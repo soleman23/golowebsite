@@ -45,7 +45,7 @@ has safe fallbacks. See **Environment variables** below.
 ## 3. Set up the database
 
 ```bash
-npm run db:migrate      # creates tables from prisma/schema.prisma (dev)
+npm run db:push         # syncs prisma/schema.prisma to the database (creates tables)
 ```
 
 ## 4. Run locally (development)
@@ -74,8 +74,7 @@ npm start               # next start -p ${PORT:-3000}
 | `npm start`         | Start the production server on `$PORT` (default 3000)   |
 | `npm run lint`      | ESLint (`next lint`)                                     |
 | `npm run typecheck` | TypeScript type-check, no emit                          |
-| `npm run db:migrate`| Create/apply a migration in development                 |
-| `npm run db:deploy` | Apply committed migrations in production (`migrate deploy`) |
+| `npm run db:push`   | Sync `schema.prisma` to the database (creates/updates tables) |
 | `npm run db:studio` | Open Prisma Studio to inspect data                      |
 
 ---
@@ -116,7 +115,7 @@ no real text. Set all three to enable real sending.
 2. **Project Settings → Database** → copy both connection strings:
    - **Pooled** (port `6543`, `?pgbouncer=true`) → `DATABASE_URL`
    - **Direct** (port `5432`) → `DIRECT_URL`
-3. Run `npm run db:migrate` (dev) or `npm run db:deploy` (prod) to create tables.
+3. Run `npm run db:push` to create the tables from the schema.
 
 Models: `PhoneLead` (hero text-link submissions) and `ContactMessage`
 (contact form). To switch engines (e.g. to MySQL on Hostinger), change
@@ -124,36 +123,76 @@ Models: `PhoneLead` (hero text-link submissions) and `ContactMessage`
 
 ---
 
-## Deploying to Hostinger (Node.js hosting) via GitHub
+## Deploying to a Hostinger VPS via GitHub
 
-This project runs as a **Node.js server** (`npm start`).
+This project runs as a **Node.js server** (`npm start`) behind an Nginx reverse
+proxy, kept alive by PM2. Run these over SSH on the VPS.
 
-1. **Push to GitHub.** `.env`, `node_modules`, `.next`, and logs are
-   git-ignored; `package-lock.json` is committed for reproducible installs.
-2. **In hPanel → Websites → your site → Node.js app** (or "Git" deploy):
-   - **Repository:** connect this GitHub repo and branch.
-   - **Node version:** 18.18+ (20 recommended — matches `.nvmrc`).
-   - **Install command:** `npm ci`
-   - **Build command:** `npm run build`
-   - **Start command:** `npm start`
-   - **Application entry / port:** the app reads `PORT` from the environment,
-     which Hostinger sets automatically. Do not hardcode a port.
-3. **Set environment variables** in Hostinger's env panel: at minimum
-   `DATABASE_URL` and `DIRECT_URL`, plus the `NEXT_PUBLIC_*` links and (when
-   ready) the Twilio values.
-4. **Run migrations against production** once the DB is reachable:
-   `npm run db:deploy` (run as a one-off command, or add it to your release
-   step).
-5. **Redeploys:** push to the connected branch; Hostinger re-runs install →
-   build → start.
-6. **Health check:** point any uptime monitor (or Hostinger's health check, if
-   offered) at `GET /api/health` — it returns `{ "status": "ok", ... }` with a
-   200 as long as the process is up.
+**1. Install Node 20 + git**
+```bash
+apt update && apt upgrade -y
+curl -fsSL https://deb.nodesource.com/setup_20.x | bash -
+apt install -y nodejs git nginx
+npm install -g pm2
+```
 
-> `next.config.mjs` uses `output: "standalone"`, so the production server is
-> self-contained and small. If your Hostinger plan is **static hosting only**
-> (no Node process), this app needs the Node.js plan because the SMS/contact
-> API routes and database require a server.
+**2. Clone + configure**
+```bash
+mkdir -p /var/www && cd /var/www
+git clone https://github.com/soleman23/golowebsite.git
+cd golowebsite
+nano .env            # paste DATABASE_URL, DIRECT_URL, NEXT_PUBLIC_* (see Env vars)
+```
+
+**3. Build, create tables, start**
+```bash
+npm ci
+npm run build
+npm run db:push                        # creates DB tables from schema
+PORT=3000 pm2 start npm --name golo -- start
+pm2 save && pm2 startup                # run the printed command to persist on reboot
+curl http://localhost:3000/api/health  # -> {"status":"ok",...}
+```
+
+**4. Nginx reverse proxy** — put this in `/etc/nginx/sites-available/golo`
+(replace the domain), then symlink to `sites-enabled/`, `nginx -t`, and
+`systemctl reload nginx`:
+```nginx
+server {
+    listen 80;
+    server_name yourdomain.com www.yourdomain.com;
+    location / {
+        proxy_pass http://localhost:3000;
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection 'upgrade';
+        proxy_set_header Host $host;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+        proxy_cache_bypass $http_upgrade;
+    }
+}
+```
+
+**5. DNS + SSL + firewall**
+```bash
+# Point A records @ and www at the VPS IP in your DNS first, then:
+apt install -y certbot python3-certbot-nginx
+certbot --nginx -d yourdomain.com -d www.yourdomain.com
+ufw allow OpenSSH && ufw allow 'Nginx Full' && ufw enable
+```
+
+**Redeploys** (after each `git push`):
+```bash
+cd /var/www/golowebsite && git pull && npm ci && npm run build && pm2 reload golo
+# add `npm run db:push` before the reload only if the schema changed
+```
+
+**Health check:** point any uptime monitor at `GET /api/health`.
+
+> `next.config.mjs` uses `output: "standalone"`. On a VPS the simplest run is
+> `npm start` (used above); the standalone bundle is also emitted under
+> `.next/standalone/` if you later want a minimal-footprint run.
 
 ---
 
