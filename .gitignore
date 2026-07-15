@@ -44,3 +44,6 @@ Thumbs.db
 # vercel / deploy caches
 .vercel
 .turbo
+
+# design reference (kept locally, not part of the deployable app)
+/design_handoff_landing_page
