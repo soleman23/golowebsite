@@ -149,7 +149,7 @@ nano .env            # paste DATABASE_URL, DIRECT_URL, NEXT_PUBLIC_* (see Env va
 npm ci
 npm run build
 npm run db:push                        # creates DB tables from schema
-PORT=3000 pm2 start npm --name golo -- start
+pm2 start ecosystem.config.js          # starts the app (name "golo", port 3000)
 pm2 save && pm2 startup                # run the printed command to persist on reboot
 curl http://localhost:3000/api/health  # -> {"status":"ok",...}
 ```
@@ -182,11 +182,24 @@ certbot --nginx -d yourdomain.com -d www.yourdomain.com
 ufw allow OpenSSH && ufw allow 'Nginx Full' && ufw enable
 ```
 
-**Redeploys** (after each `git push`):
+**Redeploys** — one command on the VPS (pull, install, build, zero-downtime reload):
 ```bash
-cd /var/www/golowebsite && git pull && npm ci && npm run build && pm2 reload golo
-# add `npm run db:push` before the reload only if the schema changed
+cd /var/www/golowebsite && npm run deploy
+npm run deploy -- --db       # same, but also runs db:push (only if the schema changed)
 ```
+
+**Automatic deploys on push (optional):** `.github/workflows/deploy.yml` SSHes
+into the VPS and runs `scripts/deploy.sh` on every push to `main`. Enable it by
+adding these repo secrets (Settings → Secrets and variables → Actions):
+
+| Secret | Value |
+| --- | --- |
+| `VPS_HOST` | VPS IP or hostname |
+| `VPS_USER` | SSH user (e.g. `root`) |
+| `VPS_SSH_KEY` | a private SSH key whose public key is in the VPS `~/.ssh/authorized_keys` |
+| `VPS_PORT` | (optional) SSH port, defaults to `22` |
+
+Until `VPS_HOST` is set, the workflow safely skips instead of failing.
 
 **Health check:** point any uptime monitor at `GET /api/health`.
 
