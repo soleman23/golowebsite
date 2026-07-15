@@ -1,0 +1,119 @@
+.hero {
+  position: relative;
+  overflow: hidden;
+}
+
+.bg {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: 50% 52%;
+}
+
+.scrim {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    180deg,
+    rgba(8, 12, 9, 0.72) 0%,
+    rgba(8, 12, 9, 0.6) 38%,
+    rgba(6, 11, 8, 0.86) 100%
+  );
+}
+
+.glow {
+  position: absolute;
+  left: -10%;
+  top: -10%;
+  width: 60%;
+  height: 70%;
+  background: radial-gradient(circle, var(--accent-glow) 0%, rgba(0, 0, 0, 0) 65%);
+  filter: blur(40px);
+  pointer-events: none;
+}
+
+.inner {
+  position: relative;
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: clamp(40px, 6vw, 82px) var(--gutter) clamp(50px, 6vw, 90px);
+  display: flex;
+  align-items: center;
+  gap: clamp(24px, 5vw, 70px);
+  flex-wrap: wrap;
+}
+
+.copy {
+  flex: 1 1 460px;
+  min-width: 300px;
+}
+
+.livePill {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  padding: 7px 14px;
+  border-radius: 9999px;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  margin-bottom: 22px;
+}
+
+.pulseDot {
+  position: relative;
+  width: 8px;
+  height: 8px;
+  flex: 0 0 auto;
+}
+.pulseCore,
+.pulseRing {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: var(--accent);
+}
+.pulseRing {
+  animation: goloPulse 1.8s ease-out infinite;
+}
+
+.livePillText {
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 2px;
+  color: var(--accent);
+}
+
+.h1 {
+  font-size: clamp(44px, 7vw, 82px);
+  font-weight: 800;
+  line-height: 0.96;
+  letter-spacing: -0.025em;
+  margin: 0 0 22px;
+  text-wrap: balance;
+}
+
+.accent {
+  color: var(--accent);
+}
+
+.lead {
+  font-size: clamp(16px, 1.5vw, 19px);
+  line-height: 1.6;
+  color: rgba(255, 255, 255, 0.74);
+  max-width: 520px;
+  margin: 0 0 30px;
+}
+
+.lead strong {
+  color: #fff;
+}
+
+.phone {
+  flex: 0 0 auto;
+  display: flex;
+  justify-content: center;
+  width: min(330px, 90vw);
+  margin: 0 auto;
+}

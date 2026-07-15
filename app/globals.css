@@ -1,0 +1,185 @@
+/* ==========================================================================
+   GoLo Golf — global styles & design tokens
+   Single source of truth for colors, typography, spacing, radii, shadows.
+   All values traced from the design handoff. The lime accent is one token;
+   translucent tints are precomputed rgba() derived from it.
+   ========================================================================== */
+
+:root {
+  /* Surfaces */
+  --page-bg: #0a0d10;
+  --footer-bg: #070a0c;
+  --logo-tile-bg: #0c0f12;
+
+  /* Brand accent (lime) + derived tints */
+  --accent: #d4f23a;
+  --accent-ink: #13250a;
+  --accent-glow: rgba(212, 242, 58, 0.42);
+  --accent-soft: rgba(212, 242, 58, 0.14);
+  --accent-border: rgba(212, 242, 58, 0.4);
+  --accent-16: rgba(212, 242, 58, 0.16);
+  --accent-35: rgba(212, 242, 58, 0.35);
+  --accent-45: rgba(212, 242, 58, 0.45);
+  --accent-50: rgba(212, 242, 58, 0.5);
+
+  /* Text */
+  --text-primary: #ffffff;
+  --text-secondary: rgba(255, 255, 255, 0.66);
+  --text-muted: rgba(255, 255, 255, 0.5);
+  --text-faint: rgba(255, 255, 255, 0.4);
+
+  /* Glass + borders */
+  --glass-surface: rgba(20, 28, 24, 0.5);
+  --glass-chrome: rgba(255, 255, 255, 0.13);
+  --card-border: rgba(255, 255, 255, 0.12);
+  --hairline: rgba(255, 255, 255, 0.08);
+  /* Near-opaque: the sticky nav can't use backdrop-filter (it triggers a
+     Chromium compositing bug that blanks the page on scroll), so the bar leans
+     on opacity instead of blur. */
+  --nav-bg: rgba(10, 13, 16, 0.92);
+
+  /* Semantic */
+  --positive: #bef264;
+  --negative: #fb7185;
+  --secondary-yellow: #facc15;
+  --blue: #60a5fa;
+
+  /* Avatar palette */
+  --avatar-teal: #2dd4bf;
+  --avatar-blue: #60a5fa;
+  --avatar-orange: #fb923c;
+  --avatar-purple: #c084fc;
+  --avatar-pink: #f472b6;
+  --avatar-yellow: #facc15;
+
+  /* Layout */
+  --max-width: 1200px;
+  --gutter: clamp(18px, 4vw, 46px);
+  --section-y: clamp(56px, 8vw, 110px);
+
+  /* Radii */
+  --radius-pill: 9999px;
+  --radius-card: 18px;
+  --radius-section: 24px;
+
+  /* Shadows */
+  --shadow-cta: 0 12px 30px rgba(0, 0, 0, 0.4);
+  --shadow-phone: 0 40px 80px -30px rgba(0, 0, 0, 0.8);
+
+  --font-sans: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background: var(--page-bg);
+  color: var(--text-primary);
+  font-family: var(--font-sans);
+  min-height: 100vh;
+  overflow-x: clip;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+::selection {
+  background: var(--accent);
+  color: var(--accent-ink);
+}
+
+/* Visible focus ring for keyboard users on every interactive element. */
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+textarea:focus-visible,
+[tabindex]:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+/* Screen-reader-only utility */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* Skip link */
+.skip-link {
+  position: absolute;
+  left: 12px;
+  top: -60px;
+  z-index: 200;
+  padding: 10px 16px;
+  border-radius: 10px;
+  background: var(--accent);
+  color: var(--accent-ink);
+  font-weight: 800;
+  font-size: 14px;
+  transition: top 0.16s ease;
+}
+.skip-link:focus {
+  top: 12px;
+}
+
+/* ---- Animations ---- */
+@keyframes goloPulse {
+  0% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  70% {
+    transform: scale(2.6);
+    opacity: 0;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+@keyframes goloFloat {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-14px);
+  }
+}
+
+/* Respect users who prefer reduced motion: kill float + pulse. */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+}

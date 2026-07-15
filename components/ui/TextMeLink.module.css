@@ -1,0 +1,81 @@
+.wrap {
+  margin-top: 18px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+}
+
+.prompt {
+  font-size: 13px;
+  font-weight: 700;
+  color: rgba(255, 255, 255, 0.55);
+}
+
+.field {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 12px;
+  padding: 5px 5px 5px 14px;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+.input {
+  background: transparent;
+  border: none;
+  outline: none;
+  color: #fff;
+  font-size: 14px;
+  font-weight: 600;
+  font-family: inherit;
+  width: 128px;
+}
+
+.input::placeholder {
+  color: rgba(255, 255, 255, 0.4);
+}
+
+.input:disabled {
+  opacity: 0.6;
+}
+
+.send {
+  height: 38px;
+  padding: 0 16px;
+  border-radius: 9px;
+  border: none;
+  background: var(--accent);
+  color: var(--accent-ink);
+  font-size: 13px;
+  font-weight: 800;
+  cursor: pointer;
+  font-family: inherit;
+  transition: transform 0.14s ease, opacity 0.14s ease;
+}
+
+.send:hover:not(:disabled) {
+  transform: translateY(-1px);
+}
+
+.send:disabled {
+  opacity: 0.7;
+  cursor: default;
+}
+
+.status {
+  font-size: 13px;
+  font-weight: 800;
+  min-height: 1em;
+}
+
+.success {
+  color: var(--accent);
+}
+
+.error {
+  color: var(--negative);
+}

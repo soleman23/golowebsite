@@ -1,0 +1,31 @@
+.lockup {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+}
+
+.tile {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 11px;
+  background: var(--logo-tile-bg);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  flex: 0 0 auto;
+}
+
+.word {
+  display: flex;
+  align-items: flex-end;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  line-height: 1;
+}
+
+.wordGo {
+  color: var(--text-primary);
+}
+
+.wordLo {
+  color: var(--accent);
+}
