@@ -85,6 +85,15 @@
   font-weight: 700;
 }
 
+/* Contact block: semantic <address>, without the browser's default italics. */
+.address {
+  font-style: normal;
+  font-size: 16px;
+  line-height: 1.8;
+  color: var(--text-secondary);
+  margin: 0;
+}
+
 .prose a {
   color: var(--accent);
   text-decoration: underline;
