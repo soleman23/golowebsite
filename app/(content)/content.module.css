@@ -45,7 +45,15 @@
   font-weight: 800;
   letter-spacing: -0.01em;
   color: #fff;
-  margin: 36px 0 12px;
+  margin: 40px 0 12px;
+}
+
+.prose h3 {
+  font-size: 17px;
+  font-weight: 800;
+  letter-spacing: -0.01em;
+  color: #fff;
+  margin: 28px 0 10px;
 }
 
 .prose p {
@@ -61,6 +69,20 @@
   color: var(--text-secondary);
   font-size: 16px;
   line-height: 1.7;
+}
+
+.prose li {
+  margin-bottom: 10px;
+}
+
+.prose li::marker {
+  color: var(--accent-border);
+}
+
+/* Bold lead-ins sit on secondary-coloured body text — lift them to primary. */
+.prose strong {
+  color: var(--text-primary);
+  font-weight: 700;
 }
 
 .prose a {
