@@ -43,6 +43,14 @@ export const serverEnv = {
     process.env.NEXT_PUBLIC_DOWNLOAD_URL ||
     process.env.NEXT_PUBLIC_SITE_URL ||
     "https://www.golo.golf/get",
+
+  // Contact-form email notification (optional). When RESEND_API_KEY is
+  // absent, the app runs in stub mode — the message still saves to the
+  // database, but no email is sent.
+  resendApiKey: optional("RESEND_API_KEY"),
+  contactNotifyTo: optional("CONTACT_NOTIFY_EMAIL") ?? "info@golo.golf",
+  contactFromEmail:
+    optional("CONTACT_FROM_EMAIL") ?? "GoLo Website <onboarding@resend.dev>",
 };
 
 /**
@@ -63,4 +71,9 @@ export function isSmsConfigured(): boolean {
       serverEnv.twilioAuthToken &&
       serverEnv.twilioFromNumber,
   );
+}
+
+/** True when contact-form notifications can be emailed; false means stub mode. */
+export function isEmailConfigured(): boolean {
+  return Boolean(serverEnv.resendApiKey);
 }

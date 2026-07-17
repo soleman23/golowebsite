@@ -92,6 +92,9 @@ Copy from [`.env.example`](.env.example). Never commit `.env`.
 | `TWILIO_AUTH_TOKEN`            | No\*     | Server-only | Twilio auth token                                   |
 | `TWILIO_FROM_NUMBER`           | No\*     | Server-only | Twilio sender number                                |
 | `SMS_MESSAGE_TEMPLATE`         | No       | Server-only | Message body; `{url}` is replaced with the link     |
+| `RESEND_API_KEY`               | No\*\*   | Server-only | Resend API key — needed to email contact-form notifications |
+| `CONTACT_NOTIFY_EMAIL`         | No       | Server-only | Inbox that receives contact-form notifications (default `info@golo.golf`) |
+| `CONTACT_FROM_EMAIL`           | No       | Server-only | Sender address Resend sends as                      |
 | `NEXT_PUBLIC_APP_STORE_URL`    | No       | **Public**  | App Store link (falls back to `#get`)               |
 | `NEXT_PUBLIC_GOOGLE_PLAY_URL`  | No       | **Public**  | Google Play link (falls back to `#get`)             |
 | `NEXT_PUBLIC_SITE_URL`         | No       | **Public**  | Canonical URL for SEO/OG tags                       |
@@ -103,6 +106,11 @@ Copy from [`.env.example`](.env.example). Never commit `.env`.
 \* If the three Twilio values are absent, the SMS endpoint runs in **stub mode**:
 it still validates the number and records the lead, returns success, but sends
 no real text. Set all three to enable real sending.
+
+\*\* If `RESEND_API_KEY` is absent, the contact endpoint runs in **stub mode**:
+the message still saves to the database and the sender still sees success, but
+no notification email is sent. Get a key at [resend.com](https://resend.com)
+(free tier available) to enable real notifications.
 
 > **Rule:** anything prefixed `NEXT_PUBLIC_` is compiled into the browser bundle
 > — never put a secret there. Database and Twilio values have no such prefix.

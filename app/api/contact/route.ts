@@ -8,6 +8,7 @@ import { NextResponse } from "next/server";
 import { prisma } from "@/lib/db";
 import { contactSchema } from "@/lib/validation";
 import { assertDatabaseConfigured } from "@/lib/env";
+import { sendContactNotification } from "@/lib/email";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -38,12 +39,22 @@ export async function POST(request: Request) {
   try {
     assertDatabaseConfigured();
     await prisma.contactMessage.create({ data: parsed.data });
-    return NextResponse.json({ ok: true });
   } catch (err) {
-    console.error("[contact] failed:", err);
+    console.error("[contact] failed to save message:", err);
     return NextResponse.json(
       { error: "We couldn't send that right now. Please try again." },
       { status: 500 },
     );
   }
+
+  // The message is saved — that's what matters for the user. A notification
+  // failure here shouldn't turn into a failed submission from their point of
+  // view; log it and let them know it went through.
+  try {
+    await sendContactNotification(parsed.data);
+  } catch (err) {
+    console.error("[contact] saved, but notification email failed:", err);
+  }
+
+  return NextResponse.json({ ok: true });
 }
