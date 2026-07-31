@@ -1,8 +1,14 @@
 import type { Metadata, Viewport } from "next";
+import Script from "next/script";
 import { siteConfig } from "@/lib/siteConfig";
 import { Nav } from "@/components/layout/Nav";
 import { Footer } from "@/components/layout/Footer";
 import "./globals.css";
+
+// Google Analytics 4 measurement ID. Override per-environment with NEXT_PUBLIC_GA_ID.
+const GA_MEASUREMENT_ID = process.env.NEXT_PUBLIC_GA_ID ?? "G-36182P0H4D";
+// Don't pollute analytics with local dev traffic.
+const GA_ENABLED = process.env.NODE_ENV === "production" && !!GA_MEASUREMENT_ID;
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteConfig.url),
@@ -47,6 +53,23 @@ export default function RootLayout({
         <Nav />
         <main id="main">{children}</main>
         <Footer />
+        {GA_ENABLED && (
+          <>
+            {/* Google tag (gtag.js) */}
+            <Script
+              src={`https://www.googletagmanager.com/gtag/js?id=${GA_MEASUREMENT_ID}`}
+              strategy="afterInteractive"
+            />
+            <Script id="google-analytics" strategy="afterInteractive">
+              {`
+                window.dataLayer = window.dataLayer || [];
+                function gtag(){dataLayer.push(arguments);}
+                gtag('js', new Date());
+                gtag('config', '${GA_MEASUREMENT_ID}');
+              `}
+            </Script>
+          </>
+        )}
       </body>
     </html>
   );
