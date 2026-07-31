@@ -11,11 +11,7 @@ import styles from "./HowItWorks.module.css";
 export function HowItWorks() {
   return (
     <section id="how" className={styles.section} aria-labelledby="how-heading">
-      <div
-        className={styles.bg}
-        style={{ backgroundImage: "url('/images/sunset.png')" }}
-        aria-hidden="true"
-      />
+      <div className={`${styles.bg} golo-bd-sunset`} aria-hidden="true" />
       <div className={styles.scrim} aria-hidden="true" />
 
       <div className={styles.inner}>

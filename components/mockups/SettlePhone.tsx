@@ -10,7 +10,7 @@ import styles from "./mockups.module.css";
 export function SettlePhone() {
   return (
     <PhoneShell
-      bg="/images/course.png"
+      bg="course"
       bgPosition="50% 62%"
       scrim="linear-gradient(180deg, rgba(6,14,9,.78) 0%, rgba(6,14,9,.6) 26%, rgba(4,12,8,.92) 100%)"
       label="GoLo settle-up screen — Mike collected $85, with the who-pays-whom transfers netted out."

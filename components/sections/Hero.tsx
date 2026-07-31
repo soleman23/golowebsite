@@ -4,21 +4,17 @@
  * phone mockup.
  */
 
-import { siteConfig, heroBackdropSrc } from "@/lib/siteConfig";
+import { siteConfig, heroBackdropClass } from "@/lib/siteConfig";
 import { StoreButtons } from "@/components/ui/StoreButtons";
 import { TextMeLink } from "@/components/ui/TextMeLink";
 import { HeroPhone } from "@/components/mockups/HeroPhone";
 import styles from "./Hero.module.css";
 
 export function Hero() {
-  const bg = heroBackdropSrc[siteConfig.heroBackdrop];
+  const bgClass = heroBackdropClass[siteConfig.heroBackdrop];
   return (
     <section id="top" className={styles.hero} aria-labelledby="hero-heading">
-      <div
-        className={styles.bg}
-        style={{ backgroundImage: `url('${bg}')` }}
-        aria-hidden="true"
-      />
+      <div className={`${styles.bg} ${bgClass}`} aria-hidden="true" />
       <div className={styles.scrim} aria-hidden="true" />
       <div className={styles.glow} aria-hidden="true" />
 

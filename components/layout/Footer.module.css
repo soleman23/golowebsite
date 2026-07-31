@@ -34,7 +34,9 @@
   font-size: 12px;
   font-weight: 800;
   letter-spacing: 1.4px;
-  color: rgba(255, 255, 255, 0.45);
+  /* .60 → 7.30:1 on --footer-bg. At .45 this sat exactly on the 4.50:1 AA
+     line and Lighthouse flagged it. */
+  color: rgba(255, 255, 255, 0.6);
   margin: 0 0 14px;
 }
 

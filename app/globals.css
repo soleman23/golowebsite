@@ -26,7 +26,9 @@
   --text-primary: #ffffff;
   --text-secondary: rgba(255, 255, 255, 0.66);
   --text-muted: rgba(255, 255, 255, 0.5);
-  --text-faint: rgba(255, 255, 255, 0.4);
+  /* .55, not .4 — at .4 this failed WCAG AA on the footer (3.76:1 against
+     --footer-bg #070a0c, needs 4.5:1). .55 lands at 6.26:1. */
+  --text-faint: rgba(255, 255, 255, 0.55);
 
   /* Glass + borders */
   --glass-surface: rgba(20, 28, 24, 0.5);
@@ -112,6 +114,138 @@ textarea:focus-visible,
   outline: 2px solid var(--accent);
   outline-offset: 2px;
   border-radius: 4px;
+}
+
+/* ==========================================================================
+   Decorative backdrop photos
+   --------------------------------------------------------------------------
+   These photos sit under heavy scrims, so they're CSS backgrounds rather than
+   <img>/next-image. Serving them as raw PNGs cost ~6.9 MB and pushed mobile
+   LCP to 27 s, so each one now resolves through image-set(): AVIF first, WebP
+   second, and the original PNG as the plain-url fallback for browsers with no
+   image-set support (that declaration is listed first so the invalid-drop
+   cascade leaves it standing).
+
+   Two size tiers:
+     .golo-bd-*       full-bleed section backdrops — 640 / 960 / 1600 by viewport
+     .golo-bd-mock-*  phone + card mockups, max ~330 CSS px — 640 / 960 only
+   ========================================================================== */
+
+/* ---- Full-bleed section backdrops ---- */
+.golo-bd-sunset,
+.golo-bd-course,
+.golo-bd-turf {
+  background-size: cover;
+}
+
+.golo-bd-sunset {
+  background-image: url("/images/sunset.png");
+  background-image: image-set(
+    url("/images/sunset-640.avif") type("image/avif"),
+    url("/images/sunset-640.webp") type("image/webp"),
+    url("/images/sunset.png") type("image/png")
+  );
+}
+.golo-bd-course {
+  background-image: url("/images/course.png");
+  background-image: image-set(
+    url("/images/course-640.avif") type("image/avif"),
+    url("/images/course-640.webp") type("image/webp"),
+    url("/images/course.png") type("image/png")
+  );
+}
+.golo-bd-turf {
+  background-image: url("/images/turf.png");
+  background-image: image-set(
+    url("/images/turf-640.avif") type("image/avif"),
+    url("/images/turf-640.webp") type("image/webp"),
+    url("/images/turf.png") type("image/png")
+  );
+}
+
+@media (min-width: 641px) {
+  .golo-bd-sunset {
+    background-image: image-set(
+      url("/images/sunset-960.avif") type("image/avif"),
+      url("/images/sunset-960.webp") type("image/webp"),
+      url("/images/sunset.png") type("image/png")
+    );
+  }
+  .golo-bd-course {
+    background-image: image-set(
+      url("/images/course-960.avif") type("image/avif"),
+      url("/images/course-960.webp") type("image/webp"),
+      url("/images/course.png") type("image/png")
+    );
+  }
+  .golo-bd-turf {
+    background-image: image-set(
+      url("/images/turf-960.avif") type("image/avif"),
+      url("/images/turf-960.webp") type("image/webp"),
+      url("/images/turf.png") type("image/png")
+    );
+  }
+}
+
+@media (min-width: 961px) {
+  .golo-bd-sunset {
+    background-image: image-set(
+      url("/images/sunset-1600.avif") type("image/avif"),
+      url("/images/sunset-1600.webp") type("image/webp"),
+      url("/images/sunset.png") type("image/png")
+    );
+  }
+  .golo-bd-course {
+    background-image: image-set(
+      url("/images/course-1600.avif") type("image/avif"),
+      url("/images/course-1600.webp") type("image/webp"),
+      url("/images/course.png") type("image/png")
+    );
+  }
+  .golo-bd-turf {
+    background-image: image-set(
+      url("/images/turf-1600.avif") type("image/avif"),
+      url("/images/turf-1600.webp") type("image/webp"),
+      url("/images/turf.png") type("image/png")
+    );
+  }
+}
+
+/* ---- Mockup backdrops (phone shells + money card) ----
+   These render at most ~330 CSS px wide, so the 1600px tier is never worth
+   fetching; 960 covers 2–3x DPR comfortably. */
+.golo-bd-mock-course {
+  background-image: url("/images/course.png");
+  background-image: image-set(
+    url("/images/course-640.avif") type("image/avif"),
+    url("/images/course-640.webp") type("image/webp"),
+    url("/images/course.png") type("image/png")
+  );
+}
+.golo-bd-mock-turf {
+  background-image: url("/images/turf.png");
+  background-image: image-set(
+    url("/images/turf-640.avif") type("image/avif"),
+    url("/images/turf-640.webp") type("image/webp"),
+    url("/images/turf.png") type("image/png")
+  );
+}
+
+@media (min-resolution: 1.5dppx), (min-width: 641px) {
+  .golo-bd-mock-course {
+    background-image: image-set(
+      url("/images/course-960.avif") type("image/avif"),
+      url("/images/course-960.webp") type("image/webp"),
+      url("/images/course.png") type("image/png")
+    );
+  }
+  .golo-bd-mock-turf {
+    background-image: image-set(
+      url("/images/turf-960.avif") type("image/avif"),
+      url("/images/turf-960.webp") type("image/webp"),
+      url("/images/turf.png") type("image/png")
+    );
+  }
 }
 
 /* Screen-reader-only utility */

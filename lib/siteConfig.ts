@@ -33,9 +33,49 @@ export const siteConfig = {
   heroBackdrop: heroBackdrop(process.env.NEXT_PUBLIC_HERO_BACKDROP),
 } as const;
 
-/** Maps a hero backdrop key to its image path in /public/images. */
+/** Maps a hero backdrop key to its original PNG path in /public/images. */
 export const heroBackdropSrc: Record<HeroBackdrop, string> = {
   sunset: "/images/sunset.png",
   course: "/images/course.png",
   turf: "/images/turf.png",
+};
+
+/**
+ * Global class (see app/globals.css) that resolves a backdrop to its
+ * AVIF/WebP/PNG image-set at the right size for the viewport. Used instead of
+ * an inline background-image so the browser can pick a modern format.
+ */
+export const heroBackdropClass: Record<HeroBackdrop, string> = {
+  sunset: "golo-bd-sunset",
+  course: "golo-bd-course",
+  turf: "golo-bd-turf",
+};
+
+/**
+ * Preload descriptor for the hero backdrop — it's the LCP element, so it needs
+ * an explicit high-priority preload (a CSS background can't carry
+ * fetchpriority on its own). Widths mirror the image-set tiers in globals.css.
+ */
+export const heroBackdropPreload: Record<
+  HeroBackdrop,
+  { srcSet: string; sizes: string; type: string }
+> = {
+  sunset: {
+    srcSet:
+      "/images/sunset-640.avif 640w, /images/sunset-960.avif 960w, /images/sunset-1600.avif 1600w",
+    sizes: "100vw",
+    type: "image/avif",
+  },
+  course: {
+    srcSet:
+      "/images/course-640.avif 640w, /images/course-960.avif 960w, /images/course-1600.avif 1600w",
+    sizes: "100vw",
+    type: "image/avif",
+  },
+  turf: {
+    srcSet:
+      "/images/turf-640.avif 640w, /images/turf-960.avif 960w, /images/turf-1600.avif 1600w",
+    sizes: "100vw",
+    type: "image/avif",
+  },
 };

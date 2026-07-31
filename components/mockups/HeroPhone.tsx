@@ -17,7 +17,7 @@ const dotColor: Record<string, string> = {
 export function HeroPhone() {
   return (
     <PhoneShell
-      bg="/images/course.png"
+      bg="course"
       bgPosition="50% 58%"
       width={300}
       height={610}

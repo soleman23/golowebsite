@@ -16,7 +16,7 @@ const dotColor: Record<string, string> = {
 export function ScoringPhone() {
   return (
     <PhoneShell
-      bg="/images/turf.png"
+      bg="turf"
       bgPosition="50% 60%"
       label="GoLo scoring screen for hole 7 — tapping in Mike's score with net and gross for the group."
     >

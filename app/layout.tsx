@@ -1,6 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import Script from "next/script";
-import { siteConfig } from "@/lib/siteConfig";
+import { siteConfig, heroBackdropPreload } from "@/lib/siteConfig";
 import { Nav } from "@/components/layout/Nav";
 import { Footer } from "@/components/layout/Footer";
 import "./globals.css";
@@ -44,8 +44,30 @@ export default function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
+  const heroPreload = heroBackdropPreload[siteConfig.heroBackdrop];
+
   return (
     <html lang="en">
+      <head>
+        {/* The hero backdrop is the LCP element. It's painted as a CSS
+            background, which can't carry fetchpriority on its own, so preload
+            it explicitly — this is what removes the ~1 s element-render delay
+            Lighthouse flags under "LCP request discovery". */}
+        <link
+          rel="preload"
+          as="image"
+          fetchPriority="high"
+          type={heroPreload.type}
+          imageSrcSet={heroPreload.srcSet}
+          imageSizes={heroPreload.sizes}
+        />
+        {/* GA/GTM loads lazily, but warming the connection costs nothing. */}
+        <link rel="preconnect" href="https://www.googletagmanager.com" />
+        <link
+          rel="dns-prefetch"
+          href="https://www.googletagmanager.com"
+        />
+      </head>
       <body>
         <a href="#main" className="skip-link">
           Skip to content
@@ -55,12 +77,15 @@ export default function RootLayout({
         <Footer />
         {GA_ENABLED && (
           <>
-            {/* Google tag (gtag.js) */}
+            {/* Google tag (gtag.js).
+                lazyOnload keeps GTM's ~160 KiB and ~200 ms of main-thread work
+                off the critical path. Trade-off: the pageview fires after the
+                load event, so very fast bounces may go uncounted. */}
             <Script
               src={`https://www.googletagmanager.com/gtag/js?id=${GA_MEASUREMENT_ID}`}
-              strategy="afterInteractive"
+              strategy="lazyOnload"
             />
-            <Script id="google-analytics" strategy="afterInteractive">
+            <Script id="google-analytics" strategy="lazyOnload">
               {`
                 window.dataLayer = window.dataLayer || [];
                 function gtag(){dataLayer.push(arguments);}

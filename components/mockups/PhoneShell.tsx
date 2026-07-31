@@ -6,12 +6,23 @@
  * The background photos are decorative (they sit under a scrim), so they're set
  * as CSS backgrounds rather than <img>/next/image; the frame carries an
  * aria-label so the mockup is announced meaningfully.
+ *
+ * `bg` names a backdrop rather than a file path — the matching global class in
+ * app/globals.css resolves it to an AVIF/WebP/PNG image-set at mockup size.
  */
 
 import styles from "./mockups.module.css";
 
+/** Backdrop photos available to the phone mockups. */
+export type PhoneShellBackdrop = "course" | "turf";
+
+const BACKDROP_CLASS: Record<PhoneShellBackdrop, string> = {
+  course: "golo-bd-mock-course",
+  turf: "golo-bd-mock-turf",
+};
+
 type PhoneShellProps = {
-  bg: string; // /images/*.png
+  bg: PhoneShellBackdrop;
   bgPosition?: string;
   width?: number;
   height?: number;
@@ -45,11 +56,8 @@ export function PhoneShell({
         aria-label={label}
       >
         <div
-          className={styles.phoneBg}
-          style={{
-            backgroundImage: `url('${bg}')`,
-            backgroundPosition: bgPosition,
-          }}
+          className={`${styles.phoneBg} ${BACKDROP_CLASS[bg]}`}
+          style={{ backgroundPosition: bgPosition }}
           aria-hidden="true"
         />
         <div className={styles.phoneScrim} style={{ background: scrim }} aria-hidden="true" />

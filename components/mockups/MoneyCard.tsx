@@ -15,8 +15,7 @@ export function MoneyCard() {
       aria-label="GoLo money-on-the-line card showing Skins, Nassau, Stroke Purse and Closest to Pin standings."
     >
       <div
-        className={styles.moneyCardBg}
-        style={{ backgroundImage: "url('/images/course.png')" }}
+        className={`${styles.moneyCardBg} golo-bd-mock-course`}
         aria-hidden="true"
       />
       <div className={styles.moneyCardScrim} aria-hidden="true" />
