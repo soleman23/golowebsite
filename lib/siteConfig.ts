@@ -52,30 +52,32 @@ export const heroBackdropClass: Record<HeroBackdrop, string> = {
 };
 
 /**
- * Preload descriptor for the hero backdrop — it's the LCP element, so it needs
- * an explicit high-priority preload (a CSS background can't carry
- * fetchpriority on its own). Widths mirror the image-set tiers in globals.css.
+ * Preload descriptors for the hero backdrop — it's the LCP element, so it needs
+ * an explicit high-priority preload (a CSS background can't carry fetchpriority
+ * on its own).
+ *
+ * These MUST use the same `media` conditions as the .golo-bd-* rules in
+ * globals.css. An imagesrcset/imagesizes preload does NOT work here: srcset
+ * picks a candidate by DEVICE pixels (CSS px x DPR) while the stylesheet picks
+ * by CSS pixels, so on a 412px @1.75x phone the preload fetched the 960 tier
+ * while the page rendered the 640 tier — a wasted download, and the real LCP
+ * image wasn't discoverable until the CSS parsed.
+ *
+ * If you change a breakpoint in globals.css, change it here too.
  */
-export const heroBackdropPreload: Record<
-  HeroBackdrop,
-  { srcSet: string; sizes: string; type: string }
-> = {
-  sunset: {
-    srcSet:
-      "/images/sunset-640.avif 640w, /images/sunset-960.avif 960w, /images/sunset-1600.avif 1600w",
-    sizes: "100vw",
-    type: "image/avif",
+export type HeroPreloadLink = { href: string; media: string };
+
+const backdropPreload = (name: HeroBackdrop): HeroPreloadLink[] => [
+  { href: `/images/${name}-640.avif`, media: "(max-width: 640px)" },
+  {
+    href: `/images/${name}-960.avif`,
+    media: "(min-width: 641px) and (max-width: 960px)",
   },
-  course: {
-    srcSet:
-      "/images/course-640.avif 640w, /images/course-960.avif 960w, /images/course-1600.avif 1600w",
-    sizes: "100vw",
-    type: "image/avif",
-  },
-  turf: {
-    srcSet:
-      "/images/turf-640.avif 640w, /images/turf-960.avif 960w, /images/turf-1600.avif 1600w",
-    sizes: "100vw",
-    type: "image/avif",
-  },
+  { href: `/images/${name}-1600.avif`, media: "(min-width: 961px)" },
+];
+
+export const heroBackdropPreload: Record<HeroBackdrop, HeroPreloadLink[]> = {
+  sunset: backdropPreload("sunset"),
+  course: backdropPreload("course"),
+  turf: backdropPreload("turf"),
 };

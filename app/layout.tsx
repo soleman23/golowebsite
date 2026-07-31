@@ -51,16 +51,20 @@ export default function RootLayout({
       <head>
         {/* The hero backdrop is the LCP element. It's painted as a CSS
             background, which can't carry fetchpriority on its own, so preload
-            it explicitly — this is what removes the ~1 s element-render delay
-            Lighthouse flags under "LCP request discovery". */}
-        <link
-          rel="preload"
-          as="image"
-          fetchPriority="high"
-          type={heroPreload.type}
-          imageSrcSet={heroPreload.srcSet}
-          imageSizes={heroPreload.sizes}
-        />
+            it explicitly. One link per breakpoint, matching the media queries
+            on .golo-bd-* in globals.css exactly — only one can ever match, so
+            the browser fetches precisely the file the stylesheet will use. */}
+        {heroPreload.map((link) => (
+          <link
+            key={link.href}
+            rel="preload"
+            as="image"
+            fetchPriority="high"
+            type="image/avif"
+            href={link.href}
+            media={link.media}
+          />
+        ))}
         {/* GA/GTM loads lazily, but warming the connection costs nothing. */}
         <link rel="preconnect" href="https://www.googletagmanager.com" />
         <link
