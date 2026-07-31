@@ -8,6 +8,7 @@
 
 import { useState } from "react";
 import { contactSchema } from "@/lib/validation";
+import { track } from "@/lib/analytics";
 import styles from "./ContactForm.module.css";
 
 type Status = "idle" | "submitting" | "success" | "error";
@@ -60,6 +61,7 @@ export function ContactForm() {
       }
 
       setStatus("success");
+      track("contact_submit", { form: "contact" });
     } catch {
       setStatus("error");
       setTopError("Network error. Please try again.");

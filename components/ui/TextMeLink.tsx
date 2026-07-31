@@ -8,6 +8,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { phoneSchema } from "@/lib/validation";
+import { track } from "@/lib/analytics";
 import styles from "./TextMeLink.module.css";
 
 type Status = "idle" | "submitting" | "success" | "error";
@@ -33,6 +34,7 @@ export function TextMeLink() {
     if (!parsed.success) {
       setStatus("error");
       setMessage(parsed.error.issues[0]?.message ?? "Enter a valid phone number.");
+      track("lead_form_error", { form: "text_me_link", stage: "validation" });
       return;
     }
 
@@ -51,11 +53,13 @@ export function TextMeLink() {
       if (!res.ok) {
         setStatus("error");
         setMessage(data.error ?? "Something went wrong. Please try again.");
+        track("lead_form_error", { form: "text_me_link", stage: "server" });
         return;
       }
 
       setStatus("success");
       setMessage("Link sent — check your messages");
+      track("generate_lead", { method: "text_me_link" });
       setPhone("");
       if (resetTimer.current) clearTimeout(resetTimer.current);
       resetTimer.current = setTimeout(() => {
@@ -65,6 +69,7 @@ export function TextMeLink() {
     } catch {
       setStatus("error");
       setMessage("Network error. Please try again.");
+      track("lead_form_error", { form: "text_me_link", stage: "network" });
     }
   }
 

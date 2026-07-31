@@ -1,10 +1,18 @@
+"use client";
+
 /**
  * App Store + Google Play download buttons. White pills with brand glyphs and
  * a two-line label. Size variant controls height (hero = 58, final CTA = 60).
  * Links come from siteConfig (env-driven), falling back to #get.
+ *
+ * Client component so clicks can be tracked. While the store URLs are still
+ * unset, `destination_configured: false` on the event tells us how many people
+ * are clicking a button that goes nowhere — that's the download-intent signal
+ * ahead of launch.
  */
 
 import { siteConfig } from "@/lib/siteConfig";
+import { track } from "@/lib/analytics";
 import styles from "./StoreButtons.module.css";
 
 function AppleGlyph({ size = 24 }: { size?: number }) {
@@ -56,6 +64,13 @@ export function StoreButtons({
   className,
 }: StoreButtonsProps) {
   const external = (href: string) => href.startsWith("http");
+  const onStoreClick = (store: "app_store" | "google_play", href: string) => {
+    track("store_button_click", {
+      store,
+      placement: size === "lg" ? "final_cta" : "hero",
+      destination_configured: external(href),
+    });
+  };
   return (
     <div
       className={`${styles.group} ${align === "center" ? styles.center : ""} ${className ?? ""}`}
@@ -64,6 +79,7 @@ export function StoreButtons({
         href={siteConfig.appStoreUrl}
         className={`${styles.button} ${size === "lg" ? styles.lg : ""}`}
         aria-label="Download GoLo on the App Store"
+        onClick={() => onStoreClick("app_store", siteConfig.appStoreUrl)}
         {...(external(siteConfig.appStoreUrl)
           ? { target: "_blank", rel: "noopener noreferrer" }
           : {})}
@@ -79,6 +95,7 @@ export function StoreButtons({
         href={siteConfig.googlePlayUrl}
         className={`${styles.button} ${size === "lg" ? styles.lg : ""}`}
         aria-label="Get GoLo on Google Play"
+        onClick={() => onStoreClick("google_play", siteConfig.googlePlayUrl)}
         {...(external(siteConfig.googlePlayUrl)
           ? { target: "_blank", rel: "noopener noreferrer" }
           : {})}
