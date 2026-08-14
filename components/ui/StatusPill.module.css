@@ -12,10 +12,12 @@
   white-space: nowrap;
 }
 
+/* --positive, not --accent: the reference reserves the sharper lime for
+   kickers and uses the green-lime for "this actually ships today". */
 .today {
-  background: var(--accent-soft);
-  border-color: var(--accent-border);
-  color: var(--accent);
+  background: color-mix(in srgb, var(--positive) 14%, transparent);
+  border-color: color-mix(in srgb, var(--positive) 32%, transparent);
+  color: var(--positive);
 }
 
 /* color-mix keeps the yellow tint derived from --secondary-yellow rather than

@@ -32,7 +32,12 @@ export function Features() {
       {features.map((feature) => {
         const Visual = visuals[feature.visual];
         return (
-          <FeatureRow key={feature.id} feature={feature}>
+          <FeatureRow
+            key={feature.id}
+            feature={feature}
+            // The money card is a flexible card; the two phones aren't.
+            visualFill={feature.visual === "money"}
+          >
             <Visual />
           </FeatureRow>
         );

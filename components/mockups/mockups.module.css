@@ -528,7 +528,7 @@
 }
 .scoreRowNet {
   font-size: 11px;
-  color: rgba(255, 255, 255, 0.45);
+  color: var(--text-muted);
 }
 .scoreRowGross {
   font-size: 20px;
@@ -581,7 +581,7 @@
 .moneyCardThrough {
   font-size: 11px;
   font-weight: 700;
-  color: rgba(255, 255, 255, 0.45);
+  color: var(--text-muted);
 }
 .moneyItem {
   display: flex;
@@ -751,7 +751,7 @@
 }
 .transferArrow {
   font-size: 15px;
-  color: rgba(255, 255, 255, 0.4);
+  color: var(--text-muted);
 }
 .transferAmount {
   flex: 1;
@@ -798,4 +798,781 @@
   justify-content: center;
   font-size: 15px;
   font-weight: 800;
+}
+
+/* SettlePhone, features variant: per-game breakdown chips. */
+.settleBreakdown {
+  position: relative;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 12px;
+}
+
+.settleBreakdownChip {
+  font-size: 10.5px;
+  font-weight: 800;
+  padding: 5px 9px;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.09);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  color: var(--text-secondary);
+}
+
+/* ScoringPhone, features variant: junk buttons in place of the progress bar. */
+.junkRow {
+  margin-top: 12px;
+  display: flex;
+  gap: 7px;
+}
+
+.junkBtn {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 38px;
+  border-radius: 11px;
+  background: rgba(255, 255, 255, 0.09);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  font-size: 12px;
+  font-weight: 800;
+  color: #fff;
+}
+
+.junkBtnAccent {
+  background: var(--accent-16);
+  border-color: var(--accent-border);
+  color: var(--accent);
+}
+
+/* ==========================================================================
+   /features mockups — shared shells
+   ========================================================================== */
+
+/* Flexible glass card, no photo: PressLadder, StrokeGrid, LockerCard. */
+.glassCard {
+  width: 100%;
+  border-radius: var(--radius-section);
+  background: var(--glass-surface);
+  border: 1px solid var(--card-border);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+}
+
+.glassCardInner {
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+/* Flexible card over a backdrop photo: SetupCard. */
+.photoCard {
+  position: relative;
+  width: 100%;
+  border-radius: var(--radius-section);
+  overflow: hidden;
+  border: 1px solid var(--card-border);
+  box-shadow: 0 30px 70px -30px rgba(0, 0, 0, 0.8);
+}
+
+.photoCardBg {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+}
+
+.photoCardScrim {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    180deg,
+    rgba(6, 14, 9, 0.8) 0%,
+    rgba(4, 12, 8, 0.93) 100%
+  );
+}
+
+.cardKicker {
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 1.6px;
+  color: var(--accent);
+}
+
+.cardMeta {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--text-muted);
+}
+
+/* ---- SetupCard ---- */
+
+.setupInner {
+  position: relative;
+  padding: 22px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.setupKicker {
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 1.6px;
+  color: var(--accent);
+}
+
+.setupWhen {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--text-muted);
+}
+
+.setupCourse {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px;
+  border-radius: 16px;
+  background: var(--glass-surface);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  border: 1px solid var(--card-border);
+}
+
+.setupCourseBadge {
+  width: 40px;
+  height: 40px;
+  border-radius: 12px;
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--accent-soft);
+  border: 1px solid var(--accent-border);
+  font-size: 16px;
+  font-weight: 800;
+  color: var(--accent);
+}
+
+.setupCourseBody {
+  flex: 1;
+  min-width: 0;
+}
+
+.setupCourseName {
+  font-size: 15px;
+  font-weight: 800;
+  color: #fff;
+}
+
+.setupCourseMeta {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-muted);
+  margin-top: 1px;
+}
+
+.setupGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.setupLabel {
+  font-size: 10.5px;
+  font-weight: 800;
+  letter-spacing: 1.3px;
+  color: var(--text-muted);
+}
+
+.setupPlayer {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px;
+  border-radius: 13px;
+  background: var(--glass-surface);
+  border: 1px solid rgba(255, 255, 255, 0.11);
+}
+
+.setupAvatar {
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  font-weight: 800;
+  color: #fff;
+}
+
+.setupName {
+  flex: 1;
+  font-size: 13.5px;
+  font-weight: 800;
+  color: #fff;
+}
+
+.setupGuest {
+  font-weight: 700;
+  color: var(--text-muted);
+}
+
+.setupIndex {
+  font-size: 11px;
+  font-weight: 800;
+  color: var(--text-muted);
+  font-variant-numeric: tabular-nums;
+}
+
+.setupTee {
+  font-size: 10.5px;
+  font-weight: 800;
+  padding: 4px 9px;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  color: #fff;
+}
+
+.setupChips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.setupChip {
+  display: inline-flex;
+  align-items: center;
+  height: 32px;
+  padding: 0 12px;
+  border-radius: var(--radius-pill);
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.setupChipAccent {
+  background: var(--accent-soft);
+  border: 1px solid var(--accent-border);
+  color: var(--accent);
+}
+
+.setupChipPlain {
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  color: #fff;
+}
+
+.setupChipAdd {
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px dashed rgba(255, 255, 255, 0.22);
+  color: var(--text-muted);
+}
+
+.setupStart {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 46px;
+  border-radius: var(--radius-tile);
+  background: var(--accent);
+  color: var(--accent-ink);
+  font-size: 14px;
+  font-weight: 800;
+}
+
+/* ---- GameStackCard ---- */
+
+.gameTiles {
+  width: 100%;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.gameTile {
+  padding: 18px;
+  border-radius: var(--radius-card);
+  background: var(--glass-surface);
+  border: 1px solid var(--card-border);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.gameTileLime {
+  background: rgba(212, 242, 58, 0.1);
+  border-color: rgba(212, 242, 58, 0.3);
+}
+
+.gameTileName {
+  font-size: 15px;
+  font-weight: 800;
+  color: #fff;
+}
+
+.gameTileLime .gameTileName {
+  color: var(--accent);
+}
+
+.gameTileRule {
+  font-size: 12.5px;
+  font-weight: 600;
+  line-height: 1.5;
+  color: var(--text-muted);
+}
+
+.gameTileLime .gameTileRule {
+  color: var(--text-secondary);
+}
+
+/* Two-up tiles get cramped below ~380px. */
+@media (max-width: 380px) {
+  .gameTiles {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ---- MoneyCard: player-standings variant ---- */
+
+.viewToggle {
+  display: flex;
+  gap: 7px;
+  margin-bottom: 14px;
+}
+
+.viewChip {
+  display: inline-flex;
+  align-items: center;
+  height: 30px;
+  padding: 0 13px;
+  border-radius: var(--radius-pill);
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  font-size: 11.5px;
+  font-weight: 800;
+  color: var(--text-secondary);
+}
+
+.viewChipActive {
+  background: var(--accent-16);
+  border-color: var(--accent-border);
+  color: var(--accent);
+}
+
+.standings {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.standingRow {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: var(--glass-surface);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  border: 1px solid var(--card-border);
+  border-radius: 15px;
+  padding: 12px 14px;
+}
+
+.standingRowLeader {
+  border-color: var(--accent-border);
+}
+
+.standingAvatar {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 13px;
+  font-weight: 800;
+  color: #fff;
+}
+
+.standingBody {
+  flex: 1;
+  min-width: 0;
+}
+
+.standingName {
+  font-size: 15px;
+  font-weight: 800;
+  color: #fff;
+}
+
+.standingReason {
+  font-size: 11.5px;
+  font-weight: 600;
+  color: var(--text-muted);
+}
+
+.standingRight {
+  text-align: right;
+  flex: 0 0 auto;
+}
+
+.standingValue {
+  font-size: 19px;
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+}
+
+.standingUp {
+  color: var(--positive);
+}
+
+.standingDown {
+  color: var(--negative);
+}
+
+.standingMove {
+  font-size: 10px;
+  font-weight: 800;
+  color: var(--text-muted);
+}
+
+.potFooter {
+  margin-top: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 12px 14px;
+  border-radius: var(--radius-tile);
+  background: rgba(212, 242, 58, 0.1);
+  border: 1px solid rgba(212, 242, 58, 0.3);
+}
+
+.potLabel {
+  font-size: 11.5px;
+  font-weight: 800;
+  letter-spacing: 1px;
+  color: var(--accent);
+}
+
+.potValue {
+  font-size: 17px;
+  font-weight: 800;
+  color: var(--accent);
+  font-variant-numeric: tabular-nums;
+}
+
+/* ---- PressLadder ---- */
+
+.rungs {
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+}
+
+.rung {
+  padding: 14px;
+  border-radius: 15px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.rungLive {
+  background: rgba(212, 242, 58, 0.1);
+  border-color: var(--accent-border);
+}
+
+.rungHoles {
+  flex: 0 0 auto;
+  width: 44px;
+  height: 44px;
+  border-radius: 13px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  font-size: 11px;
+  font-weight: 800;
+  color: var(--text-secondary);
+  line-height: 1.1;
+  text-align: center;
+  font-variant-numeric: tabular-nums;
+}
+
+.rungHolesLive {
+  background: rgba(212, 242, 58, 0.18);
+  border-color: var(--accent-border);
+  color: var(--accent);
+}
+
+.rungBody {
+  flex: 1;
+  min-width: 0;
+}
+
+.rungTitle {
+  font-size: 14.5px;
+  font-weight: 800;
+  color: #fff;
+}
+
+.rungState {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-muted);
+}
+
+.rungStateLive {
+  color: var(--accent);
+}
+
+.rungAmount {
+  font-size: 15px;
+  font-weight: 800;
+  color: #fff;
+  font-variant-numeric: tabular-nums;
+}
+
+.rungAmountPositive {
+  color: var(--positive);
+}
+
+.rungAmountNegative {
+  color: var(--negative);
+}
+
+.exposure {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 13px 14px;
+  border-radius: var(--radius-tile);
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.exposureLabel {
+  font-size: 11.5px;
+  font-weight: 800;
+  letter-spacing: 1px;
+  color: var(--text-faint);
+}
+
+.exposureValue {
+  font-size: 17px;
+  font-weight: 800;
+  color: #fff;
+  font-variant-numeric: tabular-nums;
+}
+
+/* ---- StrokeGrid ---- */
+
+.strokeHead {
+  display: flex;
+  align-items: flex-end;
+  gap: 14px;
+}
+
+.strokeBig {
+  font-size: 54px;
+  font-weight: 800;
+  line-height: 0.86;
+  letter-spacing: -0.04em;
+  color: var(--accent);
+}
+
+.strokeCaption {
+  font-size: 13px;
+  font-weight: 700;
+  line-height: 1.5;
+  color: var(--text-secondary);
+  padding-bottom: 6px;
+}
+
+.strokeLabel {
+  font-size: 10.5px;
+  font-weight: 800;
+  letter-spacing: 1.3px;
+  color: var(--text-muted);
+  margin-bottom: 10px;
+}
+
+.strokeGrid {
+  display: grid;
+  grid-template-columns: repeat(9, 1fr);
+  gap: 6px;
+}
+
+.strokeCell {
+  border-radius: 9px;
+  padding: 7px 0 6px;
+  text-align: center;
+  background: rgba(212, 242, 58, 0.22);
+  border: 1px solid rgba(212, 242, 58, 0.45);
+}
+
+.strokeCellTwo {
+  background: rgba(212, 242, 58, 0.42);
+  border-color: rgba(212, 242, 58, 0.6);
+}
+
+.strokeCellHole {
+  font-size: 10px;
+  font-weight: 800;
+  color: var(--text-secondary);
+  font-variant-numeric: tabular-nums;
+}
+
+.strokeCellTwo .strokeCellHole {
+  color: var(--accent-ink);
+}
+
+.strokeCellMarks {
+  font-size: 11px;
+  font-weight: 800;
+  margin-top: 2px;
+  color: var(--accent);
+}
+
+.strokeCellTwo .strokeCellMarks {
+  color: var(--accent-ink);
+}
+
+.strokeLegend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+  margin-top: 12px;
+}
+
+.strokeLegendItem {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 11.5px;
+  font-weight: 700;
+  color: var(--text-faint);
+}
+
+.strokeSwatch {
+  width: 10px;
+  height: 10px;
+  border-radius: 3px;
+  background: rgba(212, 242, 58, 0.22);
+  border: 1px solid rgba(212, 242, 58, 0.45);
+}
+
+.strokeSwatchTwo {
+  background: rgba(212, 242, 58, 0.42);
+  border-color: rgba(212, 242, 58, 0.6);
+}
+
+/* ---- LockerCard ---- */
+
+.lockerTotals {
+  display: flex;
+  gap: 10px;
+}
+
+.lockerTotal {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 14px;
+  border-radius: 15px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.lockerTotalLabel {
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 1.2px;
+  color: var(--text-muted);
+}
+
+.lockerTotalValue {
+  font-size: 28px;
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: -0.02em;
+  color: var(--accent);
+  font-variant-numeric: tabular-nums;
+}
+
+.lockerTotalMuted {
+  color: #fff;
+}
+
+.trend {
+  display: flex;
+  align-items: flex-end;
+  gap: 6px;
+  height: 48px;
+}
+
+.trendBar {
+  flex: 1;
+  border-radius: 4px 4px 2px 2px;
+  background: var(--accent-35);
+}
+
+.trendBar:last-child {
+  background: var(--accent);
+}
+
+.lockerTable {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+
+.lockerRow {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px;
+  border-radius: 13px;
+  background: var(--glass-surface);
+  border: 1px solid rgba(255, 255, 255, 0.11);
+}
+
+.lockerFormat {
+  flex: 1;
+  font-size: 13.5px;
+  font-weight: 800;
+  color: #fff;
+}
+
+.lockerRecord {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--text-muted);
+  font-variant-numeric: tabular-nums;
+}
+
+.lockerNet {
+  font-size: 15px;
+  font-weight: 800;
+  color: var(--positive);
+  width: 62px;
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+.lockerNetDown {
+  color: var(--negative);
 }

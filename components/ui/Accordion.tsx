@@ -48,11 +48,12 @@ export function Accordion({
   const Heading = `h${headingLevel}` as "h2" | "h3" | "h4";
 
   function toggle(id: string) {
-    setOpen((state) => {
-      const next = !state[id];
-      if (next) onOpen?.(id);
-      return { ...state, [id]: next };
-    });
+    // Fire the callback here, not inside the updater: React can invoke a state
+    // updater more than once for a single event (it does under StrictMode),
+    // which would double-count every open.
+    const willOpen = !open[id];
+    setOpen((state) => ({ ...state, [id]: !state[id] }));
+    if (willOpen) onOpen?.(id);
   }
 
   return (
