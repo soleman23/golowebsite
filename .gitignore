@@ -1,0 +1,49 @@
+# dependencies
+/node_modules
+/.pnp
+.pnp.js
+
+# next.js
+/.next/
+/out/
+next-env.d.ts
+
+# typescript
+*.tsbuildinfo
+
+# production build
+/build
+
+# prisma generated client
+/prisma/generated
+
+# environment variables — never commit real secrets
+.env
+.env.local
+.env.*.local
+
+# logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+logs
+/logs
+
+# testing
+/coverage
+
+# misc / editor / OS
+.DS_Store
+Thumbs.db
+*.pem
+.vscode/*
+!.vscode/extensions.json
+.idea
+
+# vercel / deploy caches
+.vercel
+.turbo
+
+# design reference (kept locally, not part of the deployable app)
+/design_handoff_landing_page

@@ -1,0 +1,107 @@
+/* Shared layout for text/content pages (Privacy, Contact). */
+
+.page {
+  background: var(--page-bg);
+}
+
+.inner {
+  max-width: 820px;
+  margin: 0 auto;
+  padding: clamp(48px, 7vw, 96px) var(--gutter) clamp(56px, 8vw, 100px);
+}
+
+.kicker {
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 2.5px;
+  color: var(--accent);
+  margin: 0;
+  text-transform: uppercase;
+}
+
+.title {
+  font-size: clamp(32px, 5vw, 52px);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  line-height: 1.04;
+  margin: 14px 0 0;
+  text-wrap: balance;
+}
+
+.lead {
+  font-size: clamp(16px, 1.5vw, 19px);
+  line-height: 1.6;
+  color: var(--text-secondary);
+  margin: 18px 0 0;
+  max-width: 620px;
+}
+
+.prose {
+  margin-top: 40px;
+}
+
+.prose h2 {
+  font-size: 22px;
+  font-weight: 800;
+  letter-spacing: -0.01em;
+  color: #fff;
+  margin: 40px 0 12px;
+}
+
+.prose h3 {
+  font-size: 17px;
+  font-weight: 800;
+  letter-spacing: -0.01em;
+  color: #fff;
+  margin: 28px 0 10px;
+}
+
+.prose p {
+  font-size: 16px;
+  line-height: 1.7;
+  color: var(--text-secondary);
+  margin: 0 0 14px;
+}
+
+.prose ul {
+  margin: 0 0 14px;
+  padding-left: 20px;
+  color: var(--text-secondary);
+  font-size: 16px;
+  line-height: 1.7;
+}
+
+.prose li {
+  margin-bottom: 10px;
+}
+
+.prose li::marker {
+  color: var(--accent-border);
+}
+
+/* Bold lead-ins sit on secondary-coloured body text — lift them to primary. */
+.prose strong {
+  color: var(--text-primary);
+  font-weight: 700;
+}
+
+/* Contact block: semantic <address>, without the browser's default italics. */
+.address {
+  font-style: normal;
+  font-size: 16px;
+  line-height: 1.8;
+  color: var(--text-secondary);
+  margin: 0;
+}
+
+.prose a {
+  color: var(--accent);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.updated {
+  font-size: 14px;
+  color: var(--text-muted);
+  margin-top: 8px;
+}

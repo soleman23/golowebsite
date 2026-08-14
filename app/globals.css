@@ -1,0 +1,319 @@
+/* ==========================================================================
+   GoLo Golf — global styles & design tokens
+   Single source of truth for colors, typography, spacing, radii, shadows.
+   All values traced from the design handoff. The lime accent is one token;
+   translucent tints are precomputed rgba() derived from it.
+   ========================================================================== */
+
+:root {
+  /* Surfaces */
+  --page-bg: #0a0d10;
+  --footer-bg: #070a0c;
+  --logo-tile-bg: #0c0f12;
+
+  /* Brand accent (lime) + derived tints */
+  --accent: #d4f23a;
+  --accent-ink: #13250a;
+  --accent-glow: rgba(212, 242, 58, 0.42);
+  --accent-soft: rgba(212, 242, 58, 0.14);
+  --accent-border: rgba(212, 242, 58, 0.4);
+  --accent-16: rgba(212, 242, 58, 0.16);
+  --accent-35: rgba(212, 242, 58, 0.35);
+  --accent-45: rgba(212, 242, 58, 0.45);
+  --accent-50: rgba(212, 242, 58, 0.5);
+
+  /* Text */
+  --text-primary: #ffffff;
+  --text-secondary: rgba(255, 255, 255, 0.66);
+  --text-muted: rgba(255, 255, 255, 0.5);
+  /* .55, not .4 — at .4 this failed WCAG AA on the footer (3.76:1 against
+     --footer-bg #070a0c, needs 4.5:1). .55 lands at 6.26:1. */
+  --text-faint: rgba(255, 255, 255, 0.55);
+
+  /* Glass + borders */
+  --glass-surface: rgba(20, 28, 24, 0.5);
+  --glass-chrome: rgba(255, 255, 255, 0.13);
+  --card-border: rgba(255, 255, 255, 0.12);
+  --hairline: rgba(255, 255, 255, 0.08);
+  /* Near-opaque: the sticky nav can't use backdrop-filter (it triggers a
+     Chromium compositing bug that blanks the page on scroll), so the bar leans
+     on opacity instead of blur. */
+  --nav-bg: rgba(10, 13, 16, 0.92);
+
+  /* Semantic */
+  --positive: #bef264;
+  --negative: #fb7185;
+  --secondary-yellow: #facc15;
+  --blue: #60a5fa;
+
+  /* Avatar palette */
+  --avatar-teal: #2dd4bf;
+  --avatar-blue: #60a5fa;
+  --avatar-orange: #fb923c;
+  --avatar-purple: #c084fc;
+  --avatar-pink: #f472b6;
+  --avatar-yellow: #facc15;
+
+  /* Layout */
+  --max-width: 1200px;
+  --gutter: clamp(18px, 4vw, 46px);
+  --section-y: clamp(56px, 8vw, 110px);
+
+  /* Radii */
+  --radius-pill: 9999px;
+  --radius-card: 18px;
+  --radius-section: 24px;
+
+  /* Shadows */
+  --shadow-cta: 0 12px 30px rgba(0, 0, 0, 0.4);
+  --shadow-phone: 0 40px 80px -30px rgba(0, 0, 0, 0.8);
+
+  --font-sans: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background: var(--page-bg);
+  color: var(--text-primary);
+  font-family: var(--font-sans);
+  min-height: 100vh;
+  overflow-x: clip;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+::selection {
+  background: var(--accent);
+  color: var(--accent-ink);
+}
+
+/* Visible focus ring for keyboard users on every interactive element. */
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+textarea:focus-visible,
+[tabindex]:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+/* ==========================================================================
+   Decorative backdrop photos
+   --------------------------------------------------------------------------
+   These photos sit under heavy scrims, so they're CSS backgrounds rather than
+   <img>/next-image. Serving them as raw PNGs cost ~6.9 MB and pushed mobile
+   LCP to 27 s, so each one now resolves through image-set(): AVIF first, WebP
+   second, and the original PNG as the plain-url fallback for browsers with no
+   image-set support (that declaration is listed first so the invalid-drop
+   cascade leaves it standing).
+
+   Two size tiers:
+     .golo-bd-*       full-bleed section backdrops — 640 / 960 / 1600 by viewport
+     .golo-bd-mock-*  phone + card mockups, max ~330 CSS px — 640 / 960 only
+   ========================================================================== */
+
+/* ---- Full-bleed section backdrops ---- */
+.golo-bd-sunset,
+.golo-bd-course,
+.golo-bd-turf {
+  background-size: cover;
+}
+
+.golo-bd-sunset {
+  background-image: url("/images/sunset.png");
+  background-image: image-set(
+    url("/images/sunset-640.avif") type("image/avif"),
+    url("/images/sunset-640.webp") type("image/webp"),
+    url("/images/sunset.png") type("image/png")
+  );
+}
+.golo-bd-course {
+  background-image: url("/images/course.png");
+  background-image: image-set(
+    url("/images/course-640.avif") type("image/avif"),
+    url("/images/course-640.webp") type("image/webp"),
+    url("/images/course.png") type("image/png")
+  );
+}
+.golo-bd-turf {
+  background-image: url("/images/turf.png");
+  background-image: image-set(
+    url("/images/turf-640.avif") type("image/avif"),
+    url("/images/turf-640.webp") type("image/webp"),
+    url("/images/turf.png") type("image/png")
+  );
+}
+
+@media (min-width: 641px) {
+  .golo-bd-sunset {
+    background-image: image-set(
+      url("/images/sunset-960.avif") type("image/avif"),
+      url("/images/sunset-960.webp") type("image/webp"),
+      url("/images/sunset.png") type("image/png")
+    );
+  }
+  .golo-bd-course {
+    background-image: image-set(
+      url("/images/course-960.avif") type("image/avif"),
+      url("/images/course-960.webp") type("image/webp"),
+      url("/images/course.png") type("image/png")
+    );
+  }
+  .golo-bd-turf {
+    background-image: image-set(
+      url("/images/turf-960.avif") type("image/avif"),
+      url("/images/turf-960.webp") type("image/webp"),
+      url("/images/turf.png") type("image/png")
+    );
+  }
+}
+
+@media (min-width: 961px) {
+  .golo-bd-sunset {
+    background-image: image-set(
+      url("/images/sunset-1600.avif") type("image/avif"),
+      url("/images/sunset-1600.webp") type("image/webp"),
+      url("/images/sunset.png") type("image/png")
+    );
+  }
+  .golo-bd-course {
+    background-image: image-set(
+      url("/images/course-1600.avif") type("image/avif"),
+      url("/images/course-1600.webp") type("image/webp"),
+      url("/images/course.png") type("image/png")
+    );
+  }
+  .golo-bd-turf {
+    background-image: image-set(
+      url("/images/turf-1600.avif") type("image/avif"),
+      url("/images/turf-1600.webp") type("image/webp"),
+      url("/images/turf.png") type("image/png")
+    );
+  }
+}
+
+/* ---- Mockup backdrops (phone shells + money card) ----
+   These render at most ~330 CSS px wide, so the 1600px tier is never worth
+   fetching; 960 covers 2–3x DPR comfortably. */
+.golo-bd-mock-course {
+  background-image: url("/images/course.png");
+  background-image: image-set(
+    url("/images/course-640.avif") type("image/avif"),
+    url("/images/course-640.webp") type("image/webp"),
+    url("/images/course.png") type("image/png")
+  );
+}
+.golo-bd-mock-turf {
+  background-image: url("/images/turf.png");
+  background-image: image-set(
+    url("/images/turf-640.avif") type("image/avif"),
+    url("/images/turf-640.webp") type("image/webp"),
+    url("/images/turf.png") type("image/png")
+  );
+}
+
+@media (min-resolution: 1.5dppx), (min-width: 641px) {
+  .golo-bd-mock-course {
+    background-image: image-set(
+      url("/images/course-960.avif") type("image/avif"),
+      url("/images/course-960.webp") type("image/webp"),
+      url("/images/course.png") type("image/png")
+    );
+  }
+  .golo-bd-mock-turf {
+    background-image: image-set(
+      url("/images/turf-960.avif") type("image/avif"),
+      url("/images/turf-960.webp") type("image/webp"),
+      url("/images/turf.png") type("image/png")
+    );
+  }
+}
+
+/* Screen-reader-only utility */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* Skip link */
+.skip-link {
+  position: absolute;
+  left: 12px;
+  top: -60px;
+  z-index: 200;
+  padding: 10px 16px;
+  border-radius: 10px;
+  background: var(--accent);
+  color: var(--accent-ink);
+  font-weight: 800;
+  font-size: 14px;
+  transition: top 0.16s ease;
+}
+.skip-link:focus {
+  top: 12px;
+}
+
+/* ---- Animations ---- */
+@keyframes goloPulse {
+  0% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  70% {
+    transform: scale(2.6);
+    opacity: 0;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+@keyframes goloFloat {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-14px);
+  }
+}
+
+/* Respect users who prefer reduced motion: kill float + pulse. */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+}

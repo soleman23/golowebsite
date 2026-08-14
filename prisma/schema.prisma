@@ -1,0 +1,38 @@
+// Prisma schema for GoLo Golf Website
+// Provider: PostgreSQL (Supabase). Swap `provider` to "mysql" to move engines.
+// DATABASE_URL = pooled connection (app), DIRECT_URL = direct connection (migrations).
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+/// A phone number submitted via the hero "text me the link" form.
+model PhoneLead {
+  id        String   @id @default(cuid())
+  phone     String
+  // Whether a real SMS was dispatched (false when running in stub mode).
+  smsSent   Boolean  @default(false)
+  source    String   @default("hero")
+  userAgent String?
+  createdAt DateTime @default(now())
+
+  @@index([createdAt])
+}
+
+/// A message submitted via the /contact page form.
+model ContactMessage {
+  id        String   @id @default(cuid())
+  name      String
+  email     String
+  message   String
+  handled   Boolean  @default(false)
+  createdAt DateTime @default(now())
+
+  @@index([createdAt])
+}

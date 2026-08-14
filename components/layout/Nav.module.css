@@ -1,0 +1,153 @@
+.nav {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  padding: 14px var(--gutter);
+  background: var(--nav-bg);
+  /* No backdrop-filter here: on a position:sticky element it triggers a
+     Chromium bug that blanks/duplicates the page while scrolling. The nav uses
+     a near-opaque background instead. */
+  border-bottom: 1px solid var(--hairline);
+}
+
+.desktop {
+  display: flex;
+  align-items: center;
+  gap: 30px;
+}
+
+.links {
+  display: flex;
+  align-items: center;
+  gap: 28px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.link {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--text-secondary);
+  transition: color 0.14s ease;
+}
+
+.link:hover {
+  color: #fff;
+}
+
+.cta {
+  display: flex;
+  align-items: center;
+  height: 42px;
+  padding: 0 20px;
+  border-radius: 11px;
+  background: var(--accent);
+  color: var(--accent-ink);
+  font-size: 14px;
+  font-weight: 800;
+  box-shadow: 0 6px 18px var(--accent-glow);
+  white-space: nowrap;
+  transition: transform 0.14s ease;
+}
+
+.cta:hover {
+  transform: translateY(-1px);
+}
+
+.mobileControls {
+  display: none;
+  align-items: center;
+  gap: 12px;
+}
+
+.burger {
+  width: 42px;
+  height: 42px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 11px;
+  cursor: pointer;
+}
+
+.burgerBar {
+  display: block;
+  width: 18px;
+  height: 2px;
+  background: #fff;
+  border-radius: 2px;
+  transition: transform 0.2s ease, opacity 0.2s ease;
+}
+
+.barTop {
+  transform: translateY(7px) rotate(45deg);
+}
+.barMid {
+  opacity: 0;
+}
+.barBot {
+  transform: translateY(-7px) rotate(-45deg);
+}
+
+.drawer {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  z-index: 90;
+  /* Opaque; no backdrop-filter (see .nav note). Background is already ~opaque
+     so there's no visual loss. */
+  background: rgba(10, 13, 16, 0.98);
+  border-bottom: 1px solid var(--hairline);
+  padding: 8px var(--gutter) 18px;
+}
+
+.drawerLinks {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.drawerLink {
+  display: block;
+  padding: 14px 4px;
+  font-size: 17px;
+  font-weight: 700;
+  color: rgba(255, 255, 255, 0.82);
+  border-bottom: 1px solid var(--hairline);
+}
+
+.drawerLink:hover {
+  color: #fff;
+}
+
+.scrim {
+  position: fixed;
+  inset: 0;
+  top: 70px;
+  z-index: 80;
+  background: rgba(0, 0, 0, 0.5);
+  border: none;
+  cursor: pointer;
+}
+
+/* Breakpoint: swap the desktop link row for the hamburger drawer. */
+@media (max-width: 760px) {
+  .desktop {
+    display: none;
+  }
+  .mobileControls {
+    display: flex;
+  }
+}

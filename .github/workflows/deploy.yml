@@ -1,0 +1,44 @@
+name: Deploy to VPS
+
+# Auto-deploys on every push to main. Also runnable manually from the Actions tab.
+# Requires these repo secrets (Settings -> Secrets and variables -> Actions):
+#   VPS_HOST     your VPS IP or hostname
+#   VPS_USER     SSH user (e.g. root)
+#   VPS_SSH_KEY  a private SSH key whose public key is in the VPS's authorized_keys
+#   VPS_PORT     (optional) SSH port, defaults to 22
+# Until VPS_HOST is set, this workflow safely skips instead of failing.
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+concurrency:
+  group: deploy-vps
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check for VPS secrets
+        id: guard
+        run: |
+          if [ -z "${{ secrets.VPS_HOST }}" ]; then
+            echo "VPS secrets not configured yet — skipping deploy."
+            echo "skip=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "skip=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Deploy over SSH
+        if: steps.guard.outputs.skip == 'false'
+        uses: appleboy/ssh-action@v1.2.0
+        with:
+          host: ${{ secrets.VPS_HOST }}
+          username: ${{ secrets.VPS_USER }}
+          key: ${{ secrets.VPS_SSH_KEY }}
+          port: ${{ secrets.VPS_PORT || 22 }}
+          script: |
+            cd /var/www/golowebsite
+            bash scripts/deploy.sh

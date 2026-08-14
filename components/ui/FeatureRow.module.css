@@ -1,0 +1,111 @@
+.row {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: clamp(30px, 4vw, 56px) var(--gutter);
+  display: flex;
+  align-items: center;
+  gap: clamp(28px, 5vw, 72px);
+  flex-wrap: wrap;
+}
+
+/* When the visual sits on the left at desktop, push the copy to the far right. */
+.visualLeft {
+  justify-content: flex-end;
+}
+
+.copy {
+  flex: 1 1 380px;
+  min-width: 280px;
+  /* Copy always sits first when stacked (mobile), regardless of desktop side. */
+  order: 1;
+}
+
+.visual {
+  flex: 0 0 auto;
+  order: 2;
+  display: flex;
+  justify-content: center;
+  width: min(300px, 90vw);
+  margin: 0 auto;
+}
+
+/* On the visual-left variant the visual becomes a flexible column (a card, not
+   a fixed-width phone), so let it grow. */
+.visualLeft .visual {
+  flex: 1 1 360px;
+  min-width: 280px;
+  width: auto;
+}
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 13px;
+  border-radius: var(--radius-pill);
+  background: var(--accent-soft);
+  border: 1px solid var(--accent-border);
+  margin-bottom: 16px;
+}
+
+.badgeLabel {
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 1px;
+  color: var(--accent);
+}
+
+.title {
+  font-size: clamp(26px, 3vw, 38px);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  line-height: 1.08;
+  margin: 0 0 16px;
+}
+
+.body {
+  font-size: 17px;
+  line-height: 1.6;
+  color: var(--text-secondary);
+  max-width: 480px;
+  margin: 0 0 22px;
+}
+
+.body :global(em) {
+  color: #fff;
+  font-style: normal;
+}
+
+.body :global(strong) {
+  color: #fff;
+}
+
+.checklist {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.checkItem {
+  display: flex;
+  align-items: flex-start;
+  gap: 11px;
+}
+
+.checkIcon {
+  margin-top: 2px;
+  flex: 0 0 auto;
+}
+
+.checkText {
+  font-size: 15px;
+  line-height: 1.5;
+  color: rgba(255, 255, 255, 0.78);
+}
+
+.checkText strong {
+  color: #fff;
+}
