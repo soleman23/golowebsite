@@ -21,6 +21,8 @@ export type HeroCta = {
 type PageHeroProps = {
   kicker: string;
   title: string;
+  /** Second line of the H1, broken onto its own line and set in the accent. */
+  titleAccentLine?: string;
   lead?: string;
   breadcrumbs?: Crumb[];
   status?: { variant: StatusVariant; label: string };
@@ -33,6 +35,7 @@ type PageHeroProps = {
 export function PageHero({
   kicker,
   title,
+  titleAccentLine,
   lead,
   breadcrumbs,
   status,
@@ -56,7 +59,15 @@ export function PageHero({
             ) : null}
           </div>
 
-          <h1 className={styles.title}>{title}</h1>
+          <h1 className={styles.title}>
+            {title}
+            {titleAccentLine ? (
+              <>
+                <br />
+                <span className={styles.titleAccent}>{titleAccentLine}</span>
+              </>
+            ) : null}
+          </h1>
 
           {lead ? <p className={styles.lead}>{lead}</p> : null}
 

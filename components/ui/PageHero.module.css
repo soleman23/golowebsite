@@ -59,6 +59,10 @@
   text-wrap: balance;
 }
 
+.titleAccent {
+  color: var(--accent);
+}
+
 .lead {
   font-size: clamp(16px, 1.6vw, 20px);
   font-weight: 600;

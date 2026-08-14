@@ -118,9 +118,13 @@ export const features: Feature[] = [
   },
 ];
 
-export type Game = { icon: IconName; name: string; desc: string };
+/**
+ * The home page's short game teaser. Deliberately separate from the full
+ * roster in games.ts — the two designs word their descriptions differently.
+ */
+export type HomeGame = { icon: IconName; name: string; desc: string };
 
-export const games: Game[] = [
+export const homeGames: HomeGame[] = [
   {
     icon: "target",
     name: "Skins",

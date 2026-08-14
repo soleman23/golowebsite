@@ -31,12 +31,13 @@ export async function generateMetadata({ params }: Params): Promise<Metadata> {
 export default async function GameDetailPage({ params }: Params) {
   const { slug } = await params;
   const game = findGame(slug);
-  if (!game || !game.hasDetail) notFound();
+  if (!game?.hasDetailPage) notFound();
 
   return (
     <PageHero
       kicker={game.name.toUpperCase()}
       title={`${game.name}, explained.`}
+      lead={game.desc}
       breadcrumbs={[
         { label: "Home", href: "/" },
         { label: "Games", href: "/games" },
