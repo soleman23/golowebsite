@@ -1,48 +1,126 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { findGame, gameDetailSlugs } from "@/lib/content";
+import {
+  findGameDetail,
+  gameDetailSlugsWithContent,
+  type GameDetail,
+} from "@/lib/content";
+import { siteConfig } from "@/lib/siteConfig";
 import { PageHero } from "@/components/ui/PageHero";
+import { Icon } from "@/components/ui/Icon";
+import { GameSteps } from "@/components/sections/gameDetail/GameSteps";
+import { WorkedExample } from "@/components/sections/gameDetail/WorkedExample";
+import { GameVariations } from "@/components/sections/gameDetail/GameVariations";
+import { GameTips } from "@/components/sections/gameDetail/GameTips";
+import { GameGlossary } from "@/components/sections/gameDetail/GameGlossary";
+import { GameFaq } from "@/components/sections/gameDetail/GameFaq";
+import { RelatedGames } from "@/components/sections/gameDetail/RelatedGames";
+import { PrevNextGames } from "@/components/sections/gameDetail/PrevNextGames";
+import { FinalCTA } from "@/components/sections/FinalCTA";
+import styles from "./gameDetail.module.css";
 
 type Params = { params: Promise<{ slug: string }> };
 
-/**
- * Only games with written detail content get a route — see lib/content/games.ts.
- * Everything else stays a section on /games.
- */
+/** A game earns a route once it has written content in gameDetail.ts. */
 export function generateStaticParams() {
-  return gameDetailSlugs.map((slug) => ({ slug }));
+  return gameDetailSlugsWithContent.map((slug) => ({ slug }));
 }
 
 export const dynamicParams = false;
 
 export async function generateMetadata({ params }: Params): Promise<Metadata> {
   const { slug } = await params;
-  const game = findGame(slug);
+  const game = findGameDetail(slug);
   if (!game) return {};
 
+  const title = `${game.name}, Explained`;
+  const description = game.metaDescription;
+
   return {
-    title: `${game.name}, Explained`,
-    description:
-      "Front, back and total, plus the press. How a Nassau works, what a press really costs, and the terms you'll hear on the tee.",
+    title,
+    description,
     alternates: { canonical: `/games/${game.slug}` },
+    openGraph: { type: "article", title, description },
   };
+}
+
+function jsonLd(game: GameDetail) {
+  const base = `${siteConfig.url}/games/${game.slug}`;
+  return [
+    {
+      "@context": "https://schema.org",
+      "@type": "HowTo",
+      name: game.howTitle,
+      description: game.intro,
+      step: game.steps.map((step, i) => ({
+        "@type": "HowToStep",
+        position: i + 1,
+        name: step.title,
+        text: step.body,
+        url: `${base}#how`,
+      })),
+    },
+    {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      mainEntity: game.faqs.map((f) => ({
+        "@type": "Question",
+        name: f.q,
+        acceptedAnswer: { "@type": "Answer", text: f.a },
+      })),
+    },
+  ];
 }
 
 export default async function GameDetailPage({ params }: Params) {
   const { slug } = await params;
-  const game = findGame(slug);
-  if (!game?.hasDetailPage) notFound();
+  const game = findGameDetail(slug);
+  if (!game) notFound();
 
   return (
-    <PageHero
-      kicker={game.name.toUpperCase()}
-      title={`${game.name}, explained.`}
-      lead={game.desc}
-      breadcrumbs={[
-        { label: "Home", href: "/" },
-        { label: "Games", href: "/games" },
-        { label: game.name },
-      ]}
-    />
+    <>
+      <PageHero
+        kicker={game.kicker}
+        title={game.name}
+        lead={game.tagline}
+        breadcrumbs={[
+          { label: "Home", href: "/" },
+          { label: "Games", href: "/games" },
+          { label: game.name },
+        ]}
+        meta={game.traits.map((trait) => (
+          <span key={trait} className={styles.trait}>
+            {trait}
+          </span>
+        ))}
+        visual={
+          <span className={styles.heroIcon} aria-hidden="true">
+            <Icon name={game.icon} size={64} color="var(--accent)" />
+          </span>
+        }
+      />
+
+      <GameSteps game={game} />
+      <WorkedExample game={game} />
+      <GameVariations game={game} />
+      <GameTips game={game} />
+      <GameGlossary game={game} />
+      <GameFaq game={game} />
+      <RelatedGames game={game} />
+      <PrevNextGames game={game} />
+
+      <FinalCTA
+        title={game.headings.cta.title}
+        lead={game.headings.cta.lead}
+      />
+
+      {jsonLd(game).map((block) => (
+        <script
+          key={block["@type"]}
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(block) }}
+        />
+      ))}
+    </>
   );
 }

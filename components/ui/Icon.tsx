@@ -25,12 +25,10 @@ export const ICON_PATHS = {
     "M3 8.5a1.3 1.3 0 0 1 2.1-1l3.2 2.2 2.6-4.8a1.3 1.3 0 0 1 2.2 0l2.6 4.8 3.2-2.2a1.3 1.3 0 0 1 2.1 1L19.6 17a1 1 0 0 1-1 .8H5.4a1 1 0 0 1-1-.8L3 8.5zM5 19.5h14V21H5z",
   dice: "M5 3.5h14A1.5 1.5 0 0 1 20.5 5v14A1.5 1.5 0 0 1 19 20.5H5A1.5 1.5 0 0 1 3.5 19V5A1.5 1.5 0 0 1 5 3.5zM8 7a1.4 1.4 0 1 0 0 2.8A1.4 1.4 0 0 0 8 7zm8 0a1.4 1.4 0 1 0 0 2.8A1.4 1.4 0 0 0 16 7zm-4 3.6a1.4 1.4 0 1 0 0 2.8 1.4 1.4 0 0 0 0-2.8zM8 14.2a1.4 1.4 0 1 0 0 2.8 1.4 1.4 0 0 0 0-2.8zm8 0a1.4 1.4 0 1 0 0 2.8 1.4 1.4 0 0 0 0-2.8z",
   wolf: "M4 4l3.5 2L9 3l3 3 3-3 1.5 3L20 4l-1 7.5c-.5 4-3.4 6.5-7 6.5s-6.5-2.5-7-6.5L4 4zm5 7.5a1.1 1.1 0 1 0 0 2.2 1.1 1.1 0 0 0 0-2.2zm6 0a1.1 1.1 0 1 0 0 2.2 1.1 1.1 0 0 0 0-2.2zm-3 2.8c-1 0-1.8.4-1.8 1 0 .5.8 1.2 1.8 1.2s1.8-.7 1.8-1.2c0-.6-.8-1-1.8-1z",
-  // Double chevron down — a press doubles what's already on the line.
-  press:
-    "M5.7 4.3a1.4 1.4 0 0 1 2 0L12 8.6l4.3-4.3a1.4 1.4 0 1 1 2 2l-5.3 5.3a1.4 1.4 0 0 1-2 0L5.7 6.3a1.4 1.4 0 0 1 0-2zm0 7a1.4 1.4 0 0 1 2 0L12 15.6l4.3-4.3a1.4 1.4 0 1 1 2 2l-5.3 5.3a1.4 1.4 0 0 1-2 0l-5.3-5.3a1.4 1.4 0 0 1 0-2z",
-  stack:
-    "M12 2.5 2.2 7.2a.8.8 0 0 0 0 1.4L12 13.4l9.8-4.8a.8.8 0 0 0 0-1.4L12 2.5zM4.3 11.4l-2.1 1a.8.8 0 0 0 0 1.4L12 18.6l9.8-4.8a.8.8 0 0 0 0-1.4l-2.1-1-7.7 3.8-7.7-3.8zm0 5.1-2.1 1a.8.8 0 0 0 0 1.4L12 23.7l9.8-4.8a.8.8 0 0 0 0-1.4l-2.1-1-7.7 3.8-7.7-3.8z",
-  auto: "M12 5.5V7.8a.6.6 0 0 1-1 .4L7.3 5.1a.6.6 0 0 1 0-.9L11 1.1a.6.6 0 0 1 1 .4V3a9 9 0 1 1-8.9 7.6 1.2 1.2 0 1 1 2.4.4A6.6 6.6 0 1 0 12 5.5z",
+  // Bolt — a press fires a fresh bet mid-nine.
+  press: "M13 2L4.5 13.5H11L10 22l8.5-11.5H12L13 2z",
+  stack: "M12 2l9 5-9 5-9-5 9-5zm-9 9l9 5 9-5v2.5l-9 5-9-5V11z",
+  auto: "M12 4V1L8 5l4 4V6a6 6 0 1 1-6 6H4a8 8 0 1 0 8-8z",
   grid: "M3.5 3.5h7v7h-7v-7zm10 0h7v7h-7v-7zm-10 10h7v7h-7v-7zm10 0h7v7h-7v-7z",
   clock:
     "M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20zm0 2.2a7.8 7.8 0 1 1 0 15.6 7.8 7.8 0 0 1 0-15.6zM11 6.5h2v6.1l4 2.4-1 1.7-5-3V6.5z",
@@ -74,6 +72,36 @@ export function Icon({ name, size = 22, color, title, className }: IconProps) {
     >
       {title ? <title>{title}</title> : null}
       <path d={ICON_PATHS[name]} />
+    </svg>
+  );
+}
+
+/** Rose circled-warning — the counterweight to CheckIcon in advice lists. */
+export function WarnIcon({ size = 22 }: { size?: number }) {
+  return (
+    <svg
+      width={size}
+      height={size}
+      viewBox="0 0 24 24"
+      fill="none"
+      style={{ display: "block", flex: "0 0 auto" }}
+      aria-hidden="true"
+      focusable="false"
+    >
+      <circle
+        cx="12"
+        cy="12"
+        r="11"
+        fill="rgba(251,113,133,.16)"
+        stroke="rgba(251,113,133,.5)"
+        strokeWidth="1.4"
+      />
+      <path
+        d="M12 7v6M12 16.5v.5"
+        stroke="var(--negative)"
+        strokeWidth="2.2"
+        strokeLinecap="round"
+      />
     </svg>
   );
 }

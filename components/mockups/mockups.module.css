@@ -1576,3 +1576,151 @@
 .lockerNetDown {
   color: var(--negative);
 }
+
+/* ==========================================================================
+   NassauPhone — the worked example on a game detail page
+   ========================================================================== */
+
+.matchOpponent {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--text-faint);
+}
+
+/* Hole-by-hole momentum: lime won, rose lost, neutral halved. */
+.momentum {
+  display: flex;
+  gap: 2px;
+  margin-top: 9px;
+}
+
+.momentumDot {
+  height: 5px;
+  border-radius: var(--radius-pill);
+  flex: 1;
+}
+
+.momentumWon {
+  background: var(--accent);
+}
+
+.momentumLost {
+  background: var(--negative);
+}
+
+.momentumHalved {
+  background: rgba(255, 255, 255, 0.24);
+}
+
+.betTiles {
+  display: flex;
+  gap: 8px;
+  margin-top: 14px;
+}
+
+.betTile {
+  flex: 1;
+  text-align: center;
+  background: var(--glass-surface);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1px solid var(--card-border);
+  border-radius: var(--radius-tile);
+  padding: 12px 6px;
+}
+
+.betTileGood {
+  border-color: var(--accent-border);
+}
+
+.betTileLabel {
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 1px;
+  color: var(--text-faint);
+}
+
+.betTileStatus {
+  font-size: 22px;
+  font-weight: 800;
+  line-height: 1;
+  margin-top: 8px;
+}
+
+.betTileValue {
+  font-size: 11px;
+  font-weight: 800;
+  margin-top: 6px;
+  font-variant-numeric: tabular-nums;
+}
+
+.toneGood {
+  color: var(--accent);
+}
+
+.toneBad {
+  color: var(--negative);
+}
+
+.pressCallout {
+  margin-top: 12px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: var(--accent-soft);
+  border: 1px solid var(--accent-border);
+  border-radius: var(--radius-tile);
+  padding: 11px 13px;
+}
+
+.pressTag {
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 1px;
+  color: var(--accent-ink);
+  background: var(--accent);
+  padding: 4px 8px;
+  border-radius: 8px;
+  flex: 0 0 auto;
+}
+
+.pressNote {
+  font-size: 12.5px;
+  font-weight: 700;
+  color: #fff;
+  flex: 1;
+}
+
+.settleChip {
+  margin-top: auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  background: var(--glass-surface);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  border: 1px solid var(--card-border);
+  border-radius: var(--radius-tile);
+  padding: 12px 14px;
+}
+
+.settleChipTitle {
+  display: block;
+  font-size: 13px;
+  font-weight: 800;
+  color: #fff;
+}
+
+.settleChipSub {
+  display: block;
+  font-size: 11px;
+  color: var(--text-muted);
+}
+
+.settleChipValue {
+  font-size: 22px;
+  font-weight: 800;
+  color: var(--accent);
+  font-variant-numeric: tabular-nums;
+}
