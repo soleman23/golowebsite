@@ -2,7 +2,7 @@
  * Games grid: eight game cards in an auto-fill grid.
  */
 
-import { games } from "@/lib/content";
+import { homeGames } from "@/lib/content";
 import { SectionHeader } from "@/components/ui/SectionHeader";
 import { Icon } from "@/components/ui/Icon";
 import { SeeAllLink } from "@/components/ui/SeeAllLink";
@@ -21,7 +21,7 @@ export function GamesGrid() {
         />
 
         <ul className={styles.grid}>
-          {games.map((game) => (
+          {homeGames.map((game) => (
             <li key={game.name} className={styles.card}>
               <span className={styles.icon}>
                 <Icon name={game.icon} size={24} color="var(--accent)" />
