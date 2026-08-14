@@ -3,27 +3,41 @@
  * transfers with a paid state, share + mark-all-paid footer). Decorative.
  */
 
-import { transferRows } from "@/lib/mockData";
+import { settleBreakdown, transferRows } from "@/lib/mockData";
 import { PhoneShell } from "./PhoneShell";
 import styles from "./mockups.module.css";
 
-export function SettlePhone() {
+/**
+ * "features" itemizes the win per game and closes on a single share button;
+ * "home" keeps the shorter header and the share / mark-all-paid pair.
+ */
+type SettlePhoneProps = { variant?: "home" | "features" };
+
+export function SettlePhone({ variant = "home" }: SettlePhoneProps) {
+  const isFeatures = variant === "features";
+
   return (
     <PhoneShell
       bg="course"
       bgPosition="50% 62%"
       scrim="linear-gradient(180deg, rgba(6,14,9,.78) 0%, rgba(6,14,9,.6) 26%, rgba(4,12,8,.92) 100%)"
-      label="GoLo settle-up screen — Mike collected $85, with the who-pays-whom transfers netted out."
+      label={
+        isFeatures
+          ? "GoLo settle-up screen — Mike collected $85 across the Nassau, skins and junk, reduced to three transfers with one already marked paid."
+          : "GoLo settle-up screen — Mike collected $85, with the who-pays-whom transfers netted out."
+      }
     >
       {/* header */}
       <div className={styles.rowBetween}>
-        <span className={styles.settleKicker}>FINAL · NET STROKE</span>
+        <span className={styles.settleKicker}>
+          {isFeatures ? "FINAL · SETTLE UP" : "FINAL · NET STROKE"}
+        </span>
         <span className={styles.settleCoursePill}>
           <span className={styles.settleCourseDot} />
           Pinehurst
         </span>
       </div>
-      <div className={styles.settleTitle}>Settle Up</div>
+      {isFeatures ? null : <div className={styles.settleTitle}>Settle Up</div>}
 
       {/* hero result */}
       <div className={styles.settleResult}>
@@ -33,10 +47,21 @@ export function SettlePhone() {
           <span className={styles.settleResultBig}>+$85</span>
           <span className={styles.settleResultSub}>76 gross · 68 net</span>
         </div>
+        {isFeatures ? (
+          <div className={styles.settleBreakdown}>
+            {settleBreakdown.map((b) => (
+              <span key={b.label} className={styles.settleBreakdownChip}>
+                {b.label}
+              </span>
+            ))}
+          </div>
+        ) : null}
       </div>
 
       {/* who pays whom */}
-      <div className={styles.settleSectionLabel}>WHO PAYS WHOM</div>
+      <div className={styles.settleSectionLabel}>
+        {isFeatures ? "WHO PAYS WHOM · 3 TRANSFERS" : "WHO PAYS WHOM"}
+      </div>
       <div className={styles.transferRows}>
         {transferRows.map((t, i) => (
           <div
@@ -71,17 +96,23 @@ export function SettlePhone() {
                   : undefined
               }
             >
-              {t.paid ? "✓ Paid" : "Mark paid"}
+              {t.paid ? (isFeatures ? "Paid ✓" : "✓ Paid") : "Mark paid"}
             </span>
           </div>
         ))}
       </div>
 
       {/* footer */}
-      <div className={styles.settleFooter}>
-        <span className={styles.settleShare}>↗ Share</span>
-        <span className={styles.settleMarkAll}>Mark all paid</span>
-      </div>
+      {isFeatures ? (
+        <div className={styles.settleFooter}>
+          <span className={styles.settleMarkAll}>Share the card</span>
+        </div>
+      ) : (
+        <div className={styles.settleFooter}>
+          <span className={styles.settleShare}>↗ Share</span>
+          <span className={styles.settleMarkAll}>Mark all paid</span>
+        </div>
+      )}
     </PhoneShell>
   );
 }

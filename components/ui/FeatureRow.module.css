@@ -29,12 +29,28 @@
   margin: 0 auto;
 }
 
-/* On the visual-left variant the visual becomes a flexible column (a card, not
-   a fixed-width phone), so let it grow. */
-.visualLeft .visual {
-  flex: 1 1 360px;
+/* Cards grow to fill their column; phones keep their fixed width. */
+.visualFill {
+  flex: 1 1 340px;
   min-width: 280px;
   width: auto;
+}
+
+/* Alternation only happens at wide. `.copy` and `.visual` carry fixed order
+   values so the copy always stacks first once the row wraps; moving the visual
+   to the left is therefore an explicit override, not the absence of one. */
+@media (min-width: 1100px) {
+  .visualLeft .visual {
+    order: 0;
+  }
+}
+
+.badgeRow {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 16px;
 }
 
 .badge {
@@ -45,7 +61,6 @@
   border-radius: var(--radius-pill);
   background: var(--accent-soft);
   border: 1px solid var(--accent-border);
-  margin-bottom: 16px;
 }
 
 .badgeLabel {
@@ -78,6 +93,10 @@
 
 .body :global(strong) {
   color: #fff;
+}
+
+.footer {
+  margin-top: 22px;
 }
 
 /* The checklist itself now lives in CheckList.module.css. */

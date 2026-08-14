@@ -1,0 +1,23 @@
+.blocks {
+  background: var(--page-bg);
+}
+
+/* Lime pill link closing a feature block — "See every format →". */
+.blockLink {
+  display: inline-flex;
+  align-items: center;
+  height: 44px;
+  padding: 0 18px;
+  border-radius: 12px;
+  background: var(--accent-soft);
+  border: 1px solid var(--accent-border);
+  font-size: 13.5px;
+  font-weight: 800;
+  color: var(--accent);
+  transition: transform 0.14s ease, background 0.14s ease;
+}
+
+.blockLink:hover {
+  background: var(--accent-16);
+  transform: translateY(-1px);
+}

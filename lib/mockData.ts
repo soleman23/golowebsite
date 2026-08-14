@@ -142,6 +142,207 @@ export type TransferRow = {
   paid: boolean;
 };
 
+/* ------------------------------------------------------------------------
+   /features mockups. The home page and the features page show the same app
+   at different moments, so these are separate rows rather than edits to the
+   ones above — changing those would change the home page.
+   ------------------------------------------------------------------------ */
+
+/** Hole 7 board on /features: net/gross differ from the home-page moment. */
+export const featureScoreRows: ScoreRow[] = [
+  { name: "Sarah", initial: "S", color: "#60a5fa", net: "3", gross: "4" },
+  { name: "Tom", initial: "T", color: "#fb923c", net: "4", gross: "5" },
+  { name: "Dave", initial: "D", color: "#c084fc", net: "3", gross: "3" },
+];
+
+export type SetupPlayer = {
+  name: string;
+  guest?: boolean;
+  initial: string;
+  color: string;
+  index: string;
+  tee: string;
+};
+
+export const setupPlayers: SetupPlayer[] = [
+  { name: "Mike", initial: "M", color: "#2dd4bf", index: "8.2", tee: "BLUE" },
+  { name: "Sarah", initial: "S", color: "#60a5fa", index: "14.1", tee: "WHITE" },
+  {
+    name: "Tom",
+    guest: true,
+    initial: "T",
+    color: "#fb923c",
+    index: "22",
+    tee: "WHITE",
+  },
+];
+
+export type SetupGameChip = { label: string; tone: "accent" | "plain" | "add" };
+
+export const setupGameChips: SetupGameChip[] = [
+  { label: "Nassau $5", tone: "accent" },
+  { label: "Skins $2", tone: "accent" },
+  { label: "Junk $1", tone: "plain" },
+  { label: "+ add game", tone: "add" },
+];
+
+export type GameTile = { name: string; rule: string; highlight?: boolean };
+
+export const gameTiles: GameTile[] = [
+  { name: "Nassau", rule: "Front, back, total — plus presses." },
+  { name: "Skins", rule: "Carryover on or off, pot tracked live." },
+  { name: "Wolf", rule: "Rotation, partners, lone-wolf multiplier." },
+  { name: "Stroke purse", rule: "Net or gross, winner takes the pot." },
+  { name: "Bingo Bango Bongo", rule: "Three points a hole, no strokes needed." },
+  {
+    name: "Junk board",
+    rule: "Greenies, sandies, closest-to-pin, long drive.",
+    highlight: true,
+  },
+];
+
+export type StandingRow = {
+  name: string;
+  initial: string;
+  color: string;
+  reason: string;
+  value: string;
+  up: boolean;
+  move: string;
+  leader?: boolean;
+};
+
+export const standingRows: StandingRow[] = [
+  {
+    name: "Mike",
+    initial: "M",
+    color: "#2dd4bf",
+    reason: "Nassau front closed · 3 skins",
+    value: "+$42",
+    up: true,
+    move: "▲ 1",
+    leader: true,
+  },
+  {
+    name: "Sarah",
+    initial: "S",
+    color: "#60a5fa",
+    reason: "1 skin · greenie on 7",
+    value: "+$11",
+    up: true,
+    move: "▲ 2",
+  },
+  {
+    name: "Tom",
+    initial: "T",
+    color: "#fb923c",
+    reason: "pressed the back · 2 down",
+    value: "−$18",
+    up: false,
+    move: "▼ 1",
+  },
+  {
+    name: "Dave",
+    initial: "D",
+    color: "#c084fc",
+    reason: "no skins yet · 4 carries live",
+    value: "−$35",
+    up: false,
+    move: "▼ 2",
+  },
+];
+
+export type PressRung = {
+  holes: string;
+  title: string;
+  state: string;
+  amount: string;
+  /** Live rungs get the lime treatment; closed ones stay neutral. */
+  live: boolean;
+  amountTone: "positive" | "negative" | "plain";
+};
+
+export const pressRungs: PressRung[] = [
+  {
+    holes: "1-9",
+    title: "Front nine · base",
+    state: "Closed · Mike 2 up",
+    amount: "+$5",
+    live: false,
+    amountTone: "positive",
+  },
+  {
+    holes: "6-9",
+    title: "Press · called on 6",
+    state: "Closed · Tom 1 up",
+    amount: "−$5",
+    live: false,
+    amountTone: "negative",
+  },
+  {
+    holes: "10-18",
+    title: "Back nine · base",
+    state: "Live · Mike 1 up · 6 to play",
+    amount: "$5",
+    live: true,
+    amountTone: "plain",
+  },
+  {
+    holes: "14-18",
+    title: "Auto-press · 2 down on 13",
+    state: "Live · all square",
+    amount: "$5",
+    live: true,
+    amountTone: "plain",
+  },
+];
+
+/**
+ * 18 holes with their stroke index. A 24-handicap gets one stroke everywhere
+ * and a second on the six lowest stroke indexes.
+ */
+export const strokeCells = [
+  { hole: 1, si: 5 },
+  { hole: 2, si: 13 },
+  { hole: 3, si: 1 },
+  { hole: 4, si: 17 },
+  { hole: 5, si: 9 },
+  { hole: 6, si: 3 },
+  { hole: 7, si: 15 },
+  { hole: 8, si: 11 },
+  { hole: 9, si: 7 },
+  { hole: 10, si: 4 },
+  { hole: 11, si: 12 },
+  { hole: 12, si: 2 },
+  { hole: 13, si: 16 },
+  { hole: 14, si: 8 },
+  { hole: 15, si: 6 },
+  { hole: 16, si: 18 },
+  { hole: 17, si: 14 },
+  { hole: 18, si: 10 },
+].map((h) => ({ ...h, two: h.si <= 6 }));
+
+export type SettleBreakdown = { label: string };
+
+export const settleBreakdown: SettleBreakdown[] = [
+  { label: "Nassau +$10" },
+  { label: "Skins +$66" },
+  { label: "Junk +$9" },
+];
+
+export type LockerFormatRow = { format: string; record: string; net: string };
+
+export const lockerFormats: LockerFormatRow[] = [
+  { format: "Nassau", record: "14–6", net: "+$180" },
+  { format: "Skins", record: "9–11", net: "−$45" },
+  { format: "Junk board", record: "17–3", net: "+$96" },
+];
+
+/** Handicap index trend, oldest → newest. Drives the sparkline bars. */
+export const lockerTrend = [
+  12.4, 12.1, 12.3, 11.9, 11.7, 11.8, 11.6, 11.4, 11.6,
+];
+
 export const transferRows: TransferRow[] = [
   {
     fromColor: "#c084fc",

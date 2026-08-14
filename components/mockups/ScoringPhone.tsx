@@ -3,7 +3,7 @@
  * players' rows, progress bar). Decorative marketing content.
  */
 
-import { heroDots, scoreRows } from "@/lib/mockData";
+import { featureScoreRows, heroDots, scoreRows } from "@/lib/mockData";
 import { PhoneShell } from "./PhoneShell";
 import styles from "./mockups.module.css";
 
@@ -13,12 +13,25 @@ const dotColor: Record<string, string> = {
   remaining: "rgba(255,255,255,.22)",
 };
 
-export function ScoringPhone() {
+/**
+ * "home" closes on the hole-progress bar; "features" closes on the junk
+ * buttons instead, which is the moment /features is describing.
+ */
+type ScoringPhoneProps = { variant?: "home" | "features" };
+
+export function ScoringPhone({ variant = "home" }: ScoringPhoneProps) {
+  const isFeatures = variant === "features";
+  const rows = isFeatures ? featureScoreRows : scoreRows;
+
   return (
     <PhoneShell
       bg="turf"
       bgPosition="50% 60%"
-      label="GoLo scoring screen for hole 7 — tapping in Mike's score with net and gross for the group."
+      label={
+        isFeatures
+          ? "GoLo scoring screen for hole 7 — Mike's score being tapped in, the rest of the foursome's net and gross below, and buttons to log a greenie or a sandie."
+          : "GoLo scoring screen for hole 7 — tapping in Mike's score with net and gross for the group."
+      }
     >
       {/* hole nav */}
       <div className={styles.rowBetween}>
@@ -57,7 +70,7 @@ export function ScoringPhone() {
 
       {/* other players */}
       <div className={styles.scoreRows}>
-        {scoreRows.map((r) => (
+        {rows.map((r) => (
           <div key={r.name} className={styles.scoreRow}>
             <span className={styles.scoreRowAvatar} style={{ background: r.color }}>
               {r.initial}
@@ -69,16 +82,26 @@ export function ScoringPhone() {
         ))}
       </div>
 
-      {/* progress bar */}
-      <div className={`${styles.progress} ${styles.progressBottom}`}>
-        {heroDots.map((state, i) => (
-          <span
-            key={i}
-            className={styles.progressSeg}
-            style={{ background: dotColor[state] }}
-          />
-        ))}
-      </div>
+      {isFeatures ? (
+        /* junk logged on the hole */
+        <div className={styles.junkRow}>
+          <span className={`${styles.junkBtn} ${styles.junkBtnAccent}`}>
+            + Greenie
+          </span>
+          <span className={styles.junkBtn}>+ Sandie</span>
+        </div>
+      ) : (
+        /* progress bar */
+        <div className={`${styles.progress} ${styles.progressBottom}`}>
+          {heroDots.map((state, i) => (
+            <span
+              key={i}
+              className={styles.progressSeg}
+              style={{ background: dotColor[state] }}
+            />
+          ))}
+        </div>
+      )}
     </PhoneShell>
   );
 }

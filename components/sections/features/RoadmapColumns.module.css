@@ -1,0 +1,123 @@
+.section {
+  background: var(--page-bg);
+  border-top: 1px solid rgba(255, 255, 255, 0.07);
+}
+
+.inner {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: clamp(44px, 5.5vw, 72px) var(--gutter);
+}
+
+.kicker {
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin: 0 0 14px;
+}
+
+.title {
+  font-size: clamp(28px, 3.6vw, 42px);
+  font-weight: 800;
+  line-height: 1.06;
+  letter-spacing: -0.025em;
+  margin: 0 0 12px;
+  max-width: 760px;
+  text-wrap: balance;
+}
+
+.lead {
+  font-size: 16.5px;
+  font-weight: 600;
+  line-height: 1.6;
+  color: var(--text-secondary);
+  margin: 0 0 26px;
+  max-width: 620px;
+  text-wrap: pretty;
+}
+
+.columns {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 16px;
+}
+
+.column {
+  border-radius: 22px;
+  padding: 24px 26px;
+  background: var(--glass-surface);
+  border: 1px solid var(--card-border);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+/* Only the shipped column gets the lime wash. */
+.columnToday {
+  background: linear-gradient(
+    180deg,
+    rgba(212, 242, 58, 0.12) 0%,
+    var(--glass-surface) 100%
+  );
+  border-color: rgba(212, 242, 58, 0.3);
+}
+
+.items {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.item {
+  display: flex;
+  gap: 11px;
+  align-items: flex-start;
+}
+
+.check {
+  flex: 0 0 auto;
+  width: 18px;
+  height: 18px;
+  border-radius: 5px;
+  margin-top: 2px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(212, 242, 58, 0.2);
+  border: 1px solid var(--accent-border);
+  font-size: 10px;
+  font-weight: 800;
+  color: var(--accent);
+}
+
+.dot {
+  flex: 0 0 auto;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  margin-top: 9px;
+  background: rgba(255, 255, 255, 0.45);
+}
+
+.dotFaint {
+  background: rgba(255, 255, 255, 0.28);
+}
+
+.text {
+  font-size: 15px;
+  line-height: 1.5;
+  font-weight: 700;
+  color: rgba(255, 255, 255, 0.8);
+}
+
+/* Not built yet reads quieter — but never below .5, so it still passes AA. */
+.textFaint {
+  color: rgba(255, 255, 255, 0.62);
+}
