@@ -1,9 +1,17 @@
 import type { MetadataRoute } from "next";
 import { siteConfig } from "@/lib/siteConfig";
+import { gameDetailSlugsWithContent } from "@/lib/content";
 
-/** Generates /sitemap.xml listing the public pages. */
+/**
+ * Generates /sitemap.xml. Game detail pages are derived from the content keys,
+ * so a new game appears here as soon as its copy lands — no edit needed.
+ *
+ * /terms is deliberately absent while siteConfig.termsPublished is false: it's
+ * built but hasn't cleared legal review.
+ */
 export default function sitemap(): MetadataRoute.Sitemap {
   const now = new Date();
+
   return [
     {
       url: siteConfig.url,
@@ -23,11 +31,17 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: "monthly",
       priority: 0.9,
     },
+    ...gameDetailSlugsWithContent.map((slug) => ({
+      url: `${siteConfig.url}/games/${slug}`,
+      lastModified: now,
+      changeFrequency: "monthly" as const,
+      priority: 0.8,
+    })),
     {
       url: `${siteConfig.url}/contact`,
       lastModified: now,
       changeFrequency: "yearly",
-      priority: 0.5,
+      priority: 0.6,
     },
     {
       url: `${siteConfig.url}/privacy`,

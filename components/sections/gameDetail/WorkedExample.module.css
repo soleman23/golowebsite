@@ -1,0 +1,185 @@
+.section {
+  background: var(--page-bg);
+  border-top: 1px solid rgba(255, 255, 255, 0.07);
+}
+
+.inner {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: clamp(44px, 6vw, 80px) var(--gutter);
+}
+
+.layout {
+  margin-top: 38px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: clamp(28px, 5vw, 64px);
+}
+
+.ledger {
+  flex: 1 1 380px;
+  min-width: 280px;
+}
+
+.visual {
+  flex: 0 0 auto;
+  display: flex;
+  justify-content: center;
+  width: min(300px, 90vw);
+  margin: 0 auto;
+}
+
+.bets {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.bet {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 16px 18px;
+  border-radius: var(--radius-card);
+  background: var(--glass-surface);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  border: 1px solid var(--card-border);
+}
+
+.betGood {
+  border-color: var(--accent-border);
+}
+
+.tag {
+  flex: 0 0 auto;
+  width: 44px;
+  height: 44px;
+  border-radius: 13px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.5px;
+}
+
+.tagGood {
+  background: var(--accent-soft);
+  border: 1px solid var(--accent-border);
+  color: var(--accent);
+}
+
+.tagBad {
+  background: rgba(251, 113, 133, 0.14);
+  border: 1px solid rgba(251, 113, 133, 0.4);
+  color: var(--negative);
+}
+
+.betBody {
+  flex: 1;
+  min-width: 0;
+}
+
+.betTitle {
+  display: block;
+  font-size: 16px;
+  font-weight: 800;
+  color: #fff;
+}
+
+.betDetail {
+  display: block;
+  font-size: 13px;
+  color: var(--text-faint);
+  margin-top: 2px;
+}
+
+.betValue {
+  font-size: 20px;
+  font-weight: 800;
+  flex: 0 0 auto;
+  font-variant-numeric: tabular-nums;
+}
+
+.valueGood {
+  color: var(--accent);
+}
+
+.valueBad {
+  color: var(--negative);
+}
+
+.net {
+  position: relative;
+  overflow: hidden;
+  margin-top: 14px;
+  background: rgba(20, 28, 24, 0.55);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid var(--accent-border);
+  border-radius: var(--radius-card);
+  padding: 20px 22px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.netGlow {
+  position: absolute;
+  right: -24px;
+  top: -28px;
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  background: var(--accent-glow);
+  filter: blur(30px);
+  pointer-events: none;
+}
+
+.netCopy {
+  position: relative;
+}
+
+.netLabel {
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 1.4px;
+  color: var(--text-faint);
+}
+
+.netSub {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--text-secondary);
+  margin-top: 4px;
+}
+
+.netValue {
+  position: relative;
+  font-size: clamp(34px, 4vw, 46px);
+  font-weight: 800;
+  line-height: 1;
+  color: var(--accent);
+  font-variant-numeric: tabular-nums;
+}
+
+/* Wide: ledger beside the phone. Below that the phone drops under it. */
+@media (min-width: 1100px) {
+  .layout {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 340px);
+    align-items: center;
+    flex-wrap: nowrap;
+  }
+
+  .visual {
+    width: auto;
+    margin: 0;
+  }
+}
