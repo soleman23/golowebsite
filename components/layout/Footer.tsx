@@ -1,6 +1,7 @@
 /**
- * Site footer: logo lockup + tagline, three link columns (Product / Games /
- * Company), and a bottom bar with copyright and a friendly-wager disclaimer.
+ * Site footer: logo lockup + tagline, four link columns (Product / Games /
+ * Legal / Company), and a bottom bar with copyright and a friendly-wager
+ * disclaimer. Edit footerLinks in lib/content/nav.ts, not this file.
  */
 
 import Link from "next/link";
@@ -11,6 +12,7 @@ import styles from "./Footer.module.css";
 const columns = [
   { heading: "PRODUCT", links: footerLinks.product },
   { heading: "GAMES", links: footerLinks.games },
+  { heading: "LEGAL", links: footerLinks.legal },
   { heading: "COMPANY", links: footerLinks.company },
 ];
 
@@ -33,9 +35,17 @@ export function Footer() {
               <ul className={styles.columnLinks}>
                 {col.links.map((link) => (
                   <li key={link.label}>
-                    <Link href={link.href} className={styles.columnLink}>
-                      {link.label}
-                    </Link>
+                    {link.href.startsWith("/") ? (
+                      <Link href={link.href} className={styles.columnLink}>
+                        {link.label}
+                      </Link>
+                    ) : (
+                      // mailto: and other non-route hrefs — a plain anchor, so
+                      // the router never tries to navigate to them.
+                      <a href={link.href} className={styles.columnLink}>
+                        {link.label}
+                      </a>
+                    )}
                   </li>
                 ))}
               </ul>

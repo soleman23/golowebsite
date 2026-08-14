@@ -5,6 +5,7 @@
 import { games } from "@/lib/content";
 import { SectionHeader } from "@/components/ui/SectionHeader";
 import { Icon } from "@/components/ui/Icon";
+import { SeeAllLink } from "@/components/ui/SeeAllLink";
 import styles from "./GamesGrid.module.css";
 
 export function GamesGrid() {
@@ -30,6 +31,8 @@ export function GamesGrid() {
             </li>
           ))}
         </ul>
+
+        <SeeAllLink href="/games">Browse all 8 games →</SeeAllLink>
       </div>
     </section>
   );

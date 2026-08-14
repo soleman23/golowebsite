@@ -1,0 +1,49 @@
+.card {
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+  padding: 14px 16px;
+  border-radius: var(--radius-tile);
+  background: var(--accent-soft);
+  border: 1px solid var(--accent-border);
+}
+
+.title {
+  flex: 0 0 auto;
+  padding-top: 3px;
+  font-size: 10.5px;
+  font-weight: 800;
+  letter-spacing: 1.2px;
+  text-transform: uppercase;
+  white-space: nowrap;
+  color: var(--accent);
+}
+
+.body {
+  font-size: 14.5px;
+  font-weight: 700;
+  line-height: 1.6;
+  /* No token sits at .86 — it's brighter than --text-secondary on purpose, so
+     the callout reads louder than the prose around it. */
+  color: rgba(255, 255, 255, 0.86);
+}
+
+.body p {
+  margin: 0 0 10px;
+}
+
+.body p:last-child {
+  margin-bottom: 0;
+}
+
+/* The label can't share a line with the body on narrow screens. */
+@media (max-width: 760px) {
+  .card {
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .title {
+    padding-top: 0;
+  }
+}
