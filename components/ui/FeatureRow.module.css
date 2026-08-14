@@ -80,32 +80,4 @@
   color: #fff;
 }
 
-.checklist {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-}
-
-.checkItem {
-  display: flex;
-  align-items: flex-start;
-  gap: 11px;
-}
-
-.checkIcon {
-  margin-top: 2px;
-  flex: 0 0 auto;
-}
-
-.checkText {
-  font-size: 15px;
-  line-height: 1.5;
-  color: rgba(255, 255, 255, 0.78);
-}
-
-.checkText strong {
-  color: #fff;
-}
+/* The checklist itself now lives in CheckList.module.css. */

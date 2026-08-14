@@ -19,5 +19,5 @@
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
-  "exclude": ["node_modules", "design_handoff_landing_page"]
+  "exclude": ["node_modules", "design_handoff_landing_page", "design_handoff"]
 }

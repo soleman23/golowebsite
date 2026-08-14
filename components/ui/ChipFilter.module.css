@@ -1,0 +1,64 @@
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.chip {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  height: 40px;
+  padding: 0 17px;
+  border-radius: var(--radius-pill);
+  border: 1px solid var(--card-border);
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--text-secondary);
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 800;
+  letter-spacing: 0.3px;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: border-color 0.14s ease, background 0.14s ease, color 0.14s ease;
+}
+
+.chip:hover:not(.active) {
+  border-color: var(--accent-border);
+  color: #fff;
+}
+
+.active {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: var(--accent-ink);
+}
+
+.count {
+  font-size: 11px;
+  font-weight: 700;
+  opacity: 0.6;
+}
+
+/* Narrow: one scrollable row rather than a wrapping block that eats the
+   viewport. Taller chips so the tap target clears 44px. */
+@media (max-width: 760px) {
+  .row {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    scroll-snap-type: x proximity;
+    scrollbar-width: none;
+    /* Let the row bleed to the screen edges so the last chip isn't clipped. */
+    margin-inline: calc(var(--gutter) * -1);
+    padding-inline: var(--gutter);
+  }
+
+  .row::-webkit-scrollbar {
+    display: none;
+  }
+
+  .chip {
+    height: 44px;
+    scroll-snap-align: start;
+  }
+}

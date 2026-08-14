@@ -32,6 +32,11 @@
 
   /* Glass + borders */
   --glass-surface: rgba(20, 28, 24, 0.5);
+  /* One level above --glass-surface, for card-on-card. */
+  --glass-raised: rgba(20, 28, 24, 0.72);
+  /* Opaque-ish sheets — TOC rails, sticky sub-navs. Sticky surfaces can't use
+     backdrop-filter here (see --nav-bg), so they lean on opacity instead. */
+  --glass-sheet: rgba(14, 20, 16, 0.9);
   --glass-chrome: rgba(255, 255, 255, 0.13);
   --card-border: rgba(255, 255, 255, 0.12);
   --hairline: rgba(255, 255, 255, 0.08);
@@ -61,6 +66,7 @@
 
   /* Radii */
   --radius-pill: 9999px;
+  --radius-tile: 14px;
   --radius-card: 18px;
   --radius-section: 24px;
 

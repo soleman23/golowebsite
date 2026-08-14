@@ -6,6 +6,7 @@
 import { features } from "@/lib/content";
 import { SectionHeader } from "@/components/ui/SectionHeader";
 import { FeatureRow } from "@/components/ui/FeatureRow";
+import { SeeAllLink } from "@/components/ui/SeeAllLink";
 import { ScoringPhone } from "@/components/mockups/ScoringPhone";
 import { MoneyCard } from "@/components/mockups/MoneyCard";
 import { SettlePhone } from "@/components/mockups/SettlePhone";
@@ -36,6 +37,10 @@ export function Features() {
           </FeatureRow>
         );
       })}
+
+      <div className={styles.more}>
+        <SeeAllLink href="/features">See everything GoLo does →</SeeAllLink>
+      </div>
     </section>
   );
 }

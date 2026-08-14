@@ -28,12 +28,26 @@ declare global {
  * - lead_form_error    a phone submission failed (validation or server)
  * - contact_submit     the contact form was sent successfully
  * - store_button_click an App Store / Google Play button was clicked
+ * - faq_open           an FAQ / quick-answer disclosure was opened (not closed)
+ * - game_filter        a chip on /games was selected
+ * - blog_filter        a chip on /blog was selected
+ * - newsletter_signup  a newsletter address was accepted
+ * - newsletter_error   a newsletter signup failed (validation or server)
+ * - share_click        a share control on a blog post was clicked
+ * - cta_click          a hero or closing CTA button was clicked
  */
 export type AnalyticsEvent =
   | "generate_lead"
   | "lead_form_error"
   | "contact_submit"
-  | "store_button_click";
+  | "store_button_click"
+  | "faq_open"
+  | "game_filter"
+  | "blog_filter"
+  | "newsletter_signup"
+  | "newsletter_error"
+  | "share_click"
+  | "cta_click";
 
 export function track(
   event: AnalyticsEvent,

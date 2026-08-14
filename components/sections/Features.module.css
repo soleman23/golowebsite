@@ -7,3 +7,10 @@
   margin: 0 auto;
   padding: clamp(56px, 8vw, 110px) var(--gutter) 0;
 }
+
+/* The feature rows carry their own gutter, so the teaser link matches them. */
+.more {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 0 var(--gutter);
+}

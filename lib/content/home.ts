@@ -1,7 +1,10 @@
 /**
- * Static marketing content for the landing page. Copied verbatim from the
- * design handoff. Keeping it here (not inline in components) keeps copy edits
- * in one place and sections thin.
+ * Static marketing content for the home page. Copied verbatim from the design
+ * handoff. Keeping it here (not inline in components) keeps copy edits in one
+ * place and sections thin.
+ *
+ * These sections stay on the home page as teasers; the full-page versions live
+ * in features.ts, games.ts and faq.ts.
  */
 
 import type { IconName } from "@/components/ui/Icon";
@@ -243,29 +246,4 @@ export const faqs: Faq[] = [
     q: "What about multi-day trips?",
     a: "Trip mode keeps a running tally across every round so a four-day Scottsdale or Myrtle Beach trip settles once, on the 18th green of the last day — not in a confusing pile of daily Venmos.",
   },
-];
-
-export const footerLinks = {
-  product: [
-    { label: "Features", href: "/#features" },
-    { label: "How it works", href: "/#how" },
-    { label: "Download", href: "/#get" },
-  ],
-  games: [
-    { label: "Skins", href: "/#games" },
-    { label: "Nassau", href: "/#games" },
-    { label: "Wolf", href: "/#games" },
-  ],
-  company: [
-    { label: "FAQ", href: "/#faq" },
-    { label: "Privacy", href: "/privacy" },
-    { label: "Contact", href: "/contact" },
-  ],
-};
-
-export const navLinks = [
-  { label: "Features", href: "/#features" },
-  { label: "Games", href: "/#games" },
-  { label: "How it works", href: "/#how" },
-  { label: "FAQ", href: "/#faq" },
 ];

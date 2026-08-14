@@ -20,10 +20,12 @@
   gap: 30px;
 }
 
+/* 22px, not 28: six links plus the CTA is tight at 1100–1300px and the row
+   has to shrink rather than wrap before the drawer takes over at 760px. */
 .links {
   display: flex;
   align-items: center;
-  gap: 28px;
+  gap: 22px;
   list-style: none;
   margin: 0;
   padding: 0;

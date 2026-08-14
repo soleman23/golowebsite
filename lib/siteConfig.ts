@@ -25,11 +25,29 @@ export const siteConfig = {
     "GoLo is the golf-betting scorekeeper that runs every side-game, does the handicap math, and settles the group into the fewest payments before you leave the green.",
   url: process.env.NEXT_PUBLIC_SITE_URL || "https://www.golo.golf",
 
+  /** The one public address. Also the contact of record in /privacy. */
+  supportEmail: "info@golo.golf",
+
   appStoreUrl: process.env.NEXT_PUBLIC_APP_STORE_URL || "#get",
   googlePlayUrl: process.env.NEXT_PUBLIC_GOOGLE_PLAY_URL || "#get",
 
   showStats: boolFlag(process.env.NEXT_PUBLIC_SHOW_STATS, true),
   showTestimonials: boolFlag(process.env.NEXT_PUBLIC_SHOW_TESTIMONIALS, true),
+
+  /**
+   * Is the app actually downloadable? While false the site holds the honest
+   * beta line: store buttons give way to the phone capture, the "in beta"
+   * status shows, and "free while we're in beta" is true. Flip this (and set
+   * the store URLs) on launch day and every page changes together.
+   */
+  appLive: boolFlag(process.env.NEXT_PUBLIC_APP_LIVE, false),
+
+  /**
+   * /terms is built but needs a lawyer's read before it goes public. While
+   * false the route stays noindex, out of the sitemap, and unlinked.
+   */
+  termsPublished: boolFlag(process.env.NEXT_PUBLIC_TERMS_PUBLISHED, false),
+
   heroBackdrop: heroBackdrop(process.env.NEXT_PUBLIC_HERO_BACKDROP),
 } as const;
 

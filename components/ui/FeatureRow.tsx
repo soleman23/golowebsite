@@ -6,7 +6,8 @@
  */
 
 import type { Feature } from "@/lib/content";
-import { Icon, CheckIcon } from "./Icon";
+import { Icon } from "./Icon";
+import { CheckList } from "./CheckList";
 import styles from "./FeatureRow.module.css";
 
 type FeatureRowProps = {
@@ -28,18 +29,7 @@ export function FeatureRow({ feature, children }: FeatureRowProps) {
           className={styles.body}
           dangerouslySetInnerHTML={{ __html: feature.bodyHtml }}
         />
-        <ul className={styles.checklist}>
-          {feature.checklist.map((item) => (
-            <li key={item.lead} className={styles.checkItem}>
-              <span className={styles.checkIcon}>
-                <CheckIcon />
-              </span>
-              <span className={styles.checkText}>
-                <strong>{item.lead}</strong> — {item.rest}
-              </span>
-            </li>
-          ))}
-        </ul>
+        <CheckList items={feature.checklist} />
       </div>
       <div className={styles.visual}>{children}</div>
     </div>
