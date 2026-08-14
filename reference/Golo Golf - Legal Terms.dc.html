@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <style>
+    *{box-sizing:border-box;}
+    html,body{margin:0;padding:0;}
+    body{background:#0a0d10;}
+    a{text-decoration:none;color:inherit;}
+    a:hover{color:#d4f23a;}
+    ::selection{background:#d4f23a;color:#13250a;}
+    @keyframes goloPulse { 0%{transform:scale(1);opacity:1;} 70%{transform:scale(2.6);opacity:0;} 100%{opacity:0;} }
+    html{scroll-behavior:smooth;}
+    [data-legal-body] h2{scroll-margin-top:150px;}
+  </style>
+</helmet>
+
+<div style="font-family:system-ui,-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:#0a0d10;color:#fff;min-height:100vh;overflow-x:clip;">
+
+  <!-- ============ NAV ============ -->
+  <nav style="position:sticky;top:0;z-index:100;display:flex;align-items:center;justify-content:space-between;gap:20px;padding:14px clamp(18px,4vw,46px);background:rgba(10,13,16,.72);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);border-bottom:1px solid rgba(255,255,255,.08);">
+    <a href="Golo%20Golf%20-%20Landing%20Page.dc.html" style="display:flex;align-items:center;gap:11px;">
+      <span style="width:38px;height:38px;border-radius:11px;display:flex;align-items:center;justify-content:center;background:#0c0f12;border:1px solid rgba(255,255,255,.1);box-shadow:0 8px 22px rgba(212,242,58,.3);"><svg width="28" height="28" viewBox="0 0 120 124" fill="none" style="display:block"><path d="M56 20 A40 40 0 1 0 95.8 64" stroke="#d4f23a" stroke-width="12" stroke-linecap="round"></path><line x1="95.8" y1="64" x2="64" y2="64" stroke="#d4f23a" stroke-width="12" stroke-linecap="round"></line><circle cx="56" cy="58" r="15" fill="#fff"></circle><circle cx="56" cy="58" r="9" fill="none" stroke="rgba(10,36,24,0.28)" stroke-width="2.4"></circle><line x1="56" y1="44" x2="56" y2="14" stroke="#d4f23a" stroke-width="3.4"></line><path d="M56 14 L86 22 L56 34 Z" fill="#fff"></path></svg></span>
+      <span style="display:flex;align-items:flex-end;gap:0px;"><span style="font-size:21px;font-weight:800;letter-spacing:-.02em;color:#fff;line-height:1;">Go</span><span style="font-size:21px;font-weight:800;letter-spacing:-.02em;color:#d4f23a;line-height:1;">Lo</span></span>
+    </a>
+    <div style="display:flex;align-items:center;gap:30px;">
+      <div style="display:flex;align-items:center;gap:22px;">
+        <a href="Golo%20Golf%20-%20Features.dc.html" style="font-size:14px;font-weight:700;color:rgba(255,255,255,.66);">Features</a>
+        <a href="Golo%20Golf%20-%20Games.dc.html" style="font-size:14px;font-weight:700;color:rgba(255,255,255,.66);">Games</a>
+        <a href="Golo%20Golf%20-%20Landing%20Page.dc.html#how" style="font-size:14px;font-weight:700;color:rgba(255,255,255,.66);">How It Works</a>
+        <a href="Golo%20Golf%20-%20Blog.dc.html" style="font-size:14px;font-weight:700;color:rgba(255,255,255,.66);">Blog</a>
+        <a href="Golo%20Golf%20-%20FAQ.dc.html" style="font-size:14px;font-weight:700;color:rgba(255,255,255,.66);">FAQ</a>
+        <a href="Golo%20Golf%20-%20Contact.dc.html" style="font-size:14px;font-weight:700;color:rgba(255,255,255,.66);">Contact</a>
+      </div>
+      <a href="#get" style="display:flex;align-items:center;height:42px;padding:0 20px;border-radius:11px;background: {{ accent }};color: {{ ink }};font-size:14px;font-weight:800;box-shadow:0 6px 18px {{ accentGlow }};">Get the app</a>
+    </div>
+  </nav>
+
+  <!-- ============ LEGAL SUB-NAV ============ -->
+  <div style="position:sticky;top:70px;z-index:99;background:rgba(8,11,13,.86);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-bottom:1px solid rgba(255,255,255,.07);">
+    <div style="max-width:1200px;margin:0 auto;padding:0 clamp(18px,4vw,46px);display:flex;align-items:center;gap:6px;overflow-x:auto;">
+      <span style="font-size:11px;font-weight:800;letter-spacing:1.4px;color:rgba(255,255,255,.34);padding-right:14px;flex:0 0 auto;">LEGAL</span>
+      <sc-for list="{{ legalNav }}" as="l" hint-placeholder-count="5">
+        <a href="{{ l.href }}" style="flex:0 0 auto;position:relative;padding:15px 13px 14px;font-size:13.5px;font-weight:800;color: {{ l.color }};white-space:nowrap;box-shadow: {{ l.underline }};">{{ l.label }}</a>
+      </sc-for>
+    </div>
+  </div>
+
+  <!-- ============ HERO ============ -->
+  <section style="position:relative;overflow:hidden;">
+    <div style="position:absolute;inset:0;background-image:url('assets/sunset.png');background-size:cover;background-position:50% 55%;"></div>
+    <div style="position:absolute;inset:0;background:linear-gradient(180deg, rgba(8,12,9,.74) 0%, rgba(8,12,9,.8) 45%, rgba(10,13,16,1) 100%);"></div>
+    <div style="position:absolute;left:-6%;top:-20%;width:48%;height:78%;background:radial-gradient(circle, {{ accentGlow }} 0%, rgba(0,0,0,0) 65%);filter:blur(46px);pointer-events:none;"></div>
+
+    <div style="position:relative;max-width:1200px;margin:0 auto;padding:clamp(38px,5vw,72px) clamp(18px,4vw,46px) clamp(28px,3.5vw,44px);">
+      <div style="display:flex;align-items:center;gap:9px;margin-bottom:20px;">
+        <a href="Golo%20Golf%20-%20Landing%20Page.dc.html" style="font-size:12.5px;font-weight:800;letter-spacing:.6px;color:rgba(255,255,255,.5);">Home</a>
+        <span style="font-size:12.5px;color:rgba(255,255,255,.28);">/</span>
+        <span style="font-size:12.5px;font-weight:800;letter-spacing:.6px;color: {{ accent }};">Terms of Service</span>
+      </div>
+      <h1 style="font-size:clamp(38px,6vw,68px);font-weight:800;line-height:1;letter-spacing:-.025em;margin:0 0 20px;max-width:820px;text-wrap:balance;">Terms of Service</h1>
+      <p style="font-size:clamp(16px,1.5vw,19px);line-height:1.6;color:rgba(255,255,255,.72);max-width:640px;margin:0 0 26px;">The rules of the road for using the GoLo app and golo.golf. Written to be read — every section has a plain-English note beside the legal language.</p>
+      <div style="display:flex;flex-wrap:wrap;align-items:center;gap:10px;">
+        <span style="display:inline-flex;align-items:center;gap:8px;height:38px;padding:0 15px;border-radius:9999px;background:rgba(255,255,255,.13);border:1px solid rgba(255,255,255,.18);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);font-size:13px;font-weight:800;color:rgba(255,255,255,.86);">
+          <span style="width:7px;height:7px;border-radius:50%;background: {{ accent }};"></span>Effective date: July 31, 2026
+        </span>
+        <span style="display:inline-flex;align-items:center;height:38px;padding:0 15px;border-radius:9999px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.13);font-size:13px;font-weight:700;color:rgba(255,255,255,.6);">GoLo Golf LLC · Bend, Oregon</span>
+        <span style="display:inline-flex;align-items:center;height:38px;padding:0 15px;border-radius:9999px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.13);font-size:13px;font-weight:700;color:rgba(255,255,255,.6);">{{ sectionCount }} sections · ~7 min read</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ WAGER / ELIGIBILITY WARNING ============ -->
+  <section style="background:#0a0d10;">
+    <div style="max-width:1200px;margin:0 auto;padding:0 clamp(18px,4vw,46px) clamp(30px,4vw,46px);">
+      <div style="display:flex;flex-wrap:wrap;gap:clamp(18px,3vw,34px);align-items:flex-start;padding:clamp(20px,3vw,30px);border-radius:22px;background:rgba(30,20,22,.6);border:1px solid rgba(251,113,133,.34);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);box-shadow:0 18px 50px rgba(0,0,0,.4);">
+        <div style="flex:1 1 280px;min-width:250px;">
+          <div style="display:flex;align-items:center;gap:11px;margin-bottom:14px;">
+            <span style="width:38px;height:38px;border-radius:11px;display:flex;align-items:center;justify-content:center;background:rgba(251,113,133,.16);border:1px solid rgba(251,113,133,.4);">{{ warnIcon }}</span>
+            <span style="font-size:11px;font-weight:800;letter-spacing:1.4px;color:#fb7185;">READ THIS FIRST</span>
+          </div>
+          <div style="font-size:clamp(22px,2.4vw,30px);font-weight:800;line-height:1.14;letter-spacing:-.02em;margin-bottom:10px;">GoLo is a scoreboard.<br>It is not a betting app.</div>
+          <p style="font-size:14.5px;line-height:1.65;color:rgba(255,255,255,.62);margin:0;">Settlement status in the app is information, not a transaction. No wallet, no processor, no rake — money never moves through GoLo.</p>
+        </div>
+        <div style="flex:1 1 340px;min-width:280px;display:grid;gap:10px;">
+          <sc-for list="{{ warnings }}" as="w" hint-placeholder-count="3">
+            <div style="display:flex;align-items:flex-start;gap:12px;padding:14px 16px;border-radius:14px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);">
+              <span style="font-size:19px;font-weight:800;color:#fb7185;line-height:1.15;flex:0 0 auto;min-width:34px;">{{ w.tag }}</span>
+              <span style="font-size:14px;font-weight:700;line-height:1.55;color:rgba(255,255,255,.8);">{{ w.text }}</span>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ BODY ============ -->
+  <section data-legal-body style="background:#0a0d10;">
+    <div style="max-width:1200px;margin:0 auto;padding:clamp(10px,2vw,20px) clamp(18px,4vw,46px) clamp(50px,6vw,84px);display:grid;grid-template-columns: {{ gridCols }};gap:clamp(28px,4vw,58px);align-items:start;">
+
+      <!-- sticky TOC -->
+      <aside style="display: {{ tocDisplay }};position:sticky;top:132px;flex-direction:column;gap:4px;padding:20px 16px;border-radius:20px;background:rgba(20,28,24,.5);border:1px solid rgba(255,255,255,.13);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);max-height:calc(100vh - 168px);overflow-y:auto;">
+        <div style="font-size:11px;font-weight:800;letter-spacing:1.4px;color:rgba(255,255,255,.4);padding:0 8px 12px;">ON THIS PAGE</div>
+        <sc-for list="{{ sections }}" as="s" hint-placeholder-count="14">
+          <a href="#{{ s.id }}" style="display:flex;gap:10px;padding:8px 9px;border-radius:10px;font-size:13.5px;font-weight:700;line-height:1.4;color:rgba(255,255,255,.62);" style-hover="background:rgba(255,255,255,.07);color:#d4f23a;">
+            <span style="font-size:11.5px;font-weight:800;color:rgba(255,255,255,.32);min-width:16px;padding-top:2px;">{{ s.num }}</span>{{ s.title }}
+          </a>
+        </sc-for>
+      </aside>
+
+      <div style="min-width:0;">
+        <!-- jump chips (chips layout) -->
+        <div style="display: {{ chipsDisplay }};flex-wrap:wrap;gap:8px;margin-bottom:clamp(24px,3vw,34px);">
+          <sc-for list="{{ sections }}" as="s" hint-placeholder-count="14">
+            <a href="#{{ s.id }}" style="display:inline-flex;align-items:center;gap:7px;height:36px;padding:0 14px;border-radius:9999px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);font-size:13px;font-weight:800;color:rgba(255,255,255,.7);" style-hover="border-color:rgba(212,242,58,.5);color:#d4f23a;"><span style="font-size:11px;font-weight:800;opacity:.5;">{{ s.num }}</span>{{ s.title }}</a>
+          </sc-for>
+        </div>
+
+        <!-- intro -->
+        <p style="font-size:16.5px;line-height:1.75;color:rgba(255,255,255,.74);margin:0 0 clamp(26px,3vw,38px);max-width:760px;padding-bottom:clamp(24px,3vw,34px);border-bottom:1px solid rgba(255,255,255,.09);">Welcome to GoLo. These Terms of Service ("Terms") govern your access to and use of the GoLo golf app and golo.golf website (together, the "Service"), operated by GoLo Golf LLC ("GoLo," "we," "us," "our"). By creating an account or using GoLo, you agree to these Terms.</p>
+
+        <div style="display:flex;flex-direction:column;gap:clamp(26px,3vw,40px);">
+          <sc-for list="{{ sections }}" as="s" hint-placeholder-count="14">
+            <div style="max-width:760px;">
+              <button onClick="{{ s.toggle }}" style="display:flex;align-items:baseline;gap:14px;width:100%;text-align:left;background:transparent;border:none;padding:0;margin:0 0 14px;font-family:inherit;cursor: {{ s.cursor }};">
+                <span style="font-size:clamp(26px,3vw,34px);font-weight:800;line-height:1;letter-spacing:-.03em;color: {{ accent }};flex:0 0 auto;font-variant-numeric:tabular-nums;">{{ s.num }}</span>
+                <h2 id="{{ s.id }}" style="flex:1 1 auto;font-size:clamp(20px,2.2vw,26px);font-weight:800;line-height:1.2;letter-spacing:-.02em;color:#fff;margin:0;">{{ s.title }}</h2>
+                <span style="display: {{ s.caretDisplay }};font-size:26px;font-weight:700;color: {{ accent }};line-height:1;flex:0 0 auto;transform: {{ s.rotate }};transition:transform .2s;">+</span>
+              </button>
+
+              <div style="max-height: {{ s.maxH }};overflow: {{ s.overflow }};opacity: {{ s.opacity }};transition:max-height .3s ease, opacity .25s;">
+                <sc-if value="{{ s.hasPlain }}" hint-placeholder-val="{{ true }}">
+                  <div style="display: {{ s.plainDisplay }};gap:12px;align-items:flex-start;padding:14px 16px;border-radius:14px;background: {{ accentSoft }};border:1px solid {{ accentBorder }};margin-bottom:16px;">
+                    <span style="font-size:10.5px;font-weight:800;letter-spacing:1.2px;color: {{ accent }};flex:0 0 auto;padding-top:3px;white-space:nowrap;">IN PLAIN ENGLISH</span>
+                    <span style="font-size:14.5px;font-weight:700;line-height:1.6;color:rgba(255,255,255,.86);">{{ s.plain }}</span>
+                  </div>
+                </sc-if>
+
+                <div style="display:flex;flex-direction:column;gap:14px;">
+                  <sc-for list="{{ s.paras }}" as="p" hint-placeholder-count="2">
+                    <p style="font-size:15.5px;line-height:1.75;color:rgba(255,255,255,.68);margin:0;">{{ p.text }}</p>
+                  </sc-for>
+                </div>
+
+                <sc-if value="{{ s.hasDefs }}" hint-placeholder-val="{{ false }}">
+                  <div style="display:grid;gap:11px;margin-top:16px;">
+                    <sc-for list="{{ s.defs }}" as="d" hint-placeholder-count="3">
+                      <div style="padding:15px 17px;border-radius:16px;background:rgba(20,28,24,.5);border:1px solid rgba(255,255,255,.11);">
+                        <div style="font-size:14px;font-weight:800;letter-spacing:-.01em;color:#fff;margin-bottom:6px;">{{ d.term }}</div>
+                        <div style="font-size:14.5px;font-weight:600;line-height:1.65;color:rgba(255,255,255,.7);">{{ d.text }}</div>
+                      </div>
+                    </sc-for>
+                  </div>
+                </sc-if>
+
+                <sc-if value="{{ s.hasBullets }}" hint-placeholder-val="{{ false }}">
+                  <div style="display:flex;flex-direction:column;gap:9px;margin-top:16px;padding:16px 18px;border-radius:16px;background:rgba(20,28,24,.5);border:1px solid rgba(255,255,255,.11);">
+                    <sc-for list="{{ s.bullets }}" as="b" hint-placeholder-count="3">
+                      <div style="display:flex;gap:11px;align-items:flex-start;">
+                        <span style="width:6px;height:6px;border-radius:50%;background: {{ accent }};flex:0 0 auto;margin-top:8px;"></span>
+                        <span style="font-size:15px;font-weight:600;line-height:1.65;color:rgba(255,255,255,.76);">{{ b.text }}</span>
+                      </div>
+                    </sc-for>
+                  </div>
+                </sc-if>
+
+                <sc-if value="{{ s.hasTail }}" hint-placeholder-val="{{ false }}">
+                  <div style="display:flex;flex-direction:column;gap:14px;margin-top:16px;">
+                    <sc-for list="{{ s.tail }}" as="t" hint-placeholder-count="1">
+                      <p style="font-size:15.5px;line-height:1.75;color:rgba(255,255,255,.68);margin:0;">{{ t.text }}</p>
+                    </sc-for>
+                  </div>
+                </sc-if>
+              </div>
+            </div>
+          </sc-for>
+        </div>
+
+        <!-- legal contact card -->
+        <div style="max-width:760px;margin-top:clamp(34px,4vw,52px);display:flex;flex-wrap:wrap;gap:24px;justify-content:space-between;align-items:center;padding:clamp(22px,3vw,30px);border-radius:22px;background:rgba(20,28,24,.5);border:1px solid rgba(255,255,255,.13);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);">
+          <div style="flex:1 1 260px;">
+            <div style="font-size:11px;font-weight:800;letter-spacing:1.4px;color: {{ accent }};margin-bottom:10px;">LEGAL QUESTIONS</div>
+            <div style="font-size:21px;font-weight:800;letter-spacing:-.02em;margin-bottom:8px;">GoLo Golf LLC</div>
+            <p style="font-size:14.5px;line-height:1.6;color:rgba(255,255,255,.58);margin:0;">Bend, Oregon, United States<br>Anything about these Terms — privacy, deletion, disputes — starts at this inbox.</p>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:10px;flex:0 0 auto;">
+            <a href="mailto:support@gologolf.app" style="display:flex;align-items:center;justify-content:center;height:48px;padding:0 22px;border-radius:12px;background: {{ accent }};color: {{ ink }};font-size:14.5px;font-weight:800;box-shadow:0 8px 22px {{ accentGlow }};">support@gologolf.app</a>
+            <a href="Golo%20Golf%20-%20Contact.dc.html" style="display:flex;align-items:center;justify-content:center;height:48px;padding:0 22px;border-radius:12px;background:rgba(255,255,255,.09);border:1px solid rgba(255,255,255,.16);font-size:14.5px;font-weight:800;color:#fff;">Questions? Talk to a human</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ OTHER LEGAL DOCS ============ -->
+  <section style="background:#080b0d;border-top:1px solid rgba(255,255,255,.07);">
+    <div style="max-width:1200px;margin:0 auto;padding:clamp(40px,5vw,64px) clamp(18px,4vw,46px);">
+      <div style="font-size:11px;font-weight:800;letter-spacing:1.6px;color:rgba(255,255,255,.4);margin-bottom:18px;">MORE FROM THE LEGAL SHELF</div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:14px;">
+        <sc-for list="{{ otherDocs }}" as="d" hint-placeholder-count="4">
+          <a href="{{ d.href }}" style="display:flex;flex-direction:column;gap:8px;padding:20px;border-radius:18px;background:rgba(20,28,24,.5);border:1px solid rgba(255,255,255,.12);" style-hover="border-color:rgba(212,242,58,.45);background:rgba(24,34,28,.66);">
+            <span style="font-size:16.5px;font-weight:800;letter-spacing:-.01em;color:#fff;">{{ d.label }}</span>
+            <span style="font-size:13.5px;font-weight:600;line-height:1.55;color:rgba(255,255,255,.52);">{{ d.blurb }}</span>
+            <span style="font-size:12px;font-weight:800;letter-spacing:.8px;color: {{ accent }};margin-top:4px;">{{ d.cta }}</span>
+          </a>
+        </sc-for>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ APP CTA ============ -->
+  <section id="get" style="position:relative;overflow:hidden;background:#0a0d10;">
+    <div style="position:absolute;inset:0;background-image:url('assets/turf.png');background-size:cover;background-position:50% 50%;opacity:.5;"></div>
+    <div style="position:absolute;inset:0;background:linear-gradient(180deg, rgba(8,12,9,.86) 0%, rgba(6,11,8,.94) 100%);"></div>
+    <div style="position:relative;max-width:1200px;margin:0 auto;padding:clamp(46px,6vw,78px) clamp(18px,4vw,46px);display:flex;flex-wrap:wrap;gap:28px;align-items:center;justify-content:space-between;">
+      <div style="flex:1 1 380px;">
+        <div style="font-size:12px;font-weight:800;letter-spacing:2.4px;color: {{ accent }};margin-bottom:14px;">TRACK IT. BET IT. SETTLE IT.</div>
+        <div style="font-size:clamp(28px,3.4vw,44px);font-weight:800;line-height:1.06;letter-spacing:-.025em;max-width:620px;text-wrap:balance;">Terms read. Now go win the back nine.</div>
+      </div>
+      <div style="display:flex;flex-wrap:wrap;gap:12px;">
+        <a href="#get" style="display:flex;align-items:center;height:52px;padding:0 26px;border-radius:13px;background: {{ accent }};color: {{ ink }};font-size:15px;font-weight:800;box-shadow:0 10px 28px {{ accentGlow }};">Get the app</a>
+        <a href="Golo%20Golf%20-%20Games.dc.html" style="display:flex;align-items:center;height:52px;padding:0 26px;border-radius:13px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.18);font-size:15px;font-weight:800;color:#fff;">Browse the games</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ FOOTER ============ -->
+  <footer style="background:#070a0c;border-top:1px solid rgba(255,255,255,.08);">
+    <div style="max-width:1200px;margin:0 auto;padding:clamp(40px,5vw,64px) clamp(18px,4vw,46px) 30px;display:flex;flex-wrap:wrap;gap:40px;justify-content:space-between;">
+      <div style="max-width:300px;">
+        <a href="Golo%20Golf%20-%20Landing%20Page.dc.html" style="display:flex;align-items:center;gap:11px;margin-bottom:16px;">
+          <span style="width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center;background:#0c0f12;border:1px solid rgba(255,255,255,.1);"><svg width="26" height="26" viewBox="0 0 120 124" fill="none" style="display:block"><path d="M56 20 A40 40 0 1 0 95.8 64" stroke="#d4f23a" stroke-width="12" stroke-linecap="round"></path><line x1="95.8" y1="64" x2="64" y2="64" stroke="#d4f23a" stroke-width="12" stroke-linecap="round"></line><circle cx="56" cy="58" r="15" fill="#fff"></circle><circle cx="56" cy="58" r="9" fill="none" stroke="rgba(10,36,24,0.28)" stroke-width="2.4"></circle><line x1="56" y1="44" x2="56" y2="14" stroke="#d4f23a" stroke-width="3.4"></line><path d="M56 14 L86 22 L56 34 Z" fill="#fff"></path></svg></span>
+          <span style="display:flex;align-items:flex-end;"><span style="font-size:20px;font-weight:800;color:#fff;line-height:1;">Go</span><span style="font-size:20px;font-weight:800;color:#d4f23a;line-height:1;">Lo</span></span>
+        </a>
+        <p style="font-size:14px;line-height:1.6;color:rgba(255,255,255,.5);margin:0;">Track it. Bet it. Settle it. The scorekeeper that finally settles the bet.</p>
+      </div>
+      <div style="display:flex;flex-wrap:wrap;gap:48px;">
+        <div><div style="font-size:12px;font-weight:800;letter-spacing:1.4px;color:rgba(255,255,255,.45);margin-bottom:14px;">PRODUCT</div><div style="display:flex;flex-direction:column;gap:10px;"><a href="Golo%20Golf%20-%20Features.dc.html" style="font-size:14px;font-weight:600;color:rgba(255,255,255,.66);">Features</a><a href="Golo%20Golf%20-%20Landing%20Page.dc.html#how" style="font-size:14px;font-weight:600;color:rgba(255,255,255,.66);">How it works</a><a href="#get" style="font-size:14px;font-weight:600;color:rgba(255,255,255,.66);">Download</a></div></div>
+        <div><div style="font-size:12px;font-weight:800;letter-spacing:1.4px;color:rgba(255,255,255,.45);margin-bottom:14px;">GAMES</div><div style="display:flex;flex-direction:column;gap:10px;"><a href="Golo%20Golf%20-%20Games.dc.html" style="font-size:14px;font-weight:600;color:rgba(255,255,255,.66);">All games</a><a href="Golo%20Golf%20-%20Game%20Nassau.dc.html" style="font-size:14px;font-weight:600;color:rgba(255,255,255,.66);">Nassau</a><a href="Golo%20Golf%20-%20Games.dc.html" style="font-size:14px;font-weight:600;color:rgba(255,255,255,.66);">Skins</a></div></div>
+        <div><div style="font-size:12px;font-weight:800;letter-spacing:1.4px;color:rgba(255,255,255,.45);margin-bottom:14px;">LEGAL</div><div style="display:flex;flex-direction:column;gap:10px;"><a href="Golo%20Golf%20-%20Legal%20Terms.dc.html" style="font-size:14px;font-weight:600;color:#d4f23a;">Terms of Service</a><a href="Golo%20Golf%20-%20Legal%20Privacy.dc.html" style="font-size:14px;font-weight:600;color:rgba(255,255,255,.66);">Privacy Policy</a><a href="#" style="font-size:14px;font-weight:600;color:rgba(255,255,255,.66);">Cookie Policy</a><a href="#" style="font-size:14px;font-weight:600;color:rgba(255,255,255,.66);">Acceptable Use</a></div></div>
+        <div><div style="font-size:12px;font-weight:800;letter-spacing:1.4px;color:rgba(255,255,255,.45);margin-bottom:14px;">COMPANY</div><div style="display:flex;flex-direction:column;gap:10px;"><a href="Golo%20Golf%20-%20Landing%20Page.dc.html#faq" style="font-size:14px;font-weight:600;color:rgba(255,255,255,.66);">FAQ</a><a href="Golo%20Golf%20-%20Contact.dc.html" style="font-size:14px;font-weight:600;color:rgba(255,255,255,.66);">Contact</a><a href="mailto:support@gologolf.app" style="font-size:14px;font-weight:600;color:rgba(255,255,255,.66);">Support</a></div></div>
+      </div>
+    </div>
+    <div style="max-width:1200px;margin:0 auto;padding:20px clamp(18px,4vw,46px);border-top:1px solid rgba(255,255,255,.07);display:flex;flex-wrap:wrap;gap:12px;justify-content:space-between;align-items:center;">
+      <span style="font-size:13px;color:rgba(255,255,255,.4);">© 2026 GoLo Golf LLC. All rights reserved.</span>
+      <span style="font-size:13px;color:rgba(255,255,255,.4);max-width:560px;">GoLo helps you track friendly wagers between playing partners. Keep it friendly, settle up, and play your local rules.</span>
+    </div>
+  </footer>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1200,&quot;height&quot;:1400},&quot;accent&quot;:{&quot;editor&quot;:&quot;color&quot;,&quot;default&quot;:&quot;#d4f23a&quot;,&quot;options&quot;:[&quot;#d4f23a&quot;,&quot;#bef264&quot;,&quot;#2dd4bf&quot;,&quot;#facc15&quot;],&quot;tsType&quot;:&quot;string&quot;},&quot;layout&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;default&quot;:&quot;sidebar&quot;,&quot;options&quot;:[&quot;sidebar&quot;,&quot;chips&quot;,&quot;accordion&quot;],&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Reading layout&quot;},&quot;plainEnglish&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Reading layout&quot;}}">
+class Component extends DCLogic {
+  state = { open: {} };
+
+  hexA(hex, a){ let h=(hex||'#d4f23a').replace('#',''); if(h.length===3)h=h.split('').map(c=>c+c).join(''); const r=parseInt(h.slice(0,2),16),g=parseInt(h.slice(2,4),16),b=parseInt(h.slice(4,6),16); return `rgba(${r},${g},${b},${a})`; }
+  accentColor(){ return this.props.accent ?? '#d4f23a'; }
+  toggle(i){ this.setState(s=>({ open:{...s.open, [i]: !s.open[i] } })); }
+
+  // ===== Per-document content — swap this block to clone the template (Privacy, Cookies, Refunds, Acceptable Use) =====
+  DOC = {
+    warnings: [
+      { tag:'18+', text:'You must be 18 or older (or your state\u2019s age of majority) to use GoLo.' },
+      { tag:'US', text:'GoLo is currently available only to users located in the United States.' },
+      { tag:'\u00a7', text:'Wager-style formats are your call \u2014 you are responsible for knowing what is lawful where you play.' }
+    ],
+    sections: [
+      { num:'01', id:'eligibility', title:'Eligibility and Availability',
+        plain:'You need to be 18+ and in the United States.',
+        paras:['GoLo is currently available only to users located in the United States and is intended for users 18 years of age or older (or the age of majority in your state). By using GoLo, you represent that you meet these requirements.'] },
+
+      { num:'02', id:'the-service', title:'The Service',
+        plain:'GoLo is a scorekeeper for golf games \u2014 it tracks who owes whom, and nothing more.',
+        paras:['GoLo is a golf scoring and game-format tracking app. It allows users to record round scores, apply game formats (e.g., points, skins, or wager-style formats), and track a running "settlement status" ledger of who owes whom within a group \u2014 as a scoreboard feature only.'] },
+
+      { num:'03', id:'not-betting', title:'GoLo Is Not a Betting or Payments App',
+        plain:'GoLo never touches a dollar. If money changes hands, you handle it yourselves \u2014 and it is on you to know your local laws.',
+        paras:[
+          'GoLo does not process, transmit, hold, or facilitate money in any form. GoLo has no payment processor, wallet, or in-app currency. Any settlement status shown in the app is purely informational \u2014 a scoreboard, not a transaction.',
+          'If you save a Venmo or other payout handle to your profile, GoLo simply displays it to the other players in your group; GoLo is not connected to Venmo or any payment service. If players choose to exchange money based on a game\u2019s outcome, that exchange happens entirely outside the app, directly between the players, at their own discretion and risk. GoLo:'
+        ],
+        bullets:[
+          'Does not verify, guarantee, collect, or distribute any money owed between users',
+          'Does not take a fee, rake, or commission on any settlement',
+          'Is not a licensed money transmitter, payment processor, or gambling operator',
+          'Disclaims all responsibility for any money-related dispute or exchange between users'
+        ],
+        tail:['You are solely responsible for determining whether any wager-style game format you use with GoLo is lawful in your jurisdiction. GoLo does not endorse, encourage, or facilitate real-money wagering.'] },
+
+      { num:'04', id:'accounts', title:'Accounts',
+        plain:'Keep your login private, and tell us fast if something looks off.',
+        paras:['You must provide accurate information to create an account and are responsible for maintaining the confidentiality of your login credentials and for all activity under your account. Notify us immediately at support@gologolf.app if you suspect unauthorized use.'] },
+
+      { num:'05', id:'acceptable-use', title:'Acceptable Use',
+        plain:'Don\u2019t break the law, don\u2019t break the app, and don\u2019t fake scores.',
+        paras:['You agree not to:'],
+        bullets:[
+          'Use GoLo for any unlawful purpose, including operating illegal gambling',
+          'Attempt to reverse-engineer, disrupt, or gain unauthorized access to the Service',
+          'Upload content that is infringing, abusive, or unlawful',
+          'Misrepresent scores or data in a way intended to defraud another user'
+        ] },
+
+      { num:'06', id:'user-content', title:'User Content',
+        plain:'Your photo and your scores stay yours. We only use them to run the app.',
+        paras:['You retain ownership of content you submit (e.g., your profile photo, scores). By submitting content, you grant GoLo a limited, non-exclusive license to store, display, and process that content solely to operate the Service, as described in our Privacy Policy.'] },
+
+      { num:'07', id:'course-data', title:'Course Data',
+        plain:'Course info comes from outside databases, so it can be wrong \u2014 and we are not affiliated with the courses listed.',
+        paras:['Golf course names, locations, and related data displayed in GoLo are provided for convenience and may be sourced from public or licensed third-party databases. GoLo does not guarantee the accuracy of course data and is not affiliated with the golf courses listed unless stated otherwise.'] },
+
+      { num:'08', id:'ip', title:'Intellectual Property',
+        plain:'The GoLo name, app and site are ours. Please don\u2019t copy them.',
+        paras:['The GoLo name, app, website, and associated content are owned by GoLo Golf LLC and protected by applicable intellectual property laws. You may not copy, modify, or distribute the Service without our written permission.'] },
+
+      { num:'09', id:'disclaimers', title:'Disclaimers',
+        plain:'GoLo comes as-is. We can\u2019t promise it never breaks.',
+        paras:['GoLo is provided "as is" and "as available," without warranties of any kind, express or implied, including merchantability, fitness for a particular purpose, or non-infringement. We do not guarantee the Service will be uninterrupted, error-free, or secure.'] },
+
+      { num:'10', id:'liability', title:'Limitation of Liability',
+        plain:'If money changes hands offline and it goes sideways, that is between you and your group.',
+        paras:['To the maximum extent permitted by law, GoLo Golf LLC and its officers, employees, and service providers are not liable for any indirect, incidental, special, or consequential damages, or for any loss arising from money exchanged between users outside the Service, arising out of or related to your use of GoLo.'] },
+
+      { num:'11', id:'termination', title:'Termination and Account Deletion',
+        plain:'Delete your account any time, three ways. It is instant and permanent \u2014 export your data first.',
+        paras:[
+          'We may suspend or terminate your access to GoLo at any time for violation of these Terms or unlawful use.',
+          'You may delete your account at any time using any of these paths:'
+        ],
+        bullets:[
+          'In the app: You \u2192 Delete account',
+          'On the web: /delete-account, which is reachable whether or not you are signed in',
+          'By email: if you cannot access your account, write to support@gologolf.app from the address on the account with "Delete My Account" in the subject line'
+        ],
+        tail:[
+          'Deletion is immediate and final \u2014 there is no grace period or undo. Before deleting, you can download a copy of your data using You \u2192 Download my data or the export option on /delete-account.',
+          'Rounds you played with other people, and any settlement records between you and another player, are retained for those players in anonymized form; see our Privacy Policy for exactly what is deleted, anonymized, and retained.'
+        ] },
+
+      { num:'12', id:'governing-law', title:'Governing Law',
+        plain:'Oregon law applies.',
+        paras:['These Terms are governed by the laws of the State of Oregon, United States, without regard to conflict-of-law principles.'] },
+
+      { num:'13', id:'changes', title:'Changes to These Terms',
+        plain:'We may update these Terms. Keep using GoLo after a change and you accept the new version.',
+        paras:['We may update these Terms from time to time. Continued use of GoLo after changes are posted at /terms constitutes acceptance of the revised Terms.'] },
+
+      { num:'14', id:'contact', title:'Contact',
+        plain:'One inbox for everything legal: support@gologolf.app.',
+        paras:['GoLo Golf LLC \u2014 Bend, Oregon, United States. Email: support@gologolf.app.'] }
+    ]
+  };
+
+  LEGAL_NAV = [
+    { label:'Terms of Service', href:'Golo%20Golf%20-%20Legal%20Terms.dc.html', active:true },
+    { label:'Privacy Policy', href:'Golo%20Golf%20-%20Legal%20Privacy.dc.html' },
+    { label:'Cookie Policy', href:'#' },
+    { label:'Refunds & Billing', href:'#' },
+    { label:'Acceptable Use', href:'#' }
+  ];
+
+  OTHER_DOCS = [
+    { label:'Privacy Policy', blurb:'What we collect, what we never sell, and exactly what deletion removes.', cta:'READ THE POLICY', href:'Golo%20Golf%20-%20Legal%20Privacy.dc.html' },
+    { label:'Cookie Policy', blurb:'The handful of cookies golo.golf sets, and how to turn them off.', cta:'READ THE POLICY', href:'#' },
+    { label:'Refunds & Billing', blurb:'Subscription terms, renewals, and how refunds are handled.', cta:'READ THE TERMS', href:'#' },
+    { label:'Acceptable Use', blurb:'The short list of things that get an account suspended.', cta:'READ THE RULES', href:'#' }
+  ];
+
+  renderVals(){
+    const A = this.accentColor(), ink = '#13250a';
+    const layout = this.props.layout ?? 'sidebar';
+    const showPlain = this.props.plainEnglish ?? true;
+    const isAcc = layout === 'accordion';
+
+    const warnIcon = React.createElement('svg', { width:20, height:20, viewBox:'0 0 24 24', fill:'none', style:{display:'block'} },
+      React.createElement('path', { d:'M12 3.6 21 19.2H3L12 3.6z', stroke:'#fb7185', strokeWidth:1.9, strokeLinejoin:'round' }),
+      React.createElement('path', { d:'M12 9.4v4.2', stroke:'#fb7185', strokeWidth:2, strokeLinecap:'round' }),
+      React.createElement('circle', { cx:12, cy:16.6, r:1.1, fill:'#fb7185' }));
+
+    const sections = this.DOC.sections.map((s, i) => {
+      const open = isAcc ? !!this.state.open[i] : true;
+      return {
+        num:s.num, id:s.id, title:s.title, plain:s.plain,
+        hasPlain: !!(showPlain && s.plain),
+        plainDisplay: showPlain && s.plain ? 'flex' : 'none',
+        paras: (s.paras||[]).map(t=>({ text:t })),
+        bullets: (s.bullets||[]).map(t=>({ text:t })),
+        tail: (s.tail||[]).map(t=>({ text:t })),
+        defs: (s.defs||[]).map(d=>({ term:d.term, text:d.text })),
+        hasDefs: !!(s.defs && s.defs.length),
+        hasBullets: !!(s.bullets && s.bullets.length),
+        hasTail: !!(s.tail && s.tail.length),
+        toggle: isAcc ? (()=>this.toggle(i)) : (()=>{}),
+        cursor: isAcc ? 'pointer' : 'default',
+        caretDisplay: isAcc ? 'block' : 'none',
+        rotate: open ? 'rotate(45deg)' : 'rotate(0deg)',
+        maxH: isAcc ? (open ? '1600px' : '0px') : 'none',
+        overflow: isAcc ? 'hidden' : 'visible',
+        opacity: open ? 1 : 0
+      };
+    });
+
+    return {
+      accent:A, ink,
+      accentSoft:this.hexA(A,.13), accentBorder:this.hexA(A,.4), accentGlow:this.hexA(A,.42),
+      sections, sectionCount:this.DOC.sections.length,
+      warnings:this.DOC.warnings, warnIcon,
+      otherDocs:this.OTHER_DOCS,
+      legalNav:this.LEGAL_NAV.map(l=>({
+        label:l.label, href:l.href,
+        color: l.active ? A : 'rgba(255,255,255,.6)',
+        underline: l.active ? `inset 0 -2px 0 0 ${A}` : 'none'
+      })),
+      gridCols: layout === 'sidebar' ? 'minmax(0,270px) minmax(0,1fr)' : 'minmax(0,1fr)',
+      tocDisplay: layout === 'sidebar' ? 'flex' : 'none',
+      chipsDisplay: layout === 'chips' ? 'flex' : 'none'
+    };
+  }
+}
+</script>
+</body>
+</html>

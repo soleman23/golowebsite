@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <style>
+    *{box-sizing:border-box;}
+    html,body{margin:0;padding:0;}
+    body{background:#0a0d10;}
+    a{text-decoration:none;color:inherit;}
+    a:hover{color:#d4f23a;}
+    ::selection{background:#d4f23a;color:#13250a;}
+    html{scroll-behavior:smooth;}
+    input::placeholder{color:rgba(255,255,255,.4);}
+    image-slot{display:block!important;width:100%!important;height:100%!important;color:rgba(255,255,255,.62)!important;}
+  </style>
+</helmet>
+
+<div style="font-family:system-ui,-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:#0a0d10;color:#fff;min-height:100vh;overflow-x:clip;">
+
+  <!-- ============ NAV ============ -->
+  <nav style="position:sticky;top:0;z-index:100;display:flex;align-items:center;justify-content:space-between;gap:20px;padding:14px clamp(18px,4vw,46px);background:rgba(10,13,16,.72);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);border-bottom:1px solid rgba(255,255,255,.08);">
+    <a href="Golo%20Golf%20-%20Landing%20Page.dc.html" style="display:flex;align-items:center;gap:11px;">
+      <span style="width:38px;height:38px;border-radius:11px;display:flex;align-items:center;justify-content:center;background:#0c0f12;border:1px solid rgba(255,255,255,.1);box-shadow:0 8px 22px rgba(212,242,58,.3);"><svg width="28" height="28" viewBox="0 0 120 124" fill="none" style="display:block"><path d="M56 20 A40 40 0 1 0 95.8 64" stroke="#d4f23a" stroke-width="12" stroke-linecap="round"></path><line x1="95.8" y1="64" x2="64" y2="64" stroke="#d4f23a" stroke-width="12" stroke-linecap="round"></line><circle cx="56" cy="58" r="15" fill="#fff"></circle><circle cx="56" cy="58" r="9" fill="none" stroke="rgba(10,36,24,0.28)" stroke-width="2.4"></circle><line x1="56" y1="44" x2="56" y2="14" stroke="#d4f23a" stroke-width="3.4"></line><path d="M56 14 L86 22 L56 34 Z" fill="#fff"></path></svg></span>
+      <span style="display:flex;align-items:flex-end;gap:0px;"><span style="font-size:21px;font-weight:800;letter-spacing:-.02em;color:#fff;line-height:1;">Go</span><span style="font-size:21px;font-weight:800;letter-spacing:-.02em;color:#d4f23a;line-height:1;">Lo</span></span>
+    </a>
+    <div style="display:flex;align-items:center;gap:30px;">
+      <div style="display:flex;align-items:center;gap:22px;">
+        <a href="Golo%20Golf%20-%20Features.dc.html" style="font-size:14px;font-weight:700;color:rgba(255,255,255,.66);">Features</a>
+        <a href="Golo%20Golf%20-%20Games.dc.html" style="font-size:14px;font-weight:700;color:rgba(255,255,255,.66);">Games</a>
+        <a href="Golo%20Golf%20-%20Landing%20Page.dc.html#how" style="font-size:14px;font-weight:700;color:rgba(255,255,255,.66);">How It Works</a>
+        <a href="Golo%20Golf%20-%20Blog.dc.html" style="font-size:14px;font-weight:800;color:#d4f23a;">Blog</a>
+        <a href="Golo%20Golf%20-%20FAQ.dc.html" style="font-size:14px;font-weight:700;color:rgba(255,255,255,.66);">FAQ</a>
+        <a href="Golo%20Golf%20-%20Contact.dc.html" style="font-size:14px;font-weight:700;color:rgba(255,255,255,.66);">Contact</a>
+      </div>
+      <a href="#get" style="display:flex;align-items:center;height:42px;padding:0 20px;border-radius:11px;background:#d4f23a;color:#13250a;font-size:14px;font-weight:800;box-shadow:0 6px 18px rgba(212,242,58,.42);">Get the app</a>
+    </div>
+  </nav>
+
+  <!-- ============ HERO ============ -->
+  <header style="position:relative;overflow:hidden;min-height:clamp(440px,52vw,620px);display:flex;align-items:flex-end;">
+    <div style="position:absolute;inset:0;background:rgba(255,255,255,.04);">
+      <x-import component-from-global-scope="image-slot" from="./image-slot.js" id="post-nassau-hero" shape="rect" placeholder="Drop the hero photo for this post" hint-size="100%,100%" style="width:100%;height:100%;display:block"></x-import>
+    </div>
+    <div style="position:absolute;inset:0;background-image:url('assets/course.png');background-size:cover;background-position:50% 42%;opacity:.5;pointer-events:none;"></div>
+    <div style="position:absolute;inset:0;background:linear-gradient(0deg, rgba(6,10,8,.95) 0%, rgba(6,10,8,.72) 38%, rgba(6,10,8,.18) 72%, rgba(6,10,8,.42) 100%);pointer-events:none;"></div>
+    <div style="position:absolute;left:-8%;top:-24%;width:52%;height:80%;background:radial-gradient(circle, rgba(212,242,58,.34) 0%, rgba(0,0,0,0) 66%);filter:blur(50px);pointer-events:none;"></div>
+
+    <div style="position:relative;width:100%;max-width:1200px;margin:0 auto;padding:clamp(40px,5vw,72px) clamp(18px,4vw,46px) clamp(32px,4vw,48px);">
+      <div style="display:flex;align-items:center;gap:9px;margin-bottom:22px;">
+        <a href="Golo%20Golf%20-%20Landing%20Page.dc.html" style="font-size:12.5px;font-weight:800;letter-spacing:.6px;color:rgba(255,255,255,.55);">Home</a>
+        <span style="font-size:12.5px;color:rgba(255,255,255,.3);">/</span>
+        <a href="Golo%20Golf%20-%20Blog.dc.html" style="font-size:12.5px;font-weight:800;letter-spacing:.6px;color:rgba(255,255,255,.55);">Blog</a>
+        <span style="font-size:12.5px;color:rgba(255,255,255,.3);">/</span>
+        <span style="font-size:12.5px;font-weight:800;letter-spacing:.6px;color:#d4f23a;">Nassau</span>
+      </div>
+
+      <div style="max-width:840px;">
+        <div style="display:flex;flex-wrap:wrap;align-items:center;gap:9px;margin-bottom:18px;">
+          <span style="display:inline-flex;align-items:center;height:30px;padding:0 13px;border-radius:9999px;background:#d4f23a;color:#13250a;font-size:11px;font-weight:800;letter-spacing:1.2px;">GAME RULES &amp; HOW-TO</span>
+          <span style="display:inline-flex;align-items:center;height:30px;padding:0 13px;border-radius:9999px;background:rgba(255,255,255,.13);border:1px solid rgba(255,255,255,.2);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);font-size:11px;font-weight:800;letter-spacing:1.2px;color:rgba(255,255,255,.84);">6 MIN READ</span>
+        </div>
+        <h1 style="font-size:clamp(34px,5.4vw,60px);font-weight:800;line-height:1.02;letter-spacing:-.03em;margin:0 0 20px;text-wrap:balance;">How to play a Nassau: the $2 bet that runs every group in America</h1>
+        <p style="font-size:clamp(16px,1.6vw,20px);line-height:1.6;font-weight:600;color:rgba(255,255,255,.74);margin:0 0 26px;max-width:700px;text-wrap:pretty;">Front nine, back nine, total match — plus presses. The whole format in five minutes, including the three rules your group is definitely playing differently than the next one.</p>
+        <div style="display:flex;flex-wrap:wrap;align-items:center;gap:14px;">
+          <span style="display:inline-flex;align-items:center;gap:10px;height:44px;padding:0 16px 0 10px;border-radius:9999px;background:rgba(20,28,24,.6);border:1px solid rgba(255,255,255,.14);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);">
+            <span style="width:28px;height:28px;border-radius:8px;display:flex;align-items:center;justify-content:center;background:#0c0f12;border:1px solid rgba(255,255,255,.12);"><svg width="19" height="19" viewBox="0 0 120 124" fill="none" style="display:block"><path d="M56 20 A40 40 0 1 0 95.8 64" stroke="#d4f23a" stroke-width="12" stroke-linecap="round"></path><line x1="95.8" y1="64" x2="64" y2="64" stroke="#d4f23a" stroke-width="12" stroke-linecap="round"></line><circle cx="56" cy="58" r="15" fill="#fff"></circle><line x1="56" y1="44" x2="56" y2="14" stroke="#d4f23a" stroke-width="3.4"></line><path d="M56 14 L86 22 L56 34 Z" fill="#fff"></path></svg></span>
+            <span style="font-size:13.5px;font-weight:800;color:#fff;">From the GoLo team</span>
+          </span>
+          <span style="font-size:13.5px;font-weight:700;color:rgba(255,255,255,.5);">August 4, 2026</span>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- ============ ARTICLE ============ -->
+  <article style="position:relative;background:#0a0d10;">
+    <div style="max-width:760px;margin:0 auto;padding:clamp(38px,5vw,64px) clamp(18px,4vw,46px) clamp(30px,4vw,48px);display:flex;flex-direction:column;gap:26px;">
+
+      <p style="font-size:19px;line-height:1.72;font-weight:600;color:rgba(255,255,255,.86);margin:0;text-wrap:pretty;">A Nassau is the default bet in American golf, and almost nobody explains it before the first tee. Somebody says "two-two-two?", everyone nods, and eighteen holes later there's an argument in the parking lot about whether the back nine was still live. Here is the whole thing, start to settle.</p>
+
+      <!-- RULES AT A GLANCE -->
+      <div style="border-radius:22px;background:rgba(20,28,24,.5);border:1px solid rgba(255,255,255,.13);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);padding:26px 28px;display:flex;flex-direction:column;gap:16px;">
+        <div style="font-size:11px;font-weight:800;letter-spacing:1.4px;color:rgba(255,255,255,.45);">NASSAU AT A GLANCE</div>
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:16px;">
+          <div style="display:flex;flex-direction:column;gap:5px;"><span style="font-size:12px;font-weight:800;letter-spacing:1px;color:#d4f23a;">PLAYERS</span><span style="font-size:15px;font-weight:700;line-height:1.5;color:rgba(255,255,255,.8);">2, or two teams of two</span></div>
+          <div style="display:flex;flex-direction:column;gap:5px;"><span style="font-size:12px;font-weight:800;letter-spacing:1px;color:#d4f23a;">SCORING</span><span style="font-size:15px;font-weight:700;line-height:1.5;color:rgba(255,255,255,.8);">Match play, hole by hole</span></div>
+          <div style="display:flex;flex-direction:column;gap:5px;"><span style="font-size:12px;font-weight:800;letter-spacing:1px;color:#d4f23a;">THE BETS</span><span style="font-size:15px;font-weight:700;line-height:1.5;color:rgba(255,255,255,.8);">Front 9, back 9, total 18</span></div>
+          <div style="display:flex;flex-direction:column;gap:5px;"><span style="font-size:12px;font-weight:800;letter-spacing:1px;color:#d4f23a;">TYPICAL STAKE</span><span style="font-size:15px;font-weight:700;line-height:1.5;color:rgba(255,255,255,.8);">$2 / $5 / $10 a side</span></div>
+        </div>
+      </div>
+
+      <h2 style="font-size:clamp(24px,2.6vw,30px);font-weight:800;line-height:1.15;letter-spacing:-.022em;margin:16px 0 0;text-wrap:balance;">It's three bets, not one</h2>
+      <p style="font-size:17.5px;line-height:1.75;font-weight:600;color:rgba(255,255,255,.72);margin:0;text-wrap:pretty;">That's the only idea you need. A Nassau splits the round into three separate match-play wagers of equal value: the front nine, the back nine, and the overall eighteen. Each is won by whoever is up when that segment ends. Ties push — nobody pays.</p>
+      <p style="font-size:17.5px;line-height:1.75;font-weight:600;color:rgba(255,255,255,.72);margin:0;text-wrap:pretty;">Match play means you're counting holes won, not strokes. Lose the 4th by six shots and it costs you exactly one hole, same as losing it by one. This is why the format survives a blow-up: a triple bogey ends the hole, not the round.</p>
+
+      <!-- TABLE -->
+      <div style="border-radius:20px;overflow:hidden;border:1px solid rgba(255,255,255,.13);background:rgba(20,28,24,.5);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);">
+        <div style="display:grid;grid-template-columns:1.3fr 1fr 1fr;gap:0;padding:14px 20px;background:rgba(255,255,255,.05);border-bottom:1px solid rgba(255,255,255,.1);">
+          <span style="font-size:11px;font-weight:800;letter-spacing:1.2px;color:rgba(255,255,255,.5);">SEGMENT</span>
+          <span style="font-size:11px;font-weight:800;letter-spacing:1.2px;color:rgba(255,255,255,.5);">RESULT</span>
+          <span style="font-size:11px;font-weight:800;letter-spacing:1.2px;color:rgba(255,255,255,.5);text-align:right;">PAYS</span>
+        </div>
+        <div style="display:grid;grid-template-columns:1.3fr 1fr 1fr;padding:16px 20px;border-bottom:1px solid rgba(255,255,255,.07);align-items:center;">
+          <span style="font-size:15.5px;font-weight:800;color:#fff;">Front nine</span>
+          <span style="font-size:15px;font-weight:700;color:rgba(255,255,255,.7);">You win 2 up</span>
+          <span style="font-size:16px;font-weight:800;color:#bef264;text-align:right;">+$2</span>
+        </div>
+        <div style="display:grid;grid-template-columns:1.3fr 1fr 1fr;padding:16px 20px;border-bottom:1px solid rgba(255,255,255,.07);align-items:center;">
+          <span style="font-size:15.5px;font-weight:800;color:#fff;">Back nine</span>
+          <span style="font-size:15px;font-weight:700;color:rgba(255,255,255,.7);">You lose 1 down</span>
+          <span style="font-size:16px;font-weight:800;color:#fb7185;text-align:right;">−$2</span>
+        </div>
+        <div style="display:grid;grid-template-columns:1.3fr 1fr 1fr;padding:16px 20px;border-bottom:1px solid rgba(255,255,255,.07);align-items:center;">
+          <span style="font-size:15.5px;font-weight:800;color:#fff;">Total 18</span>
+          <span style="font-size:15px;font-weight:700;color:rgba(255,255,255,.7);">You win 1 up</span>
+          <span style="font-size:16px;font-weight:800;color:#bef264;text-align:right;">+$2</span>
+        </div>
+        <div style="display:grid;grid-template-columns:1.3fr 1fr 1fr;padding:16px 20px;align-items:center;background:rgba(212,242,58,.09);">
+          <span style="font-size:15.5px;font-weight:800;color:#d4f23a;">Settle</span>
+          <span style="font-size:15px;font-weight:700;color:rgba(255,255,255,.7);">Net for the day</span>
+          <span style="font-size:18px;font-weight:800;color:#d4f23a;text-align:right;">+$2</span>
+        </div>
+      </div>
+      <p style="font-size:14px;line-height:1.6;font-weight:600;color:rgba(255,255,255,.42);margin:-12px 0 0;">A $2 Nassau, played straight. Three bets, one number at the end.</p>
+
+      <!-- KEY STAT -->
+      <div style="display:flex;flex-wrap:wrap;align-items:center;gap:24px;padding:28px;border-radius:22px;background:rgba(20,28,24,.5);border:1px solid rgba(212,242,58,.3);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);">
+        <span style="font-size:clamp(54px,7vw,78px);font-weight:800;line-height:.9;letter-spacing:-.04em;color:#d4f23a;">$6</span>
+        <span style="flex:1 1 260px;font-size:16.5px;line-height:1.6;font-weight:700;color:rgba(255,255,255,.76);text-wrap:pretty;">Maximum you can lose in a straight $2 Nassau, before anyone presses. That's the whole appeal — the number stays small enough that nobody plays scared, and big enough that a five-footer on 18 still means something.</span>
+      </div>
+
+      <h2 style="font-size:clamp(24px,2.6vw,30px);font-weight:800;line-height:1.15;letter-spacing:-.022em;margin:16px 0 0;text-wrap:balance;">Presses: the part that gets people in trouble</h2>
+      <p style="font-size:17.5px;line-height:1.75;font-weight:600;color:rgba(255,255,255,.72);margin:0;text-wrap:pretty;">A press is a brand-new bet, for the same stake, covering only the holes remaining in that segment. It's how the player who's losing buys a way back in. It's also how a $2 Nassau quietly becomes an $18 afternoon.</p>
+
+      <!-- NUMBERED STEPS -->
+      <div style="display:flex;flex-direction:column;gap:14px;">
+        <div style="display:flex;gap:16px;align-items:flex-start;padding:18px 20px;border-radius:16px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.09);">
+          <span style="flex:0 0 auto;width:32px;height:32px;border-radius:10px;display:flex;align-items:center;justify-content:center;background:rgba(212,242,58,.16);border:1px solid rgba(212,242,58,.34);font-size:14px;font-weight:800;color:#d4f23a;">1</span>
+          <span style="font-size:16.5px;line-height:1.62;font-weight:700;color:rgba(255,255,255,.8);text-wrap:pretty;">You go 2 down on the front with four holes left. You call the press on the tee.</span>
+        </div>
+        <div style="display:flex;gap:16px;align-items:flex-start;padding:18px 20px;border-radius:16px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.09);">
+          <span style="flex:0 0 auto;width:32px;height:32px;border-radius:10px;display:flex;align-items:center;justify-content:center;background:rgba(212,242,58,.16);border:1px solid rgba(212,242,58,.34);font-size:14px;font-weight:800;color:#d4f23a;">2</span>
+          <span style="font-size:16.5px;line-height:1.62;font-weight:700;color:rgba(255,255,255,.8);text-wrap:pretty;">A second $2 match starts on holes 6 through 9. The original front-nine bet keeps running underneath it.</span>
+        </div>
+        <div style="display:flex;gap:16px;align-items:flex-start;padding:18px 20px;border-radius:16px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.09);">
+          <span style="flex:0 0 auto;width:32px;height:32px;border-radius:10px;display:flex;align-items:center;justify-content:center;background:rgba(212,242,58,.16);border:1px solid rgba(212,242,58,.34);font-size:14px;font-weight:800;color:#d4f23a;">3</span>
+          <span style="font-size:16.5px;line-height:1.62;font-weight:700;color:rgba(255,255,255,.8);text-wrap:pretty;">Win those four holes 2 up and you've turned a −$2 front into a push plus $2. Lose them and you're out $4 on nine holes.</span>
+        </div>
+        <div style="display:flex;gap:16px;align-items:flex-start;padding:18px 20px;border-radius:16px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.09);">
+          <span style="flex:0 0 auto;width:32px;height:32px;border-radius:10px;display:flex;align-items:center;justify-content:center;background:rgba(212,242,58,.16);border:1px solid rgba(212,242,58,.34);font-size:14px;font-weight:800;color:#d4f23a;">4</span>
+          <span style="font-size:16.5px;line-height:1.62;font-weight:700;color:rgba(255,255,255,.8);text-wrap:pretty;">Presses can be pressed. This is where groups lose the thread, and where writing it down stops being optional.</span>
+        </div>
+      </div>
+
+      <!-- CALLOUT -->
+      <div style="display:flex;gap:16px;align-items:flex-start;padding:22px 24px;border-radius:20px;background:rgba(212,242,58,.1);border:1px solid rgba(212,242,58,.3);">
+        <span style="flex:0 0 auto;width:34px;height:34px;border-radius:11px;display:flex;align-items:center;justify-content:center;background:#d4f23a;color:#13250a;font-size:17px;font-weight:800;">!</span>
+        <div style="display:flex;flex-direction:column;gap:6px;">
+          <span style="font-size:11px;font-weight:800;letter-spacing:1.4px;color:#d4f23a;">SETTLE THIS ON THE FIRST TEE</span>
+          <span style="font-size:16.5px;line-height:1.62;font-weight:700;color:rgba(255,255,255,.82);text-wrap:pretty;">Automatic presses at 2 down, or press only when someone asks? Auto-presses roughly double the money at stake over eighteen holes. Both are fine. Finding out on the 14th which one you're playing is not.</span>
+        </div>
+      </div>
+
+      <!-- PULL QUOTE -->
+      <blockquote style="margin:14px 0;padding:0 0 0 26px;border-left:3px solid #d4f23a;">
+        <p style="font-size:clamp(21px,2.4vw,27px);line-height:1.4;font-weight:800;letter-spacing:-.018em;color:#fff;margin:0;text-wrap:balance;">Nobody argues about the golf. They argue about what the bet was.</p>
+      </blockquote>
+
+      <h2 style="font-size:clamp(24px,2.6vw,30px);font-weight:800;line-height:1.15;letter-spacing:-.022em;margin:16px 0 0;text-wrap:balance;">The three rules your group plays differently</h2>
+      <p style="font-size:17.5px;line-height:1.75;font-weight:600;color:rgba(255,255,255,.72);margin:0;text-wrap:pretty;">There is no governing body for the Nassau. Every group has house rules, and every group assumes theirs are the standard ones. These are the three that actually cause the parking-lot conversation.</p>
+
+      <div style="display:flex;flex-direction:column;gap:12px;">
+        <div style="padding:20px 22px;border-radius:18px;background:rgba(20,28,24,.5);border:1px solid rgba(255,255,255,.12);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);">
+          <div style="font-size:16.5px;font-weight:800;color:#fff;margin-bottom:7px;">Do strokes count?</div>
+          <div style="font-size:15.5px;line-height:1.62;font-weight:600;color:rgba(255,255,255,.62);text-wrap:pretty;">A Nassau with handicaps is a different game than one without. Most groups play the low handicap off scratch and give the rest their difference, allocated by the stroke index on the card. If the 6 and the 22 are playing straight up, the 22 is donating.</div>
+        </div>
+        <div style="padding:20px 22px;border-radius:18px;background:rgba(20,28,24,.5);border:1px solid rgba(255,255,255,.12);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);">
+          <div style="font-size:16.5px;font-weight:800;color:#fff;margin-bottom:7px;">When does the total 18 close?</div>
+          <div style="font-size:15.5px;line-height:1.62;font-weight:600;color:rgba(255,255,255,.62);text-wrap:pretty;">Some groups close the overall match the moment it's mathematically decided — 3 up with 2 to play, done. Others play all eighteen because the back-nine bet is still alive anyway. Pick one, because it changes whether 17 and 18 mean anything.</div>
+        </div>
+        <div style="padding:20px 22px;border-radius:18px;background:rgba(20,28,24,.5);border:1px solid rgba(255,255,255,.12);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);">
+          <div style="font-size:16.5px;font-weight:800;color:#fff;margin-bottom:7px;">Can you press on 18?</div>
+          <div style="font-size:15.5px;line-height:1.62;font-weight:600;color:rgba(255,255,255,.62);text-wrap:pretty;">A one-hole press on the last tee is either a fair last chance or a shameless double-or-nothing, depending entirely on who's asking. Decide before somebody needs it.</div>
+        </div>
+      </div>
+
+      <!-- INLINE IMAGE -->
+      <figure style="margin:14px 0 0;display:flex;flex-direction:column;gap:12px;">
+        <div style="position:relative;aspect-ratio:16/9;border-radius:20px;overflow:hidden;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.12);">
+          <x-import component-from-global-scope="image-slot" from="./image-slot.js" id="post-nassau-inline" shape="rect" placeholder="Drop a scorecard or first-tee photo here" hint-size="100%,100%" style="width:100%;height:100%;display:block"></x-import>
+        </div>
+        <figcaption style="font-size:14px;line-height:1.6;font-weight:600;color:rgba(255,255,255,.42);text-wrap:pretty;">The margin of a scorecard has settled more bets than any rulebook. It's also where they get lost.</figcaption>
+      </figure>
+
+      <h2 style="font-size:clamp(24px,2.6vw,30px);font-weight:800;line-height:1.15;letter-spacing:-.022em;margin:16px 0 0;text-wrap:balance;">Settling up</h2>
+      <p style="font-size:17.5px;line-height:1.75;font-weight:600;color:rgba(255,255,255,.72);margin:0;text-wrap:pretty;">With two players it's one number. With four, in a two-on-two Nassau with a couple of presses in it, you have six or eight small bets resolving in different directions, and somebody is doing arithmetic in a parking lot with a beer in his hand. That's the part that goes wrong — not the golf, not even the rules. The tally.</p>
+      <p style="font-size:17.5px;line-height:1.75;font-weight:600;color:rgba(255,255,255,.72);margin:0;text-wrap:pretty;">The fix is boring: agree on the format out loud, write the stake down before the first tee shot, and mark each press when it's called rather than reconstructing it later. Do that and the Nassau is the best bet in golf — three chances to win, a ceiling you can live with, and every hole still mattering to somebody.</p>
+
+      <!-- SUMMARY BOX -->
+      <div style="border-radius:22px;padding:26px 28px;background:linear-gradient(180deg, rgba(212,242,58,.12) 0%, rgba(20,28,24,.5) 100%);border:1px solid rgba(212,242,58,.28);display:flex;flex-direction:column;gap:14px;">
+        <div style="font-size:11px;font-weight:800;letter-spacing:1.4px;color:#d4f23a;">THE SHORT VERSION</div>
+        <div style="display:flex;flex-direction:column;gap:11px;">
+          <div style="display:flex;gap:12px;align-items:flex-start;"><span style="flex:0 0 auto;width:6px;height:6px;border-radius:50%;background:#d4f23a;margin-top:9px;"></span><span style="font-size:16px;line-height:1.6;font-weight:700;color:rgba(255,255,255,.82);text-wrap:pretty;">Three equal bets: front, back, total. Match play. Ties push.</span></div>
+          <div style="display:flex;gap:12px;align-items:flex-start;"><span style="flex:0 0 auto;width:6px;height:6px;border-radius:50%;background:#d4f23a;margin-top:9px;"></span><span style="font-size:16px;line-height:1.6;font-weight:700;color:rgba(255,255,255,.82);text-wrap:pretty;">A press is a new bet on the holes that are left, at the same stake.</span></div>
+          <div style="display:flex;gap:12px;align-items:flex-start;"><span style="flex:0 0 auto;width:6px;height:6px;border-radius:50%;background:#d4f23a;margin-top:9px;"></span><span style="font-size:16px;line-height:1.6;font-weight:700;color:rgba(255,255,255,.82);text-wrap:pretty;">Decide strokes, auto-presses, and the 18th-tee press before you tee off.</span></div>
+          <div style="display:flex;gap:12px;align-items:flex-start;"><span style="flex:0 0 auto;width:6px;height:6px;border-radius:50%;background:#d4f23a;margin-top:9px;"></span><span style="font-size:16px;line-height:1.6;font-weight:700;color:rgba(255,255,255,.82);text-wrap:pretty;">Straight $2 Nassau: $6 is the most anyone can lose. Presses change that.</span></div>
+        </div>
+      </div>
+
+      <!-- SHARE -->
+      <div style="display:flex;flex-wrap:wrap;align-items:center;gap:12px;padding-top:14px;border-top:1px solid rgba(255,255,255,.09);margin-top:12px;">
+        <span style="font-size:11px;font-weight:800;letter-spacing:1.4px;color:rgba(255,255,255,.42);margin-right:4px;">SHARE THIS</span>
+        <button onClick="{{ onCopy }}" style="display:inline-flex;align-items:center;height:40px;padding:0 16px;border-radius:11px;background:rgba(255,255,255,.09);border:1px solid rgba(255,255,255,.16);color:#fff;font-family:inherit;font-size:13.5px;font-weight:800;cursor:pointer;" style-hover="border-color:rgba(212,242,58,.5);color:#d4f23a;">{{ copyLabel }}</button>
+        <a href="https://twitter.com/intent/tweet" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;height:40px;padding:0 16px;border-radius:11px;background:rgba(255,255,255,.09);border:1px solid rgba(255,255,255,.16);font-size:13.5px;font-weight:800;color:#fff;" style-hover="border-color:rgba(212,242,58,.5);color:#d4f23a;">Post on X</a>
+        <a href="mailto:?subject=How%20to%20play%20a%20Nassau" style="display:inline-flex;align-items:center;height:40px;padding:0 16px;border-radius:11px;background:rgba(255,255,255,.09);border:1px solid rgba(255,255,255,.16);font-size:13.5px;font-weight:800;color:#fff;" style-hover="border-color:rgba(212,242,58,.5);color:#d4f23a;">Email it</a>
+        <a href="Golo%20Golf%20-%20Game%20Nassau.dc.html" style="display:inline-flex;align-items:center;height:40px;padding:0 16px;border-radius:11px;background:rgba(212,242,58,.14);border:1px solid rgba(212,242,58,.34);font-size:13.5px;font-weight:800;color:#d4f23a;margin-left:auto;">See the Nassau format page →</a>
+      </div>
+    </div>
+  </article>
+
+  <!-- ============ KEEP READING ============ -->
+  <section style="background:#080b0d;border-top:1px solid rgba(255,255,255,.07);">
+    <div style="max-width:1200px;margin:0 auto;padding:clamp(40px,5vw,64px) clamp(18px,4vw,46px);">
+      <div style="display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:12px;margin-bottom:20px;">
+        <div style="font-size:11px;font-weight:800;letter-spacing:1.6px;color:rgba(255,255,255,.4);">KEEP READING</div>
+        <a href="Golo%20Golf%20-%20Blog.dc.html" style="font-size:13px;font-weight:800;letter-spacing:.6px;color:#d4f23a;">ALL POSTS →</a>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px;">
+        <sc-for list="{{ related }}" as="r" hint-placeholder-count="3">
+          <a href="{{ r.href }}" style="display:flex;flex-direction:column;border-radius:20px;overflow:hidden;background:rgba(20,28,24,.5);border:1px solid rgba(255,255,255,.12);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);" style-hover="border-color:rgba(212,242,58,.45);background:rgba(24,34,28,.66);">
+            <div style="position:relative;aspect-ratio:16/10;background:rgba(255,255,255,.04);border-bottom:1px solid rgba(255,255,255,.08);">
+              <x-import component-from-global-scope="image-slot" from="./image-slot.js" id="{{ r.slotId }}" shape="rect" placeholder="{{ r.slotHint }}" hint-size="100%,100%" style="width:100%;height:100%;display:block"></x-import>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:9px;padding:18px 20px 22px;">
+              <span style="font-size:10.5px;font-weight:800;letter-spacing:1.3px;color:#d4f23a;">{{ r.catLabel }}</span>
+              <h3 style="font-size:17.5px;font-weight:800;line-height:1.24;letter-spacing:-.018em;color:#fff;margin:0;text-wrap:pretty;">{{ r.title }}</h3>
+              <p style="font-size:14px;font-weight:600;line-height:1.6;color:rgba(255,255,255,.6);margin:0;text-wrap:pretty;">{{ r.excerpt }}</p>
+            </div>
+          </a>
+        </sc-for>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ NEWSLETTER ============ -->
+  <section style="display: {{ newsletterDisplay }};background:#080b0d;border-top:1px solid rgba(255,255,255,.07);">
+    <div style="max-width:1200px;margin:0 auto;padding:clamp(36px,4.5vw,58px) clamp(18px,4vw,46px);">
+      <div style="border-radius:24px;padding:clamp(26px,3.4vw,40px);background:rgba(20,28,24,.5);border:1px solid rgba(255,255,255,.13);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);display:flex;flex-wrap:wrap;gap:26px;align-items:center;justify-content:space-between;">
+        <div style="flex:1 1 340px;">
+          <div style="font-size:12px;font-weight:800;letter-spacing:2.2px;color:#d4f23a;margin-bottom:12px;">ONE EMAIL, WHEN IT'S WORTH IT</div>
+          <div style="font-size:clamp(22px,2.6vw,30px);font-weight:800;line-height:1.12;letter-spacing:-.022em;margin-bottom:8px;text-wrap:balance;">New formats, build notes, and the launch date when we have one.</div>
+          <div style="font-size:15px;font-weight:600;line-height:1.6;color:rgba(255,255,255,.55);max-width:460px;">No drip sequence, no course-of-the-week. Unsubscribe in one click.</div>
+        </div>
+        <div style="flex:0 1 400px;min-width:280px;">
+          <div style="display: {{ formDisplay }};flex-wrap:wrap;gap:10px;">
+            <input type="email" value="{{ email }}" onInput="{{ onEmail }}" placeholder="you@email.com" style="flex:1 1 200px;height:52px;padding:0 16px;border-radius:13px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.16);color:#fff;font-family:inherit;font-size:15px;font-weight:600;outline:none;" style-focus="border-color:rgba(212,242,58,.6);">
+            <button onClick="{{ onSubmit }}" style="height:52px;padding:0 24px;border-radius:13px;background:#d4f23a;color:#13250a;border:none;font-family:inherit;font-size:15px;font-weight:800;cursor:pointer;box-shadow:0 10px 26px rgba(212,242,58,.34);">Join the list</button>
+          </div>
+          <div style="display: {{ doneDisplay }};align-items:center;gap:11px;height:52px;padding:0 18px;border-radius:13px;background:rgba(212,242,58,.14);border:1px solid rgba(212,242,58,.36);">
+            <span style="width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:#d4f23a;color:#13250a;font-size:13px;font-weight:800;">✓</span>
+            <span style="font-size:14.5px;font-weight:800;color:#d4f23a;">You're on the list. Talk soon.</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ APP CTA ============ -->
+  <section id="get" style="position:relative;overflow:hidden;background:#0a0d10;">
+    <div style="position:absolute;inset:0;background-image:url('assets/turf.png');background-size:cover;background-position:50% 50%;opacity:.5;"></div>
+    <div style="position:absolute;inset:0;background:linear-gradient(180deg, rgba(8,12,9,.86) 0%, rgba(6,11,8,.94) 100%);"></div>
+    <div style="position:relative;max-width:1200px;margin:0 auto;padding:clamp(46px,6vw,78px) clamp(18px,4vw,46px);display:flex;flex-wrap:wrap;gap:28px;align-items:center;justify-content:space-between;">
+      <div style="flex:1 1 380px;">
+        <div style="font-size:12px;font-weight:800;letter-spacing:2.4px;color:#d4f23a;margin-bottom:14px;">TRACK IT. BET IT. SETTLE IT.</div>
+        <div style="font-size:clamp(28px,3.4vw,44px);font-weight:800;line-height:1.06;letter-spacing:-.025em;max-width:620px;text-wrap:balance;">Let the app keep the presses straight.</div>
+      </div>
+      <div style="display:flex;flex-wrap:wrap;gap:12px;">
+        <a href="#get" style="display:flex;align-items:center;height:52px;padding:0 26px;border-radius:13px;background:#d4f23a;color:#13250a;font-size:15px;font-weight:800;box-shadow:0 10px 28px rgba(212,242,58,.42);">Get the app</a>
+        <a href="Golo%20Golf%20-%20Games.dc.html" style="display:flex;align-items:center;height:52px;padding:0 26px;border-radius:13px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.18);font-size:15px;font-weight:800;color:#fff;">Browse the games</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ FOOTER ============ -->
+  <footer style="background:#070a0c;border-top:1px solid rgba(255,255,255,.08);">
+    <div style="max-width:1200px;margin:0 auto;padding:clamp(40px,5vw,64px) clamp(18px,4vw,46px) 30px;display:flex;flex-wrap:wrap;gap:40px;justify-content:space-between;">
+      <div style="max-width:300px;">
+        <a href="Golo%20Golf%20-%20Landing%20Page.dc.html" style="display:flex;align-items:center;gap:11px;margin-bottom:16px;">
+          <span style="width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center;background:#0c0f12;border:1px solid rgba(255,255,255,.1);"><svg width="26" height="26" viewBox="0 0 120 124" fill="none" style="display:block"><path d="M56 20 A40 40 0 1 0 95.8 64" stroke="#d4f23a" stroke-width="12" stroke-linecap="round"></path><line x1="95.8" y1="64" x2="64" y2="64" stroke="#d4f23a" stroke-width="12" stroke-linecap="round"></line><circle cx="56" cy="58" r="15" fill="#fff"></circle><circle cx="56" cy="58" r="9" fill="none" stroke="rgba(10,36,24,0.28)" stroke-width="2.4"></circle><line x1="56" y1="44" x2="56" y2="14" stroke="#d4f23a" stroke-width="3.4"></line><path d="M56 14 L86 22 L56 34 Z" fill="#fff"></path></svg></span>
+          <span style="display:flex;align-items:flex-end;"><span style="font-size:20px;font-weight:800;color:#fff;line-height:1;">Go</span><span style="font-size:20px;font-weight:800;color:#d4f23a;line-height:1;">Lo</span></span>
+        </a>
+        <p style="font-size:14px;line-height:1.6;color:rgba(255,255,255,.5);margin:0;">Track it. Bet it. Settle it. The scorekeeper that finally settles the bet.</p>
+      </div>
+      <div style="display:flex;flex-wrap:wrap;gap:48px;">
+        <div><div style="font-size:12px;font-weight:800;letter-spacing:1.4px;color:rgba(255,255,255,.45);margin-bottom:14px;">PRODUCT</div><div style="display:flex;flex-direction:column;gap:10px;"><a href="Golo%20Golf%20-%20Features.dc.html" style="font-size:14px;font-weight:600;color:rgba(255,255,255,.66);">Features</a><a href="Golo%20Golf%20-%20Landing%20Page.dc.html#how" style="font-size:14px;font-weight:600;color:rgba(255,255,255,.66);">How it works</a><a href="#get" style="font-size:14px;font-weight:600;color:rgba(255,255,255,.66);">Download</a></div></div>
+        <div><div style="font-size:12px;font-weight:800;letter-spacing:1.4px;color:rgba(255,255,255,.45);margin-bottom:14px;">GAMES</div><div style="display:flex;flex-direction:column;gap:10px;"><a href="Golo%20Golf%20-%20Games.dc.html" style="font-size:14px;font-weight:600;color:rgba(255,255,255,.66);">All games</a><a href="Golo%20Golf%20-%20Game%20Nassau.dc.html" style="font-size:14px;font-weight:600;color:rgba(255,255,255,.66);">Nassau</a><a href="Golo%20Golf%20-%20Games.dc.html" style="font-size:14px;font-weight:600;color:rgba(255,255,255,.66);">Skins</a></div></div>
+        <div><div style="font-size:12px;font-weight:800;letter-spacing:1.4px;color:rgba(255,255,255,.45);margin-bottom:14px;">LEGAL</div><div style="display:flex;flex-direction:column;gap:10px;"><a href="Golo%20Golf%20-%20Legal%20Terms.dc.html" style="font-size:14px;font-weight:600;color:rgba(255,255,255,.66);">Terms of Service</a><a href="Golo%20Golf%20-%20Legal%20Privacy.dc.html" style="font-size:14px;font-weight:600;color:rgba(255,255,255,.66);">Privacy Policy</a><a href="#" style="font-size:14px;font-weight:600;color:rgba(255,255,255,.66);">Cookie Policy</a><a href="#" style="font-size:14px;font-weight:600;color:rgba(255,255,255,.66);">Acceptable Use</a></div></div>
+        <div><div style="font-size:12px;font-weight:800;letter-spacing:1.4px;color:rgba(255,255,255,.45);margin-bottom:14px;">COMPANY</div><div style="display:flex;flex-direction:column;gap:10px;"><a href="Golo%20Golf%20-%20Blog.dc.html" style="font-size:14px;font-weight:600;color:#d4f23a;">Blog</a><a href="Golo%20Golf%20-%20FAQ.dc.html" style="font-size:14px;font-weight:600;color:rgba(255,255,255,.66);">FAQ</a><a href="Golo%20Golf%20-%20Contact.dc.html" style="font-size:14px;font-weight:600;color:rgba(255,255,255,.66);">Contact</a><a href="mailto:support@gologolf.app" style="font-size:14px;font-weight:600;color:rgba(255,255,255,.66);">Support</a></div></div>
+      </div>
+    </div>
+    <div style="max-width:1200px;margin:0 auto;padding:20px clamp(18px,4vw,46px);border-top:1px solid rgba(255,255,255,.07);display:flex;flex-wrap:wrap;gap:12px;justify-content:space-between;align-items:center;">
+      <span style="font-size:13px;color:rgba(255,255,255,.4);">© 2026 GoLo Golf LLC. All rights reserved.</span>
+      <span style="font-size:13px;color:rgba(255,255,255,.4);max-width:560px;">GoLo helps you track friendly wagers between playing partners. Keep it friendly, settle up, and play your local rules.</span>
+    </div>
+  </footer>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1200,&quot;height&quot;:1600},&quot;showNewsletter&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Page&quot;}}">
+class Component extends DCLogic {
+  state = { email: '', joined: false, copied: false };
+
+  RELATED = [
+    { cat:'GAME RULES & HOW-TO', slug:'skins', title:'Skins, explained: the carryover is where the money is', excerpt:'How a $1 skin turns into a $9 hole, and the one setting that decides whether your group loves the format or bans it.' },
+    { cat:'BETTING ETIQUETTE', slug:'pressing', title:'Pressing: when it\u2019s fair game and when it\u2019s just rude', excerpt:'The automatic 2-down press, the vulture press, and the one press that gets you left off next week\u2019s text.' },
+    { cat:'HANDICAPS EXPLAINED', slug:'index-vs-course', title:'Handicap index vs. course handicap: what goes on the card', excerpt:'Why a 12.4 becomes 14 strokes at one course and 11 at another \u2014 and how those strokes land hole by hole.' }
+  ];
+
+  renderVals(){
+    return {
+      related: this.RELATED.map(r => ({
+        title:r.title, excerpt:r.excerpt, catLabel:r.cat, href:'#',
+        slotId:'postrel-' + r.slug,
+        slotHint:'Photo for \u201c' + r.title.split(':')[0] + '\u201d'
+      })),
+      newsletterDisplay: (this.props.showNewsletter ?? true) ? 'block' : 'none',
+      formDisplay: this.state.joined ? 'none' : 'flex',
+      doneDisplay: this.state.joined ? 'flex' : 'none',
+      email: this.state.email,
+      copyLabel: this.state.copied ? 'Link copied' : 'Copy link',
+      onCopy: () => {
+        try { navigator.clipboard.writeText(location.href); } catch(e) {}
+        this.setState({ copied: true });
+        setTimeout(() => this.setState({ copied: false }), 2000);
+      },
+      onEmail: (e) => this.setState({ email: e.target.value }),
+      onSubmit: () => { if (/.+@.+\..+/.test(this.state.email)) this.setState({ joined: true }); }
+    };
+  }
+}
+</script>
+</body>
+</html>

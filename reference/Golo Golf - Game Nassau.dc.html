@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <style>
+    *{box-sizing:border-box;}
+    html,body{margin:0;padding:0;}
+    body{background:#0a0d10;}
+    a{text-decoration:none;color:inherit;}
+    a:hover{color:#d4f23a;}
+    ::selection{background:#d4f23a;color:#13250a;}
+    @keyframes goloPulse { 0%{transform:scale(1);opacity:1;} 70%{transform:scale(2.6);opacity:0;} 100%{opacity:0;} }
+    @keyframes goloFloat { 0%,100%{transform:translateY(0);} 50%{transform:translateY(-14px);} }
+  </style>
+</helmet>
+
+<div style="font-family:system-ui,-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:#0a0d10;color:#fff;min-height:100vh;overflow-x:clip;">
+
+  <!-- ============ NAV ============ -->
+  <nav style="position:sticky;top:0;z-index:100;display:flex;align-items:center;justify-content:space-between;gap:20px;padding:14px clamp(18px,4vw,46px);background:rgba(10,13,16,.72);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);border-bottom:1px solid rgba(255,255,255,.08);">
+    <a href="Golo%20Golf%20-%20Landing%20Page.dc.html" style="display:flex;align-items:center;gap:11px;">
+      <span style="width:38px;height:38px;border-radius:11px;display:flex;align-items:center;justify-content:center;background:#0c0f12;border:1px solid rgba(255,255,255,.1);box-shadow:0 8px 22px rgba(212,242,58,.3);"><svg width="28" height="28" viewBox="0 0 120 124" fill="none" style="display:block"><path d="M56 20 A40 40 0 1 0 95.8 64" stroke="#d4f23a" stroke-width="12" stroke-linecap="round"></path><line x1="95.8" y1="64" x2="64" y2="64" stroke="#d4f23a" stroke-width="12" stroke-linecap="round"></line><circle cx="56" cy="58" r="15" fill="#fff"></circle><circle cx="56" cy="58" r="9" fill="none" stroke="rgba(10,36,24,0.28)" stroke-width="2.4"></circle><line x1="56" y1="44" x2="56" y2="14" stroke="#d4f23a" stroke-width="3.4"></line><path d="M56 14 L86 22 L56 34 Z" fill="#fff"></path></svg></span>
+      <span style="display:flex;align-items:flex-end;gap:0px;"><span style="font-size:21px;font-weight:800;letter-spacing:-.02em;color:#fff;line-height:1;">Go</span><span style="font-size:21px;font-weight:800;letter-spacing:-.02em;color:#d4f23a;line-height:1;">Lo</span></span>
+    </a>
+    <div style="display:flex;align-items:center;gap:30px;">
+      <div style="display:flex;align-items:center;gap:22px;">
+        <a href="Golo%20Golf%20-%20Features.dc.html" style="font-size:14px;font-weight:700;color:rgba(255,255,255,.66);">Features</a>
+        <a href="Golo%20Golf%20-%20Games.dc.html" style="font-size:14px;font-weight:800;color: {{ accent }};">Games</a>
+        <a href="Golo%20Golf%20-%20Landing%20Page.dc.html#how" style="font-size:14px;font-weight:700;color:rgba(255,255,255,.66);">How It Works</a>
+        <a href="Golo%20Golf%20-%20Blog.dc.html" style="font-size:14px;font-weight:700;color:rgba(255,255,255,.66);">Blog</a>
+        <a href="Golo%20Golf%20-%20FAQ.dc.html" style="font-size:14px;font-weight:700;color:rgba(255,255,255,.66);">FAQ</a>
+        <a href="Golo%20Golf%20-%20Contact.dc.html" style="font-size:14px;font-weight:700;color:rgba(255,255,255,.66);">Contact</a>
+      </div>
+      <a href="#get" style="display:flex;align-items:center;height:42px;padding:0 20px;border-radius:11px;background: {{ accent }};color: {{ ink }};font-size:14px;font-weight:800;box-shadow:0 6px 18px {{ accentGlow }};">Get the app</a>
+    </div>
+  </nav>
+
+  <!-- ============ HERO ============ -->
+  <section style="position:relative;overflow:hidden;">
+    <div style="position:absolute;inset:0;background-image:url('assets/sunset.png');background-size:cover;background-position:50% 50%;"></div>
+    <div style="position:absolute;inset:0;background:linear-gradient(180deg, rgba(8,12,9,.72) 0%, rgba(8,12,9,.66) 40%, rgba(6,11,8,.94) 100%);"></div>
+    <div style="position:absolute;left:-8%;top:-12%;width:56%;height:72%;background:radial-gradient(circle, {{ accentGlow }} 0%, rgba(0,0,0,0) 65%);filter:blur(42px);pointer-events:none;"></div>
+
+    <div style="position:relative;max-width:1120px;margin:0 auto;padding:clamp(30px,4vw,52px) clamp(18px,4vw,46px) clamp(44px,6vw,80px);">
+      <!-- breadcrumb -->
+      <div style="display:flex;align-items:center;gap:9px;font-size:13px;font-weight:700;color:rgba(255,255,255,.55);margin-bottom:clamp(26px,4vw,44px);">
+        <a href="Golo%20Golf%20-%20Games.dc.html" style="color:rgba(255,255,255,.7);">Games</a>
+        <span style="opacity:.5;">/</span>
+        <span style="color: {{ accent }};">{{ game.name }}</span>
+      </div>
+
+      <div style="display:flex;align-items:center;gap:16px;margin-bottom:22px;">
+        <span style="width:64px;height:64px;border-radius:19px;flex:0 0 auto;display:flex;align-items:center;justify-content:center;background: {{ accentSoft }};border:1px solid {{ accentBorder }};box-shadow:0 10px 30px {{ accentGlow }};">{{ game.heroIcon }}</span>
+        <span style="font-size:12px;font-weight:800;letter-spacing:2.5px;color: {{ accent }};">{{ game.kicker }}</span>
+      </div>
+      <h1 style="font-size:clamp(52px,9vw,110px);font-weight:800;line-height:.9;letter-spacing:-.03em;margin:0 0 22px;">{{ game.name }}</h1>
+      <p style="font-size:clamp(17px,1.8vw,22px);line-height:1.55;color:rgba(255,255,255,.8);max-width:620px;margin:0 0 26px;">{{ game.tagline }}</p>
+
+      <div style="display:flex;flex-wrap:wrap;gap:9px;">
+        <sc-for list="{{ game.tags }}" as="t" hint-placeholder-count="4">
+          <span style="display:inline-flex;align-items:center;padding:8px 15px;border-radius:9999px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.16);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);font-size:13px;font-weight:800;color:#fff;">{{ t }}</span>
+        </sc-for>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ HOW IT WORKS ============ -->
+  <section style="background:#0a0d10;">
+    <div style="max-width:1120px;margin:0 auto;padding:clamp(52px,7vw,96px) clamp(18px,4vw,46px) clamp(20px,3vw,32px);">
+      <div style="font-size:12px;font-weight:800;letter-spacing:2.5px;color: {{ accent }};">HOW IT WORKS</div>
+      <h2 style="font-size:clamp(30px,4vw,46px);font-weight:800;letter-spacing:-.02em;line-height:1.05;margin:14px 0 12px;max-width:760px;text-wrap:balance;">{{ game.howTitle }}</h2>
+      <p style="font-size:17px;line-height:1.6;color:rgba(255,255,255,.64);max-width:640px;margin:0 0 40px;">{{ game.intro }}</p>
+
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px;">
+        <sc-for list="{{ steps }}" as="s" hint-placeholder-count="5">
+          <div style="position:relative;background:rgba(20,28,24,.5);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);border:1px solid rgba(255,255,255,.12);border-radius:20px;padding:22px;">
+            <div style="display:flex;align-items:center;gap:11px;margin-bottom:14px;">
+              <span style="font-size:15px;font-weight:800;color: {{ ink }};background: {{ accent }};width:30px;height:30px;border-radius:9px;display:flex;align-items:center;justify-content:center;flex:0 0 auto;">{{ s.n }}</span>
+              <span style="height:1px;flex:1;background:rgba(255,255,255,.1);"></span>
+            </div>
+            <div style="font-size:18px;font-weight:800;color:#fff;">{{ s.title }}</div>
+            <div style="font-size:14.5px;line-height:1.55;color:rgba(255,255,255,.64);margin-top:7px;">{{ s.body }}</div>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ WORKED EXAMPLE ============ -->
+  <section style="position:relative;overflow:hidden;border-top:1px solid rgba(255,255,255,.07);margin-top:clamp(40px,5vw,64px);">
+    <div style="position:absolute;inset:0;background-image:url('assets/course.png');background-size:cover;background-position:50% 55%;"></div>
+    <div style="position:absolute;inset:0;background:linear-gradient(180deg, rgba(8,12,9,.9) 0%, rgba(6,11,8,.95) 100%);"></div>
+    <div style="position:relative;max-width:1120px;margin:0 auto;padding:clamp(52px,7vw,96px) clamp(18px,4vw,46px);">
+      <div style="font-size:12px;font-weight:800;letter-spacing:2.5px;color: {{ accent }};">WATCH IT PLAY OUT</div>
+      <h2 style="font-size:clamp(30px,4vw,46px);font-weight:800;letter-spacing:-.02em;line-height:1.05;margin:14px 0 12px;max-width:760px;text-wrap:balance;">A $20 Nassau, front to back.</h2>
+      <p style="font-size:17px;line-height:1.6;color:rgba(255,255,255,.7);max-width:640px;margin:0 0 42px;">You and Tom go $20 on each bet. Here's how a full round shakes out — three bets, one press, one net number at the end.</p>
+
+      <div style="display:flex;align-items:center;gap:clamp(28px,5vw,64px);flex-wrap:wrap;justify-content:center;">
+        <!-- left: bet breakdown -->
+        <div style="flex:1 1 420px;min-width:300px;">
+          <div style="display:flex;flex-direction:column;gap:12px;">
+            <sc-for list="{{ betCards }}" as="b" hint-placeholder-count="4">
+              <div style="display:flex;align-items:center;gap:14px;background:rgba(20,28,24,.5);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);border:1px solid {{ b.border }};border-radius:16px;padding:15px 17px;">
+                <span style="width:44px;height:44px;border-radius:13px;flex:0 0 auto;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:800;letter-spacing:.5px;color: {{ b.tagColor }};background: {{ b.tagBg }};border:1px solid {{ b.tagBorder }};">{{ b.tag }}</span>
+                <div style="flex:1;min-width:0;">
+                  <div style="font-size:16px;font-weight:800;color:#fff;">{{ b.title }}</div>
+                  <div style="font-size:13px;color:rgba(255,255,255,.56);margin-top:2px;">{{ b.detail }}</div>
+                </div>
+                <span style="font-size:20px;font-weight:800;color: {{ b.valColor }};flex:0 0 auto;">{{ b.val }}</span>
+              </div>
+            </sc-for>
+          </div>
+          <!-- net -->
+          <div style="position:relative;overflow:hidden;margin-top:14px;background:rgba(20,28,24,.55);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border:1px solid {{ accentBorder }};border-radius:18px;padding:20px 22px;display:flex;align-items:center;justify-content:space-between;gap:16px;">
+            <span style="position:absolute;right:-24px;top:-28px;width:120px;height:120px;border-radius:50%;background: {{ accentGlow }};filter:blur(30px);"></span>
+            <div style="position:relative;">
+              <div style="font-size:11px;font-weight:800;letter-spacing:1.4px;color:rgba(255,255,255,.55);">NET · YOU COLLECT</div>
+              <div style="font-size:14px;font-weight:700;color:rgba(255,255,255,.6);margin-top:4px;">Every bet rolled into one transfer</div>
+            </div>
+            <span style="position:relative;font-size:clamp(34px,4vw,46px);font-weight:800;line-height:1;color: {{ accent }};">+$30</span>
+          </div>
+        </div>
+
+        <!-- right: phone mockup -->
+        <div style="flex:0 0 auto;display:flex;justify-content:center;width:min(300px,90vw);animation:goloFloat 6s ease-in-out infinite;">
+          <div style="position:relative;width:290px;height:588px;border-radius:42px;border:1px solid rgba(255,255,255,.18);box-shadow:0 50px 90px -28px rgba(0,0,0,.85);overflow:hidden;background:#0b2c1a;">
+            <div style="position:absolute;inset:0;background-image:url('assets/course.png');background-size:cover;background-position:50% 58%;"></div>
+            <div style="position:absolute;inset:0;background:linear-gradient(180deg, rgba(6,14,9,.66) 0%, rgba(6,14,9,.5) 26%, rgba(4,12,8,.94) 100%);"></div>
+            <div style="position:absolute;inset:0;display:flex;flex-direction:column;padding:14px 14px 16px;">
+              <!-- live pill -->
+              <div style="display:flex;align-items:center;justify-content:space-between;">
+                <div style="display:flex;align-items:center;gap:7px;background:rgba(255,255,255,.13);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,.16);padding:6px 12px;border-radius:9999px;">
+                  <span style="position:relative;width:7px;height:7px;flex:0 0 auto;"><span style="position:absolute;inset:0;border-radius:50%;background: {{ accent }};"></span><span style="position:absolute;inset:0;border-radius:50%;background: {{ accent }};animation:goloPulse 1.8s ease-out infinite;"></span></span>
+                  <span style="font-size:11px;font-weight:800;letter-spacing:1px;color:#fff;">LIVE</span>
+                  <span style="font-size:11px;font-weight:600;color:rgba(255,255,255,.6);">Nassau</span>
+                </div>
+                <span style="font-size:11px;font-weight:700;color:rgba(255,255,255,.55);">You vs Tom</span>
+              </div>
+              <!-- through -->
+              <div style="display:flex;align-items:flex-end;justify-content:space-between;margin-top:14px;">
+                <div><div style="font-size:9px;letter-spacing:2px;color:rgba(255,255,255,.65);font-weight:800;">THROUGH</div><div style="display:flex;align-items:baseline;gap:5px;"><span style="font-size:46px;font-weight:800;line-height:.9;color:#fff;">18</span><span style="font-size:14px;font-weight:700;color:rgba(255,255,255,.5);">/ 18</span></div></div>
+                <div style="text-align:right;padding-bottom:4px;"><div style="font-size:11px;font-weight:800;color: {{ accent }};">FINAL</div><div style="font-size:10px;font-weight:600;color:rgba(255,255,255,.5);margin-top:1px;">match complete</div></div>
+              </div>
+              <div style="display:flex;gap:2px;margin-top:9px;">
+                <sc-for list="{{ statusDots }}" as="d" hint-placeholder-count="18"><span style="height:5px;border-radius:9999px;flex:1;background: {{ d.bg }};"></span></sc-for>
+              </div>
+              <!-- three bet tiles -->
+              <div style="display:flex;gap:8px;margin-top:14px;">
+                <sc-for list="{{ phoneBets }}" as="p" hint-placeholder-count="3">
+                  <div style="flex:1;text-align:center;background:rgba(20,28,24,.5);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border:1px solid {{ p.border }};border-radius:14px;padding:12px 6px;">
+                    <div style="font-size:10px;font-weight:800;letter-spacing:1px;color:rgba(255,255,255,.55);">{{ p.label }}</div>
+                    <div style="font-size:22px;font-weight:800;line-height:1;margin-top:8px;color: {{ p.color }};">{{ p.status }}</div>
+                    <div style="font-size:11px;font-weight:800;margin-top:6px;color: {{ p.valColor }};">{{ p.val }}</div>
+                  </div>
+                </sc-for>
+              </div>
+              <!-- press callout -->
+              <div style="margin-top:12px;display:flex;align-items:center;gap:10px;background: {{ accentSoft }};border:1px solid {{ accentBorder }};border-radius:14px;padding:11px 13px;">
+                <span style="font-size:10px;font-weight:800;letter-spacing:1px;color: {{ ink }};background: {{ accent }};padding:4px 8px;border-radius:8px;flex:0 0 auto;">PRESS</span>
+                <span style="font-size:12.5px;font-weight:700;color:#fff;flex:1;">Back-nine press, hole 13 — you closed it +$10</span>
+              </div>
+              <!-- settle chip -->
+              <div style="margin-top:auto;display:flex;align-items:center;justify-content:space-between;background:rgba(20,28,24,.5);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);border:1px solid rgba(255,255,255,.13);border-radius:14px;padding:12px 14px;">
+                <span><span style="display:block;font-size:13px;font-weight:800;color:#fff;">Tom pays you</span><span style="display:block;font-size:11px;color:rgba(255,255,255,.5);">3 bets + 1 press, netted</span></span>
+                <span style="font-size:22px;font-weight:800;color: {{ accent }};">$30</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ PRESSES & VARIATIONS ============ -->
+  <section style="background:#0a0d10;">
+    <div style="max-width:1120px;margin:0 auto;padding:clamp(52px,7vw,96px) clamp(18px,4vw,46px);">
+      <div style="font-size:12px;font-weight:800;letter-spacing:2.5px;color: {{ accent }};">PRESSES &amp; VARIATIONS</div>
+      <h2 style="font-size:clamp(30px,4vw,46px);font-weight:800;letter-spacing:-.02em;line-height:1.05;margin:14px 0 12px;max-width:760px;text-wrap:balance;">The press is where Nassau gets dangerous.</h2>
+      <p style="font-size:17px;line-height:1.6;color:rgba(255,255,255,.64);max-width:640px;margin:0 0 40px;">Down bad on a nine? Open a new bet for the holes that are left. GoLo tracks every press as its own line so the stack never gets confusing.</p>
+
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:14px;">
+        <sc-for list="{{ presses }}" as="p" hint-placeholder-count="4">
+          <div style="background:rgba(20,28,24,.5);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);border:1px solid rgba(255,255,255,.12);border-radius:20px;padding:22px;">
+            <span style="width:46px;height:46px;border-radius:13px;display:flex;align-items:center;justify-content:center;background: {{ accentSoft }};border:1px solid {{ accentBorder }};">{{ p.icon }}</span>
+            <div style="font-size:18px;font-weight:800;color:#fff;margin-top:14px;">{{ p.title }}</div>
+            <div style="font-size:14.5px;line-height:1.55;color:rgba(255,255,255,.62);margin-top:6px;">{{ p.body }}</div>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ STRATEGY ============ -->
+  <section style="background:#0a0d10;border-top:1px solid rgba(255,255,255,.07);">
+    <div style="max-width:1120px;margin:0 auto;padding:clamp(52px,7vw,96px) clamp(18px,4vw,46px);display:flex;gap:clamp(28px,5vw,64px);flex-wrap:wrap;">
+      <div style="flex:1 1 300px;min-width:260px;">
+        <div style="font-size:12px;font-weight:800;letter-spacing:2.5px;color: {{ accent }};">PLAY SMART</div>
+        <h2 style="font-size:clamp(30px,4vw,44px);font-weight:800;letter-spacing:-.02em;line-height:1.05;margin:14px 0 14px;text-wrap:balance;">When to press — and when to shut up.</h2>
+        <p style="font-size:16px;line-height:1.6;color:rgba(255,255,255,.62);">A Nassau rewards momentum. Read your own game before you throw more money at a nine you're spraying all over the lot.</p>
+      </div>
+      <div style="flex:1 1 400px;min-width:300px;display:flex;flex-direction:column;gap:12px;">
+        <sc-for list="{{ tips }}" as="t" hint-placeholder-count="3">
+          <div style="display:flex;align-items:flex-start;gap:14px;background:rgba(20,28,24,.5);border:1px solid rgba(255,255,255,.12);border-radius:16px;padding:17px 18px;">
+            <span style="margin-top:1px;flex:0 0 auto;">{{ t.icon }}</span>
+            <div>
+              <div style="font-size:16px;font-weight:800;color:#fff;">{{ t.title }}</div>
+              <div style="font-size:14.5px;line-height:1.5;color:rgba(255,255,255,.64);margin-top:4px;">{{ t.body }}</div>
+            </div>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ GLOSSARY ============ -->
+  <section style="background:#0a0d10;border-top:1px solid rgba(255,255,255,.07);">
+    <div style="max-width:1120px;margin:0 auto;padding:clamp(52px,7vw,96px) clamp(18px,4vw,46px);">
+      <div style="font-size:12px;font-weight:800;letter-spacing:2.5px;color: {{ accent }};">TALK THE TALK</div>
+      <h2 style="font-size:clamp(30px,4vw,46px);font-weight:800;letter-spacing:-.02em;line-height:1.05;margin:14px 0 40px;max-width:760px;text-wrap:balance;">The terms you'll hear on the tee.</h2>
+      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:14px;">
+        <sc-for list="{{ game.glossary }}" as="t" hint-placeholder-count="6">
+          <div style="background:rgba(20,28,24,.4);border:1px solid rgba(255,255,255,.1);border-radius:16px;padding:18px 20px;">
+            <div style="font-size:16px;font-weight:800;color: {{ accent }};">{{ t.term }}</div>
+            <div style="font-size:14px;line-height:1.55;color:rgba(255,255,255,.66);margin-top:6px;">{{ t.def }}</div>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ FAQ ============ -->
+  <section style="background:#0a0d10;border-top:1px solid rgba(255,255,255,.07);">
+    <div style="max-width:820px;margin:0 auto;padding:clamp(52px,7vw,96px) clamp(18px,4vw,46px);">
+      <div style="font-size:12px;font-weight:800;letter-spacing:2.5px;color: {{ accent }};text-align:center;">NASSAU, ANSWERED</div>
+      <h2 style="font-size:clamp(28px,4vw,44px);font-weight:800;letter-spacing:-.02em;line-height:1.05;margin:14px 0 38px;text-align:center;">Before you tee it up.</h2>
+      <div style="display:flex;flex-direction:column;gap:10px;">
+        <sc-for list="{{ faqs }}" as="f" hint-placeholder-count="4">
+          <div style="background:rgba(20,28,24,.5);border:1px solid rgba(255,255,255,.12);border-radius:16px;overflow:hidden;">
+            <button onClick="{{ f.toggle }}" style="width:100%;display:flex;align-items:center;justify-content:space-between;gap:16px;text-align:left;background:transparent;border:none;cursor:pointer;padding:18px 20px;font-family:inherit;">
+              <span style="font-size:17px;font-weight:800;color:#fff;">{{ f.q }}</span>
+              <span style="font-size:24px;font-weight:700;color: {{ accent }};flex:0 0 auto;line-height:1;transform: {{ f.rotate }};transition:transform .2s;">+</span>
+            </button>
+            <div style="max-height: {{ f.maxH }};overflow:hidden;transition:max-height .28s ease;">
+              <div style="padding:0 20px 18px;font-size:15px;line-height:1.6;color:rgba(255,255,255,.66);">{{ f.a }}</div>
+            </div>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ RELATED GAMES ============ -->
+  <section style="background:#0a0d10;border-top:1px solid rgba(255,255,255,.07);">
+    <div style="max-width:1120px;margin:0 auto;padding:clamp(52px,7vw,96px) clamp(18px,4vw,46px);">
+      <div style="font-size:12px;font-weight:800;letter-spacing:2.5px;color: {{ accent }};">STACK IT WITH</div>
+      <h2 style="font-size:clamp(28px,4vw,42px);font-weight:800;letter-spacing:-.02em;line-height:1.05;margin:14px 0 8px;text-wrap:balance;">Crews that run Nassau also play…</h2>
+      <p style="font-size:16px;line-height:1.6;color:rgba(255,255,255,.6);max-width:600px;margin:0 0 36px;">Run any of these alongside your Nassau in the same round — GoLo nets the whole stack into one number.</p>
+      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:14px;">
+        <sc-for list="{{ related }}" as="r" hint-placeholder-count="3">
+          <a href="{{ r.href }}" style="display:flex;align-items:center;gap:15px;background:rgba(20,28,24,.5);border:1px solid rgba(255,255,255,.12);border-radius:18px;padding:18px 20px;transition:border-color .18s,transform .18s;" style-hover="border-color: {{ accentBorder }};transform:translateY(-3px);">
+            <span style="width:50px;height:50px;border-radius:14px;flex:0 0 auto;display:flex;align-items:center;justify-content:center;background: {{ accentSoft }};border:1px solid {{ accentBorder }};">{{ r.icon }}</span>
+            <div style="flex:1;min-width:0;">
+              <div style="font-size:17px;font-weight:800;color:#fff;">{{ r.name }}</div>
+              <div style="font-size:13.5px;line-height:1.45;color:rgba(255,255,255,.58);margin-top:2px;">{{ r.desc }}</div>
+            </div>
+            <span style="flex:0 0 auto;">{{ arrowIcon }}</span>
+          </a>
+        </sc-for>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ PREV / NEXT PAGER ============ -->
+  <section style="background:#0a0d10;border-top:1px solid rgba(255,255,255,.07);">
+    <div style="max-width:1120px;margin:0 auto;padding:clamp(28px,3vw,40px) clamp(18px,4vw,46px);display:grid;grid-template-columns:1fr 1fr;gap:14px;">
+      <a href="{{ game.prev.href }}" style="display:flex;align-items:center;gap:14px;background:rgba(20,28,24,.4);border:1px solid rgba(255,255,255,.1);border-radius:16px;padding:18px 20px;transition:border-color .18s;" style-hover="border-color: {{ accentBorder }};">
+        <span style="font-size:22px;font-weight:800;color: {{ accent }};flex:0 0 auto;">‹</span>
+        <div><div style="font-size:11px;font-weight:800;letter-spacing:1.2px;color:rgba(255,255,255,.45);">PREVIOUS GAME</div><div style="font-size:18px;font-weight:800;color:#fff;margin-top:2px;">{{ game.prev.name }}</div></div>
+      </a>
+      <a href="{{ game.next.href }}" style="display:flex;align-items:center;justify-content:flex-end;gap:14px;background:rgba(20,28,24,.4);border:1px solid rgba(255,255,255,.1);border-radius:16px;padding:18px 20px;text-align:right;transition:border-color .18s;" style-hover="border-color: {{ accentBorder }};">
+        <div><div style="font-size:11px;font-weight:800;letter-spacing:1.2px;color:rgba(255,255,255,.45);">NEXT GAME</div><div style="font-size:18px;font-weight:800;color:#fff;margin-top:2px;">{{ game.next.name }}</div></div>
+        <span style="font-size:22px;font-weight:800;color: {{ accent }};flex:0 0 auto;">›</span>
+      </a>
+    </div>
+  </section>
+
+  <!-- ============ FINAL CTA ============ -->
+  <section id="get" style="position:relative;overflow:hidden;border-top:1px solid rgba(255,255,255,.07);">
+    <div style="position:absolute;inset:0;background:radial-gradient(120% 100% at 50% 0%, #14532d 0%, #0a2418 55%, #070b08 100%);"></div>
+    <div style="position:absolute;left:50%;top:-40px;transform:translateX(-50%);width:70%;height:60%;background:radial-gradient(circle, {{ accentGlow }} 0%, rgba(0,0,0,0) 65%);filter:blur(50px);pointer-events:none;"></div>
+    <div style="position:relative;max-width:840px;margin:0 auto;padding:clamp(60px,8vw,110px) clamp(18px,4vw,46px);text-align:center;">
+      <h2 style="font-size:clamp(34px,5.5vw,62px);font-weight:800;letter-spacing:-.025em;line-height:1.02;margin:0 0 20px;text-wrap:balance;">Set up your Nassau in ten seconds.</h2>
+      <p style="font-size:clamp(17px,2vw,20px);line-height:1.55;color:rgba(255,255,255,.74);max-width:560px;margin:0 auto 34px;">Add your players, pick your bet, and let GoLo track every press and net the whole thing at the 18th.</p>
+      <div style="display:flex;flex-wrap:wrap;gap:13px;justify-content:center;">
+        <a href="#get" style="display:flex;align-items:center;gap:11px;height:60px;padding:0 24px;border-radius:15px;background:#fff;color:#0a0d10;box-shadow:0 14px 34px rgba(0,0,0,.45);">
+          <svg width="25" height="25" viewBox="0 0 24 24" fill="#0a0d10" style="display:block;flex:0 0 auto;"><path d="M16.7 12.7c0-2 1.6-3 1.7-3.1-1-1.4-2.4-1.6-2.9-1.6-1.2-.1-2.4.7-3 .7-.6 0-1.6-.7-2.6-.7-1.3 0-2.6.8-3.3 2-1.4 2.4-.4 6 1 8 .7 1 1.4 2 2.4 2 1 0 1.3-.6 2.5-.6 1.2 0 1.5.6 2.5.6 1 0 1.7-.9 2.3-1.9.7-1.1 1-2.2 1-2.3-.1 0-2-.8-2-3.1zM14.8 6.5c.5-.7.9-1.6.8-2.5-.8 0-1.8.5-2.4 1.2-.5.6-1 1.5-.8 2.4.9.1 1.8-.4 2.4-1.1z"></path></svg>
+          <span style="text-align:left;line-height:1.1;"><span style="display:block;font-size:11px;font-weight:600;opacity:.6;">Download on the</span><span style="display:block;font-size:18px;font-weight:800;">App Store</span></span>
+        </a>
+        <a href="#get" style="display:flex;align-items:center;gap:11px;height:60px;padding:0 24px;border-radius:15px;background:#fff;color:#0a0d10;box-shadow:0 14px 34px rgba(0,0,0,.45);">
+          <svg width="23" height="23" viewBox="0 0 24 24" style="display:block;flex:0 0 auto;"><path d="M3.6 2.3a1.5 1.5 0 0 0-.5 1.1v17.2c0 .5.2.9.5 1.1l9.1-9.7L3.6 2.3z" fill="#34d399"></path><path d="M16.9 8.5 13 12l3.9 3.5 3.8-2.2c.9-.5.9-1.8 0-2.3l-3.8-2.5z" fill="#fbbf24"></path><path d="M3.6 2.3 12.7 12l4.2-3.5L6.3 1.9c-1-.5-2-.3-2.7.4z" fill="#60a5fa"></path><path d="M3.6 21.7c.7.7 1.7.9 2.7.4l10.6-6.6L12.7 12 3.6 21.7z" fill="#fb7185"></path></svg>
+          <span style="text-align:left;line-height:1.1;"><span style="display:block;font-size:11px;font-weight:600;opacity:.6;">Get it on</span><span style="display:block;font-size:18px;font-weight:800;">Google Play</span></span>
+        </a>
+      </div>
+      <div style="margin-top:18px;font-size:14px;font-weight:600;color:rgba(255,255,255,.5);">Free to download · No card to start · iPhone &amp; Android</div>
+    </div>
+  </section>
+
+  <!-- ============ FOOTER ============ -->
+  <footer style="background:#070a0c;border-top:1px solid rgba(255,255,255,.08);">
+    <div style="max-width:1200px;margin:0 auto;padding:clamp(40px,5vw,64px) clamp(18px,4vw,46px) 30px;display:flex;flex-wrap:wrap;gap:40px;justify-content:space-between;">
+      <div style="max-width:300px;">
+        <a href="Golo%20Golf%20-%20Landing%20Page.dc.html" style="display:flex;align-items:center;gap:11px;margin-bottom:16px;">
+          <span style="width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center;background:#0c0f12;border:1px solid rgba(255,255,255,.1);"><svg width="26" height="26" viewBox="0 0 120 124" fill="none" style="display:block"><path d="M56 20 A40 40 0 1 0 95.8 64" stroke="#d4f23a" stroke-width="12" stroke-linecap="round"></path><line x1="95.8" y1="64" x2="64" y2="64" stroke="#d4f23a" stroke-width="12" stroke-linecap="round"></line><circle cx="56" cy="58" r="15" fill="#fff"></circle><circle cx="56" cy="58" r="9" fill="none" stroke="rgba(10,36,24,0.28)" stroke-width="2.4"></circle><line x1="56" y1="44" x2="56" y2="14" stroke="#d4f23a" stroke-width="3.4"></line><path d="M56 14 L86 22 L56 34 Z" fill="#fff"></path></svg></span>
+          <span style="display:flex;align-items:flex-end;"><span style="font-size:20px;font-weight:800;color:#fff;line-height:1;">Go</span><span style="font-size:20px;font-weight:800;color:#d4f23a;line-height:1;">Lo</span></span>
+        </a>
+        <p style="font-size:14px;line-height:1.6;color:rgba(255,255,255,.5);margin:0;">Track it. Bet it. Settle it. The scorekeeper that finally settles the bet.</p>
+      </div>
+      <div style="display:flex;flex-wrap:wrap;gap:48px;">
+        <div><div style="font-size:12px;font-weight:800;letter-spacing:1.4px;color:rgba(255,255,255,.45);margin-bottom:14px;">PRODUCT</div><div style="display:flex;flex-direction:column;gap:10px;"><a href="Golo%20Golf%20-%20Features.dc.html" style="font-size:14px;font-weight:600;color:rgba(255,255,255,.66);">Features</a><a href="Golo%20Golf%20-%20Landing%20Page.dc.html#how" style="font-size:14px;font-weight:600;color:rgba(255,255,255,.66);">How it works</a><a href="#get" style="font-size:14px;font-weight:600;color:rgba(255,255,255,.66);">Download</a></div></div>
+        <div><div style="font-size:12px;font-weight:800;letter-spacing:1.4px;color:rgba(255,255,255,.45);margin-bottom:14px;">GAMES</div><div style="display:flex;flex-direction:column;gap:10px;"><a href="Golo%20Golf%20-%20Games.dc.html" style="font-size:14px;font-weight:600;color:rgba(255,255,255,.66);">All games</a><a href="#" style="font-size:14px;font-weight:600;color:rgba(255,255,255,.66);">Skins</a><a href="#" style="font-size:14px;font-weight:600;color:rgba(255,255,255,.66);">Wolf</a></div></div>
+        <div><div style="font-size:12px;font-weight:800;letter-spacing:1.4px;color:rgba(255,255,255,.45);margin-bottom:14px;">COMPANY</div><div style="display:flex;flex-direction:column;gap:10px;"><a href="Golo%20Golf%20-%20Landing%20Page.dc.html#faq" style="font-size:14px;font-weight:600;color:rgba(255,255,255,.66);">FAQ</a><a href="#" style="font-size:14px;font-weight:600;color:rgba(255,255,255,.66);">Privacy</a><a href="#" style="font-size:14px;font-weight:600;color:rgba(255,255,255,.66);">Contact</a></div></div>
+      </div>
+    </div>
+    <div style="max-width:1200px;margin:0 auto;padding:20px clamp(18px,4vw,46px);border-top:1px solid rgba(255,255,255,.07);display:flex;flex-wrap:wrap;gap:12px;justify-content:space-between;align-items:center;">
+      <span style="font-size:13px;color:rgba(255,255,255,.4);">© 2026 GoLo Golf. All rights reserved.</span>
+      <span style="font-size:13px;color:rgba(255,255,255,.4);max-width:560px;">GoLo helps you track friendly wagers between playing partners. Keep it friendly, settle up, and play your local rules.</span>
+    </div>
+  </footer>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1200,&quot;height&quot;:1400},&quot;accent&quot;:{&quot;editor&quot;:&quot;color&quot;,&quot;default&quot;:&quot;#d4f23a&quot;,&quot;tsType&quot;:&quot;string&quot;}}">
+class Component extends DCLogic {
+  ICONS = {
+    trophy:'<path d="M6 3h12v2h3a1 1 0 0 1 1 1c0 2.9-1.9 5.2-4.6 5.8A6.5 6.5 0 0 1 13 15.8V18h3a1 1 0 0 1 1 1v2H7v-2a1 1 0 0 1 1-1h3v-2.2a6.5 6.5 0 0 1-4.4-3.9C3.9 11.2 2 8.9 2 6a1 1 0 0 1 1-1h3V3zM6 7H4.2c.3 1.4 1.1 2.4 2.1 2.9A8.6 8.6 0 0 1 6 8V7zm12 0v1c0 .6 0 1.2-.2 1.8 1-.5 1.7-1.4 2-2.8H18z"/>',
+    target:'<path fill-rule="evenodd" d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20zm0 4a6 6 0 1 1 0 12 6 6 0 0 1 0-12zm0 4a2 2 0 1 1 0 4 2 2 0 0 1 0-4z"/>',
+    cash:'<path fill-rule="evenodd" d="M3 6.5A1.5 1.5 0 0 1 4.5 5h15A1.5 1.5 0 0 1 21 6.5v11A1.5 1.5 0 0 1 19.5 19h-15A1.5 1.5 0 0 1 3 17.5v-11zM12 9a3 3 0 1 0 0 6 3 3 0 0 0 0-6z"/>',
+    wolf:'<path d="M4 4l3.5 2L9 3l3 3 3-3 1.5 3L20 4l-1 7.5c-.5 4-3.4 6.5-7 6.5s-6.5-2.5-7-6.5L4 4zm5 7.5a1.1 1.1 0 1 0 0 2.2 1.1 1.1 0 0 0 0-2.2zm6 0a1.1 1.1 0 1 0 0 2.2 1.1 1.1 0 0 0 0-2.2zm-3 2.8c-1 0-1.8.4-1.8 1 0 .5.8 1.2 1.8 1.2s1.8-.7 1.8-1.2c0-.6-.8-1-1.8-1z"/>',
+    press:'<path d="M13 2L4.5 13.5H11L10 22l8.5-11.5H12L13 2z"/>',
+    stack:'<path d="M12 2l9 5-9 5-9-5 9-5zm-9 9l9 5 9-5v2.5l-9 5-9-5V11z"/>',
+    auto:'<path d="M12 4V1L8 5l4 4V6a6 6 0 1 1-6 6H4a8 8 0 1 0 8-8z"/>',
+    dice:'<path fill-rule="evenodd" d="M5 3.5h14A1.5 1.5 0 0 1 20.5 5v14A1.5 1.5 0 0 1 19 20.5H5A1.5 1.5 0 0 1 3.5 19V5A1.5 1.5 0 0 1 5 3.5zM8 7a1.4 1.4 0 1 0 0 2.8A1.4 1.4 0 0 0 8 7zm8 8.2a1.4 1.4 0 1 0 0 2.8 1.4 1.4 0 0 0 0-2.8zm-4-4.6a1.4 1.4 0 1 0 0 2.8 1.4 1.4 0 0 0 0-2.8z"/>'
+  };
+  ico(name,color,size){ size=size||24; return React.createElement('svg',{width:size,height:size,viewBox:'0 0 24 24',fill:color||'currentColor',style:{display:'block',flex:'0 0 auto'},dangerouslySetInnerHTML:{__html:this.ICONS[name]||''}}); }
+  check(color){ return React.createElement('svg',{width:22,height:22,viewBox:'0 0 24 24',fill:'none',style:{display:'block',flex:'0 0 auto'}},
+    React.createElement('circle',{cx:12,cy:12,r:11,fill:this.hexA(color,.16),stroke:this.hexA(color,.5),strokeWidth:1.4}),
+    React.createElement('path',{d:'M7.5 12.4l3 3 6-6.4',stroke:color,strokeWidth:2.2,strokeLinecap:'round',strokeLinejoin:'round'})); }
+  warn(color){ return React.createElement('svg',{width:22,height:22,viewBox:'0 0 24 24',fill:'none',style:{display:'block',flex:'0 0 auto'}},
+    React.createElement('circle',{cx:12,cy:12,r:11,fill:'rgba(251,113,133,.16)',stroke:'rgba(251,113,133,.5)',strokeWidth:1.4}),
+    React.createElement('path',{d:'M12 7v6M12 16.5v.5',stroke:'#fb7185',strokeWidth:2.2,strokeLinecap:'round'})); }
+  arrow(color){ return React.createElement('svg',{width:16,height:16,viewBox:'0 0 24 24',fill:'none',style:{display:'block',flex:'0 0 auto'}},React.createElement('path',{d:'M5 12h13M13 6l6 6-6 6',stroke:color,strokeWidth:2.4,strokeLinecap:'round',strokeLinejoin:'round'})); }
+
+  state = { open:{0:true} };
+
+  hexA(hex,a){ let h=(hex||'#d4f23a').replace('#',''); if(h.length===3)h=h.split('').map(c=>c+c).join(''); const r=parseInt(h.slice(0,2),16),g=parseInt(h.slice(2,4),16),b=parseInt(h.slice(4,6),16); return 'rgba('+r+','+g+','+b+','+a+')'; }
+  accentColor(){ return this.props.accent ?? '#d4f23a'; }
+  toggleFaq(i){ this.setState(s=>({open:{...s.open,[i]:!s.open[i]}})); }
+
+  // ===== Per-game content — swap this block to reskin the template for another game =====
+  GAME = {
+    key:'nassau', name:'Nassau', icon:'trophy',
+    kicker:'MATCH PLAY · 3 BETS IN 1',
+    tagline:'The clubhouse classic: three separate bets riding at once — the front nine, the back nine, and the whole eighteen. Lose a nine and you can always press to win it back.',
+    tags:['2–4 players','Match play','3 bets in 1','18 holes'],
+    howTitle:'One round. Three bets. Endless comebacks.',
+    intro:'A Nassau is really three matches stacked on top of each other. You play match play — win a hole and you go one "up," lose one and you fall "down." Whoever\u2019s ahead when a nine finishes wins that bet, and the overall 18 is its own separate prize.',
+    steps:[
+      {n:'1', title:'Set three equal bets', body:'Agree on a stake — say $20 — that rides on the front nine, the back nine, and the overall 18. Three bets, one round.'},
+      {n:'2', title:'Play it as match play', body:'Forget stroke totals. Win a hole outright and you go 1 up; lose it and you\u2019re 1 down. Halved holes leave the match where it is.'},
+      {n:'3', title:'Close out each nine', body:'Whoever\u2019s ahead when the 9th and 18th holes finish wins that nine\u2019s bet. The overall bet is decided across all 18.'},
+      {n:'4', title:'Press when you\u2019re down', body:'Fall two holes behind and you can "press" — start a brand-new bet for the remaining holes to claw the money back.'},
+      {n:'5', title:'Net it at the 18th', body:'GoLo tallies all three bets plus any presses and reduces it to a single amount each player owes or collects.'},
+    ],
+    glossary:[
+      {term:'Nassau', def:'A three-part wager: separate bets on the front nine, back nine, and the total 18-hole match.'},
+      {term:'1 up / 2 down', def:'Your match standing. "2 up" means you\u2019ve won two more holes than your opponent so far.'},
+      {term:'Press', def:'A new side bet opened mid-nine by the player who\u2019s behind, covering only the holes that remain.'},
+      {term:'All square (AS)', def:'The match is dead even — nobody is up.'},
+      {term:'Halve', def:'A tied hole. It counts for nothing and the match standing stays put.'},
+      {term:'Dormie', def:'You\u2019re up by exactly as many holes as are left — you can\u2019t lose the bet, only win or tie it.'},
+    ],
+    faqData:[
+      {q:'Is a Nassau one bet or three?', a:'Three. A "$20 Nassau" means $20 on the front nine, $20 on the back nine, and $20 on the overall 18 — so the most you can win or lose (before presses) is $60.'},
+      {q:'What exactly is a press?', a:'When you fall two holes down, you can start a new bet — same stake — that only covers the holes still to play on that nine. It\u2019s a fresh chance to win money back on a nine you\u2019ve already lost. GoLo tracks each press as its own line.'},
+      {q:'Can presses happen automatically?', a:'Yes. Turn on auto-press (usually "2-down automatic") and GoLo opens a new press for you every time you fall two behind — no need to call it out on the tee.'},
+      {q:'Do handicaps apply to a Nassau?', a:'They can. Enter each player\u2019s index and GoLo allocates strokes hole by hole using the course stroke index, so a net Nassau plays fair between a 5 and a 20. You can also run it straight-up gross.'},
+    ],
+    prev:{ name:'Skins', href:'#' },
+    next:{ name:'Stroke Purse', href:'#' },
+  };
+
+  renderVals(){
+    const A=this.accentColor(), ink='#13250a';
+    const G=this.GAME;
+    const accentSoft=this.hexA(A,.14), accentBorder=this.hexA(A,.4), accentGlow=this.hexA(A,.42);
+    const rose='#fb7185', roseSoft='rgba(251,113,133,.14)', roseBorder='rgba(251,113,133,.4)';
+
+    const heroIcon=this.ico(G.icon,A,32);
+
+    const faqs=G.faqData.map((f,i)=>{
+      const isOpen=!!this.state.open[i];
+      return { q:f.q, a:f.a, toggle:()=>this.toggleFaq(i), maxH:isOpen?'260px':'0px', rotate:isOpen?'rotate(45deg)':'rotate(0deg)' };
+    });
+
+    // worked example bet breakdown
+    const betCards=[
+      {tag:'F9', tagBg:accentSoft, tagBorder:accentBorder, tagColor:A, title:'Front nine', detail:'You closed it 2 up through 9', val:'+$20', valColor:A, border:accentBorder},
+      {tag:'B9', tagBg:roseSoft, tagBorder:roseBorder, tagColor:rose, title:'Back nine', detail:'Tom clawed it back, 1 up', val:'−$20', valColor:rose, border:'rgba(255,255,255,.12)'},
+      {tag:'18', tagBg:accentSoft, tagBorder:accentBorder, tagColor:A, title:'Overall match', detail:'You held on, 1 up on 18', val:'+$20', valColor:A, border:accentBorder},
+      {tag:'PR', tagBg:accentSoft, tagBorder:accentBorder, tagColor:A, title:'Back-nine press', detail:'Opened at 2 down, won it late', val:'+$10', valColor:A, border:accentBorder},
+    ];
+
+    // match momentum dots: lime = you won hole, rose = lost, neutral = halve
+    const seq=['w','w','h','l','w','h','w','l','w', 'l','l','h','w','w','l','h','w','w'];
+    const statusDots=seq.map(s=>({ bg: s==='w'?A : s==='l'?rose : 'rgba(255,255,255,.24)' }));
+
+    const phoneBets=[
+      {label:'FRONT', status:'2↑', color:A, val:'+$20', valColor:A, border:accentBorder},
+      {label:'BACK', status:'1↓', color:rose, val:'−$20', valColor:rose, border:'rgba(255,255,255,.13)'},
+      {label:'TOTAL', status:'1↑', color:A, val:'+$20', valColor:A, border:accentBorder},
+    ];
+
+    const presses=[
+      {icon:this.ico('press',A,24), title:'The press', body:'Down two on a nine? Fire a new bet for the holes that remain. Win it and you cancel out the damage — lose it and you\u2019re in deeper.'},
+      {icon:this.ico('auto',A,24), title:'2-down auto-press', body:'Set it and forget it. A new press opens automatically the moment anyone falls two behind, so nobody has to remember to call it.'},
+      {icon:this.ico('stack',A,24), title:'Presses stack', body:'Each press is its own mini-match. On a wild nine you can have two or three running at once — GoLo keeps every line straight.'},
+      {icon:this.ico('dice',A,24), title:'Escalating stakes', body:'Play a "2-2-2" that becomes a "4-4-4," or a team Nassau with best-ball. Set the stake and format up front and let the app score it.'},
+    ];
+
+    const tips=[
+      {icon:this.check(A), title:'Press with the momentum', body:'If you\u2019ve steadied your ball-striking and your opponent is leaking oil, a press turns a lost nine into found money.'},
+      {icon:this.warn(rose), title:'Don\u2019t chase a bad swing', body:'Pressing while you\u2019re spraying it everywhere just doubles the bleeding. Sometimes the smart bet is no bet.'},
+      {icon:this.check(A), title:'Mind the overall', body:'The nines reward hot streaks, but the overall 18 rewards consistency. A steady round can lose both nines and still bank the total.'},
+    ];
+
+    const related=[
+      {name:'Skins', href:'#', icon:this.ico('target',A,26), desc:'Every hole is its own little pot — ties carry it forward.'},
+      {name:'Wolf', href:'#', icon:this.ico('wolf',A,26), desc:'Rotating captain picks a partner or goes it alone for double.'},
+      {name:'Stroke Purse', href:'#', icon:this.ico('cash',A,26), desc:'One pot, lowest net total over 18 takes the whole thing.'},
+    ];
+
+    return {
+      accent:A, ink, accentGlow, accentSoft, accentBorder,
+      arrowIcon:this.arrow(A),
+      game:{ ...G, heroIcon },
+      steps:G.steps,
+      betCards, statusDots, phoneBets,
+      presses, tips, related, faqs,
+    };
+  }
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <style>
+    *{box-sizing:border-box;}
+    html,body{margin:0;padding:0;}
+    body{background:#0a0d10;}
+    a{text-decoration:none;color:inherit;}
+    a:hover{color:#d4f23a;}
+    ::selection{background:#d4f23a;color:#13250a;}
+    html{scroll-behavior:smooth;}
+    [data-faq-cat]{scroll-margin-top:96px;}
+    [data-faq-item]{scroll-margin-top:104px;}
+  </style>
+</helmet>
+
+<div style="font-family:system-ui,-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:#0a0d10;color:#fff;min-height:100vh;overflow-x:clip;">
+
+  <!-- ============ NAV ============ -->
+  <nav style="position:sticky;top:0;z-index:100;display:flex;align-items:center;justify-content:space-between;gap:20px;padding:14px clamp(18px,4vw,46px);background:rgba(10,13,16,.72);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);border-bottom:1px solid rgba(255,255,255,.08);">
+    <a href="Golo%20Golf%20-%20Landing%20Page.dc.html" style="display:flex;align-items:center;gap:11px;">
+      <span style="width:38px;height:38px;border-radius:11px;display:flex;align-items:center;justify-content:center;background:#0c0f12;border:1px solid rgba(255,255,255,.1);box-shadow:0 8px 22px rgba(212,242,58,.3);"><svg width="28" height="28" viewBox="0 0 120 124" fill="none" style="display:block"><path d="M56 20 A40 40 0 1 0 95.8 64" stroke="#d4f23a" stroke-width="12" stroke-linecap="round"></path><line x1="95.8" y1="64" x2="64" y2="64" stroke="#d4f23a" stroke-width="12" stroke-linecap="round"></line><circle cx="56" cy="58" r="15" fill="#fff"></circle><circle cx="56" cy="58" r="9" fill="none" stroke="rgba(10,36,24,0.28)" stroke-width="2.4"></circle><line x1="56" y1="44" x2="56" y2="14" stroke="#d4f23a" stroke-width="3.4"></line><path d="M56 14 L86 22 L56 34 Z" fill="#fff"></path></svg></span>
+      <span style="display:flex;align-items:flex-end;gap:0px;"><span style="font-size:21px;font-weight:800;letter-spacing:-.02em;color:#fff;line-height:1;">Go</span><span style="font-size:21px;font-weight:800;letter-spacing:-.02em;color:#d4f23a;line-height:1;">Lo</span></span>
+    </a>
+    <div style="display:flex;align-items:center;gap:30px;">
+      <div style="display:flex;align-items:center;gap:22px;">
+        <a href="Golo%20Golf%20-%20Features.dc.html" style="font-size:14px;font-weight:700;color:rgba(255,255,255,.66);">Features</a>
+        <a href="Golo%20Golf%20-%20Games.dc.html" style="font-size:14px;font-weight:700;color:rgba(255,255,255,.66);">Games</a>
+        <a href="Golo%20Golf%20-%20Landing%20Page.dc.html#how" style="font-size:14px;font-weight:700;color:rgba(255,255,255,.66);">How It Works</a>
+        <a href="Golo%20Golf%20-%20Blog.dc.html" style="font-size:14px;font-weight:700;color:rgba(255,255,255,.66);">Blog</a>
+        <a href="Golo%20Golf%20-%20FAQ.dc.html" style="font-size:14px;font-weight:800;color: {{ accent }};">FAQ</a>
+        <a href="Golo%20Golf%20-%20Contact.dc.html" style="font-size:14px;font-weight:700;color:rgba(255,255,255,.66);">Contact</a>
+      </div>
+      <a href="#get" style="display:flex;align-items:center;height:42px;padding:0 20px;border-radius:11px;background: {{ accent }};color: {{ ink }};font-size:14px;font-weight:800;box-shadow:0 6px 18px {{ accentGlow }};">Get the app</a>
+    </div>
+  </nav>
+
+  <!-- ============ HERO ============ -->
+  <section style="position:relative;overflow:hidden;">
+    <div style="position:absolute;inset:0;background-image:url('assets/sunset.png');background-size:cover;background-position:50% 55%;"></div>
+    <div style="position:absolute;inset:0;background:linear-gradient(180deg, rgba(8,12,9,.74) 0%, rgba(8,12,9,.8) 45%, rgba(10,13,16,1) 100%);"></div>
+    <div style="position:absolute;left:-6%;top:-20%;width:48%;height:78%;background:radial-gradient(circle, {{ accentGlow }} 0%, rgba(0,0,0,0) 65%);filter:blur(46px);pointer-events:none;"></div>
+
+    <div style="position:relative;max-width:1200px;margin:0 auto;padding:clamp(38px,5vw,72px) clamp(18px,4vw,46px) clamp(28px,3.5vw,44px);">
+      <div style="display:flex;align-items:center;gap:9px;margin-bottom:20px;">
+        <a href="Golo%20Golf%20-%20Landing%20Page.dc.html" style="font-size:12.5px;font-weight:800;letter-spacing:.6px;color:rgba(255,255,255,.5);">Home</a>
+        <span style="font-size:12.5px;color:rgba(255,255,255,.28);">/</span>
+        <span style="font-size:12.5px;font-weight:800;letter-spacing:.6px;color: {{ accent }};">FAQ</span>
+      </div>
+      <div style="font-size:12px;font-weight:800;letter-spacing:2.5px;color: {{ accent }};margin-bottom:14px;">QUESTIONS FROM THE 19TH HOLE</div>
+      <h1 style="font-size:clamp(38px,6vw,68px);font-weight:800;line-height:1;letter-spacing:-.025em;margin:0 0 20px;max-width:820px;text-wrap:balance;">Good question.</h1>
+      <p style="font-size:clamp(16px,1.5vw,19px);line-height:1.6;color:rgba(255,255,255,.72);max-width:640px;margin:0 0 26px;">Everything we get asked about scoring a round, running the games, and settling the bet — plus the honest answers about where GoLo is today.</p>
+      <div style="display:flex;flex-wrap:wrap;align-items:center;gap:10px;">
+        <span style="display:inline-flex;align-items:center;gap:8px;height:38px;padding:0 15px;border-radius:9999px;background:rgba(255,255,255,.13);border:1px solid rgba(255,255,255,.18);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);font-size:13px;font-weight:800;color:rgba(255,255,255,.86);">
+          <span style="width:7px;height:7px;border-radius:50%;background: {{ accent }};"></span>Not live yet — in testing with real groups
+        </span>
+        <span style="display:inline-flex;align-items:center;height:38px;padding:0 15px;border-radius:9999px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.13);font-size:13px;font-weight:700;color:rgba(255,255,255,.6);">{{ countLine }}</span>
+        <a href="Golo%20Golf%20-%20Contact.dc.html" style="display:inline-flex;align-items:center;height:38px;padding:0 15px;border-radius:9999px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.13);font-size:13px;font-weight:700;color:rgba(255,255,255,.6);">Not here? Ask us →</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ MOST ASKED ============ -->
+  <section style="display: {{ mostAskedDisplay }};background:#0a0d10;">
+    <div style="max-width:1200px;margin:0 auto;padding:0 clamp(18px,4vw,46px) clamp(30px,4vw,46px);">
+      <div style="padding:clamp(20px,3vw,28px);border-radius:22px;background:rgba(20,28,24,.55);border:1px solid {{ accentBorder }};backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);box-shadow:0 18px 50px rgba(0,0,0,.4);">
+        <div style="display:flex;align-items:center;gap:11px;margin-bottom:16px;">
+          <span style="width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center;background: {{ accentSoft }};border:1px solid {{ accentBorder }};">{{ starIcon }}</span>
+          <span style="font-size:11px;font-weight:800;letter-spacing:1.4px;color: {{ accent }};">THE SIX WE GET MOST</span>
+        </div>
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:10px;">
+          <sc-for list="{{ mostAsked }}" as="m" hint-placeholder-count="6">
+            <a href="#{{ m.id }}" onClick="{{ m.open }}" style="display:flex;align-items:flex-start;gap:12px;padding:14px 16px;border-radius:14px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);" style-hover="border-color:rgba(212,242,58,.45);background:rgba(24,34,28,.7);">
+              <span style="font-size:11px;font-weight:800;color: {{ accent }};line-height:1.5;flex:0 0 auto;padding-top:2px;">{{ m.num }}</span>
+              <span style="font-size:14.5px;font-weight:800;line-height:1.5;color:rgba(255,255,255,.86);">{{ m.q }}</span>
+            </a>
+          </sc-for>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ BODY ============ -->
+  <section style="background:#0a0d10;">
+    <div style="max-width:1200px;margin:0 auto;padding:clamp(10px,2vw,20px) clamp(18px,4vw,46px) clamp(50px,6vw,84px);display:grid;grid-template-columns:minmax(0,270px) minmax(0,1fr);gap:clamp(28px,4vw,58px);align-items:start;">
+
+      <!-- sticky category sidebar -->
+      <aside style="display:flex;position:sticky;top:86px;flex-direction:column;gap:3px;padding:20px 16px;border-radius:20px;background:rgba(20,28,24,.5);border:1px solid rgba(255,255,255,.13);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);max-height:calc(100vh - 118px);overflow-y:auto;">
+        <div style="font-size:11px;font-weight:800;letter-spacing:1.4px;color:rgba(255,255,255,.4);padding:0 8px 12px;">CATEGORIES</div>
+        <sc-for list="{{ cats }}" as="c" hint-placeholder-count="9">
+          <a href="#{{ c.id }}" style="display:flex;align-items:flex-start;gap:10px;padding:9px 9px;border-radius:10px;font-size:13.5px;font-weight:700;line-height:1.4;color:rgba(255,255,255,.62);" style-hover="background:rgba(255,255,255,.07);color:#d4f23a;">
+            <span style="font-size:11.5px;font-weight:800;color:rgba(255,255,255,.32);min-width:16px;padding-top:2px;">{{ c.num }}</span>
+            <span style="flex:1 1 auto;">{{ c.label }}</span>
+            <span style="font-size:11.5px;font-weight:800;color:rgba(255,255,255,.3);padding-top:2px;">{{ c.count }}</span>
+          </a>
+        </sc-for>
+        <div style="margin-top:14px;padding:14px 12px;border-radius:14px;background: {{ accentSoft }};border:1px solid {{ accentBorder }};">
+          <div style="font-size:13.5px;font-weight:800;line-height:1.4;color:#fff;margin-bottom:8px;">Still stuck?</div>
+          <a href="Golo%20Golf%20-%20Contact.dc.html" style="font-size:12.5px;font-weight:800;letter-spacing:.6px;color: {{ accent }};">TALK TO A HUMAN →</a>
+        </div>
+      </aside>
+
+      <div style="min-width:0;">
+        <div style="display:flex;flex-direction:column;gap:clamp(34px,4vw,52px);">
+          <sc-for list="{{ cats }}" as="c" hint-placeholder-count="9">
+            <div data-faq-cat id="{{ c.id }}" style="max-width:800px;">
+              <div style="display:flex;align-items:baseline;gap:14px;margin-bottom:6px;">
+                <span style="font-size:clamp(26px,3vw,34px);font-weight:800;line-height:1;letter-spacing:-.03em;color: {{ accent }};flex:0 0 auto;font-variant-numeric:tabular-nums;">{{ c.num }}</span>
+                <h2 style="flex:1 1 auto;font-size:clamp(20px,2.2vw,26px);font-weight:800;line-height:1.2;letter-spacing:-.02em;color:#fff;margin:0;">{{ c.label }}</h2>
+              </div>
+              <p style="font-size:14.5px;line-height:1.6;font-weight:600;color:rgba(255,255,255,.5);margin:0 0 18px;padding-left:calc(clamp(26px,3vw,34px) + 14px);">{{ c.blurb }}</p>
+
+              <div style="display:flex;flex-direction:column;gap:10px;">
+                <sc-for list="{{ c.items }}" as="q" hint-placeholder-count="4">
+                  <div data-faq-item id="{{ q.id }}" style="background:rgba(20,28,24,.5);border:1px solid {{ q.border }};border-radius:16px;overflow:hidden;backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);">
+                    <button onClick="{{ q.toggle }}" style="width:100%;display:flex;align-items:center;justify-content:space-between;gap:16px;text-align:left;background:transparent;border:none;cursor:pointer;padding:18px 20px;font-family:inherit;">
+                      <span style="font-size:16.5px;font-weight:800;letter-spacing:-.01em;line-height:1.35;color:#fff;">{{ q.q }}</span>
+                      <span style="font-size:24px;font-weight:700;color: {{ accent }};flex:0 0 auto;line-height:1;transform: {{ q.rotate }};transition:transform .2s;">+</span>
+                    </button>
+                    <div style="max-height: {{ q.maxH }};overflow:hidden;opacity: {{ q.opacity }};transition:max-height .3s ease, opacity .25s;">
+                      <div style="padding:0 20px 20px;display:flex;flex-direction:column;gap:12px;">
+                        <p style="font-size:15.5px;line-height:1.72;font-weight:600;color:rgba(255,255,255,.7);margin:0;">{{ q.a }}</p>
+                        <sc-if value="{{ q.hasNote }}" hint-placeholder-val="{{ false }}">
+                          <div style="display:flex;gap:12px;align-items:flex-start;padding:13px 15px;border-radius:13px;background: {{ accentSoft }};border:1px solid {{ accentBorder }};">
+                            <span style="font-size:10.5px;font-weight:800;letter-spacing:1.2px;color: {{ accent }};flex:0 0 auto;padding-top:3px;white-space:nowrap;">{{ q.noteTag }}</span>
+                            <span style="font-size:14px;font-weight:700;line-height:1.6;color:rgba(255,255,255,.86);">{{ q.note }}</span>
+                          </div>
+                        </sc-if>
+                        <sc-if value="{{ q.hasLink }}" hint-placeholder-val="{{ false }}">
+                          <a href="{{ q.linkHref }}" style="font-size:12.5px;font-weight:800;letter-spacing:.7px;color: {{ accent }};">{{ q.linkLabel }}</a>
+                        </sc-if>
+                      </div>
+                    </div>
+                  </div>
+                </sc-for>
+              </div>
+            </div>
+          </sc-for>
+        </div>
+
+        <!-- contact card -->
+        <div style="max-width:800px;margin-top:clamp(34px,4vw,52px);display:flex;flex-wrap:wrap;gap:24px;justify-content:space-between;align-items:center;padding:clamp(22px,3vw,30px);border-radius:22px;background:rgba(20,28,24,.5);border:1px solid rgba(255,255,255,.13);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);">
+          <div style="flex:1 1 260px;">
+            <div style="font-size:11px;font-weight:800;letter-spacing:1.4px;color: {{ accent }};margin-bottom:10px;">STILL GOT A QUESTION</div>
+            <div style="font-size:21px;font-weight:800;letter-spacing:-.02em;margin-bottom:8px;">We answer these ourselves.</div>
+            <p style="font-size:14.5px;line-height:1.6;color:rgba(255,255,255,.58);margin:0;">No ticket queue, no bot. Tell us the round, the game, and what looked wrong — we usually come back the same day.</p>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:10px;flex:0 0 auto;">
+            <a href="Golo%20Golf%20-%20Contact.dc.html" style="display:flex;align-items:center;justify-content:center;height:48px;padding:0 22px;border-radius:12px;background: {{ accent }};color: {{ ink }};font-size:14.5px;font-weight:800;box-shadow:0 8px 22px {{ accentGlow }};">Talk to a human</a>
+            <a href="mailto:support@gologolf.app" style="display:flex;align-items:center;justify-content:center;height:48px;padding:0 22px;border-radius:12px;background:rgba(255,255,255,.09);border:1px solid rgba(255,255,255,.16);font-size:14.5px;font-weight:800;color:#fff;">support@gologolf.app</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ MORE TO READ ============ -->
+  <section style="background:#080b0d;border-top:1px solid rgba(255,255,255,.07);">
+    <div style="max-width:1200px;margin:0 auto;padding:clamp(40px,5vw,64px) clamp(18px,4vw,46px);">
+      <div style="font-size:11px;font-weight:800;letter-spacing:1.6px;color:rgba(255,255,255,.4);margin-bottom:18px;">KEEP READING</div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:14px;">
+        <sc-for list="{{ otherDocs }}" as="d" hint-placeholder-count="4">
+          <a href="{{ d.href }}" style="display:flex;flex-direction:column;gap:8px;padding:20px;border-radius:18px;background:rgba(20,28,24,.5);border:1px solid rgba(255,255,255,.12);" style-hover="border-color:rgba(212,242,58,.45);background:rgba(24,34,28,.66);">
+            <span style="font-size:16.5px;font-weight:800;letter-spacing:-.01em;color:#fff;">{{ d.label }}</span>
+            <span style="font-size:13.5px;font-weight:600;line-height:1.55;color:rgba(255,255,255,.52);">{{ d.blurb }}</span>
+            <span style="font-size:12px;font-weight:800;letter-spacing:.8px;color: {{ accent }};margin-top:4px;">{{ d.cta }}</span>
+          </a>
+        </sc-for>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ APP CTA ============ -->
+  <section id="get" style="position:relative;overflow:hidden;background:#0a0d10;">
+    <div style="position:absolute;inset:0;background-image:url('assets/turf.png');background-size:cover;background-position:50% 50%;opacity:.5;"></div>
+    <div style="position:absolute;inset:0;background:linear-gradient(180deg, rgba(8,12,9,.86) 0%, rgba(6,11,8,.94) 100%);"></div>
+    <div style="position:relative;max-width:1200px;margin:0 auto;padding:clamp(46px,6vw,78px) clamp(18px,4vw,46px);display:flex;flex-wrap:wrap;gap:28px;align-items:center;justify-content:space-between;">
+      <div style="flex:1 1 380px;">
+        <div style="font-size:12px;font-weight:800;letter-spacing:2.4px;color: {{ accent }};margin-bottom:14px;">TRACK IT. BET IT. SETTLE IT.</div>
+        <div style="font-size:clamp(28px,3.4vw,44px);font-weight:800;line-height:1.06;letter-spacing:-.025em;max-width:620px;text-wrap:balance;">That's every question. Now go win the back nine.</div>
+      </div>
+      <div style="display:flex;flex-wrap:wrap;gap:12px;">
+        <a href="#get" style="display:flex;align-items:center;height:52px;padding:0 26px;border-radius:13px;background: {{ accent }};color: {{ ink }};font-size:15px;font-weight:800;box-shadow:0 10px 28px {{ accentGlow }};">Get the app</a>
+        <a href="Golo%20Golf%20-%20Games.dc.html" style="display:flex;align-items:center;height:52px;padding:0 26px;border-radius:13px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.18);font-size:15px;font-weight:800;color:#fff;">Browse the games</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ FOOTER ============ -->
+  <footer style="background:#070a0c;border-top:1px solid rgba(255,255,255,.08);">
+    <div style="max-width:1200px;margin:0 auto;padding:clamp(40px,5vw,64px) clamp(18px,4vw,46px) 30px;display:flex;flex-wrap:wrap;gap:40px;justify-content:space-between;">
+      <div style="max-width:300px;">
+        <a href="Golo%20Golf%20-%20Landing%20Page.dc.html" style="display:flex;align-items:center;gap:11px;margin-bottom:16px;">
+          <span style="width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center;background:#0c0f12;border:1px solid rgba(255,255,255,.1);"><svg width="26" height="26" viewBox="0 0 120 124" fill="none" style="display:block"><path d="M56 20 A40 40 0 1 0 95.8 64" stroke="#d4f23a" stroke-width="12" stroke-linecap="round"></path><line x1="95.8" y1="64" x2="64" y2="64" stroke="#d4f23a" stroke-width="12" stroke-linecap="round"></line><circle cx="56" cy="58" r="15" fill="#fff"></circle><circle cx="56" cy="58" r="9" fill="none" stroke="rgba(10,36,24,0.28)" stroke-width="2.4"></circle><line x1="56" y1="44" x2="56" y2="14" stroke="#d4f23a" stroke-width="3.4"></line><path d="M56 14 L86 22 L56 34 Z" fill="#fff"></path></svg></span>
+          <span style="display:flex;align-items:flex-end;"><span style="font-size:20px;font-weight:800;color:#fff;line-height:1;">Go</span><span style="font-size:20px;font-weight:800;color:#d4f23a;line-height:1;">Lo</span></span>
+        </a>
+        <p style="font-size:14px;line-height:1.6;color:rgba(255,255,255,.5);margin:0;">Track it. Bet it. Settle it. The scorekeeper that finally settles the bet.</p>
+      </div>
+      <div style="display:flex;flex-wrap:wrap;gap:48px;">
+        <div><div style="font-size:12px;font-weight:800;letter-spacing:1.4px;color:rgba(255,255,255,.45);margin-bottom:14px;">PRODUCT</div><div style="display:flex;flex-direction:column;gap:10px;"><a href="Golo%20Golf%20-%20Features.dc.html" style="font-size:14px;font-weight:600;color:rgba(255,255,255,.66);">Features</a><a href="Golo%20Golf%20-%20Landing%20Page.dc.html#how" style="font-size:14px;font-weight:600;color:rgba(255,255,255,.66);">How it works</a><a href="#get" style="font-size:14px;font-weight:600;color:rgba(255,255,255,.66);">Download</a></div></div>
+        <div><div style="font-size:12px;font-weight:800;letter-spacing:1.4px;color:rgba(255,255,255,.45);margin-bottom:14px;">GAMES</div><div style="display:flex;flex-direction:column;gap:10px;"><a href="Golo%20Golf%20-%20Games.dc.html" style="font-size:14px;font-weight:600;color:rgba(255,255,255,.66);">All games</a><a href="Golo%20Golf%20-%20Game%20Nassau.dc.html" style="font-size:14px;font-weight:600;color:rgba(255,255,255,.66);">Nassau</a><a href="Golo%20Golf%20-%20Games.dc.html" style="font-size:14px;font-weight:600;color:rgba(255,255,255,.66);">Skins</a></div></div>
+        <div><div style="font-size:12px;font-weight:800;letter-spacing:1.4px;color:rgba(255,255,255,.45);margin-bottom:14px;">LEGAL</div><div style="display:flex;flex-direction:column;gap:10px;"><a href="Golo%20Golf%20-%20Legal%20Terms.dc.html" style="font-size:14px;font-weight:600;color:rgba(255,255,255,.66);">Terms of Service</a><a href="Golo%20Golf%20-%20Legal%20Privacy.dc.html" style="font-size:14px;font-weight:600;color:rgba(255,255,255,.66);">Privacy Policy</a><a href="#" style="font-size:14px;font-weight:600;color:rgba(255,255,255,.66);">Cookie Policy</a><a href="#" style="font-size:14px;font-weight:600;color:rgba(255,255,255,.66);">Acceptable Use</a></div></div>
+        <div><div style="font-size:12px;font-weight:800;letter-spacing:1.4px;color:rgba(255,255,255,.45);margin-bottom:14px;">COMPANY</div><div style="display:flex;flex-direction:column;gap:10px;"><a href="Golo%20Golf%20-%20FAQ.dc.html" style="font-size:14px;font-weight:600;color:#d4f23a;">FAQ</a><a href="Golo%20Golf%20-%20Contact.dc.html" style="font-size:14px;font-weight:600;color:rgba(255,255,255,.66);">Contact</a><a href="mailto:support@gologolf.app" style="font-size:14px;font-weight:600;color:rgba(255,255,255,.66);">Support</a></div></div>
+      </div>
+    </div>
+    <div style="max-width:1200px;margin:0 auto;padding:20px clamp(18px,4vw,46px);border-top:1px solid rgba(255,255,255,.07);display:flex;flex-wrap:wrap;gap:12px;justify-content:space-between;align-items:center;">
+      <span style="font-size:13px;color:rgba(255,255,255,.4);">© 2026 GoLo Golf LLC. All rights reserved.</span>
+      <span style="font-size:13px;color:rgba(255,255,255,.4);max-width:560px;">GoLo helps you track friendly wagers between playing partners. Keep it friendly, settle up, and play your local rules.</span>
+    </div>
+  </footer>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1200,&quot;height&quot;:1400},&quot;accent&quot;:{&quot;editor&quot;:&quot;color&quot;,&quot;default&quot;:&quot;#d4f23a&quot;,&quot;options&quot;:[&quot;#d4f23a&quot;,&quot;#bef264&quot;,&quot;#2dd4bf&quot;,&quot;#facc15&quot;],&quot;tsType&quot;:&quot;string&quot;},&quot;startExpanded&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:false,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Reading layout&quot;},&quot;showMostAsked&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Reading layout&quot;}}">
+class Component extends DCLogic {
+  state = { open: {} };
+
+  hexA(hex, a){ let h=(hex||'#d4f23a').replace('#',''); if(h.length===3)h=h.split('').map(c=>c+c).join(''); const r=parseInt(h.slice(0,2),16),g=parseInt(h.slice(2,4),16),b=parseInt(h.slice(4,6),16); return `rgba(${r},${g},${b},${a})`; }
+  accentColor(){ return this.props.accent ?? '#d4f23a'; }
+  toggle(k){ this.setState(s=>({ open:{...s.open, [k]: !this.isOpen(k) } })); }
+  isOpen(k){ const v=this.state.open[k]; return v===undefined ? (this.props.startExpanded ?? false) : v; }
+  openKey(k){ this.setState(s=>({ open:{...s.open, [k]: true } })); }
+
+  CATS = [
+    { id:'starting', short:'GETTING STARTED', label:'Getting started', blurb:'Where GoLo is today, and what the first round looks like.',
+      items:[
+        { id:'q-available', q:'Is GoLo available yet?', a:'Not yet. We\u2019re building it and testing with real groups on real courses before we put it in anybody\u2019s hands. There\u2019s no App Store link today \u2014 when there is, it goes on the home page first.', noteTag:'STATUS', note:'In private testing. No public launch date announced.' },
+        { id:'q-everyone', q:'Do all four of us need the app?', a:'No. One person runs the whole round and the rest just play. Share the live link or the final summary to the group chat so everyone can follow along and check the receipts.' },
+        { id:'q-start-round', q:'How do I start a round?', a:'Pick the course, pick the tees, add your players, stack the games you\u2019re playing, and tee off. Setup is four screens and takes about as long as loading the cart.' },
+        { id:'q-need-first-tee', q:'What do I need before the first tee?', a:'Names and \u2014 if you\u2019re playing net \u2014 handicap indexes. Everything else (course, tees, stroke index) comes from the course you pick. You can add a player after the round starts, too.' }
+      ] },
+    { id:'scoring', short:'SCORING & GAMES', label:'Scoring & the games', blurb:'Stacking formats, entering scores, and fixing the ones you got wrong.',
+      items:[
+        { id:'q-which-games', q:'Which games can I run at once?', a:'Stack as many as you want in one round: Skins, Nassau, Stroke Purse, Wolf, Bingo Bango Bongo, Closest to Pin, Longest Drive and Birdies. Each is scored on its own, then netted into a single number per player at the end.', linkHref:'Golo%20Golf%20-%20Games.dc.html', linkLabel:'SEE ALL THE GAMES \u2192' },
+        { id:'q-hole-by-hole', q:'Do I have to enter scores hole by hole?', a:'That\u2019s the fast path \u2014 one tap per player as you walk off the green, and every game updates instantly. If you got busy, you can back-fill a hole or three later without losing anything.' },
+        { id:'q-fix-score', q:'Can I fix a score after the hole?', a:'Yes. Tap any hole, change the number, and every total, press and payout recalculates. Everyone in the round sees the correction, so nobody is arguing from an old screen.' },
+        { id:'q-pickup', q:'What if somebody picks up and never holes out?', a:'Record their maximum for the hole \u2014 most groups use double par or the ESC cap. Net scoring stays honest and the hole still counts in the games that need a number.' }
+      ] },
+    { id:'handicaps', short:'HANDICAPS', label:'Handicaps & fairness', blurb:'How strokes get allocated so a 20 and a 5 can play the same bet.',
+      items:[
+        { id:'q-handicaps', q:'Does it handle handicaps?', a:'Yes \u2014 enter each player\u2019s index once and GoLo allocates strokes hole by hole using the course stroke index. Net and gross are both always live, so a 20-handicap and a 5 can play the same game fairly.' },
+        { id:'q-gross-only', q:'Can we just play gross?', a:'Sure. Turn net off and every game scores straight up. You can also run one game net and another gross in the same round \u2014 the strokes only apply where you asked for them.' },
+        { id:'q-no-index', q:'What if someone doesn\u2019t know their index?', a:'Put in an honest estimate and move on, or play the round gross. You can change an index mid-round and everything recalculates \u2014 which is also how you settle the "he\u2019s not a 12" conversation.' }
+      ] },
+    { id:'bets', short:'BETS & SETTLING', label:'Bets, settling up & the gambling question', blurb:'What GoLo does with the money question: the math, and nothing else.',
+      items:[
+        { id:'q-settle', q:'How does the settle-up work?', a:'When the last putt drops, GoLo totals every game, figures out who\u2019s up and who\u2019s down, and reduces it to the fewest transfers that square the group. Nobody sends four separate payments \u2014 you get one clean "pay this person" instruction.' },
+        { id:'q-gambling', q:'Is this real-money gambling?', a:'GoLo is a scorekeeper for friendly wagers between playing partners \u2014 the kind you\u2019ve always settled by hand on the 18th green. It doesn\u2019t process payments or hold money; it just does the math and tells you who owes who. Keep it friendly and play your local rules.', linkHref:'Golo%20Golf%20-%20Legal%20Terms.dc.html', linkLabel:'READ THE TERMS \u2192' },
+        { id:'q-money-move', q:'Does money actually move through GoLo?', a:'Never. The settlement screen is a scoreboard, not a wallet \u2014 we don\u2019t touch cards, balances or transfers. If you save a Venmo handle we just show it to your group so they know where to send it.' },
+        { id:'q-dispute', q:'What if someone disputes the tally?', a:'Open the hole-by-hole ledger. Every skin, press and stroke is shown with the hole it came from, so the argument ends in about nine seconds.' },
+        { id:'q-stakes', q:'Can we set different stakes per game?', a:'Yes \u2014 each game carries its own stake, so a $5 Nassau and $2 skins live in the same round. Change them any time before the first tee shot.' }
+      ] },
+    { id:'trips', short:'TRIPS', label:'Trips & multi-day rounds', blurb:'Four days, five guys, one settle-up.',
+      items:[
+        { id:'q-trips', q:'What about multi-day trips?', a:'Trip mode keeps a running tally across every round so a four-day Scottsdale or Myrtle Beach trip settles once, on the 18th green of the last day \u2014 not in a confusing pile of daily Venmos.' },
+        { id:'q-roster', q:'Can the group change from day to day?', a:'Yes. Each round has its own roster, and the trip tally follows each player across the days they actually played. Guys who join for one round only carry that round\u2019s number.' },
+        { id:'q-games-per-day', q:'Can we run different games each day?', a:'Every round is set up on its own, so Tuesday can be a Nassau and Wednesday can be Wolf and skins. The trip total nets all of it.' }
+      ] },
+    { id:'pricing', short:'PRICING', label:'Pricing & billing', blurb:'The honest answer: we haven\u2019t set it.',
+      items:[
+        { id:'q-cost', q:'What will GoLo cost?', a:'We haven\u2019t set pricing. GoLo isn\u2019t publicly launched, so there\u2019s nothing to buy and no plan to compare yet. When we decide, it gets announced here and on the home page before anyone is asked for a dollar.', noteTag:'NO PRICING YET', note:'No plans, no tiers, no trial \u2014 nothing is for sale today.' },
+        { id:'q-subscription', q:'Is there a subscription?', a:'Not today. There\u2019s nothing to subscribe to, and no free-trial clock running in the background.' },
+        { id:'q-card', q:'Do I have to enter a card?', a:'No. GoLo doesn\u2019t collect or store payment card information at all \u2014 not for the app, and not for the bets your group settles between themselves.' }
+      ] },
+    { id:'account', short:'ACCOUNT & PRIVACY', label:'Account, privacy & your data',
+      blurb:'What we collect, what we don\u2019t, and how to leave.',
+      items:[
+        { id:'q-collect', q:'What data do you collect?', a:'Your account basics, the scores you enter, an optional photo, and location only while you\u2019re searching for a course. No ads, no data brokers, no analytics vendor \u2014 we don\u2019t even collect crash telemetry.', linkHref:'Golo%20Golf%20-%20Legal%20Privacy.dc.html', linkLabel:'READ THE PRIVACY POLICY \u2192' },
+        { id:'q-sell', q:'Do you sell my data or run ads?', a:'No, and no. GoLo shows no ads, sends no marketing pushes, and never sells personal information. The only notifications we send are live scoring, round activity, and "time to settle up" \u2014 each switchable.' },
+        { id:'q-delete', q:'How do I delete my account?', a:'You \u2192 Delete account in the app, or /delete-account on the web \u2014 that page works even if you\u2019re locked out. Deletion takes effect immediately and removes your profile, photo, and any round nobody else played in.' },
+        { id:'q-shared-rounds', q:'What happens to rounds I played with other people?', a:'They stay, because they\u2019re your partners\u2019 history too \u2014 but your name becomes "Former player" and your email, phone and photo come off. Their leaderboards stay intact; you disappear from them.' },
+        { id:'q-location', q:'Are you tracking my location around the course?', a:'No. Location is used only in the moment you search for a course, so nearby ones sort to the top. It\u2019s never attached to the round \u2014 the round records the course you picked.' }
+      ] },
+    { id:'offline', short:'OFFLINE & BATTERY', label:'Offline, signal & battery',
+      blurb:'What happens on the back nine where there are no bars.',
+      items:[
+        { id:'q-offline', q:'Does it work with no signal?', a:'That\u2019s the bar we\u2019re building to: scoring stays on your phone and syncs to the group the moment signal comes back. Dead-spot behavior is one of the things we\u2019re hammering on in testing right now.' },
+        { id:'q-battery', q:'Will it drain my battery over 18 holes?', a:'It shouldn\u2019t \u2014 there\u2019s no continuous GPS tracking and no map running in the background. Location gets used once, when you search for the course, and then it\u2019s done.' },
+        { id:'q-devices', q:'Can I use it on a tablet or a cart screen?', a:'It runs in a browser, so any decent screen works. The scoring layout is built phone-first, thumb-first \u2014 that\u2019s the one we design against.' }
+      ] },
+    { id:'trouble', short:'TROUBLESHOOTING', label:'Troubleshooting',
+      blurb:'When it looks wrong, start here.',
+      items:[
+        { id:'q-not-syncing', q:'Scores aren\u2019t showing up for the rest of the group.', a:'Usually signal. Refresh the round; the host device is the source of truth and will push the latest state. If it\u2019s still stale after a refresh, send us the round name and roughly when it happened.' },
+        { id:'q-wrong-course', q:'I picked the wrong course or the wrong tees.', a:'Change it in the round settings. Pars and stroke index reload from the right card and every net score, skin and press recalculates on the spot.' },
+        { id:'q-bug', q:'Something\u2019s broken. What do you need from me?', a:'Email support@gologolf.app with the round name, roughly what time it happened, and what you expected to see. A screenshot of the scorecard makes it about five times faster to fix.' }
+      ] }
+  ];
+
+  MOST_ASKED = ['q-handicaps','q-which-games','q-settle','q-gambling','q-everyone','q-trips'];
+
+  OTHER_DOCS = [
+    { label:'The games', blurb:'Skins, Nassau, Wolf, Bingo Bango Bongo \u2014 every format and how it scores.', cta:'BROWSE THE GAMES', href:'Golo%20Golf%20-%20Games.dc.html' },
+    { label:'Privacy Policy', blurb:'What we collect, the three vendors we use, and exactly what deletion does.', cta:'READ THE POLICY', href:'Golo%20Golf%20-%20Legal%20Privacy.dc.html' },
+    { label:'Terms of Service', blurb:'Eligibility, acceptable use, and why GoLo is not a betting app.', cta:'READ THE TERMS', href:'Golo%20Golf%20-%20Legal%20Terms.dc.html' },
+    { label:'Contact', blurb:'A real inbox, answered by the people building it.', cta:'GET IN TOUCH', href:'Golo%20Golf%20-%20Contact.dc.html' }
+  ];
+
+  componentDidMount(){
+    const main = [];
+    this.CATS.forEach(c => c.items.forEach(i => main.push({
+      '@type':'Question', name:i.q,
+      acceptedAnswer:{ '@type':'Answer', text: i.note ? i.a + ' ' + i.note : i.a }
+    })));
+    const prev = document.getElementById('golo-faq-schema');
+    if (prev) prev.remove();
+    const el = document.createElement('script');
+    el.type = 'application/ld+json';
+    el.id = 'golo-faq-schema';
+    el.textContent = JSON.stringify({ '@context':'https://schema.org', '@type':'FAQPage', mainEntity: main });
+    document.head.appendChild(el);
+  }
+
+  renderVals(){
+    const A = this.accentColor(), ink = '#13250a';
+    const showMost = this.props.showMostAsked ?? true;
+    const soft = this.hexA(A,.13), border = this.hexA(A,.4), glow = this.hexA(A,.42);
+
+    const starIcon = React.createElement('svg', { width:18, height:18, viewBox:'0 0 24 24', fill:'none', style:{display:'block'} },
+      React.createElement('path', { d:'M12 4l2.5 5.2 5.5.8-4 3.9 1 5.6-5-2.7-5 2.7 1-5.6-4-3.9 5.5-.8L12 4z', stroke:A, strokeWidth:1.7, strokeLinejoin:'round' }));
+
+    let n = 0;
+    const cats = this.CATS.map((c, ci) => {
+      return {
+        id:c.id, short:c.short, label:c.label, blurb:c.blurb, count:c.items.length,
+        num: String(ci + 1).padStart(2,'0'),
+        items: c.items.map(q => {
+          const open = this.isOpen(q.id);
+          n++;
+          return {
+            id:q.id, q:q.q, a:q.a,
+            toggle: () => this.toggle(q.id),
+            rotate: open ? 'rotate(45deg)' : 'rotate(0deg)',
+            maxH: open ? '460px' : '0px',
+            opacity: open ? 1 : 0,
+            border: open ? border : 'rgba(255,255,255,.12)',
+            hasNote: !!q.note, noteTag: q.noteTag || 'NOTE', note: q.note || '',
+            hasLink: !!q.linkHref, linkHref: q.linkHref || '#', linkLabel: q.linkLabel || ''
+          };
+        })
+      };
+    });
+
+    const byId = {};
+    this.CATS.forEach((c, ci) => c.items.forEach(q => { byId[q.id] = { q:q.q, ci }; }));
+    const mostAsked = this.MOST_ASKED.filter(id => byId[id]).map((id, i) => ({
+      id, q: byId[id].q, num: String(i + 1).padStart(2,'0'),
+      open: () => this.openKey(id)
+    }));
+
+    return {
+      accent:A, ink, accentSoft:soft, accentBorder:border, accentGlow:glow,
+      cats, countLine: n + ' questions \u00b7 ' + this.CATS.length + ' categories',
+      mostAsked, mostAskedDisplay: showMost ? 'block' : 'none', starIcon,
+      otherDocs:this.OTHER_DOCS
+    };
+  }
+}
+</script>
+</body>
+</html>

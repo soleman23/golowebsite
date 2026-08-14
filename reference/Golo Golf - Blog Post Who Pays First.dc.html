@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <style>
+    *{box-sizing:border-box;}
+    html,body{margin:0;padding:0;}
+    body{background:#0a0d10;}
+    a{text-decoration:none;color:inherit;}
+    a:hover{color:#d4f23a;}
+    ::selection{background:#d4f23a;color:#13250a;}
+    html{scroll-behavior:smooth;}
+    input::placeholder{color:rgba(255,255,255,.4);}
+    image-slot{display:block!important;width:100%!important;height:100%!important;color:rgba(255,255,255,.62)!important;}
+  </style>
+</helmet>
+
+<div style="font-family:system-ui,-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:#0a0d10;color:#fff;min-height:100vh;overflow-x:clip;">
+
+  <nav style="position:sticky;top:0;z-index:100;display:flex;align-items:center;justify-content:space-between;gap:20px;padding:14px clamp(18px,4vw,46px);background:rgba(10,13,16,.72);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);border-bottom:1px solid rgba(255,255,255,.08);">
+    <a href="Golo%20Golf%20-%20Landing%20Page.dc.html" style="display:flex;align-items:center;gap:11px;">
+      <span style="width:38px;height:38px;border-radius:11px;display:flex;align-items:center;justify-content:center;background:#0c0f12;border:1px solid rgba(255,255,255,.1);box-shadow:0 8px 22px rgba(212,242,58,.3);"><svg width="28" height="28" viewBox="0 0 120 124" fill="none" style="display:block"><path d="M56 20 A40 40 0 1 0 95.8 64" stroke="#d4f23a" stroke-width="12" stroke-linecap="round"></path><line x1="95.8" y1="64" x2="64" y2="64" stroke="#d4f23a" stroke-width="12" stroke-linecap="round"></line><circle cx="56" cy="58" r="15" fill="#fff"></circle><circle cx="56" cy="58" r="9" fill="none" stroke="rgba(10,36,24,0.28)" stroke-width="2.4"></circle><line x1="56" y1="44" x2="56" y2="14" stroke="#d4f23a" stroke-width="3.4"></line><path d="M56 14 L86 22 L56 34 Z" fill="#fff"></path></svg></span>
+      <span style="display:flex;align-items:flex-end;gap:0px;"><span style="font-size:21px;font-weight:800;letter-spacing:-.02em;color:#fff;line-height:1;">Go</span><span style="font-size:21px;font-weight:800;letter-spacing:-.02em;color:#d4f23a;line-height:1;">Lo</span></span>
+    </a>
+    <div style="display:flex;align-items:center;gap:30px;">
+      <div style="display:flex;align-items:center;gap:22px;">
+        <a href="Golo%20Golf%20-%20Features.dc.html" style="font-size:14px;font-weight:700;color:rgba(255,255,255,.66);">Features</a>
+        <a href="Golo%20Golf%20-%20Games.dc.html" style="font-size:14px;font-weight:700;color:rgba(255,255,255,.66);">Games</a>
+        <a href="Golo%20Golf%20-%20Landing%20Page.dc.html#how" style="font-size:14px;font-weight:700;color:rgba(255,255,255,.66);">How It Works</a>
+        <a href="Golo%20Golf%20-%20Blog.dc.html" style="font-size:14px;font-weight:800;color:#d4f23a;">Blog</a>
+        <a href="Golo%20Golf%20-%20FAQ.dc.html" style="font-size:14px;font-weight:700;color:rgba(255,255,255,.66);">FAQ</a>
+        <a href="Golo%20Golf%20-%20Contact.dc.html" style="font-size:14px;font-weight:700;color:rgba(255,255,255,.66);">Contact</a>
+      </div>
+      <a href="#get" style="display:flex;align-items:center;height:42px;padding:0 20px;border-radius:11px;background:#d4f23a;color:#13250a;font-size:14px;font-weight:800;box-shadow:0 6px 18px rgba(212,242,58,.42);">Get the app</a>
+    </div>
+  </nav>
+
+  <header style="position:relative;overflow:hidden;min-height:clamp(440px,52vw,620px);display:flex;align-items:flex-end;">
+    <div style="position:absolute;inset:0;background:rgba(255,255,255,.04);">
+      <x-import component-from-global-scope="image-slot" from="./image-slot.js" id="post-who-pays-hero" shape="rect" placeholder="Drop the hero photo — handshake on 18, or the parking lot at dusk" hint-size="100%,100%" style="width:100%;height:100%;display:block"></x-import>
+    </div>
+    <div style="position:absolute;inset:0;background-image:url('assets/sunset.png');background-size:cover;background-position:50% 46%;opacity:.5;pointer-events:none;"></div>
+    <div style="position:absolute;inset:0;background:linear-gradient(0deg, rgba(6,10,8,.95) 0%, rgba(6,10,8,.72) 38%, rgba(6,10,8,.18) 72%, rgba(6,10,8,.42) 100%);pointer-events:none;"></div>
+    <div style="position:absolute;left:-8%;top:-24%;width:52%;height:80%;background:radial-gradient(circle, rgba(212,242,58,.34) 0%, rgba(0,0,0,0) 66%);filter:blur(50px);pointer-events:none;"></div>
+
+    <div style="position:relative;width:100%;max-width:1200px;margin:0 auto;padding:clamp(40px,5vw,72px) clamp(18px,4vw,46px) clamp(32px,4vw,48px);">
+      <div style="display:flex;align-items:center;gap:9px;margin-bottom:22px;">
+        <a href="Golo%20Golf%20-%20Landing%20Page.dc.html" style="font-size:12.5px;font-weight:800;letter-spacing:.6px;color:rgba(255,255,255,.55);">Home</a>
+        <span style="font-size:12.5px;color:rgba(255,255,255,.3);">/</span>
+        <a href="Golo%20Golf%20-%20Blog.dc.html" style="font-size:12.5px;font-weight:800;letter-spacing:.6px;color:rgba(255,255,255,.55);">Blog</a>
+        <span style="font-size:12.5px;color:rgba(255,255,255,.3);">/</span>
+        <span style="font-size:12.5px;font-weight:800;letter-spacing:.6px;color:#d4f23a;">Settling up</span>
+      </div>
+
+      <div style="max-width:840px;">
+        <div style="display:flex;flex-wrap:wrap;align-items:center;gap:9px;margin-bottom:18px;">
+          <span style="display:inline-flex;align-items:center;height:30px;padding:0 13px;border-radius:9999px;background:#d4f23a;color:#13250a;font-size:11px;font-weight:800;letter-spacing:1.2px;">BETTING ETIQUETTE</span>
+          <span style="display:inline-flex;align-items:center;height:30px;padding:0 13px;border-radius:9999px;background:rgba(255,255,255,.13);border:1px solid rgba(255,255,255,.2);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);font-size:11px;font-weight:800;letter-spacing:1.2px;color:rgba(255,255,255,.84);">5 MIN READ</span>
+        </div>
+        <h1 style="font-size:clamp(34px,5.4vw,60px);font-weight:800;line-height:1.02;letter-spacing:-.03em;margin:0 0 20px;text-wrap:balance;">Who pays first? The unwritten rules of settling up</h1>
+        <p style="font-size:clamp(16px,1.6vw,20px);line-height:1.6;font-weight:600;color:rgba(255,255,255,.74);margin:0 0 26px;max-width:700px;text-wrap:pretty;">Nine rules, ranked by how often your group breaks them. Number one is not negotiable: if you lost, you pay, and you pay first.</p>
+        <div style="display:flex;flex-wrap:wrap;align-items:center;gap:14px;">
+          <span style="display:inline-flex;align-items:center;gap:10px;height:44px;padding:0 16px 0 10px;border-radius:9999px;background:rgba(20,28,24,.6);border:1px solid rgba(255,255,255,.14);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);">
+            <span style="width:28px;height:28px;border-radius:8px;display:flex;align-items:center;justify-content:center;background:#0c0f12;border:1px solid rgba(255,255,255,.12);"><svg width="19" height="19" viewBox="0 0 120 124" fill="none" style="display:block"><path d="M56 20 A40 40 0 1 0 95.8 64" stroke="#d4f23a" stroke-width="12" stroke-linecap="round"></path><line x1="95.8" y1="64" x2="64" y2="64" stroke="#d4f23a" stroke-width="12" stroke-linecap="round"></line><circle cx="56" cy="58" r="15" fill="#fff"></circle><line x1="56" y1="44" x2="56" y2="14" stroke="#d4f23a" stroke-width="3.4"></line><path d="M56 14 L86 22 L56 34 Z" fill="#fff"></path></svg></span>
+            <span style="font-size:13.5px;font-weight:800;color:#fff;">From the GoLo team</span>
+          </span>
+          <span style="font-size:13.5px;font-weight:700;color:rgba(255,255,255,.5);">August 11, 2026</span>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <article style="position:relative;background:#0a0d10;">
+    <div style="max-width:760px;margin:0 auto;padding:clamp(38px,5vw,64px) clamp(18px,4vw,46px) clamp(30px,4vw,48px);display:flex;flex-direction:column;gap:26px;">
+
+      <p style="font-size:19px;line-height:1.72;font-weight:600;color:rgba(255,255,255,.86);margin:0;text-wrap:pretty;">Golf has a rulebook, a governing body on two continents, and an official decision on what to do when your ball comes to rest against a burrowing animal. It has nothing whatsoever to say about when you hand over the ten dollars. So your group made up its own norms, and your group is quietly certain they're the universal ones.</p>
+      <p style="font-size:19px;line-height:1.72;font-weight:600;color:rgba(255,255,255,.86);margin:0;text-wrap:pretty;">Here they are, ranked by how often they get broken rather than how noble they sound. Rule one is not up for discussion.</p>
+
+      <div style="border-radius:22px;background:rgba(20,28,24,.5);border:1px solid rgba(255,255,255,.13);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);padding:26px 28px;display:flex;flex-direction:column;gap:16px;">
+        <div style="font-size:11px;font-weight:800;letter-spacing:1.4px;color:rgba(255,255,255,.45);">SETTLING UP AT A GLANCE</div>
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:16px;">
+          <div style="display:flex;flex-direction:column;gap:5px;"><span style="font-size:12px;font-weight:800;letter-spacing:1px;color:#d4f23a;">WHO MOVES FIRST</span><span style="font-size:15px;font-weight:700;line-height:1.5;color:rgba(255,255,255,.8);">Whoever's down. Winners don't invoice.</span></div>
+          <div style="display:flex;flex-direction:column;gap:5px;"><span style="font-size:12px;font-weight:800;letter-spacing:1px;color:#d4f23a;">WHEN</span><span style="font-size:15px;font-weight:700;line-height:1.5;color:rgba(255,255,255,.8);">In the lot, before anyone drives off</span></div>
+          <div style="display:flex;flex-direction:column;gap:5px;"><span style="font-size:12px;font-weight:800;letter-spacing:1px;color:#d4f23a;">HOW</span><span style="font-size:15px;font-weight:700;line-height:1.5;color:rgba(255,255,255,.8);">Cash under $20, app over it</span></div>
+          <div style="display:flex;flex-direction:column;gap:5px;"><span style="font-size:12px;font-weight:800;letter-spacing:1px;color:#d4f23a;">THE ODD DOLLAR</span><span style="font-size:15px;font-weight:700;line-height:1.5;color:rgba(255,255,255,.8);">Round against yourself. Always.</span></div>
+        </div>
+      </div>
+
+      <h2 style="font-size:clamp(24px,2.6vw,30px);font-weight:800;line-height:1.15;letter-spacing:-.022em;margin:16px 0 0;text-wrap:balance;">The nine rules, most-violated first</h2>
+
+      <div style="display:flex;flex-direction:column;gap:14px;">
+
+        <div style="display:flex;gap:20px;align-items:flex-start;padding:24px 26px;border-radius:20px;background:rgba(20,28,24,.5);border:1px solid rgba(212,242,58,.3);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);">
+          <span style="flex:0 0 auto;font-size:44px;font-weight:800;line-height:.82;letter-spacing:-.05em;color:#d4f23a;min-width:56px;">01</span>
+          <div style="display:flex;flex-direction:column;gap:8px;">
+            <span style="font-size:10.5px;font-weight:800;letter-spacing:1.4px;color:#d4f23a;">BROKEN EVERY SATURDAY</span>
+            <span style="font-size:18px;font-weight:800;line-height:1.3;letter-spacing:-.015em;color:#fff;text-wrap:balance;">The loser pays. Unprompted.</span>
+            <span style="font-size:16px;line-height:1.65;font-weight:600;color:rgba(255,255,255,.66);text-wrap:pretty;">You lost, so the money is your errand. Nobody should have to ask, because asking is the moment a friendly bet turns into an invoice. The man already sat through your account of the drive on 14. Making him also request his ten dollars is a lot to put on one afternoon.</span>
+          </div>
+        </div>
+
+        <div style="display:flex;gap:20px;align-items:flex-start;padding:24px 26px;border-radius:20px;background:rgba(20,28,24,.5);border:1px solid rgba(255,255,255,.12);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);">
+          <span style="flex:0 0 auto;font-size:44px;font-weight:800;line-height:.82;letter-spacing:-.05em;color:rgba(255,255,255,.3);min-width:56px;">02</span>
+          <div style="display:flex;flex-direction:column;gap:8px;">
+            <span style="font-size:18px;font-weight:800;line-height:1.3;letter-spacing:-.015em;color:#fff;text-wrap:balance;">"Catch you next week" is not a payment.</span>
+            <span style="font-size:16px;line-height:1.65;font-weight:600;color:rgba(255,255,255,.66);text-wrap:pretty;">It's a subscription. Once is fine, from a guy who genuinely shows up every week, for a number nobody will remember. Twice and you've become the group's least favorite lender. And never let a balance ride into the next round: carry $12 into next Saturday's $10 Nassau and one of you is now playing for $22, which one of you did not agree to.</span>
+          </div>
+        </div>
+
+        <div style="display:flex;gap:20px;align-items:flex-start;padding:24px 26px;border-radius:20px;background:rgba(20,28,24,.5);border:1px solid rgba(255,255,255,.12);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);">
+          <span style="flex:0 0 auto;font-size:44px;font-weight:800;line-height:.82;letter-spacing:-.05em;color:rgba(255,255,255,.3);min-width:56px;">03</span>
+          <div style="display:flex;flex-direction:column;gap:8px;">
+            <span style="font-size:18px;font-weight:800;line-height:1.3;letter-spacing:-.015em;color:#fff;text-wrap:balance;">Money moves in the parking lot, not in the group text.</span>
+            <span style="font-size:16px;line-height:1.65;font-weight:600;color:rgba(255,255,255,.66);text-wrap:pretty;">The lot is the last moment all four of you are in one place with the same memory of what happened. Let everyone drive off and the settle becomes a thread; the thread becomes a debate about whether the press on 15 counted; the thread dies Tuesday at 11pm when somebody replies with a laughing emoji instead of six dollars. If it truly has to happen later, say the day out loud — 48 hours is the ceiling, not the plan.</span>
+          </div>
+        </div>
+
+        <div style="display:flex;gap:20px;align-items:flex-start;padding:24px 26px;border-radius:20px;background:rgba(20,28,24,.5);border:1px solid rgba(255,255,255,.12);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);">
+          <span style="flex:0 0 auto;font-size:44px;font-weight:800;line-height:.82;letter-spacing:-.05em;color:rgba(255,255,255,.3);min-width:56px;">04</span>
+          <div style="display:flex;flex-direction:column;gap:8px;">
+            <span style="font-size:18px;font-weight:800;line-height:1.3;letter-spacing:-.015em;color:#fff;text-wrap:balance;">The junk gets paid with the match.</span>
+            <span style="font-size:16px;line-height:1.65;font-weight:600;color:rgba(255,255,255,.66);text-wrap:pretty;">Greenies, sandies, closest-to-the-pin, the skin nobody claimed on 7 — real dollars, and the first ones to evaporate. Total them on 18 alongside the match so every player ends up with one figure. "We'll sort the junk out later" is the most expensive sentence in amateur golf, because later means whoever remembers loudest wins.</span>
+          </div>
+        </div>
+
+        <div style="display:flex;gap:20px;align-items:flex-start;padding:24px 26px;border-radius:20px;background:rgba(20,28,24,.5);border:1px solid rgba(255,255,255,.12);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);">
+          <span style="flex:0 0 auto;font-size:44px;font-weight:800;line-height:.82;letter-spacing:-.05em;color:rgba(255,255,255,.3);min-width:56px;">05</span>
+          <div style="display:flex;flex-direction:column;gap:8px;">
+            <span style="font-size:18px;font-weight:800;line-height:1.3;letter-spacing:-.015em;color:#fff;text-wrap:balance;">Settle players, not bets.</span>
+            <span style="font-size:16px;line-height:1.65;font-weight:600;color:rgba(255,255,255,.66);text-wrap:pretty;">Four players have six relationships. Pay them out one wager at a time and you'll stand there handing the same twenty around a circle until someone's wife calls. Net everything — Nassau, skins, junk — into one number per person, then move the fewest dollars that make everybody whole. It's usually two or three payments instead of six, and it ends the arithmetic before the beer gets warm.</span>
+          </div>
+        </div>
+
+        <div style="display:flex;gap:20px;align-items:flex-start;padding:24px 26px;border-radius:20px;background:rgba(20,28,24,.5);border:1px solid rgba(255,255,255,.12);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);">
+          <span style="flex:0 0 auto;font-size:44px;font-weight:800;line-height:.82;letter-spacing:-.05em;color:rgba(255,255,255,.3);min-width:56px;">06</span>
+          <div style="display:flex;flex-direction:column;gap:8px;">
+            <span style="font-size:18px;font-weight:800;line-height:1.3;letter-spacing:-.015em;color:#fff;text-wrap:balance;">Round against yourself.</span>
+            <span style="font-size:16px;line-height:1.65;font-weight:600;color:rgba(255,255,255,.66);text-wrap:pretty;">Split skins and half-strokes produce numbers like $7.50, and nobody is making change on a cart path. Pay the extra dollar; collect the lesser one. If that dollar changes how you feel about the day, the stakes were wrong — and that's a first-tee problem, not a settle-up problem.</span>
+          </div>
+        </div>
+
+        <div style="display:flex;gap:20px;align-items:flex-start;padding:24px 26px;border-radius:20px;background:rgba(20,28,24,.5);border:1px solid rgba(255,255,255,.12);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);">
+          <span style="flex:0 0 auto;font-size:44px;font-weight:800;line-height:.82;letter-spacing:-.05em;color:rgba(255,255,255,.3);min-width:56px;">07</span>
+          <div style="display:flex;flex-direction:column;gap:8px;">
+            <span style="font-size:18px;font-weight:800;line-height:1.3;letter-spacing:-.015em;color:#fff;text-wrap:balance;">Cash if it's small, app if it isn't — and send it while you're standing there.</span>
+            <span style="font-size:16px;line-height:1.65;font-weight:600;color:rgba(255,255,255,.66);text-wrap:pretty;">Cash is undefeated: instant, unforgettable, impossible to renegotiate. Keep a couple of twenties in the bag and you'll never be the holdup. Above roughly twenty bucks, Venmo or Zelle is perfectly fine on one condition — you send it in the lot, not from your couch. "I'll send it when I get home" has never once been true. Add a note ("back nine + greenie"), because a bare $14 in somebody's feed three weeks later is a riddle.</span>
+          </div>
+        </div>
+
+        <div style="display:flex;gap:20px;align-items:flex-start;padding:24px 26px;border-radius:20px;background:rgba(20,28,24,.5);border:1px solid rgba(255,255,255,.12);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);">
+          <span style="flex:0 0 auto;font-size:44px;font-weight:800;line-height:.82;letter-spacing:-.05em;color:rgba(255,255,255,.3);min-width:56px;">08</span>
+          <div style="display:flex;flex-direction:column;gap:8px;">
+            <span style="font-size:18px;font-weight:800;line-height:1.3;letter-spacing:-.015em;color:#fff;text-wrap:balance;">If the number ran away, the winner brings it back.</span>
+            <span style="font-size:16px;line-height:1.65;font-weight:600;color:rgba(255,255,255,.66);text-wrap:pretty;">Presses compound, and every so often a man walks off 18 owing four times what he thought he was risking. That's the group's fault, not his. Collect the number he expected to lose and forgive the runaway. A bet that actually stings stops being a game, and the guy who felt it will develop a standing Saturday conflict. This isn't charity — it's foursome maintenance.</span>
+          </div>
+        </div>
+
+        <div style="display:flex;gap:20px;align-items:flex-start;padding:24px 26px;border-radius:20px;background:rgba(20,28,24,.5);border:1px solid rgba(255,255,255,.12);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);">
+          <span style="flex:0 0 auto;font-size:44px;font-weight:800;line-height:.82;letter-spacing:-.05em;color:rgba(255,255,255,.3);min-width:56px;">09</span>
+          <div style="display:flex;flex-direction:column;gap:8px;">
+            <span style="font-size:18px;font-weight:800;line-height:1.3;letter-spacing:-.015em;color:#fff;text-wrap:balance;">Be careful with the new guy's money.</span>
+            <span style="font-size:16px;line-height:1.65;font-weight:600;color:rgba(255,255,255,.66);text-wrap:pretty;">Take it if he insisted on playing — refusing has its own sting. But don't run the full press ladder at somebody who hasn't learned your house rules yet, and tell him the stakes on the first tee instead of the ninth green. The fastest way to turn a guest into a permanent fourth is to let him leave roughly even and slightly curious.</span>
+          </div>
+        </div>
+
+      </div>
+
+      <div style="display:flex;gap:16px;align-items:flex-start;padding:22px 24px;border-radius:20px;background:rgba(212,242,58,.1);border:1px solid rgba(212,242,58,.3);">
+        <span style="flex:0 0 auto;width:34px;height:34px;border-radius:11px;display:flex;align-items:center;justify-content:center;background:#d4f23a;color:#13250a;font-size:17px;font-weight:800;">!</span>
+        <div style="display:flex;flex-direction:column;gap:6px;">
+          <span style="font-size:11px;font-weight:800;letter-spacing:1.4px;color:#d4f23a;">THE ONE HABIT THAT FIXES EIGHT OF THESE</span>
+          <span style="font-size:16.5px;line-height:1.62;font-weight:700;color:rgba(255,255,255,.82);text-wrap:pretty;">Say the numbers out loud on the 18th green, while everyone is still standing there. Not "I think you got me" — actual figures, one per player, agreed in sixty seconds. Nearly all settle-up friction is a number two people never said to each other's faces.</span>
+        </div>
+      </div>
+
+      <blockquote style="margin:14px 0;padding:0 0 0 26px;border-left:3px solid #d4f23a;">
+        <p style="font-size:clamp(21px,2.4vw,27px);line-height:1.4;font-weight:800;letter-spacing:-.018em;color:#fff;margin:0;text-wrap:balance;">Nobody minds losing ten dollars. Everybody minds asking for it twice.</p>
+      </blockquote>
+
+      <figure style="margin:14px 0 0;display:flex;flex-direction:column;gap:12px;">
+        <div style="position:relative;aspect-ratio:16/9;border-radius:20px;overflow:hidden;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.12);">
+          <x-import component-from-global-scope="image-slot" from="./image-slot.js" id="post-who-pays-inline" shape="rect" placeholder="Drop a parking-lot / tailgate settle-up photo here" hint-size="100%,100%" style="width:100%;height:100%;display:block"></x-import>
+        </div>
+        <figcaption style="font-size:14px;line-height:1.6;font-weight:600;color:rgba(255,255,255,.42);text-wrap:pretty;">The tailgate is the real 19th hole. Anything that doesn't get settled here gets litigated by group text on Tuesday.</figcaption>
+      </figure>
+
+      <h2 style="font-size:clamp(24px,2.6vw,30px);font-weight:800;line-height:1.15;letter-spacing:-.022em;margin:16px 0 0;text-wrap:balance;">Why any of this matters over eleven dollars</h2>
+      <p style="font-size:17.5px;line-height:1.75;font-weight:600;color:rgba(255,255,255,.72);margin:0;text-wrap:pretty;">Because the money was never the point. The bet exists to make a twilight round on a Tuesday feel like it counts — to give the eight-footer on 12 a reason to matter. Settling is what keeps that device working. Pay fast, pay first, round against yourself, and the bet stays a game instead of becoming a small unspoken thing between two guys who used to enjoy playing together.</p>
+      <p style="font-size:17.5px;line-height:1.75;font-weight:600;color:rgba(255,255,255,.72);margin:0;text-wrap:pretty;">And if remembering all nine sounds like work: the honest reason groups break these rules isn't character, it's arithmetic. Nobody wants to do six-way netting in a parking lot with a beer in his hand. So don't. Let something else keep the tally and just move the money.</p>
+
+      <div style="display:flex;flex-wrap:wrap;align-items:center;gap:12px;padding-top:14px;border-top:1px solid rgba(255,255,255,.09);margin-top:12px;">
+        <span style="font-size:11px;font-weight:800;letter-spacing:1.4px;color:rgba(255,255,255,.42);margin-right:4px;">SHARE THIS</span>
+        <button onClick="{{ onCopy }}" style="display:inline-flex;align-items:center;height:40px;padding:0 16px;border-radius:11px;background:rgba(255,255,255,.09);border:1px solid rgba(255,255,255,.16);color:#fff;font-family:inherit;font-size:13.5px;font-weight:800;cursor:pointer;" style-hover="border-color:rgba(212,242,58,.5);color:#d4f23a;">{{ copyLabel }}</button>
+        <a href="https://twitter.com/intent/tweet" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;height:40px;padding:0 16px;border-radius:11px;background:rgba(255,255,255,.09);border:1px solid rgba(255,255,255,.16);font-size:13.5px;font-weight:800;color:#fff;" style-hover="border-color:rgba(212,242,58,.5);color:#d4f23a;">Post on X</a>
+        <a href="mailto:?subject=Who%20pays%20first%3F%20The%20unwritten%20rules%20of%20settling%20up" style="display:inline-flex;align-items:center;height:40px;padding:0 16px;border-radius:11px;background:rgba(255,255,255,.09);border:1px solid rgba(255,255,255,.16);font-size:13.5px;font-weight:800;color:#fff;" style-hover="border-color:rgba(212,242,58,.5);color:#d4f23a;">Email it</a>
+        <a href="#get" style="display:inline-flex;align-items:center;height:40px;padding:0 16px;border-radius:11px;background:rgba(212,242,58,.14);border:1px solid rgba(212,242,58,.34);font-size:13.5px;font-weight:800;color:#d4f23a;margin-left:auto;">Get the app →</a>
+      </div>
+    </div>
+  </article>
+
+  <section style="background:#080b0d;border-top:1px solid rgba(255,255,255,.07);">
+    <div style="max-width:1200px;margin:0 auto;padding:clamp(40px,5vw,64px) clamp(18px,4vw,46px);">
+      <div style="display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:12px;margin-bottom:20px;">
+        <div style="font-size:11px;font-weight:800;letter-spacing:1.6px;color:rgba(255,255,255,.4);">KEEP READING</div>
+        <a href="Golo%20Golf%20-%20Blog.dc.html" style="font-size:13px;font-weight:800;letter-spacing:.6px;color:#d4f23a;">ALL POSTS →</a>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px;">
+        <sc-for list="{{ related }}" as="r" hint-placeholder-count="3">
+          <a href="{{ r.href }}" style="display:flex;flex-direction:column;border-radius:20px;overflow:hidden;background:rgba(20,28,24,.5);border:1px solid rgba(255,255,255,.12);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);" style-hover="border-color:rgba(212,242,58,.45);background:rgba(24,34,28,.66);">
+            <div style="position:relative;aspect-ratio:16/10;background:rgba(255,255,255,.04);border-bottom:1px solid rgba(255,255,255,.08);">
+              <x-import component-from-global-scope="image-slot" from="./image-slot.js" id="{{ r.slotId }}" shape="rect" placeholder="{{ r.slotHint }}" hint-size="100%,100%" style="width:100%;height:100%;display:block"></x-import>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:9px;padding:18px 20px 22px;">
+              <span style="font-size:10.5px;font-weight:800;letter-spacing:1.3px;color:#d4f23a;">{{ r.catLabel }}</span>
+              <h3 style="font-size:17.5px;font-weight:800;line-height:1.24;letter-spacing:-.018em;color:#fff;margin:0;text-wrap:pretty;">{{ r.title }}</h3>
+              <p style="font-size:14px;font-weight:600;line-height:1.6;color:rgba(255,255,255,.6);margin:0;text-wrap:pretty;">{{ r.excerpt }}</p>
+            </div>
+          </a>
+        </sc-for>
+      </div>
+    </div>
+  </section>
+
+  <section style="display: {{ newsletterDisplay }};background:#080b0d;border-top:1px solid rgba(255,255,255,.07);">
+    <div style="max-width:1200px;margin:0 auto;padding:clamp(36px,4.5vw,58px) clamp(18px,4vw,46px);">
+      <div style="border-radius:24px;padding:clamp(26px,3.4vw,40px);background:rgba(20,28,24,.5);border:1px solid rgba(255,255,255,.13);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);display:flex;flex-wrap:wrap;gap:26px;align-items:center;justify-content:space-between;">
+        <div style="flex:1 1 340px;">
+          <div style="font-size:12px;font-weight:800;letter-spacing:2.2px;color:#d4f23a;margin-bottom:12px;">ONE EMAIL, WHEN IT'S WORTH IT</div>
+          <div style="font-size:clamp(22px,2.6vw,30px);font-weight:800;line-height:1.12;letter-spacing:-.022em;margin-bottom:8px;text-wrap:balance;">New formats, build notes, and the launch date when we have one.</div>
+          <div style="font-size:15px;font-weight:600;line-height:1.6;color:rgba(255,255,255,.55);max-width:460px;">No drip sequence, no course-of-the-week. Unsubscribe in one click.</div>
+        </div>
+        <div style="flex:0 1 400px;min-width:280px;">
+          <div style="display: {{ formDisplay }};flex-wrap:wrap;gap:10px;">
+            <input type="email" value="{{ email }}" onInput="{{ onEmail }}" placeholder="you@email.com" style="flex:1 1 200px;height:52px;padding:0 16px;border-radius:13px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.16);color:#fff;font-family:inherit;font-size:15px;font-weight:600;outline:none;" style-focus="border-color:rgba(212,242,58,.6);">
+            <button onClick="{{ onSubmit }}" style="height:52px;padding:0 24px;border-radius:13px;background:#d4f23a;color:#13250a;border:none;font-family:inherit;font-size:15px;font-weight:800;cursor:pointer;box-shadow:0 10px 26px rgba(212,242,58,.34);">Join the list</button>
+          </div>
+          <div style="display: {{ doneDisplay }};align-items:center;gap:11px;height:52px;padding:0 18px;border-radius:13px;background:rgba(212,242,58,.14);border:1px solid rgba(212,242,58,.36);">
+            <span style="width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:#d4f23a;color:#13250a;font-size:13px;font-weight:800;">✓</span>
+            <span style="font-size:14.5px;font-weight:800;color:#d4f23a;">You're on the list. Talk soon.</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="get" style="position:relative;overflow:hidden;background:#0a0d10;">
+    <div style="position:absolute;inset:0;background-image:url('assets/turf.png');background-size:cover;background-position:50% 50%;opacity:.5;"></div>
+    <div style="position:absolute;inset:0;background:linear-gradient(180deg, rgba(8,12,9,.86) 0%, rgba(6,11,8,.94) 100%);"></div>
+    <div style="position:relative;max-width:1200px;margin:0 auto;padding:clamp(46px,6vw,78px) clamp(18px,4vw,46px);display:flex;flex-wrap:wrap;gap:28px;align-items:center;justify-content:space-between;">
+      <div style="flex:1 1 380px;">
+        <div style="font-size:12px;font-weight:800;letter-spacing:2.4px;color:#d4f23a;margin-bottom:14px;">TRACK IT. BET IT. SETTLE IT.</div>
+        <div style="font-size:clamp(28px,3.4vw,44px);font-weight:800;line-height:1.06;letter-spacing:-.025em;max-width:620px;text-wrap:balance;">One number per player, before anyone leaves the lot.</div>
+      </div>
+      <div style="display:flex;flex-wrap:wrap;gap:12px;">
+        <a href="#get" style="display:flex;align-items:center;height:52px;padding:0 26px;border-radius:13px;background:#d4f23a;color:#13250a;font-size:15px;font-weight:800;box-shadow:0 10px 28px rgba(212,242,58,.42);">Get the app</a>
+        <a href="Golo%20Golf%20-%20Games.dc.html" style="display:flex;align-items:center;height:52px;padding:0 26px;border-radius:13px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.18);font-size:15px;font-weight:800;color:#fff;">Browse the games</a>
+      </div>
+    </div>
+  </section>
+
+  <footer style="background:#070a0c;border-top:1px solid rgba(255,255,255,.08);">
+    <div style="max-width:1200px;margin:0 auto;padding:clamp(40px,5vw,64px) clamp(18px,4vw,46px) 30px;display:flex;flex-wrap:wrap;gap:40px;justify-content:space-between;">
+      <div style="max-width:300px;">
+        <a href="Golo%20Golf%20-%20Landing%20Page.dc.html" style="display:flex;align-items:center;gap:11px;margin-bottom:16px;">
+          <span style="width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center;background:#0c0f12;border:1px solid rgba(255,255,255,.1);"><svg width="26" height="26" viewBox="0 0 120 124" fill="none" style="display:block"><path d="M56 20 A40 40 0 1 0 95.8 64" stroke="#d4f23a" stroke-width="12" stroke-linecap="round"></path><line x1="95.8" y1="64" x2="64" y2="64" stroke="#d4f23a" stroke-width="12" stroke-linecap="round"></line><circle cx="56" cy="58" r="15" fill="#fff"></circle><circle cx="56" cy="58" r="9" fill="none" stroke="rgba(10,36,24,0.28)" stroke-width="2.4"></circle><line x1="56" y1="44" x2="56" y2="14" stroke="#d4f23a" stroke-width="3.4"></line><path d="M56 14 L86 22 L56 34 Z" fill="#fff"></path></svg></span>
+          <span style="display:flex;align-items:flex-end;"><span style="font-size:20px;font-weight:800;color:#fff;line-height:1;">Go</span><span style="font-size:20px;font-weight:800;color:#d4f23a;line-height:1;">Lo</span></span>
+        </a>
+        <p style="font-size:14px;line-height:1.6;color:rgba(255,255,255,.5);margin:0;">Track it. Bet it. Settle it. The scorekeeper that finally settles the bet.</p>
+      </div>
+      <div style="display:flex;flex-wrap:wrap;gap:48px;">
+        <div><div style="font-size:12px;font-weight:800;letter-spacing:1.4px;color:rgba(255,255,255,.45);margin-bottom:14px;">PRODUCT</div><div style="display:flex;flex-direction:column;gap:10px;"><a href="Golo%20Golf%20-%20Features.dc.html" style="font-size:14px;font-weight:600;color:rgba(255,255,255,.66);">Features</a><a href="Golo%20Golf%20-%20Landing%20Page.dc.html#how" style="font-size:14px;font-weight:600;color:rgba(255,255,255,.66);">How it works</a><a href="#get" style="font-size:14px;font-weight:600;color:rgba(255,255,255,.66);">Download</a></div></div>
+        <div><div style="font-size:12px;font-weight:800;letter-spacing:1.4px;color:rgba(255,255,255,.45);margin-bottom:14px;">GAMES</div><div style="display:flex;flex-direction:column;gap:10px;"><a href="Golo%20Golf%20-%20Games.dc.html" style="font-size:14px;font-weight:600;color:rgba(255,255,255,.66);">All games</a><a href="Golo%20Golf%20-%20Game%20Nassau.dc.html" style="font-size:14px;font-weight:600;color:rgba(255,255,255,.66);">Nassau</a><a href="Golo%20Golf%20-%20Games.dc.html" style="font-size:14px;font-weight:600;color:rgba(255,255,255,.66);">Skins</a></div></div>
+        <div><div style="font-size:12px;font-weight:800;letter-spacing:1.4px;color:rgba(255,255,255,.45);margin-bottom:14px;">LEGAL</div><div style="display:flex;flex-direction:column;gap:10px;"><a href="Golo%20Golf%20-%20Legal%20Terms.dc.html" style="font-size:14px;font-weight:600;color:rgba(255,255,255,.66);">Terms of Service</a><a href="Golo%20Golf%20-%20Legal%20Privacy.dc.html" style="font-size:14px;font-weight:600;color:rgba(255,255,255,.66);">Privacy Policy</a><a href="#" style="font-size:14px;font-weight:600;color:rgba(255,255,255,.66);">Cookie Policy</a><a href="#" style="font-size:14px;font-weight:600;color:rgba(255,255,255,.66);">Acceptable Use</a></div></div>
+        <div><div style="font-size:12px;font-weight:800;letter-spacing:1.4px;color:rgba(255,255,255,.45);margin-bottom:14px;">COMPANY</div><div style="display:flex;flex-direction:column;gap:10px;"><a href="Golo%20Golf%20-%20Blog.dc.html" style="font-size:14px;font-weight:600;color:#d4f23a;">Blog</a><a href="Golo%20Golf%20-%20FAQ.dc.html" style="font-size:14px;font-weight:600;color:rgba(255,255,255,.66);">FAQ</a><a href="Golo%20Golf%20-%20Contact.dc.html" style="font-size:14px;font-weight:600;color:rgba(255,255,255,.66);">Contact</a><a href="mailto:support@gologolf.app" style="font-size:14px;font-weight:600;color:rgba(255,255,255,.66);">Support</a></div></div>
+      </div>
+    </div>
+    <div style="max-width:1200px;margin:0 auto;padding:20px clamp(18px,4vw,46px);border-top:1px solid rgba(255,255,255,.07);display:flex;flex-wrap:wrap;gap:12px;justify-content:space-between;align-items:center;">
+      <span style="font-size:13px;color:rgba(255,255,255,.4);">© 2026 GoLo Golf LLC. All rights reserved.</span>
+      <span style="font-size:13px;color:rgba(255,255,255,.4);max-width:560px;">GoLo helps you track friendly wagers between playing partners. Keep it friendly, settle up, and play your local rules.</span>
+    </div>
+  </footer>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1200,&quot;height&quot;:1600},&quot;showNewsletter&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Page&quot;}}">
+class Component extends DCLogic {
+  state = { email: '', joined: false, copied: false };
+
+  RELATED = [
+    { cat:'GAME RULES & HOW-TO', slug:'nassau', href:'Golo%20Golf%20-%20Blog%20Post.dc.html', title:'How to play a Nassau: the $2 bet that runs every group in America', excerpt:'Front nine, back nine, total match \u2014 plus presses. The whole format in five minutes.' },
+    { cat:'BETTING ETIQUETTE', slug:'pressing', href:'#', title:'Pressing: when it\u2019s fair game and when it\u2019s just rude', excerpt:'The automatic 2-down press, the vulture press, and the one press that gets you left off next week\u2019s text.' },
+    { cat:'PRODUCT UPDATES', slug:'settle-up-screen', href:'#', title:'Building the settle-up screen, and why it took four tries', excerpt:'The math was the easy part. Turning five players\u2019 debts into the fewest payments \u2014 legibly \u2014 was not.' }
+  ];
+
+  renderVals(){
+    return {
+      related: this.RELATED.map(r => ({
+        title:r.title, excerpt:r.excerpt, catLabel:r.cat, href:r.href,
+        slotId:'postrel-' + r.slug,
+        slotHint:'Photo for \u201c' + r.title.split(':')[0] + '\u201d'
+      })),
+      newsletterDisplay: (this.props.showNewsletter ?? true) ? 'block' : 'none',
+      formDisplay: this.state.joined ? 'none' : 'flex',
+      doneDisplay: this.state.joined ? 'flex' : 'none',
+      email: this.state.email,
+      copyLabel: this.state.copied ? 'Link copied' : 'Copy link',
+      onCopy: () => {
+        try { navigator.clipboard.writeText(location.href); } catch(e) {}
+        this.setState({ copied: true });
+        setTimeout(() => this.setState({ copied: false }), 2000);
+      },
+      onEmail: (e) => this.setState({ email: e.target.value }),
+      onSubmit: () => { if (/.+@.+\..+/.test(this.state.email)) this.setState({ joined: true }); }
+    };
+  }
+}
+</script>
+</body>
+</html>
