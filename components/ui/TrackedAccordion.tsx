@@ -19,6 +19,7 @@ type TrackedAccordionProps = {
   headingLevel?: 2 | 3 | 4;
   maxPanelHeight?: number;
   idPrefix?: string;
+  deepLink?: boolean;
 };
 
 export function TrackedAccordion({ page, ...rest }: TrackedAccordionProps) {

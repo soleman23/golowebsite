@@ -1,0 +1,216 @@
+/* ---------- wide: sticky sidebar ---------- */
+
+.rail {
+  position: sticky;
+  /* Nav is 70px; 96 leaves the rail a clear gap under it. */
+  top: 96px;
+  max-height: calc(100vh - 128px);
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  padding: 20px 16px;
+  border-radius: 20px;
+  /* --glass-sheet, not --glass-surface: this is sticky, and sticky elements on
+     this site can't carry backdrop-filter (Chromium blanks the page on
+     scroll), so the sheet leans on opacity instead of blur. */
+  background: var(--glass-sheet);
+  border: 1px solid var(--glass-chrome);
+}
+
+.title {
+  margin: 0;
+  padding: 0 8px 12px;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 1.4px;
+  color: var(--text-muted);
+}
+
+.list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.row {
+  /* Containing block for the .sr-only span in .count. Without it that
+     absolutely-positioned span isn't clipped by the chip row's overflow at mid
+     width — it sits at its static position out past 1400px and drags the whole
+     document into a horizontal scroll, which no ancestor overflow can stop. */
+  position: relative;
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 9px;
+  border-radius: 10px;
+  font-size: 13.5px;
+  font-weight: 700;
+  line-height: 1.4;
+  color: var(--text-secondary);
+  transition: background 0.14s ease, color 0.14s ease;
+}
+
+.row:hover {
+  background: rgba(255, 255, 255, 0.07);
+  color: var(--accent);
+}
+
+.active {
+  background: var(--accent-soft);
+  color: var(--accent);
+}
+
+.num {
+  min-width: 16px;
+  padding-top: 2px;
+  font-size: 11.5px;
+  font-weight: 800;
+  color: var(--text-muted);
+  font-variant-numeric: tabular-nums;
+}
+
+.active .num,
+.active .count {
+  color: var(--accent);
+}
+
+.label {
+  flex: 1 1 auto;
+}
+
+/* The short form only comes out in chip mode. */
+.short {
+  display: none;
+}
+
+.count {
+  padding-top: 2px;
+  font-size: 11.5px;
+  font-weight: 800;
+  color: var(--text-muted);
+  font-variant-numeric: tabular-nums;
+}
+
+.stuck {
+  margin-top: 14px;
+  padding: 14px 12px;
+  border-radius: var(--radius-tile);
+  background: var(--accent-soft);
+  border: 1px solid var(--accent-border);
+}
+
+.stuckTitle {
+  margin: 0 0 8px;
+  font-size: 13.5px;
+  font-weight: 800;
+  line-height: 1.4;
+  color: #fff;
+}
+
+.stuckLink {
+  font-size: 12.5px;
+  font-weight: 800;
+  letter-spacing: 0.6px;
+  color: var(--accent);
+}
+
+.stuckLink:hover {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+/* ---------- mid and narrow: horizontal chip row ---------- */
+@media (max-width: 1099px) {
+  .rail {
+    position: static;
+    max-height: none;
+    overflow-y: visible;
+    min-width: 0;
+    flex-direction: row;
+    align-items: center;
+    gap: 10px;
+    padding: 0;
+    background: none;
+    border: none;
+    border-radius: 0;
+  }
+
+  .title {
+    display: none;
+  }
+
+  /* Same scrolling-chip-row treatment as ChipFilter on /games and /blog: no
+     visible scrollbar, snap points. Not ChipFilter's negative-margin bleed to
+     the screen edges, though — this row is a flex item inside a grid track, so
+     the extra margin widens the track and drags the page into a horizontal
+     scroll. The half-visible chip at the gutter is affordance enough. */
+  .list {
+    flex-direction: row;
+    gap: 8px;
+    /* Nine categories never fit — scroll them instead of wrapping into a
+       four-line block that pushes the first answer off the screen. */
+    overflow-x: auto;
+    /* Without this the flex item refuses to shrink below its 1400px of chips
+       and drags the whole page into a horizontal scroll. */
+    min-width: 0;
+    scroll-snap-type: x proximity;
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .list::-webkit-scrollbar {
+    display: none;
+  }
+
+  .list > li {
+    flex: 0 0 auto;
+  }
+
+  .row {
+    align-items: center;
+    gap: 8px;
+    height: 40px;
+    padding: 0 15px;
+    border-radius: var(--radius-pill);
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid var(--card-border);
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: 0.6px;
+    white-space: nowrap;
+    scroll-snap-align: start;
+  }
+
+  .active {
+    background: var(--accent-soft);
+    border-color: var(--accent-border);
+  }
+
+  .num,
+  .label {
+    display: none;
+  }
+
+  .short {
+    display: inline;
+  }
+
+  .count {
+    padding-top: 0;
+  }
+
+  .stuck {
+    display: none;
+  }
+}
+
+/* Narrow: 44px tap targets, same floor ChipFilter holds. */
+@media (max-width: 760px) {
+  .row {
+    height: 44px;
+  }
+}

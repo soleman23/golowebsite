@@ -11,6 +11,12 @@
   overflow: hidden;
 }
 
+/* Deep-link targets clear the sticky nav (70px) plus a little air, so
+   /faq#q-settle doesn't park the question under the bar. */
+.anchored {
+  scroll-margin-top: 104px;
+}
+
 .questionHeading {
   margin: 0;
   font-size: inherit;

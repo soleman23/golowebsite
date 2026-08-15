@@ -10,8 +10,8 @@ import { Accordion, type AccordionItem } from "@/components/ui/Accordion";
 import { SeeAllLink } from "@/components/ui/SeeAllLink";
 import styles from "./FAQ.module.css";
 
-const items: AccordionItem[] = faqs.map((faq, i) => ({
-  id: String(i),
+const items: AccordionItem[] = faqs.map((faq) => ({
+  id: faq.id,
   question: faq.q,
   answer: faq.a,
 }));
