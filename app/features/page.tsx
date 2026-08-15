@@ -19,6 +19,7 @@ import { BetaQuotes } from "@/components/sections/features/BetaQuotes";
 import { PricingNote } from "@/components/sections/features/PricingNote";
 import { QuickAnswers } from "@/components/sections/features/QuickAnswers";
 import { FinalCTA } from "@/components/sections/FinalCTA";
+import { JsonLd } from "@/components/ui/JsonLd";
 import styles from "./features.module.css";
 
 export const metadata: Metadata = {
@@ -46,7 +47,12 @@ const VISUALS: Record<
   locker: { Component: LockerCard, fill: true },
 };
 
-/** Quick answers double as FAQPage structured data. */
+/**
+ * Quick answers double as FAQPage structured data — these five only. /faq
+ * carries the canonical block with every question on it; these five are close
+ * cousins of five of those, so if either page ever starts losing rich results
+ * this is the one to drop, not /faq.
+ */
 const faqJsonLd = {
   "@context": "https://schema.org",
   "@type": "FAQPage",
@@ -64,9 +70,21 @@ export default function FeaturesPage() {
         kicker="EVERYTHING GOLO DOES"
         title="A scorecard that can do arithmetic, keep a bet straight, and remember who owes who."
         lead="Set the round, stack the games, tap in scores. GoLo handles the strokes, the presses, the junk and the math — and hands you one number per player before anyone leaves the lot."
+        breadcrumbs={[{ label: "Home", href: "/" }, { label: "Features" }]}
+        page="features"
         ctas={[
-          { label: "Get the app", href: "/#get", variant: "primary" },
-          { label: "Browse the games", href: "/games", variant: "ghost" },
+          {
+            label: "Get the app",
+            href: "/#get",
+            variant: "primary",
+            cta: "get_app",
+          },
+          {
+            label: "Browse the games",
+            href: "/games",
+            variant: "ghost",
+            cta: "browse_games",
+          },
         ]}
         meta={
           <>
@@ -133,10 +151,7 @@ export default function FeaturesPage() {
         ]}
       />
 
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
-      />
+      <JsonLd data={faqJsonLd} />
     </>
   );
 }

@@ -20,7 +20,9 @@
 .tagline {
   font-size: 14px;
   line-height: 1.6;
-  color: var(--text-muted);
+  /* --text-faint (.55), not --text-muted (.5): the .5 floor is for the page
+     background. On --footer-bg the floor is .55 (5.33:1 → 6.26:1). */
+  color: var(--text-faint);
   margin: 16px 0 0;
 }
 
@@ -73,7 +75,7 @@
 }
 
 .columnLink:hover {
-  color: #fff;
+  color: var(--text-primary);
 }
 
 .bottom {

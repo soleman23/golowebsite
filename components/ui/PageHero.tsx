@@ -2,20 +2,25 @@
  * The top of every page: breadcrumb, kicker, the page's single <h1>, lead,
  * CTA row, status pills and an optional visual beside the copy.
  *
- * Server component — the CTAs are plain links. Pages that need a tracked CTA
- * pass their own client leaf as `visual` or wrap the hero, rather than making
- * this whole shell client-side.
+ * Stays a server component. The CTA row renders TrackedCta, which is a client
+ * leaf of its own — importing it here doesn't pull the shell across the
+ * boundary, so the hero copy and the H1 still ship as static HTML.
  */
 
-import Link from "next/link";
 import { Breadcrumbs, type Crumb } from "./Breadcrumbs";
 import { StatusPill, type StatusVariant } from "./StatusPill";
+import { TrackedCta } from "./TrackedCta";
 import styles from "./PageHero.module.css";
 
 export type HeroCta = {
   label: string;
   href: string;
   variant: "primary" | "ghost";
+  /**
+   * Short slug for the cta_click param — "get_app", "browse_games", "ask_us".
+   * Defaults from the href so an untagged CTA still reports something useful.
+   */
+  cta?: string;
 };
 
 type PageHeroProps = {
@@ -27,10 +32,18 @@ type PageHeroProps = {
   breadcrumbs?: Crumb[];
   status?: { variant: StatusVariant; label: string };
   ctas?: HeroCta[];
+  /** Names the page in the cta_click param. Required once `ctas` is set. */
+  page?: string;
   /** Small text row under the CTAs — availability notes, read time, dates. */
   meta?: React.ReactNode;
   visual?: React.ReactNode;
 };
+
+/** "/games" → "games", "/#get" → "get", "/" → "home". */
+function ctaSlug(href: string): string {
+  const cleaned = href.replace(/^\/#?/, "").replace(/[#?].*$/, "");
+  return cleaned === "" ? "home" : cleaned.replace(/\//g, "_");
+}
 
 export function PageHero({
   kicker,
@@ -40,6 +53,7 @@ export function PageHero({
   breadcrumbs,
   status,
   ctas,
+  page = "page",
   meta,
   visual,
 }: PageHeroProps) {
@@ -74,15 +88,17 @@ export function PageHero({
           {ctas?.length ? (
             <div className={styles.ctaRow}>
               {ctas.map((cta) => (
-                <Link
+                <TrackedCta
                   key={cta.href + cta.label}
                   href={cta.href}
+                  page={page}
+                  cta={cta.cta ?? ctaSlug(cta.href)}
                   className={`${styles.cta} ${
                     cta.variant === "primary" ? styles.primary : styles.ghost
                   }`}
                 >
                   {cta.label}
-                </Link>
+                </TrackedCta>
               ))}
             </div>
           ) : null}

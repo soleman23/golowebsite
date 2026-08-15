@@ -17,6 +17,7 @@ import { GameFaq } from "@/components/sections/gameDetail/GameFaq";
 import { RelatedGames } from "@/components/sections/gameDetail/RelatedGames";
 import { PrevNextGames } from "@/components/sections/gameDetail/PrevNextGames";
 import { FinalCTA } from "@/components/sections/FinalCTA";
+import { JsonLd } from "@/components/ui/JsonLd";
 import styles from "./gameDetail.module.css";
 
 type Params = { params: Promise<{ slug: string }> };
@@ -110,16 +111,13 @@ export default async function GameDetailPage({ params }: Params) {
       <PrevNextGames game={game} />
 
       <FinalCTA
+        page={`game_${game.slug}`}
         title={game.headings.cta.title}
         lead={game.headings.cta.lead}
       />
 
       {jsonLd(game).map((block) => (
-        <script
-          key={block["@type"]}
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(block) }}
-        />
+        <JsonLd key={block["@type"]} data={block} />
       ))}
     </>
   );

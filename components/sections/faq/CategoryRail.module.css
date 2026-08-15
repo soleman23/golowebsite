@@ -10,7 +10,7 @@
   flex-direction: column;
   gap: 3px;
   padding: 20px 16px;
-  border-radius: 20px;
+  border-radius: var(--radius-section);
   /* --glass-sheet, not --glass-surface: this is sticky, and sticky elements on
      this site can't carry backdrop-filter (Chromium blanks the page on
      scroll), so the sheet leans on opacity instead of blur. */
@@ -108,7 +108,7 @@
   font-size: 13.5px;
   font-weight: 800;
   line-height: 1.4;
-  color: #fff;
+  color: var(--text-primary);
 }
 
 .stuckLink {

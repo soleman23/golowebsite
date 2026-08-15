@@ -1,10 +1,19 @@
 import type { MetadataRoute } from "next";
 import { siteConfig } from "@/lib/siteConfig";
-import { gameDetailSlugsWithContent, publishedPosts } from "@/lib/content";
+import {
+  gameDetailSlugsWithContent,
+  legalDocs,
+  publishedPosts,
+} from "@/lib/content";
 
 /**
- * Generates /sitemap.xml. Game detail pages are derived from the content keys,
- * so a new game appears here as soon as its copy lands — no edit needed.
+ * Generates /sitemap.xml entirely from the content layer — publishing a post,
+ * writing a game detail page or dating a legal document is the only edit
+ * needed. Nothing here is a hand-written URL list.
+ *
+ * `lastModified` is honest where the data knows a real date (post dates, legal
+ * effective dates) and falls back to build time only for pages whose content
+ * has no date of its own.
  *
  * /terms is deliberately absent while siteConfig.termsPublished is false: it's
  * built but hasn't cleared legal review.
@@ -31,6 +40,9 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: "monthly",
       priority: 0.9,
     },
+    // Keyed off the written detail content rather than the roster's
+    // `hasDetailPage` flag, so a game can never be listed here before its page
+    // actually renders.
     ...gameDetailSlugsWithContent.map((slug) => ({
       url: `${siteConfig.url}/games/${slug}`,
       lastModified: now,
@@ -39,7 +51,9 @@ export default function sitemap(): MetadataRoute.Sitemap {
     })),
     {
       url: `${siteConfig.url}/blog`,
-      lastModified: now,
+      lastModified: publishedPosts[0]
+        ? new Date(publishedPosts[0].date)
+        : now,
       changeFrequency: "weekly",
       priority: 0.8,
     },
@@ -63,23 +77,16 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: "yearly",
       priority: 0.6,
     },
-    {
-      url: `${siteConfig.url}/privacy`,
-      lastModified: now,
-      changeFrequency: "yearly",
-      priority: 0.3,
-    },
-    // /terms joins the sitemap the moment it clears legal review, and not
-    // before — the page is built and readable, just not published.
-    ...(siteConfig.termsPublished
-      ? [
-          {
-            url: `${siteConfig.url}/terms`,
-            lastModified: now,
-            changeFrequency: "yearly" as const,
-            priority: 0.3,
-          },
-        ]
-      : []),
+    // /privacy is always listed; /terms joins the moment it clears legal
+    // review, and not before — the page is built and readable, just not
+    // published. Both date themselves from the document's own effective date.
+    ...legalDocs
+      .filter((doc) => doc.slug !== "terms" || siteConfig.termsPublished)
+      .map((doc) => ({
+        url: `${siteConfig.url}/${doc.slug}`,
+        lastModified: new Date(doc.effective),
+        changeFrequency: "yearly" as const,
+        priority: 0.3,
+      })),
   ];
 }

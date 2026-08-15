@@ -2,10 +2,14 @@
  * The game roster behind /games and /games/[slug]. Copy is verbatim from
  * design_handoff/reference/Golo Golf - Games.dc.html.
  *
- * `hasDetailPage` is what gives a game its own route — only Nassau is written
- * today, so only Nassau gets one. The rest are full cards on /games, each
- * deep-linkable at /games#<slug>, and get promoted to a route when their
+ * `hasDetailPage` is what points a card at its own route — only Nassau is
+ * written today, so only Nassau gets one. The rest are full cards on /games,
+ * each deep-linkable at /games#<slug>, and get promoted to a route when their
  * long-form copy exists.
+ *
+ * The route and the sitemap both build from `gameDetailSlugsWithContent` in
+ * gameDetail.ts, not from this flag — that way a slug can never be linked or
+ * indexed before its copy exists. Set the flag in the same commit as the copy.
  */
 
 import type { IconName } from "@/components/ui/Icon";
@@ -120,11 +124,6 @@ export const gameFilters: GameFilter[] = [
   { id: "points", label: "Points" },
   { id: "side", label: "Side bets" },
 ];
-
-/** Slugs with a written detail page — the source for generateStaticParams. */
-export const gameDetailSlugs = games
-  .filter((game) => game.hasDetailPage)
-  .map((game) => game.slug);
 
 export function findGame(slug: string): Game | undefined {
   return games.find((game) => game.slug === slug);

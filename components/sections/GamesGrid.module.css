@@ -28,7 +28,7 @@
 .icon {
   width: 46px;
   height: 46px;
-  border-radius: 13px;
+  border-radius: var(--radius-tile);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -39,7 +39,7 @@
 .name {
   font-size: 18px;
   font-weight: 800;
-  color: #fff;
+  color: var(--text-primary);
   margin: 14px 0 0;
 }
 

@@ -45,7 +45,7 @@
 }
 
 .column {
-  border-radius: 22px;
+  border-radius: var(--radius-card);
   padding: 24px 26px;
   background: var(--glass-surface);
   border: 1px solid var(--card-border);

@@ -7,6 +7,11 @@
  *
  * Focus scrolls a chip into view, so the row is usable when it overflows
  * horizontally on narrow screens.
+ *
+ * Re-clicking the active chip is a no-op. Both callers push the filter into
+ * the URL and fire an analytics event from onChange, so letting it through
+ * would stack duplicate history entries under the back button and count one
+ * filter selection several times.
  */
 
 import styles from "./ChipFilter.module.css";
@@ -43,7 +48,9 @@ export function ChipFilter({
             type="button"
             className={`${styles.chip} ${isActive ? styles.active : ""}`}
             aria-pressed={isActive}
-            onClick={() => onChange(item.id)}
+            onClick={() => {
+              if (!isActive) onChange(item.id);
+            }}
             onFocus={(e) =>
               e.currentTarget.scrollIntoView({
                 block: "nearest",

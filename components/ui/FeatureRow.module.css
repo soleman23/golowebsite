@@ -87,12 +87,12 @@
 }
 
 .body :global(em) {
-  color: #fff;
+  color: var(--text-primary);
   font-style: normal;
 }
 
 .body :global(strong) {
-  color: #fff;
+  color: var(--text-primary);
 }
 
 .footer {

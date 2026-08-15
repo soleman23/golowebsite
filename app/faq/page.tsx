@@ -3,6 +3,7 @@ import Link from "next/link";
 import { faqCategories, faqCountLine, faqItems } from "@/lib/content";
 import { PageHero } from "@/components/ui/PageHero";
 import { StatusPill } from "@/components/ui/StatusPill";
+import { JsonLd } from "@/components/ui/JsonLd";
 import { MostAsked } from "@/components/sections/faq/MostAsked";
 import { CategoryRail } from "@/components/sections/faq/CategoryRail";
 import { CategoryAnswers } from "@/components/sections/faq/CategoryAnswers";
@@ -99,10 +100,7 @@ export default function FaqPage() {
         ]}
       />
 
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
-      />
+      <JsonLd data={faqJsonLd} />
     </>
   );
 }

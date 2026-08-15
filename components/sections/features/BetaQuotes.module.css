@@ -43,7 +43,7 @@
 }
 
 .card {
-  border-radius: 22px;
+  border-radius: var(--radius-card);
   padding: 26px;
   background: var(--glass-surface);
   border: 1px solid var(--card-border);
@@ -80,7 +80,7 @@
   justify-content: center;
   font-size: 13px;
   font-weight: 800;
-  color: #fff;
+  color: var(--text-primary);
 }
 
 .personBody {
@@ -91,7 +91,7 @@
 .name {
   font-size: 13.5px;
   font-weight: 800;
-  color: #fff;
+  color: var(--text-primary);
 }
 
 .meta {

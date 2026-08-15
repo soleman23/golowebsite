@@ -25,7 +25,7 @@
 }
 
 .link:hover {
-  color: #fff;
+  color: var(--text-primary);
 }
 
 .current {

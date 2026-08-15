@@ -1,7 +1,12 @@
 /**
  * Hero: full-bleed backdrop photo + scrim, live pill, three-line H1, lead,
- * store buttons, and the "text me the link" control, beside the live-leaderboard
- * phone mockup.
+ * the download row, and the "text me the link" control, beside the
+ * live-leaderboard phone mockup.
+ *
+ * The download row follows siteConfig.appLive. While it's false there is no
+ * app to download, so the store buttons stay off and the phone capture carries
+ * the CTA alone — /faq, /blog and /features all say "not live yet" in copy,
+ * and two dead store buttons on the home page contradicted every one of them.
  */
 
 import {
@@ -71,8 +76,16 @@ export function Hero() {
             <strong>exactly who owes who</strong> before you hit the parking lot.
           </p>
 
-          <StoreButtons size="md" />
-          <TextMeLink />
+          {siteConfig.appLive ? <StoreButtons size="md" /> : null}
+          <TextMeLink
+            id="hero-phone"
+            placement="hero"
+            prompt={
+              siteConfig.appLive
+                ? "or text me the link:"
+                : "Text me the link when it's live:"
+            }
+          />
         </div>
 
         <div className={styles.phone}>

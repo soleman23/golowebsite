@@ -7,7 +7,7 @@
 .item {
   background: var(--glass-surface);
   border: 1px solid var(--card-border);
-  border-radius: 16px;
+  border-radius: var(--radius-card);
   overflow: hidden;
 }
 
@@ -40,7 +40,7 @@
 .questionText {
   font-size: 17px;
   font-weight: 800;
-  color: #fff;
+  color: var(--text-primary);
 }
 
 .plus {

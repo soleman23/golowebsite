@@ -36,6 +36,7 @@ export default async function GamesPage({ searchParams }: GamesPageProps) {
       <GamesGrid active={active} />
 
       <FinalCTA
+        page="games"
         title="Stack 'em all. Settle in seconds."
         lead="Set up every game before the first tee and let GoLo keep score. Download it, and never do parking-lot math again."
       />
