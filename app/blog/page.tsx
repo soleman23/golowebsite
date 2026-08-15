@@ -12,6 +12,7 @@ import { PostGrid, BLOG_TOPIC_IDS } from "@/components/sections/blog/PostGrid";
 import { NewsletterBand } from "@/components/sections/blog/NewsletterBand";
 import { Elsewhere } from "@/components/sections/blog/Elsewhere";
 import { FinalCTA } from "@/components/sections/FinalCTA";
+import { JsonLd } from "@/components/ui/JsonLd";
 import styles from "./blog.module.css";
 
 export const metadata: Metadata = {
@@ -97,10 +98,7 @@ export default async function BlogPage({ searchParams }: BlogPageProps) {
         ]}
       />
 
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(blogJsonLd) }}
-      />
+      <JsonLd data={blogJsonLd} />
     </>
   );
 }

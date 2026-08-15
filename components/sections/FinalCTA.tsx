@@ -1,12 +1,20 @@
 /**
  * The closing band. Two layouts off the same component rather than a fork:
  *
- * - "center" (home): radial green background, big heading, store buttons.
- * - "split" (inner pages): turf backdrop, kicker + heading left, link buttons
- *   right, each firing cta_click.
+ * - "center" (home, /games, /games/*): radial green background, big heading,
+ *   and the download row.
+ * - "split" (the text pages): turf backdrop, kicker + heading left, link
+ *   buttons right, each firing cta_click.
+ *
+ * The download row follows siteConfig.appLive the same way the hero's does:
+ * store buttons once there's an app to install, the phone capture until then.
+ * The fine print moves with it — "free to download" is not something to print
+ * under a button that can't download anything.
  */
 
+import { siteConfig } from "@/lib/siteConfig";
 import { StoreButtons } from "@/components/ui/StoreButtons";
+import { TextMeLink } from "@/components/ui/TextMeLink";
 import { TrackedCta } from "@/components/ui/TrackedCta";
 import styles from "./FinalCTA.module.css";
 
@@ -34,7 +42,9 @@ export function FinalCTA({
   kicker,
   title = "Stop doing math in the parking lot.",
   lead = "Download GoLo, set up your games before the first tee, and let the app keep the books. Your buddies’ excuses end here.",
-  fine = "Free to download · No card to start · iPhone & Android",
+  fine = siteConfig.appLive
+    ? "Free to download · No card to start · iPhone & Android"
+    : "In testing with real groups · Free while we’re in beta · iPhone & Android",
   buttons,
   page = "home",
   layout = "center",
@@ -88,8 +98,15 @@ export function FinalCTA({
                 </TrackedCta>
               ))}
             </div>
-          ) : (
+          ) : siteConfig.appLive ? (
             <StoreButtons size="lg" align="center" />
+          ) : (
+            <TextMeLink
+              id={`cta-phone-${page}`}
+              placement="final_cta"
+              prompt="Text me the link when it's live:"
+              align="center"
+            />
           )}
           {fine && !split ? <p className={styles.fine}>{fine}</p> : null}
         </div>

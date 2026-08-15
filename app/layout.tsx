@@ -18,6 +18,9 @@ export const metadata: Metadata = {
   },
   description: siteConfig.description,
   applicationName: siteConfig.name,
+  // The home page's own canonical. Inner pages override this with their route;
+  // without it, "/" was the only page shipping no canonical at all.
+  alternates: { canonical: "/" },
   openGraph: {
     type: "website",
     title: `${siteConfig.name} — ${siteConfig.tagline}`,

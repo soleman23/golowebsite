@@ -52,7 +52,7 @@
   font-size: 13.5px;
   font-weight: 800;
   line-height: 1.4;
-  color: #fff;
+  color: var(--text-primary);
 }
 
 .pitchBody {
@@ -95,7 +95,7 @@
   font-size: clamp(20px, 2.2vw, 26px);
   font-weight: 800;
   letter-spacing: -0.02em;
-  color: #fff;
+  color: var(--text-primary);
 }
 
 .count {

@@ -54,7 +54,7 @@
   gap: 9px;
   padding: 7px 14px;
   border-radius: 9999px;
-  background: rgba(255, 255, 255, 0.08);
+  background: var(--hairline);
   border: 1px solid rgba(255, 255, 255, 0.16);
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
@@ -107,7 +107,7 @@
 }
 
 .lead strong {
-  color: #fff;
+  color: var(--text-primary);
 }
 
 .phone {

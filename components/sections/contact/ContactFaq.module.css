@@ -44,17 +44,17 @@
   align-items: center;
   height: 44px;
   padding: 0 20px;
-  border-radius: 12px;
-  background: rgba(255, 255, 255, 0.08);
+  border-radius: var(--radius-tile);
+  background: var(--hairline);
   border: 1px solid rgba(255, 255, 255, 0.16);
   font-size: 14px;
   font-weight: 800;
-  color: #fff;
+  color: var(--text-primary);
   white-space: nowrap;
   transition: border-color 0.14s ease, background 0.14s ease;
 }
 
 .fullFaq:hover {
-  background: rgba(255, 255, 255, 0.12);
+  background: var(--card-border);
   border-color: var(--accent-45);
 }

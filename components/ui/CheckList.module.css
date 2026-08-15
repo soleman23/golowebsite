@@ -25,5 +25,5 @@
 }
 
 .text strong {
-  color: #fff;
+  color: var(--text-primary);
 }

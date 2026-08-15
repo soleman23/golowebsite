@@ -89,7 +89,7 @@
 }
 
 .tile:hover .question {
-  color: #fff;
+  color: var(--text-primary);
 }
 
 /* Narrow: one column, and the panel loses its inset padding. */

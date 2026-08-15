@@ -11,7 +11,7 @@
   gap: 3px;
   min-width: 0;
   padding: 18px 14px;
-  border-radius: 20px;
+  border-radius: var(--radius-section);
   /* --glass-sheet, not --glass-surface: this is sticky, and sticky elements
      here can't carry backdrop-filter (BUILD-SPEC §5.1). */
   background: var(--glass-sheet);

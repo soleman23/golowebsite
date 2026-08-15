@@ -20,7 +20,7 @@
   height: 100%;
   padding: clamp(20px, 2.4vw, 26px);
   text-align: left;
-  border-radius: 20px;
+  border-radius: var(--radius-card);
   background: var(--glass-surface);
   border: 1px solid var(--glass-chrome);
   font-family: inherit;
@@ -41,7 +41,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  border-radius: 13px;
+  border-radius: var(--radius-tile);
   background: var(--accent-soft);
   border: 1px solid var(--accent-border);
 }
@@ -58,7 +58,7 @@
   font-size: 19px;
   font-weight: 800;
   letter-spacing: -0.015em;
-  color: #fff;
+  color: var(--text-primary);
 }
 
 .routeBlurb {

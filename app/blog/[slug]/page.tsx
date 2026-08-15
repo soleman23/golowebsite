@@ -8,6 +8,7 @@ import { ShareRow } from "@/components/sections/blog/ShareRow";
 import { KeepReadingPosts } from "@/components/sections/blog/KeepReadingPosts";
 import { NewsletterBand } from "@/components/sections/blog/NewsletterBand";
 import { FinalCTA } from "@/components/sections/FinalCTA";
+import { JsonLd } from "@/components/ui/JsonLd";
 
 /**
  * The post template. Every post renders through here from its `blocks` — a new
@@ -109,12 +110,7 @@ export default async function BlogPostPage({ params }: Params) {
         ]}
       />
 
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify(articleJsonLd(post)),
-        }}
-      />
+      <JsonLd data={articleJsonLd(post)} />
     </>
   );
 }

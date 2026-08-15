@@ -5,10 +5,11 @@
  * a two-line label. Size variant controls height (hero = 58, final CTA = 60).
  * Links come from siteConfig (env-driven), falling back to #get.
  *
- * Client component so clicks can be tracked. While the store URLs are still
- * unset, `destination_configured: false` on the event tells us how many people
- * are clicking a button that goes nowhere — that's the download-intent signal
- * ahead of launch.
+ * Callers gate this on siteConfig.appLive — pre-launch the phone capture
+ * stands in its place, so these buttons only render when there's something to
+ * install. `destination_configured: false` therefore means a real
+ * misconfiguration (appLive flipped, store URLs never set) rather than the
+ * expected pre-launch state, and is worth alerting on.
  */
 
 import { siteConfig } from "@/lib/siteConfig";
