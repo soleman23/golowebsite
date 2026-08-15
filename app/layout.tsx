@@ -1,6 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import Script from "next/script";
-import { siteConfig, heroBackdropPreload } from "@/lib/siteConfig";
+import { siteConfig } from "@/lib/siteConfig";
 import { Nav } from "@/components/layout/Nav";
 import { Footer } from "@/components/layout/Footer";
 import "./globals.css";
@@ -44,27 +44,11 @@ export default function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const heroPreload = heroBackdropPreload[siteConfig.heroBackdrop];
-
   return (
     <html lang="en">
       <head>
-        {/* The hero backdrop is the LCP element. It's painted as a CSS
-            background, which can't carry fetchpriority on its own, so preload
-            it explicitly. One link per breakpoint, matching the media queries
-            on .golo-bd-* in globals.css exactly — only one can ever match, so
-            the browser fetches precisely the file the stylesheet will use. */}
-        {heroPreload.map((link) => (
-          <link
-            key={link.href}
-            rel="preload"
-            as="image"
-            fetchPriority="high"
-            type="image/avif"
-            href={link.href}
-            media={link.media}
-          />
-        ))}
+        {/* No hero-backdrop preload here — only the home page paints a photo,
+            and components/sections/Hero owns the preload for it. */}
         {/* GA/GTM loads lazily, but warming the connection costs nothing. */}
         <link rel="preconnect" href="https://www.googletagmanager.com" />
         <link
