@@ -1,0 +1,67 @@
+name: CI
+
+# The three gates from CLAUDE.md, enforced instead of remembered.
+#
+# Needs no secrets. lib/env.ts keeps its required() checks inside getters
+# rather than at module top-level precisely so `next build` succeeds with
+# nothing configured, and `prisma generate` reads the schema without touching
+# a database. If a future change makes the build need DATABASE_URL, that's a
+# bug in the change, not a reason to add a secret here.
+
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+
+# A second push to the same PR makes the first run irrelevant.
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    name: lint · typecheck · build
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          # Reads .nvmrc, so the Node version can't drift from what the VPS runs.
+          node-version-file: .nvmrc
+          cache: npm
+
+      # `npm ci` runs postinstall → prisma generate, so the client is always
+      # in step with prisma/schema.prisma. A stale client is exactly what made
+      # typecheck fail before this workflow existed.
+      - name: Install
+        run: npm ci
+
+      # Next's build cache. Keyed on the lockfile plus every source file, so a
+      # source edit misses the exact key and falls back to the most recent
+      # cache for the same lockfile rather than rebuilding cold.
+      - name: Restore Next.js build cache
+        uses: actions/cache@v4
+        with:
+          path: .next/cache
+          key: next-${{ runner.os }}-${{ hashFiles('**/package-lock.json') }}-${{ hashFiles('app/**', 'components/**', 'lib/**') }}
+          restore-keys: |
+            next-${{ runner.os }}-${{ hashFiles('**/package-lock.json') }}-
+
+      - name: Lint
+        run: npm run lint
+
+      # Runs even if lint failed, so one push surfaces every problem at once
+      # instead of trickling them out over three round-trips.
+      - name: Typecheck
+        if: '!cancelled()'
+        run: npm run typecheck
+
+      - name: Build
+        if: '!cancelled()'
+        run: npm run build
