@@ -1,12 +1,16 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { findPost, posts } from "@/lib/content";
+import { findPost, publishedPosts } from "@/lib/content";
 import { PageHero } from "@/components/ui/PageHero";
 
 type Params = { params: Promise<{ slug: string }> };
 
+/**
+ * Only written posts get a route. An unpublished slug has no page to build and
+ * 404s if typed — findPost won't resolve it either.
+ */
 export function generateStaticParams() {
-  return posts.map((post) => ({ slug: post.slug }));
+  return publishedPosts.map((post) => ({ slug: post.slug }));
 }
 
 export const dynamicParams = false;

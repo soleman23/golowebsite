@@ -50,5 +50,20 @@ export const contactSchema = z.object({
     .optional(),
 });
 
+export const subscribeSchema = z.object({
+  email: z
+    .string()
+    .trim()
+    .min(1, "Enter your email address.")
+    .email("That email doesn’t look right — check it once more.")
+    .max(200)
+    // Stored as the identity of a list member, so casing shouldn't be able to
+    // create two rows for the same person.
+    .transform((value) => value.toLowerCase()),
+  /** Which page the signup came from. Not user input — the form sets it. */
+  source: z.string().trim().max(40).optional(),
+});
+
 export type ContactInput = z.infer<typeof contactSchema>;
 export type TextLinkInput = z.infer<typeof textLinkSchema>;
+export type SubscribeInput = z.infer<typeof subscribeSchema>;

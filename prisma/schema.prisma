@@ -25,6 +25,18 @@ model PhoneLead {
   @@index([createdAt])
 }
 
+/// An email address submitted via the newsletter band on /blog.
+model NewsletterLead {
+  id String @id @default(cuid())
+  /// Unique so a repeat signup is an upsert, not a duplicate row. The route
+  /// answers "you're on the list" either way — never leak who is a member.
+  email     String   @unique
+  source    String   @default("blog")
+  createdAt DateTime @default(now())
+
+  @@index([createdAt])
+}
+
 /// A message submitted via the /contact page form.
 model ContactMessage {
   id      String @id @default(cuid())

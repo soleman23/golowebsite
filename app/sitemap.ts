@@ -1,6 +1,6 @@
 import type { MetadataRoute } from "next";
 import { siteConfig } from "@/lib/siteConfig";
-import { gameDetailSlugsWithContent } from "@/lib/content";
+import { gameDetailSlugsWithContent, publishedPosts } from "@/lib/content";
 
 /**
  * Generates /sitemap.xml. Game detail pages are derived from the content keys,
@@ -36,6 +36,20 @@ export default function sitemap(): MetadataRoute.Sitemap {
       lastModified: now,
       changeFrequency: "monthly" as const,
       priority: 0.8,
+    })),
+    {
+      url: `${siteConfig.url}/blog`,
+      lastModified: now,
+      changeFrequency: "weekly",
+      priority: 0.8,
+    },
+    // Driven off the data, so publishing a post is a one-line change in
+    // lib/content/blog.ts and never an edit here.
+    ...publishedPosts.map((post) => ({
+      url: `${siteConfig.url}/blog/${post.slug}`,
+      lastModified: new Date(post.date),
+      changeFrequency: "yearly" as const,
+      priority: 0.7,
     })),
     {
       url: `${siteConfig.url}/faq`,

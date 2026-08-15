@@ -76,3 +76,54 @@ export async function sendContactNotification(
 
   return { sent: true, stub: false };
 }
+
+/**
+ * Tells the team a newsletter signup came in. Same stub-mode contract as the
+ * contact notification: absent RESEND_API_KEY means the lead is still stored,
+ * just not announced.
+ *
+ * No reply_to here — this isn't a message someone is waiting on an answer to.
+ */
+export async function sendNewsletterNotification(
+  email: string,
+  source: string,
+): Promise<EmailResult> {
+  const subject = `[GoLo] Newsletter signup — ${source}`;
+  const text = [
+    "Someone joined the GoLo list.",
+    "",
+    `Email:  ${email}`,
+    `Source: ${source}`,
+  ].join("\n");
+
+  if (!isEmailConfigured()) {
+    if (process.env.NODE_ENV !== "production") {
+      // eslint-disable-next-line no-console
+      console.info(
+        `[email:stub] would notify ${serverEnv.contactNotifyTo}: "${subject}"`,
+      );
+    }
+    return { sent: false, stub: true };
+  }
+
+  const res = await fetch("https://api.resend.com/emails", {
+    method: "POST",
+    headers: {
+      Authorization: `Bearer ${serverEnv.resendApiKey}`,
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      from: serverEnv.contactFromEmail,
+      to: [serverEnv.contactNotifyTo],
+      subject,
+      text,
+    }),
+  });
+
+  if (!res.ok) {
+    const detail = await res.text().catch(() => "");
+    throw new Error(`Resend send failed (${res.status}): ${detail}`);
+  }
+
+  return { sent: true, stub: false };
+}
