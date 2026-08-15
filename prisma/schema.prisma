@@ -27,10 +27,13 @@ model PhoneLead {
 
 /// A message submitted via the /contact page form.
 model ContactMessage {
-  id        String   @id @default(cuid())
-  name      String
-  email     String
-  message   String
+  id      String @id @default(cuid())
+  name    String
+  email   String
+  message String
+  /// Which of the six contact topics the sender picked (see lib/content/contact.ts).
+  /// Nullable: messages predate the picker, and the API still accepts a post without one.
+  topic     String?
   handled   Boolean  @default(false)
   createdAt DateTime @default(now())
 

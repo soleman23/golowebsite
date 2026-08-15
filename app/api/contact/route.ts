@@ -36,9 +36,15 @@ export async function POST(request: Request) {
     );
   }
 
+  const { name, email, message, topic } = parsed.data;
+
   try {
     assertDatabaseConfigured();
-    await prisma.contactMessage.create({ data: parsed.data });
+    // Explicit null rather than undefined so a topic-less submission stores a
+    // real NULL instead of relying on the column default.
+    await prisma.contactMessage.create({
+      data: { name, email, message, topic: topic ?? null },
+    });
   } catch (err) {
     console.error("[contact] failed to save message:", err);
     return NextResponse.json(

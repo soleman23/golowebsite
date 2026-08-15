@@ -7,15 +7,17 @@
 
 import "server-only";
 import { serverEnv, isEmailConfigured } from "./env";
+import { contactTopicLabel } from "./content/contactTopics";
 import type { ContactInput } from "./validation";
 
 export type EmailResult = { sent: boolean; stub: boolean };
 
 /** Plain-text body. Kept simple and readable in any mail client. */
-function buildBody(msg: ContactInput): string {
+function buildBody(msg: ContactInput, topic: string): string {
   return [
     "New message from the GoLo website contact form.",
     "",
+    `Topic: ${topic}`,
     `Name:  ${msg.name}`,
     `Email: ${msg.email}`,
     "",
@@ -35,7 +37,11 @@ function buildBody(msg: ContactInput): string {
 export async function sendContactNotification(
   msg: ContactInput,
 ): Promise<EmailResult> {
-  const subject = `GoLo contact form — ${msg.name}`;
+  // Topic leads the subject so the inbox sorts itself: "[GoLo] Course data —
+  // Mike Donnelly". Falls back to "General" for a post with no topic, which the
+  // schema still allows.
+  const topic = contactTopicLabel(msg.topic) ?? "General";
+  const subject = `[GoLo] ${topic} — ${msg.name}`;
 
   if (!isEmailConfigured()) {
     if (process.env.NODE_ENV !== "production") {
@@ -59,7 +65,7 @@ export async function sendContactNotification(
       // So you can hit Reply and answer the person directly.
       reply_to: msg.email,
       subject,
-      text: buildBody(msg),
+      text: buildBody(msg, topic),
     }),
   });
 

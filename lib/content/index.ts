@@ -9,5 +9,6 @@ export * from "./features";
 export * from "./games";
 export * from "./gameDetail";
 export * from "./faq";
+export * from "./contact";
 export * from "./blog";
 export * from "./legal";

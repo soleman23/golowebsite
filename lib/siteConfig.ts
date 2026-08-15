@@ -28,6 +28,25 @@ export const siteConfig = {
   /** The one public address. Also the contact of record in /privacy. */
   supportEmail: "info@golo.golf",
 
+  instagramHandle: "@gologolf",
+  instagramUrl: "https://instagram.com/gologolf",
+
+  /**
+   * Mailing address of record. /privacy §14 holds the authoritative copy —
+   * that text is legal and stays verbatim, so this is a second rendering of
+   * the same facts rather than its source. Change both together.
+   */
+  legalName: "GoLo Golf LLC",
+  address: {
+    street: "21196 Anne Lane",
+    city: "Bend",
+    region: "Oregon",
+    postalCode: "97702",
+    country: "United States",
+  },
+  /** One-line form for chips and cards: "GoLo Golf LLC · Bend, Oregon". */
+  addressShort: "GoLo Golf LLC · Bend, Oregon",
+
   appStoreUrl: process.env.NEXT_PUBLIC_APP_STORE_URL || "#get",
   googlePlayUrl: process.env.NEXT_PUBLIC_GOOGLE_PLAY_URL || "#get",
 

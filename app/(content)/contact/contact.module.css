@@ -1,0 +1,54 @@
+/* Hero contact chips. The email is the loud one — it carries the lime dot and
+   the brighter fill; the other two are quiet context. */
+
+.chip,
+.chipStatic {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  height: 38px;
+  padding: 0 15px;
+  border-radius: var(--radius-pill);
+  background: rgba(255, 255, 255, 0.07);
+  border: 1px solid rgba(255, 255, 255, 0.13);
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text-muted);
+}
+
+.chip {
+  transition: border-color 0.14s ease, color 0.14s ease;
+}
+
+.chip:hover {
+  border-color: var(--accent-45);
+  color: var(--accent);
+}
+
+.chipPrimary {
+  background: var(--glass-chrome);
+  border-color: rgba(255, 255, 255, 0.18);
+  font-weight: 800;
+  /* .88 — this is the primary way in, so it reads brighter than the two
+     context chips beside it. */
+  color: rgba(255, 255, 255, 0.88);
+}
+
+.dot {
+  width: 7px;
+  height: 7px;
+  flex: 0 0 auto;
+  border-radius: 50%;
+  background: var(--accent);
+}
+
+/* Narrow: the chips are tap targets and the email can be long. */
+@media (max-width: 760px) {
+  .chip,
+  .chipStatic {
+    height: auto;
+    min-height: 44px;
+    padding-top: 8px;
+    padding-bottom: 8px;
+  }
+}
