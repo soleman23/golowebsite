@@ -1,0 +1,641 @@
+/* ============ 1. sticky legal sub-nav ============ */
+
+.subNav {
+  position: sticky;
+  /* Directly under the main nav. */
+  top: 70px;
+  z-index: 90;
+  /* --glass-sheet, not blur: a sticky element with backdrop-filter blanks the
+     page on scroll in Chromium (BUILD-SPEC §5.1). */
+  background: var(--glass-sheet);
+  border-bottom: 1px solid var(--hairline);
+}
+
+.subNavInner {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 0 var(--gutter);
+  display: flex;
+  align-items: center;
+  gap: 22px;
+  height: 52px;
+}
+
+.subNavLabel {
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 1.6px;
+  color: var(--text-muted);
+}
+
+.subNavLinks {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.subNavLink {
+  display: inline-flex;
+  align-items: center;
+  height: 52px;
+  font-size: 13.5px;
+  font-weight: 700;
+  color: var(--text-secondary);
+  transition: color 0.14s ease;
+}
+
+.subNavLink:hover {
+  color: #fff;
+}
+
+.subNavActive {
+  color: var(--accent);
+  font-weight: 800;
+  /* Inset shadow rather than border-bottom: no 2px of layout shift. */
+  box-shadow: inset 0 -2px 0 0 var(--accent);
+}
+
+/* ============ 2. hero ============ */
+
+.hero {
+  position: relative;
+  background: var(--page-bg);
+  border-bottom: 1px solid var(--hairline);
+}
+
+.heroInner {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: clamp(34px, 5vw, 64px) var(--gutter) clamp(26px, 3.5vw, 40px);
+}
+
+.crumbs {
+  margin-bottom: clamp(20px, 3vw, 32px);
+}
+
+.kicker {
+  margin: 0 0 14px;
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 2.5px;
+  color: var(--accent);
+}
+
+.title {
+  margin: 0 0 18px;
+  font-size: clamp(34px, 5vw, 56px);
+  font-weight: 800;
+  line-height: 1.04;
+  letter-spacing: -0.03em;
+  text-wrap: balance;
+}
+
+.lead {
+  margin: 0 0 24px;
+  max-width: 680px;
+  font-size: clamp(16px, 1.5vw, 19px);
+  font-weight: 600;
+  line-height: 1.6;
+  color: var(--text-secondary);
+  text-wrap: pretty;
+}
+
+.meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.metaChip {
+  display: inline-flex;
+  align-items: center;
+  height: 34px;
+  padding: 0 14px;
+  border-radius: var(--radius-pill);
+  background: rgba(255, 255, 255, 0.07);
+  border: 1px solid rgba(255, 255, 255, 0.13);
+  font-size: 12.5px;
+  font-weight: 700;
+  color: var(--text-muted);
+}
+
+/* ============ 3. short version ============ */
+
+.shortSection {
+  background: var(--page-bg);
+}
+
+.shortInner {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: clamp(26px, 3vw, 38px) var(--gutter) 0;
+}
+
+.shortCard {
+  padding: clamp(20px, 3vw, 28px);
+  border-radius: var(--radius-section);
+  background: var(--glass-surface);
+  border: 1px solid var(--accent-border);
+}
+
+.shortHead {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  margin-bottom: 14px;
+}
+
+.shortIcon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  background: var(--accent-soft);
+  border: 1px solid var(--accent-border);
+}
+
+.shortTag {
+  margin: 0;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 1.4px;
+  color: var(--accent);
+}
+
+.shortTitle {
+  margin: 0 0 8px;
+  max-width: 620px;
+  font-size: clamp(21px, 2.6vw, 28px);
+  font-weight: 800;
+  line-height: 1.14;
+  letter-spacing: -0.025em;
+  text-wrap: balance;
+}
+
+/* The "summary, not a substitute" line. Muted on purpose — it's a caveat. */
+.shortSub {
+  margin: 0 0 18px;
+  font-size: 13.5px;
+  font-weight: 600;
+  color: var(--text-muted);
+}
+
+.shortLines {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.shortLine {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  padding: 14px 16px;
+  border-radius: var(--radius-tile);
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--card-border);
+}
+
+.shortLineTag {
+  font-size: 10.5px;
+  font-weight: 800;
+  letter-spacing: 1.2px;
+  color: var(--accent);
+}
+
+.shortLineText {
+  font-size: 13.5px;
+  font-weight: 600;
+  line-height: 1.55;
+  color: var(--text-secondary);
+}
+
+/* ============ 4. TOC + body ============ */
+
+.body {
+  background: var(--page-bg);
+}
+
+.grid {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: clamp(28px, 4vw, 48px) var(--gutter) clamp(50px, 6vw, 84px);
+  display: grid;
+  grid-template-columns: minmax(0, 270px) minmax(0, 1fr);
+  gap: clamp(24px, 3vw, 48px);
+  /* Not stretch: the rail sticks, and a stretched grid item can't move. */
+  align-items: start;
+}
+
+.doc {
+  min-width: 0;
+  max-width: 780px;
+}
+
+.intro {
+  padding-bottom: 8px;
+}
+
+.section {
+  padding-top: clamp(26px, 3vw, 38px);
+}
+
+.sectionHeading {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  margin: 0 0 14px;
+  font-size: clamp(20px, 2.2vw, 26px);
+  font-weight: 800;
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+  color: var(--text-primary);
+  /* Anchors clear both sticky bars. */
+  scroll-margin-top: 150px;
+}
+
+.sectionNum {
+  flex: 0 0 auto;
+  font-size: 15px;
+  font-weight: 800;
+  color: var(--accent);
+  font-variant-numeric: tabular-nums;
+}
+
+.sectionBody {
+  min-width: 0;
+}
+
+/* ---- prose ---- */
+
+.p {
+  margin: 0 0 16px;
+  font-size: 16px;
+  line-height: 1.72;
+  color: var(--text-secondary);
+  text-wrap: pretty;
+}
+
+.p:last-child {
+  margin-bottom: 0;
+}
+
+.p strong,
+.ul strong,
+.dd strong {
+  color: var(--text-primary);
+  font-weight: 800;
+}
+
+.p a,
+.ul a,
+.dd a {
+  color: var(--accent);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.h3 {
+  margin: 24px 0 12px;
+  font-size: 16px;
+  font-weight: 800;
+  letter-spacing: -0.01em;
+  color: var(--text-primary);
+}
+
+.ul {
+  margin: 0 0 16px;
+  padding-left: 22px;
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+  font-size: 16px;
+  line-height: 1.68;
+  color: var(--text-secondary);
+}
+
+.ul li::marker {
+  color: var(--accent-50);
+}
+
+.dl {
+  margin: 0 0 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.dlRow {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.dt {
+  font-size: 15px;
+  font-weight: 800;
+  color: var(--text-primary);
+}
+
+.dd {
+  margin: 0;
+  font-size: 16px;
+  line-height: 1.68;
+  color: var(--text-secondary);
+}
+
+.tableWrap {
+  margin: 0 0 16px;
+  overflow-x: auto;
+  border-radius: var(--radius-card);
+  border: 1px solid var(--card-border);
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14.5px;
+}
+
+.table th,
+.table td {
+  padding: 11px 14px;
+  text-align: left;
+  border-bottom: 1px solid var(--card-border);
+}
+
+.table th {
+  background: var(--glass-surface);
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 1.2px;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  white-space: nowrap;
+}
+
+.table td {
+  font-weight: 600;
+  color: var(--text-secondary);
+}
+
+.table tr:last-child td {
+  border-bottom: none;
+}
+
+.address {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  font-size: 16px;
+  font-style: normal;
+  line-height: 1.68;
+  color: var(--text-secondary);
+}
+
+/* ---- plain-English note ----
+   Muted glass, smaller type, sits after the legal text in the DOM. It is a
+   gloss on the section above it, never a replacement. */
+.plain {
+  margin-top: 14px;
+  padding: 13px 15px;
+  border-radius: var(--radius-tile);
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-left: 2px solid var(--accent-50);
+}
+
+.plainTag {
+  margin: 0 0 5px;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 1.2px;
+  color: var(--text-muted);
+}
+
+.plainText {
+  margin: 0;
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1.6;
+  color: var(--text-secondary);
+}
+
+/* ============ 5. contact ============ */
+
+.contact {
+  background: var(--page-bg);
+  border-top: 1px solid rgba(255, 255, 255, 0.07);
+}
+
+.contactInner {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: clamp(38px, 5vw, 60px) var(--gutter);
+}
+
+.contactCard {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 24px;
+  align-items: center;
+  justify-content: space-between;
+  padding: clamp(22px, 3vw, 30px);
+  border-radius: var(--radius-section);
+  background: var(--glass-surface);
+  border: 1px solid var(--glass-chrome);
+}
+
+.contactKicker {
+  margin: 0 0 10px;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 1.4px;
+  color: var(--accent);
+}
+
+.contactTitle {
+  margin: 0 0 8px;
+  font-size: 20px;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+}
+
+.contactAddress {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 10px;
+  font-size: 14px;
+  font-style: normal;
+  line-height: 1.5;
+  color: var(--text-muted);
+}
+
+.contactBlurb {
+  margin: 0;
+  max-width: 460px;
+  font-size: 14.5px;
+  line-height: 1.6;
+  color: var(--text-secondary);
+}
+
+.contactActions {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  flex: 0 0 auto;
+}
+
+.contactEmail {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 48px;
+  padding: 0 22px;
+  border-radius: 12px;
+  background: var(--accent);
+  color: var(--accent-ink);
+  font-size: 14.5px;
+  font-weight: 800;
+  box-shadow: 0 8px 22px var(--accent-glow);
+  word-break: break-word;
+  text-align: center;
+  transition: transform 0.14s ease;
+}
+
+.contactEmail:hover {
+  transform: translateY(-1px);
+}
+
+.contactLink {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 48px;
+  padding: 0 22px;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.09);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  font-size: 14.5px;
+  font-weight: 800;
+  color: #fff;
+}
+
+.contactLink:hover {
+  border-color: var(--accent-45);
+}
+
+/* ============ 6. legal shelf ============ */
+
+.shelf {
+  background: var(--footer-bg);
+  border-top: 1px solid rgba(255, 255, 255, 0.07);
+}
+
+.shelfInner {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: clamp(36px, 5vw, 56px) var(--gutter);
+}
+
+.shelfLabel {
+  margin: 0 0 18px;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 1.6px;
+  color: var(--text-faint);
+}
+
+.shelfGrid {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 14px;
+}
+
+.shelfCard {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  height: 100%;
+  padding: 20px;
+  border-radius: var(--radius-card);
+  background: var(--glass-surface);
+  border: 1px solid var(--card-border);
+  transition: border-color 0.14s ease, background 0.14s ease;
+}
+
+.shelfCard:hover {
+  border-color: var(--accent-45);
+  background: var(--glass-raised);
+}
+
+.shelfName {
+  font-size: 16.5px;
+  font-weight: 800;
+  letter-spacing: -0.01em;
+  color: var(--text-primary);
+}
+
+.shelfBlurb {
+  font-size: 13.5px;
+  font-weight: 600;
+  line-height: 1.55;
+  /* .55 on --footer-bg is the AA floor for this surface. */
+  color: var(--text-faint);
+}
+
+.shelfCta {
+  margin-top: auto;
+  padding-top: 4px;
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.8px;
+  color: var(--accent);
+}
+
+/* ============ responsive ============ */
+
+@media (max-width: 1099px) {
+  .grid {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 20px;
+  }
+
+  .doc {
+    max-width: none;
+  }
+
+  .shortLines {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+@media (max-width: 760px) {
+  /* The sub-nav is a second sticky bar on a small screen and the footer
+     already links both documents. */
+  .subNav {
+    display: none;
+  }
+
+  .p,
+  .ul,
+  .dd,
+  .address {
+    font-size: 17px;
+  }
+
+  .contactActions {
+    flex: 1 1 100%;
+  }
+}

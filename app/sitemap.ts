@@ -69,5 +69,17 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: "yearly",
       priority: 0.3,
     },
+    // /terms joins the sitemap the moment it clears legal review, and not
+    // before — the page is built and readable, just not published.
+    ...(siteConfig.termsPublished
+      ? [
+          {
+            url: `${siteConfig.url}/terms`,
+            lastModified: now,
+            changeFrequency: "yearly" as const,
+            priority: 0.3,
+          },
+        ]
+      : []),
   ];
 }

@@ -1,0 +1,147 @@
+/* ---------- wide: sticky rail ---------- */
+
+.rail {
+  position: sticky;
+  /* Clears the main nav (70px) and the legal sub-nav below it. */
+  top: 150px;
+  max-height: calc(100vh - 180px);
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  min-width: 0;
+  padding: 18px 14px;
+  border-radius: 20px;
+  /* --glass-sheet, not --glass-surface: this is sticky, and sticky elements
+     here can't carry backdrop-filter (BUILD-SPEC §5.1). */
+  background: var(--glass-sheet);
+  border: 1px solid var(--glass-chrome);
+}
+
+.label {
+  margin: 0;
+  padding: 0 8px 10px;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 1.4px;
+  color: var(--text-muted);
+}
+
+.list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  counter-reset: none;
+}
+
+.row {
+  /* Containing block for anything absolutely positioned inside, so the chip
+     row's overflow can clip it (see CategoryRail for the bug this avoids). */
+  position: relative;
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 8px 9px;
+  border-radius: 10px;
+  font-size: 13px;
+  font-weight: 700;
+  line-height: 1.4;
+  color: var(--text-secondary);
+  transition: background 0.14s ease, color 0.14s ease;
+}
+
+.row:hover {
+  background: rgba(255, 255, 255, 0.07);
+  color: var(--accent);
+}
+
+.active {
+  background: var(--accent-soft);
+  color: var(--accent);
+}
+
+.num {
+  min-width: 18px;
+  padding-top: 1px;
+  font-size: 11px;
+  font-weight: 800;
+  color: var(--text-muted);
+  font-variant-numeric: tabular-nums;
+}
+
+.active .num {
+  color: var(--accent);
+}
+
+.title {
+  flex: 1 1 auto;
+}
+
+/* ---------- mid and narrow: scrolling chip row ---------- */
+
+@media (max-width: 1099px) {
+  .rail {
+    position: static;
+    max-height: none;
+    overflow-y: visible;
+    min-width: 0;
+    flex-direction: row;
+    align-items: center;
+    gap: 10px;
+    padding: 0;
+    background: none;
+    border: none;
+    border-radius: 0;
+  }
+
+  .label {
+    display: none;
+  }
+
+  .list {
+    flex-direction: row;
+    gap: 8px;
+    overflow-x: auto;
+    /* Without this the flex item refuses to shrink below its content width
+       and drags the page into a horizontal scroll. */
+    min-width: 0;
+    scroll-snap-type: x proximity;
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .list::-webkit-scrollbar {
+    display: none;
+  }
+
+  .list > li {
+    flex: 0 0 auto;
+  }
+
+  .row {
+    align-items: center;
+    gap: 7px;
+    height: 40px;
+    padding: 0 14px;
+    border-radius: var(--radius-pill);
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid var(--card-border);
+    font-size: 12.5px;
+    font-weight: 800;
+    white-space: nowrap;
+    scroll-snap-align: start;
+  }
+
+  .active {
+    border-color: var(--accent-border);
+  }
+}
+
+@media (max-width: 760px) {
+  .row {
+    height: 44px;
+  }
+}
