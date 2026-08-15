@@ -1,0 +1,390 @@
+/* One 760px column, no sidebar. Everything below is measured against that
+   width — the reading line is the whole design here. */
+
+.prose {
+  max-width: 760px;
+  margin: 0 auto;
+  padding: clamp(34px, 4vw, 56px) var(--gutter) clamp(40px, 5vw, 64px);
+}
+
+.p {
+  margin: 0 0 22px;
+  font-size: 18px;
+  line-height: 1.75;
+  color: var(--text-secondary);
+  text-wrap: pretty;
+}
+
+.p:last-child {
+  margin-bottom: 0;
+}
+
+.p strong {
+  color: var(--text-primary);
+  font-weight: 800;
+}
+
+.p em {
+  font-style: italic;
+}
+
+.p a {
+  color: var(--accent);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.h2 {
+  margin: clamp(38px, 5vw, 54px) 0 20px;
+  font-size: clamp(24px, 3vw, 32px);
+  font-weight: 800;
+  line-height: 1.14;
+  letter-spacing: -0.025em;
+  color: var(--text-primary);
+  text-wrap: balance;
+  /* Deep-link target: clear the sticky nav. */
+  scroll-margin-top: 96px;
+}
+
+/* ---------- at a glance ---------- */
+
+.glance {
+  margin: 30px 0;
+  padding: clamp(18px, 2.4vw, 24px);
+  border-radius: var(--radius-section);
+  background: var(--glass-surface);
+  border: 1px solid var(--card-border);
+}
+
+.glanceTitle {
+  margin: 0 0 16px;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 1.4px;
+  color: var(--accent);
+}
+
+.glanceGrid {
+  margin: 0;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 18px 22px;
+}
+
+.glanceItem {
+  min-width: 0;
+}
+
+.glanceLabel {
+  margin: 0 0 5px;
+  font-size: 10.5px;
+  font-weight: 800;
+  letter-spacing: 1.2px;
+  color: var(--text-muted);
+}
+
+.glanceValue {
+  margin: 0;
+  font-size: 15px;
+  font-weight: 700;
+  line-height: 1.5;
+  color: #fff;
+}
+
+/* ---------- numbered rules ---------- */
+
+.steps {
+  list-style: none;
+  margin: 30px 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 26px;
+}
+
+.step {
+  display: flex;
+  gap: 18px;
+  align-items: flex-start;
+  /* Each rule is a deep-link target too (#rule-5). */
+  scroll-margin-top: 96px;
+}
+
+.stepNum {
+  flex: 0 0 auto;
+  font-size: clamp(24px, 3vw, 30px);
+  font-weight: 800;
+  line-height: 1.1;
+  letter-spacing: -0.03em;
+  color: var(--accent);
+  font-variant-numeric: tabular-nums;
+}
+
+.stepBody {
+  min-width: 0;
+}
+
+.stepTag {
+  display: inline-flex;
+  align-items: center;
+  height: 22px;
+  margin-bottom: 8px;
+  padding: 0 10px;
+  border-radius: var(--radius-pill);
+  background: color-mix(in srgb, var(--negative) 14%, transparent);
+  border: 1px solid color-mix(in srgb, var(--negative) 40%, transparent);
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 1.2px;
+  color: var(--negative);
+}
+
+.stepTitle {
+  margin: 0 0 8px;
+  font-size: 19px;
+  font-weight: 800;
+  line-height: 1.3;
+  letter-spacing: -0.015em;
+  color: var(--text-primary);
+  text-wrap: balance;
+}
+
+.stepText {
+  margin: 0;
+  font-size: 17px;
+  line-height: 1.72;
+  color: var(--text-secondary);
+  text-wrap: pretty;
+}
+
+/* ---------- callout ---------- */
+
+.callout {
+  display: flex;
+  gap: 14px;
+  align-items: flex-start;
+  margin: 30px 0;
+  padding: clamp(18px, 2.4vw, 22px);
+  border-radius: var(--radius-section);
+  background: var(--accent-soft);
+  border: 1px solid var(--accent-border);
+}
+
+.calloutMark {
+  flex: 0 0 auto;
+  width: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: var(--accent);
+  color: var(--accent-ink);
+  font-size: 17px;
+  font-weight: 800;
+}
+
+.calloutTitle {
+  margin: 0 0 8px;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 1.4px;
+  color: var(--accent);
+}
+
+.calloutBody {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 1.68;
+  /* Brighter than --text-secondary on purpose: the callout is the loudest
+     paragraph on the page. */
+  color: rgba(255, 255, 255, 0.86);
+}
+
+/* ---------- pull quote ---------- */
+
+.quoteWrap {
+  margin: 36px 0;
+  /* Hanging indent: the quote steps out of the reading column. */
+  margin-left: -24px;
+  padding-left: 24px;
+  border-left: 3px solid var(--accent);
+}
+
+.quote {
+  margin: 0;
+  font-size: clamp(20px, 2.6vw, 26px);
+  font-weight: 800;
+  line-height: 1.35;
+  letter-spacing: -0.02em;
+  color: #fff;
+  text-wrap: balance;
+}
+
+.quoteCite {
+  margin-top: 10px;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text-muted);
+}
+
+/* ---------- table ---------- */
+
+.tableWrap {
+  margin: 30px 0;
+  /* A wide table scrolls inside its own box rather than the page. */
+  overflow-x: auto;
+  border-radius: var(--radius-card);
+  border: 1px solid var(--card-border);
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 15px;
+}
+
+.table th,
+.table td {
+  padding: 13px 16px;
+  text-align: left;
+  border-bottom: 1px solid var(--card-border);
+  white-space: nowrap;
+}
+
+.table th {
+  background: var(--glass-surface);
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 1.2px;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+.table td {
+  font-weight: 600;
+  color: var(--text-secondary);
+}
+
+.table tr:last-child td {
+  border-bottom: none;
+}
+
+/* ---------- key stat ---------- */
+
+.keyStat {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin: 30px 0;
+  padding: clamp(20px, 2.6vw, 26px);
+  border-radius: var(--radius-section);
+  background: var(--glass-surface);
+  border: 1px solid var(--accent-border);
+}
+
+.keyStatValue {
+  font-size: clamp(38px, 6vw, 56px);
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: -0.03em;
+  color: var(--accent);
+  font-variant-numeric: tabular-nums;
+}
+
+.keyStatLabel {
+  font-size: 15px;
+  font-weight: 600;
+  line-height: 1.6;
+  color: var(--text-secondary);
+}
+
+/* ---------- inline image ---------- */
+
+.figure {
+  margin: 32px 0;
+}
+
+.figureFrame {
+  position: relative;
+  display: block;
+  aspect-ratio: 16 / 9;
+  border-radius: var(--radius-card);
+  overflow: hidden;
+  background: var(--glass-chrome);
+  border: 1px solid var(--card-border);
+}
+
+.figureImage {
+  object-fit: cover;
+}
+
+.caption {
+  margin-top: 10px;
+  font-size: 13.5px;
+  font-weight: 600;
+  line-height: 1.55;
+  color: var(--text-muted);
+}
+
+/* ---------- summary ---------- */
+
+.summary {
+  margin: 34px 0 0;
+  padding: clamp(20px, 2.6vw, 26px);
+  border-radius: var(--radius-section);
+  background: var(--glass-surface);
+  border: 1px solid var(--accent-border);
+}
+
+.summaryTitle {
+  margin: 0 0 14px;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 1.4px;
+  color: var(--accent);
+}
+
+.summaryList {
+  margin: 0;
+  padding-left: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+  font-size: 15.5px;
+  font-weight: 600;
+  line-height: 1.6;
+  color: var(--text-secondary);
+}
+
+/* ---------- narrow ---------- */
+
+@media (max-width: 760px) {
+  .p {
+    font-size: 17px;
+  }
+
+  .stepText {
+    font-size: 16.5px;
+  }
+
+  .glanceGrid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .step {
+    gap: 14px;
+  }
+
+  /* No room to hang out of the column on a phone. */
+  .quoteWrap {
+    margin-left: 0;
+    padding-left: 18px;
+  }
+
+  .table th,
+  .table td {
+    padding: 11px 13px;
+  }
+}
