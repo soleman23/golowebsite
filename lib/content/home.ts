@@ -8,6 +8,7 @@
  */
 
 import type { IconName } from "@/components/ui/Icon";
+import { mostAskedFaqs, type FaqItem } from "./faq";
 
 export type Stat = {
   value: string;
@@ -223,31 +224,10 @@ export const quotes: Quote[] = [
   },
 ];
 
-export type Faq = { q: string; a: string };
-
-export const faqs: Faq[] = [
-  {
-    q: "Does it handle handicaps?",
-    a: "Yes — enter each player's index once and GoLo allocates strokes hole by hole using the course stroke index. Net and gross are both always live, so a 20-handicap and a 5 can play the same game fairly.",
-  },
-  {
-    q: "Which games can I run at once?",
-    a: "Stack as many as you want in one round: Skins, Nassau, Stroke Purse, Wolf, Bingo Bango Bongo, Closest to Pin, Longest Drive and Birdies. Each is scored on its own, then netted into a single number per player at the end.",
-  },
-  {
-    q: "How does the settle-up work?",
-    a: 'When the last putt drops, GoLo totals every game, figures out who\'s up and who\'s down, and reduces it to the fewest transfers that square the group. Nobody sends four separate payments — you get one clean "pay this person" instruction.',
-  },
-  {
-    q: "Is this real-money gambling?",
-    a: "GoLo is a scorekeeper for friendly wagers between playing partners — the kind you've always settled by hand. It doesn't process payments or hold money; it just does the math and tells you who owes who. Keep it friendly and play your local rules.",
-  },
-  {
-    q: "Do all four of us need the app?",
-    a: "No. One person can run the whole round and the rest just play. Share the live link or final summary to the group chat so everyone can follow along and check the receipts.",
-  },
-  {
-    q: "What about multi-day trips?",
-    a: "Trip mode keeps a running tally across every round so a four-day Scottsdale or Myrtle Beach trip settles once, on the 18th green of the last day — not in a confusing pile of daily Venmos.",
-  },
-];
+/**
+ * The home page's short FAQ: the same six as the "most asked" panel on /faq,
+ * pulled from faq.ts rather than restated here. Editing an answer in one place
+ * now changes both, and the ids double as the deep-link targets on /faq — so
+ * "Read the full FAQ →" lands somewhere the visitor recognises.
+ */
+export const faqs: FaqItem[] = mostAskedFaqs;

@@ -1,0 +1,70 @@
+/* This status label is a sentence, not the two-word chip StatusPill is sized
+   for — at 350px it runs past a 320px screen and takes the page with it. Let
+   it wrap and grow instead of holding one nowrap line. */
+.heroPill {
+  height: auto;
+  min-height: 26px;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  white-space: normal;
+  text-align: left;
+}
+
+/* Hero meta row: the count line and the "ask us" escape hatch sit beside the
+   status pill, matching the reference's single row of chips. */
+.metaChip,
+.metaLink {
+  display: inline-flex;
+  align-items: center;
+  height: 38px;
+  padding: 0 15px;
+  border-radius: var(--radius-pill);
+  background: rgba(255, 255, 255, 0.07);
+  border: 1px solid rgba(255, 255, 255, 0.13);
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text-muted);
+}
+
+.metaLink {
+  transition: border-color 0.14s ease, color 0.14s ease;
+}
+
+.metaLink:hover {
+  border-color: var(--accent-45);
+  color: var(--accent);
+}
+
+/* Narrow: this chip is the only tappable one in the row, so it clears 44px. */
+@media (max-width: 760px) {
+  .metaLink {
+    height: auto;
+    min-height: 44px;
+  }
+}
+
+/* ---------- rail + answers ---------- */
+
+.body {
+  background: var(--page-bg);
+}
+
+.grid {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: clamp(10px, 2vw, 20px) var(--gutter) clamp(40px, 5vw, 60px);
+  display: grid;
+  grid-template-columns: minmax(0, 270px) minmax(0, 1fr);
+  gap: clamp(28px, 4vw, 58px);
+  /* Not stretch: the rail sticks, and a stretched grid item has no room to
+     move inside its track. */
+  align-items: start;
+}
+
+/* ---------- mid and narrow: the rail becomes a chip row above the answers ---- */
+@media (max-width: 1099px) {
+  .grid {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 22px;
+  }
+}
