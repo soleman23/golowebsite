@@ -45,7 +45,9 @@ export function GameCard({ game }: { game: Game }) {
   );
 
   return (
-    <li id={game.slug} className={styles.cell}>
+    // data-tags is what the /games filter matches on — see GamesGrid.module.css.
+    // Harmless on the game-detail "stack it with" row, which never filters.
+    <li id={game.slug} className={styles.cell} data-tags={game.tags.join(" ")}>
       {game.hasDetailPage ? (
         <Link
           href={`/games/${game.slug}`}

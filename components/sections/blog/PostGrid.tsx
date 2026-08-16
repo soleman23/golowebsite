@@ -1,86 +1,55 @@
 /**
- * The topic rail beside the post grid. Server component: every card is in the
- * HTML whichever topic is selected, and the chips are the only client leaf.
+ * The topic rail beside the post grid. Server component that renders every
+ * card, every time — the filter is CSS keyed off <html data-filter>, same
+ * mechanism as /games, so the HTML always holds the full feed.
  *
  * The rail is a sticky sidebar at wide and a scrolling chip row below 1100px —
  * ChipFilter's own CSS already handles the narrow case.
  */
 
 import Link from "next/link";
-import {
-  blogFilters,
-  blogTopicIds,
-  blogCategoryLabel,
-  postsByDate,
-  type Post,
-} from "@/lib/content";
+import { blogFilters, blogTopicIds, postsByDate } from "@/lib/content";
+import { BlogFilterProvider } from "./BlogFilterProvider";
 import { BlogFilterChips } from "./BlogFilterChips";
+import { PostGridHead } from "./PostGridHead";
 import { PostCard } from "./PostCard";
 import styles from "./PostGrid.module.css";
 
-export const BLOG_TOPIC_IDS = new Set<string>(blogTopicIds);
-
-/** The featured post leads the page, so it doesn't repeat in the grid below. */
-function gridPosts(active: string, exclude?: string): Post[] {
-  return postsByDate.filter(
-    (post) =>
-      post.slug !== exclude && (active === "all" || post.category === active),
-  );
-}
-
-type PostGridProps = {
-  active: string;
-  featuredSlug?: string;
-};
-
-export function PostGrid({ active, featuredSlug }: PostGridProps) {
-  const shown = gridPosts(active, featuredSlug);
-  const activeLabel =
-    active === "all" ? "Latest posts" : blogCategoryLabel(active);
+export function PostGrid({ featuredSlug }: { featuredSlug?: string }) {
+  // The featured post leads the page, so it doesn't repeat in the grid below.
+  const shown = postsByDate.filter((post) => post.slug !== featuredSlug);
+  const chips = blogFilters(featuredSlug);
 
   return (
     <section className={styles.section} aria-labelledby="post-grid-heading">
-      <div className={styles.grid}>
-        <div className={styles.rail}>
-          <p className={styles.railLabel}>TOPICS</p>
-          <BlogFilterChips
-            items={blogFilters(featuredSlug)}
-            value={active}
-            className={styles.chips}
-          />
+      <BlogFilterProvider ids={blogTopicIds}>
+        <div className={styles.grid}>
+          <div className={styles.rail}>
+            <p className={styles.railLabel}>TOPICS</p>
+            <BlogFilterChips items={chips} className={styles.chips} />
 
-          <div className={styles.pitch}>
-            <p className={styles.pitchTitle}>Want a format covered?</p>
-            <p className={styles.pitchBody}>
-              Tell us the game your group argues about.
-            </p>
-            <Link href="/contact?topic=idea" className={styles.pitchLink}>
-              SEND IT OVER →
-            </Link>
-          </div>
-        </div>
-
-        <div className={styles.main}>
-          <div className={styles.head}>
-            <h2 id="post-grid-heading" className={styles.heading}>
-              {activeLabel}
-            </h2>
-            <span className={styles.count} aria-live="polite">
-              {shown.length} {shown.length === 1 ? "post" : "posts"}
-            </span>
+            <div className={styles.pitch}>
+              <p className={styles.pitchTitle}>Want a format covered?</p>
+              <p className={styles.pitchBody}>
+                Tell us the game your group argues about.
+              </p>
+              <Link href="/contact?topic=idea" className={styles.pitchLink}>
+                SEND IT OVER →
+              </Link>
+            </div>
           </div>
 
-          {shown.length === 0 ? (
-            <p className={styles.empty}>Nothing under that topic yet.</p>
-          ) : (
+          <div className={styles.main}>
+            <PostGridHead items={chips} />
+
             <ul className={styles.cards}>
               {shown.map((post) => (
                 <PostCard key={post.slug} post={post} />
               ))}
             </ul>
-          )}
+          </div>
         </div>
-      </div>
+      </BlogFilterProvider>
     </section>
   );
 }

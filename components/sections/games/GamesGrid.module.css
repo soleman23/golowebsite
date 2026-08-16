@@ -30,6 +30,9 @@
   margin: 0;
 }
 
+/* The /games filter rules live in GameCard.module.css, beside the .cell class
+   they hide — a class name only resolves inside the module that declares it. */
+
 .grid {
   list-style: none;
   margin: 0;

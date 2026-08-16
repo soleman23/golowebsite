@@ -51,7 +51,8 @@ export function PostCard({ post }: { post: Post }) {
   );
 
   return (
-    <li className={styles.item}>
+    // data-topic is what the /blog filter matches on — see PostGrid.module.css.
+    <li className={styles.item} data-topic={post.category}>
       {post.published ? (
         <Link href={`/blog/${post.slug}`} className={styles.card}>
           {body}

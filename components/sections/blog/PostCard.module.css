@@ -3,6 +3,25 @@
   min-width: 0;
 }
 
+/* ---- /blog filtering ----------------------------------------------------
+   Every post is in the HTML; this hides the ones the active topic excludes.
+   FilterBoot writes data-filter onto <html> before first paint, so
+   /blog?topic=etiquette paints filtered rather than flashing the full feed.
+
+   These rules live here rather than in PostGrid.module.css because .item is
+   declared here, and CSS Modules only resolve a class inside its own file.
+
+   One rule per topic, because CSS can't compare an ancestor's attribute
+   against a descendant's. These are the blogCategoryIds union in
+   lib/content/blog.ts — add a category there and it needs a line here. */
+html[data-filter="rules"] .item:not([data-topic="rules"]),
+html[data-filter="etiquette"] .item:not([data-topic="etiquette"]),
+html[data-filter="handicaps"] .item:not([data-topic="handicaps"]),
+html[data-filter="trips"] .item:not([data-topic="trips"]),
+html[data-filter="building"] .item:not([data-topic="building"]) {
+  display: none;
+}
+
 .card {
   display: flex;
   flex-direction: column;
@@ -24,6 +43,19 @@ a.card:hover {
 /* Unwritten: same card, dimmed, and no pointer affordance. */
 .unwritten {
   opacity: 0.72;
+}
+
+/* opacity dims the composited result, so it multiplies every child's contrast
+   with it — --text-muted at .5 came out as #626466 on the card, 3.17:1, an AA
+   failure Lighthouse caught on /blog. Text inside an unwritten card therefore
+   starts one step brighter to land where the same text lands on a written one.
+   Change .unwritten's opacity and these two have to be re-checked. */
+.unwritten .excerpt {
+  color: var(--text-secondary);
+}
+
+.unwritten .soon {
+  color: var(--text-primary);
 }
 
 /* The photo slot. Until the real images land this is a flat panel rather than

@@ -1,14 +1,16 @@
 import type { Metadata } from "next";
 import {
   blogCountLine,
+  blogTopicIds,
   featuredPost,
   publishedPosts,
 } from "@/lib/content";
 import { siteConfig } from "@/lib/siteConfig";
 import { PageHero } from "@/components/ui/PageHero";
 import { StatusPill } from "@/components/ui/StatusPill";
+import { FilterBoot } from "@/components/ui/FilterBoot";
 import { FeaturedPost } from "@/components/sections/blog/FeaturedPost";
-import { PostGrid, BLOG_TOPIC_IDS } from "@/components/sections/blog/PostGrid";
+import { PostGrid } from "@/components/sections/blog/PostGrid";
 import { NewsletterBand } from "@/components/sections/blog/NewsletterBand";
 import { Elsewhere } from "@/components/sections/blog/Elsewhere";
 import { FinalCTA } from "@/components/sections/FinalCTA";
@@ -40,19 +42,18 @@ const blogJsonLd = {
 };
 
 /**
- * The topic filter lives in the URL and is resolved here, on the server, so
- * every card ships in the HTML — same reasoning as /games.
+ * Static, and deliberately so. Reading `searchParams` here would make the
+ * route dynamic, and Next 15 streams metadata on dynamic routes — the title
+ * and description end up in the body instead of <head>. See FilterBoot.
+ *
+ * Every post ships in the HTML on every request now, which is strictly better
+ * for a crawler than serving whatever subset the query string asked for.
  */
-type BlogPageProps = {
-  searchParams: Promise<{ topic?: string }>;
-};
-
-export default async function BlogPage({ searchParams }: BlogPageProps) {
-  const { topic } = await searchParams;
-  const active = topic && BLOG_TOPIC_IDS.has(topic) ? topic : "all";
-
+export default function BlogPage() {
   return (
     <>
+      <FilterBoot param="topic" ids={blogTopicIds} />
+
       <PageHero
         kicker="NOTES FROM THE CART PATH"
         title="How the bet actually works."
@@ -72,7 +73,7 @@ export default async function BlogPage({ searchParams }: BlogPageProps) {
 
       {featuredPost ? <FeaturedPost post={featuredPost} /> : null}
 
-      <PostGrid active={active} featuredSlug={featuredPost?.slug} />
+      <PostGrid featuredSlug={featuredPost?.slug} />
 
       <NewsletterBand page="blog" />
       <Elsewhere />
