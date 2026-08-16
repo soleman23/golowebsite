@@ -1423,9 +1423,13 @@
   border: 1px solid rgba(212, 242, 58, 0.45);
 }
 
+/* .60, not .42: these cells put --accent-ink on the lime, and at .42 the fill
+   composited to #627224 — 3.04:1 against the ink, an AA failure Lighthouse
+   caught on /features. At .60 it lands at 5.4:1. Any cell using the
+   accent/accent-ink pairing needs the lime near-solid to earn it. */
 .strokeCellTwo {
-  background: rgba(212, 242, 58, 0.42);
-  border-color: rgba(212, 242, 58, 0.6);
+  background: rgba(212, 242, 58, 0.6);
+  border-color: rgba(212, 242, 58, 0.75);
 }
 
 .strokeCellHole {
