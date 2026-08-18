@@ -79,12 +79,14 @@ export default function sitemap(): MetadataRoute.Sitemap {
     },
     // /privacy is always listed; /terms joins the moment it clears legal
     // review, and not before — the page is built and readable, just not
-    // published. Both date themselves from the document's own effective date.
+    // published. Both date themselves from the document's own effective date,
+    // read from `effectiveISO` rather than the display string: an ISO date
+    // parses as UTC, so the <lastmod> is the same on every build machine.
     ...legalDocs
       .filter((doc) => doc.slug !== "terms" || siteConfig.termsPublished)
       .map((doc) => ({
         url: `${siteConfig.url}/${doc.slug}`,
-        lastModified: new Date(doc.effective),
+        lastModified: new Date(doc.effectiveISO),
         changeFrequency: "yearly" as const,
         priority: 0.3,
       })),

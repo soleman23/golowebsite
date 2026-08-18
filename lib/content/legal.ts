@@ -54,7 +54,18 @@ export type LegalDoc = {
    * assert something the lawyer did not.
    */
   dateLabel: string;
+  /** Verbatim reviewed copy — rendered as-is beside `dateLabel`. */
   effective: string;
+  /**
+   * The same date in ISO, for machines (the sitemap's `lastModified`).
+   *
+   * Both fields exist because `effective` is legal copy that has to read the
+   * way it was reviewed, while `new Date("July 16, 2026")` parses as *local*
+   * midnight — so /sitemap.xml emitted a different <lastmod> depending on the
+   * build machine's timezone. ISO parses as UTC, which makes the build
+   * reproducible. Keep the two in sync.
+   */
+  effectiveISO: string;
   entity: string;
   /** Paragraphs before section 1, verbatim and in order. */
   intro: LegalBlock[];
@@ -377,6 +388,7 @@ export const privacyDoc: LegalDoc = {
   lead: "What GoLo collects, how it gets used, and exactly what happens when you delete your account. Every section has a plain-English note beside the legal language.",
   dateLabel: "Last updated",
   effective: "July 16, 2026",
+  effectiveISO: "2026-07-16",
   entity: siteConfig.addressShort,
   intro: privacyIntro,
   short: {
@@ -419,6 +431,7 @@ export const termsDoc: LegalDoc = {
   lead: "The rules of the road for using the GoLo app and golo.golf. Written to be read — every section has a plain-English note beside the legal language.",
   dateLabel: "Effective date",
   effective: "July 31, 2026",
+  effectiveISO: "2026-07-31",
   entity: siteConfig.addressShort,
   intro: [
     {

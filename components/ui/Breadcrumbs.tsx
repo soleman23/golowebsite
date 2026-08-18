@@ -3,11 +3,14 @@
  * current page: rendered as plain text, marked aria-current, never a link.
  *
  * Emits a BreadcrumbList server-side alongside the visible trail so the two
- * can't drift apart.
+ * can't drift apart. It goes out through JsonLd like every other block on the
+ * site — the last crumb is a content-file value (a game name, a post title),
+ * so it needs the same "<" escaping as the rest.
  */
 
 import Link from "next/link";
 import { siteConfig } from "@/lib/siteConfig";
+import { JsonLd } from "./JsonLd";
 import styles from "./Breadcrumbs.module.css";
 
 export type Crumb = { label: string; href?: string };
@@ -58,10 +61,7 @@ export function Breadcrumbs({ items, className }: BreadcrumbsProps) {
           })}
         </ol>
       </nav>
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
-      />
+      <JsonLd data={jsonLd} />
     </>
   );
 }
