@@ -12,3 +12,4 @@ export * from "./faq";
 export * from "./contact";
 export * from "./blog";
 export * from "./legal";
+export * from "./utility";

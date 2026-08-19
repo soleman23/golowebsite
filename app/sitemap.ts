@@ -77,6 +77,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: "yearly",
       priority: 0.6,
     },
+    {
+      url: `${siteConfig.url}/delete-account`,
+      lastModified: now,
+      changeFrequency: "yearly",
+      priority: 0.4,
+    },
     // /privacy is always listed; /terms joins the moment it clears legal
     // review, and not before — the page is built and readable, just not
     // published. Both date themselves from the document's own effective date,

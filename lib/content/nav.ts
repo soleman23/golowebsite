@@ -31,7 +31,7 @@ export const footerLinks: Record<FooterColumn, NavLink[]> = {
   games: [
     { label: "All games", href: "/games" },
     { label: "Nassau", href: "/games/nassau" },
-    { label: "Skins", href: "/games#skins" },
+    { label: "Skins", href: "/games/skins" },
   ],
   legal: [
     // /terms is built but stays unlinked until it clears legal review.
@@ -39,6 +39,7 @@ export const footerLinks: Record<FooterColumn, NavLink[]> = {
       ? [{ label: "Terms of Service", href: "/terms" }]
       : []),
     { label: "Privacy Policy", href: "/privacy" },
+    { label: "Delete account", href: "/delete-account" },
   ],
   company: [
     { label: "Blog", href: "/blog" },
