@@ -398,7 +398,7 @@ export const posts: Post[] = [
     crumb: "Pressing",
     author: "From the GoLo team",
     hero: { src: blogMedia.sunset, alt: "Golfers finishing a round beneath an orange sunset", position: "50% 52%" },
-    published: true,
+    published: false,
     body: article(
       "A press is the most useful tool in a friendly bet and the fastest way to sour one. Called at the right moment it keeps a beaten player in the round; called at the wrong one it tells three people exactly what you think of them. The mechanics take a paragraph. The etiquette is the actual subject.",
       [
@@ -432,7 +432,7 @@ export const posts: Post[] = [
     crumb: "Handicaps",
     author: "From the GoLo team",
     hero: { src: blogMedia.course, alt: "A golf course with multiple teeing areas and a distant green", position: "50% 42%" },
-    published: true,
+    published: false,
     body: article(
       "Somebody in your group says “I’m a twelve.” That is a handicap index, and it is not the number he plays off today. Move him back one set of tees and it changes. Take him to a harder course and it changes again. Here is the difference, the formula, and which number belongs on the card when there is money on the hole.",
       [
@@ -464,7 +464,7 @@ export const posts: Post[] = [
     date: "2026-05-14",
     readMins: 6,
     hero: { src: blogMedia.turf, alt: "A golf ball sitting in closely cut turf", position: "50% 56%" },
-    published: true,
+    published: false,
     body: article(
       "Somebody in your group wins more than he should. He has an 18 that never moves, he never seems to have a bad Saturday, and the money has been going one direction since March. You can accuse him, which ends badly whether you are right or wrong. Or you can make the numbers visible and let the group fix itself.",
       [
@@ -530,7 +530,7 @@ export const posts: Post[] = [
     date: "2026-05-09",
     readMins: 5,
     hero: { src: blogMedia.bunkerGreen, alt: "A distant golf flag viewed across a bunker", position: "50% 40%" },
-    published: true,
+    published: false,
     body: article(
       "If you play for ten dollars a side with the same three guys, this decision is smaller than the internet makes it. A laser gives you one exact number. A watch gives you three approximate ones without you doing anything. The honest answer depends on how you miss, how fast your group plays, and whether you will actually use the thing.",
       [
@@ -562,7 +562,7 @@ export const posts: Post[] = [
     date: "2026-05-12",
     readMins: 5,
     hero: { src: blogMedia.sunset, alt: "A coastal-looking golf course under a windy sunset sky", position: "50% 45%" },
-    published: true,
+    published: false,
     body: article(
       "You booked a links trip, you are walking every hole, and on the second morning it is blowing 30 out of the southwest with rain in it. Your golf will be fine — that is what you came for. Your bet will not. Stroke play does not survive weather like this, and the group usually finds that out around the 12th, when two of the four have stopped keeping score.",
       [
@@ -596,7 +596,7 @@ export const posts: Post[] = [
     crumb: "Scottsdale",
     author: "From the GoLo team",
     hero: { src: blogMedia.bunkerFairway, alt: "A desert-style golf fairway bordered by sand", position: "50% 50%" },
-    published: true,
+    published: false,
     body: article(
       "Eight guys, four rounds, one desert. The golf takes care of itself. What ruins buddies trips is the betting: a different game every morning, nobody sure what the running total is, and by Sunday two players have stopped caring because they are down $80 with no way back. Here is a structure that fixes both problems.",
       [
@@ -640,7 +640,7 @@ export const posts: Post[] = [
     crumb: "Build notes",
     author: "From the GoLo team",
     hero: { src: blogMedia.course, alt: "Golfers testing a scoring app during a real round", position: "50% 58%" },
-    published: true,
+    published: false,
     body: article(
       "We did not write a word of marketing until GoLo had been carried around a golf course forty times. Not demos, not internal testing at a desk — real Saturday rounds, real money, real groups who did not care about our roadmap. Here is what we learned, including the parts that were unflattering.",
       [
@@ -676,7 +676,7 @@ export const posts: Post[] = [
     date: "2026-04-16",
     readMins: 5,
     hero: { src: blogMedia.turf, alt: "A golf ball on the final green before settling a round", position: "50% 46%" },
-    published: true,
+    published: false,
     body: article(
       "The settle-up screen is the only screen in GoLo that has to be perfect. Everything before it happens while people are playing golf and forgiving. This one happens in a parking lot, with five guys looking at a phone, and it either ends the round cleanly or starts the conversation we built the app to prevent. It took four attempts.",
       [
