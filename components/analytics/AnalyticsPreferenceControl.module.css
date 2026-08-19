@@ -63,6 +63,11 @@
   color: var(--accent-ink);
 }
 
+.button:disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
 @media (max-width: 760px) {
   .inner { align-items: flex-start; flex-direction: column; border-radius: 0; }
   .actions { width: 100%; }
