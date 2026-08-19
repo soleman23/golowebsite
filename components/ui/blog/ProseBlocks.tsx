@@ -143,12 +143,29 @@ function ProseBlock({ block }: { block: Block }) {
               fill
               sizes="(min-width: 820px) 760px, 92vw"
               className={styles.figureImage}
+              style={{ objectPosition: block.position }}
             />
           </span>
           {block.caption ? (
             <figcaption className={styles.caption}>{block.caption}</figcaption>
           ) : null}
         </figure>
+      );
+
+    case "cardGrid":
+      return (
+        <aside className={styles.cardGrid}>
+          {block.title ? <p className={styles.cardGridTitle}>{block.title}</p> : null}
+          <div className={styles.cardGridItems}>
+            {block.items.map((item) => (
+              <section key={item.title} className={styles.observationCard}>
+                {item.eyebrow ? <p className={styles.cardEyebrow}>{item.eyebrow}</p> : null}
+                <h3>{item.title}</h3>
+                <p>{item.body}</p>
+              </section>
+            ))}
+          </div>
+        </aside>
       );
 
     case "summary":

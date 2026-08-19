@@ -25,6 +25,7 @@ export function PostCard({ post }: { post: Post }) {
             fill
             sizes={CARD_SIZES}
             className={styles.image}
+            style={{ objectPosition: post.hero.position }}
           />
         ) : null}
         <span className={styles.category}>
