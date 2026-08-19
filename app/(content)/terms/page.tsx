@@ -4,13 +4,9 @@ import { siteConfig } from "@/lib/siteConfig";
 import { LegalPage } from "@/components/sections/legal/LegalPage";
 
 /**
- * NOT APPROVED FOR PUBLICATION. The section text in lib/content/legal.ts is
- * the prototype's design copy, not a lawyer's. While siteConfig.termsPublished
- * is false the route builds and renders — so it can be reviewed at /terms —
- * but stays noindex, out of the sitemap, and unlinked from the footer.
- *
- * On sign-off: flip NEXT_PUBLIC_TERMS_PUBLISHED, and the robots block below,
- * the sitemap entry and the footer link all follow from that one switch.
+ * The owner authorized this copy as interim website Terms. It still requires
+ * legal approval or replacement before NEXT_PUBLIC_APP_LIVE can become true.
+ * The publication flag controls robots, sitemap inclusion, and navigation.
  */
 
 export const metadata: Metadata = {

@@ -104,9 +104,12 @@ Copy from [`.env.example`](.env.example). Never commit `.env`.
 | `NEXT_PUBLIC_HERO_BACKDROP`    | No       | **Public**  | `sunset` \| `course` \| `turf`                      |
 | `NEXT_PUBLIC_APP_LIVE`         | No       | **Public**  | `true`/`false` (default **false**) — see below      |
 | `NEXT_PUBLIC_TERMS_PUBLISHED`  | No       | **Public**  | `true`/`false` (default **false**) — see below      |
-| `NEXT_PUBLIC_GA_ID`            | No       | **Public**  | GA4 measurement ID; analytics only load in production |
+| `NEXT_PUBLIC_COOKIES_PUBLISHED`| No       | **Public**  | `true`/`false` (default **false**)                   |
+| `NEXT_PUBLIC_ACCEPTABLE_USE_PUBLISHED` | No | **Public** | `true`/`false` (default **false**)                 |
+| `NEXT_PUBLIC_ANALYTICS_ENABLED`| No       | **Public**  | GA kill switch (default **false**); consent is still required |
+| `NEXT_PUBLIC_GA_ID`            | No       | **Public**  | GA4 measurement ID                                  |
 
-### The two launch switches
+### Launch controls
 
 `NEXT_PUBLIC_APP_LIVE` is what keeps the site honest before release. While it's
 `false`, the hero and the closing CTA show the **"text me the link" capture
@@ -116,11 +119,16 @@ it to `true` — *and* setting the two store URLs — turns the store buttons ba
 everywhere at once. Don't flip one without the other: `store_button_click` fires
 `destination_configured: false` if you do.
 
-`NEXT_PUBLIC_TERMS_PUBLISHED` gates `/terms`, whose copy is the prototype's
-design text and has **not** had a lawyer's read. While it's `false` the page
-renders (so it can be reviewed at `/terms`) but carries `noindex, nofollow`,
-stays out of the sitemap, and is unlinked from the footer. One switch moves all
-four.
+`NEXT_PUBLIC_TERMS_PUBLISHED` gates `/terms`. The current copy is authorized as
+interim website Terms but must be approved or replaced before
+`NEXT_PUBLIC_APP_LIVE` becomes `true`. Cookie and Acceptable Use drafts remain
+directly reviewable while their flags are `false`, but carry `noindex,
+nofollow`, stay out of the sitemap, and remain unlinked.
+
+`NEXT_PUBLIC_ANALYTICS_ENABLED` is an explicit kill switch and defaults to
+`false`. Even when enabled, analytics requires a visitor's explicit grant at
+`/privacy#analytics-choices`; an unset preference or Global Privacy Control
+keeps analytics off. Withdrawing consent clears accessible `_ga*` cookies.
 
 \* If the three Twilio values are absent, the SMS endpoint runs in **stub mode**:
 it still validates the number and records the lead, returns success, but sends
@@ -254,13 +262,16 @@ Until `VPS_HOST` is set, the workflow safely skips instead of failing.
 | `/` | static | landing page; keeps section ids `#top` `#features` `#games` `#how` `#get` `#faq` |
 | `/features` | static | |
 | `/games` | dynamic | `?filter=` is resolved server-side so every card ships in the HTML |
-| `/games/[slug]` | SSG | one page per key in `gameDetail.ts` (Nassau today) |
+| `/games/[slug]` | SSG | one page per key in `gameDetail.ts` |
 | `/faq` | static | |
 | `/contact` | static | |
 | `/blog` | dynamic | `?topic=` resolved server-side, same reason as `/games` |
 | `/blog/[slug]` | SSG | one page per **published** post |
 | `/privacy` | static | |
-| `/terms` | static | built but `noindex` + out of the sitemap until `NEXT_PUBLIC_TERMS_PUBLISHED=true` |
+| `/terms` | static | indexed only when `NEXT_PUBLIC_TERMS_PUBLISHED=true` |
+| `/cookies` | static | reviewable draft; unpublished by default |
+| `/acceptable-use` | static | reviewable draft; unpublished by default |
+| `/delete-account` | static | public account-deletion guide |
 
 Old URLs fold into these via `redirects()` in `next.config.mjs` (all 308):
 `/privacy-policy` `/terms-of-service` `/tos` `/faqs` `/game/nassau`
