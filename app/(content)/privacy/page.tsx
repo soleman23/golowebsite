@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { privacyDoc } from "@/lib/content";
 import { siteConfig } from "@/lib/siteConfig";
+import { AnalyticsPreferenceControl } from "@/components/analytics/AnalyticsPreferenceControl";
 import { LegalPage } from "@/components/sections/legal/LegalPage";
 
 /**
@@ -16,5 +17,14 @@ export const metadata: Metadata = {
 };
 
 export default function PrivacyPage() {
-  return <LegalPage doc={privacyDoc} />;
+  return (
+    <LegalPage
+      doc={privacyDoc}
+      afterBody={
+        <AnalyticsPreferenceControl
+          measurementId={siteConfig.gaMeasurementId}
+        />
+      }
+    />
+  );
 }

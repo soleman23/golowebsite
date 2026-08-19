@@ -7,8 +7,11 @@ import "./globals.css";
 
 // Google Analytics 4 measurement ID. Override per-environment with NEXT_PUBLIC_GA_ID.
 const GA_MEASUREMENT_ID = siteConfig.gaMeasurementId;
-// Don't pollute analytics with local dev traffic.
-const GA_ENABLED = process.env.NODE_ENV === "production" && !!GA_MEASUREMENT_ID;
+// Launch-safe kill switch plus a production-only guard.
+const GA_ENABLED =
+  process.env.NODE_ENV === "production" &&
+  siteConfig.analyticsEnabled &&
+  !!GA_MEASUREMENT_ID;
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteConfig.url),

@@ -42,7 +42,7 @@ export function AnalyticsLoader({
 
   const reconcile = useCallback(() => {
     if (!enabled) {
-      window.__goloAnalyticsAllowed = false;
+      applyAnalyticsState(measurementId, false);
       setAllowed(false);
       return;
     }

@@ -28,15 +28,19 @@ export function AnalyticsPreferenceControl({
   };
 
   const status = gpc
-    ? "Global Privacy Control is on. Analytics is blocked for this visit."
+    ? "Global Privacy Control is on. It overrides saved consent and keeps analytics off for this visit."
     : preference === "denied"
       ? "Analytics is off in this browser."
       : preference === "granted"
         ? "Analytics is on in this browser."
-        : "Analytics is on by default. No preference has been saved yet.";
+        : "Analytics is off until you allow it.";
 
   return (
-    <section className={styles.section} aria-labelledby="analytics-choice-heading">
+    <section
+      id="analytics-choices"
+      className={styles.section}
+      aria-labelledby="analytics-choice-heading"
+    >
       <div className={styles.inner}>
         <div>
           <p className={styles.kicker}>COOKIE PREFERENCE</p>
@@ -46,19 +50,20 @@ export function AnalyticsPreferenceControl({
         <div className={styles.actions} role="group" aria-label="Analytics preference">
           <button
             type="button"
-            className={`${styles.button} ${preference !== "denied" && !gpc ? styles.active : ""}`}
-            aria-pressed={preference !== "denied" && !gpc}
+            className={`${styles.button} ${preference === "granted" && !gpc ? styles.active : ""}`}
+            aria-pressed={preference === "granted" && !gpc}
+            disabled={gpc}
             onClick={() => choose("granted")}
           >
             Allow analytics
           </button>
           <button
             type="button"
-            className={`${styles.button} ${preference === "denied" || gpc ? styles.active : ""}`}
-            aria-pressed={preference === "denied" || gpc}
+            className={`${styles.button} ${preference !== "granted" || gpc ? styles.active : ""}`}
+            aria-pressed={preference !== "granted" || gpc}
             onClick={() => choose("denied")}
           >
-            Turn analytics off
+            Keep analytics off
           </button>
         </div>
       </div>
