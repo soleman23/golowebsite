@@ -1,5 +1,5 @@
 /**
- * Section trees for /privacy and /terms.
+ * Section trees for the public and review-gated legal documents.
  *
  * ── /privacy ─────────────────────────────────────────────────────────────
  * The policy text below is the repo's authoritative, reviewed copy. It was
@@ -42,8 +42,15 @@ export type LegalSection = {
   blocks: LegalBlock[];
 };
 
+export type LegalSlug =
+  | "privacy"
+  | "terms"
+  | "cookies"
+  | "acceptable-use";
+
 export type LegalDoc = {
-  slug: "privacy" | "terms";
+  slug: LegalSlug;
+  published: boolean;
   title: string;
   kicker: string;
   /** Hero standfirst. Presentational summary, not part of the legal text. */
@@ -383,6 +390,7 @@ const privacyPlain: Record<string, string> = {
 
 export const privacyDoc: LegalDoc = {
   slug: "privacy",
+  published: true,
   title: "Privacy Policy",
   kicker: "LEGAL",
   lead: "What GoLo collects, how it gets used, and exactly what happens when you delete your account. Every section has a plain-English note beside the legal language.",
@@ -426,6 +434,7 @@ export const privacyDoc: LegalDoc = {
 
 export const termsDoc: LegalDoc = {
   slug: "terms",
+  published: siteConfig.termsPublished,
   title: "Terms of Service",
   kicker: "LEGAL",
   lead: "The rules of the road for using the GoLo app and golo.golf. Written to be read — every section has a plain-English note beside the legal language.",
@@ -698,8 +707,207 @@ export const termsDoc: LegalDoc = {
   cta: { title: "Terms read. Now go win the back nine." },
 };
 
+export const cookiesDoc: LegalDoc = {
+  slug: "cookies",
+  published: siteConfig.cookiesPublished,
+  title: "Cookie Policy",
+  kicker: "LEGAL · WEBSITE PREFERENCES",
+  lead:
+    "What golo.golf stores in your browser, when Google Analytics is allowed to load, and how to change that choice.",
+  dateLabel: "Draft updated",
+  effective: "August 18, 2026",
+  effectiveISO: "2026-08-18",
+  entity: siteConfig.legalName,
+  intro: [
+    {
+      kind: "p",
+      html: "This Cookie Policy describes browser storage used by the public marketing website at golo.golf. It does not describe cookies used by the GoLo mobile app or a future authenticated web application.",
+    },
+    {
+      kind: "p",
+      html: "The marketing site does not currently use Supabase authentication cookies, advertising cookies, or cross-site marketing pixels. The inventory below reflects the website behavior that is actually implemented.",
+    },
+  ],
+  short: {
+    tag: "THE SHORT VERSION",
+    title: "One preference, one optional analytics service.",
+    sub: "The site works without analytics. Your choice is stored in this browser and Global Privacy Control overrides analytics for the visit.",
+    lines: [
+      { tag: "NECESSARY", text: "We store your analytics choice locally so the site can remember it." },
+      { tag: "ANALYTICS", text: "Google Analytics loads by default unless you opt out or Global Privacy Control is enabled." },
+      { tag: "NO ADS", text: "No advertising, retargeting, or data-broker cookies are used." },
+      { tag: "YOUR CONTROL", text: "Use the control below at any time; opting out removes first-party Google Analytics cookies." },
+    ],
+  },
+  sections: [
+    {
+      num: "01",
+      id: "scope",
+      title: "Scope",
+      plain: "This document is about the public website in this browser.",
+      blocks: [
+        { kind: "p", html: "Browser storage includes cookies and local storage. Cookies are small values a site may send with later requests. Local storage remains in your browser and is not sent automatically with each request." },
+        { kind: "p", html: "The website can be browsed, including its games, blog, FAQ, contact information, and legal pages, without accepting analytics." },
+      ],
+    },
+    {
+      num: "02",
+      id: "preference-storage",
+      title: "Preference Storage",
+      plain: "We remember granted or denied so you do not have to choose on every page.",
+      blocks: [
+        { kind: "p", html: "GoLo stores an analytics preference in local storage under a GoLo-specific key. Its value is either <strong>granted</strong> or <strong>denied</strong>. This value is used only to decide whether the website may request and use Google Analytics." },
+        { kind: "p", html: "Removing the value restores the default behavior on the next visit. A Global Privacy Control signal still overrides a stored grant for the current visit." },
+      ],
+    },
+    {
+      num: "03",
+      id: "analytics",
+      title: "Google Analytics",
+      plain: "No Google script request is made while analytics is denied.",
+      blocks: [
+        { kind: "p", html: "When analytics is allowed, the site requests the Google Analytics 4 tag and may receive first-party cookies whose names begin with <strong>_ga</strong>, including a property-specific cookie such as <strong>_ga_&lt;container-id&gt;</strong>. These are used to distinguish browser sessions and understand aggregate website use." },
+        { kind: "p", html: "GoLo does not send names, email addresses, phone numbers, free-form contact messages, or other directly identifying form values as analytics event parameters." },
+        { kind: "table", head: ["Storage", "Purpose", "When created"], rows: [
+          ["Local preference", "Remember granted or denied", "After you change the analytics setting"],
+          ["_ga", "Distinguish a browser for aggregate measurement", "Only while analytics is allowed"],
+          ["_ga_<container-id>", "Maintain GA4 session state", "Only while analytics is allowed"],
+        ] },
+      ],
+    },
+    {
+      num: "04",
+      id: "controls",
+      title: "Your Controls",
+      plain: "Opting out is immediate for new events and clears first-party GA cookies we can access.",
+      blocks: [
+        { kind: "p", html: "Use the analytics control on this page to grant or deny analytics. If you opt out after the Google tag has loaded, GoLo sets Google’s property disable flag, stops GoLo analytics events, and expires accessible first-party cookies whose names begin with _ga." },
+        { kind: "p", html: "You may also clear site data in your browser. Browser extensions, network filters, and privacy settings may block analytics independently of the GoLo control." },
+        { kind: "h3", text: "Global Privacy Control" },
+        { kind: "p", html: "If your browser sends a Global Privacy Control signal, GoLo treats analytics as denied for that visit even if this browser previously stored a grant. The stored value is not overwritten merely because GPC is present." },
+      ],
+    },
+    {
+      num: "05",
+      id: "changes-contact",
+      title: "Changes and Contact",
+      plain: "If the website adds another browser-storage purpose, this inventory must change first.",
+      blocks: [
+        { kind: "p", html: `We may update this policy when website behavior changes. Questions about browser storage or analytics may be sent to <strong><a href="mailto:${siteConfig.supportEmail}">${siteConfig.supportEmail}</a></strong>.` },
+      ],
+    },
+  ],
+  contact: {
+    kicker: "COOKIE QUESTIONS",
+    blurb: "Ask what the website stored, report behavior that does not match this inventory, or request help changing a preference.",
+  },
+  cta: { title: "Preferences set. Back to the first tee." },
+};
+
+export const acceptableUseDoc: LegalDoc = {
+  slug: "acceptable-use",
+  published: siteConfig.acceptableUsePublished,
+  title: "Acceptable Use Policy",
+  kicker: "LEGAL · COMMUNITY RULES",
+  lead:
+    "The line between a friendly golf scorekeeper and conduct that does not belong on GoLo.",
+  dateLabel: "Draft updated",
+  effective: "August 18, 2026",
+  effectiveISO: "2026-08-18",
+  entity: siteConfig.legalName,
+  intro: [
+    { kind: "p", html: "This Acceptable Use Policy applies to the GoLo Service and supplements the Terms of Service. It is a legal draft and remains subject to review before publication." },
+    { kind: "p", html: "You are responsible for following applicable law, course rules, tournament rules, and the agreements you make with other players." },
+  ],
+  short: {
+    tag: "THE SHORT VERSION",
+    title: "Keep it friendly, honest, and legal.",
+    sub: "Do not use GoLo to harm people, attack systems, manipulate records, or run unlawful wagering activity.",
+    lines: [
+      { tag: "PLAY FAIR", text: "Enter honest scores and do not alter another player’s results without authorization." },
+      { tag: "KEEP IT LEGAL", text: "You are responsible for local law and course or competition rules." },
+      { tag: "NO ABUSE", text: "No harassment, threats, impersonation, spam, or exploitation." },
+      { tag: "NO ATTACKS", text: "Do not probe, disrupt, scrape, reverse engineer, or bypass access controls." },
+    ],
+  },
+  sections: [
+    {
+      num: "01",
+      id: "permitted-use",
+      title: "Permitted Use",
+      plain: "Use GoLo to organize golf, keep score, track agreed games, and calculate settlements.",
+      blocks: [
+        { kind: "p", html: "You may use GoLo for lawful personal, recreational, club, league, or course activities consistent with the Service’s intended functions and the rights of other people." },
+      ],
+    },
+    {
+      num: "02",
+      id: "prohibited-conduct",
+      title: "Prohibited Conduct",
+      plain: "Do not use the product to cheat, harass, deceive, or cause harm.",
+      blocks: [
+        { kind: "p", html: "You may not use the Service to:" },
+        { kind: "ul", items: [
+          "violate applicable law, regulation, court order, course rule, or competition rule;",
+          "organize, promote, or facilitate unlawful gambling or payment activity;",
+          "submit scores, identities, account details, settlement status, or other records you know are false or misleading;",
+          "harass, threaten, stalk, shame, discriminate against, or expose private information about another person;",
+          "impersonate another person or misrepresent your authority to act for a player, club, course, or organization;",
+          "send spam, unwanted promotions, malware, or deceptive links; or",
+          "infringe intellectual-property, privacy, publicity, or other rights.",
+        ] },
+      ],
+    },
+    {
+      num: "03",
+      id: "system-integrity",
+      title: "System Integrity",
+      plain: "Do not attack, scrape, overload, or work around the service.",
+      blocks: [
+        { kind: "ul", items: [
+          "probe, scan, or test vulnerabilities without written authorization;",
+          "bypass authentication, rate limits, safety controls, or access restrictions;",
+          "interfere with availability or use automated traffic that degrades the Service;",
+          "scrape, harvest, or export information except through features GoLo provides or with written permission;",
+          "reverse engineer or attempt to extract source code except where law expressly permits it; or",
+          "use the Service to develop or train a competing product without written permission.",
+        ] },
+      ],
+    },
+    {
+      num: "04",
+      id: "enforcement",
+      title: "Enforcement",
+      plain: "We may remove content or restrict accounts when necessary to protect people or the service.",
+      blocks: [
+        { kind: "p", html: "GoLo may investigate suspected violations and may warn, limit, suspend, or terminate access; remove or preserve relevant content; and cooperate with affected people, service providers, or lawful authorities when appropriate." },
+        { kind: "p", html: "We consider context, severity, repetition, risk, and whether immediate action is necessary. Nothing in this policy requires GoLo to monitor every round or communication." },
+      ],
+    },
+    {
+      num: "05",
+      id: "reporting",
+      title: "Reporting and Questions",
+      plain: "Send enough detail for a person to locate and assess the issue.",
+      blocks: [
+        { kind: "p", html: `Report suspected abuse to <strong><a href="mailto:${siteConfig.supportEmail}">${siteConfig.supportEmail}</a></strong>. Include the account, round, approximate time, and screenshots or links when available. Do not send passwords, payment credentials, or unnecessary sensitive information.` },
+      ],
+    },
+  ],
+  contact: {
+    kicker: "REPORT A PROBLEM",
+    blurb: "Abuse, security concerns, impersonation, or conduct that puts a player or the Service at risk. A person reads it.",
+  },
+  cta: { title: "Rules agreed. Keep the game friendly." },
+};
+
 /** The legal shelf, for the sub-nav and the "more from" cards. */
-export const legalDocs: LegalDoc[] = [termsDoc, privacyDoc];
+export const legalDocs: LegalDoc[] = [
+  termsDoc,
+  privacyDoc,
+  cookiesDoc,
+  acceptableUseDoc,
+];
 
 export function findLegalDoc(slug: string): LegalDoc | undefined {
   return legalDocs.find((doc) => doc.slug === slug);

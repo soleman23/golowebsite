@@ -24,6 +24,7 @@ export const siteConfig = {
   description:
     "GoLo is the golf-betting scorekeeper that runs every side-game, does the handicap math, and settles the group into the fewest payments before you leave the green.",
   url: process.env.NEXT_PUBLIC_SITE_URL || "https://www.golo.golf",
+  gaMeasurementId: process.env.NEXT_PUBLIC_GA_ID || "G-36182P0H4D",
 
   /** The one public address. Also the contact of record in /privacy. */
   supportEmail: "info@golo.golf",
@@ -66,6 +67,14 @@ export const siteConfig = {
    * false the route stays noindex, out of the sitemap, and unlinked.
    */
   termsPublished: boolFlag(process.env.NEXT_PUBLIC_TERMS_PUBLISHED, false),
+  cookiesPublished: boolFlag(
+    process.env.NEXT_PUBLIC_COOKIES_PUBLISHED,
+    false,
+  ),
+  acceptableUsePublished: boolFlag(
+    process.env.NEXT_PUBLIC_ACCEPTABLE_USE_PUBLISHED,
+    false,
+  ),
 
   heroBackdrop: heroBackdrop(process.env.NEXT_PUBLIC_HERO_BACKDROP),
 } as const;

@@ -39,6 +39,12 @@ export const footerLinks: Record<FooterColumn, NavLink[]> = {
       ? [{ label: "Terms of Service", href: "/terms" }]
       : []),
     { label: "Privacy Policy", href: "/privacy" },
+    ...(siteConfig.cookiesPublished
+      ? [{ label: "Cookie Policy", href: "/cookies" }]
+      : []),
+    ...(siteConfig.acceptableUsePublished
+      ? [{ label: "Acceptable Use", href: "/acceptable-use" }]
+      : []),
     { label: "Delete account", href: "/delete-account" },
   ],
   company: [

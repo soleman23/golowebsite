@@ -15,8 +15,8 @@ import {
  * effective dates) and falls back to build time only for pages whose content
  * has no date of its own.
  *
- * /terms is deliberately absent while siteConfig.termsPublished is false: it's
- * built but hasn't cleared legal review.
+ * Legal drafts are built for review but remain absent until their individual
+ * publication flags are enabled.
  */
 export default function sitemap(): MetadataRoute.Sitemap {
   const now = new Date();
@@ -40,9 +40,8 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: "monthly",
       priority: 0.9,
     },
-    // Keyed off the written detail content rather than the roster's
-    // `hasDetailPage` flag, so a game can never be listed here before its page
-    // actually renders.
+    // Keyed off the complete, typed detail-record map so every roster game is
+    // guaranteed to have exactly one routable page.
     ...gameDetailSlugsWithContent.map((slug) => ({
       url: `${siteConfig.url}/games/${slug}`,
       lastModified: now,
@@ -83,13 +82,11 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: "yearly",
       priority: 0.4,
     },
-    // /privacy is always listed; /terms joins the moment it clears legal
-    // review, and not before — the page is built and readable, just not
-    // published. Both date themselves from the document's own effective date,
-    // read from `effectiveISO` rather than the display string: an ISO date
-    // parses as UTC, so the <lastmod> is the same on every build machine.
+    // Privacy is always listed. Each draft joins the moment its publication
+    // flag clears legal review. Documents date themselves from `effectiveISO`,
+    // so <lastmod> is stable across build-machine time zones.
     ...legalDocs
-      .filter((doc) => doc.slug !== "terms" || siteConfig.termsPublished)
+      .filter((doc) => doc.published)
       .map((doc) => ({
         url: `${siteConfig.url}/${doc.slug}`,
         lastModified: new Date(doc.effectiveISO),
