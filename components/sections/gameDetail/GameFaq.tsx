@@ -12,7 +12,7 @@ export function GameFaq({ game }: { game: GameDetail }) {
     <section className={styles.section} aria-labelledby="game-faq-heading">
       <div className={styles.inner}>
         <SectionHeader
-          kicker={`${game.name.toUpperCase()}, ANSWERED`}
+          kicker={game.headings.faq.kicker}
           title={game.headings.faq.title}
           headingId="game-faq-heading"
           className={styles.header}

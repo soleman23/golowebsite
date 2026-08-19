@@ -2,8 +2,7 @@
  * One game card. Shared by the /games grid and the "stack it with" row on a
  * game detail page, so the two can't drift apart.
  *
- * Only games with a detail page become links; the rest carry their whole
- * explanation on the card, so there's nowhere for a link to go.
+ * Every roster game has a matching detail route.
  */
 
 import Link from "next/link";
@@ -34,32 +33,22 @@ export function GameCard({ game }: { game: Game }) {
       <div className={styles.meta}>
         <span className={styles.metaPill}>{game.players}</span>
         <span className={styles.metaPill}>{game.format}</span>
-        {game.hasDetailPage ? (
-          <span className={styles.play}>
-            How to play
-            <Icon name="arrowRight" size={14} />
-          </span>
-        ) : null}
+        <span className={styles.play}>
+          How to play
+          <Icon name="arrowRight" size={14} />
+        </span>
       </div>
     </>
   );
 
   return (
     <li id={game.slug} className={styles.cell}>
-      {game.hasDetailPage ? (
-        <Link
-          href={`/games/${game.slug}`}
-          className={`${styles.card} ${styles.cardLink} ${game.popular ? styles.cardPopular : ""}`}
-        >
-          {body}
-        </Link>
-      ) : (
-        <article
-          className={`${styles.card} ${game.popular ? styles.cardPopular : ""}`}
-        >
-          {body}
-        </article>
-      )}
+      <Link
+        href={`/games/${game.slug}`}
+        className={`${styles.card} ${styles.cardLink} ${game.popular ? styles.cardPopular : ""}`}
+      >
+        {body}
+      </Link>
     </li>
   );
 }

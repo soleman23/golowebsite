@@ -55,6 +55,11 @@
   border-color: var(--accent-border);
 }
 
+.betBad,
+.betNeutral {
+  border-color: var(--card-border);
+}
+
 .tag {
   flex: 0 0 auto;
   width: 44px;
@@ -66,6 +71,13 @@
   font-size: 12px;
   font-weight: 800;
   letter-spacing: 0.5px;
+  flex-direction: column;
+  line-height: 1.05;
+}
+
+.tag small {
+  font-size: 8px;
+  margin-top: 3px;
 }
 
 .tagGood {
@@ -78,6 +90,12 @@
   background: rgba(251, 113, 133, 0.14);
   border: 1px solid rgba(251, 113, 133, 0.4);
   color: var(--negative);
+}
+
+.tagNeutral {
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  color: var(--text-secondary);
 }
 
 .betBody {
@@ -112,6 +130,37 @@
 
 .valueBad {
   color: var(--negative);
+}
+
+.valueNeutral {
+  color: var(--text-secondary);
+}
+
+.standings {
+  display: grid;
+  gap: 8px;
+  margin-top: 14px;
+}
+
+.standing {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 11px 14px;
+  border: 1px solid var(--card-border);
+  border-radius: 12px;
+  background: rgba(20, 28, 24, 0.4);
+}
+
+.standing span,
+.standing small {
+  display: block;
+}
+
+.standing small {
+  margin-top: 2px;
+  color: var(--text-faint);
 }
 
 .net {

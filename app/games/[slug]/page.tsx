@@ -9,6 +9,7 @@ import { siteConfig } from "@/lib/siteConfig";
 import { PageHero } from "@/components/ui/PageHero";
 import { Icon } from "@/components/ui/Icon";
 import { GameSteps } from "@/components/sections/gameDetail/GameSteps";
+import { GameScoring } from "@/components/sections/gameDetail/GameScoring";
 import { WorkedExample } from "@/components/sections/gameDetail/WorkedExample";
 import { GameVariations } from "@/components/sections/gameDetail/GameVariations";
 import { GameTips } from "@/components/sections/gameDetail/GameTips";
@@ -102,6 +103,7 @@ export default async function GameDetailPage({ params }: Params) {
       />
 
       <GameSteps game={game} />
+      <GameScoring game={game} />
       <WorkedExample game={game} />
       <GameVariations game={game} />
       <GameTips game={game} />
