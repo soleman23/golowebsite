@@ -103,7 +103,10 @@ export function FinalCTA({
           ) : (
             <TextMeLink
               id={`cta-phone-${page}`}
-              placement="final_cta"
+              // Carries the page, so generate_lead can tell a signup from the
+              // home page apart from one off /games or a game detail — all
+              // three render this same closing band.
+              placement={`final_cta_${page}`}
               prompt="Text me the link when it's live:"
               align="center"
             />

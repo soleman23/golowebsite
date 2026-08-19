@@ -228,7 +228,7 @@ The repo is already in decent shape (skip link, focus-visible ring, semantic sec
 
 - One `<h1>` per page, in `PageHero`. Headings descend without skipping.
 - Accordions: `<button aria-expanded aria-controls>` inside a heading, panel `role="region" aria-labelledby`. Multiple-open is fine; item 0 opens by default (matches the existing FAQ).
-- Filter chips: `role="tablist"`/`tab` only if the panel really is tab content; otherwise plain buttons with `aria-pressed`.
+- Filter chips: `role="tablist"`/`tab` only if the panel really is tab content; URL-backed filter links use `aria-current="true"` on the active link, while standalone toggle buttons use `aria-pressed`.
 - Mockups: decorative internals `aria-hidden="true"` inside a `role="img"` + `aria-label` frame that says what it shows ("Scorecard for hole 7 showing net scores for four players").
 - Forms: real `<label>`s (not placeholders), `aria-invalid` + `aria-describedby` on errors, error text as `role="alert"`, focus moves to the first invalid field on submit.
 - Contrast: keep muted text at ≥ .5 on `--page-bg` and ≥ .55 on `--footer-bg`. Lime `#d4f23a` on `#0a0d10` passes; lime on `--glass-chrome` needs the same check before you use it for body text.

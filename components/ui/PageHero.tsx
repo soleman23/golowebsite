@@ -23,7 +23,7 @@ export type HeroCta = {
   cta?: string;
 };
 
-type PageHeroProps = {
+type PageHeroBase = {
   kicker: string;
   title: string;
   /** Second line of the H1, broken onto its own line and set in the accent. */
@@ -31,13 +31,22 @@ type PageHeroProps = {
   lead?: string;
   breadcrumbs?: Crumb[];
   status?: { variant: StatusVariant; label: string };
-  ctas?: HeroCta[];
-  /** Names the page in the cta_click param. Required once `ctas` is set. */
-  page?: string;
   /** Small text row under the CTAs — availability notes, read time, dates. */
   meta?: React.ReactNode;
   visual?: React.ReactNode;
 };
+
+/**
+ * `page` names the page in the cta_click param, and it's only meaningful when
+ * there are CTAs to click — so the two travel together rather than `page`
+ * being an optional with a placeholder default. A hero that adds CTAs and
+ * forgets `page` is a type error, not an analytics report full of "page".
+ */
+type PageHeroProps = PageHeroBase &
+  (
+    | { ctas: HeroCta[]; page: string }
+    | { ctas?: undefined; page?: undefined }
+  );
 
 /** "/games" → "games", "/#get" → "get", "/" → "home". */
 function ctaSlug(href: string): string {
@@ -53,7 +62,7 @@ export function PageHero({
   breadcrumbs,
   status,
   ctas,
-  page = "page",
+  page,
   meta,
   visual,
 }: PageHeroProps) {
@@ -85,7 +94,7 @@ export function PageHero({
 
           {lead ? <p className={styles.lead}>{lead}</p> : null}
 
-          {ctas?.length ? (
+          {ctas?.length && page ? (
             <div className={styles.ctaRow}>
               {ctas.map((cta) => (
                 <TrackedCta

@@ -40,6 +40,8 @@ Thumbs.db
 .vscode/*
 !.vscode/extensions.json
 .idea
+.claude/settings.local.json
+.playwright-cli/
 
 # vercel / deploy caches
 .vercel
@@ -48,3 +50,4 @@ Thumbs.db
 # design reference (kept locally, not part of the deployable app)
 /design_handoff_landing_page
 /design_handoff
+/GoLo Golf Website Claude Design/

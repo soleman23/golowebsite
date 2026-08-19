@@ -26,7 +26,11 @@ const nextConfig = {
       { source: "/terms-of-service", destination: "/terms", permanent: true },
       { source: "/tos", destination: "/terms", permanent: true },
       { source: "/faqs", destination: "/faq", permanent: true },
-      { source: "/game/nassau", destination: "/games/nassau", permanent: true },
+      // The whole /game/* namespace, not just the one game that has a detail
+      // page today. Everything else about games derives from the content layer
+      // (the route, generateStaticParams, the sitemap), so hardcoding a slug
+      // here would 404 the moment a second game is written.
+      { source: "/game/:slug", destination: "/games/:slug", permanent: true },
       {
         source: "/games/nassau-explained",
         destination: "/games/nassau",
