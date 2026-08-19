@@ -2,22 +2,30 @@
  * The game roster behind /games and /games/[slug]. Copy is verbatim from
  * design_handoff/reference/Golo Golf - Games.dc.html.
  *
- * `hasDetailPage` is what points a card at its own route — only Nassau is
- * written today, so only Nassau gets one. The rest are full cards on /games,
- * each deep-linkable at /games#<slug>, and get promoted to a route when their
- * long-form copy exists.
- *
- * The route and the sitemap both build from `gameDetailSlugsWithContent` in
- * gameDetail.ts, not from this flag — that way a slug can never be linked or
- * indexed before its copy exists. Set the flag in the same commit as the copy.
+ * Every roster entry has a long-form route. The tuple below is the canonical
+ * inventory for cards, detail records, related links, navigation, and sitemap
+ * generation, so a misspelled or missing game slug fails TypeScript.
  */
 
 import type { IconName } from "@/components/ui/Icon";
 
 export type GameTag = "pots" | "match" | "points" | "side";
 
+export const GAME_SLUGS = [
+  "skins",
+  "nassau",
+  "stroke-purse",
+  "wolf",
+  "bingo-bango-bongo",
+  "closest-to-pin",
+  "longest-drive",
+  "birdies",
+] as const;
+
+export type GameSlug = (typeof GAME_SLUGS)[number];
+
 export type Game = {
-  slug: string;
+  slug: GameSlug;
   icon: IconName;
   name: string;
   desc: string;
@@ -26,7 +34,6 @@ export type Game = {
   format: string;
   tags: GameTag[];
   popular?: boolean;
-  hasDetailPage?: boolean;
 };
 
 export const games: Game[] = [
@@ -51,7 +58,6 @@ export const games: Game[] = [
     format: "3 bets in 1",
     tags: ["match"],
     popular: true,
-    hasDetailPage: true,
   },
   {
     slug: "stroke-purse",
@@ -124,6 +130,10 @@ export const gameFilters: GameFilter[] = [
   { id: "points", label: "Points" },
   { id: "side", label: "Side bets" },
 ];
+
+export function isGameSlug(slug: string): slug is GameSlug {
+  return (GAME_SLUGS as readonly string[]).includes(slug);
+}
 
 export function findGame(slug: string): Game | undefined {
   return games.find((game) => game.slug === slug);

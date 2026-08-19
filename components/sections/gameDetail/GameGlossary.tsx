@@ -12,7 +12,7 @@ export function GameGlossary({ game }: { game: GameDetail }) {
     <section className={styles.section} aria-labelledby="glossary-heading">
       <div className={styles.inner}>
         <SectionHeader
-          kicker="TALK THE TALK"
+          kicker={game.headings.glossary.kicker}
           title={game.headings.glossary.title}
           headingId="glossary-heading"
           maxWidth={720}
