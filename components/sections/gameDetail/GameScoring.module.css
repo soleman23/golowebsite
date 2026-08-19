@@ -72,11 +72,15 @@
 
 @media (max-width: 520px) {
   .row {
-    grid-template-columns: auto minmax(0, 1fr);
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .tag {
+    width: fit-content;
   }
 
   .value {
-    grid-column: 2;
+    grid-column: 1;
     text-align: left;
   }
 }
