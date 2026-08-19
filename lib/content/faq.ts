@@ -228,11 +228,8 @@ export const faqCategories: FaqCategory[] = [
       {
         id: "q-delete",
         q: "How do I delete my account?",
-        // Handoff copy pointed at a /delete-account page that doesn't exist and
-        // promised immediate deletion. /privacy §8 is the authority: in-app
-        // path, email if locked out, 30 days out of active systems.
-        a: `You → Account → Delete Account, in the app. Locked out? Email ${siteConfig.supportEmail} and we’ll do it for you. Deletion removes your profile, your photo and any round nobody else played in, and clears active systems within 30 days.`,
-        link: { label: "READ THE PRIVACY POLICY →", href: "/privacy" },
+        a: `You → Account → Delete Account, in the app. Locked out? Email ${siteConfig.supportEmail} and we’ll verify the account and handle the request. Active systems are cleared within 30 days; shared rounds remain de-identified for the other players and backups age out within 90 days.`,
+        link: { label: "OPEN THE DELETION GUIDE →", href: "/delete-account" },
       },
       {
         id: "q-shared-rounds",

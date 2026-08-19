@@ -102,9 +102,8 @@ export const contactChannels: ContactChannel[] = [
 ];
 
 /**
- * The fine print row. /terms is omitted until it clears legal review, and
- * /delete-account isn't linked because that page doesn't exist yet — see
- * decision 7 in the handoff README.
+ * The fine print row. Draft legal documents remain omitted until publication,
+ * while the account-deletion guide is always available.
  */
 export type ContactLegalLink = { label: string; href: string };
 
@@ -113,6 +112,7 @@ export const contactLegalLinks: ContactLegalLink[] = [
     ? [{ label: "Terms", href: "/terms" }]
     : []),
   { label: "Privacy", href: "/privacy" },
+  { label: "Delete account", href: "/delete-account" },
   { label: "Full FAQ", href: "/faq" },
 ];
 
