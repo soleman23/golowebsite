@@ -319,6 +319,11 @@ Adding a post or a game page is a data edit here — never a new page file.
 - **Images** in `public/images/` are placeholders from the design handoff. Swap
   them for the client's own course photography at the same crops; keep the scrim
   gradients so foreground text stays legible.
+- **Icons** — every raster icon (`app/favicon.ico`, `app/apple-icon.png`, the
+  manifest icons in `public/icons/`, and the structured-data logo at
+  `public/images/brand/golo-logo-600.png`) is generated from `app/icon.svg` by
+  `node scripts/generate-icons.mjs`. Change the mark there, re-run it, and
+  commit the output — don't hand-edit the PNGs.
 - **Fonts:** system UI stack only — nothing to install.
 - **Accent color** is a single CSS variable (`--accent`) in `app/globals.css`.
 

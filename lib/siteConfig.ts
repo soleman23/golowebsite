@@ -70,6 +70,23 @@ export const siteConfig = {
   heroBackdrop: heroBackdrop(process.env.NEXT_PUBLIC_HERO_BACKDROP),
 } as const;
 
+/**
+ * The brand mark as an ImageObject, for `Organization.logo` and every blog
+ * post's `publisher.logo`. Both sites of use want the identical object, so it
+ * is built once here.
+ *
+ * It has to be a raster: Google's structured-data spec doesn't read SVG in a
+ * logo field, so pointing this at /icon.svg (as it used to) left the logo
+ * silently absent from rich results. The PNG comes out of
+ * scripts/generate-icons.mjs — regenerate it there, don't hand-edit.
+ */
+export const organizationLogo = {
+  "@type": "ImageObject",
+  url: `${siteConfig.url}/images/brand/golo-logo-600.png`,
+  width: 600,
+  height: 600,
+} as const;
+
 /** Maps a hero backdrop key to its original PNG path in /public/images. */
 export const heroBackdropSrc: Record<HeroBackdrop, string> = {
   sunset: "/images/sunset.png",
