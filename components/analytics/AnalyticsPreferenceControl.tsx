@@ -2,11 +2,14 @@
 
 import { useEffect, useState } from "react";
 import {
+  ANALYTICS_PREFERENCE_EVENT,
+  ANALYTICS_STORAGE_KEY,
   getAnalyticsPreference,
   hasGlobalPrivacyControl,
   setAnalyticsPreference,
   type AnalyticsPreference,
 } from "@/lib/analyticsPreference";
+import { siteConfig } from "@/lib/siteConfig";
 import styles from "./AnalyticsPreferenceControl.module.css";
 
 export function AnalyticsPreferenceControl({
@@ -16,10 +19,25 @@ export function AnalyticsPreferenceControl({
 }) {
   const [preference, setPreference] = useState<AnalyticsPreference | null>(null);
   const [gpc, setGpc] = useState(false);
+  const enabled =
+    process.env.NODE_ENV === "production" && siteConfig.analyticsEnabled;
 
   useEffect(() => {
-    setPreference(getAnalyticsPreference());
-    setGpc(hasGlobalPrivacyControl());
+    const reconcile = () => {
+      setPreference(getAnalyticsPreference());
+      setGpc(hasGlobalPrivacyControl());
+    };
+    const onStorage = (event: StorageEvent) => {
+      if (event.key === ANALYTICS_STORAGE_KEY) reconcile();
+    };
+
+    reconcile();
+    window.addEventListener(ANALYTICS_PREFERENCE_EVENT, reconcile);
+    window.addEventListener("storage", onStorage);
+    return () => {
+      window.removeEventListener(ANALYTICS_PREFERENCE_EVENT, reconcile);
+      window.removeEventListener("storage", onStorage);
+    };
   }, []);
 
   const choose = (next: AnalyticsPreference) => {
@@ -27,7 +45,9 @@ export function AnalyticsPreferenceControl({
     setPreference(next);
   };
 
-  const status = gpc
+  const status = !enabled
+    ? "Analytics is currently disabled on this site. A saved preference cannot turn it on."
+    : gpc
     ? "Global Privacy Control is on. It overrides saved consent and keeps analytics off for this visit."
     : preference === "denied"
       ? "Analytics is off in this browser."
@@ -50,17 +70,17 @@ export function AnalyticsPreferenceControl({
         <div className={styles.actions} role="group" aria-label="Analytics preference">
           <button
             type="button"
-            className={`${styles.button} ${preference === "granted" && !gpc ? styles.active : ""}`}
-            aria-pressed={preference === "granted" && !gpc}
-            disabled={gpc}
+            className={`${styles.button} ${enabled && preference === "granted" && !gpc ? styles.active : ""}`}
+            aria-pressed={enabled && preference === "granted" && !gpc}
+            disabled={!enabled || gpc}
             onClick={() => choose("granted")}
           >
             Allow analytics
           </button>
           <button
             type="button"
-            className={`${styles.button} ${preference !== "granted" || gpc ? styles.active : ""}`}
-            aria-pressed={preference !== "granted" || gpc}
+            className={`${styles.button} ${!enabled || preference !== "granted" || gpc ? styles.active : ""}`}
+            aria-pressed={!enabled || preference !== "granted" || gpc}
             onClick={() => choose("denied")}
           >
             Keep analytics off
