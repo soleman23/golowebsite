@@ -51,7 +51,9 @@ export async function generateMetadata({ params }: Params): Promise<Metadata> {
       // The hero doubles as the OG image once there's a photo to point at;
       // until then the site-wide card stands in. Declaring `openGraph` here
       // replaces the inherited object, so leaving this out means no og:image.
-      images: post.hero ? [{ url: post.hero.src }] : [defaultOgImage],
+      images: post.hero
+        ? [{ url: post.hero.src, alt: post.hero.alt }]
+        : [defaultOgImage],
     },
   };
 }

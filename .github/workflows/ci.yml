@@ -64,4 +64,11 @@ jobs:
 
       - name: Build
         if: '!cancelled()'
+        env:
+          NEXT_PUBLIC_SITE_URL: https://www.golo.golf
+          NEXT_PUBLIC_APP_LIVE: "false"
+          NEXT_PUBLIC_TERMS_PUBLISHED: "true"
+          NEXT_PUBLIC_COOKIES_PUBLISHED: "false"
+          NEXT_PUBLIC_ACCEPTABLE_USE_PUBLISHED: "false"
+          NEXT_PUBLIC_ANALYTICS_ENABLED: "false"
         run: npm run build

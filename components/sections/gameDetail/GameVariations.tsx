@@ -12,7 +12,7 @@ export function GameVariations({ game }: { game: GameDetail }) {
     <section className={styles.section} aria-labelledby="variations-heading">
       <div className={styles.inner}>
         <SectionHeader
-          kicker="PRESSES & VARIATIONS"
+          kicker={game.headings.variations.kicker}
           title={game.headings.variations.title}
           lead={game.headings.variations.lead}
           headingId="variations-heading"

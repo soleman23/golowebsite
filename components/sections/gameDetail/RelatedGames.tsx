@@ -20,7 +20,7 @@ export function RelatedGames({ game }: { game: GameDetail }) {
     <section className={styles.section} aria-labelledby="related-heading">
       <div className={styles.inner}>
         <SectionHeader
-          kicker="STACK IT WITH"
+          kicker={game.headings.related.kicker}
           title={game.headings.related.title}
           lead={game.headings.related.lead}
           headingId="related-heading"

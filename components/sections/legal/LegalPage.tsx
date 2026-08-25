@@ -9,6 +9,7 @@
  */
 
 import Link from "next/link";
+import type { ReactNode } from "react";
 import {
   legalDocs,
   legalReadMinutes,
@@ -22,9 +23,20 @@ import { FinalCTA } from "@/components/sections/FinalCTA";
 import { TocRail } from "./TocRail";
 import styles from "./legal.module.css";
 
-export function LegalPage({ doc }: { doc: LegalDoc }) {
+export function LegalPage({
+  doc,
+  afterBody,
+}: {
+  doc: LegalDoc;
+  afterBody?: ReactNode;
+}) {
   const minutes = legalReadMinutes(doc);
-  const others = legalDocs.filter((d) => d.slug !== doc.slug);
+  const visibleDocs = legalDocs.filter(
+    (candidate) => candidate.published || candidate.slug === doc.slug,
+  );
+  const others = legalDocs.filter(
+    (candidate) => candidate.published && candidate.slug !== doc.slug,
+  );
 
   return (
     <>
@@ -33,7 +45,7 @@ export function LegalPage({ doc }: { doc: LegalDoc }) {
         <div className={styles.subNavInner}>
           <span className={styles.subNavLabel}>LEGAL</span>
           <ul className={styles.subNavLinks}>
-            {legalDocs.map((d) => {
+            {visibleDocs.map((d) => {
               const active = d.slug === doc.slug;
               return (
                 <li key={d.slug}>
@@ -47,6 +59,11 @@ export function LegalPage({ doc }: { doc: LegalDoc }) {
                 </li>
               );
             })}
+            <li>
+              <Link href="/delete-account" className={styles.subNavLink}>
+                Delete Account
+              </Link>
+            </li>
           </ul>
         </div>
       </nav>
@@ -147,6 +164,8 @@ export function LegalPage({ doc }: { doc: LegalDoc }) {
         </div>
       </section>
 
+      {afterBody}
+
       {/* 5. contact */}
       <section className={styles.contact} aria-labelledby="legal-contact-heading">
         <div className={styles.contactInner}>
@@ -183,26 +202,34 @@ export function LegalPage({ doc }: { doc: LegalDoc }) {
       </section>
 
       {/* 6. the rest of the shelf */}
-      {others.length > 0 ? (
-        <section className={styles.shelf} aria-labelledby="shelf-heading">
-          <div className={styles.shelfInner}>
-            <h2 id="shelf-heading" className={styles.shelfLabel}>
-              MORE FROM THE LEGAL SHELF
-            </h2>
-            <ul className={styles.shelfGrid}>
-              {others.map((other) => (
-                <li key={other.slug}>
-                  <Link href={`/${other.slug}`} className={styles.shelfCard}>
-                    <span className={styles.shelfName}>{other.title}</span>
-                    <span className={styles.shelfBlurb}>{other.lead}</span>
-                    <span className={styles.shelfCta}>READ IT →</span>
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
-        </section>
-      ) : null}
+      <section className={styles.shelf} aria-labelledby="shelf-heading">
+        <div className={styles.shelfInner}>
+          <h2 id="shelf-heading" className={styles.shelfLabel}>
+            MORE FROM THE LEGAL SHELF
+          </h2>
+          <ul className={styles.shelfGrid}>
+            {others.map((other) => (
+              <li key={other.slug}>
+                <Link href={`/${other.slug}`} className={styles.shelfCard}>
+                  <span className={styles.shelfName}>{other.title}</span>
+                  <span className={styles.shelfBlurb}>{other.lead}</span>
+                  <span className={styles.shelfCta}>READ IT →</span>
+                </Link>
+              </li>
+            ))}
+            <li>
+              <Link href="/delete-account" className={styles.shelfCard}>
+                <span className={styles.shelfName}>Delete Your Account</span>
+                <span className={styles.shelfBlurb}>
+                  The in-app path, export instructions, and exactly what is
+                  deleted, retained, or de-identified.
+                </span>
+                <span className={styles.shelfCta}>OPEN THE GUIDE →</span>
+              </Link>
+            </li>
+          </ul>
+        </div>
+      </section>
 
       <FinalCTA
         layout="split"

@@ -17,6 +17,7 @@ declare global {
   interface Window {
     gtag?: GtagFn;
     dataLayer?: unknown[];
+    __goloAnalyticsAllowed?: boolean;
   }
 }
 
@@ -54,5 +55,6 @@ export function track(
   params: Record<string, string | number | boolean> = {},
 ): void {
   if (typeof window === "undefined") return;
+  if (window.__goloAnalyticsAllowed !== true) return;
   window.gtag?.("event", event, params);
 }
