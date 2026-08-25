@@ -1,7 +1,11 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { findPost, publishedPosts, type Post } from "@/lib/content";
-import { organizationLogo, siteConfig } from "@/lib/siteConfig";
+import {
+  defaultOgImage,
+  organizationLogo,
+  siteConfig,
+} from "@/lib/siteConfig";
 import { PostHero } from "@/components/sections/blog/PostHero";
 import { ProseBlocks } from "@/components/ui/blog/ProseBlocks";
 import { ShareRow } from "@/components/sections/blog/ShareRow";
@@ -44,8 +48,12 @@ export async function generateMetadata({ params }: Params): Promise<Metadata> {
       description,
       publishedTime: post.date,
       authors: ["GoLo Golf"],
-      // The hero doubles as the OG image once there's a photo to point at.
-      ...(post.hero ? { images: [{ url: post.hero.src }] } : {}),
+      // The hero doubles as the OG image once there's a photo to point at;
+      // until then the site-wide card stands in. Declaring `openGraph` here
+      // replaces the inherited object, so leaving this out means no og:image.
+      images: post.hero
+        ? [{ url: post.hero.src, alt: post.hero.alt }]
+        : [defaultOgImage],
     },
   };
 }

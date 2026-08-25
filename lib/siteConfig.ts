@@ -97,6 +97,27 @@ export const organizationLogo = {
   height: 600,
 } as const;
 
+/**
+ * The default social share card, rendered from scripts/og-image.html.
+ *
+ * Deliberately a plain file in /public referenced from metadata, rather than
+ * Next's app/opengraph-image.png convention. The convention emits the image but
+ * silently drops og:image:alt — its sibling .alt.txt produces nothing on Next
+ * 15.5 — and it also takes precedence over metadata, so the alt could not be
+ * supplied any other way. Screen readers on X and Facebook read that attribute.
+ *
+ * Because it is ordinary metadata it is inherited, and a route that declares
+ * its own `openGraph` replaces the inherited object wholesale, images included.
+ * /blog/[slug] and /games/[slug] therefore name this explicitly, and any new
+ * route that sets `openGraph` must do the same or it ships with no card.
+ */
+export const defaultOgImage = {
+  url: "/images/brand/og-card.png",
+  width: 1200,
+  height: 630,
+  alt: "GoLo — Bet it. Track it. Settle it.",
+} as const;
+
 /** Maps a hero backdrop key to its original PNG path in /public/images. */
 export const heroBackdropSrc: Record<HeroBackdrop, string> = {
   sunset: "/images/sunset.png",
