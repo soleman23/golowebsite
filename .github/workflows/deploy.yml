@@ -15,7 +15,12 @@ on:
 
 concurrency:
   group: deploy-vps
-  cancel-in-progress: true
+  # Deliberately NOT cancel-in-progress. Cancelling the job kills the SSH
+  # session mid-script, which can land between `npm ci` and `pm2 reload` and
+  # leave the VPS with half-installed dependencies and a stale build. Two
+  # pushes in quick succession should queue, not race — the second deploy
+  # pulls whatever is newest anyway, so nothing is lost by waiting.
+  cancel-in-progress: false
 
 jobs:
   deploy:
