@@ -15,7 +15,12 @@ on:
 
 concurrency:
   group: deploy-vps
-  cancel-in-progress: true
+  # Deliberately NOT cancel-in-progress. Cancelling the job kills the SSH
+  # session mid-script, which can land between `npm ci` and `pm2 reload` and
+  # leave the VPS with half-installed dependencies and a stale build. Two
+  # pushes in quick succession should queue, not race — the second deploy
+  # pulls whatever is newest anyway, so nothing is lost by waiting.
+  cancel-in-progress: false
 
 jobs:
   deploy:
@@ -39,6 +44,13 @@ jobs:
           username: ${{ secrets.VPS_USER }}
           key: ${{ secrets.VPS_SSH_KEY }}
           port: ${{ secrets.VPS_PORT || 22 }}
+          # ssh-action defaults this to 10m and then kills the remote command.
+          # deploy.sh does `npm ci` + `prisma generate` + `next build` on a
+          # shared-CPU VPS with a possibly cold npm cache, and a 10m cap turns
+          # a merely slow deploy into a timeout that reads nothing like its
+          # cause. The step is serialised by the concurrency group above, so a
+          # longer ceiling costs nothing but a later failure message.
+          command_timeout: 30m
           script: |
             cd /var/www/golowebsite
             bash scripts/deploy.sh
