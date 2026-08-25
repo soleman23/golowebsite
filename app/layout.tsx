@@ -1,6 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import Script from "next/script";
-import { siteConfig } from "@/lib/siteConfig";
+import { defaultOgImage, siteConfig } from "@/lib/siteConfig";
 import { Nav } from "@/components/layout/Nav";
 import { Footer } from "@/components/layout/Footer";
 import "./globals.css";
@@ -27,11 +27,13 @@ export const metadata: Metadata = {
     description: siteConfig.description,
     url: siteConfig.url,
     siteName: siteConfig.name,
+    images: [defaultOgImage],
   },
   twitter: {
     card: "summary_large_image",
     title: `${siteConfig.name} — ${siteConfig.tagline}`,
     description: siteConfig.description,
+    images: [defaultOgImage],
   },
   // Icons are file-convention routes Next.js picks up on its own:
   // app/icon.svg (modern browsers), app/favicon.ico (crawlers and older

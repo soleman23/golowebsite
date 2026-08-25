@@ -319,6 +319,12 @@ Adding a post or a game page is a data edit here — never a new page file.
 - **Images** in `public/images/` are placeholders from the design handoff. Swap
   them for the client's own course photography at the same crops; keep the scrim
   gradients so foreground text stays legible.
+- **Social card** — `public/images/brand/og-card.png` is rendered from
+  `scripts/og-image.html` (that file carries the render command). It is wired up
+  as ordinary metadata via `defaultOgImage` in `lib/siteConfig`, not through
+  Next's `app/opengraph-image` convention — see the comment there for why. A new
+  route that declares its own `openGraph` must name `images` or it ships with no
+  card.
 - **Icons** — every raster icon (`app/favicon.ico`, `app/apple-icon.png`, the
   manifest icons in `public/icons/`, and the structured-data logo at
   `public/images/brand/golo-logo-600.png`) is generated from `app/icon.svg` by
