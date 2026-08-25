@@ -3,7 +3,7 @@
  * testimonials are gated behind content flags from siteConfig.
  */
 
-import { siteConfig } from "@/lib/siteConfig";
+import { organizationLogo, siteConfig } from "@/lib/siteConfig";
 import { Hero } from "@/components/sections/Hero";
 import { StatsBand } from "@/components/sections/StatsBand";
 import { Features } from "@/components/sections/Features";
@@ -38,10 +38,7 @@ const homeJsonLd = {
       alternateName: siteConfig.name,
       url: siteConfig.url,
       email: siteConfig.supportEmail,
-      logo: {
-        "@type": "ImageObject",
-        url: `${siteConfig.url}/icon.svg`,
-      },
+      logo: organizationLogo,
       address: {
         "@type": "PostalAddress",
         streetAddress: siteConfig.address.street,

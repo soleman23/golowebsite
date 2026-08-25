@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { findPost, publishedPosts, type Post } from "@/lib/content";
-import { siteConfig } from "@/lib/siteConfig";
+import { organizationLogo, siteConfig } from "@/lib/siteConfig";
 import { PostHero } from "@/components/sections/blog/PostHero";
 import { ProseBlocks } from "@/components/ui/blog/ProseBlocks";
 import { ShareRow } from "@/components/sections/blog/ShareRow";
@@ -62,10 +62,7 @@ function articleJsonLd(post: Post) {
     publisher: {
       "@type": "Organization",
       name: siteConfig.name,
-      logo: {
-        "@type": "ImageObject",
-        url: `${siteConfig.url}/icon.svg`,
-      },
+      logo: organizationLogo,
     },
     ...(post.hero ? { image: `${siteConfig.url}${post.hero.src}` } : {}),
     mainEntityOfPage: { "@type": "WebPage", "@id": url },

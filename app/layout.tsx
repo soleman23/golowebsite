@@ -33,7 +33,11 @@ export const metadata: Metadata = {
     title: `${siteConfig.name} — ${siteConfig.tagline}`,
     description: siteConfig.description,
   },
-  // Favicon is provided by app/icon.svg (auto-detected by Next.js).
+  // Icons are file-convention routes Next.js picks up on its own:
+  // app/icon.svg (modern browsers), app/favicon.ico (crawlers and older
+  // clients that request the path directly) and app/apple-icon.png (iOS
+  // home screen). app/manifest.ts adds the rest. All regenerate from the
+  // one mark via scripts/generate-icons.mjs.
 };
 
 export const viewport: Viewport = {
