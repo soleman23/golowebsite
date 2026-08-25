@@ -14,7 +14,7 @@ export function GameTips({ game }: { game: GameDetail }) {
     <section className={styles.section} aria-labelledby="tips-heading">
       <div className={styles.inner}>
         <SectionHeader
-          kicker="PLAY SMART"
+          kicker={game.headings.tips.kicker}
           title={game.headings.tips.title}
           lead={game.headings.tips.lead}
           headingId="tips-heading"

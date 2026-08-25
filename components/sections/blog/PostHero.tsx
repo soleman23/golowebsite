@@ -24,6 +24,7 @@ export function PostHero({ post }: { post: Post }) {
           // The LCP element on this page.
           priority
           className={styles.photo}
+          style={{ objectPosition: post.hero.position }}
         />
       ) : null}
       <div className={styles.scrim} aria-hidden="true" />

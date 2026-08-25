@@ -1,10 +1,6 @@
-/**
- * The worked-example phone on a game detail page: the finished match, its
- * hole-by-hole momentum strip, each bet's standing, the press that turned the
- * back nine, and the single transfer it all nets to. Decorative.
- */
+/** Data-driven worked-example phone shared by every public game page. */
 
-import type { GameDetail } from "@/lib/content";
+import type { GameDetail, GameTone } from "@/lib/content";
 import { PhoneShell } from "./PhoneShell";
 import styles from "./mockups.module.css";
 
@@ -14,7 +10,13 @@ const DOT_CLASS = {
   h: styles.momentumHalved,
 } as const;
 
-export function NassauPhone({
+function toneClass(tone: GameTone) {
+  if (tone === "good") return styles.toneGood;
+  if (tone === "bad") return styles.toneBad;
+  return styles.toneNeutral;
+}
+
+export function GameExamplePhone({
   phone,
   gameName,
   label,
@@ -61,39 +63,37 @@ export function NassauPhone({
       </div>
 
       <div className={styles.momentum}>
-        {phone.sequence.map((result, i) => (
+        {phone.sequence.map((result, index) => (
           <span
-            key={i}
+            key={index}
             className={`${styles.momentumDot} ${DOT_CLASS[result]}`}
           />
         ))}
       </div>
 
       <div className={styles.betTiles}>
-        {phone.bets.map((bet) => (
+        {phone.stats.map((stat) => (
           <div
-            key={bet.label}
-            className={`${styles.betTile} ${bet.tone === "good" ? styles.betTileGood : ""}`}
+            key={stat.label}
+            className={`${styles.betTile} ${stat.tone === "good" ? styles.betTileGood : ""}`}
           >
-            <div className={styles.betTileLabel}>{bet.label}</div>
-            <div
-              className={`${styles.betTileStatus} ${bet.tone === "good" ? styles.toneGood : styles.toneBad}`}
-            >
-              {bet.status}
+            <div className={styles.betTileLabel}>{stat.label}</div>
+            <div className={`${styles.betTileStatus} ${toneClass(stat.tone)}`}>
+              {stat.status}
             </div>
-            <div
-              className={`${styles.betTileValue} ${bet.tone === "good" ? styles.toneGood : styles.toneBad}`}
-            >
-              {bet.value}
+            <div className={`${styles.betTileValue} ${toneClass(stat.tone)}`}>
+              {stat.value}
             </div>
           </div>
         ))}
       </div>
 
-      <div className={styles.pressCallout}>
-        <span className={styles.pressTag}>{phone.pressLabel}</span>
-        <span className={styles.pressNote}>{phone.pressNote}</span>
-      </div>
+      {phone.callout ? (
+        <div className={styles.pressCallout}>
+          <span className={styles.pressTag}>{phone.callout.label}</span>
+          <span className={styles.pressNote}>{phone.callout.note}</span>
+        </div>
+      ) : null}
 
       <div className={styles.settleChip}>
         <span>
