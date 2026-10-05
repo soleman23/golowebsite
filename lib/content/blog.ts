@@ -750,6 +750,13 @@ export const blogTopicIds: string[] = [
 
 export const blogCountLine = `${postsByDate.length} posts · ${blogCategories.length} topics`;
 
+/** The /blog hero. The H1 names the topic a searcher types. */
+export const blogHero = {
+  kicker: "NOTES FROM THE CART PATH",
+  title: "Golf game rules and betting guides.",
+  lead: "Format breakdowns, settling etiquette, and the arguments your group keeps having — written by people who keep score for money on a Saturday.",
+};
+
 /** "Elsewhere on GoLo" — the three cards under the newsletter band. */
 export type BlogElsewhere = {
   label: string;

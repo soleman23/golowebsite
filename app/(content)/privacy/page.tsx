@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { privacyDoc } from "@/lib/content";
+import { pageMetadata } from "@/lib/pageMetadata";
 import { siteConfig } from "@/lib/siteConfig";
 import { AnalyticsPreferenceControl } from "@/components/analytics/AnalyticsPreferenceControl";
 import { LegalPage } from "@/components/sections/legal/LegalPage";
@@ -10,11 +11,12 @@ import { LegalPage } from "@/components/sections/legal/LegalPage";
  * is now just the route.
  */
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMetadata({
+  path: "/privacy",
   title: "Privacy Policy",
-  description: `How ${siteConfig.name} collects, uses, and protects your information.`,
-  alternates: { canonical: "/privacy" },
-};
+  description:
+    `How ${siteConfig.name} collects, uses, and protects your information.`,
+});
 
 export default function PrivacyPage() {
   return (

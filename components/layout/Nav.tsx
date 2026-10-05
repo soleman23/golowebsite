@@ -1,7 +1,7 @@
 "use client";
 
 /**
- * Sticky top nav. Desktop shows the full link row + "Get the app" pill. Below
+ * Sticky top nav. Desktop shows the full link row + the app CTA pill. Below
  * ~760px the links collapse into an accessible hamburger drawer (the handoff
  * explicitly asks for this on mobile), keeping the logo and CTA visible.
  */
@@ -10,7 +10,7 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Logo } from "@/components/ui/Logo";
-import { navLinks } from "@/lib/content";
+import { appCtaLabel, appCtaShortLabel, navLinks } from "@/lib/content";
 import { siteConfig } from "@/lib/siteConfig";
 import styles from "./Nav.module.css";
 
@@ -77,14 +77,14 @@ export function Nav() {
           })}
         </ul>
         <Link href="/#get" className={styles.cta}>
-          Get the app
+          {appCtaLabel}
         </Link>
       </div>
 
       {/* Mobile controls */}
       <div className={styles.mobileControls}>
         <Link href="/#get" className={styles.cta}>
-          Get the app
+          {appCtaShortLabel}
         </Link>
         <button
           type="button"

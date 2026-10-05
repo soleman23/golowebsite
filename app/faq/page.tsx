@@ -1,6 +1,12 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { faqCategories, faqCountLine, faqItems } from "@/lib/content";
+import {
+  appCtaLabel,
+  faqCategories,
+  faqCountLine,
+  faqItems,
+} from "@/lib/content";
+import { pageMetadata } from "@/lib/pageMetadata";
 import { PageHero } from "@/components/ui/PageHero";
 import { StatusPill } from "@/components/ui/StatusPill";
 import { JsonLd } from "@/components/ui/JsonLd";
@@ -12,12 +18,12 @@ import { KeepReading } from "@/components/sections/faq/KeepReading";
 import { FinalCTA } from "@/components/sections/FinalCTA";
 import styles from "./faq.module.css";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMetadata({
+  path: "/faq",
   title: "FAQ",
   description:
     "Handicaps, stacking games, settling up and where GoLo is today — answered by the people who built it.",
-  alternates: { canonical: "/faq" },
-};
+});
 
 /**
  * The highest-value structured data on the site: every question on the page,
@@ -86,7 +92,7 @@ export default function FaqPage() {
         title="That's every question. Now go win the back nine."
         buttons={[
           {
-            label: "Get the app",
+            label: appCtaLabel,
             href: "/#get",
             cta: "get_app",
             variant: "primary",

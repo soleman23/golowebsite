@@ -11,32 +11,27 @@ import {
  * writing a game detail page or dating a legal document is the only edit
  * needed. Nothing here is a hand-written URL list.
  *
- * `lastModified` is honest where the data knows a real date (post dates, legal
- * effective dates) and falls back to build time only for pages whose content
- * has no date of its own.
+ * `lastModified` is honest where the data knows a real date (post dates, the
+ * blog index's newest post, legal effective dates). Undated pages omit it
+ * rather than implying that every rebuild changed their content.
  *
  * Legal drafts are built for review but remain absent until their individual
  * publication flags are enabled.
  */
 export default function sitemap(): MetadataRoute.Sitemap {
-  const now = new Date();
-
   return [
     {
       url: siteConfig.url,
-      lastModified: now,
       changeFrequency: "monthly",
       priority: 1,
     },
     {
       url: `${siteConfig.url}/features`,
-      lastModified: now,
       changeFrequency: "monthly",
       priority: 0.9,
     },
     {
       url: `${siteConfig.url}/games`,
-      lastModified: now,
       changeFrequency: "monthly",
       priority: 0.9,
     },
@@ -44,15 +39,16 @@ export default function sitemap(): MetadataRoute.Sitemap {
     // guaranteed to have exactly one routable page.
     ...gameDetailSlugsWithContent.map((slug) => ({
       url: `${siteConfig.url}/games/${slug}`,
-      lastModified: now,
       changeFrequency: "monthly" as const,
       priority: 0.8,
     })),
     {
       url: `${siteConfig.url}/blog`,
-      lastModified: publishedPosts[0]
-        ? new Date(publishedPosts[0].date)
-        : now,
+      // The index changes when a post is published, so the newest post's date
+      // is the honest one. publishedPosts is newest-first.
+      ...(publishedPosts[0]
+        ? { lastModified: new Date(publishedPosts[0].date) }
+        : {}),
       changeFrequency: "weekly",
       priority: 0.8,
     },
@@ -66,19 +62,16 @@ export default function sitemap(): MetadataRoute.Sitemap {
     })),
     {
       url: `${siteConfig.url}/faq`,
-      lastModified: now,
       changeFrequency: "monthly",
       priority: 0.6,
     },
     {
       url: `${siteConfig.url}/contact`,
-      lastModified: now,
       changeFrequency: "yearly",
       priority: 0.6,
     },
     {
       url: `${siteConfig.url}/delete-account`,
-      lastModified: now,
       changeFrequency: "yearly",
       priority: 0.4,
     },

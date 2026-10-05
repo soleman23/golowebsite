@@ -3,6 +3,8 @@
  * testimonials are gated behind content flags from siteConfig.
  */
 
+import type { Metadata } from "next";
+import { pageMetadata } from "@/lib/pageMetadata";
 import { organizationLogo, siteConfig } from "@/lib/siteConfig";
 import { Hero } from "@/components/sections/Hero";
 import { StatsBand } from "@/components/sections/StatsBand";
@@ -13,6 +15,12 @@ import { Testimonials } from "@/components/sections/Testimonials";
 import { FinalCTA } from "@/components/sections/FinalCTA";
 import { FAQ } from "@/components/sections/FAQ";
 import { JsonLd } from "@/components/ui/JsonLd";
+
+export const metadata: Metadata = pageMetadata({
+  path: "/",
+  title: "Golf Betting Scorecard App for Skins, Nassau & More",
+  description: siteConfig.description,
+});
 
 /**
  * The app itself, plus the company behind it. One graph rather than two script

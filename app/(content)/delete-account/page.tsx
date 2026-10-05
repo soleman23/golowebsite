@@ -1,15 +1,17 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { deleteAccountContent } from "@/lib/content";
+import { pageMetadata } from "@/lib/pageMetadata";
 import { PageHero } from "@/components/ui/PageHero";
 import { Icon } from "@/components/ui/Icon";
 import styles from "./deleteAccount.module.css";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMetadata({
+  path: "/delete-account",
   title: "Delete Your Account",
-  description: "How to export your GoLo data and delete your account, including what is removed, retained, and de-identified.",
-  alternates: { canonical: "/delete-account" },
-};
+  description:
+    "How to export your GoLo data and delete your account, including what is removed, retained, and de-identified.",
+});
 
 export default function DeleteAccountPage() {
   return (
