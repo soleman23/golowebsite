@@ -22,7 +22,7 @@ import {
   useMemo,
   useState,
 } from "react";
-import { FilterUrlSync } from "@/components/ui/FilterUrlSync";
+import { FilterUrlSync, useInitialFilter } from "@/components/ui/FilterUrlSync";
 
 type BlogFilterValue = {
   /** null until the URL has been read. */
@@ -53,6 +53,8 @@ export function BlogFilterProvider({ ids, children }: ProviderProps) {
     setActive(id);
     document.documentElement.dataset.filter = id;
   }, []);
+
+  useInitialFilter("topic", ids, select);
 
   const value = useMemo(() => ({ active, select }), [active, select]);
 

@@ -43,18 +43,26 @@
    CSS can't compare an ancestor's attribute with a descendant's, so it's one
    line per filter id. The ids are gameFilters in lib/content/games.ts, and
    `npm run lint` fails if one is missing here (scripts/check-filter-css.mjs).
-   html:not([data-filter]) is the no-JS case: everything shows, "All" is lit. */
+   html:not([data-filter]) is the no-JS case: every card shows, "All" is lit,
+   and the "All" result line is the one not marked `hidden`. */
 html[data-filter="pots"] .grid > :not([data-tags~="pots"]),
 html[data-filter="match"] .grid > :not([data-tags~="match"]),
 html[data-filter="points"] .grid > :not([data-tags~="points"]),
 html[data-filter="side"] .grid > :not([data-tags~="side"]),
-html:not([data-filter]) .result > :not([data-for="all"]),
-html[data-filter="all"] .result > :not([data-for="all"]),
-html[data-filter="pots"] .result > :not([data-for="pots"]),
-html[data-filter="match"] .result > :not([data-for="match"]),
-html[data-filter="points"] .result > :not([data-for="points"]),
-html[data-filter="side"] .result > :not([data-for="side"]) {
+html[data-filter="pots"] .result > [data-for="all"],
+html[data-filter="match"] .result > [data-for="all"],
+html[data-filter="points"] .result > [data-for="all"],
+html[data-filter="side"] .result > [data-for="all"] {
   display: none;
+}
+
+/* The matching result line. The others carry `hidden`; an author rule beats
+   the browser's [hidden] rule, so this reveals exactly one. */
+html[data-filter="pots"] .result > [data-for="pots"],
+html[data-filter="match"] .result > [data-for="match"],
+html[data-filter="points"] .result > [data-for="points"],
+html[data-filter="side"] .result > [data-for="side"] {
+  display: inline;
 }
 
 /* The lit chip before hydration. Same look as ChipFilter's .active, which

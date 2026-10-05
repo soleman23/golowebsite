@@ -6,7 +6,8 @@
  * Before hydration the page is static HTML and can't know ?filter=. FilterBoot
  * sets <html data-filter> during parse, and GamesGrid.module.css uses it to
  * hide cards, light the matching chip and show the matching result line —
- * every result line ships, CSS picks one. So `active` starts null: the server
+ * every result line ships, the non-default ones `hidden` (so anything reading
+ * the HTML without CSS sees one line), and CSS reveals the match. So `active` starts null: the server
  * HTML marks no chip current rather than claiming "All".
  *
  * After hydration three things stay in step: React state (aria-current and
@@ -19,7 +20,7 @@ import { Suspense, useCallback, useMemo, useState } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import { ChipFilter, type ChipItem } from "@/components/ui/ChipFilter";
 import { FilterStatus } from "@/components/ui/FilterStatus";
-import { FilterUrlSync } from "@/components/ui/FilterUrlSync";
+import { FilterUrlSync, useInitialFilter } from "@/components/ui/FilterUrlSync";
 import { track } from "@/lib/analytics";
 import styles from "./GamesGrid.module.css";
 
@@ -56,6 +57,8 @@ export function GameFilterChips({ items }: GameFilterChipsProps) {
     document.documentElement.dataset.filter = id;
   }, []);
 
+  useInitialFilter("filter", ids, apply);
+
   function onChange(id: string) {
     apply(id);
     const href = id === "all" ? pathname : `${pathname}?filter=${id}`;
@@ -79,7 +82,7 @@ export function GameFilterChips({ items }: GameFilterChipsProps) {
       />
       <span className={styles.result}>
         {items.map((item) => (
-          <span key={item.id} data-for={item.id}>
+          <span key={item.id} data-for={item.id} hidden={item.id !== "all"}>
             {resultLine(item)}
           </span>
         ))}

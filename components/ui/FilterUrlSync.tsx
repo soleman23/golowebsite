@@ -20,8 +20,35 @@
  * Back, and on the way out.
  */
 
-import { useLayoutEffect } from "react";
+import { useLayoutEffect, useRef } from "react";
 import { useSearchParams } from "next/navigation";
+
+function resolve(raw: string | null, ids: readonly string[]): string {
+  return raw && ids.includes(raw) ? raw : "all";
+}
+
+/**
+ * Seed the owner's state from the URL in the hydration commit itself.
+ *
+ * In a production build FilterUrlSync is a client-rendered boundary (that's
+ * the Suspense bail-out) and mounts a render after the page hydrates. A chip
+ * tapped in that gap would be undone by its first sync to the old URL. Read
+ * here first, the owner already holds the URL's value — the sync that mounts
+ * later agrees with it, and a tap made after this point is never reverted.
+ * Call it from the owner, outside the Suspense boundary.
+ */
+export function useInitialFilter(
+  param: string,
+  ids: readonly string[],
+  onSync: (id: string) => void,
+) {
+  const done = useRef(false);
+  useLayoutEffect(() => {
+    if (done.current) return;
+    done.current = true;
+    onSync(resolve(new URLSearchParams(window.location.search).get(param), ids));
+  }, [param, ids, onSync]);
+}
 
 type FilterUrlSyncProps = {
   /** Query param to read: "filter" on /games, "topic" on /blog. */
@@ -33,8 +60,7 @@ type FilterUrlSyncProps = {
 };
 
 export function FilterUrlSync({ param, ids, onSync }: FilterUrlSyncProps) {
-  const raw = useSearchParams().get(param);
-  const next = raw && ids.includes(raw) ? raw : "all";
+  const next = resolve(useSearchParams().get(param), ids);
 
   useLayoutEffect(() => {
     onSync(next);

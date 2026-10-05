@@ -5,9 +5,13 @@
  *
  * Every topic's heading and count is rendered, and PostGrid.module.css shows
  * the one matching <html data-filter> — so they're right on a deep link
- * before hydration, not just after. Labels and counts come from the chip
- * data, so the chip and the heading can't disagree. Reading them from props
- * also keeps @/lib/content (every post body) out of this client bundle.
+ * before hydration, not just after. Only the default variant is visible
+ * without CSS; the rest are `hidden`, so a crawler or reader view that skips
+ * the stylesheet reads one heading ("Latest posts"), not eight run together.
+ *
+ * Labels and counts come from the chip data, so the chip and the heading
+ * can't disagree. Reading them from props also keeps @/lib/content (every
+ * post body) out of this client bundle.
  *
  * The count isn't a live region; FilterStatus announces changes the reader
  * makes, and not the initial read of the URL.
@@ -42,14 +46,14 @@ export function PostGridHead({ items }: { items: ChipItem[] }) {
     <div className={styles.head}>
       <h2 id="post-grid-heading" className={styles.heading}>
         {items.map((item) => (
-          <span key={item.id} data-for={item.id}>
+          <span key={item.id} data-for={item.id} hidden={item.id !== "all"}>
             {headingFor(item)}
           </span>
         ))}
       </h2>
       <span className={styles.count}>
         {items.map((item) => (
-          <span key={item.id} data-for={item.id}>
+          <span key={item.id} data-for={item.id} hidden={item.id !== "all"}>
             {countFor(item)}
           </span>
         ))}
