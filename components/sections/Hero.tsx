@@ -1,7 +1,7 @@
 /**
- * Hero: full-bleed backdrop photo + scrim, live pill, three-line H1, lead,
- * the download row, and the "text me the link" control, beside the
- * live-leaderboard phone mockup.
+ * Hero: full-bleed backdrop photo + scrim, the tagline pill, an H1 that names
+ * the category for search, lead, the download row, and the "text me the link"
+ * control, beside the live-leaderboard phone mockup.
  *
  * The download row follows siteConfig.appLive. While it's false there is no
  * app to download, so the store buttons stay off and the phone capture carries
@@ -9,6 +9,7 @@
  * and two dead store buttons on the home page contradicted every one of them.
  */
 
+import { heroHeading } from "@/lib/content";
 import {
   siteConfig,
   heroBackdropClass,
@@ -57,18 +58,16 @@ export function Hero() {
               <span className={styles.pulseCore} />
               <span className={styles.pulseRing} />
             </span>
-            <span className={styles.livePillText}>
-              THE SCOREKEEPER THAT SETTLES THE BET
-            </span>
+            <span className={styles.livePillText}>{siteConfig.tagline}</span>
           </div>
 
           <h1 id="hero-heading" className={styles.h1}>
-            The golf scorecard app that tracks side games and{" "}
-            <span className={styles.accent}>settles the bet.</span>
+            {heroHeading.text}{" "}
+            <span className={styles.accent}>{heroHeading.accent}</span>
           </h1>
 
           <p className={styles.lead}>
-            Bet it. Track it. Settle it. Skins, Nassau, the press on the back nine — GoLo runs every side-game,
+            Skins, Nassau, the press on the back nine — GoLo runs every side-game,
             does the math you hate, and tells everyone{" "}
             <strong>exactly who owes who</strong> before you hit the parking lot.
           </p>

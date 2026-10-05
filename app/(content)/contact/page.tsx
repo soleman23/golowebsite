@@ -1,4 +1,6 @@
 import type { Metadata } from "next";
+import { appCtaLabel } from "@/lib/content";
+import { pageMetadata } from "@/lib/pageMetadata";
 import { siteConfig } from "@/lib/siteConfig";
 import { PageHero } from "@/components/ui/PageHero";
 import { ContactPanel } from "@/components/sections/contact/ContactPanel";
@@ -7,12 +9,12 @@ import { ContactFaq } from "@/components/sections/contact/ContactFaq";
 import { FinalCTA } from "@/components/sections/FinalCTA";
 import styles from "./contact.module.css";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMetadata({
+  path: "/contact",
   title: "Contact",
   description:
     "Support, feature requests, course-data fixes and press — every message lands in the inbox we read between rounds.",
-  alternates: { canonical: "/contact" },
-};
+});
 
 export default function ContactPage() {
   return (
@@ -50,7 +52,7 @@ export default function ContactPage() {
         title="Message sent. Now go take their money."
         buttons={[
           {
-            label: "Get the app",
+            label: appCtaLabel,
             href: "/#get",
             cta: "get_app",
             variant: "primary",

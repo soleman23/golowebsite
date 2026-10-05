@@ -1,11 +1,17 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { findPost, publishedPosts, type Post } from "@/lib/content";
+import {
+  appCtaLabel,
+  findPost,
+  publishedPosts,
+  type Post,
+} from "@/lib/content";
 import {
   defaultOgImage,
   organizationLogo,
   siteConfig,
 } from "@/lib/siteConfig";
+import { socialDefaults } from "@/lib/pageMetadata";
 import { PostHero } from "@/components/sections/blog/PostHero";
 import { ProseBlocks } from "@/components/ui/blog/ProseBlocks";
 import { ShareRow } from "@/components/sections/blog/ShareRow";
@@ -43,14 +49,15 @@ export async function generateMetadata({ params }: Params): Promise<Metadata> {
     description,
     alternates: { canonical: `/blog/${post.slug}` },
     openGraph: {
+      ...socialDefaults.openGraph,
       type: "article",
+      url: `/blog/${post.slug}`,
       title: post.title,
       description,
       publishedTime: post.date,
       authors: ["GoLo Golf"],
       // The hero doubles as the OG image once there's a photo to point at;
-      // until then the site-wide card stands in. Declaring `openGraph` here
-      // replaces the inherited object, so leaving this out means no og:image.
+      // until then the site-wide card stands in.
       images: post.hero
         ? [{ url: post.hero.src, alt: post.hero.alt }]
         : [defaultOgImage],
@@ -101,7 +108,7 @@ export default async function BlogPostPage({ params }: Params) {
         title="Stop doing this math in the parking lot."
         buttons={[
           {
-            label: "Get the app",
+            label: appCtaLabel,
             href: "/#get",
             cta: "get_app",
             variant: "primary",

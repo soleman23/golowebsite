@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
-import { defaultOgImage, siteConfig } from "@/lib/siteConfig";
+import { siteConfig } from "@/lib/siteConfig";
+import { socialDefaults } from "@/lib/pageMetadata";
 import { Nav } from "@/components/layout/Nav";
 import { Footer } from "@/components/layout/Footer";
 import { AnalyticsLoader } from "@/components/analytics/AnalyticsLoader";
@@ -21,23 +22,10 @@ export const metadata: Metadata = {
   },
   description: siteConfig.description,
   applicationName: siteConfig.name,
-  // The home page's own canonical. Inner pages override this with their route;
-  // without it, "/" was the only page shipping no canonical at all.
-  alternates: { canonical: "/" },
-  openGraph: {
-    type: "website",
-    title: `${siteConfig.name} — ${siteConfig.tagline}`,
-    description: siteConfig.description,
-    url: siteConfig.url,
-    siteName: siteConfig.name,
-    images: [defaultOgImage],
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: `${siteConfig.name} — ${siteConfig.tagline}`,
-    description: siteConfig.description,
-    images: [defaultOgImage],
-  },
+  // No canonical, URL or social title here: every route sets its own (through
+  // pageMetadata or generateMetadata), and a page-specific value at this level
+  // is inherited by any route that forgets to — a 404 included.
+  ...socialDefaults,
   // Icons are file-convention routes Next.js picks up on its own:
   // app/icon.svg (modern browsers), app/favicon.ico (crawlers and older
   // clients that request the path directly) and app/apple-icon.png (iOS

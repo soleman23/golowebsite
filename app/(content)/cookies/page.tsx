@@ -1,13 +1,17 @@
 import type { Metadata } from "next";
 import { cookiesDoc } from "@/lib/content";
+import { pageMetadata } from "@/lib/pageMetadata";
 import { siteConfig } from "@/lib/siteConfig";
 import { AnalyticsPreferenceControl } from "@/components/analytics/AnalyticsPreferenceControl";
 import { LegalPage } from "@/components/sections/legal/LegalPage";
 
 export const metadata: Metadata = {
-  title: "Cookie Policy",
-  description: "Browser storage and analytics controls for the GoLo public website.",
-  alternates: { canonical: "/cookies" },
+  ...pageMetadata({
+    path: "/cookies",
+    title: "Cookie Policy",
+    description:
+      "Browser storage and analytics controls for the GoLo public website.",
+  }),
   ...(siteConfig.cookiesPublished
     ? {}
     : { robots: { index: false, follow: false } }),

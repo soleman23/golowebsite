@@ -11,9 +11,9 @@ import {
  * writing a game detail page or dating a legal document is the only edit
  * needed. Nothing here is a hand-written URL list.
  *
- * `lastModified` is honest where the data knows a real date (post dates, legal
- * effective dates). Undated pages omit lastModified rather than implying
- * that every rebuild changed their content.
+ * `lastModified` is honest where the data knows a real date (post dates, the
+ * blog index's newest post, legal effective dates). Undated pages omit it
+ * rather than implying that every rebuild changed their content.
  *
  * Legal drafts are built for review but remain absent until their individual
  * publication flags are enabled.
@@ -44,6 +44,11 @@ export default function sitemap(): MetadataRoute.Sitemap {
     })),
     {
       url: `${siteConfig.url}/blog`,
+      // The index changes when a post is published, so the newest post's date
+      // is the honest one. publishedPosts is newest-first.
+      ...(publishedPosts[0]
+        ? { lastModified: new Date(publishedPosts[0].date) }
+        : {}),
       changeFrequency: "weekly",
       priority: 0.8,
     },

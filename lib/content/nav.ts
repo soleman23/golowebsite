@@ -8,6 +8,24 @@ import { siteConfig } from "@/lib/siteConfig";
 export type NavLink = { label: string; href: string };
 
 /**
+ * The label on every button that sends you to /#get — the nav pill and each
+ * page's CTAs. Until siteConfig.appLive there's nothing to download there,
+ * only the phone capture, so the button names what you'll actually get.
+ */
+export const appCtaLabel = siteConfig.appLive
+  ? "Get the app"
+  : "Get the launch link";
+
+/**
+ * The same thing, short enough for the mobile nav row, where the logo, this
+ * pill and the menu button share a 320px screen. The full prelaunch label
+ * pushed the menu button off the edge and widened the page.
+ */
+export const appCtaShortLabel = siteConfig.appLive
+  ? "Get the app"
+  : "Get the link";
+
+/**
  * "How it works" stays an anchor: that section lives on the home page only.
  * Everything else is now a real route.
  */

@@ -10,6 +10,16 @@
 import type { IconName } from "@/components/ui/Icon";
 import { mostAskedFaqs, type FaqItem } from "./faq";
 
+/**
+ * The hero H1. It names what a searcher types — "golf scorecard app", "side
+ * games" — and the accent carries the payoff. The brand line ("Bet it. Track
+ * it. Settle it.", siteConfig.tagline) sits in the pill above it.
+ */
+export const heroHeading = {
+  text: "The golf scorecard app that tracks side games and",
+  accent: "settles the bet.",
+};
+
 export type Stat = {
   value: string;
   accentValue?: boolean; // render the numeral in the lime accent

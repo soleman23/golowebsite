@@ -1,11 +1,13 @@
-import { pageMetadata } from "@/lib/pageMetadata";
 import type { Metadata } from "next";
 import {
+  appCtaLabel,
   blogCountLine,
+  blogHero,
   blogTopicIds,
   featuredPost,
   publishedPosts,
 } from "@/lib/content";
+import { pageMetadata } from "@/lib/pageMetadata";
 import { siteConfig } from "@/lib/siteConfig";
 import { PageHero } from "@/components/ui/PageHero";
 import { StatusPill } from "@/components/ui/StatusPill";
@@ -18,11 +20,12 @@ import { FinalCTA } from "@/components/sections/FinalCTA";
 import { JsonLd } from "@/components/ui/JsonLd";
 import styles from "./blog.module.css";
 
-export const metadata: Metadata = pageMetadata(
-  "/blog",
-  "Golf Betting Rules, Handicaps & Side Games",
-  "Explore golf betting rules, skins carryovers, Nassau presses, side-game strategy and settling etiquette from GoLo.",
-);
+export const metadata: Metadata = pageMetadata({
+  path: "/blog",
+  title: "Golf Betting Rules, Handicaps & Side Games",
+  description:
+    "Explore golf betting rules, skins carryovers, Nassau presses, side-game strategy and settling etiquette from GoLo.",
+});
 
 /** Only published posts go in the feed — an unwritten card isn't a page. */
 const blogJsonLd = {
@@ -55,9 +58,7 @@ export default function BlogPage() {
       <FilterBoot param="topic" ids={blogTopicIds} />
 
       <PageHero
-        kicker="NOTES FROM THE CART PATH"
-        title="Golf game rules and betting guides."
-        lead="Format breakdowns, settling etiquette, and the arguments your group keeps having — written by people who keep score for money on a Saturday."
+        {...blogHero}
         breadcrumbs={[{ label: "Home", href: "/" }, { label: "Blog" }]}
         meta={
           <>
@@ -85,7 +86,7 @@ export default function BlogPage() {
         title="Enough reading. Go settle something."
         buttons={[
           {
-            label: siteConfig.appLive ? "Get the app" : "Get the launch link",
+            label: appCtaLabel,
             href: "/#get",
             cta: "get_app",
             variant: "primary",

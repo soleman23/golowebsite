@@ -11,6 +11,7 @@
 import Link from "next/link";
 import type { ReactNode } from "react";
 import {
+  appCtaLabel,
   legalDocs,
   legalReadMinutes,
   type LegalBlock,
@@ -238,7 +239,7 @@ export function LegalPage({
         title={doc.cta.title}
         buttons={[
           {
-            label: "Get the app",
+            label: appCtaLabel,
             href: "/#get",
             cta: "get_app",
             variant: "primary",

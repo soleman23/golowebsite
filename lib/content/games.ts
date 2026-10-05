@@ -8,6 +8,7 @@
  */
 
 import type { IconName } from "@/components/ui/Icon";
+import { siteConfig } from "@/lib/siteConfig";
 
 export type GameTag = "pots" | "match" | "points" | "side";
 
@@ -130,6 +131,25 @@ export const gameFilters: GameFilter[] = [
   { id: "points", label: "Points" },
   { id: "side", label: "Side bets" },
 ];
+
+/** The /games hero. The H1 names the topic; the lead keeps the voice. */
+export const gamesHero = {
+  kicker: "EVERY GAME, SCORED AUTOMATICALLY",
+  title: "Golf betting games:",
+  titleAccentLine: "Rules, scoring, and payouts.",
+  lead: "Skins, Nassau, Wolf, the side pots your buddy always forgets to pay — GoLo runs every one, stacks them in a single round, and nets it all into one number per player. Browse the whole roster below.",
+};
+
+/**
+ * The /games closing band. The lead follows siteConfig.appLive the way the
+ * band's own buttons do: no "download it" before there's anything to download.
+ */
+export const gamesFinalCta = {
+  title: "Stack 'em all. Settle in seconds.",
+  lead: siteConfig.appLive
+    ? "Set up every game before the first tee and let GoLo keep score. Download it, and never do parking-lot math again."
+    : "Set up every game before the first tee and let GoLo keep score. Get the launch link and let GoLo handle the parking-lot math.",
+};
 
 export function isGameSlug(slug: string): slug is GameSlug {
   return (GAME_SLUGS as readonly string[]).includes(slug);

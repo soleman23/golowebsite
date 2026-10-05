@@ -1,7 +1,12 @@
-import { pageMetadata } from "@/lib/pageMetadata";
 import type { Metadata } from "next";
 import Link from "next/link";
-import { featureBlocks, quickAnswers, type FeatureVisual } from "@/lib/content";
+import {
+  appCtaLabel,
+  featureBlocks,
+  quickAnswers,
+  type FeatureVisual,
+} from "@/lib/content";
+import { pageMetadata } from "@/lib/pageMetadata";
 import { siteConfig } from "@/lib/siteConfig";
 import { PageHero } from "@/components/ui/PageHero";
 import { StatusPill } from "@/components/ui/StatusPill";
@@ -23,11 +28,12 @@ import { FinalCTA } from "@/components/sections/FinalCTA";
 import { JsonLd } from "@/components/ui/JsonLd";
 import styles from "./features.module.css";
 
-export const metadata: Metadata = pageMetadata(
-  "/features",
-  "Golf Scorecard App With Live Side-Game Scoring",
-  "Track golf scores, handicaps, Nassau presses and side games in one round. See how GoLo calculates balances and simplifies settling up.",
-);
+export const metadata: Metadata = pageMetadata({
+  path: "/features",
+  title: "Golf Scorecard App With Live Side-Game Scoring",
+  description:
+    "Track golf scores, handicaps, Nassau presses and side games in one round. See how GoLo calculates balances and simplifies settling up.",
+});
 
 /** Which mockup renders for each block, and whether it's a card or a phone. */
 const VISUALS: Record<
@@ -74,7 +80,7 @@ export default function FeaturesPage() {
         page="features"
         ctas={[
           {
-            label: siteConfig.appLive ? "Get the app" : "Get the launch link",
+            label: appCtaLabel,
             href: "/#get",
             variant: "primary",
             cta: "get_app",
@@ -137,7 +143,7 @@ export default function FeaturesPage() {
         title="Bring it Saturday. Let the phone keep the tally."
         buttons={[
           {
-            label: siteConfig.appLive ? "Get the app" : "Get the launch link",
+            label: appCtaLabel,
             href: "/#get",
             cta: "get_app",
             variant: "primary",

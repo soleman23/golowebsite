@@ -5,7 +5,8 @@ import {
   gameDetailSlugsWithContent,
   type GameDetail,
 } from "@/lib/content";
-import { defaultOgImage, siteConfig } from "@/lib/siteConfig";
+import { siteConfig } from "@/lib/siteConfig";
+import { socialDefaults } from "@/lib/pageMetadata";
 import { PageHero } from "@/components/ui/PageHero";
 import { Icon } from "@/components/ui/Icon";
 import { GameSteps } from "@/components/sections/gameDetail/GameSteps";
@@ -42,13 +43,15 @@ export async function generateMetadata({ params }: Params): Promise<Metadata> {
     title,
     description,
     alternates: { canonical: `/games/${game.slug}` },
-    // images is required here: declaring `openGraph` drops the inherited
-    // app/opengraph-image.png, and these pages are the most-linked on the site.
+    // Declaring `openGraph` replaces the layout's object, so the site-wide
+    // defaults (siteName, the share card) are spread back in — these pages are
+    // the most-linked on the site and can't share without an image.
     openGraph: {
+      ...socialDefaults.openGraph,
       type: "article",
+      url: `/games/${game.slug}`,
       title,
       description,
-      images: [defaultOgImage],
     },
   };
 }
