@@ -18,7 +18,9 @@ html[data-filter="rules"] .item:not([data-topic="rules"]),
 html[data-filter="etiquette"] .item:not([data-topic="etiquette"]),
 html[data-filter="handicaps"] .item:not([data-topic="handicaps"]),
 html[data-filter="trips"] .item:not([data-topic="trips"]),
-html[data-filter="building"] .item:not([data-topic="building"]) {
+html[data-filter="building"] .item:not([data-topic="building"]),
+html[data-filter="gear"] .item:not([data-topic="gear"]),
+html[data-filter="product"] .item:not([data-topic="product"]) {
   display: none;
 }
 
