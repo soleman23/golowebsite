@@ -26,6 +26,19 @@ a.card:hover {
   opacity: 0.72;
 }
 
+/* opacity dims the composited result, so it multiplies every child's contrast
+   with it — --text-muted at .5 came out as #626466 on the card, 3.17:1, an AA
+   failure Lighthouse caught on /blog. Text inside an unwritten card therefore
+   starts one step brighter to land where the same text lands on a written one.
+   Change .unwritten's opacity and these two have to be re-checked. */
+.unwritten .excerpt {
+  color: var(--text-secondary);
+}
+
+.unwritten .soon {
+  color: var(--text-primary);
+}
+
 /* The photo slot. Until the real images land this is a flat panel rather than
    a stretched placeholder — see the note in lib/content/blog.ts. */
 .photo {

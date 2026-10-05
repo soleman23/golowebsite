@@ -56,6 +56,13 @@ jobs:
       - name: Lint
         run: npm run lint
 
+      # The /games and /blog filter CSS has one hand-written line per filter id
+      # (see scripts/check-filter-css.mjs). `lint` runs this too, but only when
+      # ESLint passes; as its own step it reports even when ESLint doesn't.
+      - name: Filter CSS
+        if: '!cancelled()'
+        run: npm run lint:filters
+
       # Runs even if lint failed, so one push surfaces every problem at once
       # instead of trickling them out over three round-trips.
       - name: Typecheck

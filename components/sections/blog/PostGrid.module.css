@@ -111,6 +111,82 @@
   color: var(--text-secondary);
 }
 
+/* ---- Filtering ----------------------------------------------------------
+   The page is static, so the HTML can't know ?topic=. Every card, every
+   heading and count variant and every chip ships, and these rules choose from
+   <html data-filter>, which FilterBoot sets during parse. A deep link paints
+   filtered — right cards, right chip lit, right heading and count — before
+   any JS runs. After hydration BlogFilterProvider keeps the attribute in step
+   with the URL.
+
+   Scoped to .cards, not to the card: the related posts under an article
+   render the same cards and must never filter.
+
+   CSS can't compare an ancestor's attribute with a descendant's, so it's one
+   line per topic. The ids are blogCategoryIds in lib/content/blog.ts, and
+   `npm run lint` fails if one is missing here (scripts/check-filter-css.mjs).
+   html:not([data-filter]) is the no-JS case: every card shows, "All" is lit,
+   and the "All" heading and count are the ones not marked `hidden`. Hidden
+   variants stay out of the h2's accessible name either way. */
+html[data-filter="rules"] .cards > :not([data-topic="rules"]),
+html[data-filter="etiquette"] .cards > :not([data-topic="etiquette"]),
+html[data-filter="handicaps"] .cards > :not([data-topic="handicaps"]),
+html[data-filter="trips"] .cards > :not([data-topic="trips"]),
+html[data-filter="building"] .cards > :not([data-topic="building"]),
+html[data-filter="gear"] .cards > :not([data-topic="gear"]),
+html[data-filter="product"] .cards > :not([data-topic="product"]),
+html[data-filter="rules"] .heading > [data-for="all"],
+html[data-filter="etiquette"] .heading > [data-for="all"],
+html[data-filter="handicaps"] .heading > [data-for="all"],
+html[data-filter="trips"] .heading > [data-for="all"],
+html[data-filter="building"] .heading > [data-for="all"],
+html[data-filter="gear"] .heading > [data-for="all"],
+html[data-filter="product"] .heading > [data-for="all"],
+html[data-filter="rules"] .count > [data-for="all"],
+html[data-filter="etiquette"] .count > [data-for="all"],
+html[data-filter="handicaps"] .count > [data-for="all"],
+html[data-filter="trips"] .count > [data-for="all"],
+html[data-filter="building"] .count > [data-for="all"],
+html[data-filter="gear"] .count > [data-for="all"],
+html[data-filter="product"] .count > [data-for="all"] {
+  display: none;
+}
+
+/* The matching heading and count. The others carry `hidden`; an author rule
+   beats the browser's [hidden] rule, so this reveals exactly one of each. */
+html[data-filter="rules"] .heading > [data-for="rules"],
+html[data-filter="etiquette"] .heading > [data-for="etiquette"],
+html[data-filter="handicaps"] .heading > [data-for="handicaps"],
+html[data-filter="trips"] .heading > [data-for="trips"],
+html[data-filter="building"] .heading > [data-for="building"],
+html[data-filter="gear"] .heading > [data-for="gear"],
+html[data-filter="product"] .heading > [data-for="product"],
+html[data-filter="rules"] .count > [data-for="rules"],
+html[data-filter="etiquette"] .count > [data-for="etiquette"],
+html[data-filter="handicaps"] .count > [data-for="handicaps"],
+html[data-filter="trips"] .count > [data-for="trips"],
+html[data-filter="building"] .count > [data-for="building"],
+html[data-filter="gear"] .count > [data-for="gear"],
+html[data-filter="product"] .count > [data-for="product"] {
+  display: inline;
+}
+
+/* The lit chip before hydration. Same look as ChipFilter's .active, which
+   React applies to the same chip once it has read the URL. */
+html:not([data-filter]) .chips [data-chip="all"],
+html[data-filter="all"] .chips [data-chip="all"],
+html[data-filter="rules"] .chips [data-chip="rules"],
+html[data-filter="etiquette"] .chips [data-chip="etiquette"],
+html[data-filter="handicaps"] .chips [data-chip="handicaps"],
+html[data-filter="trips"] .chips [data-chip="trips"],
+html[data-filter="building"] .chips [data-chip="building"],
+html[data-filter="gear"] .chips [data-chip="gear"],
+html[data-filter="product"] .chips [data-chip="product"] {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: var(--accent-ink);
+}
+
 .cards {
   list-style: none;
   margin: 0;

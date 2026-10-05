@@ -19,6 +19,11 @@
  * what it actually is, and it matches the URL these chips write to. Full
  * radio semantics would say the same thing, but they'd also owe the reader
  * arrow-key navigation and a roving tabindex this row doesn't implement.
+ *
+ * `value` is null until the caller knows the current filter. On a static page
+ * that's until hydration, and no chip is marked current rather than the wrong
+ * one. Each chip carries data-chip so the page's CSS can light the right one
+ * from <html data-filter> in the meantime.
  */
 
 import styles from "./ChipFilter.module.css";
@@ -27,7 +32,7 @@ export type ChipItem = { id: string; label: string; count?: number };
 
 type ChipFilterProps = {
   items: ChipItem[];
-  value: string;
+  value: string | null;
   onChange: (id: string) => void;
   /** Names what's being filtered, for screen readers. */
   label: string;
@@ -55,6 +60,7 @@ export function ChipFilter({
             type="button"
             className={`${styles.chip} ${isActive ? styles.active : ""}`}
             aria-current={isActive ? true : undefined}
+            data-chip={item.id}
             onClick={() => {
               if (!isActive) onChange(item.id);
             }}

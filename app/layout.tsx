@@ -57,7 +57,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en">
+    // suppressHydrationWarning: FilterBoot (components/ui/FilterBoot.tsx) writes
+    // data-filter onto <html> during parse on /games and /blog, before React
+    // hydrates. This silences attribute diffs on <html> itself only — the
+    // rest of the tree is still checked.
+    <html lang="en" suppressHydrationWarning>
       <head />
       <body>
         <a href="#main" className="skip-link">
