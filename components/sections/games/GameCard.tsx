@@ -42,7 +42,9 @@ export function GameCard({ game }: { game: Game }) {
   );
 
   return (
-    <li id={game.slug} className={styles.cell}>
+    // data-tags is what the /games filter matches on — see GameCard.module.css.
+    // Harmless on the game-detail "stack it with" row, which never filters.
+    <li id={game.slug} className={styles.cell} data-tags={game.tags.join(" ")}>
       <Link
         href={`/games/${game.slug}`}
         className={`${styles.card} ${styles.cardLink} ${game.popular ? styles.cardPopular : ""}`}

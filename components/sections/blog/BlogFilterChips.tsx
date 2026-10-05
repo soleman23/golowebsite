@@ -1,31 +1,27 @@
 "use client";
 
 /**
- * The topic chips. Same deal as GameFilterChips on /games: the active topic
- * arrives as a prop resolved on the server, so this never calls
- * useSearchParams — that would have Next prerender a Suspense fallback and
- * ship a blog index with no posts in the HTML.
+ * The topic chips. State lives in BlogFilterProvider, because the heading in
+ * the main column reads it too.
  */
 
 import { usePathname, useRouter } from "next/navigation";
 import { ChipFilter, type ChipItem } from "@/components/ui/ChipFilter";
 import { track } from "@/lib/analytics";
+import { useBlogFilter } from "./BlogFilterProvider";
 
 type BlogFilterChipsProps = {
   items: ChipItem[];
-  value: string;
   className?: string;
 };
 
-export function BlogFilterChips({
-  items,
-  value,
-  className,
-}: BlogFilterChipsProps) {
+export function BlogFilterChips({ items, className }: BlogFilterChipsProps) {
   const router = useRouter();
   const pathname = usePathname();
+  const { active, select } = useBlogFilter();
 
   function onChange(id: string) {
+    select(id);
     const href = id === "all" ? pathname : `${pathname}?topic=${id}`;
     // push, not replace: back should walk through topics, not leave /blog.
     router.push(href, { scroll: false });
@@ -35,7 +31,7 @@ export function BlogFilterChips({
   return (
     <ChipFilter
       items={items}
-      value={value}
+      value={active}
       onChange={onChange}
       label="Filter posts by topic"
       className={className}

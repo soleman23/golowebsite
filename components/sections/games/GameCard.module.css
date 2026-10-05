@@ -4,6 +4,25 @@
   scroll-margin-top: 96px;
 }
 
+/* ---- /games filtering ---------------------------------------------------
+   Every card is in the HTML; this hides the ones the active filter excludes.
+   FilterBoot writes data-filter onto <html> before first paint, so a deep link
+   paints filtered rather than flashing the full roster.
+
+   These rules live here rather than in GamesGrid.module.css because .cell is
+   declared here, and CSS Modules only resolve a class inside its own file.
+
+   One rule per tag, because CSS can't compare an ancestor's attribute against
+   a descendant's. The tags are the GameTag union in lib/content/games.ts — add
+   a tag there and it needs a line here. gameFilters still drives the chips and
+   the counts, so this list is the only manual copy. */
+html[data-filter="pots"] .cell:not([data-tags~="pots"]),
+html[data-filter="match"] .cell:not([data-tags~="match"]),
+html[data-filter="points"] .cell:not([data-tags~="points"]),
+html[data-filter="side"] .cell:not([data-tags~="side"]) {
+  display: none;
+}
+
 .card {
   position: relative;
   flex: 1;

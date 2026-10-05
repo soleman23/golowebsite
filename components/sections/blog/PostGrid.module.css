@@ -111,6 +111,9 @@
   color: var(--text-secondary);
 }
 
+/* The /blog filter rules live in PostCard.module.css, beside the .item class
+   they hide — a class name only resolves inside the module that declares it. */
+
 .cards {
   list-style: none;
   margin: 0;

@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
+import { gameFilters } from "@/lib/content";
 import { PageHero } from "@/components/ui/PageHero";
-import { GamesGrid, GAME_FILTER_IDS } from "@/components/sections/games/GamesGrid";
+import { FilterBoot } from "@/components/ui/FilterBoot";
+import { GamesGrid } from "@/components/sections/games/GamesGrid";
 import { FinalCTA } from "@/components/sections/FinalCTA";
 
 export const metadata: Metadata = {
@@ -11,20 +13,20 @@ export const metadata: Metadata = {
 };
 
 /**
- * The filter lives in the URL and is resolved here, on the server, so every
- * card ships in the HTML. Reading it in a client hook instead would hand
- * crawlers a games page with no games on it.
+ * Static, and deliberately so. Reading `searchParams` here would make the
+ * route dynamic, and Next 15 streams metadata on dynamic routes — the title
+ * and description end up in the body instead of <head>. See FilterBoot.
+ *
+ * Every card ships in the HTML on every request now, which is strictly better
+ * for a crawler than the old behaviour of serving whatever subset the query
+ * string asked for. The filter is presentation: FilterBoot sets it before
+ * paint, CSS applies it, and the chips own it after hydration.
  */
-type GamesPageProps = {
-  searchParams: Promise<{ filter?: string }>;
-};
-
-export default async function GamesPage({ searchParams }: GamesPageProps) {
-  const { filter } = await searchParams;
-  const active = filter && GAME_FILTER_IDS.has(filter) ? filter : "all";
-
+export default function GamesPage() {
   return (
     <>
+      <FilterBoot param="filter" ids={gameFilters.map((f) => f.id)} />
+
       <PageHero
         kicker="EVERY GAME, SCORED AUTOMATICALLY"
         title="Pick your poison."
@@ -33,7 +35,7 @@ export default async function GamesPage({ searchParams }: GamesPageProps) {
         breadcrumbs={[{ label: "Home", href: "/" }, { label: "Games" }]}
       />
 
-      <GamesGrid active={active} />
+      <GamesGrid />
 
       <FinalCTA
         page="games"
