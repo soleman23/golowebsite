@@ -45,7 +45,13 @@ export function GameFilterChips({ items, className }: GameFilterChipsProps) {
     // router.push doesn't fire popstate; the back button does. This is what
     // makes walking back through filters restore both the cards and the chip.
     window.addEventListener("popstate", readUrl);
-    return () => window.removeEventListener("popstate", readUrl);
+    return () => {
+      window.removeEventListener("popstate", readUrl);
+      // <html> outlives this page under the App Router. Left set, the filter
+      // would follow a client-side navigation and hide cards on the next page
+      // that renders any — the "stack it with" row on a game detail page.
+      delete document.documentElement.dataset.filter;
+    };
   }, [items]);
 
   function onChange(id: string) {

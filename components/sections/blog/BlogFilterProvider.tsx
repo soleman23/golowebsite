@@ -64,7 +64,12 @@ export function BlogFilterProvider({ ids, children }: ProviderProps) {
     // router.push doesn't fire popstate; the back button does. This is what
     // makes walking back through topics restore the cards and the chip.
     window.addEventListener("popstate", readUrl);
-    return () => window.removeEventListener("popstate", readUrl);
+    return () => {
+      window.removeEventListener("popstate", readUrl);
+      // <html> outlives this page under the App Router. Left set, the filter
+      // would follow a client-side navigation and hide post cards elsewhere.
+      delete document.documentElement.dataset.filter;
+    };
   }, [idKey]);
 
   const select = useCallback((id: string) => {
