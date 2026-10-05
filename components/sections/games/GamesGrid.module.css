@@ -30,8 +30,45 @@
   margin: 0;
 }
 
-/* The /games filter rules live in GameCard.module.css, beside the .cell class
-   they hide — a class name only resolves inside the module that declares it. */
+/* ---- Filtering ----------------------------------------------------------
+   The page is static, so the HTML can't know ?filter=. Every card, every
+   result line and every chip ships, and these rules choose from
+   <html data-filter>, which FilterBoot sets during parse. A deep link paints
+   filtered — right cards, right chip lit, right count — before any JS runs.
+   After hydration GameFilterChips keeps the attribute in step with the URL.
+
+   Scoped to .grid, not to the card: the "stack it with" row on a game detail
+   page renders the same cards and must never filter.
+
+   CSS can't compare an ancestor's attribute with a descendant's, so it's one
+   line per filter id. The ids are gameFilters in lib/content/games.ts, and
+   `npm run lint` fails if one is missing here (scripts/check-filter-css.mjs).
+   html:not([data-filter]) is the no-JS case: everything shows, "All" is lit. */
+html[data-filter="pots"] .grid > :not([data-tags~="pots"]),
+html[data-filter="match"] .grid > :not([data-tags~="match"]),
+html[data-filter="points"] .grid > :not([data-tags~="points"]),
+html[data-filter="side"] .grid > :not([data-tags~="side"]),
+html:not([data-filter]) .result > :not([data-for="all"]),
+html[data-filter="all"] .result > :not([data-for="all"]),
+html[data-filter="pots"] .result > :not([data-for="pots"]),
+html[data-filter="match"] .result > :not([data-for="match"]),
+html[data-filter="points"] .result > :not([data-for="points"]),
+html[data-filter="side"] .result > :not([data-for="side"]) {
+  display: none;
+}
+
+/* The lit chip before hydration. Same look as ChipFilter's .active, which
+   React applies to the same chip once it has read the URL. */
+html:not([data-filter]) .chips [data-chip="all"],
+html[data-filter="all"] .chips [data-chip="all"],
+html[data-filter="pots"] .chips [data-chip="pots"],
+html[data-filter="match"] .chips [data-chip="match"],
+html[data-filter="points"] .chips [data-chip="points"],
+html[data-filter="side"] .chips [data-chip="side"] {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: var(--accent-ink);
+}
 
 .grid {
   list-style: none;

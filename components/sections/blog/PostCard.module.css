@@ -3,27 +3,6 @@
   min-width: 0;
 }
 
-/* ---- /blog filtering ----------------------------------------------------
-   Every post is in the HTML; this hides the ones the active topic excludes.
-   FilterBoot writes data-filter onto <html> before first paint, so
-   /blog?topic=etiquette paints filtered rather than flashing the full feed.
-
-   These rules live here rather than in PostGrid.module.css because .item is
-   declared here, and CSS Modules only resolve a class inside its own file.
-
-   One rule per topic, because CSS can't compare an ancestor's attribute
-   against a descendant's. These are the blogCategoryIds union in
-   lib/content/blog.ts — add a category there and it needs a line here. */
-html[data-filter="rules"] .item:not([data-topic="rules"]),
-html[data-filter="etiquette"] .item:not([data-topic="etiquette"]),
-html[data-filter="handicaps"] .item:not([data-topic="handicaps"]),
-html[data-filter="trips"] .item:not([data-topic="trips"]),
-html[data-filter="building"] .item:not([data-topic="building"]),
-html[data-filter="gear"] .item:not([data-topic="gear"]),
-html[data-filter="product"] .item:not([data-topic="product"]) {
-  display: none;
-}
-
 .card {
   display: flex;
   flex-direction: column;

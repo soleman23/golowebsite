@@ -42,9 +42,9 @@ export function GameCard({ game }: { game: Game }) {
   );
 
   return (
-    // data-tags is what the /games filter matches on — see GameCard.module.css.
-    // The game-detail "stack it with" row carries it too, and never filters:
-    // GameFilterChips clears the attribute when you leave /games.
+    // data-tags is what the /games filter matches on — see GamesGrid.module.css.
+    // The game-detail "stack it with" row carries it too and never filters:
+    // those rules only reach cards inside the /games grid.
     <li id={game.slug} className={styles.cell} data-tags={game.tags.join(" ")}>
       <Link
         href={`/games/${game.slug}`}

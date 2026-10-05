@@ -3,60 +3,61 @@
 /**
  * The chip row for /games, and the owner of the filter once JS is running.
  *
- * Deliberately not useSearchParams: on a static route that hook forces a
- * Suspense boundary, and the chips would ship as a fallback instead of as
- * markup. Reading location.search directly keeps the row in the static HTML.
+ * Before hydration the page is static HTML and can't know ?filter=. FilterBoot
+ * sets <html data-filter> during parse, and GamesGrid.module.css uses it to
+ * hide cards, light the matching chip and show the matching result line —
+ * every result line ships, CSS picks one. So `active` starts null: the server
+ * HTML marks no chip current rather than claiming "All".
  *
- * Three things stay in step — React state (for the active chip and the count),
- * <html data-filter> (which CSS filters on), and the URL. FilterBoot sets the
- * attribute before paint; from hydration on, this component does.
+ * After hydration three things stay in step: React state (aria-current and
+ * the announcement), <html data-filter>, and the URL. FilterUrlSync re-reads
+ * the URL on every navigation; a chip click applies its filter immediately
+ * and then pushes the URL.
  */
 
-import { useEffect, useState } from "react";
+import { Suspense, useCallback, useMemo, useState } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import { ChipFilter, type ChipItem } from "@/components/ui/ChipFilter";
+import { FilterStatus } from "@/components/ui/FilterStatus";
+import { FilterUrlSync } from "@/components/ui/FilterUrlSync";
 import { track } from "@/lib/analytics";
 import styles from "./GamesGrid.module.css";
 
 type GameFilterChipsProps = {
   items: ChipItem[];
-  className?: string;
 };
 
-export function GameFilterChips({ items, className }: GameFilterChipsProps) {
+function resultLine(item: ChipItem): string {
+  const count = item.count ?? 0;
+  return item.id === "all"
+    ? `All ${count} games`
+    : `${count} ${count === 1 ? "game" : "games"}`;
+}
+
+export function GameFilterChips({ items }: GameFilterChipsProps) {
   const router = useRouter();
   const pathname = usePathname();
-  const [active, setActive] = useState("all");
+  const [active, setActive] = useState<string | null>(null);
 
-  // Starts at "all" so the server render and the first client render agree.
-  // The real value arrives here, after hydration — the visible list is already
-  // correct by then because FilterBoot set the attribute during parse.
-  useEffect(() => {
-    const ids = new Set(items.map((i) => i.id));
+  const ids = useMemo(() => items.map((i) => i.id), [items]);
+  const messages = useMemo(
+    () =>
+      Object.fromEntries(
+        items.map((i) => [
+          i.id,
+          i.id === "all" ? resultLine(i) : `${i.label}: ${resultLine(i)}`,
+        ]),
+      ),
+    [items],
+  );
 
-    function readUrl() {
-      const raw = new URLSearchParams(window.location.search).get("filter");
-      const next = raw && ids.has(raw) ? raw : "all";
-      setActive(next);
-      document.documentElement.dataset.filter = next;
-    }
-
-    readUrl();
-    // router.push doesn't fire popstate; the back button does. This is what
-    // makes walking back through filters restore both the cards and the chip.
-    window.addEventListener("popstate", readUrl);
-    return () => {
-      window.removeEventListener("popstate", readUrl);
-      // <html> outlives this page under the App Router. Left set, the filter
-      // would follow a client-side navigation and hide cards on the next page
-      // that renders any — the "stack it with" row on a game detail page.
-      delete document.documentElement.dataset.filter;
-    };
-  }, [items]);
-
-  function onChange(id: string) {
+  const apply = useCallback((id: string) => {
     setActive(id);
     document.documentElement.dataset.filter = id;
+  }, []);
+
+  function onChange(id: string) {
+    apply(id);
     const href = id === "all" ? pathname : `${pathname}?filter=${id}`;
     // push, not replace: the acceptance check wants the back button to walk
     // back through filters rather than leave the page.
@@ -64,22 +65,26 @@ export function GameFilterChips({ items, className }: GameFilterChipsProps) {
     track("game_filter", { filter: id });
   }
 
-  const count = items.find((i) => i.id === active)?.count ?? 0;
-
   return (
     <>
+      <Suspense fallback={null}>
+        <FilterUrlSync param="filter" ids={ids} onSync={apply} />
+      </Suspense>
       <ChipFilter
         items={items}
         value={active}
         onChange={onChange}
         label="Filter games by type"
-        className={className}
+        className={styles.chips}
       />
-      <span className={styles.result} aria-live="polite">
-        {active === "all"
-          ? `All ${count} games`
-          : `${count} ${count === 1 ? "game" : "games"}`}
+      <span className={styles.result}>
+        {items.map((item) => (
+          <span key={item.id} data-for={item.id}>
+            {resultLine(item)}
+          </span>
+        ))}
       </span>
+      <FilterStatus active={active} messages={messages} />
     </>
   );
 }

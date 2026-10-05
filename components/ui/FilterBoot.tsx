@@ -8,11 +8,16 @@
  * once React hydrated — Lighthouse scored /games 91 on SEO for a description
  * that was technically present but not where a parser looks.
  *
- * So both pages are static again and render every card. The filtering is a CSS
- * concern keyed off this attribute, and this script sets it during parse —
- * before the cards below it are parsed, so a deep link like
- * /games?filter=match paints filtered on the first frame with no flash of the
- * full list.
+ * So both pages are static again and render every card, every chip and every
+ * count/heading variant. The filtering is a CSS concern keyed off this
+ * attribute (GamesGrid.module.css, PostGrid.module.css), and this script sets
+ * it during parse — before the markup below it is parsed, so a deep link like
+ * /games?filter=match paints filtered on the first frame: the right cards, the
+ * right chip lit, the right count, with no flash of the full list.
+ *
+ * The attribute lands on <html> before React hydrates, which is why the root
+ * layout sets suppressHydrationWarning there. From hydration on, FilterUrlSync
+ * owns it.
  *
  * Render it as the FIRST child of the page, above the markup it filters.
  * Placement is the whole mechanism: move it below the grid and the grid paints

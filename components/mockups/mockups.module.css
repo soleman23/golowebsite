@@ -1409,6 +1409,16 @@
   margin-bottom: 10px;
 }
 
+/* One source for the stroke fills, read by the cells and by the legend
+   swatches that label them, so the key can't drift from what it describes. */
+.strokeGrid,
+.strokeLegend {
+  --stroke-one-fill: rgba(212, 242, 58, 0.22);
+  --stroke-one-border: var(--accent-45);
+  --stroke-two-fill: rgba(212, 242, 58, 0.6);
+  --stroke-two-border: rgba(212, 242, 58, 0.75);
+}
+
 .strokeGrid {
   display: grid;
   grid-template-columns: repeat(9, 1fr);
@@ -1419,17 +1429,17 @@
   border-radius: 9px;
   padding: 7px 0 6px;
   text-align: center;
-  background: rgba(212, 242, 58, 0.22);
-  border: 1px solid rgba(212, 242, 58, 0.45);
+  background: var(--stroke-one-fill);
+  border: 1px solid var(--stroke-one-border);
 }
 
 /* .60, not .42: these cells put --accent-ink on the lime, and at .42 the fill
    composited to #627224 — 3.04:1 against the ink, an AA failure Lighthouse
-   caught on /features. At .60 it lands at 5.4:1. Any cell using the
-   accent/accent-ink pairing needs the lime near-solid to earn it. */
+   caught on /features. At .60 it composites to #859a2b, 5.1:1. Any cell using
+   the accent/accent-ink pairing needs the lime near-solid to earn it. */
 .strokeCellTwo {
-  background: rgba(212, 242, 58, 0.6);
-  border-color: rgba(212, 242, 58, 0.75);
+  background: var(--stroke-two-fill);
+  border-color: var(--stroke-two-border);
 }
 
 .strokeCellHole {
@@ -1474,13 +1484,13 @@
   width: 10px;
   height: 10px;
   border-radius: 3px;
-  background: rgba(212, 242, 58, 0.22);
-  border: 1px solid rgba(212, 242, 58, 0.45);
+  background: var(--stroke-one-fill);
+  border: 1px solid var(--stroke-one-border);
 }
 
 .strokeSwatchTwo {
-  background: rgba(212, 242, 58, 0.42);
-  border-color: rgba(212, 242, 58, 0.6);
+  background: var(--stroke-two-fill);
+  border-color: var(--stroke-two-border);
 }
 
 /* ---- LockerCard ---- */

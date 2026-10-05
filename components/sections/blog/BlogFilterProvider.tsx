@@ -6,27 +6,27 @@
  * The chips live in the rail and the heading lives in the main column — two
  * different grid cells — so the state they share can't hang off either one.
  *
- * Deliberately not useSearchParams: on a static route that hook forces a
- * Suspense boundary, and everything under it ships as a fallback instead of as
- * markup. Reading location.search keeps the whole grid in the static HTML.
- *
- * `active` starts at "all" so the server render and the first client render
- * agree. The URL's real value arrives after hydration — the visible cards are
- * already correct by then, because FilterBoot set <html data-filter> during
- * parse and CSS acted on it before the first paint.
+ * `active` starts null: the page is static and the server HTML can't know
+ * ?topic=, so no chip is marked current rather than the wrong one. Until
+ * hydration, FilterBoot's <html data-filter> and the rules in
+ * PostGrid.module.css show the right cards, chip, heading and count. From
+ * then on FilterUrlSync re-reads the URL on every navigation — including a
+ * plain link back to /blog, which keeps this page mounted.
  */
 
 import {
+  Suspense,
   createContext,
   useCallback,
   useContext,
-  useEffect,
   useMemo,
   useState,
 } from "react";
+import { FilterUrlSync } from "@/components/ui/FilterUrlSync";
 
 type BlogFilterValue = {
-  active: string;
+  /** null until the URL has been read. */
+  active: string | null;
   select: (id: string) => void;
 };
 
@@ -47,30 +47,7 @@ type ProviderProps = {
 };
 
 export function BlogFilterProvider({ ids, children }: ProviderProps) {
-  const [active, setActive] = useState("all");
-  const idKey = ids.join("|");
-
-  useEffect(() => {
-    const valid = new Set(idKey.split("|"));
-
-    function readUrl() {
-      const raw = new URLSearchParams(window.location.search).get("topic");
-      const next = raw && valid.has(raw) ? raw : "all";
-      setActive(next);
-      document.documentElement.dataset.filter = next;
-    }
-
-    readUrl();
-    // router.push doesn't fire popstate; the back button does. This is what
-    // makes walking back through topics restore the cards and the chip.
-    window.addEventListener("popstate", readUrl);
-    return () => {
-      window.removeEventListener("popstate", readUrl);
-      // <html> outlives this page under the App Router. Left set, the filter
-      // would follow a client-side navigation and hide post cards elsewhere.
-      delete document.documentElement.dataset.filter;
-    };
-  }, [idKey]);
+  const [active, setActive] = useState<string | null>(null);
 
   const select = useCallback((id: string) => {
     setActive(id);
@@ -81,6 +58,9 @@ export function BlogFilterProvider({ ids, children }: ProviderProps) {
 
   return (
     <BlogFilterContext.Provider value={value}>
+      <Suspense fallback={null}>
+        <FilterUrlSync param="topic" ids={ids} onSync={select} />
+      </Suspense>
       {children}
     </BlogFilterContext.Provider>
   );
