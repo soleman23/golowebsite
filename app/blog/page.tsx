@@ -1,3 +1,4 @@
+import { pageMetadata } from "@/lib/pageMetadata";
 import type { Metadata } from "next";
 import {
   blogCountLine,
@@ -17,12 +18,11 @@ import { FinalCTA } from "@/components/sections/FinalCTA";
 import { JsonLd } from "@/components/ui/JsonLd";
 import styles from "./blog.module.css";
 
-export const metadata: Metadata = {
-  title: "Blog",
-  description:
-    "Game rules written by people who play them, betting etiquette, trip structures, and honest notes from building GoLo.",
-  alternates: { canonical: "/blog" },
-};
+export const metadata: Metadata = pageMetadata(
+  "/blog",
+  "Golf Betting Rules, Handicaps & Side Games",
+  "Explore golf betting rules, skins carryovers, Nassau presses, side-game strategy and settling etiquette from GoLo.",
+);
 
 /** Only published posts go in the feed — an unwritten card isn't a page. */
 const blogJsonLd = {
@@ -56,7 +56,7 @@ export default function BlogPage() {
 
       <PageHero
         kicker="NOTES FROM THE CART PATH"
-        title="How the bet actually works."
+        title="Golf game rules and betting guides."
         lead="Format breakdowns, settling etiquette, and the arguments your group keeps having — written by people who keep score for money on a Saturday."
         breadcrumbs={[{ label: "Home", href: "/" }, { label: "Blog" }]}
         meta={
@@ -85,7 +85,7 @@ export default function BlogPage() {
         title="Enough reading. Go settle something."
         buttons={[
           {
-            label: "Get the app",
+            label: siteConfig.appLive ? "Get the app" : "Get the launch link",
             href: "/#get",
             cta: "get_app",
             variant: "primary",

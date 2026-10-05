@@ -63,15 +63,12 @@ export function Hero() {
           </div>
 
           <h1 id="hero-heading" className={styles.h1}>
-            Bet it.
-            <br />
-            Track it.
-            <br />
-            <span className={styles.accent}>Settle it.</span>
+            The golf scorecard app that tracks side games and{" "}
+            <span className={styles.accent}>settles the bet.</span>
           </h1>
 
           <p className={styles.lead}>
-            Skins, Nassau, the press on the back nine — GoLo runs every side-game,
+            Bet it. Track it. Settle it. Skins, Nassau, the press on the back nine — GoLo runs every side-game,
             does the math you hate, and tells everyone{" "}
             <strong>exactly who owes who</strong> before you hit the parking lot.
           </p>

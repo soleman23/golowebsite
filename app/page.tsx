@@ -1,3 +1,5 @@
+import type { Metadata } from "next";
+import { pageMetadata } from "@/lib/pageMetadata";
 /**
  * GoLo landing page — composes the sections top to bottom. Stats and
  * testimonials are gated behind content flags from siteConfig.
@@ -13,6 +15,12 @@ import { Testimonials } from "@/components/sections/Testimonials";
 import { FinalCTA } from "@/components/sections/FinalCTA";
 import { FAQ } from "@/components/sections/FAQ";
 import { JsonLd } from "@/components/ui/JsonLd";
+
+export const metadata: Metadata = pageMetadata(
+  "/",
+  "Golf Betting Scorecard App for Skins, Nassau & More",
+  siteConfig.description,
+);
 
 /**
  * The app itself, plus the company behind it. One graph rather than two script
