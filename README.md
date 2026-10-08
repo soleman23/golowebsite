@@ -17,7 +17,8 @@ database and a real **SMS** endpoint for the hero "text me the link" form.
 
 ## Requirements
 
-- **Node.js 24** (pinned in `.nvmrc`; production builds on 24.x — Node 20 reached end of life in April 2026)
+- **Node.js 24** (pinned in `.nvmrc`; CI builds on 24.x — Node 20 reached end of life in April 2026)
+- For Hostinger Node.js hosting, set **24.x** in hPanel under **golo.golf → Settings** and redeploy; `.nvmrc` alone does not change the hosted runtime.
 - A **Postgres** database (Supabase recommended; any Postgres works)
 - _(Optional)_ a **Twilio** account to send real SMS
 
