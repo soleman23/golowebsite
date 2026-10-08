@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import {
   appCtaLabel,
+  betaQuotes,
   featureBlocks,
   quickAnswers,
   type FeatureVisual,
@@ -132,7 +133,7 @@ export default function FeaturesPage() {
 
       <AlsoInThere />
       <RoadmapColumns />
-      {siteConfig.showTestimonials ? <BetaQuotes /> : null}
+      {siteConfig.showTestimonials && betaQuotes.length > 0 ? <BetaQuotes /> : null}
       {siteConfig.appLive ? null : <PricingNote />}
       <QuickAnswers />
 

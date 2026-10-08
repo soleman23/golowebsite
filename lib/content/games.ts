@@ -135,7 +135,7 @@ export const gameFilters: GameFilter[] = [
 /** The /games hero. The H1 names the topic; the lead keeps the voice. */
 export const gamesHero = {
   kicker: "EVERY GAME, SCORED AUTOMATICALLY",
-  title: "Golf betting games:",
+  title: "Golf side games:",
   titleAccentLine: "Rules, scoring, and payouts.",
   lead: "Skins, Nassau, Wolf, the side pots your buddy always forgets to pay — GoLo runs every one, stacks them in a single round, and nets it all into one number per player. Browse the whole roster below.",
 };

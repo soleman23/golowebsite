@@ -22,9 +22,9 @@ import styles from "./blog.module.css";
 
 export const metadata: Metadata = pageMetadata({
   path: "/blog",
-  title: "Golf Betting Rules, Handicaps & Side Games",
+  title: "Golf Side-Game Rules, Handicaps & Etiquette",
   description:
-    "Explore golf betting rules, skins carryovers, Nassau presses, side-game strategy and settling etiquette from GoLo.",
+    "Golf side-game rules, skins carryovers, Nassau presses, strategy and settling-up etiquette for friendly wagers, from GoLo.",
 });
 
 /** Only published posts go in the feed — an unwritten card isn't a page. */

@@ -15,10 +15,11 @@ import { Testimonials } from "@/components/sections/Testimonials";
 import { FinalCTA } from "@/components/sections/FinalCTA";
 import { FAQ } from "@/components/sections/FAQ";
 import { JsonLd } from "@/components/ui/JsonLd";
+import { quotes } from "@/lib/content";
 
 export const metadata: Metadata = pageMetadata({
   path: "/",
-  title: "Golf Betting Scorecard App for Skins, Nassau & More",
+  title: "Golf Side-Game Scorecard App for Skins, Nassau & More",
   description: siteConfig.description,
 });
 
@@ -32,6 +33,13 @@ export const metadata: Metadata = pageMetadata({
  * data ignored site-wide. `price: "0"` is true today and stays true while
  * siteConfig.appLive is false; revisit it with the pricing page at launch.
  *
+ * Organization is named "GoLo Golf" — the name searchers use, and the one that
+ * separates this company from the GOLO dice game, putters and diet — with the
+ * LLC as legalName. WebSite carries the same name: it's what Google reads to
+ * pick the site name shown above a result. The address stops at the city: the
+ * street address is a residence, and an app company has no storefront to find.
+ * /privacy keeps the full mailing address of record.
+ *
  * The home page carries no FAQPage even though it ends with an FAQ section —
  * those same questions are the canonical /faq block, and the same Q/A marked
  * up on two URLs is a demotion risk.
@@ -42,20 +50,27 @@ const homeJsonLd = {
     {
       "@type": "Organization",
       "@id": `${siteConfig.url}/#organization`,
-      name: siteConfig.legalName,
+      name: siteConfig.brandName,
+      legalName: siteConfig.legalName,
       alternateName: siteConfig.name,
       url: siteConfig.url,
       email: siteConfig.supportEmail,
       logo: organizationLogo,
       address: {
         "@type": "PostalAddress",
-        streetAddress: siteConfig.address.street,
         addressLocality: siteConfig.address.city,
         addressRegion: siteConfig.address.region,
-        postalCode: siteConfig.address.postalCode,
         addressCountry: siteConfig.address.country,
       },
       sameAs: [siteConfig.instagramUrl],
+    },
+    {
+      "@type": "WebSite",
+      "@id": `${siteConfig.url}/#website`,
+      name: siteConfig.brandName,
+      alternateName: siteConfig.name,
+      url: siteConfig.url,
+      publisher: { "@id": `${siteConfig.url}/#organization` },
     },
     {
       "@type": "SoftwareApplication",
@@ -83,7 +98,7 @@ export default function HomePage() {
       <Features />
       <GamesGrid />
       <HowItWorks />
-      {siteConfig.showTestimonials ? <Testimonials /> : null}
+      {siteConfig.showTestimonials && quotes.length > 0 ? <Testimonials /> : null}
       <FinalCTA />
       <FAQ />
 

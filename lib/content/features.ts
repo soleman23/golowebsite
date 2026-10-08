@@ -291,29 +291,11 @@ export type BetaQuote = {
   color: string;
 };
 
-export const betaQuotes: BetaQuote[] = [
-  {
-    text: '"We used to spend the whole ride home arguing about the presses. Now we spend it arguing about my swing."',
-    name: "Dave M.",
-    meta: "11.6 index · Saturday game, 9 years",
-    initial: "D",
-    color: "var(--avatar-teal)",
-  },
-  {
-    text: '"I\'m a 22 and I finally understand what I\'m getting. The stroke grid ended a four-year disagreement in about nine seconds."',
-    name: "Tom R.",
-    meta: "22.0 index · muni regular",
-    initial: "T",
-    color: "var(--avatar-orange)",
-  },
-  {
-    text: '"Three transfers instead of six, and nobody standing in the lot doing math. That\'s the whole thing for me."',
-    name: "Sarah K.",
-    meta: "14.1 index · runs the trip every spring",
-    initial: "S",
-    color: "var(--avatar-blue)",
-  },
-];
+/**
+ * Only real testers who agreed in writing to be quoted, with what they wrote.
+ * Empty until then; /features renders no quotes band while it is.
+ */
+export const betaQuotes: BetaQuote[] = [];
 
 /* ----------------------------------------------------------------- pricing */
 

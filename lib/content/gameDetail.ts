@@ -59,6 +59,17 @@ export type GameDetail = {
   tagline: string;
   /** Meta description for this route (BUILD-SPEC §6). */
   metaDescription: string;
+  /**
+   * The <title>, without the "· GoLo" suffix. Written for the query
+   * ("how to play skins golf"), where the H1 stays the game's name.
+   */
+  seoTitle: string;
+  /**
+   * The article that goes past the rules for this game, linked under the tips.
+   * Guide and article own different searches; this link tells readers (and
+   * crawlers) which one to read for what.
+   */
+  deeperReading?: { href: string; label: string };
   traits: string[];
   howTitle: string;
   intro: string;
@@ -108,6 +119,8 @@ export type GameDetail = {
 
 const nassau: GameDetail = {
   slug: "nassau",
+  seoTitle: "How to Play a Nassau in Golf: Rules & Presses",
+  deeperReading: { href: "/blog/nassau", label: "Deeper reading: the $2 Nassau, presses and house rules →" },
   name: "Nassau",
   icon: "trophy",
   kicker: "MATCH PLAY · 3 BETS IN 1",
@@ -339,6 +352,8 @@ function gameFaqs(
 
 const skins: GameDetail = {
   slug: "skins",
+  seoTitle: "How to Play Skins in Golf: Rules & Carryovers",
+  deeperReading: { href: "/blog/skins-carryover", label: "Deeper reading: how skins carryovers build the pot →" },
   name: "Skins",
   icon: "target",
   kicker: "POT PLAY · HOLE BY HOLE",
@@ -429,6 +444,7 @@ const skins: GameDetail = {
 
 const strokePurse: GameDetail = {
   slug: "stroke-purse",
+  seoTitle: "Golf Stroke Play Purse: Buy-Ins & Payout Rules",
   name: "Stroke Purse",
   icon: "cash",
   kicker: "POT · LOW NET TAKES IT",
@@ -525,6 +541,8 @@ const strokePurse: GameDetail = {
 
 const wolf: GameDetail = {
   slug: "wolf", name: "Wolf", icon: "wolf", kicker: "TEAMS · ROTATING CAPTAIN",
+  seoTitle: "Wolf Golf Game Rules: Rotation, Lone Wolf & Scoring",
+  deeperReading: { href: "/blog/wolf", label: "Deeper reading: playing Wolf with a foursome that can’t agree →" },
   tagline: "One player is the Wolf on every hole. They watch the other three drives and pick a partner on the spot — or turn everyone down and take on the whole group alone for double.",
   metaDescription: "Learn the Wolf rotation, partner-pick rule, Lone Wolf payouts, and how points turn into one final settlement.",
   traits: ["4 players", "Rotating captain", "Points", "18 holes"],
@@ -614,6 +632,8 @@ const wolf: GameDetail = {
 
 const bingoBangoBongo: GameDetail = {
   slug: "bingo-bango-bongo", name: "Bingo Bango Bongo", icon: "dice", kicker: "POINTS · 3 PER HOLE",
+  seoTitle: "Bingo Bango Bongo Golf Game: Rules & Scoring",
+  deeperReading: { href: "/blog/bingo-bango-bongo", label: "Deeper reading: why Bingo Bango Bongo suits mixed handicaps →" },
   tagline: "Three points on every hole: first ball on the green, closest once everyone is on, and first in the cup. Your total score never comes into it — which is why the shortest hitter in the group keeps winning.",
   metaDescription: "Learn Bingo Bango Bongo: three points per hole, strict order of play, no handicap required, and 54 points to settle.",
   traits: ["2–4 players", "3 points / hole", "54 points", "No handicaps needed"],
@@ -701,8 +721,9 @@ const bingoBangoBongo: GameDetail = {
 
 const closestToPin: GameDetail = {
   slug: "closest-to-pin", name: "Closest to Pin", icon: "pin", kicker: "SIDE BET · PAR 3s",
+  seoTitle: "Closest to the Pin & Greenies: Golf Side Game Rules",
   tagline: "One tee shot, one pot. Stick it tighter than everybody else on the par 3s and collect — as long as you can still make par from there.",
-  metaDescription: "Settle closest-to-pin greenies with clear on-green, par-to-collect, measuring, and carryover rules.",
+  metaDescription: "How closest to the pin and greenies work: who qualifies, par-to-collect, measuring, carryovers, and how the side pot pays out.",
   traits: ["Any group size", "Par 3s only", "Greenies", "Per-hole pot"],
   howTitle: "The oldest side bet in golf, and the easiest to argue about.",
   intro: "Also known as a greenie. On every par 3, whoever hits their tee shot closest to the flag takes that hole’s pot. Two rules do all the work: the ball usually has to finish on the green, and most groups make you two-putt for par before the money is actually yours.",
@@ -790,6 +811,7 @@ const closestToPin: GameDetail = {
 
 const longestDrive: GameDetail = {
   slug: "longest-drive", name: "Longest Drive", icon: "drive", kicker: "SIDE BET · ONE MARKED HOLE",
+  seoTitle: "Longest Drive Golf Side Game: Rules & Payouts",
   tagline: "Pick a hole, swing out of your shoes, and the longest ball that finishes in the fairway takes the pot. Short grass or nothing.",
   metaDescription: "Set up a longest-drive side bet with a marked hole, fairway-only rule, measurement, carryovers, and a clean payout.",
   traits: ["Any group size", "One marked hole", "Fairway only", "Single pot"],
@@ -879,8 +901,9 @@ const longestDrive: GameDetail = {
 
 const birdies: GameDetail = {
   slug: "birdies", name: "Birdies", icon: "bird", kicker: "BOUNTY · ALL 18 HOLES",
+  seoTitle: "Birdie Bounties in Golf: Side Game Rules & Payouts",
   tagline: "A standing price on every birdie. Card one and everybody who did not pays you. Eagles double it, and nobody has ever complained about paying.",
-  metaDescription: "Set a birdie bounty with gross or net scoring, eagle multipliers, payer rules, and a sensible cap.",
+  metaDescription: "How a birdie bounty works: gross or net birdies, eagle multipliers, who pays whom, and a sensible cap so one hot round stays friendly.",
   traits: ["Any group size", "All 18 holes", "Per-birdie bounty", "Eagles double"],
   howTitle: "The only bet that pays you for playing well instead of for beating somebody.",
   intro: "Put a price on a birdie before the round. Every time somebody makes one, each of the other players hands over that amount — so a $5 birdie is worth $15 in a foursome. Eagles usually pay double, and because it sits on top of whatever else you are playing, most groups leave it running all season.",

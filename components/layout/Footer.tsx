@@ -31,8 +31,10 @@ export function Footer() {
         <div className={styles.columns}>
           {columns.map((col) => (
             <div key={col.heading} className={styles.column}>
-              <h2 className={styles.columnHeading}>{col.heading}</h2>
-              <ul className={styles.columnLinks}>
+              {/* A label, not a heading: as h2s these four put PRODUCT, GAMES,
+                  LEGAL and COMPANY into every page's outline. */}
+              <p className={styles.columnHeading}>{col.heading}</p>
+              <ul className={styles.columnLinks} aria-label={col.heading}>
                 {col.links.map((link) => (
                   <li key={link.label}>
                     {link.href.startsWith("/") ? (

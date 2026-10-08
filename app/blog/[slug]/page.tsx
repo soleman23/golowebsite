@@ -42,7 +42,7 @@ export async function generateMetadata({ params }: Params): Promise<Metadata> {
   const post = findPost(slug);
   if (!post) return {};
 
-  const description = post.dek ?? post.excerpt;
+  const description = post.metaDescription ?? post.dek ?? post.excerpt;
 
   return {
     title: post.title,
