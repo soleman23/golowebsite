@@ -29,9 +29,9 @@ Owner decisions this round: the web app is not public yet; Instagram is @gologol
 - Baseline security headers (HSTS without includeSubDomains, nosniff, Referrer-Policy, X-Frame-Options, Permissions-Policy) in next.config.mjs.
 - Lint, typecheck and production build verified; pages checked in the dev server at 320 px and desktop.
 
-## Blocking: nothing merged since August 25 is live
+## Deployed October 8, 2026
 
-Production is Hostinger's managed Node.js hosting (hPanel → golo.golf → Deployments), which builds `main` from GitHub. Its Deployments page shows "Repository access missing" and Redeploy is disabled, so the live build is still commit 7c1aa075 from August 25 and PR #11 and everything above are not in production. Fix: Manage access → re-authorize Hostinger's GitHub app for this repo, then Redeploy. The "Deploy to VPS" GitHub workflow is unused; it skips every run ("VPS secrets not configured yet").
+Production is Hostinger's managed Node.js hosting (hPanel → golo.golf → Deployments), which builds `main` from GitHub on Node 20. It had lost GitHub repository access, so nothing deployed between August 25 and October 8. Access was restored and `main` at 43171cd (PR #14) deployed October 8; everything above is live. Checked on the live site: new titles and canonicals on /, /games, /blog and the game guides; GA enabled; HSTS and X-Frame-Options headers; robots.txt and a 22-URL sitemap; /cookies and /acceptable-use noindex. The "Deploy to VPS" GitHub workflow is unused; it skips every run ("VPS secrets not configured yet").
 
 ## Search Console baseline, October 8, 2026
 
@@ -44,10 +44,10 @@ Domain property `sc-domain:golo.golf`, already verified. Taken while production 
 
 ## Remaining
 
-- Search Console: re-check index coverage, selected canonicals and field Core Web Vitals once the current build is live.
+- Search Console: re-check index coverage, selected canonicals and field Core Web Vitals two to four weeks after the October 8 deploy, against the baseline above.
 - The /blog "app isn't live yet" status pill doesn't follow appLive.
 - Web app noindex: soleman23/golo PR #499 (into staging). Reaches gologolf.netlify.app only after the staging → main release and a Publish in Netlify.
-- GA4: NEXT_PUBLIC_ANALYTICS_ENABLED=true is set in hPanel (October 8; the measurement ID G-36182P0H4D is the siteConfig default). It is baked in at build time, so it takes effect on the first build after repository access is restored (see Blocking). After that, mark generate_lead as a key event in GA.
+- GA4 is live as of the October 8 build (NEXT_PUBLIC_ANALYTICS_ENABLED=true in hPanel; measurement ID G-36182P0H4D, the siteConfig default). Still to do in GA: mark generate_lead as a key event.
 - GA4 will undercount, by design. Analytics is opt-in: no data until a visitor grants it in the "Privacy choices" control (footer link → /privacy#analytics-choices). There is no banner, and Global Privacy Control or no choice keeps it off. Read GA as a small opted-in sample, not traffic; use Search Console clicks and the lead table for volume. A consent banner would raise the sample, but that is a product and counsel decision, not an SEO task.
 - Store landing page and referrer host on leads (Prisma migration).
 - Verifiable authorship / reviewer information; do not invent credentials or people.
