@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "private": true,
   "engines": {
-    "node": ">=18.18.0"
+    "node": ">=24"
   },
   "//browserslist": "Modern-only targets, matched to the browsers that support AVIF and CSS image-set (what the backdrops in globals.css rely on). Governs SWC transpilation of app code and autoprefixer. NOTE: this does NOT clear Lighthouse's 'Legacy JavaScript' audit — those polyfills come from next/dist/build/polyfills/polyfill-module.js, which Next injects into the client bundle unconditionally.",
   "browserslist": [
