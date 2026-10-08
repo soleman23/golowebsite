@@ -36,7 +36,7 @@ export async function generateMetadata({ params }: Params): Promise<Metadata> {
   const game = findGameDetail(slug);
   if (!game) return {};
 
-  const title = `${game.name}, Explained`;
+  const title = game.seoTitle;
   const description = game.metaDescription;
 
   return {

@@ -1,12 +1,13 @@
 /**
  * "Play smart" — three tips. The cautionary one carries the rose warning mark
  * rather than a lime check, so the advice not to press reads as a warning at
- * a glance.
+ * a glance. Games with a companion article link to it underneath.
  */
 
 import type { GameDetail } from "@/lib/content";
 import { SectionHeader } from "@/components/ui/SectionHeader";
 import { CheckIcon, WarnIcon } from "@/components/ui/Icon";
+import { SeeAllLink } from "@/components/ui/SeeAllLink";
 import styles from "./GameTips.module.css";
 
 export function GameTips({ game }: { game: GameDetail }) {
@@ -35,6 +36,12 @@ export function GameTips({ game }: { game: GameDetail }) {
             </li>
           ))}
         </ul>
+
+        {game.deeperReading ? (
+          <SeeAllLink href={game.deeperReading.href}>
+            {game.deeperReading.label}
+          </SeeAllLink>
+        ) : null}
       </div>
     </section>
   );

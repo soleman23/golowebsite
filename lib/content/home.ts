@@ -9,6 +9,7 @@
 
 import type { IconName } from "@/components/ui/Icon";
 import { mostAskedFaqs, type FaqItem } from "./faq";
+import type { GameSlug } from "./games";
 
 /**
  * The hero H1. It names what a searcher types — "golf scorecard app", "side
@@ -133,45 +134,59 @@ export const features: Feature[] = [
  * The home page's short game teaser. Deliberately separate from the full
  * roster in games.ts — the two designs word their descriptions differently.
  */
-export type HomeGame = { icon: IconName; name: string; desc: string };
+/** `slug` links each card to its guide, so all eight get a link from the home page. */
+export type HomeGame = {
+  slug: GameSlug;
+  icon: IconName;
+  name: string;
+  desc: string;
+};
 
 export const homeGames: HomeGame[] = [
   {
+    slug: "skins",
     icon: "target",
     name: "Skins",
     desc: "Low score wins the hole. Ties carry the pot to the next — and the next.",
   },
   {
+    slug: "nassau",
     icon: "trophy",
     name: "Nassau",
     desc: "Three bets in one: front nine, back nine and the overall match.",
   },
   {
+    slug: "stroke-purse",
     icon: "cash",
     name: "Stroke Purse",
     desc: "Everyone buys in; lowest net total over 18 takes the whole pot.",
   },
   {
+    slug: "wolf",
     icon: "wolf",
     name: "Wolf",
     desc: "Rotating captain picks a partner — or goes Lone Wolf for double.",
   },
   {
+    slug: "bingo-bango-bongo",
     icon: "dice",
     name: "Bingo Bango Bongo",
     desc: "Points for first on, closest once on, and first in the hole.",
   },
   {
+    slug: "closest-to-pin",
     icon: "pin",
     name: "Closest to Pin",
     desc: "Stick it tight on the par 3s and take the side pot.",
   },
   {
+    slug: "longest-drive",
     icon: "drive",
     name: "Longest Drive",
     desc: "Bomb it down the fairway on the marked hole to collect.",
   },
   {
+    slug: "birdies",
     icon: "bird",
     name: "Birdies",
     desc: "A standing bounty on every birdie — paid by everyone who didn't.",
@@ -210,29 +225,13 @@ export type Quote = {
   color: string;
 };
 
-export const quotes: Quote[] = [
-  {
-    text: "I haven't done press-the-back-nine math in my head since I got this. And somehow I always get paid now.",
-    name: "Marcus T.",
-    role: "Plays 3× a week",
-    initial: "M",
-    color: "#2dd4bf",
-  },
-  {
-    text: "Forty guys, every Saturday. Used to be a spreadsheet and a headache. Now the league just runs itself.",
-    name: "Dave R.",
-    role: "MGA commissioner",
-    initial: "D",
-    color: "#fb923c",
-  },
-  {
-    text: "Four days in Scottsdale, six games a day. We settled the entire trip standing on the 18th green.",
-    name: "Tyler K.",
-    role: "Annual golf trip",
-    initial: "T",
-    color: "#60a5fa",
-  },
-];
+/**
+ * Only real people who agreed in writing to be quoted. The placeholder quotes
+ * that shipped here described using an app nobody outside the test group can
+ * use yet, which is the kind of testimonial the FTC's review rule prohibits.
+ * While this is empty the home page renders no testimonials section at all.
+ */
+export const quotes: Quote[] = [];
 
 /**
  * The home page's short FAQ: the same six as the "most asked" panel on /faq,

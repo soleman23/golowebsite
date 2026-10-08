@@ -58,6 +58,8 @@ export type Post = {
   slug: string;
   category: BlogCategoryId;
   title: string;
+  /** Search snippet, when the dek runs past ~155 characters. Falls back to the dek. */
+  metaDescription?: string;
   /** The index card's summary. */
   excerpt: string;
   /** The standfirst under the H1, and the page's meta description. */
@@ -230,7 +232,11 @@ export const posts: Post[] = [
   {
     slug: "nassau",
     category: "rules",
-    title: "How to play a Nassau: the $2 bet that runs every group in America",
+    title: "The $2 Nassau: three bets, presses and house rules",
+    // The guide (/games/nassau) owns "how to play a Nassau"; this post owns the
+    // stakes, the presses and the arguments.
+    metaDescription:
+      "Why the $2 Nassau is golf's default side game: three bets, how presses work, the house rules groups disagree on, and settling up after 18.",
     excerpt: "Front nine, back nine, total match — plus presses. The whole format in five minutes.",
     dek: "Front nine, back nine, total match — plus presses. The whole format in five minutes, including the three rules your group is definitely playing differently than the next one.",
     crumb: "Nassau",
@@ -240,7 +246,7 @@ export const posts: Post[] = [
     hero: { src: blogMedia.course, alt: "A fairway opening toward a distant green", position: "50% 55%" },
     published: true,
     body: article(
-      "A Nassau is the default bet in American golf, and almost nobody explains it before the first tee. Somebody says “five-five-five?”, everyone nods, and eighteen holes later there is an argument in the parking lot about whether the back nine was still alive. Here is the whole format, start to settle.",
+      "A Nassau is the default bet in American golf, and almost nobody explains it before the first tee. Somebody says “five-five-five?”, everyone nods, and eighteen holes later there is an argument in the parking lot about whether the back nine was still alive. Here is the whole format, start to settle. If you only want the rules card, the <a href=\"/games/nassau\">Nassau guide</a> has it in five steps.",
       [
         { id: "three-bets", title: "It is three bets, not one", paragraphs: ["That is the only idea you need. A Nassau splits the round into three separate match-play wagers of equal value: the front nine, the back nine, and the overall eighteen. Each one is won by whoever is up when that segment ends. Ties push, and nobody pays.", "Match play means you are counting holes won, not strokes. Lose the 4th by six shots and it costs you exactly one hole, the same as losing it by one. That is why the format survives a blow-up: a triple bogey ends the hole, not the afternoon."], blocks: [{ kind: "atAGlance", title: "NASSAU AT A GLANCE", items: [{ label: "PLAYERS", value: "2, or two teams of two" }, { label: "SCORING", value: "Match play, hole by hole" }, { label: "THE BETS", value: "Front 9, back 9, total 18" }, { label: "TYPICAL STAKE", value: "$2 / $5 / $10 a side" }] }] },
         { id: "five-dollar-example", title: "A $5 Nassau, played out", paragraphs: ["Two players, $5 a side, one press. You win the front nine comfortably, get run over on the back, and still walk off the 18th collecting money. Here is how that happens."], blocks: [
@@ -268,7 +274,10 @@ export const posts: Post[] = [
   {
     slug: "skins-carryover",
     category: "rules",
-    title: "Skins, explained: the carryover is where the money is",
+    title: "Skins carryovers: how a $5 skin becomes a $60 hole",
+    // The guide (/games/skins) owns "how to play skins"; this post owns the carryover.
+    metaDescription:
+      "What happens to the pot when a skin ties, how carryovers change what each hole is worth, and the house rules to agree on before the first tee.",
     excerpt:
       "How a $1 skin turns into a $9 hole, and the one setting that decides whether your group loves the format or bans it.",
     date: "2026-07-14",
@@ -279,7 +288,7 @@ export const posts: Post[] = [
     hero: { src: blogMedia.turf, alt: "Close-cut golf turf beside the rough", position: "50% 50%" },
     published: true,
     body: article(
-      "Skins is the simplest bet in golf to explain and the easiest one to underestimate. One skin per hole, low score takes it, nothing complicated. Then four holes get halved in a row, somebody rolls in a twelve-footer on the 8th, and the hole is suddenly worth sixty dollars.",
+      "Skins is the simplest bet in golf to explain and the easiest one to underestimate. One skin per hole, low score takes it, nothing complicated. Then four holes get halved in a row, somebody rolls in a twelve-footer on the 8th, and the hole is suddenly worth sixty dollars. The basic rules are in the <a href=\"/games/skins\">Skins guide</a>; this is about the carryover.",
       [
         { id: "outright", title: "One skin per hole, won outright", paragraphs: ["Every hole is worth one skin. The lowest score on the hole wins it, and the emphasis is on outright — if two players tie for low, nobody wins. That single word is what separates skins from every other format. In a Nassau a halved hole is a non-event. In skins it is the engine.", "Unlike match play, skins does not care who is second. Make a 4 when the winner makes a 3 and it costs you exactly what a 9 would have. That is why it plays well in a bigger group and why one wild hole never ruins your day."], blocks: [{ kind: "atAGlance", title: "SKINS AT A GLANCE", items: [{ label: "PLAYERS", value: "3 to 6, four is ideal" }, { label: "SCORING", value: "Low score wins the hole outright" }, { label: "THE BET", value: "One skin per hole, 18 total" }, { label: "TYPICAL STAKE", value: "$5 a skin, per player" }] }] },
         { id: "carryover", title: "The carryover is the whole game", paragraphs: ["When a hole is tied, the skin does not disappear — it rides to the next hole and stacks on top of it. Four players, $5 a skin, and a quiet stretch of halved holes is how a small game turns into a big one."], blocks: [
@@ -318,7 +327,7 @@ export const posts: Post[] = [
     hero: { src: blogMedia.bunkerFairway, alt: "A golf fairway running between bunkers", position: "50% 48%" },
     published: true,
     body: article(
-      "Wolf is the format for a foursome that cannot agree on a bet. Nobody has a fixed partner, the teams change every hole, and one player each hole decides whether he wants help or wants all the money. It takes one hole to learn and about four to get genuinely competitive.",
+      "Wolf is the format for a foursome that cannot agree on a bet. Nobody has a fixed partner, the teams change every hole, and one player each hole decides whether he wants help or wants all the money. It takes one hole to learn and about four to get genuinely competitive. The rotation and scoring are in the <a href=\"/games/wolf\">Wolf guide</a>; this is about the decisions.",
       [
         { id: "rotation", title: "Everybody gets to be the wolf", paragraphs: ["The tee order rotates. On the 1st hole player one is the wolf, on the 2nd it is player two, and so on, which means each player is the wolf on holes 1, 5, 9, and 13 — four turns each over sixteen holes. The last two holes are a house rule, and we will get to those.", "Being the wolf is the whole job: after the tee shots you either take a partner for that hole or play the hole alone against the other three. Everything else is a two-on-two best-ball hole, decided the way you would expect."], blocks: [{ kind: "atAGlance", title: "WOLF AT A GLANCE", items: [{ label: "PLAYERS", value: "4 — the format is built for it" }, { label: "SCORING", value: "Best ball vs. best ball, per hole" }, { label: "THE BET", value: "New teams every hole" }, { label: "TYPICAL STAKE", value: "$5 a hole, lone wolf doubles" }] }] },
         { id: "partner-timing", title: "Picking a partner, and the timing rule that matters", paragraphs: ["This is the part groups get wrong. The wolf does not watch all three drives and then shop around — he has to decide immediately after each one."], blocks: [{ kind: "steps", items: [
@@ -356,7 +365,7 @@ export const posts: Post[] = [
     hero: { src: blogMedia.bunkerGreen, alt: "A golf green guarded by bright sand bunkers", position: "50% 46%" },
     published: true,
     body: article(
-      "Every group has one: a 22-handicap who is out of the bet by the 5th hole and spends the back nine watching three other people play for money. Bingo Bango Bongo fixes that without a single stroke changing hands. Three points a hole, and two have almost nothing to do with how far you hit it.",
+      "Every group has one: a 22-handicap who is out of the bet by the 5th hole and spends the back nine watching three other people play for money. Bingo Bango Bongo fixes that without a single stroke changing hands. Three points a hole, and two have almost nothing to do with how far you hit it. The scoring rules are in the <a href=\"/games/bingo-bango-bongo\">Bingo Bango Bongo guide</a>; this is about why it works for an uneven group.",
       [
         { id: "three-points", title: "Three points, three different skills", blocks: [{ kind: "atAGlance", title: "BINGO BANGO BONGO AT A GLANCE", items: [{ label: "PLAYERS", value: "3 or 4 — four is the sweet spot" }, { label: "SCORING", value: "3 points every hole, 54 total" }, { label: "THE BET", value: "A price per point" }, { label: "HANDICAPS", value: "Not required" }] }, { kind: "cardGrid", items: [
           { eyebrow: "BINGO", title: "First ball on the green", body: "Not the best shot, the first one to find the putting surface. This is the point the short hitter wins, because he is playing before everybody else and can be on in three while the long hitters are still deciding on a club." },
@@ -753,7 +762,7 @@ export const blogCountLine = `${postsByDate.length} posts · ${blogCategories.le
 /** The /blog hero. The H1 names the topic a searcher types. */
 export const blogHero = {
   kicker: "NOTES FROM THE CART PATH",
-  title: "Golf game rules and betting guides.",
+  title: "Golf game rules and side-game guides.",
   lead: "Format breakdowns, settling etiquette, and the arguments your group keeps having — written by people who keep score for money on a Saturday.",
 };
 

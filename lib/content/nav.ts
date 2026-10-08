@@ -44,7 +44,7 @@ export const footerLinks: Record<FooterColumn, NavLink[]> = {
   product: [
     { label: "Features", href: "/features" },
     { label: "How it works", href: "/#how" },
-    { label: "Download", href: "/#get" },
+    { label: siteConfig.appLive ? "Download" : "Launch link", href: "/#get" },
   ],
   games: [
     { label: "All games", href: "/games" },

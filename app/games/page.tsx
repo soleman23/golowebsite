@@ -8,7 +8,7 @@ import { FinalCTA } from "@/components/sections/FinalCTA";
 
 export const metadata: Metadata = pageMetadata({
   path: "/games",
-  title: "Golf Betting Games: Rules, Scoring & Payouts",
+  title: "Golf Side Games: Rules, Scoring & Payouts",
   description:
     "Learn the rules, scoring and payouts for Skins, Nassau, Wolf, Bingo Bango Bongo and more golf side games.",
 });

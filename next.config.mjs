@@ -20,6 +20,32 @@ const nextConfig = {
    * review either way, and pointing /tos at a noindex page is better than a
    * 404 that outlives the review.
    */
+  /**
+   * Baseline hardening on every response. HSTS deliberately omits
+   * includeSubDomains and preload until every golo.golf subdomain is confirmed
+   * to serve HTTPS — includeSubDomains would make browsers refuse any that
+   * don't. No strict Content-Security-Policy yet: the hosting layer already
+   * sends upgrade-insecure-requests, and a full policy needs testing against
+   * GA and the forms first.
+   */
+  async headers() {
+    return [
+      {
+        source: "/:path*",
+        headers: [
+          { key: "Strict-Transport-Security", value: "max-age=31536000" },
+          { key: "X-Content-Type-Options", value: "nosniff" },
+          { key: "Referrer-Policy", value: "strict-origin-when-cross-origin" },
+          { key: "X-Frame-Options", value: "SAMEORIGIN" },
+          {
+            key: "Permissions-Policy",
+            value: "camera=(), microphone=(), geolocation=()",
+          },
+        ],
+      },
+    ];
+  },
+
   async redirects() {
     return [
       {

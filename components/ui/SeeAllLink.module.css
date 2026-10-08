@@ -10,8 +10,10 @@
 .link {
   display: inline-flex;
   align-items: center;
-  height: 44px;
-  padding: 0 18px;
+  /* min-height, not height: the longer guide → article labels wrap on a phone. */
+  min-height: 44px;
+  padding: 10px 18px;
+  line-height: 1.35;
   border-radius: var(--radius-tile);
   background: var(--accent-soft);
   border: 1px solid var(--accent-border);

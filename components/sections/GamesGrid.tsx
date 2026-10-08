@@ -1,7 +1,8 @@
 /**
- * Games grid: eight game cards in an auto-fill grid.
+ * Games grid: eight game cards in an auto-fill grid, each linking to its guide.
  */
 
+import Link from "next/link";
 import { homeGames } from "@/lib/content";
 import { SectionHeader } from "@/components/ui/SectionHeader";
 import { Icon } from "@/components/ui/Icon";
@@ -22,12 +23,14 @@ export function GamesGrid() {
 
         <ul className={styles.grid}>
           {homeGames.map((game) => (
-            <li key={game.name} className={styles.card}>
-              <span className={styles.icon}>
-                <Icon name={game.icon} size={24} color="var(--accent)" />
-              </span>
-              <h3 className={styles.name}>{game.name}</h3>
-              <p className={styles.desc}>{game.desc}</p>
+            <li key={game.slug}>
+              <Link href={`/games/${game.slug}`} className={styles.card}>
+                <span className={styles.icon}>
+                  <Icon name={game.icon} size={24} color="var(--accent)" />
+                </span>
+                <h3 className={styles.name}>{game.name}</h3>
+                <p className={styles.desc}>{game.desc}</p>
+              </Link>
             </li>
           ))}
         </ul>

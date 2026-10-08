@@ -20,9 +20,13 @@ function heroBackdrop(value: string | undefined): HeroBackdrop {
 
 export const siteConfig = {
   name: "GoLo",
+  /** The full brand, for structured data and anywhere "GoLo" alone is ambiguous. */
+  brandName: "GoLo Golf",
   tagline: "Bet it. Track it. Settle it.",
   description:
-    "GoLo is the golf-betting scorekeeper that runs every side-game, does the handicap math, and settles the group into the fewest payments before you leave the green.",
+    // "Friendly wagers", not "betting": the Terms say GoLo is not a betting app,
+    // and search titles and descriptions hold that line until counsel signs off.
+    "GoLo is the golf scorekeeper for friendly wagers: it runs every side game, does the handicap math, and settles the group in the fewest payments.",
   url: process.env.NEXT_PUBLIC_SITE_URL || "https://www.golo.golf",
   gaMeasurementId: process.env.NEXT_PUBLIC_GA_ID || "G-36182P0H4D",
   analyticsEnabled: boolFlag(
@@ -33,8 +37,8 @@ export const siteConfig = {
   /** The one public address. Also the contact of record in /privacy. */
   supportEmail: "info@golo.golf",
 
-  instagramHandle: "@gologolf",
-  instagramUrl: "https://instagram.com/gologolf",
+  instagramHandle: "@gologolfapp",
+  instagramUrl: "https://www.instagram.com/gologolfapp/",
 
   /**
    * Mailing address of record. /privacy §14 holds the authoritative copy —
@@ -56,7 +60,11 @@ export const siteConfig = {
   googlePlayUrl: process.env.NEXT_PUBLIC_GOOGLE_PLAY_URL || "#get",
 
   showStats: boolFlag(process.env.NEXT_PUBLIC_SHOW_STATS, true),
-  showTestimonials: boolFlag(process.env.NEXT_PUBLIC_SHOW_TESTIMONIALS, true),
+  /**
+   * Off unless real, consented quotes exist. The sections also stay hidden
+   * while their quote lists (lib/content) are empty, whatever this says.
+   */
+  showTestimonials: boolFlag(process.env.NEXT_PUBLIC_SHOW_TESTIMONIALS, false),
 
   /**
    * Is the app actually downloadable? While false the site holds the honest
