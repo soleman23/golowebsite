@@ -17,7 +17,7 @@ database and a real **SMS** endpoint for the hero "text me the link" form.
 
 ## Requirements
 
-- **Node.js ≥ 18.18** (see `.nvmrc` → Node 20 recommended)
+- **Node.js ≥ 20.9** (`.nvmrc` pins Node 20; sharp 0.35, which `next/image` uses, needs 20.9+)
 - A **Postgres** database (Supabase recommended; any Postgres works)
 - _(Optional)_ a **Twilio** account to send real SMS
 
