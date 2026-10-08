@@ -31,14 +31,24 @@ Owner decisions this round: the web app is not public yet; Instagram is @gologol
 
 ## Blocking: nothing merged since August 25 is live
 
-The "Deploy to VPS" workflow skips every run ("VPS secrets not configured yet"). The live build is from August 25, so PR #11 and everything above are not in production. Whatever published the August 25 build (Hostinger's own Git deployment, or a manual `npm run deploy`) has to run again.
+Production is Hostinger's managed Node.js hosting (hPanel → golo.golf → Deployments), which builds `main` from GitHub. Its Deployments page shows "Repository access missing" and Redeploy is disabled, so the live build is still commit 7c1aa075 from August 25 and PR #11 and everything above are not in production. Fix: Manage access → re-authorize Hostinger's GitHub app for this repo, then Redeploy. The "Deploy to VPS" GitHub workflow is unused; it skips every run ("VPS secrets not configured yet").
+
+## Search Console baseline, October 8, 2026
+
+Domain property `sc-domain:golo.golf`, already verified. Taken while production still runs the August 25 build, so it measures the old titles.
+
+- Sitemap `https://www.golo.golf/sitemap.xml`: first submitted August 25, resubmitted October 8. Last read September 25: Success, 22 discovered pages.
+- Performance, last 3 months (data through October 5): 2 clicks, 347 impressions, 0.6% CTR, average position 45.8, 92 queries.
+- Top queries by impressions: nassau golf bet (14, pos 40.8), what is a nassau in golf (10, pos 73.2), golo golf (9, pos 6.6), nassau golf game (8, pos 41.6), nassau golf format (8, pos 61.0), golf nassau bet (7), go lo golf (6, pos 33.5), golo board (6), mongolian reversal (6), what is a nassau bet in golf (5).
+- Page indexing: 16 indexed, 11 not indexed — 6 discovered-not-indexed, 3 page with redirect, 1 alternate with proper canonical, 1 crawled-not-indexed.
 
 ## Remaining
 
-- Search Console property access: sitemap submission, index coverage, selected canonicals, baseline search metrics, and field Core Web Vitals.
+- Search Console: re-check index coverage, selected canonicals and field Core Web Vitals once the current build is live.
 - The /blog "app isn't live yet" status pill doesn't follow appLive.
-- Add `<meta name="robots" content="noindex">` to the web app's index.html (gologolf.netlify.app, separate repo) until it opens to the public.
-- Turn on GA4 in production (NEXT_PUBLIC_ANALYTICS_ENABLED=true on the server, then rebuild) and mark generate_lead as a key event.
+- Web app noindex: soleman23/golo PR #499 (into staging). Reaches gologolf.netlify.app only after the staging → main release and a Publish in Netlify.
+- GA4: NEXT_PUBLIC_ANALYTICS_ENABLED=true is set in hPanel (October 8; the measurement ID G-36182P0H4D is the siteConfig default). It is baked in at build time, so it takes effect on the first build after repository access is restored (see Blocking). After that, mark generate_lead as a key event in GA.
+- GA4 will undercount, by design. Analytics is opt-in: no data until a visitor grants it in the "Privacy choices" control (footer link → /privacy#analytics-choices). There is no banner, and Global Privacy Control or no choice keeps it off. Read GA as a small opted-in sample, not traffic; use Search Console clicks and the lead table for volume. A consent banner would raise the sample, but that is a product and counsel decision, not an SEO task.
 - Store landing page and referrer host on leads (Prisma migration).
 - Verifiable authorship / reviewer information; do not invent credentials or people.
 - Finish and review pressing and handicap draft articles before publication.
