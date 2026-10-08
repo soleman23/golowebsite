@@ -17,7 +17,8 @@ database and a real **SMS** endpoint for the hero "text me the link" form.
 
 ## Requirements
 
-- **Node.js ≥ 20.9** (`.nvmrc` pins Node 20; sharp 0.35, which `next/image` uses, needs 20.9+)
+- **Node.js 24** (pinned in `.nvmrc`; CI builds on 24.x — Node 20 reached end of life in April 2026)
+- For Hostinger Node.js hosting, set **24.x** in hPanel under **golo.golf → Settings** and redeploy; `.nvmrc` alone does not change the hosted runtime.
 - A **Postgres** database (Supabase recommended; any Postgres works)
 - _(Optional)_ a **Twilio** account to send real SMS
 
@@ -174,10 +175,10 @@ To switch engines (e.g. to MySQL on Hostinger), change `provider` in
 This project runs as a **Node.js server** (`npm start`) behind an Nginx reverse
 proxy, kept alive by PM2. Run these over SSH on the VPS.
 
-**1. Install Node 20 + git**
+**1. Install Node 24 + git**
 ```bash
 apt update && apt upgrade -y
-curl -fsSL https://deb.nodesource.com/setup_20.x | bash -
+curl -fsSL https://deb.nodesource.com/setup_24.x | bash -
 apt install -y nodejs git nginx
 npm install -g pm2
 ```

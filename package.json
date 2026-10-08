@@ -2,9 +2,9 @@
   "name": "golo-golf-website",
   "version": "1.0.0",
   "private": true,
-  "//engines": "20.9 is the floor sharp 0.35.5 sets (the release that fixes the libvips/libheif/librsvg advisories). next uses sharp for next/image in production. The VPS and CI run Node 20 (.nvmrc).",
+  "//engines": "20.9 is the floor sharp 0.35.5 sets (the release that fixes the libvips/libheif/librsvg advisories). next uses sharp for next/image in production. Node 24 is pinned in .nvmrc and used by CI; configure the production runtime to match.",
   "engines": {
-    "node": ">=20.9.0"
+    "node": ">=24"
   },
   "//browserslist": "Modern-only targets, matched to the browsers that support AVIF and CSS image-set (what the backdrops in globals.css rely on). Governs SWC transpilation of app code and autoprefixer. NOTE: this does NOT clear Lighthouse's 'Legacy JavaScript' audit — those polyfills come from next/dist/build/polyfills/polyfill-module.js, which Next injects into the client bundle unconditionally.",
   "browserslist": [
