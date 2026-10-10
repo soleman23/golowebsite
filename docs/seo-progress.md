@@ -58,6 +58,8 @@ ALTER TABLE "PhoneLead" ADD COLUMN "landingPath" TEXT, ADD COLUMN "referrerHost"
 ALTER TABLE "NewsletterLead" ADD COLUMN "landingPath" TEXT, ADD COLUMN "referrerHost" TEXT;
 ```
 
+Applied October 10 to the website's Supabase database; all four columns confirmed present and nullable. The branch is safe to merge.
+
 ## Remaining
 
 - Search Console: re-check index coverage, selected canonicals and field Core Web Vitals against the October 8 baseline. Due between October 22 and November 5 (two to four weeks after the deploy).
