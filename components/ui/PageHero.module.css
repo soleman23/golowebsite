@@ -29,6 +29,12 @@
   display: none;
 }
 
+/* The scrim already fades the photo into the page at the foot of the hero,
+   so the hairline would only draw an edge across that fade. */
+.withPhoto {
+  border-bottom: 0;
+}
+
 /* --- photo behind the copy (the `photo` prop) ---
    Paint order is DOM order: photo, scrim, glow, then .inner on top. The photo
    never sizes the hero, so it can't shift layout when it lands.
