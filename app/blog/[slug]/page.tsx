@@ -56,10 +56,14 @@ export async function generateMetadata({ params }: Params): Promise<Metadata> {
       description,
       publishedTime: post.date,
       authors: ["GoLo Golf"],
-      // The hero doubles as the OG image once there's a photo to point at;
-      // until then the site-wide card stands in.
+      // The hero's 1200x630 cut when it has one, else the hero itself; with no
+      // photo, the site-wide card. twitter:image inherits whichever this is.
       images: post.hero
-        ? [{ url: post.hero.src, alt: post.hero.alt }]
+        ? [
+            post.hero.og
+              ? { url: post.hero.og, width: 1200, height: 630, alt: post.hero.alt }
+              : { url: post.hero.src, alt: post.hero.alt },
+          ]
         : [defaultOgImage],
     },
   };
