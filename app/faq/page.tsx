@@ -5,6 +5,7 @@ import {
   faqCategories,
   faqCountLine,
   faqItems,
+  heroOgImage,
 } from "@/lib/content";
 import { pageMetadata } from "@/lib/pageMetadata";
 import { PageHero } from "@/components/ui/PageHero";
@@ -23,6 +24,7 @@ export const metadata: Metadata = pageMetadata({
   title: "FAQ",
   description:
     "Handicaps, stacking games, settling up and where GoLo is today — answered by the people who built it.",
+  image: heroOgImage("faq"),
 });
 
 /**
@@ -54,6 +56,7 @@ export default function FaqPage() {
   return (
     <>
       <PageHero
+        photo="faq"
         kicker="QUESTIONS FROM THE 19TH HOLE"
         title="Good question."
         lead="Everything we get asked about scoring a round, running the games, and settling the bet — plus the honest answers about where GoLo is today."

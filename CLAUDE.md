@@ -10,7 +10,7 @@ Marketing site for GoLo, the golf-betting scorekeeper. Next.js 15 App Router · 
 - **`@/` alias** for all internal imports.
 - **Server components by default.** `"use client"` only on the leaf that owns state.
 - **No `backdrop-filter` on sticky or fixed elements.** It triggers a Chromium compositing bug that blanks this page on scroll. Use a near-opaque background (`--nav-bg` pattern).
-- **Photos go through the `image-set` classes** in globals.css (`.golo-bd-*`, `.golo-bd-mock-*`) or `next/image`. Never a raw multi-MB PNG background.
+- **Photos go through the `image-set` classes** in globals.css (`.golo-bd-*`, `.golo-bd-mock-*`), `next/image`, or `PageHero`'s `photo` prop (an art-directed `<picture>` over AVIF/WebP built by `scripts/generate-hero-images.mjs`). Never a raw multi-MB PNG background.
 - **New analytics event?** Add it to the `AnalyticsEvent` union in `lib/analytics.ts` first. Never send PII as an event param.
 - **Never commit secrets.** Anything `NEXT_PUBLIC_*` ships to the browser.
 
