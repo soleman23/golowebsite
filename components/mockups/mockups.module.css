@@ -25,8 +25,7 @@
 }
 
 /* Inside another device frame: that frame is the bezel, and its dynamic
-   island sits over the top 40px, so the content starts under it. The framed
-   screen is 44px taller than the default, which pays for the padding. */
+   island sits over the top 40px, so the content starts under it. */
 .phoneFramed {
   border: 0;
   box-shadow: none;

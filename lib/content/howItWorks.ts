@@ -26,15 +26,15 @@ export const hiwRoundHeader = {
 } as const;
 
 /**
- * The existing mockup each step falls back to until a real screenshot is
- * dropped in at public/images/how-it-works/step-0N.{avif,webp}.
+ * The coded screen (components/mockups/HiwScreen) each step shows until a
+ * real screenshot is dropped in at public/images/how-it-works/step-0N.
  */
 export type TimelineFallback =
   | "setup"
   | "strokes"
   | "scoring"
-  | "press"
-  | "money"
+  | "turn"
+  | "final"
   | "settle";
 
 export type RoundStep = {
@@ -115,7 +115,7 @@ export const roundSteps: RoundStep[] = [
       "Every press tracked as a separate bet",
       "Greenies, sandies and birdies tallied as you go",
     ],
-    screen: { fallback: "press" },
+    screen: { fallback: "turn" },
   },
   {
     id: "step-05",
@@ -130,7 +130,7 @@ export const roundSteps: RoundStep[] = [
       "Full hole-by-hole history if anyone asks",
       "Round saved to your history",
     ],
-    screen: { fallback: "money" },
+    screen: { fallback: "final" },
   },
   {
     id: "step-06",
@@ -244,6 +244,76 @@ export const betExample = {
   settleBody:
     "Every bet netted against every other. Mike won the Nassau and still owes two bucks — GoLo doesn't make him pay out and collect separately.",
   settleFooter: "Cash, Venmo, Zelle — your call. Nothing runs through GoLo.",
+} as const;
+
+/**
+ * The coded phone screens the timeline shows until real screenshots land.
+ * They reuse strokeExample and betExample wherever they can, so the phone
+ * and the copy beside it can't disagree. The hole-3 scores are chosen to
+ * match the stroke note ("Her 5 on the 3rd counts as a 4"): Mike, Jess and
+ * Sarah all net 4, so the skin carries.
+ */
+export const hiwScreens = {
+  setup: {
+    kicker: "NEW ROUND",
+    when: "Sat · 7:48 AM",
+    course: "Pinehurst No. 8",
+    courseMeta: "White · 72.6 / 137 · Par 72",
+    teamsLabel: "TEAMS",
+    teams: [
+      ["Mike", "Tom"],
+      ["Sarah", "Jess"],
+    ] as HiwPlayerName[][],
+    gamesLabel: "GAMES ON THE CARD",
+    games: ["Team Nassau · $5", "Skins · $2"],
+    addGame: "+ add game",
+    start: "Start the round",
+  },
+  strokes: {
+    kicker: "FIRST TEE",
+    title: "Strokes",
+    allowance: "Full handicap",
+    /** First hole of the round; who gets a stroke there is computed. */
+    hole: 1,
+    holeLabel: "ON THE 1ST",
+  },
+  scoring: {
+    kicker: "HOLE",
+    hole: 3,
+    par: 4,
+    scores: { Mike: 4, Jess: 5, Sarah: 5, Tom: 6 } as Record<
+      HiwPlayerName,
+      number
+    >,
+    skin: "Tied at net 4 · skin carries to the 4th",
+    match: "Front · all square thru 3",
+  },
+  turn: {
+    kicker: "NASSAU · $5 · MIKE & TOM",
+    rungs: [
+      { holes: "1–9", title: "Front nine", state: "Final · Sarah & Jess 2 up", amount: "−$5", tone: "negative" },
+      { holes: "10–18", title: "Back nine", state: "Live · all square", amount: "$5", tone: "live" },
+      { holes: "1–18", title: "The 18", state: "Live · 2 down", amount: "$5", tone: "live" },
+    ] as {
+      holes: string;
+      title: string;
+      state: string;
+      amount: string;
+      tone: "negative" | "live";
+    }[],
+    pressLabel: "PRESS",
+    press: "Auto-press when you go 2 down on the back",
+  },
+  final: {
+    kicker: "FINAL · THRU 18",
+    title: "Every bet closed",
+    standingsLabel: "NET, ALL GAMES",
+  },
+  settle: {
+    kicker: "SETTLE UP",
+    title: "2 payments",
+    share: "Share the card",
+  },
 } as const;
 
 export const guestsSection = {

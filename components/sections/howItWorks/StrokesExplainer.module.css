@@ -233,11 +233,6 @@
   color: var(--accent-ink);
 }
 
-/* The segment is lime when checked, so the ring sits outside it in white. */
-.segment[aria-checked="true"]:focus-visible {
-  outline-color: var(--text-primary);
-}
-
 .grid {
   display: flex;
   flex-direction: column;

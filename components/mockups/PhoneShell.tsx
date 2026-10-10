@@ -32,14 +32,12 @@ type PhoneShellProps = {
   float?: boolean;
   /**
    * Inside another device frame (the /how-it-works timeline): drop this
-   * shell's own bezel and fill a 288×624 screen — the 390:844 aspect of the
-   * frame it sits in, at this shell's width.
+   * shell's own bezel and fill the parent — 288px wide, as tall as the
+   * screen it sits in.
    */
   framed?: boolean;
   children: React.ReactNode;
 };
-
-const FRAMED = { width: 288, height: 624 } as const;
 
 export function PhoneShell({
   bg,
@@ -54,12 +52,15 @@ export function PhoneShell({
   children,
 }: PhoneShellProps) {
   const size = framed
-    ? { width: FRAMED.width, height: FRAMED.height, borderRadius: 0 }
+    ? { width: 288, height: "100%", borderRadius: 0 }
     : { width, height, borderRadius: radius };
   return (
     <div
       className={`${styles.phoneOuter} ${float ? styles.float : ""}`}
-      style={{ width: "min(" + width + "px, 90vw)" }}
+      style={{
+        width: "min(" + width + "px, 90vw)",
+        height: framed ? "100%" : undefined,
+      }}
     >
       <div
         className={`${styles.phone} ${framed ? styles.phoneFramed : ""}`}

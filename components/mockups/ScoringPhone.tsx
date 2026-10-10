@@ -17,15 +17,14 @@ const dotColor: Record<string, string> = {
  * "home" closes on the hole-progress bar; "features" closes on the junk
  * buttons instead, which is the moment /features is describing.
  */
-type ScoringPhoneProps = { variant?: "home" | "features"; framed?: boolean };
+type ScoringPhoneProps = { variant?: "home" | "features" };
 
-export function ScoringPhone({ variant = "home", framed = false }: ScoringPhoneProps) {
+export function ScoringPhone({ variant = "home" }: ScoringPhoneProps) {
   const isFeatures = variant === "features";
   const rows = isFeatures ? featureScoreRows : scoreRows;
 
   return (
     <PhoneShell
-      framed={framed}
       bg="turf"
       bgPosition="50% 60%"
       label={

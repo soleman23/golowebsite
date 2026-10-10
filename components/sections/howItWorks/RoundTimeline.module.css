@@ -211,8 +211,8 @@
     #14532d 45%,
     #0a2418 85%
   );
-  /* The stage below scales against this box's width. */
-  container-type: inline-size;
+  /* The stage below scales against this box's size. */
+  container-type: size;
 }
 
 .island {
@@ -254,36 +254,21 @@
   object-fit: cover;
 }
 
-/* Mockups are laid out at 288px wide — PhoneShell's width — on a stage with
-   the frame's 390:844 aspect, then scaled to the screen's real width.
-   tan(atan2(a, b)) is a / b as a plain number, the one way to divide two
-   lengths in CSS today; where it isn't supported the stage just renders at
-   1:1, clipped by the screen. */
+/* Screens are laid out at 288px wide — PhoneShell's width — then scaled to
+   the screen's real width. The stage takes the screen's own aspect (the
+   bezel padding makes it a touch taller than 390:844), so the phone fills it
+   to the bottom edge. tan(atan2(a, b)) is a / b as a plain number, the one
+   way to divide two lengths in CSS today; where it isn't supported the stage
+   renders at 1:1, clipped by the screen. */
 .stage {
   position: absolute;
   top: 0;
   left: 0;
   width: 288px;
   height: 624px;
+  height: calc(288px * tan(atan2(100cqh, 100cqw)));
   transform-origin: 0 0;
   transform: scale(tan(atan2(100cqw, 288px)));
-}
-
-.stageCard {
-  position: absolute;
-  inset: 0;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  padding: 48px 12px 20px;
-}
-
-/* Some card mockups are glass. Inside a sticky column that blur is the
-   compositing bug CLAUDE.md warns about, and over this opaque turf it showed
-   nothing anyway. Doubled class to outrank the mockup's own rule. */
-.stage.stage :global(*) {
-  backdrop-filter: none;
-  -webkit-backdrop-filter: none;
 }
 
 /* ---- right column (≥900px) ---- */
