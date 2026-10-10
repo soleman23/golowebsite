@@ -31,6 +31,11 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 0.9,
     },
     {
+      url: `${siteConfig.url}/how-it-works`,
+      changeFrequency: "monthly",
+      priority: 0.9,
+    },
+    {
       url: `${siteConfig.url}/games`,
       changeFrequency: "monthly",
       priority: 0.9,

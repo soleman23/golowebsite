@@ -1,11 +1,13 @@
 /**
  * How it works: full-bleed sunset backdrop + heavy scrim, three numbered step
- * cards.
+ * cards, and a link to the full walkthrough at /how-it-works. Keeps id="how"
+ * so old /#how links still land here.
  */
 
 import { steps } from "@/lib/content";
 import { SectionHeader } from "@/components/ui/SectionHeader";
 import { Icon } from "@/components/ui/Icon";
+import { SeeAllLink } from "@/components/ui/SeeAllLink";
 import styles from "./HowItWorks.module.css";
 
 export function HowItWorks() {
@@ -37,6 +39,8 @@ export function HowItWorks() {
             </li>
           ))}
         </ol>
+
+        <SeeAllLink href="/how-it-works">See the full walkthrough →</SeeAllLink>
       </div>
     </section>
   );

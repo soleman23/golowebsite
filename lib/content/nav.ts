@@ -26,13 +26,13 @@ export const appCtaShortLabel = siteConfig.appLive
   : "Get the link";
 
 /**
- * "How it works" stays an anchor: that section lives on the home page only.
- * Everything else is now a real route.
+ * Every top-level entry is a real route. "How it works" goes to the full
+ * walkthrough; the home page's #how teaser links there too.
  */
 export const navLinks: NavLink[] = [
   { label: "Features", href: "/features" },
   { label: "Games", href: "/games" },
-  { label: "How it works", href: "/#how" },
+  { label: "How it works", href: "/how-it-works" },
   { label: "Blog", href: "/blog" },
   { label: "FAQ", href: "/faq" },
   { label: "Contact", href: "/contact" },
@@ -43,7 +43,7 @@ export type FooterColumn = "product" | "games" | "legal" | "company";
 export const footerLinks: Record<FooterColumn, NavLink[]> = {
   product: [
     { label: "Features", href: "/features" },
-    { label: "How it works", href: "/#how" },
+    { label: "How it works", href: "/how-it-works" },
     { label: siteConfig.appLive ? "Download" : "Launch link", href: "/#get" },
   ],
   games: [

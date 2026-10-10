@@ -6,6 +6,7 @@
 export * from "./nav";
 export * from "./home";
 export * from "./features";
+export * from "./howItWorks";
 export * from "./games";
 export * from "./gameDetail";
 export * from "./faq";

@@ -11,13 +11,14 @@ import styles from "./mockups.module.css";
  * "features" itemizes the win per game and closes on a single share button;
  * "home" keeps the shorter header and the share / mark-all-paid pair.
  */
-type SettlePhoneProps = { variant?: "home" | "features" };
+type SettlePhoneProps = { variant?: "home" | "features"; framed?: boolean };
 
-export function SettlePhone({ variant = "home" }: SettlePhoneProps) {
+export function SettlePhone({ variant = "home", framed = false }: SettlePhoneProps) {
   const isFeatures = variant === "features";
 
   return (
     <PhoneShell
+      framed={framed}
       bg="course"
       bgPosition="50% 62%"
       scrim="linear-gradient(180deg, rgba(6,14,9,.78) 0%, rgba(6,14,9,.6) 26%, rgba(4,12,8,.92) 100%)"

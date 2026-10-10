@@ -1,0 +1,73 @@
+/* Page-level layout only — each section styles itself. */
+
+/* ---- hero jump chips (PageHero `meta`) ---- */
+.chips {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  height: 38px;
+  padding: 0 15px 0 8px;
+  border-radius: var(--radius-pill);
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  color: var(--text-primary);
+  font-size: 13px;
+  font-weight: 800;
+  transition: background 0.14s ease, border-color 0.14s ease;
+}
+
+.chip:hover {
+  background: var(--accent-soft);
+  border-color: var(--accent-border);
+}
+
+.chip:focus-visible {
+  border-radius: var(--radius-pill);
+}
+
+.chipNum {
+  height: 24px;
+  min-width: 24px;
+  padding: 0 6px;
+  border-radius: var(--radius-pill);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--accent-16);
+  color: var(--accent);
+  font-size: 11px;
+  font-weight: 800;
+}
+
+@media (max-width: 899px) {
+  .chip {
+    height: 44px;
+  }
+}
+
+/* ---- the round ---- */
+.round {
+  background: var(--page-bg);
+  scroll-margin-top: 70px;
+}
+
+.roundHead {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: clamp(48px, 6vw, 84px) var(--gutter) 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .chip {
+    transition: none;
+  }
+}
