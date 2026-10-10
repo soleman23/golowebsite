@@ -12,7 +12,7 @@ datasource db {
   directUrl = env("DIRECT_URL")
 }
 
-/// A phone number submitted via the hero "text me the link" form.
+/// A phone number submitted via a "text me the link" form (hero or a closing band).
 model PhoneLead {
   id           String   @id @default(cuid())
   phone        String
