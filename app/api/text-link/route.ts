@@ -30,7 +30,7 @@ export async function POST(request: Request) {
     );
   }
 
-  const { phone } = parsed.data;
+  const { phone, source = "hero", landingPath, referrerHost } = parsed.data;
 
   try {
     assertDatabaseConfigured();
@@ -40,7 +40,9 @@ export async function POST(request: Request) {
       data: {
         phone,
         smsSent: result.sent,
-        source: "hero",
+        source,
+        landingPath,
+        referrerHost,
         userAgent: request.headers.get("user-agent") ?? undefined,
       },
     });

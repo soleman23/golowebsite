@@ -12,6 +12,7 @@
 import { useId, useRef, useState } from "react";
 import { subscribeSchema } from "@/lib/validation";
 import { track } from "@/lib/analytics";
+import { landingAttribution } from "@/lib/attribution";
 import styles from "./NewsletterBand.module.css";
 
 type Status = "idle" | "submitting" | "success" | "error";
@@ -28,7 +29,11 @@ export function NewsletterBand({ page = "blog" }: { page?: string }) {
     e.preventDefault();
     if (status === "submitting") return;
 
-    const parsed = subscribeSchema.safeParse({ email, source: page });
+    const parsed = subscribeSchema.safeParse({
+      email,
+      source: page,
+      ...landingAttribution(),
+    });
     if (!parsed.success) {
       const message =
         parsed.error.issues[0]?.message ?? "Enter your email address.";

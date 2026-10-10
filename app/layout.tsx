@@ -4,6 +4,7 @@ import { socialDefaults } from "@/lib/pageMetadata";
 import { Nav } from "@/components/layout/Nav";
 import { Footer } from "@/components/layout/Footer";
 import { AnalyticsLoader } from "@/components/analytics/AnalyticsLoader";
+import { LandingCapture } from "@/components/layout/LandingCapture";
 import "./globals.css";
 
 // Google Analytics 4 measurement ID. Override per-environment with NEXT_PUBLIC_GA_ID.
@@ -58,6 +59,7 @@ export default function RootLayout({
         <Nav />
         <main id="main">{children}</main>
         <Footer />
+        <LandingCapture />
         <AnalyticsLoader
           enabled={GA_ENABLED}
           measurementId={GA_MEASUREMENT_ID}

@@ -21,8 +21,34 @@ export const phoneSchema = z
     return digits.length >= 10 && digits.length <= 15;
   }, "Enter a valid phone number.");
 
+/**
+ * Where the visit started (lib/attribution.ts). Set by the page, not typed by
+ * the visitor, and never worth losing a lead over: a value that doesn't fit
+ * is dropped instead of failing the submission.
+ */
+const attributionFields = {
+  landingPath: z
+    .string()
+    .trim()
+    .max(200)
+    .startsWith("/")
+    .optional()
+    .catch(undefined),
+  referrerHost: z
+    .string()
+    .trim()
+    .toLowerCase()
+    .max(253)
+    .regex(/^[a-z0-9.-]+$/)
+    .optional()
+    .catch(undefined),
+};
+
 export const textLinkSchema = z.object({
   phone: phoneSchema,
+  /** Which placement the number came from. Not user input — the form sets it. */
+  source: z.string().trim().max(40).optional(),
+  ...attributionFields,
 });
 
 export const contactSchema = z.object({
@@ -62,6 +88,7 @@ export const subscribeSchema = z.object({
     .transform((value) => value.toLowerCase()),
   /** Which page the signup came from. Not user input — the form sets it. */
   source: z.string().trim().max(40).optional(),
+  ...attributionFields,
 });
 
 export type ContactInput = z.infer<typeof contactSchema>;
