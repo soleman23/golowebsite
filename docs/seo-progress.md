@@ -42,14 +42,28 @@ Domain property `sc-domain:golo.golf`, already verified. Taken while production 
 - Top queries by impressions: nassau golf bet (14, pos 40.8), what is a nassau in golf (10, pos 73.2), golo golf (9, pos 6.6), nassau golf game (8, pos 41.6), nassau golf format (8, pos 61.0), golf nassau bet (7), go lo golf (6, pos 33.5), golo board (6), mongolian reversal (6), what is a nassau bet in golf (5).
 - Page indexing: 16 indexed, 11 not indexed — 6 discovered-not-indexed, 3 page with redirect, 1 alternate with proper canonical, 1 crawled-not-indexed.
 
+## Implemented October 10, 2026 (branch seo/phase-2)
+
+- The /blog and /faq hero status pills ("isn't live yet", "Not live yet") render only while appLive is false; their labels moved to lib/content.
+- Leads record where the visit started. PhoneLead and NewsletterLead gain nullable `landingPath` (first path of the visit, no query string) and `referrerHost` (outside referrer's host only; empty for direct visits and in-site reloads). Captured once per page load by LandingCapture in the root layout and held in memory only, so the cookie policy's storage inventory is unchanged. The API drops a malformed value instead of rejecting the lead.
+- PhoneLead `source` is now the form's placement (`hero`, `final_cta_<page>`). Before this, every phone lead was saved as `hero`, closing-band ones included.
+- Web app noindex confirmed live: soleman23/golo PR #499 merged October 8 and gologolf.netlify.app serves `<meta name="robots" content="noindex">`.
+- /how-it-works (PR #22) checked: own title, description and canonical, in the sitemap, linked from the nav, footer and home teaser. It uses the default share card until it has a hero photo.
+- Lint, typecheck and production build verified; form payloads checked in the dev server with fetch stubbed, so no rows were written.
+
+**Deploy order:** add the four columns to the production database before this branch reaches `main`. Hostinger's build runs `prisma generate`, not `db push`, and the new code returns the new columns on insert, so a deploy ahead of the schema change fails every lead submission. The columns are nullable, so adding them first doesn't affect the build that's live now. Run `npm run db:push` with production's DATABASE_URL and DIRECT_URL, or apply the equivalent SQL:
+
+```sql
+ALTER TABLE "PhoneLead" ADD COLUMN "landingPath" TEXT, ADD COLUMN "referrerHost" TEXT;
+ALTER TABLE "NewsletterLead" ADD COLUMN "landingPath" TEXT, ADD COLUMN "referrerHost" TEXT;
+```
+
 ## Remaining
 
-- Search Console: re-check index coverage, selected canonicals and field Core Web Vitals two to four weeks after the October 8 deploy, against the baseline above.
-- The /blog "app isn't live yet" status pill doesn't follow appLive.
-- Web app noindex: soleman23/golo PR #499 (into staging). Reaches gologolf.netlify.app only after the staging → main release and a Publish in Netlify.
+- Search Console: re-check index coverage, selected canonicals and field Core Web Vitals against the October 8 baseline. Due between October 22 and November 5 (two to four weeks after the deploy).
 - GA4 is live as of the October 8 build (NEXT_PUBLIC_ANALYTICS_ENABLED=true in hPanel; measurement ID G-36182P0H4D, the siteConfig default). Still to do in GA: mark generate_lead as a key event.
-- GA4 will undercount, by design. Analytics is opt-in: no data until a visitor grants it in the "Privacy choices" control (footer link → /privacy#analytics-choices). There is no banner, and Global Privacy Control or no choice keeps it off. Read GA as a small opted-in sample, not traffic; use Search Console clicks and the lead table for volume. A consent banner would raise the sample, but that is a product and counsel decision, not an SEO task.
-- Store landing page and referrer host on leads (Prisma migration).
+- GA4 will undercount, by design. Analytics is opt-in: no data until a visitor grants it in the "Privacy choices" control (footer link → /privacy#analytics-choices). There is no banner, and Global Privacy Control or no choice keeps it off. Read GA as a small opted-in sample, not traffic; use Search Console clicks and the lead table (now with landing page and referrer) for volume. A consent banner would raise the sample, but that is a product and counsel decision, not an SEO task.
+- Privacy policy: the download-link bullet mentions "related technical records", and the usage section lists "referring pages". Counsel to confirm that covers landing page and referrer host on lead rows, or add them explicitly.
 - Verifiable authorship / reviewer information; do not invent credentials or people.
 - Finish and review pressing and handicap draft articles before publication.
 - Add maintained article revision dates when substantively editing content.
