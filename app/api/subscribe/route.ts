@@ -40,14 +40,14 @@ export async function POST(request: Request) {
     );
   }
 
-  const { email, source = "blog" } = parsed.data;
+  const { email, source = "blog", landingPath, referrerHost } = parsed.data;
   let alreadyOnList = false;
 
   try {
     assertDatabaseConfigured();
     // Upsert rather than create: the unique index makes a second signup a
-    // no-op instead of a 500, and `update: {}` leaves the original createdAt
-    // and source alone.
+    // no-op instead of a 500, and `update: {}` leaves the original createdAt,
+    // source and landing alone.
     const existing = await prisma.newsletterLead.findUnique({
       where: { email },
       select: { id: true },
@@ -56,7 +56,7 @@ export async function POST(request: Request) {
     await prisma.newsletterLead.upsert({
       where: { email },
       update: {},
-      create: { email, source },
+      create: { email, source, landingPath, referrerHost },
     });
   } catch (err) {
     console.error("[subscribe] failed to save lead:", err);

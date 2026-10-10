@@ -5,9 +5,11 @@ import {
   faqCategories,
   faqCountLine,
   faqItems,
+  faqPrelaunchStatus,
   heroOgImage,
 } from "@/lib/content";
 import { pageMetadata } from "@/lib/pageMetadata";
+import { siteConfig } from "@/lib/siteConfig";
 import { PageHero } from "@/components/ui/PageHero";
 import { StatusPill } from "@/components/ui/StatusPill";
 import { JsonLd } from "@/components/ui/JsonLd";
@@ -63,11 +65,13 @@ export default function FaqPage() {
         breadcrumbs={[{ label: "Home", href: "/" }, { label: "FAQ" }]}
         meta={
           <>
-            <StatusPill
-              variant="testing"
-              label="Not live yet — in testing with real groups"
-              className={styles.heroPill}
-            />
+            {siteConfig.appLive ? null : (
+              <StatusPill
+                variant="testing"
+                label={faqPrelaunchStatus}
+                className={styles.heroPill}
+              />
+            )}
             <span className={styles.metaChip}>{faqCountLine}</span>
             <Link href="/contact" className={styles.metaLink}>
               Not here? Ask us →

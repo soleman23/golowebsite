@@ -323,6 +323,9 @@ export const mostAskedFaqs: FaqItem[] = mostAskedFaqIds
 /** Hero meta line: "33 questions · 9 categories". Never hand-typed. */
 export const faqCountLine = `${faqItems.length} questions · ${faqCategories.length} categories`;
 
+/** Hero status pill. The page renders it only while siteConfig.appLive is false. */
+export const faqPrelaunchStatus = "Not live yet — in testing with real groups";
+
 export type FaqReadNext = {
   label: string;
   blurb: string;

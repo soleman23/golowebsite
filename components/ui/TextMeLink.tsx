@@ -14,6 +14,7 @@
 import { useEffect, useRef, useState } from "react";
 import { phoneSchema } from "@/lib/validation";
 import { track } from "@/lib/analytics";
+import { landingAttribution } from "@/lib/attribution";
 import styles from "./TextMeLink.module.css";
 
 type Status = "idle" | "submitting" | "success" | "error";
@@ -23,7 +24,7 @@ type TextMeLinkProps = {
   id?: string;
   /** Label above the field. Reads "or text me the link:" beside store buttons. */
   prompt?: string;
-  /** Names the placement in the generate_lead param. */
+  /** Names the placement in the generate_lead param and the lead's source. */
   placement?: string;
   align?: "start" | "center";
 };
@@ -69,7 +70,11 @@ export function TextMeLink({
       const res = await fetch("/api/text-link", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ phone }),
+        body: JSON.stringify({
+          phone,
+          source: placement,
+          ...landingAttribution(),
+        }),
       });
       const data = (await res.json().catch(() => ({}))) as {
         error?: string;

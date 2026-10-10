@@ -12,27 +12,36 @@ datasource db {
   directUrl = env("DIRECT_URL")
 }
 
-/// A phone number submitted via the hero "text me the link" form.
+/// A phone number submitted via a "text me the link" form (hero or a closing band).
 model PhoneLead {
-  id        String   @id @default(cuid())
-  phone     String
+  id           String   @id @default(cuid())
+  phone        String
   // Whether a real SMS was dispatched (false when running in stub mode).
-  smsSent   Boolean  @default(false)
-  source    String   @default("hero")
-  userAgent String?
-  createdAt DateTime @default(now())
+  smsSent      Boolean  @default(false)
+  /// The form's placement: "hero", or "final_cta_<page>" for a closing band.
+  source       String   @default("hero")
+  userAgent    String?
+  /// First path of the visit and the outside host that referred it
+  /// (lib/attribution.ts). Null on older rows, direct visits and stripped
+  /// referrers.
+  landingPath  String?
+  referrerHost String?
+  createdAt    DateTime @default(now())
 
   @@index([createdAt])
 }
 
 /// An email address submitted via the newsletter band on /blog.
 model NewsletterLead {
-  id String @id @default(cuid())
+  id           String   @id @default(cuid())
   /// Unique so a repeat signup is an upsert, not a duplicate row. The route
   /// answers "you're on the list" either way — never leak who is a member.
-  email     String   @unique
-  source    String   @default("blog")
-  createdAt DateTime @default(now())
+  email        String   @unique
+  source       String   @default("blog")
+  /// As on PhoneLead. Set on the first signup only; a repeat leaves it alone.
+  landingPath  String?
+  referrerHost String?
+  createdAt    DateTime @default(now())
 
   @@index([createdAt])
 }
