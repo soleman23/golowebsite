@@ -1495,8 +1495,11 @@
 
 /* ---- LockerCard ---- */
 
+/* Wraps only when the two 28px totals can't sit side by side (below ~365px);
+   otherwise `flex: 1` splits the row evenly as before. */
 .lockerTotals {
   display: flex;
+  flex-wrap: wrap;
   gap: 10px;
 }
 
