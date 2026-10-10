@@ -770,6 +770,9 @@ export const blogTopicIds: string[] = [
 
 export const blogCountLine = `${postsByDate.length} posts · ${blogCategories.length} topics`;
 
+/** Hero status pill. The page renders it only while siteConfig.appLive is false. */
+export const blogPrelaunchStatus = "The app isn't live yet — these are the build notes";
+
 /** The /blog hero. The H1 names the topic a searcher types. */
 export const blogHero = {
   kicker: "NOTES FROM THE CART PATH",

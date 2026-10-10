@@ -3,6 +3,7 @@ import {
   appCtaLabel,
   blogCountLine,
   blogHero,
+  blogPrelaunchStatus,
   blogTopicIds,
   featuredPost,
   publishedPosts,
@@ -65,11 +66,13 @@ export default function BlogPage() {
         breadcrumbs={[{ label: "Home", href: "/" }, { label: "Blog" }]}
         meta={
           <>
-            <StatusPill
-              variant="testing"
-              label="The app isn't live yet — these are the build notes"
-              className={styles.heroPill}
-            />
+            {siteConfig.appLive ? null : (
+              <StatusPill
+                variant="testing"
+                label={blogPrelaunchStatus}
+                className={styles.heroPill}
+              />
+            )}
             <span className={styles.metaChip}>{blogCountLine}</span>
           </>
         }
