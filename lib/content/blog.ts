@@ -75,7 +75,18 @@ export type Post = {
    * Undefined until the photo is actually in public/images/blog/. The card
    * renders a flat panel in its place rather than a broken <img>.
    */
-  hero?: { src: string; alt: string; position?: string };
+  hero?: {
+    src: string;
+    alt: string;
+    /**
+     * object-position wherever the frame is narrower than the photo — the card
+     * thumbnail and the phone hero. Wide heroes always anchor right, where the
+     * 21:9 photos keep their subject.
+     */
+    position?: string;
+    /** 1200x630 share card cut from the hero. Without one the hero is shared. */
+    og?: string;
+  };
   /** false = hidden from the index's links, 404 on the detail route. */
   published: boolean;
   featured?: boolean;
@@ -243,7 +254,7 @@ export const posts: Post[] = [
     author: "From the GoLo team",
     date: "2026-07-28",
     readMins: 5,
-    hero: { src: blogMedia.course, alt: "A fairway opening toward a distant green", position: "50% 55%" },
+    hero: { src: "/images/blog/nassau-hero.webp", alt: "A ball teed up on the first tee beside three wooden tees, with the fairway opening ahead", position: "90% 50%", og: "/images/blog/nassau-og.jpg" },
     published: true,
     body: article(
       "A Nassau is the default bet in American golf, and almost nobody explains it before the first tee. Somebody says “five-five-five?”, everyone nods, and eighteen holes later there is an argument in the parking lot about whether the back nine was still alive. Here is the whole format, start to settle. If you only want the rules card, the <a href=\"/games/nassau\">Nassau guide</a> has it in five steps.",
@@ -259,7 +270,7 @@ export const posts: Post[] = [
           { kind: "table", head: ["Bet", "Result", "Pays"], rows: [["Front nine", "You win, 2 up", "+$5"], ["Back nine", "You lose, 2 down", "−$5"], ["The press · 14–18", "You win, 1 up", "+$5"], ["Total 18", "All square", "Push"], ["Settle", "Net for the day", "+$5"]] },
           { kind: "p", html: "Four bets, one number. Lose the back nine, win the press, and the day still goes your way." },
           { kind: "keyStat", value: "$15", label: "The most you can lose in a straight $5 Nassau before anybody presses. That ceiling is the whole appeal — small enough that nobody plays scared, big enough that a five-footer on 18 still means something." },
-          { kind: "image", src: blogMedia.course, alt: "Two golfers agreeing to a Nassau on the first tee", caption: "Three bets get agreed on the first tee in about four seconds. The trouble always starts later.", position: "50% 52%" },
+          { kind: "image", src: "/images/blog/nassau-mid.webp", alt: "Two golfers shaking hands on the first tee before the round", caption: "Three bets get agreed on the first tee in about four seconds. The trouble always starts later.", position: "50% 50%" },
         ] },
         { id: "presses", title: "Presses: the part that gets people in trouble", paragraphs: ["A press is a brand-new bet, at the same stake, covering only the holes left in that segment. It is how the player who is losing buys a way back in, and it is also how a $5 Nassau quietly becomes a $40 afternoon. Presses can be pressed, which is where groups lose the thread entirely."], blocks: [{ kind: "callout", title: "SETTLE THIS ON THE FIRST TEE", html: "Automatic presses at 2 down, or press only when somebody asks? Auto-presses roughly double the money at stake over eighteen holes. Both are fine. Finding out on the 14th which one you are playing is not." }, { kind: "quote", text: "Nobody argues about the golf. They argue about what the bet was." }] },
         { id: "house-rules", title: "The three rules your group plays differently", paragraphs: ["There is no governing body for the Nassau. Every group has house rules and every group assumes theirs are the standard ones. These three cause the parking-lot conversation."], blocks: [{ kind: "cardGrid", items: [
@@ -279,13 +290,13 @@ export const posts: Post[] = [
     metaDescription:
       "What happens to the pot when a skin ties, how carryovers change what each hole is worth, and the house rules to agree on before the first tee.",
     excerpt:
-      "How a $1 skin turns into a $9 hole, and the one setting that decides whether your group loves the format or bans it.",
+      "How a $5 skin turns into a $60 hole, and the one setting that decides whether your group loves the format or bans it.",
     date: "2026-07-14",
     readMins: 6,
     dek: "How a $5 skin turns into a $60 hole, why a tied hole is the most important thing that can happen, and the setting that decides whether your group loves the format or bans it.",
     crumb: "Skins",
     author: "From the GoLo team",
-    hero: { src: blogMedia.turf, alt: "Close-cut golf turf beside the rough", position: "50% 50%" },
+    hero: { src: "/images/blog/skins-carryover-hero.webp", alt: "A stack of four ball markers beside the cup as a ball rolls toward the hole", position: "80% 50%", og: "/images/blog/skins-carryover-og.jpg" },
     published: true,
     body: article(
       "Skins is the simplest bet in golf to explain and the easiest one to underestimate. One skin per hole, low score takes it, nothing complicated. Then four holes get halved in a row, somebody rolls in a twelve-footer on the 8th, and the hole is suddenly worth sixty dollars. The basic rules are in the <a href=\"/games/skins\">Skins guide</a>; this is about the carryover.",
@@ -301,7 +312,7 @@ export const posts: Post[] = [
           { kind: "table", head: ["Hole", "What happened", "You"], rows: [["Holes 1–3", "All halved, 3 skins carry", "—"], ["Hole 4", "Your birdie takes 4 skins", "+$60"], ["Hole 9", "Tom wins 1 with a par", "−$5"], ["Holes 12–15", "Three halved, Mike takes 4", "−$20"], ["Full 18", "You 7, Tom 6, Mike 5, Dave 0", "+$50"]] },
           { kind: "p", html: "A $5 skins game between four players, all 18 skins claimed. Every skin moves $5 from each of the three losers to the winner." },
           { kind: "keyStat", value: "$90", label: "What a “$5 skins game” actually costs the player who never wins a hole: 18 skins at $5. Run the number before you set the stake, because nobody in the group has done that math either." },
-          { kind: "image", src: blogMedia.turf, alt: "A birdie putt that can win a large carried skins pot", caption: "Nothing changes the mood of a round faster than a twelve-footer that four people are watching for money.", position: "50% 50%" },
+          { kind: "image", src: "/images/blog/skins-carryover-mid.webp", alt: "A golfer standing over a twelve-foot putt while three playing partners watch", caption: "Nothing changes the mood of a round faster than a twelve-footer that four people are watching for money.", position: "50% 45%" },
         ] },
         { id: "settings", title: "The settings that change everything", paragraphs: ["Skins looks like one game but plays like four, depending on how you answer these. Groups that love the format and groups that banned it are usually running different settings, not different golf."], blocks: [{ kind: "cardGrid", items: [
           { title: "Carryovers on, or off?", body: "Off means every hole is worth exactly one skin and the money stays flat and predictable. On is where the format gets its teeth. If your group has one player who tilts, carryovers are the setting that finds him." },
@@ -324,7 +335,7 @@ export const posts: Post[] = [
     dek: "Pick a partner or go it alone, hole by hole. The rotation, the timing rule most groups get wrong, and when the lone-wolf gamble is worth taking.",
     crumb: "Wolf",
     author: "From the GoLo team",
-    hero: { src: blogMedia.bunkerFairway, alt: "A golf fairway running between bunkers", position: "50% 48%" },
+    hero: { src: "/images/blog/wolf-hero.webp", alt: "A single ball teed up at the front of the tee box with three more waiting behind it", position: "77% 50%", og: "/images/blog/wolf-og.jpg" },
     published: true,
     body: article(
       "Wolf is the format for a foursome that cannot agree on a bet. Nobody has a fixed partner, the teams change every hole, and one player each hole decides whether he wants help or wants all the money. It takes one hole to learn and about four to get genuinely competitive. The rotation and scoring are in the <a href=\"/games/wolf\">Wolf guide</a>; this is about the decisions.",
@@ -339,7 +350,7 @@ export const posts: Post[] = [
         { kind: "table", head: ["Hole", "What happened", "You"], rows: [["Hole 5", "You take Mike; your side wins", "+$5"], ["Hole 9", "Tom declares lone wolf and birdies", "−$10"], ["Hole 13", "You go alone; par beats all three", "+$30"], ["Hole 17", "Dave picks you; your side wins", "+$5"], ["Settle", "One good gamble carried the round", "+$30"]] },
         { kind: "p", html: "A $5 Wolf game. Partnered holes pay $5 a man; a winning lone wolf takes $10 from each of the other three." },
         { kind: "keyStat", value: "6×", label: "How much more a lone-wolf hole moves than a partnered one: $30 against $5. Four turns as the wolf is four chances to make that call, and the round is usually decided by whoever read them right." },
-        { kind: "image", src: blogMedia.bunkerFairway, alt: "The wolf committing to a drive before seeing the rest of the group", caption: "The wolf hits first, which is the elegant cruelty of the format — you commit before you know anything.", position: "50% 48%" },
+        { kind: "image", src: "/images/blog/wolf-mid.webp", alt: "A golfer finishing his drive while the other three in his group wait on the tee", caption: "The wolf hits first, which is the elegant cruelty of the format — you commit before you know anything.", position: "50% 45%" },
         ] },
         { id: "lone-wolf", title: "When going alone is actually the right call", paragraphs: ["Lone wolf is not bravado, it is arithmetic. You need to beat the best score of three players, so the question is only ever how likely a good score is to be enough on this specific hole."], blocks: [{ kind: "cardGrid", items: [
           { title: "Go alone on the short holes", body: "A par 3 you can hit and a drivable par 4 are where three opponents are most likely to all make par. If a birdie wins outright and a par often ties, the odds are with you." },
@@ -356,13 +367,13 @@ export const posts: Post[] = [
     category: "rules",
     title: "Bingo Bango Bongo keeps the 22-handicap interested",
     excerpt:
-      "Three points a hole, no strokes required. The fairest game in golf for a group with a 6 and a 26 in it.",
+      "Three points a hole, no strokes required. The fairest game in golf for a group with a 6 and a 22 in it.",
     date: "2026-06-18",
     readMins: 5,
     dek: "Three points a hole, no strokes required. The fairest game in golf for a group with a 6 and a 22 — and why order of play does all the work.",
     crumb: "Bingo Bango Bongo",
     author: "From the GoLo team",
-    hero: { src: blogMedia.bunkerGreen, alt: "A golf green guarded by bright sand bunkers", position: "50% 46%" },
+    hero: { src: "/images/blog/bingo-bango-bongo-hero.webp", alt: "A golf ball rolling onto the front edge of the green while three others wait back in the fairway", position: "83% 50%", og: "/images/blog/bingo-bango-bongo-og.jpg" },
     published: true,
     body: article(
       "Every group has one: a 22-handicap who is out of the bet by the 5th hole and spends the back nine watching three other people play for money. Bingo Bango Bongo fixes that without a single stroke changing hands. Three points a hole, and two have almost nothing to do with how far you hit it. The scoring rules are in the <a href=\"/games/bingo-bango-bongo\">Bingo Bango Bongo guide</a>; this is about why it works for an uneven group.",
@@ -382,7 +393,7 @@ export const posts: Post[] = [
           { kind: "table", head: ["Player", "Points over 18", "Net at $2 a point"], rows: [["You · 12 index", "15", "+$12"], ["Mike · 6 index", "14", "+$4"], ["Tom · 15 index", "13", "−$4"], ["Dave · 22 index", "12", "−$12"], ["54 points", "Three a hole, all claimed", "$0 net"]] },
           { kind: "p", html: "Each point moves $2 from each of the other three players, so a point is worth $6 to whoever wins it. Nobody took strokes." },
           { kind: "keyStat", value: "3", label: "Points on every hole, which means there is no such thing as a dead hole. Make a triple and you can still walk off with a point — that is the reason the 22 is still paying attention on the 16th." },
-          { kind: "image", src: blogMedia.bunkerGreen, alt: "Four balls around a green waiting for bango to be measured", caption: "Bango is measured once every ball is on the green, which is why a chip-on can beat three good approach shots.", position: "50% 48%" },
+          { kind: "image", src: "/images/blog/bingo-bango-bongo-mid.webp", alt: "Four golf balls on the green at different distances from the hole, the closest just chipped on from the rough", caption: "Bango is measured once every ball is on the green, which is why a chip-on can beat three good approach shots.", position: "50% 60%" },
         ] },
         { id: "why-it-works", title: "Why it works with a 6 and a 22 in the group", paragraphs: ["Most bets need handicaps to be fair, and handicaps are where arguments live. Bingo Bango Bongo is fair by construction: two of the three points are decided by order of play, and order of play favors the player who is behind.", "The better player still wins more often. He is closer more often, which is bango, and he holes more putts, which is bongo. But he cannot run away with a hole, and he certainly cannot run away with the round. A four-point spread over 54 is a normal result, and a four-point spread is a bet everybody is still in on the 18th tee."], blocks: [{ kind: "quote", text: "Being 60 yards behind everybody is not a disadvantage here. It is a head start on bingo." }] },
         { id: "rules", title: "The four rules worth settling first", blocks: [{ kind: "cardGrid", items: [

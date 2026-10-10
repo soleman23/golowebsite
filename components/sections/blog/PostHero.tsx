@@ -1,9 +1,11 @@
 /**
- * The post's photo hero. The scrim is bottom-weighted so the headline sits on
- * the darkest part of the picture.
+ * The post's photo hero. The photos are 21:9 with the subject on the right and
+ * the left side dark, so wide heroes anchor the photo right and the scrim
+ * darkens left-to-right under the copy. Phones crop to post.hero.position.
  *
  * No photo yet: the layout is identical, the photo layer just isn't rendered
- * and the gradient stands on its own. Nothing collapses and nothing 404s.
+ * and the bottom-weighted gradient stands on its own. Nothing collapses and
+ * nothing 404s.
  */
 
 import Image from "next/image";
@@ -14,7 +16,9 @@ import styles from "./PostHero.module.css";
 
 export function PostHero({ post }: { post: Post }) {
   return (
-    <header className={styles.hero}>
+    <header
+      className={post.hero ? `${styles.hero} ${styles.withPhoto}` : styles.hero}
+    >
       {post.hero ? (
         <Image
           src={post.hero.src}
@@ -24,7 +28,7 @@ export function PostHero({ post }: { post: Post }) {
           // The LCP element on this page.
           priority
           className={styles.photo}
-          style={{ objectPosition: post.hero.position }}
+          style={{ "--phone-position": post.hero.position } as React.CSSProperties}
         />
       ) : null}
       <div className={styles.scrim} aria-hidden="true" />
