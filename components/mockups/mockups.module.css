@@ -24,6 +24,18 @@
   max-width: 90vw;
 }
 
+/* Inside another device frame: that frame is the bezel, and its dynamic
+   island sits over the top 40px, so the content starts under it. */
+.phoneFramed {
+  border: 0;
+  box-shadow: none;
+  max-width: none;
+}
+
+.phoneFramed .phoneContent {
+  padding-top: 52px;
+}
+
 .phoneBg,
 .phoneScrim {
   position: absolute;
@@ -1744,4 +1756,147 @@
   font-weight: 800;
   color: var(--accent);
   font-variant-numeric: tabular-nums;
+}
+
+/* ==========================================================================
+   GuestCard — /how-it-works guests section
+   ========================================================================== */
+.guestInner {
+  position: relative;
+  padding: 22px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.guestHead {
+  margin-bottom: 4px;
+}
+
+.guestKicker {
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 1.6px;
+  color: var(--accent);
+}
+
+/* .5, not .45 — muted-text floor. */
+.guestCount {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--text-muted);
+}
+
+.guestRow {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px;
+  border-radius: 13px;
+  background: var(--glass-surface);
+  border: 1px solid rgba(255, 255, 255, 0.11);
+}
+
+.guestRowGuest {
+  background: rgba(212, 242, 58, 0.1);
+  border-color: var(--accent-35);
+}
+
+.guestAvatar {
+  flex: 0 0 auto;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  font-weight: 800;
+}
+
+.guestName {
+  flex: 1;
+  min-width: 0;
+  font-size: 14px;
+  font-weight: 800;
+}
+
+.guestYou {
+  font-weight: 700;
+  color: var(--text-muted);
+}
+
+.guestTag {
+  padding: 4px 8px;
+  border-radius: 7px;
+  background: var(--accent-16);
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 1px;
+  color: var(--accent);
+}
+
+.guestIndex {
+  font-size: 12px;
+  font-weight: 800;
+  color: var(--text-muted);
+  font-variant-numeric: tabular-nums;
+}
+
+.guestSheet {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 6px;
+  padding: 14px;
+  border-radius: 16px;
+  background: var(--glass-sheet);
+  border: 1px solid var(--glass-chrome);
+}
+
+.guestSheetLabel {
+  font-size: 10.5px;
+  font-weight: 800;
+  letter-spacing: 1.3px;
+  color: var(--text-muted);
+}
+
+.guestFields {
+  display: flex;
+  gap: 8px;
+}
+
+/* Placeholder text in a picture of a field — .5 keeps it legible. */
+.guestField {
+  height: 44px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  padding: 0 12px;
+  background: rgba(255, 255, 255, 0.07);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--text-muted);
+}
+
+.guestFieldName {
+  flex: 1;
+  min-width: 0;
+}
+
+.guestFieldIndex {
+  width: 84px;
+}
+
+.guestAdd {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 44px;
+  border-radius: 12px;
+  background: var(--accent);
+  color: var(--accent-ink);
+  font-size: 14px;
+  font-weight: 800;
 }

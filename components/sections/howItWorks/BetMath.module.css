@@ -1,0 +1,313 @@
+.section {
+  position: relative;
+  overflow: hidden;
+  border-top: 1px solid rgba(255, 255, 255, 0.07);
+  scroll-margin-top: 96px;
+}
+
+.bg,
+.scrim {
+  position: absolute;
+  inset: 0;
+}
+
+.bg {
+  background-position: 50% 50%;
+}
+
+.scrim {
+  background: linear-gradient(
+    180deg,
+    rgba(8, 12, 9, 0.9) 0%,
+    rgba(6, 11, 8, 0.94) 100%
+  );
+}
+
+.inner {
+  position: relative;
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: clamp(56px, 7vw, 100px) var(--gutter);
+}
+
+.header {
+  margin-bottom: 40px;
+}
+
+.cards {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  align-items: stretch;
+}
+
+/* ---- results card ---- */
+.results {
+  flex: 1.5 1 520px;
+  min-width: 0;
+  padding: clamp(18px, 2.4vw, 28px);
+  border-radius: 22px;
+  background: rgba(20, 28, 24, 0.55);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid var(--glass-chrome);
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.chips {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.chip {
+  display: inline-flex;
+  align-items: center;
+  height: 28px;
+  padding: 0 11px;
+  border-radius: var(--radius-pill);
+  background: var(--hairline);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  font-size: 11.5px;
+  font-weight: 800;
+  color: rgba(255, 255, 255, 0.75);
+}
+
+.chipOn {
+  background: var(--accent-soft);
+  border-color: var(--accent-35);
+  color: var(--accent);
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  table-layout: fixed;
+  font-variant-numeric: tabular-nums;
+}
+
+.table th,
+.table td {
+  padding: 14px 0 14px 10px;
+  text-align: right;
+  vertical-align: middle;
+  font-size: 15px;
+  font-weight: 800;
+}
+
+.table th:first-child {
+  padding-left: 0;
+  text-align: left;
+  width: 36%;
+}
+
+.table thead th {
+  padding-top: 10px;
+  padding-bottom: 10px;
+  font-size: 11px;
+  letter-spacing: 1.2px;
+  color: var(--text-muted);
+}
+
+.table tbody tr {
+  border-top: 1px solid var(--hairline);
+}
+
+.player {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+}
+
+.playerText {
+  display: flex;
+  flex-direction: column;
+}
+
+.playerName {
+  font-size: 15px;
+  font-weight: 800;
+}
+
+/* .5, not .45 — muted-text floor. */
+.playerSkins {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--text-muted);
+}
+
+.avatar {
+  flex: 0 0 auto;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.avatarMd {
+  width: 30px;
+  height: 30px;
+}
+
+.positive {
+  color: var(--positive);
+}
+
+.negative {
+  color: var(--negative);
+}
+
+.table .net {
+  font-size: clamp(20px, 2.2vw, 26px);
+}
+
+.explain {
+  margin: 0;
+  padding: 14px 16px;
+  border-radius: var(--radius-tile);
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  font-size: 13.5px;
+  line-height: 1.6;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.6);
+  text-wrap: pretty;
+}
+
+.explain strong {
+  color: var(--text-primary);
+  font-weight: 800;
+}
+
+/* ---- settle-up card ---- */
+.settle {
+  flex: 1 1 320px;
+  min-width: 0;
+  padding: clamp(20px, 2.4vw, 28px);
+  border-radius: 22px;
+  background: var(--glass-sheet);
+  border: 1px solid rgba(212, 242, 58, 0.3);
+  box-shadow: 0 30px 70px -30px rgba(0, 0, 0, 0.85);
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.settleKicker {
+  margin: 0;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 1.4px;
+  color: var(--accent);
+}
+
+.settleHead {
+  margin: 0;
+  display: flex;
+  align-items: flex-end;
+  gap: 14px;
+}
+
+.settleCount {
+  font-size: clamp(84px, 9vw, 112px);
+  font-weight: 800;
+  line-height: 0.82;
+  letter-spacing: -0.05em;
+  color: var(--accent);
+}
+
+.settleCaption {
+  padding-bottom: 6px;
+  font-size: 17px;
+  font-weight: 800;
+  line-height: 1.3;
+}
+
+.payments {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.payment {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px;
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.payName {
+  font-size: 15px;
+  font-weight: 800;
+}
+
+.payTo {
+  flex: 1;
+}
+
+/* Decorative arrow (the sr-only "pays" carries it), so the reference's .4
+   is kept — it isn't text a reader needs. */
+.arrow {
+  font-size: 14px;
+  font-weight: 800;
+  color: rgba(255, 255, 255, 0.4);
+}
+
+.payAmount {
+  font-size: 22px;
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+}
+
+.settleBody {
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.6;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.6);
+  text-wrap: pretty;
+}
+
+.settleFooter {
+  margin: auto 0 0;
+  font-size: 12.5px;
+  font-weight: 700;
+  color: var(--text-muted);
+}
+
+@media (max-width: 600px) {
+  .results {
+    flex-basis: 100%;
+  }
+
+  .table th,
+  .table td {
+    font-size: 14px;
+    padding-left: 6px;
+  }
+
+  .table th:first-child {
+    width: 34%;
+  }
+
+  /* The row's name and skin count need the room more than the dot does. */
+  .table .avatar {
+    display: none;
+  }
+}

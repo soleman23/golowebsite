@@ -1,0 +1,426 @@
+/* ==========================================================================
+   Round timeline — steps left, sticky phone right (≥900px); one phone per
+   step below that. No backdrop-filter anywhere in here: the phone column is
+   sticky (see CLAUDE.md). Its halo is a plain filter: blur(), which is fine.
+   ========================================================================== */
+
+.root {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: clamp(20px, 3vw, 40px) var(--gutter) clamp(56px, 7vw, 96px);
+  display: flex;
+  gap: clamp(32px, 6vw, 90px);
+  align-items: flex-start;
+  --node: 44px;
+  --rail-left: 21px;
+  --col-pad: 64px;
+}
+
+/* ---- left column: rail + steps ---- */
+.stepsCol {
+  flex: 1 1 0;
+  min-width: 0;
+  position: relative;
+  padding-left: var(--col-pad);
+}
+
+.railTrack,
+.railFill {
+  position: absolute;
+  left: var(--rail-left);
+  top: 0;
+  width: 2px;
+  border-radius: 2px;
+}
+
+.railTrack {
+  bottom: 0;
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.railFill {
+  background: var(--accent);
+  box-shadow: 0 0 14px rgba(212, 242, 58, 0.6);
+  transition: height 0.45s ease;
+}
+
+.steps {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.step {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-height: 74vh;
+  padding: clamp(28px, 4vw, 48px) 0;
+  scroll-margin-top: 96px;
+}
+
+.article {
+  position: relative;
+  transition: opacity 0.35s ease;
+}
+
+.node {
+  position: absolute;
+  left: calc(var(--col-pad) * -1);
+  top: -10px;
+  width: var(--node);
+  height: var(--node);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  font-weight: 800;
+  background: var(--page-bg);
+  color: var(--text-muted);
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  transition: background 0.35s ease, color 0.35s ease, border-color 0.35s ease;
+}
+
+.step[data-state="active"] .node {
+  background: var(--accent);
+  color: var(--accent-ink);
+  border-color: var(--accent);
+}
+
+.step[data-state="done"] .node {
+  background: var(--accent-16);
+  color: var(--accent);
+  border-color: var(--accent);
+}
+
+.meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+  margin: 0 0 14px;
+}
+
+.place {
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 2px;
+  color: var(--accent);
+}
+
+/* .5, not the reference's .45 — the muted-text floor. */
+.time {
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.6px;
+  color: var(--text-muted);
+}
+
+.title {
+  font-size: clamp(26px, 3vw, 38px);
+  font-weight: 800;
+  letter-spacing: -0.022em;
+  line-height: 1.08;
+  margin: 0 0 16px;
+  max-width: 540px;
+  text-wrap: balance;
+}
+
+.body {
+  font-size: 17px;
+  line-height: 1.65;
+  font-weight: 600;
+  color: var(--text-secondary);
+  max-width: 520px;
+  margin: 0 0 22px;
+  text-wrap: pretty;
+}
+
+.bullets {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.bullet {
+  display: flex;
+  align-items: flex-start;
+  gap: 11px;
+  font-size: 15px;
+  line-height: 1.55;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.76);
+}
+
+.check {
+  flex: 0 0 auto;
+  width: 20px;
+  height: 20px;
+  margin-top: 2px;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--accent-16);
+  border: 1px solid var(--accent-35);
+  font-size: 11px;
+  font-weight: 800;
+  color: var(--accent);
+}
+
+.stepLink {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  margin-top: 10px;
+  font-size: 14px;
+  font-weight: 800;
+  color: var(--accent);
+}
+
+.stepLink:hover {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+/* ---- device frame (both sizes) ---- */
+.frame {
+  position: relative;
+  height: min(640px, calc(100vh - 190px));
+  aspect-ratio: 390 / 844;
+  border-radius: 48px;
+  background: var(--logo-tile-bg);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  padding: 9px;
+  box-shadow: 0 50px 100px -30px rgba(0, 0, 0, 0.9);
+}
+
+.screen {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  border-radius: 40px;
+  overflow: hidden;
+  background: radial-gradient(
+    120% 80% at 50% 0%,
+    #2a7d4a 0%,
+    #14532d 45%,
+    #0a2418 85%
+  );
+  /* The stage below scales against this box's size. */
+  container-type: size;
+}
+
+.island {
+  position: absolute;
+  top: 12px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 96px;
+  height: 28px;
+  border-radius: 16px;
+  background: #000;
+  pointer-events: none;
+  z-index: 2;
+}
+
+/* Width-led below 900px so a 320px screen never overflows: the reference's
+   520px-tall phone is 240px wide, more than the column has there. */
+.frameInline {
+  height: auto;
+  width: min(240px, 100%, calc(76vh * 390 / 844));
+  border-radius: 44px;
+  padding: 8px;
+  box-shadow: 0 40px 80px -30px rgba(0, 0, 0, 0.85);
+}
+
+.frameInline .screen {
+  border-radius: 36px;
+}
+
+.frameInline .island {
+  top: 10px;
+  width: 84px;
+  height: 24px;
+  border-radius: 14px;
+}
+
+/* ---- what goes in the screen (TimelineScreen) ---- */
+.screenshot {
+  object-fit: cover;
+}
+
+/* Screens are laid out at 288px wide — PhoneShell's width — then scaled to
+   the screen's real width. The stage takes the screen's own aspect (the
+   bezel padding makes it a touch taller than 390:844), so the phone fills it
+   to the bottom edge. tan(atan2(a, b)) is a / b as a plain number, the one
+   way to divide two lengths in CSS today; where it isn't supported the stage
+   renders at 1:1, clipped by the screen. */
+.stage {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 288px;
+  height: 624px;
+  height: calc(288px * tan(atan2(100cqh, 100cqw)));
+  transform-origin: 0 0;
+  transform: scale(tan(atan2(100cqw, 288px)));
+}
+
+/* ---- right column (≥900px) ---- */
+.aside {
+  position: sticky;
+  top: 100px;
+  flex: 0 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  padding: 30px 0;
+}
+
+.phoneWrap {
+  position: relative;
+}
+
+.halo {
+  position: absolute;
+  inset: -14%;
+  background: radial-gradient(
+    circle,
+    rgba(212, 242, 58, 0.26) 0%,
+    rgba(0, 0, 0, 0) 62%
+  );
+  filter: blur(40px);
+  pointer-events: none;
+}
+
+.screenLayer {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  transition: opacity 0.45s ease;
+}
+
+.screenLayer[data-active] {
+  opacity: 1;
+}
+
+.progress {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+
+.progressLabel {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 0;
+  font-size: 13px;
+  font-weight: 800;
+}
+
+.progressCount {
+  color: var(--accent);
+  font-variant-numeric: tabular-nums;
+}
+
+.progressName {
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.ticks {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+}
+
+/* The bar is 6px; the link around it is 24px tall so it's a fair target. */
+.tick {
+  display: flex;
+  align-items: center;
+  height: 24px;
+  padding: 0 3px;
+}
+
+.tickBar {
+  display: block;
+  width: 8px;
+  height: 6px;
+  border-radius: var(--radius-pill);
+  background: rgba(255, 255, 255, 0.2);
+  transition: width 0.35s ease, background 0.35s ease;
+}
+
+.tick:hover .tickBar {
+  background: rgba(255, 255, 255, 0.45);
+}
+
+.tick[data-state="done"] .tickBar {
+  background: var(--accent-45);
+}
+
+.tick[data-state="active"] .tickBar {
+  width: 26px;
+  background: var(--accent);
+}
+
+.inlinePhone {
+  display: none;
+}
+
+/* Inactive steps dim only once JS is tracking the active one, only on the
+   two-column layout, and never under reduced motion. .55, not the
+   reference's .34 — that failed AA. */
+@media (min-width: 900px) and (prefers-reduced-motion: no-preference) {
+  .root[data-enhanced] .step:not([data-state="active"]) .article {
+    opacity: 0.55;
+  }
+}
+
+/* ---- narrow: no sticky column, a phone under each step ---- */
+@media (max-width: 899px) {
+  .aside {
+    display: none;
+  }
+
+  .step {
+    min-height: auto;
+  }
+
+  .inlinePhone {
+    display: flex;
+    justify-content: center;
+    margin-top: 28px;
+  }
+}
+
+/* Gives the copy back some width at 320px. */
+@media (max-width: 560px) {
+  .root {
+    --node: 36px;
+    --rail-left: 17px;
+    --col-pad: 50px;
+  }
+
+  .node {
+    font-size: 13px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .railFill,
+  .node,
+  .article,
+  .screenLayer,
+  .tickBar {
+    transition: none;
+  }
+}

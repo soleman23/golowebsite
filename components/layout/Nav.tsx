@@ -20,10 +20,10 @@ import styles from "./Nav.module.css";
  * Matched on prefix, so /games/nassau lights up Games and /blog/who-pays-first
  * lights up Blog.
  *
- * Anchor links ("How it works" → /#how) never light up. They point at a
- * section of the home page, and knowing whether that section is on screen
- * needs a scroll-spy the nav doesn't have — so on the home page the whole row
- * stays unhighlighted rather than claiming a position it can't verify.
+ * Anchor links ("/#…") never light up. They point at a section of the home
+ * page, and knowing whether that section is on screen needs a scroll-spy the
+ * nav doesn't have — so they stay unhighlighted rather than claiming a
+ * position they can't verify.
  */
 function isCurrent(href: string, pathname: string): boolean {
   if (href.startsWith("/#") || href === "/") return false;

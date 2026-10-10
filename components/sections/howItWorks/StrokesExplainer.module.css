@@ -1,0 +1,357 @@
+.section {
+  background: var(--page-bg);
+  border-top: 1px solid rgba(255, 255, 255, 0.07);
+  scroll-margin-top: 96px;
+}
+
+.inner {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: clamp(56px, 7vw, 100px) var(--gutter);
+}
+
+.header {
+  margin-bottom: 40px;
+}
+
+.cards {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  align-items: stretch;
+}
+
+.card {
+  flex: 1 1 440px;
+  min-width: 0;
+  padding: clamp(20px, 2.4vw, 28px);
+  border-radius: 22px;
+  background: var(--glass-surface);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid var(--glass-chrome);
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.formulaCard {
+  flex-basis: 420px;
+}
+
+/* Below ~480px the flex-basis would force a sideways scroll. */
+@media (max-width: 520px) {
+  .card,
+  .formulaCard {
+    flex-basis: 100%;
+  }
+}
+
+.label {
+  margin: 0;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 1.4px;
+  color: var(--text-muted);
+}
+
+/* ---- formula card ---- */
+.formulaHead {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.formula {
+  margin: 0;
+  font-size: clamp(16px, 1.7vw, 19px);
+  font-weight: 800;
+  line-height: 1.4;
+}
+
+.course {
+  margin: 0;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text-muted);
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  table-layout: fixed;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  font-variant-numeric: tabular-nums;
+}
+
+.table th,
+.table td {
+  padding: 12px 0 12px 10px;
+  text-align: right;
+  vertical-align: middle;
+}
+
+.table th:first-child {
+  padding-left: 0;
+  text-align: left;
+  width: 38%;
+}
+
+.table thead th {
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 1.2px;
+  color: var(--text-muted);
+}
+
+.table tbody tr {
+  border-top: 1px solid var(--hairline);
+}
+
+.player {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+  font-size: 15px;
+  font-weight: 800;
+}
+
+.avatar {
+  flex: 0 0 auto;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  font-weight: 800;
+}
+
+/* .5, not .42 — muted-text floor. */
+.guest {
+  font-weight: 700;
+  color: var(--text-muted);
+}
+
+.index {
+  font-size: 15px;
+  font-weight: 700;
+  color: rgba(255, 255, 255, 0.62);
+}
+
+.courseHcp {
+  font-size: 15px;
+  font-weight: 800;
+}
+
+.strokes {
+  font-size: 20px;
+  font-weight: 800;
+  color: var(--accent);
+}
+
+.lowMan {
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 1px;
+  color: var(--text-faint);
+}
+
+.allowances {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+}
+
+.chip {
+  display: inline-flex;
+  align-items: center;
+  height: 30px;
+  padding: 0 12px;
+  border-radius: var(--radius-pill);
+  background: var(--hairline);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  font-size: 12px;
+  font-weight: 800;
+  color: rgba(255, 255, 255, 0.75);
+}
+
+.chipOn {
+  background: var(--accent-soft);
+  border-color: var(--accent-35);
+  color: var(--accent);
+}
+
+.allowanceNote {
+  padding: 0 4px;
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--text-muted);
+}
+
+/* ---- picker card ---- */
+.pickerHead {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.segments {
+  display: flex;
+  gap: 4px;
+  padding: 4px;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.07);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.segment {
+  height: 32px;
+  padding: 0 13px;
+  border-radius: 9px;
+  border: 0;
+  cursor: pointer;
+  font: inherit;
+  font-size: 12.5px;
+  font-weight: 800;
+  background: transparent;
+  color: rgba(255, 255, 255, 0.7);
+  transition: background 0.25s ease, color 0.25s ease;
+}
+
+.segment:hover {
+  color: var(--text-primary);
+}
+
+.segment[aria-checked="true"] {
+  background: var(--accent);
+  color: var(--accent-ink);
+}
+
+.grid {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.gridRow {
+  display: grid;
+  grid-template-columns: 34px repeat(9, minmax(0, 1fr));
+  gap: 5px;
+  align-items: center;
+}
+
+.gridLabel {
+  font-size: 10.5px;
+  font-weight: 800;
+  letter-spacing: 1px;
+  color: var(--text-muted);
+}
+
+.cell {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+  height: 62px;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.09);
+  transition: background 0.3s ease, border-color 0.3s ease;
+}
+
+.cellHole {
+  font-size: 14px;
+  font-weight: 800;
+  color: var(--text-faint);
+}
+
+.cellSi {
+  font-size: 9.5px;
+  font-weight: 800;
+  letter-spacing: 0.4px;
+  color: var(--text-muted);
+  white-space: nowrap;
+}
+
+.cellDot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: transparent;
+}
+
+.cell[data-stroke] {
+  background: var(--accent-16);
+  border-color: var(--accent-45);
+}
+
+.cell[data-stroke] .cellHole {
+  color: var(--text-primary);
+}
+
+.cell[data-stroke] .cellSi {
+  color: var(--accent);
+}
+
+.cell[data-stroke] .cellDot {
+  background: var(--accent);
+}
+
+.note {
+  margin: 0;
+  font-size: 15px;
+  line-height: 1.6;
+  font-weight: 600;
+  color: var(--text-secondary);
+  text-wrap: pretty;
+}
+
+.footnote {
+  margin: 0;
+  font-size: 13px;
+  line-height: 1.55;
+  font-weight: 600;
+  color: var(--text-muted);
+}
+
+/* 320px: nine cells share ~230px, so the label column and SI line shrink. */
+@media (max-width: 420px) {
+  .gridRow {
+    grid-template-columns: 24px repeat(9, minmax(0, 1fr));
+    gap: 3px;
+  }
+
+  .gridLabel {
+    font-size: 9px;
+    letter-spacing: 0.5px;
+  }
+
+  .cell {
+    height: 54px;
+    border-radius: 8px;
+  }
+
+  .cellSi {
+    font-size: 8px;
+    letter-spacing: 0;
+  }
+
+  .segment {
+    padding: 0 9px;
+    font-size: 12px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cell,
+  .segment {
+    transition: none;
+  }
+}

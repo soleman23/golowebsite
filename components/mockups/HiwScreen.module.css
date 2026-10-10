@@ -1,0 +1,330 @@
+/* The /how-it-works phone screens. Laid out for PhoneShell's framed 288×624
+   screen (content starts under the island). No backdrop-filter: these sit in
+   a sticky column. Muted text holds at .5 like everywhere else. */
+
+.screen {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  height: 100%;
+}
+
+.rowBetween {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.head {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.kicker {
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 1.6px;
+  color: var(--accent);
+}
+
+.title {
+  font-size: 26px;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  line-height: 1.05;
+}
+
+.label {
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 1.3px;
+  color: var(--text-muted);
+}
+
+.meta {
+  display: block;
+  font-size: 11.5px;
+  font-weight: 700;
+  color: var(--text-muted);
+  font-variant-numeric: tabular-nums;
+}
+
+.name {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex: 1;
+  min-width: 0;
+  font-size: 14px;
+  font-weight: 800;
+}
+
+.avatar {
+  flex: 0 0 auto;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  font-weight: 800;
+}
+
+.tag {
+  padding: 2px 6px;
+  border-radius: 6px;
+  background: var(--accent-16);
+  font-size: 9px;
+  letter-spacing: 0.8px;
+  color: var(--accent);
+}
+
+.list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px;
+  border-radius: 14px;
+  background: rgba(14, 20, 16, 0.78);
+  border: 1px solid rgba(255, 255, 255, 0.11);
+}
+
+.rowLive {
+  background: rgba(30, 44, 14, 0.85);
+  border-color: var(--accent-35);
+}
+
+.big {
+  font-size: 22px;
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+}
+
+.lowMan {
+  font-size: 10px;
+  letter-spacing: 1px;
+  color: var(--text-faint);
+}
+
+.positive {
+  color: var(--positive);
+}
+
+.negative {
+  color: var(--negative);
+}
+
+.panel {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 12px;
+  border-radius: 14px;
+  background: rgba(14, 20, 16, 0.85);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  font-size: 13px;
+  font-weight: 700;
+  line-height: 1.4;
+}
+
+.panelOn {
+  border-color: var(--accent-35);
+  color: var(--accent);
+}
+
+.panelOn .label {
+  color: var(--accent);
+}
+
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.chip {
+  display: inline-flex;
+  align-items: center;
+  height: 26px;
+  padding: 0 10px;
+  border-radius: var(--radius-pill);
+  background: rgba(14, 20, 16, 0.8);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  font-size: 11px;
+  font-weight: 800;
+  color: rgba(255, 255, 255, 0.75);
+  white-space: nowrap;
+}
+
+.chipOn {
+  background: rgba(30, 44, 14, 0.9);
+  border-color: var(--accent-35);
+  color: var(--accent);
+}
+
+.button {
+  margin-top: auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 46px;
+  border-radius: 13px;
+  background: var(--accent);
+  color: var(--accent-ink);
+  font-size: 14px;
+  font-weight: 800;
+}
+
+.foot {
+  font-size: 11.5px;
+  font-weight: 700;
+  line-height: 1.4;
+  color: var(--text-faint);
+}
+
+.button + .foot,
+.foot + .button {
+  margin-top: auto;
+}
+
+/* ---- setup ---- */
+.course {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px;
+  border-radius: 14px;
+  background: rgba(14, 20, 16, 0.78);
+  border: 1px solid rgba(255, 255, 255, 0.11);
+}
+
+.courseBadge {
+  flex: 0 0 auto;
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--accent-16);
+  border: 1px solid var(--accent-35);
+  font-size: 15px;
+  font-weight: 800;
+  color: var(--accent);
+}
+
+.courseName {
+  display: block;
+  font-size: 15px;
+  font-weight: 800;
+}
+
+.team {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 8px 10px;
+  border-radius: 14px;
+  background: rgba(14, 20, 16, 0.78);
+  border: 1px solid rgba(255, 255, 255, 0.11);
+}
+
+.teamPlayer {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+/* ---- strokes ---- */
+.dots {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.dotChip {
+  padding: 4px 9px;
+  border-radius: var(--radius-pill);
+  background: rgba(255, 255, 255, 0.06);
+  font-size: 11.5px;
+  font-weight: 800;
+  color: var(--text-muted);
+}
+
+.dotChipOn {
+  background: var(--accent-16);
+  color: var(--accent);
+}
+
+/* ---- scoring ---- */
+.holeHead {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+}
+
+.holeNum {
+  font-size: 72px;
+  font-weight: 800;
+  line-height: 0.9;
+  letter-spacing: -0.04em;
+}
+
+.strokeDot {
+  font-size: 8px;
+  color: var(--accent);
+}
+
+/* ---- the turn ---- */
+.rungHoles {
+  flex: 0 0 auto;
+  min-width: 44px;
+  font-size: 11px;
+  font-weight: 800;
+  color: var(--text-faint);
+  font-variant-numeric: tabular-nums;
+}
+
+.rowLive .rungHoles {
+  color: var(--accent);
+}
+
+.rungBody {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  flex: 1;
+  min-width: 0;
+}
+
+.amount {
+  font-size: 15px;
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+}
+
+/* ---- settle ---- */
+.payName {
+  font-size: 13px;
+  font-weight: 800;
+}
+
+.grow {
+  flex: 1;
+}
+
+.arrow {
+  font-size: 13px;
+  font-weight: 800;
+  color: var(--text-muted);
+}

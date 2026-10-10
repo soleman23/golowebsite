@@ -85,6 +85,12 @@ export const siteConfig = {
     false,
   ),
 
+  /**
+   * The /how-it-works video: the #watch section and the hero's "Watch it"
+   * CTA. Off until a real recording (and its captions) is in public/videos/.
+   */
+  showHowItWorksVideo: boolFlag(process.env.NEXT_PUBLIC_SHOW_HIW_VIDEO, false),
+
   heroBackdrop: heroBackdrop(process.env.NEXT_PUBLIC_HERO_BACKDROP),
 } as const;
 
