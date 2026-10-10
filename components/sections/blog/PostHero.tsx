@@ -25,8 +25,11 @@ export function PostHero({ post }: { post: Post }) {
           alt={post.hero.alt}
           fill
           sizes="100vw"
-          // The LCP element on this page.
+          // The LCP element on this page. priority preloads it and loads it
+          // eagerly, but on Next 15 it doesn't set fetchpriority, so that's
+          // asked for separately; next/image puts it on the preload too.
           priority
+          fetchPriority="high"
           className={styles.photo}
           style={{ "--phone-position": post.hero.position } as React.CSSProperties}
         />
