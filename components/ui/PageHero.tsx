@@ -1,12 +1,15 @@
 /**
  * The top of every page: breadcrumb, kicker, the page's single <h1>, lead,
- * CTA row, status pills and an optional visual beside the copy.
+ * CTA row, status pills, an optional visual beside the copy and an optional
+ * photo behind it.
  *
  * Stays a server component. The CTA row renders TrackedCta, which is a client
  * leaf of its own — importing it here doesn't pull the shell across the
  * boundary, so the hero copy and the H1 still ship as static HTML.
  */
 
+import { preload } from "react-dom";
+import { heroPhotos, type HeroPhotoKey } from "@/lib/content";
 import { Breadcrumbs, type Crumb } from "./Breadcrumbs";
 import { StatusPill, type StatusVariant } from "./StatusPill";
 import { TrackedCta } from "./TrackedCta";
@@ -34,6 +37,8 @@ type PageHeroBase = {
   /** Small text row under the CTAs — availability notes, read time, dates. */
   meta?: React.ReactNode;
   visual?: React.ReactNode;
+  /** Decorative photo behind the copy — see lib/content/heroPhotos. */
+  photo?: HeroPhotoKey;
 };
 
 /**
@@ -54,6 +59,91 @@ function ctaSlug(href: string): string {
   return cleaned === "" ? "home" : cleaned.replace(/\//g, "_");
 }
 
+/*
+ * Kept in step with scripts/generate-hero-images.mjs, which writes these
+ * widths from 2688x1152 and 1792x2240 sources.
+ */
+const PHOTO_SET = {
+  desktop: { widths: [1280, 1920, 2560], width: 2688, height: 1152 },
+  mobile: { widths: [480, 768, 1080], width: 1792, height: 2240 },
+} as const;
+/* Matches the art-direction switch in PageHero.module.css. */
+const PHONE = "(max-width: 767px)";
+const DESKTOP = "(min-width: 768px)";
+
+function srcSet(key: HeroPhotoKey, variant: keyof typeof PHOTO_SET, ext: string) {
+  return PHOTO_SET[variant].widths
+    .map((w) => `/images/heroes/${key}-${variant}-${w}.${ext} ${w}w`)
+    .join(", ");
+}
+
+/**
+ * The photo is the page's LCP element, so it loads eagerly at high priority,
+ * and each frame is preloaded under the same media query its <source> uses.
+ * preload() rather than a rendered <link>: React puts it in <head>, where the
+ * browser finds it before any CSS, while a <link> stays where it's rendered.
+ * Only the AVIF is preloaded: every browser in the browserslist decodes it,
+ * so it's the one the <picture> will pick.
+ *
+ * It's decoration — the H1 already says what the page is — so it's hidden
+ * from assistive tech. It sits absolutely inside the hero and never sizes it,
+ * which is what keeps it from shifting layout when it arrives.
+ */
+function HeroPhotoLayer({ photoKey }: { photoKey: HeroPhotoKey }) {
+  const mobile = srcSet(photoKey, "mobile", "avif");
+  const desktop = srcSet(photoKey, "desktop", "avif");
+  for (const [media, variant, set] of [
+    [PHONE, "mobile", mobile],
+    [DESKTOP, "desktop", desktop],
+  ] as const) {
+    preload(`/images/heroes/${photoKey}-${variant}-${PHOTO_SET[variant].widths[1]}.avif`, {
+      as: "image",
+      type: "image/avif",
+      media,
+      imageSrcSet: set,
+      imageSizes: "100vw",
+      fetchPriority: "high",
+    });
+  }
+  return (
+    <>
+      <picture>
+        <source
+          media={PHONE}
+          type="image/avif"
+          srcSet={mobile}
+          sizes="100vw"
+          width={PHOTO_SET.mobile.width}
+          height={PHOTO_SET.mobile.height}
+        />
+        <source
+          media={PHONE}
+          type="image/webp"
+          srcSet={srcSet(photoKey, "mobile", "webp")}
+          sizes="100vw"
+          width={PHOTO_SET.mobile.width}
+          height={PHOTO_SET.mobile.height}
+        />
+        <source type="image/avif" srcSet={desktop} sizes="100vw" />
+        {/* eslint-disable-next-line @next/next/no-img-element -- art-directed
+            <picture> over pre-built files; next/image can't switch frames */}
+        <img
+          className={styles.photo}
+          src={`/images/heroes/${photoKey}-desktop-1920.webp`}
+          srcSet={srcSet(photoKey, "desktop", "webp")}
+          sizes="100vw"
+          width={PHOTO_SET.desktop.width}
+          height={PHOTO_SET.desktop.height}
+          alt=""
+          aria-hidden="true"
+          fetchPriority="high"
+        />
+      </picture>
+      <div className={styles.scrim} aria-hidden="true" />
+    </>
+  );
+}
+
 export function PageHero({
   kicker,
   title,
@@ -65,9 +155,21 @@ export function PageHero({
   page,
   meta,
   visual,
+  photo,
 }: PageHeroProps) {
   return (
-    <header className={styles.hero}>
+    <header
+      className={`${styles.hero} ${photo ? styles.withPhoto : ""}`}
+      data-photo={photo}
+      style={
+        photo
+          ? ({
+              "--hero-subject": heroPhotos[photo].mobileSubject,
+            } as React.CSSProperties)
+          : undefined
+      }
+    >
+      {photo ? <HeroPhotoLayer photoKey={photo} /> : null}
       <div className={styles.glow} aria-hidden="true" />
       <div className={`${styles.inner} ${visual ? styles.withVisual : ""}`}>
         <div className={styles.copy}>

@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { gameFilters, gamesFinalCta, gamesHero } from "@/lib/content";
+import { gameFilters, gamesFinalCta, gamesHero, heroOgImage } from "@/lib/content";
 import { pageMetadata } from "@/lib/pageMetadata";
 import { PageHero } from "@/components/ui/PageHero";
 import { FilterBoot } from "@/components/ui/FilterBoot";
@@ -11,6 +11,7 @@ export const metadata: Metadata = pageMetadata({
   title: "Golf Side Games: Rules, Scoring & Payouts",
   description:
     "Learn the rules, scoring and payouts for Skins, Nassau, Wolf, Bingo Bango Bongo and more golf side games.",
+  image: heroOgImage("games"),
 });
 
 /**
@@ -29,6 +30,7 @@ export default function GamesPage() {
       <FilterBoot param="filter" ids={gameFilters.map((f) => f.id)} />
 
       <PageHero
+        photo="games"
         {...gamesHero}
         breadcrumbs={[{ label: "Home", href: "/" }, { label: "Games" }]}
       />

@@ -6,6 +6,7 @@ import {
   blogTopicIds,
   featuredPost,
   publishedPosts,
+  heroOgImage,
 } from "@/lib/content";
 import { pageMetadata } from "@/lib/pageMetadata";
 import { siteConfig } from "@/lib/siteConfig";
@@ -25,6 +26,7 @@ export const metadata: Metadata = pageMetadata({
   title: "Golf Side-Game Rules, Handicaps & Etiquette",
   description:
     "Golf side-game rules, skins carryovers, Nassau presses, strategy and settling-up etiquette for friendly wagers, from GoLo.",
+  image: heroOgImage("blog"),
 });
 
 /** Only published posts go in the feed — an unwritten card isn't a page. */
@@ -58,6 +60,7 @@ export default function BlogPage() {
       <FilterBoot param="topic" ids={blogTopicIds} />
 
       <PageHero
+        photo="blog"
         {...blogHero}
         breadcrumbs={[{ label: "Home", href: "/" }, { label: "Blog" }]}
         meta={

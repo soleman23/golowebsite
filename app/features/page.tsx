@@ -6,6 +6,7 @@ import {
   featureBlocks,
   quickAnswers,
   type FeatureVisual,
+  heroOgImage,
 } from "@/lib/content";
 import { pageMetadata } from "@/lib/pageMetadata";
 import { siteConfig } from "@/lib/siteConfig";
@@ -34,6 +35,7 @@ export const metadata: Metadata = pageMetadata({
   title: "Golf Scorecard App With Live Side-Game Scoring",
   description:
     "Track golf scores, handicaps, Nassau presses and side games in one round. See how GoLo calculates balances and simplifies settling up.",
+  image: heroOgImage("features"),
 });
 
 /** Which mockup renders for each block, and whether it's a card or a phone. */
@@ -74,6 +76,7 @@ export default function FeaturesPage() {
   return (
     <>
       <PageHero
+        photo="features"
         kicker="EVERYTHING GOLO DOES"
         title="A scorecard that can do arithmetic, keep a bet straight, and remember who owes who."
         lead="Set the round, stack the games, tap in scores. GoLo handles the strokes, the presses, the junk and the math — and hands you one number per player before anyone leaves the lot."

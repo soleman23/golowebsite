@@ -26,6 +26,8 @@ type PageMetadataInput = {
   /** Search title, without the "· GoLo" suffix. */
   title: string;
   description: string;
+  /** Share card for this page. Defaults to the site-wide card. */
+  image?: { url: string; width: number; height: number; alt: string };
 };
 
 /** Keep search and social previews aligned for each marketing page. */
@@ -33,6 +35,7 @@ export function pageMetadata({
   path,
   title,
   description,
+  image,
 }: PageMetadataInput): Metadata {
   const socialTitle = `${title} · ${siteConfig.name}`;
   return {
@@ -45,6 +48,7 @@ export function pageMetadata({
     // into it, so the site-wide defaults are spread back in.
     openGraph: {
       ...socialDefaults.openGraph,
+      ...(image ? { images: [image] } : null),
       url: path,
       title: socialTitle,
       description,
