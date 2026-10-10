@@ -67,9 +67,11 @@ const PHOTO_SET = {
   desktop: { widths: [1280, 1920, 2560], width: 2688, height: 1152 },
   mobile: { widths: [480, 768, 1080], width: 1792, height: 2240 },
 } as const;
-/* Matches the art-direction switch in PageHero.module.css. */
+/* Matches the art-direction switch in PageHero.module.css. DESKTOP is the
+   exact complement, so a fractional width (767.5px when zoomed) still gets a
+   preload rather than falling between the two. */
 const PHONE = "(max-width: 767px)";
-const DESKTOP = "(min-width: 768px)";
+const DESKTOP = "not all and (max-width: 767px)";
 
 function srcSet(key: HeroPhotoKey, variant: keyof typeof PHOTO_SET, ext: string) {
   return PHOTO_SET[variant].widths
@@ -169,8 +171,15 @@ export function PageHero({
           : undefined
       }
     >
-      {photo ? <HeroPhotoLayer photoKey={photo} /> : null}
-      <div className={styles.glow} aria-hidden="true" />
+      {/* A photo bakes its own glow into the same corner. Stacked, the CSS
+          one only hazed it (+45-70% mean brightness there at 1280px) and at
+          wide phone widths pulled the meta chips under AA, so it's one or
+          the other. */}
+      {photo ? (
+        <HeroPhotoLayer photoKey={photo} />
+      ) : (
+        <div className={styles.glow} aria-hidden="true" />
+      )}
       <div className={`${styles.inner} ${visual ? styles.withVisual : ""}`}>
         <div className={styles.copy}>
           {breadcrumbs?.length ? (

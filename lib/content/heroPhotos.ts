@@ -11,7 +11,6 @@
 export type HeroPhotoKey = "faq" | "blog" | "games" | "features";
 
 export type HeroPhoto = {
-  key: HeroPhotoKey;
   /**
    * How much of the 4:5 phone frame, measured up from the bottom, the subject
    * takes. On phones the hero leaves that much room under the copy, so the
@@ -24,22 +23,18 @@ export type HeroPhoto = {
 
 export const heroPhotos: Record<HeroPhotoKey, HeroPhoto> = {
   faq: {
-    key: "faq",
     mobileSubject: 0.55,
     ogAlt: "A pint, a golf ball, a glove and a pencilled scorecard on a dark bar top.",
   },
   blog: {
-    key: "blog",
     mobileSubject: 0.56,
     ogAlt: "A golf cart parked beside a cart path at dusk, clubs in the back.",
   },
   games: {
-    key: "games",
     mobileSubject: 0.45,
     ogAlt: "Golf balls around the cup on a putting green at dusk, flagstick in the hole.",
   },
   features: {
-    key: "features",
     mobileSubject: 0.54,
     ogAlt: "A phone showing a scorecard on a golf cart dash, next to a paper card, a pencil, a ball and tees.",
   },

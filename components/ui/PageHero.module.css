@@ -21,14 +21,6 @@
   pointer-events: none;
 }
 
-/* A hero photo has its own glow baked into the same corner, so this one comes
-   off. Stacked on the photo it only hazed it (+45-70% mean brightness in the
-   corner at 1280px), and at wide phone widths the two together pulled the
-   meta chips under AA. */
-.withPhoto .glow {
-  display: none;
-}
-
 /* The scrim already fades the photo into the page at the foot of the hero,
    so the hairline would only draw an edge across that fade. */
 .withPhoto {
@@ -36,8 +28,9 @@
 }
 
 /* --- photo behind the copy (the `photo` prop) ---
-   Paint order is DOM order: photo, scrim, glow, then .inner on top. The photo
-   never sizes the hero, so it can't shift layout when it lands.
+   Paint order is DOM order: photo, scrim, then .inner on top (a photo hero
+   renders no .glow — see PageHero.tsx). The photo never sizes the hero, so
+   it can't shift layout when it lands.
    Wide frames: subject on the right, so the scrim darkens left-to-right under
    the copy. Phone frames: subject at the bottom — see the narrow block. */
 .photo,
@@ -76,7 +69,8 @@
     );
 }
 
-/* Measured widest reach of each page's copy, plus a little air. */
+/* Measured widest reach of each page's copy, plus a little air. Re-measure
+   if that page's hero copy changes: a longer line would run past the guard. */
 .hero[data-photo="faq"] .scrim {
   --copy-span: 760px;
 }
