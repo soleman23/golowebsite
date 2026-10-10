@@ -235,19 +235,6 @@ cd /var/www/golowebsite && npm run deploy
 npm run deploy -- --db       # same, but also runs db:push (only if the schema changed)
 ```
 
-**Automatic deploys on push (optional):** `.github/workflows/deploy.yml` SSHes
-into the VPS and runs `scripts/deploy.sh` on every push to `main`. Enable it by
-adding these repo secrets (Settings → Secrets and variables → Actions):
-
-| Secret | Value |
-| --- | --- |
-| `VPS_HOST` | VPS IP or hostname |
-| `VPS_USER` | SSH user (e.g. `root`) |
-| `VPS_SSH_KEY` | a private SSH key whose public key is in the VPS `~/.ssh/authorized_keys` |
-| `VPS_PORT` | (optional) SSH port, defaults to `22` |
-
-Until `VPS_HOST` is set, the workflow safely skips instead of failing.
-
 **Health check:** point any uptime monitor at `GET /api/health`.
 
 > `next.config.mjs` uses `output: "standalone"`. On a VPS the simplest run is
