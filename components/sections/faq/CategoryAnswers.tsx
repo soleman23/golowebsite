@@ -37,9 +37,6 @@ export function CategoryAnswers() {
             page="faq"
             idPrefix="faq"
             deepLink
-            // Answers here run long, and some carry a callout and a link on
-            // top. 720 clears the tallest of them at 320px without clipping.
-            maxPanelHeight={720}
             defaultOpen={
               i === 0 && category.items[0] ? [category.items[0].id] : []
             }
