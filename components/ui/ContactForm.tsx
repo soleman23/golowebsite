@@ -21,6 +21,7 @@ import {
 } from "@/lib/content/contactTopics";
 import { siteConfig } from "@/lib/siteConfig";
 import { track } from "@/lib/analytics";
+import { revealFocusRing } from "@/lib/revealFocusRing";
 import styles from "./ContactForm.module.css";
 
 type Status = "idle" | "submitting" | "success" | "error";
@@ -304,6 +305,8 @@ export function ContactForm({ topic, onTopicChange }: ContactFormProps) {
             className={styles.textarea}
             value={values.message}
             onChange={(e) => update("message", e.target.value)}
+            // Tab only brings the caret's line into view, not the field.
+            onFocus={(e) => revealFocusRing(e.currentTarget)}
             aria-invalid={Boolean(errors.message)}
             aria-describedby={errors.message ? errorId("message") : undefined}
             disabled={submitting}

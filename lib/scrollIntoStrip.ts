@@ -8,7 +8,8 @@
  * included, so a focus event the reader didn't cause (browsers fire one on the
  * focused element when you come back to the tab) could drag the page back up
  * to a strip they'd scrolled away from. The browser already brings a
- * keyboard-focused element into the viewport on its own.
+ * keyboard-focused element into the viewport on its own; revealFocusRing
+ * covers the two places where it doesn't bring in the whole ring.
  *
  * Honours the scroller's scroll-padding, which is where the rails keep room
  * for the ring.

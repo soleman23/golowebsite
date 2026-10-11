@@ -10,6 +10,7 @@
  */
 
 import { useEffect, useState } from "react";
+import { revealFocusRing } from "@/lib/revealFocusRing";
 import styles from "./Accordion.module.css";
 
 export type AccordionItem = {
@@ -109,6 +110,14 @@ export function Accordion({
                 aria-expanded={isOpen}
                 aria-controls={panelId}
                 onClick={() => toggle(item.id)}
+                // The ring is drawn on the whole item, but Tab only brings
+                // the button into view. A closed item is no taller than its
+                // button, so only an open one needs this.
+                onFocus={
+                  isOpen
+                    ? (e) => revealFocusRing(e.currentTarget.closest(`.${styles.item}`))
+                    : undefined
+                }
               >
                 <span className={styles.questionText}>{item.question}</span>
                 <span
