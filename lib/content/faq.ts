@@ -26,7 +26,11 @@ export type FaqItem = {
 
 export type FaqCategory = {
   id: string;
-  /** Short uppercase form, for the rail chip at mid width. */
+  /**
+   * Short uppercase form, for the rail chip below 1100px. It's also the chip's
+   * accessible name there (the full label is display: none), so it has to
+   * stand on its own.
+   */
   short: string;
   label: string;
   blurb: string;
