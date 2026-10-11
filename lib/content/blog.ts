@@ -86,12 +86,6 @@ export type Post = {
     position?: string;
     /** 1200x630 share card cut from the hero. Without one the hero is shared. */
     og?: string;
-    /**
-     * How far the copy's guard reaches from the text's left edge. The 700px
-     * default covers the dek's 680px max-width; a title that balances wider
-     * than that from 1100px up sets its widest line plus air here.
-     */
-    copySpan?: string;
   };
   /** false = hidden from the index's links, 404 on the detail route. */
   published: boolean;
@@ -463,7 +457,7 @@ export const posts: Post[] = [
     dek: "Why a 12.4 becomes 14 strokes at one tee box and 11 at another, how those strokes land hole by hole, and which number belongs on the card.",
     crumb: "Handicaps",
     author: "From the GoLo team",
-    hero: { src: "/images/blog/index-vs-course-handicap-hero.webp", alt: "A blue tee marker on the back tee box, with the white tee markers on the forward tee further down the same hole", position: "100% 50%", og: "/images/blog/index-vs-course-handicap-og.jpg", copySpan: "820px" },
+    hero: { src: "/images/blog/index-vs-course-handicap-hero.webp", alt: "A blue tee marker on the back tee box, with the white tee markers on the forward tee further down the same hole", position: "100% 50%", og: "/images/blog/index-vs-course-handicap-og.jpg" },
     published: true,
     body: article(
       "Somebody in your group says “I’m a twelve.” That is a handicap index, and it is not the number he plays off today. Move him back one set of tees and it changes. Take him to a harder course and it changes again. Here is the difference, the formula, and which number belongs on the card when there is money on the hole.",
@@ -601,7 +595,7 @@ export const posts: Post[] = [
     author: "From the GoLo team",
     date: "2026-10-09",
     readMins: 5,
-    hero: { src: "/images/blog/bandon-hero.webp", alt: "A golfer and caddie walking toward a clifftop links green as a rain squall rolls in off the ocean, the flag blowing straight out", position: "94% 50%", og: "/images/blog/bandon-og.jpg", copySpan: "845px" },
+    hero: { src: "/images/blog/bandon-hero.webp", alt: "A golfer and caddie walking toward a clifftop links green as a rain squall rolls in off the ocean, the flag blowing straight out", position: "94% 50%", og: "/images/blog/bandon-og.jpg" },
     published: true,
     body: article(
       "You booked a links trip, you are walking every hole, and on the second morning it is blowing 30 out of the southwest with rain in it. Your golf will be fine — that is what you came for. Your bet will not. Stroke play does not survive weather like this, and the group usually finds that out somewhere around the 12th, when two of the four have stopped keeping score.",
