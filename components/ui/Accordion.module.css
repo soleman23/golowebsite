@@ -37,6 +37,20 @@
   font-family: inherit;
 }
 
+/* .item clips to its rounded corners, so the question's own ring, drawn
+   outside the button, never shows. Ring the whole card instead. Browsers
+   without :has() keep the old behaviour rather than losing the ring. */
+@supports selector(:has(*)) {
+  .question:focus-visible {
+    outline: none;
+  }
+
+  .item:has(.question:focus-visible) {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+  }
+}
+
 .questionText {
   font-size: 17px;
   font-weight: 800;
@@ -56,9 +70,18 @@
   transform: rotate(45deg);
 }
 
+/* A closed panel is only 0px tall, so anything focusable inside it was an
+   invisible tab stop. Hide it from the tab order and screen readers too;
+   the flip to hidden waits for the collapse to finish so it still animates. */
 .panel {
   overflow: hidden;
-  transition: max-height 0.28s ease;
+  visibility: hidden;
+  transition: max-height 0.28s ease, visibility 0s linear 0.28s;
+}
+
+.panelOpen {
+  visibility: visible;
+  transition: max-height 0.28s ease, visibility 0s;
 }
 
 .answer {

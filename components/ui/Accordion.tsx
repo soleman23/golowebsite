@@ -126,7 +126,7 @@ export function Accordion({
               id={panelId}
               role="region"
               aria-labelledby={buttonId}
-              className={styles.panel}
+              className={`${styles.panel} ${isOpen ? styles.panelOpen : ""}`}
               style={{ maxHeight: isOpen ? maxPanelHeight : 0 }}
             >
               <div className={styles.answer}>{item.answer}</div>
