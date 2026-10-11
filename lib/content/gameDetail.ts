@@ -440,15 +440,15 @@ const skins: GameDetail = {
 
 const bestScore: GameDetail = {
   slug: "best-score",
-  seoTitle: "Best Score Purse in Golf: Buy-Ins & Payout Rules",
+  seoTitle: "Golf Stroke Purse (Best Score): Buy-Ins & Payout Rules",
   name: "Best Score",
   icon: "cash",
   kicker: "POT · LOW NET TAKES IT",
   tagline: "Everybody puts the same money in the middle. Eighteen holes later the lowest net score picks it up. No per-hole math, no presses — one number decides it.",
-  metaDescription: "Set up a Best Score purse with a fair buy-in, net or gross scoring, payout places, and a clean settlement after 18 holes.",
+  metaDescription: "Set up a stroke purse — Best Score in GoLo — with a fair buy-in, net or gross scoring, payout places, and a clean settlement after 18 holes.",
   traits: ["2–8 players", "18 holes", "One buy-in", "Net or gross"],
   howTitle: "One pot, one number, one very long back nine.",
-  intro: "The simplest bet in golf and the hardest to hide in. Everyone buys in for the same amount before the round, plays their own ball for 18, and the lowest score after handicaps takes the purse. Two decisions do all the work: whether you settle on net or gross, and whether the money pays one place or two.",
+  intro: "The stroke purse, which GoLo calls Best Score: the simplest bet in golf and the hardest to hide in. Everyone buys in for the same amount before the round, plays their own ball for 18, and the lowest score after handicaps takes the purse. Two decisions do all the work: whether you settle on net or gross, and whether the money pays one place or more.",
   steps: [
     { n: "1", title: "Agree the buy-in", body: "One number, same for everybody, settled on the first tee. Most groups land between $10 and $50 a man." },
     { n: "2", title: "Net or gross", body: "Net is the default: handicap strokes come off before cards are compared. Gross works when everybody is within a couple of shots." },
@@ -507,7 +507,7 @@ const bestScore: GameDetail = {
   },
   variations: [
     { icon: "cash", title: "Winner takes all", body: "One payout, nothing to argue about, and last place funds it." },
-    { icon: "stack", title: "Two places, 70/30", body: "Pays first and second, keeping two players live down the stretch." },
+    { icon: "stack", title: "Two places, 70/30", body: "Pays first and second, keeping two players live down the stretch. GoLo splits two places evenly instead." },
     { icon: "trophy", title: "Front, back, and total", body: "Split the purse into thirds by nine for three chances to win." },
     { icon: "dice", title: "Quota purse", body: "Score Stableford points against a quota when the handicap spread is wide." },
   ],
@@ -527,8 +527,8 @@ const bestScore: GameDetail = {
   faqs: gameFaqs("best-score", [
     { q: "Net or gross?", a: "Net, unless everybody is within a shot or two. Gross otherwise turns the purse into a bet on who is already better." },
     { q: "How big should the buy-in be?", a: "Big enough to pay attention on the last three, small enough that fourth place still buys a round afterwards. Ten to fifty dollars covers most groups." },
-    { q: "Does it have to be winner-takes-all?", a: "No. Paying 70/30 to first and second is the most common compromise. In GoLo the top two or three places split the purse evenly." },
-    { q: "What happens on a tie?", a: "Split it or use a card playoff: back nine, last six, then the 18th. Pick one before teeing off. GoLo splits it." },
+    { q: "Does it have to be winner-takes-all?", a: "No. Paying 70/30 to first and second is the most common compromise. GoLo pays one place, or splits the top two or three evenly; it does not do 70/30." },
+    { q: "What happens on a tie?", a: "Split it or use a card playoff: back nine, last six, then the 18th. Pick one before teeing off. GoLo splits ties evenly and has no card playoff." },
     { q: "Can we cap a blow-up hole?", a: "Yes. Max double par keeps one disaster from deciding the purse on the third hole." },
     { q: "Can we run a purse alongside other bets?", a: "Yes. GoLo tracks the purse, skins, and side bounties from the same card and nets the result." },
   ]),
