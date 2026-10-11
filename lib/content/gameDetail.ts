@@ -156,14 +156,17 @@ const nassau: GameDetail = {
     {
       n: "5",
       title: "Net it at the 18th",
-      body: "GoLo tallies all three bets plus any presses and reduces it to a single amount each player owes or collects.",
+      body: "GoLo tallies all three bets and reduces them to a single amount each player owes or collects. It doesn’t take presses on a Nassau, so those still go on the card.",
     },
   ],
   example: {
     kicker: "WATCH IT PLAY OUT",
     title: "A $20 Nassau, front to back.",
-    lead: "You and Tom go $20 on each bet. Here's how a full round shakes out — three bets, one press, one net number at the end.",
-    // +20 − 20 + 20 + 10 = +30. Keep these reconciled with net.value.
+    lead: "You and Tom go $20 on each bet. Here's how a full round shakes out — three bets, one net number at the end.",
+    // +20 − 20 + 20 = +20. Keep these reconciled with net.value, and the
+    // phone's sequence with its stats: front 4–2, back 3–4, total 7–6, and no
+    // bet decided before its last hole (dormie on 17, a half on 18).
+    // No press: GoLo's Nassau doesn't take them (presses are Overall Match only).
     bets: [
       {
         tag: "F9",
@@ -186,18 +189,11 @@ const nassau: GameDetail = {
         value: "+$20",
         tone: "good",
       },
-      {
-        tag: "PR",
-        title: "Back-nine press",
-        detail: "Opened at 2 down, won it late",
-        value: "+$10",
-        tone: "good",
-      },
     ],
     net: {
       label: "NET · YOU COLLECT",
       sub: "Every bet rolled into one transfer",
-      value: "+$30",
+      value: "+$20",
     },
     phone: {
       opponent: "You vs Tom",
@@ -206,8 +202,8 @@ const nassau: GameDetail = {
       state: "FINAL",
       stateSub: "match complete",
       sequence: [
-        "w", "w", "h", "l", "w", "h", "w", "l", "w",
-        "l", "l", "h", "w", "w", "l", "h", "w", "w",
+        "w", "h", "l", "w", "h", "l", "w", "h", "w",
+        "l", "w", "l", "h", "w", "l", "w", "l", "h",
       ],
       stats: [
         { label: "FRONT", status: "2↑", value: "+$20", tone: "good" },
@@ -215,21 +211,21 @@ const nassau: GameDetail = {
         { label: "TOTAL", status: "1↑", value: "+$20", tone: "good" },
       ],
       callout: {
-        label: "PRESS",
-        note: "Back-nine press, hole 13 — you closed it +$10",
+        label: "DORMIE",
+        note: "2 up with two to play; a half on 18 won it",
       },
       settleTitle: "Tom pays you",
-      settleSub: "3 bets + 1 press, netted",
-      settleValue: "$30",
+      settleSub: "3 bets, netted",
+      settleValue: "$20",
       label:
-        "The finished Nassau against Tom: front nine won for $20, back nine lost for $20, the overall match won for $20, plus a back-nine press worth $10 — Tom pays you $30.",
+        "The finished Nassau against Tom: front nine won for $20, back nine lost for $20, the overall match won for $20 — Tom pays you $20.",
     },
   },
   headings: {
     variations: {
       kicker: "PRESSES & VARIATIONS",
       title: "The press is where Nassau gets dangerous.",
-      lead: "Down bad on a nine? Open a new bet for the holes that are left. GoLo tracks every press as its own line so the stack never gets confusing.",
+      lead: "Down bad on a nine? Open a new bet for the holes that are left. GoLo's Nassau doesn't take presses; in the app, presses are on the Overall Match game.",
     },
     tips: {
       kicker: "PLAY SMART",
@@ -245,7 +241,7 @@ const nassau: GameDetail = {
     },
     cta: {
       title: "Set up your Nassau in ten seconds.",
-      lead: "Pick the stake, tap the players, and let GoLo track every bet and press to the last putt.",
+      lead: "Pick the stake, tap the players, and let GoLo track all three bets to the last putt.",
     },
   },
   variations: [
@@ -257,12 +253,12 @@ const nassau: GameDetail = {
     {
       icon: "auto",
       title: "2-down auto-press",
-      body: "Set it and forget it. A new press opens automatically the moment anyone falls two behind, so nobody has to remember to call it.",
+      body: "A common house rule: a new press opens automatically the moment anyone falls two behind, so nobody has to remember to call it. GoLo doesn’t do automatic presses yet.",
     },
     {
       icon: "stack",
       title: "Presses stack",
-      body: "Each press is its own mini-match. On a wild nine you can have two or three running at once — GoLo keeps every line straight.",
+      body: "Each press is its own mini-match. On a wild nine you can have two or three running at once, which is where the card usually stops adding up.",
     },
     {
       icon: "dice",
@@ -322,12 +318,12 @@ const nassau: GameDetail = {
     {
       id: "what-is-a-press",
       q: "What exactly is a press?",
-      a: "When you fall two holes down, you can start a new bet — same stake — that only covers the holes still to play on that nine. It’s a fresh chance to win money back on a nine you’ve already lost. GoLo tracks each press as its own line.",
+      a: "When you fall two holes down, you can start a new bet — same stake — that only covers the holes still to play on that nine. It’s a fresh chance to win money back on a nine you’ve already lost. GoLo doesn’t take presses on a Nassau; in the app they’re on the Overall Match game.",
     },
     {
       id: "auto-press",
       q: "Can presses happen automatically?",
-      a: 'Yes. Turn on auto-press (usually "2-down automatic") and GoLo opens a new press for you every time you fall two behind — no need to call it out on the tee.',
+      a: 'In a lot of groups, yes: "2-down automatic" opens a new press every time someone falls two behind, without anyone calling it. GoLo doesn’t do automatic presses yet. Its Nassau takes no presses at all, and on the Overall Match game the side that’s 2 down calls each one.',
     },
     {
       id: "handicaps",
@@ -909,10 +905,10 @@ const birdies: GameDetail = {
   intro: "Put a price on a birdie before the round. Every time somebody makes one, each of the other players hands over that amount — so a $5 birdie is worth $15 in a foursome. Eagles usually pay double, and because it sits on top of whatever else you are playing, most groups leave it running all season.",
   steps: [
     { n: "1", title: "Set the price", body: "$5 a birdie is standard. Much more and one hot nine becomes a real number." },
-    { n: "2", title: "Gross or net", body: "Gross is simple. Net lets a 20 handicap into the bet when par on a stroke hole counts." },
+    { n: "2", title: "Gross or net", body: "Gross is simple. Net lets a 20 handicap into the bet when par on a stroke hole counts. GoLo counts gross birdies only." },
     { n: "3", title: "Everybody else pays the maker", body: "This is a transfer, not a pot. Every other player pays." },
     { n: "4", title: "Eagles double, aces clear the table", body: "The traditional multiplier, with optional bonuses for streaks or hard holes." },
-    { n: "5", title: "GoLo tallies every bounty", body: "Each bounty posts automatically and nets against what you owe." },
+    { n: "5", title: "GoLo tallies every bounty", body: "In GoLo it is a Skins setting: Birdie Skin, plus Eagle Skin for the double, both at your skin price. Each bounty posts automatically and nets against what you owe." },
   ],
   scoring: {
     kicker: "SETTLE THESE FIRST", title: "Four questions, asked before the first birdie.", lead: "A bounty is simple until somebody makes five of them. Here is where most groups land.",
@@ -920,7 +916,7 @@ const birdies: GameDetail = {
       { title: "Gross or net birdies?", detail: "Whether a handicap stroke can turn par into birdie", value: "GROSS" },
       { title: "What does an eagle pay?", detail: "Flat rate, double, or a number of its own", value: "DOUBLE" },
       { title: "Who pays the maker?", detail: "Every other player or only those who lost the hole", value: "EVERYBODY ELSE" },
-      { title: "Is there a cap?", detail: "What happens when one player makes five", value: "SET A CAP" },
+      { title: "Is there a cap?", detail: "What happens when one player makes five (GoLo has no cap setting)", value: "SET A CAP" },
     ],
   },
   example: {
@@ -952,12 +948,12 @@ const birdies: GameDetail = {
     },
   },
   headings: {
-    variations: { kicker: "BOUNTIES & VARIATIONS", title: "A bounty does not have to stop at birdies.", lead: "Same mechanic every time: a fixed price on one specific thing happening. Four versions worth adding." },
+    variations: { kicker: "BOUNTIES & VARIATIONS", title: "A bounty does not have to stop at birdies.", lead: "Same mechanic every time: a fixed price on one specific thing happening. Four versions worth adding. GoLo scores the plain gross bounty and sandies; net and escalating bounties, barkies and Arnies are house rules it does not track." },
     tips: { kicker: "PLAY SMART", title: "Birdies pay for the cheap risk, not every risk.", lead: "Attack the short par 5 and drivable par 4. Do not take on a tucked pin over water for the same bounty." },
     glossary: { kicker: "TALK THE TALK", title: "The bounties your group already argues about." },
     faq: { kicker: "BIRDIES, ANSWERED", title: "Before you set the price." },
     related: { kicker: "STACK IT WITH", title: "Bounties are the seasoning, not the meal.", lead: "Birdies runs on top of whatever your group already plays. Pick the game underneath it." },
-    cta: { title: "Put a price on the best shot you hit all day.", lead: "Choose the bounty and eagle multiplier. GoLo posts each one while you play." },
+    cta: { title: "Put a price on the best shot you hit all day.", lead: "Turn on Birdie Skin and Eagle Skin, set the price, and GoLo posts each one while you play." },
   },
   variations: [
     { icon: "bird", title: "Net birdies", body: "A par on a stroke hole counts, giving a high handicap a real chance." },
@@ -980,11 +976,11 @@ const birdies: GameDetail = {
   ],
   faqs: gameFaqs("birdies", [
     { q: "How much should a birdie be worth?", a: "Five dollars is the default: enough that a hot nine matters without paying the best player a salary." },
-    { q: "Should we count net birdies?", a: "Yes when the handicap spread is wide. A bet nobody can win is not much of a bet." },
-    { q: "Do eagles really pay double?", a: "Almost always, and a hole-in-one commonly clears the table. Set it before the shot." },
+    { q: "Should we count net birdies?", a: "Yes when the handicap spread is wide. A bet nobody can win is not much of a bet. GoLo counts gross birdies only, so net birdies are a house rule it does not track." },
+    { q: "Do eagles really pay double?", a: "Almost always, and a hole-in-one commonly clears the table. Set it before the shot. GoLo pays an eagle double when Eagle Skin is on, and has no separate ace bonus." },
     { q: "Who pays the maker?", a: "Everybody else pays. That is what makes it a bounty rather than a match." },
-    { q: "What if somebody goes on a run?", a: "Use a cap so a great round stays a great story instead of an awkward bill." },
-    { q: "Can we stack it on another game?", a: "Yes. Birdies runs underneath Nassau, a purse, or skins and GoLo nets it all." },
+    { q: "What if somebody goes on a run?", a: "Use a cap so a great round stays a great story instead of an awkward bill. GoLo has no cap setting, so agree one before the round and settle the difference yourselves." },
+    { q: "Can we stack it on another game?", a: "Yes. In GoLo it is part of the Skins game, so it runs beside a Nassau or a purse, with or without the standard skin, and GoLo nets it all." },
   ]),
   related: ["skins", "nassau", "closest-to-pin"], prev: "longest-drive", next: "skins",
 };

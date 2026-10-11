@@ -24,7 +24,7 @@ export function StrokeGrid() {
           <span className={styles.strokeCaption}>
             strokes at White tees
             <br />
-            slope 128 · 100% allowance
+            slope 128 · full handicap
           </span>
         </div>
 
