@@ -12,6 +12,7 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import { scrollIntoStrip } from "@/lib/scrollIntoStrip";
 import styles from "./CategoryRail.module.css";
 
 export type RailCategory = {
@@ -71,14 +72,8 @@ export function CategoryRail({ categories }: { categories: RailCategory[] }) {
                 className={`${styles.row} ${active ? styles.active : ""}`}
                 aria-current={active ? "true" : undefined}
                 // Chrome won't scroll a half-visible link into view when it
-                // takes focus, which leaves a chip and its ring hanging off
-                // the edge of the row. Same fix as ChipFilter.
-                onFocus={(e) =>
-                  e.currentTarget.scrollIntoView({
-                    block: "nearest",
-                    inline: "nearest",
-                  })
-                }
+                // takes focus; see scrollIntoStrip.
+                onFocus={(e) => scrollIntoStrip(e.currentTarget)}
               >
                 <span className={styles.num} aria-hidden="true">
                   {String(i + 1).padStart(2, "0")}

@@ -25,7 +25,6 @@ export function QuickAnswers() {
         <TrackedAccordion
           page="features"
           idPrefix="quick"
-          maxPanelHeight={360}
           items={quickAnswers.map((a) => ({
             id: a.id,
             question: a.question,

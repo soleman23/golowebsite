@@ -17,7 +17,6 @@ type TrackedAccordionProps = {
   page: string;
   defaultOpen?: string[];
   headingLevel?: 2 | 3 | 4;
-  maxPanelHeight?: number;
   idPrefix?: string;
   deepLink?: boolean;
 };

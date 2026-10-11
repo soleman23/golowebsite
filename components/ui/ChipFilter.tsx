@@ -26,6 +26,7 @@
  * from <html data-filter> in the meantime.
  */
 
+import { scrollIntoStrip } from "@/lib/scrollIntoStrip";
 import styles from "./ChipFilter.module.css";
 
 export type ChipItem = { id: string; label: string; count?: number };
@@ -64,12 +65,7 @@ export function ChipFilter({
             onClick={() => {
               if (!isActive) onChange(item.id);
             }}
-            onFocus={(e) =>
-              e.currentTarget.scrollIntoView({
-                block: "nearest",
-                inline: "nearest",
-              })
-            }
+            onFocus={(e) => scrollIntoStrip(e.currentTarget)}
           >
             {item.label}
             {item.count === undefined ? null : (

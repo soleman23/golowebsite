@@ -21,7 +21,6 @@ export function GameFaq({ game }: { game: GameDetail }) {
         <TrackedAccordion
           page={game.slug}
           idPrefix="game-faq"
-          maxPanelHeight={320}
           items={game.faqs.map((f) => ({
             id: f.id,
             question: f.q,

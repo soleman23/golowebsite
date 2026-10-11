@@ -63,9 +63,13 @@
   --max-width: 1200px;
   --gutter: clamp(18px, 4vw, 46px);
   --section-y: clamp(56px, 8vw, 110px);
-  /* How far the focus ring (2px outline at 2px offset, below) reaches past
-     its element. A scroller pads by this so it doesn't clip the ring. */
-  --focus-ring-reach: 4px;
+  /* Focus ring: every ring on the site is drawn from these. --focus-ring-reach
+     is how far it extends past its element; a scroller pads by this so it
+     doesn't clip the ring. */
+  --focus-ring-width: 2px;
+  --focus-ring-offset: 2px;
+  --focus-ring: var(--focus-ring-width) solid var(--accent);
+  --focus-ring-reach: calc(var(--focus-ring-width) + var(--focus-ring-offset));
 
   /* Radii */
   --radius-pill: 9999px;
@@ -120,8 +124,8 @@ button:focus-visible,
 input:focus-visible,
 textarea:focus-visible,
 [tabindex]:focus-visible {
-  outline: 2px solid var(--accent);
-  outline-offset: 2px;
+  outline: var(--focus-ring);
+  outline-offset: var(--focus-ring-offset);
 }
 
 /* Rounds the ring on things with square corners of their own, mostly text
@@ -137,8 +141,8 @@ textarea:focus-visible,
    Single-pseudo-class specificity, so a component's own focus style still
    wins. */
 :focus-visible {
-  outline: 2px solid var(--accent);
-  outline-offset: 2px;
+  outline: var(--focus-ring);
+  outline-offset: var(--focus-ring-offset);
 }
 
 /* ==========================================================================

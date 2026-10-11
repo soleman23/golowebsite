@@ -55,7 +55,7 @@
   }
 
   .frame:has(.video:focus-visible) {
-    outline: 2px solid var(--accent);
-    outline-offset: 2px;
+    outline: var(--focus-ring);
+    outline-offset: var(--focus-ring-offset);
   }
 }

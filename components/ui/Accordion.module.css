@@ -46,8 +46,8 @@
   }
 
   .item:has(.question:focus-visible) {
-    outline: 2px solid var(--accent);
-    outline-offset: 2px;
+    outline: var(--focus-ring);
+    outline-offset: var(--focus-ring-offset);
   }
 }
 
@@ -70,18 +70,29 @@
   transform: rotate(45deg);
 }
 
-/* A closed panel is only 0px tall, so anything focusable inside it was an
-   invisible tab stop. Hide it from the tab order and screen readers too;
-   the flip to hidden waits for the collapse to finish so it still animates. */
+/* The panel opens to the answer's own height: its one grid row animates from
+   0fr to 1fr, so there's no height cap for a long answer to outgrow and get
+   cut off under. A closed panel is 0px tall, so anything focusable inside it
+   would be an invisible tab stop; it's hidden from the tab order and screen
+   readers too, and the flip to hidden waits for the collapse to finish so it
+   still animates. */
 .panel {
-  overflow: hidden;
+  display: grid;
+  grid-template-rows: 0fr;
   visibility: hidden;
-  transition: max-height 0.28s ease, visibility 0s linear 0.28s;
+  transition: grid-template-rows 0.28s ease, visibility 0s linear 0.28s;
 }
 
 .panelOpen {
+  grid-template-rows: 1fr;
   visibility: visible;
-  transition: max-height 0.28s ease, visibility 0s;
+  transition: grid-template-rows 0.28s ease, visibility 0s;
+}
+
+/* No padding here: the answer's padding would hold the row open. */
+.panelInner {
+  min-height: 0;
+  overflow: hidden;
 }
 
 .answer {

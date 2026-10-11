@@ -30,7 +30,6 @@ export function ContactFaq() {
         <TrackedAccordion
           page="contact"
           idPrefix="contact-faq"
-          maxPanelHeight={280}
           defaultOpen={[]}
           items={contactFaqs.map((item) => ({
             id: item.id,

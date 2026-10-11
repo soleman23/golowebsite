@@ -26,8 +26,6 @@ type AccordionProps = {
   onOpen?: (id: string) => void;
   /** Heading level wrapping each question button. */
   headingLevel?: 2 | 3 | 4;
-  /** Panel height cap for the open transition. */
-  maxPanelHeight?: number;
   /** Prefix for the generated button/panel ids, so two accordions can coexist. */
   idPrefix?: string;
   /**
@@ -44,7 +42,6 @@ export function Accordion({
   defaultOpen,
   onOpen,
   headingLevel = 3,
-  maxPanelHeight = 320,
   idPrefix = "accordion",
   deepLink = false,
 }: AccordionProps) {
@@ -127,9 +124,10 @@ export function Accordion({
               role="region"
               aria-labelledby={buttonId}
               className={`${styles.panel} ${isOpen ? styles.panelOpen : ""}`}
-              style={{ maxHeight: isOpen ? maxPanelHeight : 0 }}
             >
-              <div className={styles.answer}>{item.answer}</div>
+              <div className={styles.panelInner}>
+                <div className={styles.answer}>{item.answer}</div>
+              </div>
             </div>
           </div>
         );
