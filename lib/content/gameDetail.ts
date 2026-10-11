@@ -455,7 +455,7 @@ const bestScore: GameDetailCopy = {
     { n: "1", title: "Agree the buy-in", body: "One number, same for everybody, settled on the first tee. Most groups land between $10 and $50 a man." },
     { n: "2", title: "Net or gross", body: "Net is the default: handicap strokes come off before cards are compared. Gross works when everybody is within a couple of shots." },
     { n: "3", title: "Decide how it pays", body: "Winner-takes-all is cleanest. Paying 70/30 to first and second keeps two players interested walking to 18. GoLo pays one place, or splits the top two or three evenly." },
-    { n: "4", title: "Cap the disasters", body: "Max double par, or net double bogey, so one lost ball on the third hole does not end somebody’s afternoon." },
+    { n: "4", title: "Cap the disasters", body: "Plenty of groups cap a hole at double par, so one lost ball on the third hole does not end somebody’s afternoon. GoLo scores what you enter, so put in the capped number." },
     { n: "5", title: "GoLo settles the purse", body: "Enter scores as you play. GoLo allocates strokes, keeps a live net leaderboard, and splits the places at the end." },
   ],
   scoring: {
@@ -466,7 +466,7 @@ const bestScore: GameDetailCopy = {
       { title: "Net or gross?", detail: "Whether handicap strokes come off before cards are compared", value: "NET" },
       { title: "How many places pay?", detail: "One winner, or the top two or three in equal shares", value: "WINNER TAKES ALL" },
       { title: "Where do handicaps come from?", detail: "A posted index converted for the tees", value: "COURSE HANDICAP" },
-      { title: "What happens on a blow-up hole?", detail: "One triple can decide a purse before the turn", value: "MAX DOUBLE PAR" },
+      { title: "What happens on a blow-up hole?", detail: "One triple can decide a purse before the turn. GoLo scores what you enter", value: "MAX DOUBLE PAR" },
     ],
   },
   example: {
@@ -476,8 +476,8 @@ const bestScore: GameDetailCopy = {
     bets: [
       { tag: "69", tagSub: "NET", title: "You — 78 gross, 9 strokes", detail: "Birdie on 17 to take the low card", value: "+$120", tone: "good" },
       { tag: "70", tagSub: "NET", title: "Mike — 74 gross, 4 strokes", detail: "Low round of the day, one net shot short", value: "−$40", tone: "bad" },
-      { tag: "72", tagSub: "NET", title: "Tom — 86 gross, 14 strokes", detail: "Double on 12 cost him a place", value: "−$40", tone: "bad" },
-      { tag: "75", tagSub: "NET", title: "Dave — 95 gross, 20 strokes", detail: "Two blow-ups, both capped at double par", value: "−$40", tone: "bad" },
+      { tag: "72", tagSub: "NET", title: "Tom — 86 gross, 14 strokes", detail: "A double on 12 left him three back", value: "−$40", tone: "bad" },
+      { tag: "75", tagSub: "NET", title: "Dave — 95 gross, 20 strokes", detail: "Two blow-ups, both entered at double par", value: "−$40", tone: "bad" },
     ],
     standings: [
       { name: "You", note: "1st · net 69", value: "+$120", tone: "good" },
@@ -531,7 +531,7 @@ const bestScore: GameDetailCopy = {
     { q: "How big should the buy-in be?", a: "Big enough to pay attention on the last three, small enough that fourth place still buys a round afterwards. Ten to fifty dollars covers most groups." },
     { q: "Does it have to be winner-takes-all?", a: "No. Paying 70/30 to first and second is the most common compromise. GoLo pays one place, or splits the top two or three evenly; it does not do 70/30." },
     { q: "What happens on a tie?", a: "Split it or use a card playoff: back nine, last six, then the 18th. Pick one before teeing off. GoLo splits ties evenly and has no card playoff." },
-    { q: "Can we cap a blow-up hole?", a: "Yes. Max double par keeps one disaster from deciding the purse on the third hole." },
+    { q: "Can we cap a blow-up hole?", a: "Yes, as a house rule. GoLo does not cap scores, so enter the capped number — double par, say — when that is what your group agreed." },
     { q: "Can we run a purse alongside other bets?", a: "Yes. GoLo tracks the purse, skins, and side bounties from the same card and nets the result." },
   ]),
   related: ["skins", "nassau", "birdies"], prev: "nassau", next: "wolf",
