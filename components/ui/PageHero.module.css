@@ -86,6 +86,9 @@
 .hero[data-photo="how-it-works"] .scrim {
   --copy-span: 800px;
 }
+.hero[data-photo="contact"] .scrim {
+  --copy-span: 860px;
+}
 
 .inner {
   position: relative;
