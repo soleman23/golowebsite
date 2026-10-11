@@ -18,6 +18,12 @@ export function PostHero({ post }: { post: Post }) {
   return (
     <header
       className={post.hero ? `${styles.hero} ${styles.withPhoto}` : styles.hero}
+      // A title wider than the dek widens the copy's guard. See .inner::before.
+      style={
+        post.hero?.copySpan
+          ? ({ "--copy-span": post.hero.copySpan } as React.CSSProperties)
+          : undefined
+      }
     >
       {post.hero ? (
         <Image
@@ -25,8 +31,10 @@ export function PostHero({ post }: { post: Post }) {
           alt={post.hero.alt}
           fill
           sizes="100vw"
-          // The LCP element on this page.
+          // The LCP element on this page. priority alone preloads it eagerly
+          // but at default priority; fetchPriority puts it ahead of the rest.
           priority
+          fetchPriority="high"
           className={styles.photo}
           style={{ "--phone-position": post.hero.position } as React.CSSProperties}
         />

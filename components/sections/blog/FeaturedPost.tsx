@@ -22,6 +22,7 @@ export function FeaturedPost({ post }: { post: Post }) {
             // The featured photo is the largest thing above the fold here.
             priority
             className={styles.image}
+            style={{ objectPosition: post.hero.position }}
           />
         ) : null}
         <span className={styles.category}>

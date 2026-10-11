@@ -72,8 +72,9 @@
    over 10vw on the right. It tracks the copy's height however the title
    wraps, and the photo shows clear above it.
 
-   --copy-span is the dek's 680px max-width plus air — the widest line on every
-   post today. A title that balances wider than that needs it re-measured.
+   --copy-span defaults to the dek's 680px max-width plus air. A title that
+   balances wider than that from 1100px up sets its own, from post.hero.copySpan
+   on the header: its widest line, measured, plus the same air.
    z-index -1 keeps the band under the text: .inner is its stacking context. */
 .withPhoto .inner::before {
   --top-pad: clamp(40px, 6vw, 80px);
