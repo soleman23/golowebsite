@@ -13,7 +13,13 @@ import { useEffect, useState } from "react";
 import { scrollIntoStrip } from "@/lib/scrollIntoStrip";
 import styles from "./TocRail.module.css";
 
-export type TocItem = { id: string; num: string; title: string };
+export type TocItem = {
+  id: string;
+  num: string;
+  title: string;
+  /** Shown instead of the title in the strip layout; see .hasShort. */
+  short?: string;
+};
 
 export function TocRail({ items }: { items: TocItem[] }) {
   const [activeId, setActiveId] = useState(items[0]?.id ?? "");
@@ -60,7 +66,7 @@ export function TocRail({ items }: { items: TocItem[] }) {
             <li key={item.id}>
               <a
                 href={`#${item.id}`}
-                className={`${styles.row} ${active ? styles.active : ""}`}
+                className={`${styles.row} ${item.short ? styles.hasShort : ""} ${active ? styles.active : ""}`}
                 aria-current={active ? "true" : undefined}
                 // Chrome won't scroll a half-visible link into view when it
                 // takes focus; see scrollIntoStrip.
@@ -70,6 +76,11 @@ export function TocRail({ items }: { items: TocItem[] }) {
                   {item.num}
                 </span>
                 <span className={styles.title}>{item.title}</span>
+                {item.short ? (
+                  <span className={styles.short} aria-hidden="true">
+                    {item.short}
+                  </span>
+                ) : null}
               </a>
             </li>
           );

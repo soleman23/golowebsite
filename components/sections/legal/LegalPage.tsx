@@ -128,6 +128,7 @@ export function LegalPage({
               id: s.id,
               num: s.num,
               title: s.title,
+              short: s.tocLabel,
             }))}
           />
 
