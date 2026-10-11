@@ -331,9 +331,9 @@ const nassau: GameDetail = {
       a: "They can. Enter each player’s index and GoLo allocates strokes hole by hole using the course stroke index, so a net Nassau plays fair between a 5 and a 20. You can also run it straight-up gross.",
     },
   ],
-  related: ["skins", "wolf", "stroke-purse"],
+  related: ["skins", "wolf", "best-score"],
   prev: "skins",
-  next: "stroke-purse",
+  next: "best-score",
 };
 
 function gameFaqs(
@@ -433,26 +433,26 @@ const skins: GameDetail = {
     { q: "Can we play skins with handicaps?", a: "Yes. GoLo allocates strokes by the course stroke index, or you can run it straight gross." },
     { q: "What if the last hole gets halved?", a: "Choose before the round: split the pot, chip off, or carry it to next week." },
   ]),
-  related: ["nassau", "birdies", "stroke-purse"],
+  related: ["nassau", "birdies", "best-score"],
   prev: "birdies",
   next: "nassau",
 };
 
-const strokePurse: GameDetail = {
-  slug: "stroke-purse",
-  seoTitle: "Golf Stroke Play Purse: Buy-Ins & Payout Rules",
-  name: "Stroke Purse",
+const bestScore: GameDetail = {
+  slug: "best-score",
+  seoTitle: "Golf Stroke Purse (Best Score): Buy-Ins & Payout Rules",
+  name: "Best Score",
   icon: "cash",
   kicker: "POT · LOW NET TAKES IT",
   tagline: "Everybody puts the same money in the middle. Eighteen holes later the lowest net score picks it up. No per-hole math, no presses — one number decides it.",
-  metaDescription: "Set up a stroke purse with a fair buy-in, net or gross scoring, payout places, and a clean settlement after 18 holes.",
+  metaDescription: "Set up a stroke purse — Best Score in GoLo — with a fair buy-in, net or gross scoring, payout places, and a clean settlement after 18 holes.",
   traits: ["2–8 players", "18 holes", "One buy-in", "Net or gross"],
   howTitle: "One pot, one number, one very long back nine.",
-  intro: "The simplest bet in golf and the hardest to hide in. Everyone buys in for the same amount before the round, plays their own ball for 18, and the lowest score after handicaps takes the purse. Two decisions do all the work: whether you settle on net or gross, and whether the money pays one place or two.",
+  intro: "The stroke purse, which GoLo calls Best Score: the simplest bet in golf and the hardest to hide in. Everyone buys in for the same amount before the round, plays their own ball for 18, and the lowest score after handicaps takes the purse. Two decisions do all the work: whether you settle on net or gross, and whether the money pays one place or more.",
   steps: [
     { n: "1", title: "Agree the buy-in", body: "One number, same for everybody, settled on the first tee. Most groups land between $10 and $50 a man." },
     { n: "2", title: "Net or gross", body: "Net is the default: handicap strokes come off before cards are compared. Gross works when everybody is within a couple of shots." },
-    { n: "3", title: "Decide how it pays", body: "Winner-takes-all is cleanest. Paying 70/30 to first and second keeps two players interested walking to 18." },
+    { n: "3", title: "Decide how it pays", body: "Winner-takes-all is cleanest. Paying 70/30 to first and second keeps two players interested walking to 18. GoLo pays one place, or splits the top two or three evenly." },
     { n: "4", title: "Cap the disasters", body: "Max double par, or net double bogey, so one lost ball on the third hole does not end somebody’s afternoon." },
     { n: "5", title: "GoLo settles the purse", body: "Enter scores as you play. GoLo allocates strokes, keeps a live net leaderboard, and splits the places at the end." },
   ],
@@ -462,7 +462,7 @@ const strokePurse: GameDetail = {
     lead: "A purse only goes sideways when nobody agreed how it pays out. Here is where most groups land.",
     rows: [
       { title: "Net or gross?", detail: "Whether handicap strokes come off before cards are compared", value: "NET" },
-      { title: "How many places pay?", detail: "One winner takes everything, or 70/30 to first and second", value: "70 / 30" },
+      { title: "How many places pay?", detail: "One winner, or the top two or three in equal shares", value: "WINNER TAKES ALL" },
       { title: "Where do handicaps come from?", detail: "A posted index converted for the tees", value: "COURSE HANDICAP" },
       { title: "What happens on a blow-up hole?", detail: "One triple can decide a purse before the turn", value: "MAX DOUBLE PAR" },
     ],
@@ -470,20 +470,20 @@ const strokePurse: GameDetail = {
   example: {
     kicker: "WATCH IT PLAY OUT",
     title: "$40 a man, a $160 purse, and one net shot between first and second.",
-    lead: "Four players, net scoring off the course handicap, paying 70/30. Mike shot the low gross round of the day and still finished second.",
+    lead: "Four players, net scoring off the course handicap, winner takes all. Mike shot the low gross round of the day and finished second, which pays the same as fourth.",
     bets: [
-      { tag: "69", tagSub: "NET", title: "You — 78 gross, 9 strokes", detail: "Birdie on 17 to take the low card", value: "+$72", tone: "good" },
-      { tag: "70", tagSub: "NET", title: "Mike — 74 gross, 4 strokes", detail: "Low round of the day, one net shot short", value: "+$8", tone: "neutral" },
+      { tag: "69", tagSub: "NET", title: "You — 78 gross, 9 strokes", detail: "Birdie on 17 to take the low card", value: "+$120", tone: "good" },
+      { tag: "70", tagSub: "NET", title: "Mike — 74 gross, 4 strokes", detail: "Low round of the day, one net shot short", value: "−$40", tone: "bad" },
       { tag: "72", tagSub: "NET", title: "Tom — 86 gross, 14 strokes", detail: "Double on 12 cost him a place", value: "−$40", tone: "bad" },
       { tag: "75", tagSub: "NET", title: "Dave — 95 gross, 20 strokes", detail: "Two blow-ups, both capped at double par", value: "−$40", tone: "bad" },
     ],
     standings: [
-      { name: "You", note: "1st · net 69", value: "+$72", tone: "good" },
-      { name: "Mike", note: "2nd · net 70", value: "+$8", tone: "good" },
+      { name: "You", note: "1st · net 69", value: "+$120", tone: "good" },
+      { name: "Mike", note: "2nd · net 70", value: "−$40", tone: "bad" },
       { name: "Tom", note: "3rd · net 72", value: "−$40", tone: "bad" },
       { name: "Dave", note: "4th · net 75", value: "−$40", tone: "bad" },
     ],
-    net: { label: "PURSE · YOU COLLECT", sub: "First place at 70%", value: "+$72" },
+    net: { label: "PURSE · YOU COLLECT", sub: "The whole purse, less your buy-in", value: "+$120" },
     phone: {
       opponent: "Four-player purse", through: "18", of: "/ 18", state: "FINAL", stateSub: "net leaderboard",
       sequence: ["h", "h", "w", "h", "h", "w", "h", "h", "h", "w", "l", "h", "w", "l", "h", "w", "h", "h"],
@@ -492,22 +492,22 @@ const strokePurse: GameDetail = {
         { label: "PURSE", status: "$160", value: "4 buy-ins", tone: "neutral" },
         { label: "PLACE", status: "1st", value: "of 4", tone: "good" },
       ],
-      callout: { label: "PAYOUT", note: "First $112 · second $48 before entry cost" },
-      settleTitle: "You collect", settleSub: "Purse payout, netted", settleValue: "$72",
-      label: "Final stroke purse leaderboard: your net 69 wins the 160 dollar purse and your net settlement is 72 dollars.",
+      callout: { label: "PAYOUT", note: "Winner takes all: $160, less your $40 buy-in" },
+      settleTitle: "You collect", settleSub: "Purse payout, netted", settleValue: "$120",
+      label: "Final Best Score leaderboard: your net 69 wins the 160 dollar purse, winner takes all, and your net settlement is 120 dollars.",
     },
   },
   headings: {
-    variations: { kicker: "WAYS TO SPLIT IT", title: "Winner-takes-all is one option, not the only one.", lead: "How the purse pays out changes how the whole round feels. Four structures groups actually use." },
+    variations: { kicker: "WAYS TO SPLIT IT", title: "Winner-takes-all is one option, not the only one.", lead: "How the purse pays out changes how the whole round feels. Four structures groups actually use. GoLo does winner-takes-all and even splits of the top two or three; 70/30, a purse split by nines and a quota purse are house rules it does not track." },
     tips: { kicker: "PLAY SMART", title: "A purse is won on your worst holes, not your best.", lead: "Nobody wins with the round they planned. They win by turning the three holes that got away into bogeys instead of doubles." },
     glossary: { kicker: "TALK THE TALK", title: "The words that decide who gets paid." },
-    faq: { kicker: "STROKE PURSE, ANSWERED", title: "Before you put money in the middle." },
+    faq: { kicker: "BEST SCORE, ANSWERED", title: "Before you put money in the middle." },
     related: { kicker: "PLAYS WELL WITH", title: "A purse plus one side game is the standard Saturday.", lead: "The purse settles the round. Everything else keeps the holes in between interesting." },
     cta: { title: "One buy-in. One number. No spreadsheet.", lead: "Set the purse, choose the places, and let GoLo keep the live net leaderboard honest." },
   },
   variations: [
     { icon: "cash", title: "Winner takes all", body: "One payout, nothing to argue about, and last place funds it." },
-    { icon: "stack", title: "Two places, 70/30", body: "Pays first and second, keeping two players live down the stretch." },
+    { icon: "stack", title: "Two places, 70/30", body: "Pays first and second, keeping two players live down the stretch. GoLo splits two places evenly instead." },
     { icon: "trophy", title: "Front, back, and total", body: "Split the purse into thirds by nine for three chances to win." },
     { icon: "dice", title: "Quota purse", body: "Score Stableford points against a quota when the handicap spread is wide." },
   ],
@@ -524,11 +524,11 @@ const strokePurse: GameDetail = {
     { term: "Places", def: "How many finishers get paid." },
     { term: "Quota", def: "A Stableford variant that scores points against a target." },
   ],
-  faqs: gameFaqs("stroke-purse", [
+  faqs: gameFaqs("best-score", [
     { q: "Net or gross?", a: "Net, unless everybody is within a shot or two. Gross otherwise turns the purse into a bet on who is already better." },
     { q: "How big should the buy-in be?", a: "Big enough to pay attention on the last three, small enough that fourth place still buys a round afterwards. Ten to fifty dollars covers most groups." },
-    { q: "Does it have to be winner-takes-all?", a: "No. Paying 70/30 to first and second is the most common compromise." },
-    { q: "What happens on a tie?", a: "Split it or use a card playoff: back nine, last six, then the 18th. Pick one before teeing off." },
+    { q: "Does it have to be winner-takes-all?", a: "No. Paying 70/30 to first and second is the most common compromise. GoLo pays one place, or splits the top two or three evenly; it does not do 70/30." },
+    { q: "What happens on a tie?", a: "Split it or use a card playoff: back nine, last six, then the 18th. Pick one before teeing off. GoLo splits ties evenly and has no card playoff." },
     { q: "Can we cap a blow-up hole?", a: "Yes. Max double par keeps one disaster from deciding the purse on the third hole." },
     { q: "Can we run a purse alongside other bets?", a: "Yes. GoLo tracks the purse, skins, and side bounties from the same card and nets the result." },
   ]),
@@ -623,7 +623,7 @@ const wolf: GameDetail = {
     { q: "Who is Wolf on 17 and 18?", a: "Usually the two players furthest behind, though some groups restart the rotation. Set it before the round." },
     { q: "Can we play Wolf with handicaps?", a: "Yes. GoLo allocates strokes by stroke index before deciding each best ball." },
   ]),
-  related: ["skins", "nassau", "bingo-bango-bongo"], prev: "stroke-purse", next: "bingo-bango-bongo",
+  related: ["skins", "nassau", "bingo-bango-bongo"], prev: "best-score", next: "bingo-bango-bongo",
 };
 
 const bingoBangoBongo: GameDetail = {
@@ -690,7 +690,7 @@ const bingoBangoBongo: GameDetail = {
     { icon: "clock", title: "Order of play", body: "Furthest from the hole plays first, tee to green. It is the rule the game depends on." },
     { icon: "pin", title: "Ties and half points", body: "Split the point or carry it when two balls are genuinely even." },
     { icon: "shield", title: "No handicaps required", body: "The game equalizes itself, though GoLo can still allocate strokes if your group wants them." },
-    { icon: "stack", title: "Run it under another game", body: "It stacks beneath skins or a stroke purse without changing the card." },
+    { icon: "stack", title: "Run it under another game", body: "It stacks beneath skins or a Best Score purse without changing the card." },
   ],
   tips: [
     { tone: "good", title: "Being short is an advantage", body: "You play first from 100 yards while everyone else waits — a free look at bingo." },
@@ -988,7 +988,7 @@ const birdies: GameDetail = {
 export const gameDetails = {
   skins,
   nassau,
-  "stroke-purse": strokePurse,
+  "best-score": bestScore,
   wolf,
   "bingo-bango-bongo": bingoBangoBongo,
   "closest-to-pin": closestToPin,

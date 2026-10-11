@@ -113,7 +113,7 @@ export const features: Feature[] = [
     kicker: "AUTO SETTLE-UP",
     title: "The math is done before the handshake.",
     bodyHtml:
-      "Skins, Nassau, the purse, closest-to-pin and long drive — all netted into the <strong>fewest possible transfers</strong>. No daisy-chain of Venmos. Just “you pay him, he pays her,” done.",
+      "Skins, Nassau, Best Score, closest-to-pin and long drive — all netted into the <strong>fewest possible transfers</strong>. No daisy-chain of Venmos. Just “you pay him, he pays her,” done.",
     checklist: [
       {
         lead: "One net number per person",
@@ -156,9 +156,9 @@ export const homeGames: HomeGame[] = [
     desc: "Three bets in one: front nine, back nine and the overall match.",
   },
   {
-    slug: "stroke-purse",
+    slug: "best-score",
     icon: "cash",
-    name: "Stroke Purse",
+    name: "Best Score",
     desc: "Everyone buys in; lowest net total over 18 takes the whole pot.",
   },
   {

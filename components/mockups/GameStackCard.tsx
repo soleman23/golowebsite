@@ -11,7 +11,7 @@ export function GameStackCard() {
     <div
       className={styles.gameTiles}
       role="img"
-      aria-label="The GoLo game library: Nassau, skins, Wolf, stroke purse, Bingo Bango Bongo and the junk board, each with its scoring rule."
+      aria-label="The GoLo game library: Nassau, skins, Wolf, Best Score, Bingo Bango Bongo and the junk board, each with its scoring rule."
     >
       {gameTiles.map((tile) => (
         <div

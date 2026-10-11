@@ -58,6 +58,13 @@ const nextConfig = {
       { source: "/terms-of-service", destination: "/terms", permanent: true },
       { source: "/tos", destination: "/terms", permanent: true },
       { source: "/faqs", destination: "/faq", permanent: true },
+      // Ahead of the /game/:slug catch-all, so an old link to the renamed game
+      // is one hop, not two.
+      {
+        source: "/game/stroke-purse",
+        destination: "/games/best-score",
+        permanent: true,
+      },
       // The whole /game/* namespace, not just the one game that has a detail
       // page today. Everything else about games derives from the content layer
       // (the route, generateStaticParams, the sitemap), so hardcoding a slug
@@ -66,6 +73,12 @@ const nextConfig = {
       {
         source: "/games/nassau-explained",
         destination: "/games/nassau",
+        permanent: true,
+      },
+      // Renamed to match the app, where Setup calls this game Best Score.
+      {
+        source: "/games/stroke-purse",
+        destination: "/games/best-score",
         permanent: true,
       },
       {

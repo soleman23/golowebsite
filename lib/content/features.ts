@@ -264,7 +264,7 @@ export const roadmap: RoadmapColumn[] = [
     heading: "IN THE APP TODAY",
     items: [
       "Hole-by-hole scoring, net and gross",
-      "Nassau, skins, stroke purse, junk board",
+      "Nassau, skins, Best Score, junk board",
       "Presses on the Overall Match game",
       "Handicap strokes by stroke index",
       "Netted settle-up and round history",

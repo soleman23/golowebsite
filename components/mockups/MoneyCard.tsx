@@ -15,7 +15,7 @@ type MoneyCardProps = { variant?: "games" | "players" };
 
 const LABEL = {
   games:
-    "GoLo money-on-the-line card showing Skins, Nassau, Stroke Purse and Closest to Pin standings.",
+    "GoLo money-on-the-line card showing Skins, Nassau, Best Score and Closest to Pin standings.",
   players:
     "GoLo live leaderboard through 12 holes: Mike up $42, Sarah up $11, Tom down $18, Dave down $35, with $32 carried in the skins pot.",
 };
