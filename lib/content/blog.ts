@@ -86,6 +86,12 @@ export type Post = {
     position?: string;
     /** 1200x630 share card cut from the hero. Without one the hero is shared. */
     og?: string;
+    /**
+     * How far the copy's guard reaches from the text's left edge. The 700px
+     * default covers the dek's 680px max-width; a title that balances wider
+     * than that from 1100px up sets its widest line plus air here.
+     */
+    copySpan?: string;
   };
   /** false = hidden from the index's links, 404 on the detail route. */
   published: boolean;
@@ -135,7 +141,6 @@ function article(intro: string, sections: ArticleSection[]): Block[] {
 
 const blogMedia = {
   course: "/images/course-1600.webp",
-  sunset: "/images/sunset-1600.webp",
   turf: "/images/turf-1600.webp",
   bunkerFairway: "/images/blog/bunker-fairway.webp",
   bunkerGreen: "/images/blog/bunker-green.webp",
@@ -147,12 +152,13 @@ export const posts: Post[] = [
     category: "etiquette",
     title: "Who pays first? The unwritten rules of settling up",
     excerpt:
-      "On the green, in the parking lot, or by dinner — a field guide to not being the guy everybody has to chase.",
+      "Nine rules, ranked by how often your group breaks them — starting with: if you lost, you pay first.",
     dek: "Nine rules, ranked by how often your group breaks them. Number one is not negotiable: if you lost, you pay, and you pay first.",
     crumb: "Settling up",
     author: "From the GoLo team",
     date: "2026-08-11",
     readMins: 5,
+    hero: { src: "/images/blog/who-pays-first-hero.webp", alt: "An open SUV tailgate in a wet clubhouse parking lot at dusk, a golf bag leaning on the bumper and golf shoes and a cap in the trunk", position: "87% 50%", og: "/images/blog/who-pays-first-og.jpg" },
     published: true,
     featured: true,
     body: [
@@ -229,12 +235,8 @@ export const posts: Post[] = [
         title: "THE ONE HABIT THAT FIXES EIGHT OF THESE",
         html: "Say the numbers out loud on the 18th green, while everyone is still standing there. Not \"I think you got me\" — actual figures, one per player, agreed in sixty seconds. Nearly all settle-up friction is a number two people never said to each other's faces.",
       },
+      { kind: "image", src: "/images/blog/who-pays-first-mid.webp", alt: "Four golfers silhouetted on the final green at sunset, two of them shaking hands by the flag", caption: "Sixty seconds on the last green saves a week of group texts.", position: "50% 45%" },
       { kind: "quote", text: "Nobody minds losing ten dollars. Everybody minds asking for it twice." },
-      // The tailgate photo is not sourced yet. When it lands in
-      // public/images/blog/, restore the block here:
-      // { kind: "image", src: "/images/blog/who-pays-first-tailgate.png",
-      //   alt: "Four players settling up on a tailgate after the round",
-      //   caption: "The tailgate is the real 19th hole. Anything that doesn't get settled here gets litigated by group text on Tuesday." },
       { kind: "h2", id: "why-it-matters", text: "Why any of this matters over eleven dollars" },
       { kind: "p", html: "Because the money was never the point. The bet exists to make a twilight round on a Tuesday feel like it counts — to give the eight-footer on 12 a reason to matter. Settling is what keeps that device working. Pay fast, pay first, round against yourself, and the bet stays a game instead of becoming a small unspoken thing between two guys who used to enjoy playing together." },
       { kind: "p", html: "And if remembering all nine sounds like work: the honest reason groups break these rules isn't character, it's arithmetic. Nobody wants to do six-way netting in a parking lot with a beer in his hand. So don't. Let something else keep the tally and just move the money." },
@@ -419,7 +421,7 @@ export const posts: Post[] = [
     dek: "The automatic 2-down press, the 18th-tee press, and the one press that gets you left off next week’s text — plus what auto-presses do to the size of your bet.",
     crumb: "Pressing",
     author: "From the GoLo team",
-    hero: { src: blogMedia.sunset, alt: "A green and a greenside bunker under an orange sunset, the flag in the middle distance", position: "50% 52%" },
+    hero: { src: "/images/blog/pressing-hero.webp", alt: "Two golf balls teed up side by side on a tee box at sunset, a driver resting beside them", position: "87% 50%", og: "/images/blog/pressing-og.jpg" },
     published: true,
     body: article(
       "A press is the most useful tool in a friendly bet and the fastest way to sour one. Called at the right moment it keeps a beaten player in the round; called at the wrong one it tells three people exactly what you think of them. The mechanics take a paragraph. The etiquette is the actual subject. If you need the format underneath first, the <a href=\"/games/nassau\">Nassau guide</a> has the rules.",
@@ -440,6 +442,7 @@ export const posts: Post[] = [
         { id: "friendly-rules", title: "Three rules that keep it friendly", blocks: [{ kind: "cardGrid", items: [
           { title: "Only the side that is down gets to press", body: "This is the one that separates a bet from a shakedown. If you are up and want more money on the line, you are not pressing, you are pushing. Wait until the situation reverses." },
           { title: "Call it on the tee, not after your drive", body: "A press called from the middle of the fairway after you have striped one is a different bet than a press called on the tee, and everybody knows it. Before anybody hits, or not at all." },
+        ] }, { kind: "image", src: "/images/blog/pressing-mid.webp", alt: "Two golfers talking on an elevated tee box at sunset before either one hits, a cart parked beside them", caption: "Before anybody hits, or not at all.", position: "50% 50%" }, { kind: "cardGrid", items: [
           { title: "Read the room", body: "If somebody is having a genuinely rough day, the correct move is often not to press at all. The money is not the point, and everybody can tell when you have forgotten that." },
         ] }, { kind: "quote", text: "A press should give a beaten player something to play for. If it is doing anything else, do not call it." }] },
         { id: "accept-or-decline", title: "When to say yes, and when to decline", paragraphs: ["If your group plays presses on request rather than automatically, accepting is the default. Declining a press from a player who is 3 down with four to play is technically your right and socially expensive — you are choosing to protect $5 at the cost of the next hour being awkward.", "The exception is stakes. If a press would take the round past what somebody in the group can comfortably lose, say so out loud and cap it. “Happy to press, but that is the last one” is a completely normal sentence and it protects everybody, including the guy asking."] },
@@ -460,7 +463,7 @@ export const posts: Post[] = [
     dek: "Why a 12.4 becomes 14 strokes at one tee box and 11 at another, how those strokes land hole by hole, and which number belongs on the card.",
     crumb: "Handicaps",
     author: "From the GoLo team",
-    hero: { src: blogMedia.course, alt: "A flagstick on a green at sunrise, with the clubhouse behind it", position: "50% 42%" },
+    hero: { src: "/images/blog/index-vs-course-handicap-hero.webp", alt: "A blue tee marker on the back tee box, with the white tee markers on the forward tee further down the same hole", position: "100% 50%", og: "/images/blog/index-vs-course-handicap-og.jpg", copySpan: "820px" },
     published: true,
     body: article(
       "Somebody in your group says “I’m a twelve.” That is a handicap index, and it is not the number he plays off today. Move him back one set of tees and it changes. Take him to a harder course and it changes again. Here is the difference, the formula, and which number belongs on the card when there is money on the hole.",
@@ -472,7 +475,7 @@ export const posts: Post[] = [
           { title: "A 14 gets one stroke on indexes 1 through 14", body: "Those are the holes where the player’s net score is adjusted." },
           { title: "Above 18, strokes double up", body: "A 22 gets two strokes on the four hardest holes and one everywhere else." },
           { title: "The net score settles the hole", body: "With a stroke on stroke index 3, a bogey 5 is a net 4. It halves the other player’s unaided par; a par 4 with the stroke would have won the hole." },
-        ] }, { kind: "quote", text: "“I’m a twelve” is a fact about the player. It is not the number that settles the hole." }] },
+        ] }, { kind: "image", src: "/images/blog/index-vs-course-handicap-mid.webp", alt: "A pencil resting on a scorecard clipped to a golf cart steering wheel, the fairway soft in the background", caption: "The stroke index row decides where the strokes land, not the total at the bottom.", position: "50% 50%" }, { kind: "quote", text: "“I’m a twelve” is a fact about the player. It is not the number that settles the hole." }] },
         { id: "playing-handicap", title: "In a bet, nobody plays their full number", paragraphs: ["Two more conventions sit between the course handicap and what your group actually plays, and both exist for the same reason: to stop the format from doing something silly."], blocks: [{ kind: "cardGrid", items: [
           { title: "Play the differences, not the totals", body: "In a match, the lowest course handicap plays off scratch and everybody else gets the difference. If you are 14 and your opponent is 11, he plays even and you get three strokes — on stroke index 1, 2, and 3." },
           { title: "Formats have allowances", body: "Handicap allowances exist because some formats amplify a high handicap. Four-ball match play is commonly played at 90%; individual match play at 100%. Casual groups can skip them if everybody knows that is the choice." },
@@ -492,11 +495,7 @@ export const posts: Post[] = [
     author: "From the GoLo team",
     date: "2026-10-10",
     readMins: 6,
-    // TODO photo: stock frames until the design's own land in public/images/blog/
-    // (sandbagging-hero.webp, -mid.webp, -og.jpg): a hero, a scorecard or
-    // handicap-app screenshot for the first inline, and the group in the
-    // parking lot or at the clubhouse for the second.
-    hero: { src: blogMedia.turf, alt: "Close-cut turf catching low morning sun, a flag blurred in the distance", position: "50% 56%" },
+    hero: { src: "/images/blog/sandbagging-hero.webp", alt: "A golf bag propped at the edge of a freshly raked greenside bunker, a rake lying in the sand", position: "89% 50%", og: "/images/blog/sandbagging-og.jpg" },
     published: true,
     body: article(
       "Somebody in your group wins more than he should. He has an 18 that never moves, he never seems to have a bad Saturday, and the money has been going one direction since March. You can accuse him, which ends badly whether you are right or wrong. Or you can make the numbers visible and let the group fix itself.",
@@ -527,7 +526,7 @@ export const posts: Post[] = [
           { kind: "table", head: ["Saturday game · 18 strokes", "Gross", "Net vs. par 72"], rows: [["April 12", "85", "−5"], ["April 26", "84", "−6"], ["May 10", "87", "−3"], ["May 24", "83", "−7"], ["Rounds he posted this spring", "0", "index still 18.2"], ["The pattern", "Four straight, each by three or more", "1 in 160,000"]] },
           { kind: "p", html: "Nobody here called anybody a cheat. This is four Saturdays of arithmetic, and it makes its own case." },
           { kind: "keyStat", value: "1 in 5", label: "Roughly how often an honest handicap plays to his number. If somebody in your group is doing it most weeks, you do not have a golf problem or a character problem. You have a data problem, and data problems have fixes." },
-          { kind: "image", src: blogMedia.bunkerGreen, alt: "A raked greenside bunker in late-afternoon light, the flag on the green behind it", caption: "The index is the argument. Nobody needs to raise their voice about a spreadsheet.", position: "50% 58%" },
+          { kind: "image", src: "/images/blog/sandbagging-mid-1.webp", alt: "Four golf balls lined up in a perfectly even row just short of the cup", caption: "The index is the argument. Nobody needs to raise their voice about a spreadsheet.", position: "50% 60%" },
         ] },
         { id: "patterns", title: "The patterns worth noticing", blocks: [
           { kind: "cardGrid", items: [
@@ -546,7 +545,7 @@ export const posts: Post[] = [
             { title: "Use the lowest index of the last twelve months", body: "This is how club events handle it. If a player was a 12 in September, he plays as a 12 in April. It is the single most effective rule you can adopt, and it sounds like housekeeping rather than an accusation." },
           ] },
           { kind: "callout", title: "BEFORE YOU SAY ANYTHING", html: "An accusation costs more than the money. If you are wrong you have insulted a friend over $20; if you are right, you have made the next twenty rounds awkward for four people. Change the structure first and see whether the results change with it. They usually do." },
-          { kind: "image", src: blogMedia.course, alt: "A flagstick on a green at sunrise, with the clubhouse behind it", caption: "The group that posts every round together never has this conversation.", position: "50% 58%" },
+          { kind: "image", src: "/images/blog/sandbagging-mid-2.webp", alt: "Four golfers walking up a misty fairway together at sunrise, carrying their bags", caption: "The group that posts every round together never has this conversation.", position: "50% 55%" },
         ] },
         { id: "say-something", title: "If you do have to say something", paragraphs: ["Say it privately, once, and about the bet rather than the man. “Your net has been beating par most weeks, so I think your number is stale — want to play off 14 and see how it goes?” gives him a way to fix it without admitting anything. That is the point. You are not trying to win an argument, you are trying to get an honest game back.", "And keep your own house clean. Post the 79 as promptly as you post the 94. The player who does that has standing in this conversation. The one who does not is just complaining about a better sandbagger."], blocks: [
           { kind: "summary", title: "THE SHORT VERSION", items: ["An honest handicap plays to its number about one round in five. Track that.", "Rule out improvement, laziness, slope, and home-course knowledge first.", "Fix it structurally: post every round, cap the strokes, rotate stroke-free formats, and play off the lowest index of the last twelve months.", "If you must raise it, do it privately, about the bet, and offer a number instead of a verdict."] },
@@ -602,17 +601,13 @@ export const posts: Post[] = [
     author: "From the GoLo team",
     date: "2026-10-09",
     readMins: 5,
-    // TODO photo: stock frames until the design's own land in public/images/blog/
-    // (bandon-hero.webp, -mid.webp, -og.jpg): a hero, windswept links or
-    // coastline for the first inline, and a caddie, a walking group, or dunes
-    // for the second.
-    hero: { src: blogMedia.sunset, alt: "A green and a greenside bunker under an orange sunset, the flag in the middle distance", position: "50% 45%" },
+    hero: { src: "/images/blog/bandon-hero.webp", alt: "A golfer and caddie walking toward a clifftop links green as a rain squall rolls in off the ocean, the flag blowing straight out", position: "94% 50%", og: "/images/blog/bandon-og.jpg", copySpan: "845px" },
     published: true,
     body: article(
       "You booked a links trip, you are walking every hole, and on the second morning it is blowing 30 out of the southwest with rain in it. Your golf will be fine — that is what you came for. Your bet will not. Stroke play does not survive weather like this, and the group usually finds that out somewhere around the 12th, when two of the four have stopped keeping score.",
       [
         { id: "wind-multiplier", title: "Wind is a handicap multiplier", paragraphs: ["Here is the thing nobody accounts for when they set the bet in the hotel bar the night before: hard wind does not add the same number of shots to everybody. It adds a few to the good player and a pile to everybody else.", "A low handicap flights the ball down, takes more club, and accepts 30 feet. A 20-handicap cannot do that on command, so his misses get bigger, his three-putts multiply, and one hole into the teeth of it becomes a 9. His handicap was built on calm afternoons at home; it is not a wind handicap, and no allowance in the system pretends otherwise.", "So the format does the real work out here. The same two scorecards can produce a blowout or a one-hole match, depending entirely on how you agreed to count them."], blocks: [{ kind: "atAGlance", title: "LINKS BETTING AT A GLANCE", items: [{ label: "THE GOLF", value: "Walking, caddies, 36 a day" }, { label: "THE VARIABLE", value: "Wind, and it changes mid-round" }, { label: "WHAT WORKS", value: "Match play, quota, nine-hole bets" }, { label: "WHAT BREAKS", value: "Net stroke play and big purses" }] }] },
-        { id: "four-ways", title: "One windy round, scored four ways", paragraphs: ["A real pairing: you play off 12, Rick plays off 20, and it blows all afternoon. You shoot 88. Rick shoots 104, and twelve of those shots live on three holes — a 9, an 8, and another 9, all into the wind."], blocks: [{ kind: "table", head: ["How you counted it", "Result", "When it was over"], rows: [["Net stroke play", "You win by 8 shots", "the 12th"], ["Net match play", "You win, 1 up", "the 18th green"], ["Quota points", "You +1, Rick −1", "the 17th"], ["Two nine-hole bets", "Front to Rick, back to you", "both went the distance"], ["Same two cards", "88 and 104", "four different afternoons"]] }, { kind: "p", html: "Nothing changed except the counting. Rick’s three disaster holes cost him twelve shots in stroke play and exactly three holes in <a href=\"/games/nassau\">match play</a>." }, { kind: "keyStat", value: "16", label: "Shots between the two gross scores. Match play compressed that into a one-hole match, because it does not care how badly you lose a hole — only that you lost it. In wind, that is not a technicality. It is the whole bet." }, { kind: "image", src: blogMedia.sunset, alt: "A greenside bunker and a flag under an orange evening sky", caption: "A links hole plays two clubs different depending on which way you walk off the green.", position: "50% 45%" }] },
+        { id: "four-ways", title: "One windy round, scored four ways", paragraphs: ["A real pairing: you play off 12, Rick plays off 20, and it blows all afternoon. You shoot 88. Rick shoots 104, and twelve of those shots live on three holes — a 9, an 8, and another 9, all into the wind."], blocks: [{ kind: "table", head: ["How you counted it", "Result", "When it was over"], rows: [["Net stroke play", "You win by 8 shots", "the 12th"], ["Net match play", "You win, 1 up", "the 18th green"], ["Quota points", "You +1, Rick −1", "the 17th"], ["Two nine-hole bets", "Front to Rick, back to you", "both went the distance"], ["Same two cards", "88 and 104", "four different afternoons"]] }, { kind: "p", html: "Nothing changed except the counting. Rick’s three disaster holes cost him twelve shots in stroke play and exactly three holes in <a href=\"/games/nassau\">match play</a>." }, { kind: "keyStat", value: "16", label: "Shots between the two gross scores. Match play compressed that into a one-hole match, because it does not care how badly you lose a hole — only that you lost it. In wind, that is not a technicality. It is the whole bet." }, { kind: "image", src: "/images/blog/bandon-mid-1.webp", alt: "A flag whipping in the wind on a links green ringed by dunes and gorse, the ocean beyond under storm clouds", caption: "A links hole plays two clubs different depending on which way you walk off the green.", position: "50% 50%" }] },
         { id: "formats", title: "Four formats that survive 30 miles an hour", blocks: [{ kind: "cardGrid", items: [
           { title: "Match play, everything", body: "A hole is a hole. The 9 you made on the par 3 into the wind costs one hole, not six shots, so nobody is out of the bet before lunch. If you only change one thing about your links betting, change this." },
           { title: "Quota, with a floor at zero", body: "Stableford scoring with no negatives — a wipe is simply zero points and you walk to the next tee. It keeps a card alive through two blowups and it is far easier to total on a wet scorecard than a running net." },
@@ -624,7 +619,7 @@ export const posts: Post[] = [
           { title: "If the wind moves your ball, play it from there", body: "Worth knowing rather than debating on the green: when natural forces move a ball at rest, there is no penalty and you play it from its new position. The exception is a ball on the green you have already marked and replaced, which goes back to its spot. On firm greens in 30 miles an hour, that will come up. Know it before it does." },
           { title: "Give the card to your caddie", body: "Best scorekeeper you will ever have: no stake in the bet, dry hands, and he will remember the press you called on the 13th. Keeping your own score instead? Keep it in a phone, in a zipped pocket." },
           { title: "Cap the day, not the round", body: "Thirty-six holes means two bets, and two bets at the same stake is double what you agreed to risk. Set a number for the day — the afternoon round plays for whatever is left of it." },
-        ] }, { kind: "callout", title: "BET THE NINE, NOT THE EIGHTEEN", html: "Links weather changes inside a round. A front nine downwind and a back nine into it are two different golf courses, so make them two different bets. Anyone who gets buried in the first half starts even after the turn, and the group stays honest about the fact that the wind, not the golf, did most of it." }, { kind: "image", src: blogMedia.turf, alt: "Close-cut turf catching low morning sun, a flag blurred in the distance", caption: "On foot, in weather, the scorecard is the first thing to fail. Give it to somebody with dry hands.", position: "50% 56%" }] },
+        ] }, { kind: "callout", title: "BET THE NINE, NOT THE EIGHTEEN", html: "Links weather changes inside a round. A front nine downwind and a back nine into it are two different golf courses, so make them two different bets. Anyone who gets buried in the first half starts even after the turn, and the group stays honest about the fact that the wind, not the golf, did most of it." }, { kind: "image", src: "/images/blog/bandon-mid-2.webp", alt: "A hooded caddie in the rain holding a scorecard sealed in a plastic sleeve, a golf bag on his shoulder", caption: "On foot, in weather, the scorecard is the first thing to fail. Give it to somebody with dry hands.", position: "50% 5%" }] },
         // The design says GoLo scores quota and rolls the day into one number.
         // It does neither yet (47f2b8c), so this paragraph keeps the draft.
         { id: "one-number", title: "Thirty-six holes, one number", paragraphs: ["The practical problem out here is not the formats, it is the bookkeeping. Two rounds a day, a different game each time, and a scorecard that has been through the ocean. By dinner nobody can reconstruct the morning, so the group defaults to “call it even” — a quiet way of saying the bet did not matter.", "GoLo scores match play and <a href=\"/games/skins\">skins</a> off the same card and nets each round to one number. It does not score quota, and it does not add the morning and the afternoon together yet, so a 36-hole day is two settle-ups. You still keep your hands in your pockets and let the wind be the only thing you argue about."], blocks: [{ kind: "summary", title: "THE SHORT VERSION", items: ["Wind adds more shots to high handicaps than low ones. Net stroke play cannot absorb that.", "Match play caps a disaster at one hole. Quota with a floor at zero does the same thing.", "Split the round into two nine-hole bets, because the weather already did.", "Cap the day rather than the round, and let the caddie keep the card."] }] },
