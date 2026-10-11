@@ -1,7 +1,7 @@
 /**
- * #math — the foursome's round settled: Nassau and skins per player, netted,
- * then boiled down to two payments. Every number comes from betExample and
- * nets to zero.
+ * #math — the foursome's round settled: Nassau, skins and closest-to-pin per
+ * player, netted, then boiled down to two payments. Every number comes from
+ * betExample and nets to zero.
  */
 
 import { betExample, hiwPlayerColor, type HiwPlayerName } from "@/lib/content";
@@ -20,9 +20,10 @@ function Avatar({ name, size }: { name: HiwPlayerName; size: "sm" | "md" }) {
   );
 }
 
-/** "+$10" → positive, "−$12" (real minus) → negative. */
+/** "+$10" → positive, "−$12" (real minus) → negative, "$0" → neither. */
 function tone(amount: string): string {
-  return amount.startsWith("−") ? styles.negative : styles.positive;
+  if (amount.startsWith("−")) return styles.negative;
+  return amount.startsWith("+") ? styles.positive : styles.even;
 }
 
 export function BetMath() {
@@ -62,6 +63,7 @@ export function BetMath() {
                   <th scope="col">PLAYER</th>
                   <th scope="col">NASSAU</th>
                   <th scope="col">SKINS</th>
+                  <th scope="col">CTP</th>
                   <th scope="col">NET</th>
                 </tr>
               </thead>
@@ -73,14 +75,13 @@ export function BetMath() {
                         <Avatar name={row.name} size="sm" />
                         <span className={styles.playerText}>
                           <span className={styles.playerName}>{row.name}</span>
-                          <span className={styles.playerSkins}>
-                            {row.skinsWon} {row.skinsWon === 1 ? "skin" : "skins"}
-                          </span>
+                          <span className={styles.playerNote}>{row.note}</span>
                         </span>
                       </span>
                     </th>
                     <td className={tone(row.nassau)}>{row.nassau}</td>
                     <td className={tone(row.skins)}>{row.skins}</td>
+                    <td className={tone(row.ctp)}>{row.ctp}</td>
                     <td className={`${styles.net} ${tone(row.net)}`}>{row.net}</td>
                   </tr>
                 ))}
@@ -89,7 +90,8 @@ export function BetMath() {
 
             <p className={styles.explain}>
               <strong>Nassau:</strong> {betExample.noteNassau}{" "}
-              <strong>Skins:</strong> {betExample.noteSkins}
+              <strong>Skins:</strong> {betExample.noteSkins}{" "}
+              <strong>Closest to pin:</strong> {betExample.noteCtp}
             </p>
           </div>
 

@@ -1,7 +1,7 @@
 /**
- * #strokes — the course-handicap formula worked for the foursome, and the
- * picker showing where each player's strokes land. Server shell; only
- * StrokePicker is client.
+ * #strokes — the course-handicap formula worked for the foursome (each
+ * player's course handicap is the strokes they get), and the picker showing
+ * where those strokes land. Server shell; only StrokePicker is client.
  */
 
 import { hiwPlayerColor, strokeExample } from "@/lib/content";
@@ -38,8 +38,7 @@ export function StrokesExplainer() {
                 <tr>
                   <th scope="col">PLAYER</th>
                   <th scope="col">INDEX</th>
-                  <th scope="col">COURSE</th>
-                  <th scope="col">STROKES</th>
+                  <th scope="col">COURSE HCP</th>
                 </tr>
               </thead>
               <tbody>
@@ -56,20 +55,17 @@ export function StrokesExplainer() {
                         >
                           {p.name[0]}
                         </span>
-                        {p.name}
-                        {p.guest ? (
-                          <span className={styles.guest}> · guest</span>
-                        ) : null}
+                        <span className={styles.playerText}>
+                          {p.name}
+                          {p.guest ? (
+                            <span className={styles.guest}>guest</span>
+                          ) : null}
+                        </span>
                       </span>
                     </th>
                     <td className={styles.index}>{p.index}</td>
-                    <td className={styles.courseHcp}>{p.course}</td>
                     <td>
-                      {p.strokes === null ? (
-                        <span className={styles.lowMan}>LOW MAN</span>
-                      ) : (
-                        <span className={styles.strokes}>{p.strokes}</span>
-                      )}
+                      <span className={styles.strokes}>{p.course}</span>
                     </td>
                   </tr>
                 ))}

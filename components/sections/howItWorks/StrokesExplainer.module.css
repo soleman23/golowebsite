@@ -129,8 +129,16 @@
   font-weight: 800;
 }
 
-/* .5, not .42 — muted-text floor. */
+.playerText {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+/* .5, not .42 — muted-text floor. Its own line, so a 320px row never has
+   to break it. */
 .guest {
+  font-size: 12px;
   font-weight: 700;
   color: var(--text-muted);
 }
@@ -141,22 +149,10 @@
   color: rgba(255, 255, 255, 0.62);
 }
 
-.courseHcp {
-  font-size: 15px;
-  font-weight: 800;
-}
-
 .strokes {
   font-size: 20px;
   font-weight: 800;
   color: var(--accent);
-}
-
-.lowMan {
-  font-size: 11px;
-  font-weight: 800;
-  letter-spacing: 1px;
-  color: var(--text-faint);
 }
 
 .allowances {
@@ -278,6 +274,11 @@
   letter-spacing: 0.4px;
   color: var(--text-muted);
   white-space: nowrap;
+}
+
+.cellDots {
+  display: flex;
+  gap: 3px;
 }
 
 .cellDot {

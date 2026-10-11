@@ -4,6 +4,7 @@ import {
   hiwFinalCta,
   hiwHero,
   hiwRoundHeader,
+  heroOgImage,
   roundSteps,
 } from "@/lib/content";
 import { pageMetadata } from "@/lib/pageMetadata";
@@ -21,13 +22,12 @@ import { GameGuides } from "@/components/sections/howItWorks/GameGuides";
 import { FinalCTA } from "@/components/sections/FinalCTA";
 import styles from "./howItWorks.module.css";
 
-// No hero photo yet, so no `image`: the page shares the default card. Add
-// one alongside a `photo` prop on PageHero once there's a source frame.
 export const metadata: Metadata = pageMetadata({
   path: "/how-it-works",
   title: "How GoLo Works: Golf Side-Game Scoring, Handicaps and Settling Up",
   description:
     "Follow one foursome through 18 holes: round setup, handicap strokes, live side-game scoring, presses, and settling up in the fewest payments.",
+  image: heroOgImage("how-it-works"),
 });
 
 const heroCtas: HeroCta[] = [
@@ -59,6 +59,7 @@ export default function HowItWorksPage() {
         lead={hiwHero.lead}
         breadcrumbs={[{ label: "Home", href: "/" }, { label: "How it works" }]}
         page="how_it_works"
+        photo="how-it-works"
         ctas={heroCtas}
         meta={
           <nav aria-label="Jump to a moment in the round">

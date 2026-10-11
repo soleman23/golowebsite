@@ -1,14 +1,19 @@
 /**
- * Photos behind the /faq, /blog, /games and /features heroes. The files are
- * built by scripts/generate-hero-images.mjs into /public/images/heroes; this
- * is what the pages need to know about them.
+ * Photos behind the /faq, /blog, /games, /features and /how-it-works heroes.
+ * The files are built by scripts/generate-hero-images.mjs into
+ * /public/images/heroes; this is what the pages need to know about them.
  *
  * Every photo comes as a 21:9 desktop frame with the subject on the right and
  * the left half dark, and a 4:5 phone frame with the subject in the bottom
  * half and the top dark. PageHero lays the copy over the dark part of each.
  */
 
-export type HeroPhotoKey = "faq" | "blog" | "games" | "features";
+export type HeroPhotoKey =
+  | "faq"
+  | "blog"
+  | "games"
+  | "features"
+  | "how-it-works";
 
 export type HeroPhoto = {
   /**
@@ -37,6 +42,10 @@ export const heroPhotos: Record<HeroPhotoKey, HeroPhoto> = {
   features: {
     mobileSubject: 0.54,
     ogAlt: "A phone showing a scorecard on a golf cart dash, next to a paper card, a pencil, a ball and tees.",
+  },
+  "how-it-works": {
+    mobileSubject: 0.6,
+    ogAlt: "An open car hatch in a golf course parking lot at dusk: golf shoes, a glove, four balls in a row and a bag of clubs.",
   },
 };
 

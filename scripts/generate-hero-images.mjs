@@ -4,7 +4,8 @@
  * tmp/hero-src/ (git-ignored) as {page}-desktop.png (21:9) and
  * {page}-mobile.png (4:5), then run:
  *
- *   node scripts/generate-hero-images.mjs
+ *   node scripts/generate-hero-images.mjs                 # every page
+ *   node scripts/generate-hero-images.mjs how-it-works    # just the ones named
  *
  * Out come, per page, in public/images/heroes/:
  *
@@ -30,7 +31,12 @@ const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const SRC = join(ROOT, "tmp/hero-src");
 const OUT = join(ROOT, "public/images/heroes");
 
-const PAGES = ["faq", "blog", "games", "features"];
+const ALL_PAGES = ["faq", "blog", "games", "features", "how-it-works"];
+const requested = process.argv.slice(2);
+const unknown = requested.filter((p) => !ALL_PAGES.includes(p));
+if (unknown.length) throw new Error(`unknown page: ${unknown.join(", ")} (pages: ${ALL_PAGES.join(", ")})`);
+// Naming pages rebuilds only those, so adding a hero leaves the others' files untouched.
+const PAGES = requested.length ? requested : ALL_PAGES;
 const VARIANTS = {
   desktop: { widths: [1280, 1920, 2560], budgetWidth: 1920, budget: 250 * 1024 },
   mobile: { widths: [480, 768, 1080], budgetWidth: 768, budget: 120 * 1024 },

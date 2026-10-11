@@ -2,6 +2,9 @@
  * #watch — the ninety-second walkthrough. Rendered only while
  * siteConfig.showHowItWorksVideo is on; the page checks the flag, so this
  * component assumes the files in hiwVideo exist.
+ *
+ * The video is silent and its chapter text is on screen, so the captions
+ * (the same words, timed) are offered rather than on by default.
  */
 
 import { hiwVideo } from "@/lib/content";
@@ -36,7 +39,6 @@ export function WatchIt() {
               src={hiwVideo.captions}
               srcLang="en"
               label="English"
-              default
             />
           </video>
         </div>
