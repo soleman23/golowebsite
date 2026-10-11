@@ -1,7 +1,5 @@
 # SEO implementation progress
 
-Source: root SEO-REPORT.md (September 23 audit) and GOLO SEO - 9-24 references.
-
 ## Implemented October 4, 2026
 
 - Homepage search title and H1 name the golf scorecard / side-game category; the brand tagline (siteConfig.tagline) sits in the pill above the H1.
