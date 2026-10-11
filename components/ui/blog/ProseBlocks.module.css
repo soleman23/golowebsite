@@ -239,13 +239,6 @@
   border: 1px solid var(--card-border);
 }
 
-/* The ring comes from globals.css. ScrollRegion adds a tabindex while the
-   table overflows, and the global [tabindex] ring would square the corners
-   to 4px; keep the card's. */
-.tableWrap:focus-visible {
-  border-radius: var(--radius-card);
-}
-
 .table {
   width: 100%;
   border-collapse: collapse;

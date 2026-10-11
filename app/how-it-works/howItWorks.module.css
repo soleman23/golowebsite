@@ -30,10 +30,6 @@
   border-color: var(--accent-border);
 }
 
-.chip:focus-visible {
-  border-radius: var(--radius-pill);
-}
-
 .chipNum {
   height: 24px;
   min-width: 24px;
