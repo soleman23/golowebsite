@@ -11,6 +11,9 @@
   gap: 3px;
   min-width: 0;
   padding: 18px 14px;
+  /* When focus scrolls a row into view, stop it inside the padding, as at
+     rest, not flush with the edge, where the clip cuts its ring. */
+  scroll-padding-block: 18px;
   border-radius: var(--radius-section);
   /* --glass-sheet, not --glass-surface: this is sticky, and sticky elements
      here can't carry backdrop-filter (BUILD-SPEC §5.1). */
@@ -108,6 +111,16 @@
     /* Without this the flex item refuses to shrink below its content width
        and drags the page into a horizontal scroll. */
     min-width: 0;
+    /* overflow-x: auto clips on both axes, and the chips fill the row, so a
+       focus ring would lose its top and bottom and the end chips their outer
+       side. Pad the scroll box and take the padding back with a negative
+       margin: the chips sit where they did, inside the clip. The ends get
+       twice the ring's reach, so a chip scrolled into view keeps its ring
+       clear of the edge once the scroll offset rounds to a whole pixel. */
+    margin: calc(var(--focus-ring-reach) * -1) calc(var(--focus-ring-reach) * -2);
+    padding: var(--focus-ring-reach) calc(var(--focus-ring-reach) * 2);
+    /* Focus scrolling and snapping stop a chip where the first one rests. */
+    scroll-padding-inline: calc(var(--focus-ring-reach) * 2);
     scroll-snap-type: x proximity;
     scrollbar-width: none;
     -webkit-overflow-scrolling: touch;
@@ -115,6 +128,13 @@
 
   .list::-webkit-scrollbar {
     display: none;
+  }
+
+  /* Snapping fights focus scrolling: once a chip is scrolled into view the
+     row snaps back to the nearest chip start, which can leave the focused
+     chip half out of the row. Keyboard focus in the row turns it off. */
+  .list:has(.row:focus-visible) {
+    scroll-snap-type: none;
   }
 
   .list > li {
