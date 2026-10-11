@@ -359,6 +359,14 @@
   border: 1px solid var(--card-border);
 }
 
+/* Chrome makes an overflowing scroller keyboard-focusable on its own, with no
+   tabindex, so the global [tabindex] ring misses it. A static tabindex would
+   add a stop to tables that fit; match the ring here instead. */
+.tableWrap:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
 .table {
   width: 100%;
   border-collapse: collapse;
