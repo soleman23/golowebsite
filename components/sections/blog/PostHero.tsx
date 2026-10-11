@@ -18,12 +18,6 @@ export function PostHero({ post }: { post: Post }) {
   return (
     <header
       className={post.hero ? `${styles.hero} ${styles.withPhoto}` : styles.hero}
-      // A title wider than the dek widens the copy's guard. See .inner::before.
-      style={
-        post.hero?.copySpan
-          ? ({ "--copy-span": post.hero.copySpan } as React.CSSProperties)
-          : undefined
-      }
     >
       {post.hero ? (
         <Image
