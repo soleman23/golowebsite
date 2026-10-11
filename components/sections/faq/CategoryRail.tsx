@@ -70,6 +70,15 @@ export function CategoryRail({ categories }: { categories: RailCategory[] }) {
                 href={`#${category.id}`}
                 className={`${styles.row} ${active ? styles.active : ""}`}
                 aria-current={active ? "true" : undefined}
+                // Chrome won't scroll a half-visible link into view when it
+                // takes focus, which leaves a chip and its ring hanging off
+                // the edge of the row. Same fix as ChipFilter.
+                onFocus={(e) =>
+                  e.currentTarget.scrollIntoView({
+                    block: "nearest",
+                    inline: "nearest",
+                  })
+                }
               >
                 <span className={styles.num} aria-hidden="true">
                   {String(i + 1).padStart(2, "0")}

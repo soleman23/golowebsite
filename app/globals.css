@@ -63,6 +63,9 @@
   --max-width: 1200px;
   --gutter: clamp(18px, 4vw, 46px);
   --section-y: clamp(56px, 8vw, 110px);
+  /* How far the focus ring (2px outline at 2px offset, below) reaches past
+     its element. A scroller pads by this so it doesn't clip the ring. */
+  --focus-ring-reach: 4px;
 
   /* Radii */
   --radius-pill: 9999px;
