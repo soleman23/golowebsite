@@ -161,19 +161,27 @@ export type SetupPlayer = {
   initial: string;
   color: string;
   index: string;
-  tee: string;
+  /** Full course handicap off the group's one set of tees (setupTees). */
+  courseHandicap: string;
 };
 
+/**
+ * The app plays one set of tees for the whole group, so the card names it once
+ * and shows each player's course handicap from it. These are WHS numbers for
+ * the card's 72.6 / 137, par 72: index × 137 ÷ 113 + 0.6, rounded.
+ */
+export const setupTees = "BLUE TEES";
+
 export const setupPlayers: SetupPlayer[] = [
-  { name: "Mike", initial: "M", color: "#2dd4bf", index: "8.2", tee: "BLUE" },
-  { name: "Sarah", initial: "S", color: "#60a5fa", index: "14.1", tee: "WHITE" },
+  { name: "Mike", initial: "M", color: "#2dd4bf", index: "8.2", courseHandicap: "11" },
+  { name: "Sarah", initial: "S", color: "#60a5fa", index: "14.1", courseHandicap: "18" },
   {
     name: "Tom",
     guest: true,
     initial: "T",
     color: "#fb923c",
     index: "22",
-    tee: "WHITE",
+    courseHandicap: "27",
   },
 ];
 
@@ -189,7 +197,7 @@ export const setupGameChips: SetupGameChip[] = [
 export type GameTile = { name: string; rule: string; highlight?: boolean };
 
 export const gameTiles: GameTile[] = [
-  { name: "Nassau", rule: "Front, back, total — plus presses." },
+  { name: "Nassau", rule: "Front, back, total — three bets in one." },
   { name: "Skins", rule: "Carryover on or off, pot tracked live." },
   { name: "Wolf", rule: "Rotation, partners, lone-wolf multiplier." },
   { name: "Stroke purse", rule: "Net or gross, winner takes the pot." },
@@ -236,7 +244,7 @@ export const standingRows: StandingRow[] = [
     name: "Tom",
     initial: "T",
     color: "#fb923c",
-    reason: "pressed the back · 2 down",
+    reason: "Nassau back · 2 down",
     value: "−$18",
     up: false,
     move: "▼ 1",
@@ -262,36 +270,34 @@ export type PressRung = {
   amountTone: "positive" | "negative" | "plain";
 };
 
+/**
+ * A $5 Overall Match, Tom vs Mike, through 13 — the only game the app takes
+ * presses on, and only when called. Tom, 2 down after 6, pressed at 2× and
+ * closed the original; 3 down after 13, he pressed again at 3×. That's the
+ * app's limit of two live presses. Amounts are Mike's side of it.
+ */
 export const pressRungs: PressRung[] = [
   {
-    holes: "1-9",
-    title: "Front nine · base",
-    state: "Closed · Mike 2 up",
+    holes: "1-6",
+    title: "Base match",
+    state: "Closed on 6 · Mike 2 up",
     amount: "+$5",
     live: false,
     amountTone: "positive",
   },
   {
-    holes: "6-9",
-    title: "Press · called on 6",
-    state: "Closed · Tom 1 up",
-    amount: "−$5",
-    live: false,
-    amountTone: "negative",
-  },
-  {
-    holes: "10-18",
-    title: "Back nine · base",
-    state: "Live · Mike 1 up · 6 to play",
-    amount: "$5",
+    holes: "7-18",
+    title: "Tom presses ×2 on 6",
+    state: "Live · Mike 1 up · 5 to play",
+    amount: "$10",
     live: true,
     amountTone: "plain",
   },
   {
     holes: "14-18",
-    title: "Auto-press · 2 down on 13",
-    state: "Live · all square",
-    amount: "$5",
+    title: "Tom presses ×3 on 13",
+    state: "Live · starts on 14",
+    amount: "$15",
     live: true,
     amountTone: "plain",
   },

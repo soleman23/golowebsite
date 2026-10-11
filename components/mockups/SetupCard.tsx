@@ -1,11 +1,12 @@
 /**
- * /features block 1: the new-round setup card — course, players and tees,
- * games on the card, start button. Decorative marketing content.
+ * /features block 1: the new-round setup card — course, the group's tees,
+ * players with their course handicaps, games on the card, start button.
+ * Decorative marketing content.
  *
  * Card-shaped rather than a phone frame, matching the reference design.
  */
 
-import { setupGameChips, setupPlayers } from "@/lib/mockData";
+import { setupGameChips, setupPlayers, setupTees } from "@/lib/mockData";
 import styles from "./mockups.module.css";
 
 const CHIP_CLASS = {
@@ -19,7 +20,7 @@ export function SetupCard() {
     <div
       className={styles.photoCard}
       role="img"
-      aria-label="GoLo new-round setup card for Pinehurst No. 8 — three players with their tees, and Nassau, skins and junk added to the card."
+      aria-label="GoLo new-round setup card for Pinehurst No. 8 — three players off the Blue tees with their course handicaps, and Nassau, skins and junk added to the card."
     >
       <div
         className={`${styles.photoCardBg} golo-bd-mock-turf`}
@@ -44,7 +45,7 @@ export function SetupCard() {
         </div>
 
         <div className={styles.setupGroup}>
-          <div className={styles.setupLabel}>PLAYERS &amp; TEES</div>
+          <div className={styles.setupLabel}>PLAYERS · {setupTees}</div>
           {setupPlayers.map((p) => (
             <div key={p.name} className={styles.setupPlayer}>
               <span
@@ -60,7 +61,7 @@ export function SetupCard() {
                 ) : null}
               </span>
               <span className={styles.setupIndex}>{p.index}</span>
-              <span className={styles.setupTee}>{p.tee}</span>
+              <span className={styles.setupCh}>CH {p.courseHandicap}</span>
             </div>
           ))}
         </div>

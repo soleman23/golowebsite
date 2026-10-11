@@ -156,14 +156,17 @@ const nassau: GameDetail = {
     {
       n: "5",
       title: "Net it at the 18th",
-      body: "GoLo tallies all three bets plus any presses and reduces it to a single amount each player owes or collects.",
+      body: "GoLo tallies all three bets and reduces them to a single amount each player owes or collects. It doesn’t take presses on a Nassau, so those still go on the card.",
     },
   ],
   example: {
     kicker: "WATCH IT PLAY OUT",
     title: "A $20 Nassau, front to back.",
-    lead: "You and Tom go $20 on each bet. Here's how a full round shakes out — three bets, one press, one net number at the end.",
-    // +20 − 20 + 20 + 10 = +30. Keep these reconciled with net.value.
+    lead: "You and Tom go $20 on each bet. Here's how a full round shakes out — three bets, one net number at the end.",
+    // +20 − 20 + 20 = +20. Keep these reconciled with net.value, and the
+    // phone's sequence with its stats: front 4–2, back 3–4, total 7–6, and no
+    // bet decided before its last hole (dormie on 17, a half on 18).
+    // No press: GoLo's Nassau doesn't take them (presses are Overall Match only).
     bets: [
       {
         tag: "F9",
@@ -186,18 +189,11 @@ const nassau: GameDetail = {
         value: "+$20",
         tone: "good",
       },
-      {
-        tag: "PR",
-        title: "Back-nine press",
-        detail: "Opened at 2 down, won it late",
-        value: "+$10",
-        tone: "good",
-      },
     ],
     net: {
       label: "NET · YOU COLLECT",
       sub: "Every bet rolled into one transfer",
-      value: "+$30",
+      value: "+$20",
     },
     phone: {
       opponent: "You vs Tom",
@@ -206,8 +202,8 @@ const nassau: GameDetail = {
       state: "FINAL",
       stateSub: "match complete",
       sequence: [
-        "w", "w", "h", "l", "w", "h", "w", "l", "w",
-        "l", "l", "h", "w", "w", "l", "h", "w", "w",
+        "w", "h", "l", "w", "h", "l", "w", "h", "w",
+        "l", "w", "l", "h", "w", "l", "w", "l", "h",
       ],
       stats: [
         { label: "FRONT", status: "2↑", value: "+$20", tone: "good" },
@@ -215,21 +211,21 @@ const nassau: GameDetail = {
         { label: "TOTAL", status: "1↑", value: "+$20", tone: "good" },
       ],
       callout: {
-        label: "PRESS",
-        note: "Back-nine press, hole 13 — you closed it +$10",
+        label: "DORMIE",
+        note: "2 up with two to play; a half on 18 won it",
       },
       settleTitle: "Tom pays you",
-      settleSub: "3 bets + 1 press, netted",
-      settleValue: "$30",
+      settleSub: "3 bets, netted",
+      settleValue: "$20",
       label:
-        "The finished Nassau against Tom: front nine won for $20, back nine lost for $20, the overall match won for $20, plus a back-nine press worth $10 — Tom pays you $30.",
+        "The finished Nassau against Tom: front nine won for $20, back nine lost for $20, the overall match won for $20 — Tom pays you $20.",
     },
   },
   headings: {
     variations: {
       kicker: "PRESSES & VARIATIONS",
       title: "The press is where Nassau gets dangerous.",
-      lead: "Down bad on a nine? Open a new bet for the holes that are left. GoLo tracks every press as its own line so the stack never gets confusing.",
+      lead: "Down bad on a nine? Open a new bet for the holes that are left. GoLo's Nassau doesn't take presses; in the app, presses are on the Overall Match game.",
     },
     tips: {
       kicker: "PLAY SMART",
@@ -245,7 +241,7 @@ const nassau: GameDetail = {
     },
     cta: {
       title: "Set up your Nassau in ten seconds.",
-      lead: "Pick the stake, tap the players, and let GoLo track every bet and press to the last putt.",
+      lead: "Pick the stake, tap the players, and let GoLo track all three bets to the last putt.",
     },
   },
   variations: [
@@ -257,12 +253,12 @@ const nassau: GameDetail = {
     {
       icon: "auto",
       title: "2-down auto-press",
-      body: "Set it and forget it. A new press opens automatically the moment anyone falls two behind, so nobody has to remember to call it.",
+      body: "A common house rule: a new press opens automatically the moment anyone falls two behind, so nobody has to remember to call it. GoLo doesn’t do automatic presses yet.",
     },
     {
       icon: "stack",
       title: "Presses stack",
-      body: "Each press is its own mini-match. On a wild nine you can have two or three running at once — GoLo keeps every line straight.",
+      body: "Each press is its own mini-match. On a wild nine you can have two or three running at once, which is where the card usually stops adding up.",
     },
     {
       icon: "dice",
@@ -322,12 +318,12 @@ const nassau: GameDetail = {
     {
       id: "what-is-a-press",
       q: "What exactly is a press?",
-      a: "When you fall two holes down, you can start a new bet — same stake — that only covers the holes still to play on that nine. It’s a fresh chance to win money back on a nine you’ve already lost. GoLo tracks each press as its own line.",
+      a: "When you fall two holes down, you can start a new bet — same stake — that only covers the holes still to play on that nine. It’s a fresh chance to win money back on a nine you’ve already lost. GoLo doesn’t take presses on a Nassau; in the app they’re on the Overall Match game.",
     },
     {
       id: "auto-press",
       q: "Can presses happen automatically?",
-      a: 'Yes. Turn on auto-press (usually "2-down automatic") and GoLo opens a new press for you every time you fall two behind — no need to call it out on the tee.',
+      a: 'In a lot of groups, yes: "2-down automatic" opens a new press every time someone falls two behind, without anyone calling it. GoLo doesn’t do automatic presses yet. Its Nassau takes no presses at all, and on the Overall Match game the side that’s 2 down calls each one.',
     },
     {
       id: "handicaps",

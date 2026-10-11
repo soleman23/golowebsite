@@ -3,6 +3,14 @@
  * design_handoff/reference/Golo Golf - Features.dc.html — including its
  * straight apostrophes in the block copy and curly ones in the quick answers,
  * which is how the designs have it. Don't tidy them.
+ *
+ * Where the design promised more than the app ships, the copy follows the app
+ * (checked against GoLo 0.6.2): full course handicaps for everyone, nobody off
+ * the low man, one set of tees per group, Net or Gross with no percentage
+ * allowance outside a scramble's team handicap, presses only on the Overall
+ * Match game and never automatic, and one scorer per round (one per team in a
+ * scramble) while signed-in players follow along live. Check the app before
+ * putting any of that back.
  */
 
 import type { StatusVariant } from "@/components/ui/StatusPill";
@@ -43,8 +51,8 @@ export const featureBlocks: FeatureBlock[] = [
     lead: "Course, tees, players, games, stakes. Set it once while the group is still stretching and the rest of the round is just tapping numbers. Save your Saturday crew as a preset and it's four taps next week.",
     checklist: [
       {
-        lead: "Different tees per player",
-        rest: "the card adjusts, the bet still works.",
+        lead: "One set of tees for the group",
+        rest: "everyone's course handicap comes off it. Mixed tees aren't in the app.",
       },
       {
         lead: "Guests need nothing",
@@ -67,7 +75,7 @@ export const featureBlocks: FeatureBlock[] = [
     checklist: [
       {
         lead: "Your house rules, per game",
-        rest: "carryover, auto-presses, allowances.",
+        rest: "skins carryover, which skins count, how the purse splits.",
       },
       {
         lead: "Teams or individual",
@@ -130,12 +138,15 @@ export const featureBlocks: FeatureBlock[] = [
     kicker: "PRESS TRACKING",
     status: TODAY,
     title: "Every press logged the second it's called.",
-    lead: "Presses are where friendly bets go to die — three of them deep and nobody agrees what's live. Tap it on the tee and the ladder stays legible: which bet, which holes, at what stake, and who's up in it right now.",
+    lead: "Presses are where friendly bets go to die — three of them deep and nobody agrees what's live. In GoLo they're on the Overall Match game: the side that's 2 or more down taps it on the tee and the ladder stays legible — which holes, at what stake, and who's up in it right now.",
     checklist: [
-      { lead: "Auto-press at 2 down", rest: "on or off, agreed once at setup." },
       {
-        lead: "Presses on presses",
-        rest: "nested and still readable at the end.",
+        lead: "Called, not automatic",
+        rest: "auto-press isn't in the app yet, and Nassau doesn't take presses.",
+      },
+      {
+        lead: "Up to two live at once",
+        rest: "at two, three or four times the stake, and still readable at the end.",
       },
       {
         lead: "Timestamped",
@@ -151,7 +162,7 @@ export const featureBlocks: FeatureBlock[] = [
     kicker: "HANDICAPS & STROKES",
     status: TODAY,
     title: "The 6 and the 22 can play for real money.",
-    lead: "Index in, course handicap out, strokes allocated by the card's stroke index — including the second stroke on the hardest holes when somebody needs 24 of them. Play it full, play it at 90%, or play straight up; the bets follow whatever you chose.",
+    lead: "Index in, course handicap out, strokes allocated by the card's stroke index — including the second stroke on the hardest holes when somebody needs 24 of them. Everyone gets their full course handicap, or play the round gross and nobody gets any; the bets follow whatever you chose.",
     checklist: [
       {
         lead: "No GHIN required",
@@ -162,8 +173,8 @@ export const featureBlocks: FeatureBlock[] = [
         rest: "the same index gives different strokes at different tees.",
       },
       {
-        lead: "Allowance settings",
-        rest: "match play off the low ball, or full handicap.",
+        lead: "Full strokes, not off the low man",
+        rest: "no 90% or other allowances, except a scramble's team handicap.",
       },
     ],
     visualSide: "left",
@@ -254,7 +265,7 @@ export const roadmap: RoadmapColumn[] = [
     items: [
       "Hole-by-hole scoring, net and gross",
       "Nassau, skins, stroke purse, junk board",
-      "Presses, including auto-presses",
+      "Presses on the Overall Match game",
       "Handicap strokes by stroke index",
       "Netted settle-up and round history",
     ],
@@ -274,7 +285,7 @@ export const roadmap: RoadmapColumn[] = [
     heading: "ON THE LIST, NOT BUILT",
     items: [
       "GPS yardages and shot distances",
-      "Everyone scoring at once, live-synced",
+      "Everyone entering their own scores",
       "Multi-day trip tallies",
       "Watch app",
     ],
@@ -326,7 +337,7 @@ export const quickAnswers: QuickAnswer[] = [
     id: "everyone-need-the-app",
     question: "Does everyone in the group need the app?",
     answer:
-      "No. One phone scores the round and everyone else can look over a shoulder. Live sync so all four can enter their own scores is on the list, not built yet.",
+      "No. One phone keeps the card. Anyone signed in can join the round and follow it live on their own phone, but only the scorer enters scores — in a scramble, each team can have its own. Everyone entering their own scores is on the list, not built yet.",
   },
   {
     id: "need-a-ghin",
@@ -338,7 +349,7 @@ export const quickAnswers: QuickAnswer[] = [
     id: "house-rules",
     question: "Can we play our own house rules?",
     answer:
-      "That’s the point. Carryover on or off, auto-presses at 2 down or press-on-request, full handicap or 90% — you set it at the first tee and the app scores it your way.",
+      "Most of them. Skins carryover on or off, which skins count, how the purse splits, net or gross — you set it at the first tee and the app scores it your way. What it doesn’t do today: automatic presses, presses on a Nassau (they’re on the Overall Match game), 90% allowances, or playing off the low man. Everyone gets their full course handicap.",
   },
   {
     id: "launch-and-cost",

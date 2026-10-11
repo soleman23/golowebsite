@@ -1,6 +1,8 @@
 /**
- * /features block 5: the Nassau press ladder — base bets and presses as rungs,
- * live ones in lime, plus the worst-case exposure footer. Decorative.
+ * /features block 5: the Overall Match press ladder — the base match and its
+ * presses as rungs, live ones in lime, plus Tom's worst-case exposure footer.
+ * Overall Match because it's the only game the app takes presses on.
+ * Decorative.
  */
 
 import { pressRungs } from "@/lib/mockData";
@@ -17,11 +19,11 @@ export function PressLadder() {
     <div
       className={styles.glassCard}
       role="img"
-      aria-label="A $5 Nassau press ladder between Tom and Mike: the front nine and its press are closed, the back nine and an auto-press are still live, with $25 of total exposure."
+      aria-label="A $5 Overall Match press ladder between Tom and Mike: the base match closed on 6 with Mike 2 up when Tom pressed at double the stake; that press and a second one at triple, from the 14th, are both live, with $30 of total exposure."
     >
       <div className={styles.glassCardInner} aria-hidden="true">
         <div className={styles.rowBetween}>
-          <span className={styles.cardKicker}>NASSAU · $5 · THE LADDER</span>
+          <span className={styles.cardKicker}>OVERALL MATCH · $5</span>
           <span className={styles.cardMeta}>Tom vs Mike</span>
         </div>
 
@@ -57,7 +59,7 @@ export function PressLadder() {
           <span className={styles.exposureLabel}>
             EXPOSURE IF EVERYTHING FALLS BADLY
           </span>
-          <span className={styles.exposureValue}>$25</span>
+          <span className={styles.exposureValue}>$30</span>
         </div>
       </div>
     </div>
