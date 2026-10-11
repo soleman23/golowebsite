@@ -60,6 +60,19 @@
   color: var(--text-primary);
 }
 
+/* The links fill the bar's full 52px, so a ring drawn outside the link would
+   run 4px up under the main nav. Ring the text instead, the way the main
+   nav's links look; the click target stays the full height of the bar. */
+.subNavLink:focus-visible {
+  outline: none;
+}
+
+.subNavLink:focus-visible .subNavText {
+  outline: var(--focus-ring);
+  outline-offset: var(--focus-ring-offset);
+  border-radius: 4px;
+}
+
 .subNavActive {
   color: var(--accent);
   font-weight: 800;
