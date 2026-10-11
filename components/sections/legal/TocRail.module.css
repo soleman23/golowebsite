@@ -98,6 +98,8 @@
     background: none;
     border: none;
     border-radius: 0;
+    /* The chips size against this; see .row's max-width. */
+    container-type: inline-size;
   }
 
   .label {
@@ -152,7 +154,20 @@
     font-size: 12.5px;
     font-weight: 800;
     white-space: nowrap;
+    /* A chip wider than the strip can't be scrolled fully into view, and its
+       ring loses an edge to the clip; the longest titles run past 300px at
+       320px wide. Cap it at the rail's width, which is exactly the strip's
+       room inside its scroll-padding (the list's negative margin and padding
+       cancel out), and end the title in an ellipsis. The link's accessible
+       name is still the whole title. */
+    max-width: 100cqi;
     scroll-snap-align: start;
+  }
+
+  .title {
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 
   .active {
