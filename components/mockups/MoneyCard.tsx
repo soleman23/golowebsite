@@ -8,7 +8,7 @@
  */
 
 import { Icon } from "@/components/ui/Icon";
-import { moneyCardLabels, moneyRows, standingRows } from "@/lib/mockData";
+import { moneyCardLabels, moneyRows, skinsPot, standingRows } from "@/lib/mockData";
 import styles from "./mockups.module.css";
 
 type MoneyCardProps = { variant?: "games" | "players" };
@@ -94,8 +94,10 @@ export function MoneyCard({ variant = "games" }: MoneyCardProps) {
             </div>
 
             <div className={styles.potFooter}>
-              <span className={styles.potLabel}>SKINS POT · 4 CARRIED</span>
-              <span className={styles.potValue}>$32</span>
+              <span className={styles.potLabel}>
+                {`SKINS POT · ${skinsPot.carried} CARRIED`}
+              </span>
+              <span className={styles.potValue}>{skinsPot.value}</span>
             </div>
           </>
         )}

@@ -3,7 +3,7 @@
  */
 
 import Link from "next/link";
-import { homeGames } from "@/lib/content";
+import { homeGames, homeGamesSection } from "@/lib/content";
 import { SectionHeader } from "@/components/ui/SectionHeader";
 import { Icon } from "@/components/ui/Icon";
 import { SeeAllLink } from "@/components/ui/SeeAllLink";
@@ -14,9 +14,9 @@ export function GamesGrid() {
     <section id="games" className={styles.section} aria-labelledby="games-heading">
       <div className={styles.inner}>
         <SectionHeader
-          kicker="EVERY GAME YOU ACTUALLY PLAY"
-          title="Stack as many games as your group can argue about."
-          lead="Run them all in a single round. GoLo scores each one independently, then nets the whole stack into one number per player."
+          kicker={homeGamesSection.kicker}
+          title={homeGamesSection.title}
+          lead={homeGamesSection.lead}
           headingId="games-heading"
           maxWidth={720}
         />
@@ -35,7 +35,7 @@ export function GamesGrid() {
           ))}
         </ul>
 
-        <SeeAllLink href="/games">Browse all 8 games →</SeeAllLink>
+        <SeeAllLink href="/games">{homeGamesSection.seeAll}</SeeAllLink>
       </div>
     </section>
   );

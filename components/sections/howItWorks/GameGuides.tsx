@@ -20,17 +20,20 @@ export function GameGuides() {
           </Link>
         </div>
         <ul className={styles.grid}>
-          {gameGuideOrder.map((slug) => rosterGame(slug)).map((game) => (
-            <li key={game.slug}>
-              <Link href={`/games/${game.slug}`} className={styles.card}>
-                <span className={styles.name}>{game.name}</span>
-                <span className={styles.line}>{game.rule}</span>
-                <span className={styles.cta} aria-hidden="true">
-                  {gameGuidesSection.cardCta}
-                </span>
-              </Link>
-            </li>
-          ))}
+          {gameGuideOrder.map((slug) => {
+            const game = rosterGame(slug);
+            return (
+              <li key={slug}>
+                <Link href={`/games/${slug}`} className={styles.card}>
+                  <span className={styles.name}>{game.name}</span>
+                  <span className={styles.line}>{game.rule}</span>
+                  <span className={styles.cta} aria-hidden="true">
+                    {gameGuidesSection.cardCta}
+                  </span>
+                </Link>
+              </li>
+            );
+          })}
         </ul>
       </div>
     </section>

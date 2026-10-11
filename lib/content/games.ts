@@ -1,15 +1,17 @@
 /**
  * The game roster behind /games and /games/[slug]. Copy is verbatim from
- * design_handoff/reference/Golo Golf - Games.dc.html.
+ * design_handoff/reference/Golo Golf - Games.dc.html, except `rule`, the
+ * one-liners from the How It Works reference's game guide cards.
  *
  * Every roster entry has a long-form route. The tuple below is the canonical
  * inventory for cards, detail records, related links, navigation, and sitemap
  * generation, so a misspelled or missing game slug fails TypeScript.
  *
- * The roster is also the one place a game's name, icon and one-line rule are
- * written. The guides (gameDetail.ts), the home page cards, the /how-it-works
- * guide cards and the mockups read them through rosterGame(), so renaming a
- * game is one edit here.
+ * A game's name, icon and one-line rule are written here and nowhere else as
+ * data: the guides (gameDetail.ts), the home page cards, the /how-it-works
+ * guide cards and the mockups read them through rosterGame(). Prose that names
+ * a game in a sentence (guide copy, the FAQ, the blog) still says it in words,
+ * so a rename means a search through lib/content as well.
  */
 
 import type { IconName } from "@/components/ui/Icon";
@@ -44,9 +46,12 @@ export type Game = {
   popular?: boolean;
 };
 
-export const games: Game[] = [
-  {
-    slug: "skins",
+/**
+ * Keyed by slug, so a game missing from the roster (or one that isn't in
+ * GAME_SLUGS) fails typecheck.
+ */
+const roster = {
+  skins: {
     icon: "target",
     name: "Skins",
     rule: "Win the hole outright, win the skin. Ties carry.",
@@ -57,8 +62,7 @@ export const games: Game[] = [
     tags: ["pots"],
     popular: true,
   },
-  {
-    slug: "nassau",
+  nassau: {
     icon: "trophy",
     name: "Nassau",
     rule: "Front, back, total — three bets in one.",
@@ -69,8 +73,7 @@ export const games: Game[] = [
     tags: ["match"],
     popular: true,
   },
-  {
-    slug: "best-score",
+  "best-score": {
     icon: "cash",
     name: "Best Score",
     rule: "Net or gross, winner takes the pot.",
@@ -80,8 +83,7 @@ export const games: Game[] = [
     format: "One pot",
     tags: ["pots"],
   },
-  {
-    slug: "wolf",
+  wolf: {
     icon: "wolf",
     name: "Wolf",
     rule: "Rotation, partners, lone-wolf multiplier.",
@@ -91,8 +93,7 @@ export const games: Game[] = [
     format: "Rotating captain",
     tags: ["match"],
   },
-  {
-    slug: "bingo-bango-bongo",
+  "bingo-bango-bongo": {
     icon: "dice",
     name: "Bingo Bango Bongo",
     rule: "Three points a hole, no strokes needed.",
@@ -102,8 +103,7 @@ export const games: Game[] = [
     format: "3 points / hole",
     tags: ["points"],
   },
-  {
-    slug: "closest-to-pin",
+  "closest-to-pin": {
     icon: "pin",
     name: "Closest to Pin",
     rule: "The par-3 side bet, settled on the green.",
@@ -113,8 +113,7 @@ export const games: Game[] = [
     format: "Par 3s only",
     tags: ["side"],
   },
-  {
-    slug: "longest-drive",
+  "longest-drive": {
     icon: "drive",
     name: "Longest Drive",
     rule: "One fairway, one bomb, one winner.",
@@ -124,8 +123,7 @@ export const games: Game[] = [
     format: "One marked hole",
     tags: ["side"],
   },
-  {
-    slug: "birdies",
+  birdies: {
     icon: "bird",
     name: "Birdies",
     rule: "Every birdie on the card gets paid.",
@@ -135,7 +133,10 @@ export const games: Game[] = [
     format: "Per-birdie bounty",
     tags: ["side"],
   },
-];
+} satisfies Record<GameSlug, Omit<Game, "slug">>;
+
+/** In GAME_SLUGS order. */
+export const games: Game[] = GAME_SLUGS.map((slug) => ({ slug, ...roster[slug] }));
 
 export type GameFilter = { id: "all" | GameTag; label: string };
 
@@ -174,19 +175,7 @@ export function findGame(slug: string): Game | undefined {
   return games.find((game) => game.slug === slug);
 }
 
-/**
- * The roster entry for a known slug. Throws rather than returning undefined,
- * so a slug with no entry fails the build at prerender instead of rendering a
- * card with no name.
- */
+/** The roster entry for a slug. Every slug has one; the roster's type sees to it. */
 export function rosterGame(slug: GameSlug): Game {
-  const game = findGame(slug);
-  if (!game) throw new Error(`games.ts has no roster entry for "${slug}"`);
-  return game;
-}
-
-/** "a, b and c" — the site's list style, no serial comma. */
-export function andList(items: readonly string[]): string {
-  if (items.length < 2) return items.join("");
-  return `${items.slice(0, -1).join(", ")} and ${items[items.length - 1]}`;
+  return games[GAME_SLUGS.indexOf(slug)];
 }

@@ -1,6 +1,6 @@
 import type { IconName } from "@/components/ui/Icon";
 import { siteConfig } from "@/lib/siteConfig";
-import { games } from "./games";
+import { games } from "@/lib/content/games";
 
 export const notFoundContent = {
   kicker: "ERROR 404 · OUT OF BOUNDS",

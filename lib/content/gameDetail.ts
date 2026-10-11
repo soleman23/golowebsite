@@ -8,7 +8,7 @@
  */
 
 import type { IconName } from "@/components/ui/Icon";
-import { rosterGame, type GameSlug } from "./games";
+import { rosterGame, type GameSlug } from "@/lib/content/games";
 
 export type GameTone = "good" | "bad" | "neutral";
 

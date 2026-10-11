@@ -5,7 +5,8 @@
  */
 
 import type { IconName } from "@/components/ui/Icon";
-import { andList, rosterGame, type GameSlug } from "@/lib/content/games";
+import { rosterGame, type GameSlug } from "@/lib/content/games";
+import { andList } from "@/lib/format";
 
 /** 18-segment hole progress bar: 0–11 played (accent), 12 current, rest faint. */
 export const heroDots = Array.from({ length: 18 }, (_, i) => {
@@ -145,14 +146,8 @@ export const moneyRows: MoneyRow[] = moneyRowSpecs.map(
   },
 );
 
-/** The MoneyCard's accessible names, one per variant. */
-export const moneyCardLabels = {
-  games: `GoLo money-on-the-line card showing ${andList(
-    moneyRowSpecs.map((row) => rosterGame(row.game).name),
-  )} standings.`,
-  players:
-    "GoLo live leaderboard through 12 holes: Mike up $42, Sarah up $11, Tom down $18, Dave down $35, with $32 carried in the skins pot.",
-};
+/** The skins pot in the MoneyCard's players view footer. */
+export const skinsPot = { carried: 4, value: "$32" };
 
 export type TransferRow = {
   fromColor: string;
@@ -223,12 +218,16 @@ function gameTile(slug: GameSlug): GameTile {
   return { name, rule };
 }
 
-export const gameTiles: GameTile[] = [
+const rosterTiles: GameTile[] = [
   gameTile("nassau"),
   gameTile("skins"),
   gameTile("wolf"),
   gameTile("best-score"),
   gameTile("bingo-bango-bongo"),
+];
+
+export const gameTiles: GameTile[] = [
+  ...rosterTiles,
   // Not a roster game: the junk side bets, grouped.
   {
     name: "Junk board",
@@ -238,9 +237,10 @@ export const gameTiles: GameTile[] = [
 ];
 
 /** The GameStackCard's accessible name. */
-export const gameTilesLabel = `The GoLo game library: ${andList(
-  gameTiles.map((tile) => tile.name),
-)}, each with its scoring rule.`;
+export const gameTilesLabel = `The GoLo game library: ${andList([
+  ...rosterTiles.map((tile) => tile.name),
+  "the junk board",
+])}, each with its scoring rule.`;
 
 export type StandingRow = {
   name: string;
@@ -408,3 +408,13 @@ export const transferRows: TransferRow[] = [
     paid: false,
   },
 ];
+
+/** The MoneyCard's accessible names, one per variant, from the rows it shows. */
+export const moneyCardLabels = {
+  games: `GoLo money-on-the-line card showing ${andList([
+    ...new Set(moneyRowSpecs.map((row) => rosterGame(row.game).name)),
+  ])} standings.`,
+  players: `GoLo live leaderboard through 12 holes: ${standingRows
+    .map((row) => `${row.name} ${row.up ? "up" : "down"} ${row.value.replace(/^[+−]/, "")}`)
+    .join(", ")}, with ${skinsPot.value} carried in the skins pot.`,
+};

@@ -4,15 +4,13 @@
  */
 
 import type { GameDetail } from "@/lib/content";
-import { findGame } from "@/lib/content";
+import { rosterGame } from "@/lib/content";
 import { SectionHeader } from "@/components/ui/SectionHeader";
 import { GameCard } from "@/components/sections/games/GameCard";
 import styles from "./RelatedGames.module.css";
 
 export function RelatedGames({ game }: { game: GameDetail }) {
-  const related = game.related
-    .map((slug) => findGame(slug))
-    .filter((g): g is NonNullable<typeof g> => Boolean(g));
+  const related = game.related.map((slug) => rosterGame(slug));
 
   if (related.length === 0) return null;
 

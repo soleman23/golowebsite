@@ -9,7 +9,7 @@
 
 import type { IconName } from "@/components/ui/Icon";
 import { mostAskedFaqs, type FaqItem } from "./faq";
-import { rosterGame, type GameSlug } from "./games";
+import { games, rosterGame, type GameSlug } from "@/lib/content/games";
 
 /**
  * The hero H1. It names what a searcher types — "golf scorecard app", "side
@@ -30,7 +30,7 @@ export type Stat = {
 
 export const stats: Stat[] = [
   {
-    value: "8",
+    value: String(games.length),
     accentValue: true,
     label: "games scored automatically",
     sub: "Skins, Nassau, Wolf & more",
@@ -129,6 +129,13 @@ export const features: Feature[] = [
     visual: "settle",
   },
 ];
+
+export const homeGamesSection = {
+  kicker: "EVERY GAME YOU ACTUALLY PLAY",
+  title: "Stack as many games as your group can argue about.",
+  lead: "Run them all in a single round. GoLo scores each one independently, then nets the whole stack into one number per player.",
+  seeAll: `Browse all ${games.length} games →`,
+};
 
 /**
  * The home page's short game teaser. The descriptions are deliberately its
