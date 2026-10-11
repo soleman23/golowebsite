@@ -83,6 +83,10 @@
   flex: 1 1 auto;
 }
 
+.short {
+  display: none;
+}
+
 /* ---------- mid and narrow: scrolling chip row ---------- */
 
 @media (max-width: 1099px) {
@@ -164,10 +168,28 @@
     scroll-snap-align: start;
   }
 
-  .title {
+  .title,
+  .short {
     min-width: 0;
     overflow: hidden;
     text-overflow: ellipsis;
+  }
+
+  /* A long title gives way to its short label here. The title is hidden the
+     .sr-only way rather than with display: none, so it stays the link's
+     accessible name; the short label is aria-hidden and is a run of words
+     from the title, so what's on screen is still part of that name. */
+  .hasShort .title {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+  }
+
+  .hasShort .short {
+    display: block;
   }
 
   .active {

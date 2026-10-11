@@ -37,6 +37,13 @@ export type LegalSection = {
   num: string;
   id: string;
   title: string;
+  /**
+   * Shorter chip label for the TOC strip below 1100px, where a long title
+   * won't fit at 320px. Presentation, like `plain`; the link's accessible name
+   * stays the full title. Keep it a run of words lifted from `title`, so a
+   * voice-control user can say what's on screen.
+   */
+  tocLabel?: string;
   /** The "in plain English" gloss. Presentation — never load-bearing. */
   plain?: string;
   blocks: LegalBlock[];
@@ -190,6 +197,7 @@ const privacySections: LegalSection[] = [
     num: "03",
     id: "section-3",
     title: "Side Games, Dollar Stakes, and Payments",
+    tocLabel: "Side Games",
     blocks: [
       { kind: "p", html: "GoLo is a scorekeeping and recordkeeping tool. Users may enter private side-game terms and dollar stakes, and GoLo may calculate a suggested settlement and record participant-entered sent or received statuses." },
       { kind: "p", html: "GoLo does not:" },
@@ -497,6 +505,7 @@ export const termsDoc: LegalDoc = {
       num: "03",
       id: "not-betting",
       title: "GoLo Is Not a Betting or Payments App",
+      tocLabel: "Not a Betting or Payments App",
       plain:
         "GoLo never touches a dollar. If money changes hands, you handle it yourselves — and it is on you to know your local laws.",
       blocks: [
