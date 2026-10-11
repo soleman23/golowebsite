@@ -53,7 +53,9 @@
 /* ---- the round ---- */
 .round {
   background: var(--page-bg);
-  scroll-margin-top: 70px;
+  /* #round lands flush under the nav, without html's usual scroll clearance:
+     the section's own top padding is the air. */
+  scroll-margin-top: calc(var(--nav-height) - var(--scroll-clearance));
 }
 
 .roundHead {

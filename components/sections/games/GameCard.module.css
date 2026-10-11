@@ -1,7 +1,8 @@
 .cell {
   display: flex;
-  /* Clear the sticky nav when /games#skins lands on a card. */
-  scroll-margin-top: 96px;
+  /* Air above a card /games#skins lands on. html's scroll-padding-top clears
+     the sticky nav, for this and for the card link keyboard focus scrolls to. */
+  scroll-margin-top: 16px;
 }
 
 .card {

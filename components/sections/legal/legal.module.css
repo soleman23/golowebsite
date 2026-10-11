@@ -11,6 +11,15 @@
   border-bottom: 1px solid var(--hairline);
 }
 
+/* While the sub-nav shows, whatever the browser scrolls into view (a focused
+   link, an #anchor) has to clear both bars, not just the main nav. Stuck, the
+   sub-nav ends at 123px: top 70px, 52px tall, a 1px border. */
+@media (min-width: 761px) {
+  :global(html):has(.subNav) {
+    scroll-padding-top: calc(70px + 53px + var(--focus-ring-reach) + 5px);
+  }
+}
+
 .subNavInner {
   max-width: var(--max-width);
   margin: 0 auto;
@@ -258,8 +267,10 @@
   line-height: 1.2;
   letter-spacing: -0.02em;
   color: var(--text-primary);
-  /* Anchors clear both sticky bars. */
-  scroll-margin-top: 150px;
+  /* Air under the sticky bars. html's scroll-padding-top clears the bars
+     themselves: both of them from 761px, where this lands at 150px as it
+     always has, and just the nav below that. */
+  scroll-margin-top: 18px;
 }
 
 .sectionNum {

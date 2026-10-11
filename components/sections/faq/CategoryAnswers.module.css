@@ -7,8 +7,9 @@
 
 .category {
   max-width: 800px;
-  /* Clears the sticky nav when the rail jumps here. */
-  scroll-margin-top: 96px;
+  /* Air under the sticky nav when the rail jumps here. html's
+     scroll-padding-top clears the nav itself. */
+  scroll-margin-top: 16px;
 }
 
 .head {

@@ -42,8 +42,9 @@
   letter-spacing: -0.025em;
   color: var(--text-primary);
   text-wrap: balance;
-  /* Deep-link target: clear the sticky nav. */
-  scroll-margin-top: 96px;
+  /* Deep-link target: air under the sticky nav, which html's
+     scroll-padding-top clears. */
+  scroll-margin-top: 16px;
 }
 
 /* ---------- at a glance ---------- */
@@ -107,7 +108,7 @@
   gap: 18px;
   align-items: flex-start;
   /* Each rule is a deep-link target too (#rule-5). */
-  scroll-margin-top: 96px;
+  scroll-margin-top: 16px;
 }
 
 .stepNum {
