@@ -83,7 +83,9 @@ html[data-filter="side"] .chips [data-chip="side"] {
   margin: 0;
   padding: 0;
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  /* min() keeps the single column inside the gutters below 336px, where the
+     content box is narrower than 300px. Wider, it resolves to plain 300px. */
+  grid-template-columns: repeat(auto-fill, minmax(min(300px, 100%), 1fr));
   gap: 16px;
 }
 
