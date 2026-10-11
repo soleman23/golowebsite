@@ -68,6 +68,12 @@ const nextConfig = {
         destination: "/games/nassau",
         permanent: true,
       },
+      // Renamed to match the app, where Setup calls this game Best Score.
+      {
+        source: "/games/stroke-purse",
+        destination: "/games/best-score",
+        permanent: true,
+      },
       {
         source: "/blog/who-pays",
         destination: "/blog/who-pays-first",

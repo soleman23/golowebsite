@@ -317,10 +317,10 @@ export const gameGuidesSection = {
 
 /** Keyed by slug, so a missing or misspelled game fails typecheck. */
 export const gameGuideLines: Record<GameSlug, string> = {
-  nassau: "Front, back, total — plus presses.",
+  nassau: "Front, back, total — three bets in one.",
   skins: "Win the hole outright, win the skin. Ties carry.",
   wolf: "Rotation, partners, lone-wolf multiplier.",
-  "stroke-purse": "Net or gross, winner takes the pot.",
+  "best-score": "Net or gross, winner takes the pot.",
   "bingo-bango-bongo": "Three points a hole, no strokes needed.",
   "closest-to-pin": "The par-3 side bet, settled on the green.",
   "longest-drive": "One fairway, one bomb, one winner.",
@@ -332,7 +332,7 @@ export const gameGuideOrder: GameSlug[] = [
   "nassau",
   "skins",
   "wolf",
-  "stroke-purse",
+  "best-score",
   "bingo-bango-bongo",
   "closest-to-pin",
   "longest-drive",

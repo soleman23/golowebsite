@@ -156,9 +156,9 @@ export const homeGames: HomeGame[] = [
     desc: "Three bets in one: front nine, back nine and the overall match.",
   },
   {
-    slug: "stroke-purse",
+    slug: "best-score",
     icon: "cash",
-    name: "Stroke Purse",
+    name: "Best Score",
     desc: "Everyone buys in; lowest net total over 18 takes the whole pot.",
   },
   {
