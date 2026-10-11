@@ -122,6 +122,15 @@ textarea:focus-visible,
   border-radius: 4px;
 }
 
+/* Fallback for anything focusable the list above doesn't name, such as a
+   scroller Chrome or Firefox makes focusable on its own when it overflows.
+   Single-pseudo-class specificity, so a component's own focus style still
+   wins, and no border-radius, so a card keeps its corners. */
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
 /* ==========================================================================
    Decorative backdrop photos
    --------------------------------------------------------------------------

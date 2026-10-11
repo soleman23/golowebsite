@@ -2,7 +2,8 @@
  * The shared legal template. /privacy and /terms are the same page with
  * different data — one component, one stylesheet.
  *
- * Server component throughout except the TOC rail, which owns the scroll-spy.
+ * Server component throughout except the TOC rail, which owns the scroll-spy,
+ * and ScrollRegion around tables, which measures overflow.
  * Note the reading order: the plain-English gloss comes AFTER its section's
  * legal text in the DOM and is placed beside it with CSS, so a screen reader
  * and a no-CSS render both hit the governing words first.
@@ -20,6 +21,7 @@ import {
 import { siteConfig } from "@/lib/siteConfig";
 import { Breadcrumbs } from "@/components/ui/Breadcrumbs";
 import { WarnIcon } from "@/components/ui/Icon";
+import { ScrollRegion } from "@/components/ui/ScrollRegion";
 import { FinalCTA } from "@/components/sections/FinalCTA";
 import { TocRail } from "./TocRail";
 import styles from "./legal.module.css";
@@ -294,7 +296,10 @@ function Block({ block }: { block: LegalBlock }) {
 
     case "table":
       return (
-        <div className={styles.tableWrap}>
+        <ScrollRegion
+          className={styles.tableWrap}
+          label={`Scrollable table: ${block.head.join(", ")}`}
+        >
           <table className={styles.table}>
             <thead>
               <tr>
@@ -315,7 +320,7 @@ function Block({ block }: { block: LegalBlock }) {
               ))}
             </tbody>
           </table>
-        </div>
+        </ScrollRegion>
       );
 
     case "address":
