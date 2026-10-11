@@ -136,7 +136,7 @@
 }
 
 /* .5, not .45 — muted-text floor. */
-.playerSkins {
+.playerNote {
   font-size: 12px;
   font-weight: 700;
   color: var(--text-muted);
@@ -165,6 +165,10 @@
 
 .negative {
   color: var(--negative);
+}
+
+.even {
+  color: var(--text-muted);
 }
 
 .table .net {
@@ -306,8 +310,36 @@
     width: 34%;
   }
 
-  /* The row's name and skin count need the room more than the dot does. */
+  /* The row's name and note need the room more than the dot does. */
   .table .avatar {
     display: none;
+  }
+}
+
+/* 320px: five columns share ~250px. Amounts never break after the sign. */
+@media (max-width: 420px) {
+  .table th,
+  .table td {
+    padding-left: 4px;
+    white-space: nowrap;
+  }
+
+  .table th:first-child {
+    width: 25%;
+    white-space: normal;
+  }
+
+  .table th:last-child {
+    width: 23%;
+  }
+
+  .table thead th {
+    padding-left: 2px;
+    font-size: 9px;
+    letter-spacing: 0;
+  }
+
+  .table .net {
+    font-size: 17px;
   }
 }

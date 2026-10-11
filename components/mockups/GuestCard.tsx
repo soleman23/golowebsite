@@ -12,7 +12,7 @@ export function GuestCard() {
     <div
       className={styles.photoCard}
       role="img"
-      aria-label="GoLo player list for the round — Mike, Jess and Sarah, plus Tom added as a guest with a 22 index — and an Add a guest form that takes just a name and an index."
+      aria-label="GoLo player list for the round — Mike, Jess and Sarah, plus Tom added as a guest with a 22.0 index — and an Add a guest form that takes just a name and an index."
     >
       <div
         className={`${styles.photoCardBg} golo-bd-mock-turf`}
@@ -23,7 +23,7 @@ export function GuestCard() {
       <div className={styles.guestInner} aria-hidden="true">
         <div className={`${styles.rowBetween} ${styles.guestHead}`}>
           <span className={styles.guestKicker}>PLAYERS</span>
-          <span className={styles.guestCount}>4 of 6</span>
+          <span className={styles.guestCount}>4 of 12</span>
         </div>
 
         {guestCardPlayers.map((p) => (
