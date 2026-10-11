@@ -75,7 +75,7 @@ export const featureBlocks: FeatureBlock[] = [
     checklist: [
       {
         lead: "Your house rules, per game",
-        rest: "skins carryover, which skins count, how the purse splits.",
+        rest: "skins carryover, which skins count, how Best Score splits the pot.",
       },
       {
         lead: "Teams or individual",
@@ -185,7 +185,7 @@ export const featureBlocks: FeatureBlock[] = [
     kicker: "AUTO SETTLE-UP",
     status: TODAY,
     title: "Four players, six debts, three payments.",
-    lead: "Nassau, presses, skins, the purse and every greenie get netted into one number per player, then reduced to the fewest transfers that make everyone whole. You read the list out loud in the parking lot and it's over — no daisy chain, no arithmetic with a beer in your hand.",
+    lead: "Nassau, presses, skins, Best Score and every greenie get netted into one number per player, then reduced to the fewest transfers that make everyone whole. You read the list out loud in the parking lot and it's over — no daisy chain, no arithmetic with a beer in your hand.",
     checklist: [
       { lead: "Who pays whom", rest: "names and amounts, in plain order." },
       {
@@ -264,7 +264,7 @@ export const roadmap: RoadmapColumn[] = [
     heading: "IN THE APP TODAY",
     items: [
       "Hole-by-hole scoring, net and gross",
-      "Nassau, skins, stroke purse, junk board",
+      "Nassau, skins, Best Score, junk board",
       "Presses on the Overall Match game",
       "Handicap strokes by stroke index",
       "Netted settle-up and round history",
@@ -349,7 +349,7 @@ export const quickAnswers: QuickAnswer[] = [
     id: "house-rules",
     question: "Can we play our own house rules?",
     answer:
-      "Most of them. Skins carryover on or off, which skins count, how the purse splits, net or gross — you set it at the first tee and the app scores it your way. What it doesn’t do today: automatic presses, presses on a Nassau (they’re on the Overall Match game), 90% allowances, or playing off the low man. Everyone gets their full course handicap.",
+      "Most of them. Skins carryover on or off, which skins count, how Best Score splits the pot, net or gross — you set it at the first tee and the app scores it your way. What it doesn’t do today: automatic presses, presses on a Nassau (they’re on the Overall Match game), 90% allowances, or playing off the low man. Everyone gets their full course handicap.",
   },
   {
     id: "launch-and-cost",

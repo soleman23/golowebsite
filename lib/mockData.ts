@@ -114,7 +114,7 @@ export const moneyRows: MoneyRow[] = [
     iconColor: "#bef264",
     iconBg: "rgba(190,242,100,.14)",
     iconBorder: "rgba(190,242,100,.35)",
-    title: "Stroke Purse",
+    title: "Best Score",
     who: "Tom leads at −4",
     val: "$80",
     valAccent: true,
@@ -200,7 +200,7 @@ export const gameTiles: GameTile[] = [
   { name: "Nassau", rule: "Front, back, total — three bets in one." },
   { name: "Skins", rule: "Carryover on or off, pot tracked live." },
   { name: "Wolf", rule: "Rotation, partners, lone-wolf multiplier." },
-  { name: "Stroke purse", rule: "Net or gross, winner takes the pot." },
+  { name: "Best Score", rule: "Net or gross, winner takes the pot." },
   { name: "Bingo Bango Bongo", rule: "Three points a hole, no strokes needed." },
   {
     name: "Junk board",

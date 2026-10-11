@@ -63,7 +63,7 @@ export const games: Game[] = [
   {
     slug: "stroke-purse",
     icon: "cash",
-    name: "Stroke Purse",
+    name: "Best Score",
     desc: "Everyone buys into one pot. Lowest net total over 18 walks away with the whole thing.",
     how: "Set the buy-in, play your round, and the lowest net score after handicaps takes the purse. Winner takes all.",
     players: "2+ players",
