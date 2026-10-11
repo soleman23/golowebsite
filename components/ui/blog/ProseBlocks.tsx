@@ -2,11 +2,13 @@
  * Renders a post body from its typed blocks. Every kind in the Block union has
  * a case here — post prose never lives in a page file.
  *
- * Server component: nothing in a post body is interactive.
+ * Server component: nothing in a post body is interactive. The one client leaf
+ * is ScrollRegion, which only measures whether a table overflows.
  */
 
 import Image from "next/image";
 import type { Block } from "@/lib/content";
+import { ScrollRegion } from "@/components/ui/ScrollRegion";
 import styles from "./ProseBlocks.module.css";
 
 export function ProseBlocks({ blocks }: { blocks: Block[] }) {
@@ -101,7 +103,10 @@ function ProseBlock({ block }: { block: Block }) {
 
     case "table":
       return (
-        <div className={styles.tableWrap}>
+        <ScrollRegion
+          className={styles.tableWrap}
+          label={`Scrollable table: ${block.head.join(", ")}`}
+        >
           <table className={styles.table}>
             <thead>
               <tr>
@@ -122,7 +127,7 @@ function ProseBlock({ block }: { block: Block }) {
               ))}
             </tbody>
           </table>
-        </div>
+        </ScrollRegion>
       );
 
     case "keyStat":

@@ -359,12 +359,11 @@
   border: 1px solid var(--card-border);
 }
 
-/* Chrome makes an overflowing scroller keyboard-focusable on its own, with no
-   tabindex, so the global [tabindex] ring misses it. A static tabindex would
-   add a stop to tables that fit; match the ring here instead. */
+/* The ring comes from globals.css. ScrollRegion adds a tabindex while the
+   table overflows, and the global [tabindex] ring would square the corners
+   to 4px; keep the card's. */
 .tableWrap:focus-visible {
-  outline: 2px solid var(--accent);
-  outline-offset: 2px;
+  border-radius: var(--radius-card);
 }
 
 .table {
