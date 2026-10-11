@@ -79,7 +79,10 @@ export function CategoryRail({ categories }: { categories: RailCategory[] }) {
                   {String(i + 1).padStart(2, "0")}
                 </span>
                 <span className={styles.label}>{category.label}</span>
-                <span className={styles.short} aria-hidden="true">
+                {/* Only one of label/short is displayed at a time, and the
+                    displayed one is the link's name: aria-hiding the short
+                    form left "4 questions" as the whole name in chip mode. */}
+                <span className={styles.short}>
                   {category.short}
                 </span>
                 <span className={styles.count}>
