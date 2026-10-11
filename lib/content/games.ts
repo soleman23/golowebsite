@@ -5,6 +5,11 @@
  * Every roster entry has a long-form route. The tuple below is the canonical
  * inventory for cards, detail records, related links, navigation, and sitemap
  * generation, so a misspelled or missing game slug fails TypeScript.
+ *
+ * The roster is also the one place a game's name, icon and one-line rule are
+ * written. The guides (gameDetail.ts), the home page cards, the /how-it-works
+ * guide cards and the mockups read them through rosterGame(), so renaming a
+ * game is one edit here.
  */
 
 import type { IconName } from "@/components/ui/Icon";
@@ -29,6 +34,8 @@ export type Game = {
   slug: GameSlug;
   icon: IconName;
   name: string;
+  /** The one-line rule: the /how-it-works guide cards and the game-library mockup. */
+  rule: string;
   desc: string;
   how: string;
   players: string;
@@ -42,6 +49,7 @@ export const games: Game[] = [
     slug: "skins",
     icon: "target",
     name: "Skins",
+    rule: "Win the hole outright, win the skin. Ties carry.",
     desc: 'Low score wins the hole and the "skin." Tie it and the pot carries to the next — pressure builds fast.',
     how: "Each hole is worth a skin. Outright low score takes it; ties carry the value forward until someone wins clean.",
     players: "2–6 players",
@@ -53,6 +61,7 @@ export const games: Game[] = [
     slug: "nassau",
     icon: "trophy",
     name: "Nassau",
+    rule: "Front, back, total — three bets in one.",
     desc: "The classic. Three separate bets in one round — front nine, back nine, and the overall 18.",
     how: "Win the most holes on the front, back, and total. Three match-play bets, settled as one number.",
     players: "2–4 players",
@@ -64,6 +73,7 @@ export const games: Game[] = [
     slug: "best-score",
     icon: "cash",
     name: "Best Score",
+    rule: "Net or gross, winner takes the pot.",
     desc: "Everyone buys into one pot. Lowest net total over 18 walks away with the whole thing.",
     how: "Set the buy-in, play your round, and the lowest net score after handicaps takes the purse — or the top two or three split it evenly.",
     players: "2+ players",
@@ -74,6 +84,7 @@ export const games: Game[] = [
     slug: "wolf",
     icon: "wolf",
     name: "Wolf",
+    rule: "Rotation, partners, lone-wolf multiplier.",
     desc: 'A rotating captain — the "Wolf" — picks a partner off the tee, or goes it alone for double the points.',
     how: "Each hole a new Wolf watches drives, then picks a teammate or declares Lone Wolf to take on the group solo.",
     players: "4 players",
@@ -84,6 +95,7 @@ export const games: Game[] = [
     slug: "bingo-bango-bongo",
     icon: "dice",
     name: "Bingo Bango Bongo",
+    rule: "Three points a hole, no strokes needed.",
     desc: "Three points per hole that reward good golf at every stage, not just the lowest score.",
     how: "A point for first on the green (bingo), closest once all are on (bango), and first in the hole (bongo). Most points wins.",
     players: "2–4 players",
@@ -94,6 +106,7 @@ export const games: Game[] = [
     slug: "closest-to-pin",
     icon: "pin",
     name: "Closest to Pin",
+    rule: "The par-3 side bet, settled on the green.",
     desc: "Stick your tee shot tightest on the par 3s and collect the side pot.",
     how: "On each designated par 3, whoever lands closest to the flag and makes par or better takes that hole’s pot.",
     players: "Any group",
@@ -104,6 +117,7 @@ export const games: Game[] = [
     slug: "longest-drive",
     icon: "drive",
     name: "Longest Drive",
+    rule: "One fairway, one bomb, one winner.",
     desc: "Rip it down the fairway on the marked hole. Longest ball in play collects.",
     how: "Pick a hole up front. Longest drive that finishes in the short grass wins — miss the fairway and you’re out.",
     players: "Any group",
@@ -114,6 +128,7 @@ export const games: Game[] = [
     slug: "birdies",
     icon: "bird",
     name: "Birdies",
+    rule: "Every birdie on the card gets paid.",
     desc: "A standing bounty on every birdie — paid out by everyone who didn’t make one.",
     how: "Set a per-birdie amount. Card a birdie and every other player pays you. Eagles usually count double.",
     players: "Any group",
@@ -157,4 +172,21 @@ export function isGameSlug(slug: string): slug is GameSlug {
 
 export function findGame(slug: string): Game | undefined {
   return games.find((game) => game.slug === slug);
+}
+
+/**
+ * The roster entry for a known slug. Throws rather than returning undefined,
+ * so a slug with no entry fails the build at prerender instead of rendering a
+ * card with no name.
+ */
+export function rosterGame(slug: GameSlug): Game {
+  const game = findGame(slug);
+  if (!game) throw new Error(`games.ts has no roster entry for "${slug}"`);
+  return game;
+}
+
+/** "a, b and c" — the site's list style, no serial comma. */
+export function andList(items: readonly string[]): string {
+  if (items.length < 2) return items.join("");
+  return `${items.slice(0, -1).join(", ")} and ${items[items.length - 1]}`;
 }

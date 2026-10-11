@@ -5,6 +5,7 @@
  */
 
 import type { IconName } from "@/components/ui/Icon";
+import { andList, rosterGame, type GameSlug } from "@/lib/content/games";
 
 /** 18-segment hole progress bar: 0–11 played (accent), 12 current, rest faint. */
 export const heroDots = Array.from({ length: 18 }, (_, i) => {
@@ -86,52 +87,72 @@ export type MoneyRow = {
   tag: string;
 };
 
-export const moneyRows: MoneyRow[] = [
+/** A row as written here: the game's name and icon come from the roster. */
+type MoneyRowSpec = Omit<MoneyRow, "icon" | "title"> & {
+  game: GameSlug;
+  /** Which part of the game the row is about, after its name: "Nassau · Front". */
+  segment?: string;
+};
+
+const moneyRowSpecs: MoneyRowSpec[] = [
   {
-    icon: "target",
+    game: "skins",
     iconColor: "var(--accent)",
     iconBg: "rgba(212,242,58,.14)",
     iconBorder: "rgba(212,242,58,.35)",
-    title: "Skins",
     who: "2-hole carry on the pot",
     val: "$120",
     valAccent: true,
     tag: "in the pot",
   },
   {
-    icon: "trophy",
+    game: "nassau",
+    segment: "Front",
     iconColor: "#facc15",
     iconBg: "rgba(250,204,21,.14)",
     iconBorder: "rgba(250,204,21,.35)",
-    title: "Nassau · Front",
     who: "Tom 2 up",
     val: "closed",
     valAccent: false,
     tag: "match play",
   },
   {
-    icon: "cash",
+    game: "best-score",
     iconColor: "#bef264",
     iconBg: "rgba(190,242,100,.14)",
     iconBorder: "rgba(190,242,100,.35)",
-    title: "Best Score",
     who: "Tom leads at −4",
     val: "$80",
     valAccent: true,
     tag: "winner takes",
   },
   {
-    icon: "pin",
+    game: "closest-to-pin",
     iconColor: "#60a5fa",
     iconBg: "rgba(96,165,250,.14)",
     iconBorder: "rgba(96,165,250,.35)",
-    title: "Closest to Pin",
     who: "Sarah · hole 7",
     val: "$20",
     valAccent: true,
     tag: "live pot",
   },
 ];
+
+export const moneyRows: MoneyRow[] = moneyRowSpecs.map(
+  ({ game, segment, ...row }) => {
+    const { name, icon } = rosterGame(game);
+    return { ...row, icon, title: segment ? `${name} · ${segment}` : name };
+  },
+);
+
+/** The MoneyCard's accessible names, one per variant. */
+export const moneyCardLabels = {
+  games: `GoLo money-on-the-line card showing ${andList(
+    moneyRowSpecs.map((row) => rosterGame(row.game).name),
+  )} standings.`,
+  players:
+    "GoLo live leaderboard through 12 holes: Mike up $42, Sarah up $11, Tom down $18, Dave down $35, with $32 carried in the skins pot.",
+};
 
 export type TransferRow = {
   fromColor: string;
@@ -196,18 +217,30 @@ export const setupGameChips: SetupGameChip[] = [
 
 export type GameTile = { name: string; rule: string; highlight?: boolean };
 
+/** A roster game as a tile: its name and one-line rule. */
+function gameTile(slug: GameSlug): GameTile {
+  const { name, rule } = rosterGame(slug);
+  return { name, rule };
+}
+
 export const gameTiles: GameTile[] = [
-  { name: "Nassau", rule: "Front, back, total — three bets in one." },
-  { name: "Skins", rule: "Carryover on or off, pot tracked live." },
-  { name: "Wolf", rule: "Rotation, partners, lone-wolf multiplier." },
-  { name: "Best Score", rule: "Net or gross, winner takes the pot." },
-  { name: "Bingo Bango Bongo", rule: "Three points a hole, no strokes needed." },
+  gameTile("nassau"),
+  gameTile("skins"),
+  gameTile("wolf"),
+  gameTile("best-score"),
+  gameTile("bingo-bango-bongo"),
+  // Not a roster game: the junk side bets, grouped.
   {
     name: "Junk board",
     rule: "Greenies, sandies, closest-to-pin, long drive.",
     highlight: true,
   },
 ];
+
+/** The GameStackCard's accessible name. */
+export const gameTilesLabel = `The GoLo game library: ${andList(
+  gameTiles.map((tile) => tile.name),
+)}, each with its scoring rule.`;
 
 export type StandingRow = {
   name: string;

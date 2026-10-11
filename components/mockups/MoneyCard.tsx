@@ -8,24 +8,17 @@
  */
 
 import { Icon } from "@/components/ui/Icon";
-import { moneyRows, standingRows } from "@/lib/mockData";
+import { moneyCardLabels, moneyRows, standingRows } from "@/lib/mockData";
 import styles from "./mockups.module.css";
 
 type MoneyCardProps = { variant?: "games" | "players" };
-
-const LABEL = {
-  games:
-    "GoLo money-on-the-line card showing Skins, Nassau, Best Score and Closest to Pin standings.",
-  players:
-    "GoLo live leaderboard through 12 holes: Mike up $42, Sarah up $11, Tom down $18, Dave down $35, with $32 carried in the skins pot.",
-};
 
 export function MoneyCard({ variant = "games" }: MoneyCardProps) {
   return (
     <div
       className={styles.moneyCard}
       role="img"
-      aria-label={LABEL[variant]}
+      aria-label={moneyCardLabels[variant]}
     >
       <div
         className={`${styles.moneyCardBg} golo-bd-mock-course`}

@@ -3,7 +3,7 @@
  * one-line rule. Decorative marketing content.
  */
 
-import { gameTiles } from "@/lib/mockData";
+import { gameTiles, gameTilesLabel } from "@/lib/mockData";
 import styles from "./mockups.module.css";
 
 export function GameStackCard() {
@@ -11,7 +11,7 @@ export function GameStackCard() {
     <div
       className={styles.gameTiles}
       role="img"
-      aria-label="The GoLo game library: Nassau, skins, Wolf, Best Score, Bingo Bango Bongo and the junk board, each with its scoring rule."
+      aria-label={gameTilesLabel}
     >
       {gameTiles.map((tile) => (
         <div

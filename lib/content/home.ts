@@ -9,7 +9,7 @@
 
 import type { IconName } from "@/components/ui/Icon";
 import { mostAskedFaqs, type FaqItem } from "./faq";
-import type { GameSlug } from "./games";
+import { rosterGame, type GameSlug } from "./games";
 
 /**
  * The hero H1. It names what a searcher types — "golf scorecard app", "side
@@ -131,8 +131,9 @@ export const features: Feature[] = [
 ];
 
 /**
- * The home page's short game teaser. Deliberately separate from the full
- * roster in games.ts — the two designs word their descriptions differently.
+ * The home page's short game teaser. The descriptions are deliberately its
+ * own — the two designs word them differently — but names and icons come
+ * from the roster in games.ts.
  */
 /** `slug` links each card to its guide, so all eight get a link from the home page. */
 export type HomeGame = {
@@ -142,56 +143,46 @@ export type HomeGame = {
   desc: string;
 };
 
-export const homeGames: HomeGame[] = [
+/** Each card's own description; the name and icon come from the roster. */
+const homeGameDescs: { slug: GameSlug; desc: string }[] = [
   {
     slug: "skins",
-    icon: "target",
-    name: "Skins",
     desc: "Low score wins the hole. Ties carry the pot to the next — and the next.",
   },
   {
     slug: "nassau",
-    icon: "trophy",
-    name: "Nassau",
     desc: "Three bets in one: front nine, back nine and the overall match.",
   },
   {
     slug: "best-score",
-    icon: "cash",
-    name: "Best Score",
     desc: "Everyone buys in; lowest net total over 18 takes the whole pot.",
   },
   {
     slug: "wolf",
-    icon: "wolf",
-    name: "Wolf",
     desc: "Rotating captain picks a partner — or goes Lone Wolf for double.",
   },
   {
     slug: "bingo-bango-bongo",
-    icon: "dice",
-    name: "Bingo Bango Bongo",
     desc: "Points for first on, closest once on, and first in the hole.",
   },
   {
     slug: "closest-to-pin",
-    icon: "pin",
-    name: "Closest to Pin",
     desc: "Stick it tight on the par 3s and take the side pot.",
   },
   {
     slug: "longest-drive",
-    icon: "drive",
-    name: "Longest Drive",
     desc: "Bomb it down the fairway on the marked hole to collect.",
   },
   {
     slug: "birdies",
-    icon: "bird",
-    name: "Birdies",
     desc: "A standing bounty on every birdie — paid by everyone who didn't.",
   },
 ];
+
+export const homeGames: HomeGame[] = homeGameDescs.map(({ slug, desc }) => {
+  const { name, icon } = rosterGame(slug);
+  return { slug, icon, name, desc };
+});
 
 export type Step = { n: string; icon: IconName; title: string; body: string };
 
