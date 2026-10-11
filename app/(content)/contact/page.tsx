@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { appCtaLabel } from "@/lib/content";
+import { appCtaLabel, heroOgImage } from "@/lib/content";
 import { pageMetadata } from "@/lib/pageMetadata";
 import { siteConfig } from "@/lib/siteConfig";
 import { PageHero } from "@/components/ui/PageHero";
@@ -14,6 +14,7 @@ export const metadata: Metadata = pageMetadata({
   title: "Contact",
   description:
     "Support, feature requests, course-data fixes and press — every message lands in the inbox we read between rounds.",
+  image: heroOgImage("contact"),
 });
 
 export default function ContactPage() {
@@ -24,6 +25,7 @@ export default function ContactPage() {
         title="Talk to the people who built it."
         lead={`GoLo is a small shop in Bend, Oregon. Every message lands in the same inbox we read between rounds — no ticket robot, no tier-one script, no “your call is important to us.”`}
         breadcrumbs={[{ label: "Home", href: "/" }, { label: "Contact" }]}
+        photo="contact"
         meta={
           <>
             <a
