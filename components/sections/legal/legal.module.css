@@ -286,6 +286,16 @@
   scroll-margin-top: 18px;
 }
 
+/* Without :has() (Firefox before 121), html only clears the main nav, so
+   the heading's own margin covers the sub-nav and it still lands at 150px. */
+@supports not selector(:has(*)) {
+  @media (min-width: 761px) {
+    .sectionHeading {
+      scroll-margin-top: 70px;
+    }
+  }
+}
+
 .sectionNum {
   flex: 0 0 auto;
   font-size: 15px;
