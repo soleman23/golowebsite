@@ -272,7 +272,7 @@ export const posts: Post[] = [
           { kind: "keyStat", value: "$15", label: "The most you can lose in a straight $5 Nassau before anybody presses. That ceiling is the whole appeal — small enough that nobody plays scared, big enough that a five-footer on 18 still means something." },
           { kind: "image", src: "/images/blog/nassau-mid.webp", alt: "Two golfers shaking hands on the first tee before the round", caption: "Three bets get agreed on the first tee in about four seconds. The trouble always starts later.", position: "50% 50%" },
         ] },
-        { id: "presses", title: "Presses: the part that gets people in trouble", paragraphs: ["A press is a brand-new bet, at the same stake, covering only the holes left in that segment. It is how the player who is losing buys a way back in, and it is also how a $5 Nassau quietly becomes a $40 afternoon. Presses can be pressed, which is where groups lose the thread entirely."], blocks: [{ kind: "callout", title: "SETTLE THIS ON THE FIRST TEE", html: "Automatic presses at 2 down, or press only when somebody asks? Auto-presses roughly double the money at stake over eighteen holes. Both are fine. Finding out on the 14th which one you are playing is not." }, { kind: "quote", text: "Nobody argues about the golf. They argue about what the bet was." }] },
+        { id: "presses", title: "Presses: the part that gets people in trouble", paragraphs: ["A press is a brand-new bet, at the same stake, covering only the holes left in that segment. It is how the player who is losing buys a way back in, and it is also how a $5 Nassau quietly becomes a $40 afternoon. Presses can be pressed, which is where groups lose the thread entirely. The etiquette of <a href=\"/blog/pressing\">when to press, and when not to</a>, gets its own post."], blocks: [{ kind: "callout", title: "SETTLE THIS ON THE FIRST TEE", html: "Automatic presses at 2 down, or press only when somebody asks? Auto-presses roughly double the money at stake over eighteen holes. Both are fine. Finding out on the 14th which one you are playing is not." }, { kind: "quote", text: "Nobody argues about the golf. They argue about what the bet was." }] },
         { id: "house-rules", title: "The three rules your group plays differently", paragraphs: ["There is no governing body for the Nassau. Every group has house rules and every group assumes theirs are the standard ones. These three cause the parking-lot conversation."], blocks: [{ kind: "cardGrid", items: [
           { title: "Do strokes count?", body: "A Nassau with handicaps is a different game than one without. Most groups play the low handicap off scratch and give everybody else their difference, allocated by the stroke index printed on the card. If a 6 and a 22 are playing straight up, the 22 is making a donation." },
           { title: "When does the total 18 close?", body: "Some groups close the overall match the moment it is mathematically decided — 3 up with 2 to play, done. Others play all eighteen because the back-nine bet is live anyway. Pick one, because it decides whether 17 and 18 mean anything." },
@@ -395,7 +395,7 @@ export const posts: Post[] = [
           { kind: "keyStat", value: "3", label: "Points on every hole, which means there is no such thing as a dead hole. Make a triple and you can still walk off with a point — that is the reason the 22 is still paying attention on the 16th." },
           { kind: "image", src: "/images/blog/bingo-bango-bongo-mid.webp", alt: "Four golf balls on the green at different distances from the hole, the closest just chipped on from the rough", caption: "Bango is measured once every ball is on the green, which is why a chip-on can beat three good approach shots.", position: "50% 60%" },
         ] },
-        { id: "why-it-works", title: "Why it works with a 6 and a 22 in the group", paragraphs: ["Most bets need handicaps to be fair, and handicaps are where arguments live. Bingo Bango Bongo is fair by construction: two of the three points are decided by order of play, and order of play favors the player who is behind.", "The better player still wins more often. He is closer more often, which is bango, and he holes more putts, which is bongo. But he cannot run away with a hole, and he certainly cannot run away with the round. A four-point spread over 54 is a normal result, and a four-point spread is a bet everybody is still in on the 18th tee."], blocks: [{ kind: "quote", text: "Being 60 yards behind everybody is not a disadvantage here. It is a head start on bingo." }] },
+        { id: "why-it-works", title: "Why it works with a 6 and a 22 in the group", paragraphs: ["Most bets need <a href=\"/blog/index-vs-course-handicap\">handicaps</a> to be fair, and handicaps are where arguments live. Bingo Bango Bongo is fair by construction: two of the three points are decided by order of play, and order of play favors the player who is behind.", "The better player still wins more often. He is closer more often, which is bango, and he holes more putts, which is bongo. But he cannot run away with a hole, and he certainly cannot run away with the round. A four-point spread over 54 is a normal result, and a four-point spread is a bet everybody is still in on the 18th tee."], blocks: [{ kind: "quote", text: "Being 60 yards behind everybody is not a disadvantage here. It is a head start on bingo." }] },
         { id: "rules", title: "The four rules worth settling first", blocks: [{ kind: "cardGrid", items: [
           { title: "Does the fringe count for bingo?", body: "Most groups require the putting surface. A ball two feet off the front in the collar is not on the green, and that call is much easier to make before somebody is standing over it." },
           { title: "Bango is measured with everybody on", body: "Not after the approaches. If one player is chipping from the rough, bango is not decided until his ball is on the surface too. Groups that measure early hand the point to the wrong person about twice a round." },
@@ -414,13 +414,13 @@ export const posts: Post[] = [
       "What a press is in golf, when calling one is fair, what automatic 2-down presses do to a $5 Nassau, and when to accept or decline one.",
     excerpt:
       "The automatic 2-down press, the 18th-tee press, and the one press that gets you left off next week’s text.",
-    date: "2026-06-04",
+    date: "2026-10-10",
     readMins: 6,
     dek: "The automatic 2-down press, the 18th-tee press, and the one press that gets you left off next week’s text — plus what auto-presses do to the size of your bet.",
     crumb: "Pressing",
     author: "From the GoLo team",
     hero: { src: blogMedia.sunset, alt: "A green and a greenside bunker under an orange sunset, the flag in the middle distance", position: "50% 52%" },
-    published: false,
+    published: true,
     body: article(
       "A press is the most useful tool in a friendly bet and the fastest way to sour one. Called at the right moment it keeps a beaten player in the round; called at the wrong one it tells three people exactly what you think of them. The mechanics take a paragraph. The etiquette is the actual subject. If you need the format underneath first, the <a href=\"/games/nassau\">Nassau guide</a> has the rules.",
       [
@@ -455,13 +455,13 @@ export const posts: Post[] = [
       "How a handicap index becomes a course handicap: the slope and course rating formula worked for two tee boxes, and how strokes land hole by hole.",
     excerpt:
       "Why a 12.4 becomes 14 strokes at one tee box and 11 at another — and how those strokes land hole by hole.",
-    date: "2026-05-21",
+    date: "2026-10-10",
     readMins: 5,
     dek: "Why a 12.4 becomes 14 strokes at one tee box and 11 at another, how those strokes land hole by hole, and which number belongs on the card.",
     crumb: "Handicaps",
     author: "From the GoLo team",
     hero: { src: blogMedia.course, alt: "A flagstick on a green at sunrise, with the clubhouse behind it", position: "50% 42%" },
-    published: false,
+    published: true,
     body: article(
       "Somebody in your group says “I’m a twelve.” That is a handicap index, and it is not the number he plays off today. Move him back one set of tees and it changes. Take him to a harder course and it changes again. Here is the difference, the formula, and which number belongs on the card when there is money on the hole.",
       [

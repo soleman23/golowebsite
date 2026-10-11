@@ -60,6 +60,16 @@ ALTER TABLE "NewsletterLead" ADD COLUMN "landingPath" TEXT, ADD COLUMN "referrer
 
 Applied October 10 to the website's Supabase database; all four columns confirmed present and nullable. The branch is safe to merge.
 
+## Published October 10, 2026 (branch content/press-handicap-drafts)
+
+Owner decisions: publish both drafts now, on the stock backdrop heroes; dedicated photos can follow through scripts/generate-blog-images.mjs.
+
+- /blog/pressing and /blog/index-vs-course-handicap published, dated the day of publication rather than their May and June draft dates.
+- Corrections from review. Pressing: the auto-press example table contradicted itself (a press won 2 up inside a nine lost 1 down); rebuilt as a hole-by-hole sequence that reconciles, with a settle row. "Vulture press" is presented as our nickname, not a recognized term, and auto-presses "can double" the money instead of "roughly double". Handicaps: a net par halves an unaided par (the draft said it wins); slope rating is defined against scratch, not as bogey difficulty alone; the index revises daily rather than "as soon as you post"; the excerpt said two courses where the example uses two tee boxes; read time 5 minutes, not 8.
+- Alt text on both heroes described people, tee boxes and a scorecard the photos don't show; rewritten to match. The two mid-article figures reused the hero photo under the same mismatched captions and were removed (pressing gains a step-by-step sequence instead, handicaps a callout).
+- Search: pressing's title front-loads "Pressing in golf"; both have meta descriptions under 155 characters without "betting".
+- Internal links: pressing → Nassau guide; handicaps → Nassau and Skins guides; the Nassau post's presses section → pressing; the Bingo Bango Bongo post → handicaps.
+
 ## Remaining
 
 - Search Console: re-check index coverage, selected canonicals and field Core Web Vitals against the October 8 baseline. Due between October 22 and November 5 (two to four weeks after the deploy).
@@ -67,6 +77,6 @@ Applied October 10 to the website's Supabase database; all four columns confirme
 - GA4 will undercount, by design. Analytics is opt-in: no data until a visitor grants it in the "Privacy choices" control (footer link → /privacy#analytics-choices). There is no banner, and Global Privacy Control or no choice keeps it off. Read GA as a small opted-in sample, not traffic; use Search Console clicks and the lead table (now with landing page and referrer) for volume. A consent banner would raise the sample, but that is a product and counsel decision, not an SEO task.
 - Privacy policy: the download-link bullet mentions "related technical records", and the usage section lists "referring pages". Counsel to confirm that covers landing page and referrer host on lead rows, or add them explicitly.
 - Verifiable authorship / reviewer information; do not invent credentials or people.
-- Finish and review pressing and handicap draft articles before publication.
+- Dedicated hero and mid-article photos for /blog/pressing and /blog/index-vs-course-handicap (source PNGs into tmp/img-src/, then scripts/generate-blog-images.mjs).
 - Add maintained article revision dates when substantively editing content.
 - Evaluate performance opportunities after content and discovery work.
