@@ -8,7 +8,7 @@
  */
 
 import type { IconName } from "@/components/ui/Icon";
-import type { GameSlug } from "./games";
+import { rosterGame, type GameSlug } from "@/lib/content/games";
 
 export type GameTone = "good" | "bad" | "neutral";
 
@@ -117,12 +117,18 @@ export type GameDetail = {
   next?: GameSlug;
 };
 
-const nassau: GameDetail = {
+/** A guide as written here. Its name and icon come from the roster in games.ts. */
+type GameDetailCopy = Omit<GameDetail, "name" | "icon">;
+
+function withRoster(copy: GameDetailCopy): GameDetail {
+  const { name, icon } = rosterGame(copy.slug);
+  return { ...copy, name, icon };
+}
+
+const nassau: GameDetailCopy = {
   slug: "nassau",
   seoTitle: "How to Play a Nassau in Golf: Rules & Presses",
   deeperReading: { href: "/blog/nassau", label: "Deeper reading: the $2 Nassau, presses and house rules →" },
-  name: "Nassau",
-  icon: "trophy",
   kicker: "MATCH PLAY · 3 BETS IN 1",
   tagline:
     "The clubhouse classic: three separate bets riding at once — the front nine, the back nine, and the whole eighteen. Lose a nine and you can always press to win it back.",
@@ -346,12 +352,10 @@ function gameFaqs(
   }));
 }
 
-const skins: GameDetail = {
+const skins: GameDetailCopy = {
   slug: "skins",
   seoTitle: "How to Play Skins in Golf: Rules & Carryovers",
   deeperReading: { href: "/blog/skins-carryover", label: "Deeper reading: how skins carryovers build the pot →" },
-  name: "Skins",
-  icon: "target",
   kicker: "POT PLAY · HOLE BY HOLE",
   tagline:
     "Every hole is its own little pot. Post the low score alone and the money is yours — tie it and nobody wins, so the pot rolls onto the next tee and gets heavier.",
@@ -438,11 +442,9 @@ const skins: GameDetail = {
   next: "nassau",
 };
 
-const bestScore: GameDetail = {
+const bestScore: GameDetailCopy = {
   slug: "best-score",
   seoTitle: "Golf Stroke Purse (Best Score): Buy-Ins & Payout Rules",
-  name: "Best Score",
-  icon: "cash",
   kicker: "POT · LOW NET TAKES IT",
   tagline: "Everybody puts the same money in the middle. Eighteen holes later the lowest net score picks it up. No per-hole math, no presses — one number decides it.",
   metaDescription: "Set up a stroke purse — Best Score in GoLo — with a fair buy-in, net or gross scoring, payout places, and a clean settlement after 18 holes.",
@@ -535,8 +537,8 @@ const bestScore: GameDetail = {
   related: ["skins", "nassau", "birdies"], prev: "nassau", next: "wolf",
 };
 
-const wolf: GameDetail = {
-  slug: "wolf", name: "Wolf", icon: "wolf", kicker: "TEAMS · ROTATING CAPTAIN",
+const wolf: GameDetailCopy = {
+  slug: "wolf", kicker: "TEAMS · ROTATING CAPTAIN",
   seoTitle: "Wolf Golf Game Rules: Rotation, Lone Wolf & Scoring",
   deeperReading: { href: "/blog/wolf", label: "Deeper reading: playing Wolf with a foursome that can’t agree →" },
   tagline: "One player is the Wolf on every hole. They watch the other three drives and pick a partner on the spot — or turn everyone down and take on the whole group alone for double.",
@@ -626,8 +628,8 @@ const wolf: GameDetail = {
   related: ["skins", "nassau", "bingo-bango-bongo"], prev: "best-score", next: "bingo-bango-bongo",
 };
 
-const bingoBangoBongo: GameDetail = {
-  slug: "bingo-bango-bongo", name: "Bingo Bango Bongo", icon: "dice", kicker: "POINTS · 3 PER HOLE",
+const bingoBangoBongo: GameDetailCopy = {
+  slug: "bingo-bango-bongo", kicker: "POINTS · 3 PER HOLE",
   seoTitle: "Bingo Bango Bongo Golf Game: Rules & Scoring",
   deeperReading: { href: "/blog/bingo-bango-bongo", label: "Deeper reading: why Bingo Bango Bongo suits mixed handicaps →" },
   tagline: "Three points on every hole: first ball on the green, closest once everyone is on, and first in the cup. Your total score never comes into it — which is why the shortest hitter in the group keeps winning.",
@@ -715,8 +717,8 @@ const bingoBangoBongo: GameDetail = {
   related: ["wolf", "skins", "closest-to-pin"], prev: "wolf", next: "closest-to-pin",
 };
 
-const closestToPin: GameDetail = {
-  slug: "closest-to-pin", name: "Closest to Pin", icon: "pin", kicker: "SIDE BET · PAR 3s",
+const closestToPin: GameDetailCopy = {
+  slug: "closest-to-pin", kicker: "SIDE BET · PAR 3s",
   seoTitle: "Closest to the Pin & Greenies: Golf Side Game Rules",
   tagline: "One tee shot, one pot. Stick it tighter than everybody else on the par 3s and collect — as long as you can still make par from there.",
   metaDescription: "How closest to the pin and greenies work: who qualifies, par-to-collect, measuring, carryovers, and how the side pot pays out.",
@@ -805,8 +807,8 @@ const closestToPin: GameDetail = {
   related: ["longest-drive", "birdies", "bingo-bango-bongo"], prev: "bingo-bango-bongo", next: "longest-drive",
 };
 
-const longestDrive: GameDetail = {
-  slug: "longest-drive", name: "Longest Drive", icon: "drive", kicker: "SIDE BET · ONE MARKED HOLE",
+const longestDrive: GameDetailCopy = {
+  slug: "longest-drive", kicker: "SIDE BET · ONE MARKED HOLE",
   seoTitle: "Longest Drive Golf Side Game: Rules & Payouts",
   tagline: "Pick a hole, swing out of your shoes, and the longest ball that finishes in the fairway takes the pot. Short grass or nothing.",
   metaDescription: "Set up a longest-drive side bet with a marked hole, fairway-only rule, measurement, carryovers, and a clean payout.",
@@ -895,8 +897,8 @@ const longestDrive: GameDetail = {
   related: ["closest-to-pin", "birdies", "skins"], prev: "closest-to-pin", next: "birdies",
 };
 
-const birdies: GameDetail = {
-  slug: "birdies", name: "Birdies", icon: "bird", kicker: "BOUNTY · ALL 18 HOLES",
+const birdies: GameDetailCopy = {
+  slug: "birdies", kicker: "BOUNTY · ALL 18 HOLES",
   seoTitle: "Birdie Bounties in Golf: Side Game Rules & Payouts",
   tagline: "A standing price on every birdie. Card one and everybody who did not pays you. Eagles double it, and nobody has ever complained about paying.",
   metaDescription: "How a birdie bounty works: gross or net birdies, eagle multipliers, who pays whom, and a sensible cap so one hot round stays friendly.",
@@ -986,14 +988,14 @@ const birdies: GameDetail = {
 };
 
 export const gameDetails = {
-  skins,
-  nassau,
-  "best-score": bestScore,
-  wolf,
-  "bingo-bango-bongo": bingoBangoBongo,
-  "closest-to-pin": closestToPin,
-  "longest-drive": longestDrive,
-  birdies,
+  skins: withRoster(skins),
+  nassau: withRoster(nassau),
+  "best-score": withRoster(bestScore),
+  wolf: withRoster(wolf),
+  "bingo-bango-bongo": withRoster(bingoBangoBongo),
+  "closest-to-pin": withRoster(closestToPin),
+  "longest-drive": withRoster(longestDrive),
+  birdies: withRoster(birdies),
 } satisfies Record<GameSlug, GameDetail>;
 
 export const gameDetailSlugsWithContent = Object.keys(gameDetails) as GameSlug[];

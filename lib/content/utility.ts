@@ -1,5 +1,6 @@
 import type { IconName } from "@/components/ui/Icon";
 import { siteConfig } from "@/lib/siteConfig";
+import { games } from "@/lib/content/games";
 
 export const notFoundContent = {
   kicker: "ERROR 404 · OUT OF BOUNDS",
@@ -8,7 +9,7 @@ export const notFoundContent = {
   lead: "The page you were looking for isn't on this scorecard. Nothing lost but a stroke — here's where everyone else is playing.",
   destinations: [
     { icon: "star", name: "Features", desc: "Live scoring, auto bet math, one number per player at the end.", cta: "See the features", href: "/features" },
-    { icon: "target", name: "Games", desc: "Skins, Nassau, Wolf, Bingo Bango Bongo and every side pot.", cta: "Browse all 8", href: "/games" },
+    { icon: "target", name: "Games", desc: "Skins, Nassau, Wolf, Bingo Bango Bongo and every side pot.", cta: `Browse all ${games.length}`, href: "/games" },
     { icon: "card", name: "Blog", desc: "Bet math, group etiquette, and the rules nobody agrees on.", cta: "Read the latest", href: "/blog" },
     { icon: "chat", name: "FAQ", desc: "Handicaps, payouts, privacy, and what GoLo will never do.", cta: "Get answers", href: "/faq" },
   ] satisfies { icon: IconName; name: string; desc: string; cta: string; href: string }[],

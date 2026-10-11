@@ -10,7 +10,10 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Logo } from "@/components/ui/Logo";
-import { appCtaLabel, appCtaShortLabel, navLinks } from "@/lib/content";
+// Straight from the module, not the @/lib/content barrel: this is a client
+// component on every page, and the barrel would ship every page's copy to
+// the browser.
+import { appCtaLabel, appCtaShortLabel, navLinks } from "@/lib/content/nav";
 import { siteConfig } from "@/lib/siteConfig";
 import styles from "./Nav.module.css";
 

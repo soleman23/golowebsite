@@ -16,6 +16,7 @@ import {
   strokeExample,
   type HiwPlayerName,
 } from "@/lib/content/howItWorks";
+import { andList } from "@/lib/format";
 import styles from "./StrokesExplainer.module.css";
 
 const NAMES = strokeExample.players.map((p) => p.name);
@@ -26,7 +27,7 @@ const STROKES = Object.fromEntries(
 function listHoles(holes: number[]): string {
   if (holes.length === 18) return "every hole";
   if (holes.length === 1) return `hole ${holes[0]}`;
-  return `holes ${holes.slice(0, -1).join(", ")} and ${holes[holes.length - 1]}`;
+  return `holes ${andList(holes.map(String))}`;
 }
 
 /** Strokes on a hole of stroke index `si` for a player getting `strokes`. */

@@ -1,10 +1,17 @@
 /**
  * The game roster behind /games and /games/[slug]. Copy is verbatim from
- * design_handoff/reference/Golo Golf - Games.dc.html.
+ * design_handoff/reference/Golo Golf - Games.dc.html, except `rule`, the
+ * one-liners from the How It Works reference's game guide cards.
  *
  * Every roster entry has a long-form route. The tuple below is the canonical
  * inventory for cards, detail records, related links, navigation, and sitemap
  * generation, so a misspelled or missing game slug fails TypeScript.
+ *
+ * A game's name, icon and one-line rule are written here and nowhere else as
+ * data: the guides (gameDetail.ts), the home page cards, the /how-it-works
+ * guide cards and the mockups read them through rosterGame(). Prose that names
+ * a game in a sentence (guide copy, the FAQ, the blog) still says it in words,
+ * so a rename means a search through lib/content as well.
  */
 
 import type { IconName } from "@/components/ui/Icon";
@@ -29,6 +36,8 @@ export type Game = {
   slug: GameSlug;
   icon: IconName;
   name: string;
+  /** The one-line rule: the /how-it-works guide cards and the game-library mockup. */
+  rule: string;
   desc: string;
   how: string;
   players: string;
@@ -37,11 +46,15 @@ export type Game = {
   popular?: boolean;
 };
 
-export const games: Game[] = [
-  {
-    slug: "skins",
+/**
+ * Keyed by slug, so a game missing from the roster (or one that isn't in
+ * GAME_SLUGS) fails typecheck.
+ */
+const roster = {
+  skins: {
     icon: "target",
     name: "Skins",
+    rule: "Win the hole outright, win the skin. Ties carry.",
     desc: 'Low score wins the hole and the "skin." Tie it and the pot carries to the next — pressure builds fast.',
     how: "Each hole is worth a skin. Outright low score takes it; ties carry the value forward until someone wins clean.",
     players: "2–6 players",
@@ -49,10 +62,10 @@ export const games: Game[] = [
     tags: ["pots"],
     popular: true,
   },
-  {
-    slug: "nassau",
+  nassau: {
     icon: "trophy",
     name: "Nassau",
+    rule: "Front, back, total — three bets in one.",
     desc: "The classic. Three separate bets in one round — front nine, back nine, and the overall 18.",
     how: "Win the most holes on the front, back, and total. Three match-play bets, settled as one number.",
     players: "2–4 players",
@@ -60,67 +73,70 @@ export const games: Game[] = [
     tags: ["match"],
     popular: true,
   },
-  {
-    slug: "best-score",
+  "best-score": {
     icon: "cash",
     name: "Best Score",
+    rule: "Net or gross, winner takes the pot.",
     desc: "Everyone buys into one pot. Lowest net total over 18 walks away with the whole thing.",
     how: "Set the buy-in, play your round, and the lowest net score after handicaps takes the purse — or the top two or three split it evenly.",
     players: "2+ players",
     format: "One pot",
     tags: ["pots"],
   },
-  {
-    slug: "wolf",
+  wolf: {
     icon: "wolf",
     name: "Wolf",
+    rule: "Rotation, partners, lone-wolf multiplier.",
     desc: 'A rotating captain — the "Wolf" — picks a partner off the tee, or goes it alone for double the points.',
     how: "Each hole a new Wolf watches drives, then picks a teammate or declares Lone Wolf to take on the group solo.",
     players: "4 players",
     format: "Rotating captain",
     tags: ["match"],
   },
-  {
-    slug: "bingo-bango-bongo",
+  "bingo-bango-bongo": {
     icon: "dice",
     name: "Bingo Bango Bongo",
+    rule: "Three points a hole, no strokes needed.",
     desc: "Three points per hole that reward good golf at every stage, not just the lowest score.",
     how: "A point for first on the green (bingo), closest once all are on (bango), and first in the hole (bongo). Most points wins.",
     players: "2–4 players",
     format: "3 points / hole",
     tags: ["points"],
   },
-  {
-    slug: "closest-to-pin",
+  "closest-to-pin": {
     icon: "pin",
     name: "Closest to Pin",
+    rule: "The par-3 side bet, settled on the green.",
     desc: "Stick your tee shot tightest on the par 3s and collect the side pot.",
     how: "On each designated par 3, whoever lands closest to the flag and makes par or better takes that hole’s pot.",
     players: "Any group",
     format: "Par 3s only",
     tags: ["side"],
   },
-  {
-    slug: "longest-drive",
+  "longest-drive": {
     icon: "drive",
     name: "Longest Drive",
+    rule: "One fairway, one bomb, one winner.",
     desc: "Rip it down the fairway on the marked hole. Longest ball in play collects.",
     how: "Pick a hole up front. Longest drive that finishes in the short grass wins — miss the fairway and you’re out.",
     players: "Any group",
     format: "One marked hole",
     tags: ["side"],
   },
-  {
-    slug: "birdies",
+  birdies: {
     icon: "bird",
     name: "Birdies",
+    rule: "Every birdie on the card gets paid.",
     desc: "A standing bounty on every birdie — paid out by everyone who didn’t make one.",
     how: "Set a per-birdie amount. Card a birdie and every other player pays you. Eagles usually count double.",
     players: "Any group",
     format: "Per-birdie bounty",
     tags: ["side"],
   },
-];
+} satisfies Record<GameSlug, Omit<Game, "slug">>;
+
+/** In GAME_SLUGS order. */
+export const games: Game[] = GAME_SLUGS.map((slug) => ({ slug, ...roster[slug] }));
 
 export type GameFilter = { id: "all" | GameTag; label: string };
 
@@ -157,4 +173,9 @@ export function isGameSlug(slug: string): slug is GameSlug {
 
 export function findGame(slug: string): Game | undefined {
   return games.find((game) => game.slug === slug);
+}
+
+/** The roster entry for a slug. Every slug has one; the roster's type sees to it. */
+export function rosterGame(slug: GameSlug): Game {
+  return games[GAME_SLUGS.indexOf(slug)];
 }

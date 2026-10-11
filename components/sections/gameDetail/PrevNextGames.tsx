@@ -4,13 +4,13 @@
 
 import Link from "next/link";
 import type { GameDetail } from "@/lib/content";
-import { findGame } from "@/lib/content";
+import { rosterGame } from "@/lib/content";
 import { Icon } from "@/components/ui/Icon";
 import styles from "./PrevNextGames.module.css";
 
 export function PrevNextGames({ game }: { game: GameDetail }) {
-  const prev = game.prev ? findGame(game.prev) : undefined;
-  const next = game.next ? findGame(game.next) : undefined;
+  const prev = game.prev ? rosterGame(game.prev) : undefined;
+  const next = game.next ? rosterGame(game.next) : undefined;
 
   if (!prev && !next) return null;
 

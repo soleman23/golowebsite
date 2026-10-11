@@ -315,19 +315,10 @@ export const gameGuidesSection = {
   cardCta: "How to play →",
 } as const;
 
-/** Keyed by slug, so a missing or misspelled game fails typecheck. */
-export const gameGuideLines: Record<GameSlug, string> = {
-  nassau: "Front, back, total — three bets in one.",
-  skins: "Win the hole outright, win the skin. Ties carry.",
-  wolf: "Rotation, partners, lone-wolf multiplier.",
-  "best-score": "Net or gross, winner takes the pot.",
-  "bingo-bango-bongo": "Three points a hole, no strokes needed.",
-  "closest-to-pin": "The par-3 side bet, settled on the green.",
-  "longest-drive": "One fairway, one bomb, one winner.",
-  birdies: "Every birdie on the card gets paid.",
-};
-
-/** Card order on the page — the reference's, not the roster's. */
+/**
+ * Card order on the page — the reference's, not the roster's. Each card's
+ * name and one-line rule come from the roster in games.ts.
+ */
 export const gameGuideOrder: GameSlug[] = [
   "nassau",
   "skins",
