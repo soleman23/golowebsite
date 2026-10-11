@@ -905,10 +905,10 @@ const birdies: GameDetail = {
   intro: "Put a price on a birdie before the round. Every time somebody makes one, each of the other players hands over that amount — so a $5 birdie is worth $15 in a foursome. Eagles usually pay double, and because it sits on top of whatever else you are playing, most groups leave it running all season.",
   steps: [
     { n: "1", title: "Set the price", body: "$5 a birdie is standard. Much more and one hot nine becomes a real number." },
-    { n: "2", title: "Gross or net", body: "Gross is simple. Net lets a 20 handicap into the bet when par on a stroke hole counts." },
+    { n: "2", title: "Gross or net", body: "Gross is simple. Net lets a 20 handicap into the bet when par on a stroke hole counts. GoLo counts gross birdies only." },
     { n: "3", title: "Everybody else pays the maker", body: "This is a transfer, not a pot. Every other player pays." },
     { n: "4", title: "Eagles double, aces clear the table", body: "The traditional multiplier, with optional bonuses for streaks or hard holes." },
-    { n: "5", title: "GoLo tallies every bounty", body: "Each bounty posts automatically and nets against what you owe." },
+    { n: "5", title: "GoLo tallies every bounty", body: "In GoLo it is a Skins setting: Birdie Skin, plus Eagle Skin for the double, both at your skin price. Each bounty posts automatically and nets against what you owe." },
   ],
   scoring: {
     kicker: "SETTLE THESE FIRST", title: "Four questions, asked before the first birdie.", lead: "A bounty is simple until somebody makes five of them. Here is where most groups land.",
@@ -916,7 +916,7 @@ const birdies: GameDetail = {
       { title: "Gross or net birdies?", detail: "Whether a handicap stroke can turn par into birdie", value: "GROSS" },
       { title: "What does an eagle pay?", detail: "Flat rate, double, or a number of its own", value: "DOUBLE" },
       { title: "Who pays the maker?", detail: "Every other player or only those who lost the hole", value: "EVERYBODY ELSE" },
-      { title: "Is there a cap?", detail: "What happens when one player makes five", value: "SET A CAP" },
+      { title: "Is there a cap?", detail: "What happens when one player makes five (GoLo has no cap setting)", value: "SET A CAP" },
     ],
   },
   example: {
@@ -948,12 +948,12 @@ const birdies: GameDetail = {
     },
   },
   headings: {
-    variations: { kicker: "BOUNTIES & VARIATIONS", title: "A bounty does not have to stop at birdies.", lead: "Same mechanic every time: a fixed price on one specific thing happening. Four versions worth adding." },
+    variations: { kicker: "BOUNTIES & VARIATIONS", title: "A bounty does not have to stop at birdies.", lead: "Same mechanic every time: a fixed price on one specific thing happening. Four versions worth adding. GoLo scores the plain gross bounty and sandies; net and escalating bounties, barkies and Arnies are house rules it does not track." },
     tips: { kicker: "PLAY SMART", title: "Birdies pay for the cheap risk, not every risk.", lead: "Attack the short par 5 and drivable par 4. Do not take on a tucked pin over water for the same bounty." },
     glossary: { kicker: "TALK THE TALK", title: "The bounties your group already argues about." },
     faq: { kicker: "BIRDIES, ANSWERED", title: "Before you set the price." },
     related: { kicker: "STACK IT WITH", title: "Bounties are the seasoning, not the meal.", lead: "Birdies runs on top of whatever your group already plays. Pick the game underneath it." },
-    cta: { title: "Put a price on the best shot you hit all day.", lead: "Choose the bounty and eagle multiplier. GoLo posts each one while you play." },
+    cta: { title: "Put a price on the best shot you hit all day.", lead: "Turn on Birdie Skin and Eagle Skin, set the price, and GoLo posts each one while you play." },
   },
   variations: [
     { icon: "bird", title: "Net birdies", body: "A par on a stroke hole counts, giving a high handicap a real chance." },
@@ -976,11 +976,11 @@ const birdies: GameDetail = {
   ],
   faqs: gameFaqs("birdies", [
     { q: "How much should a birdie be worth?", a: "Five dollars is the default: enough that a hot nine matters without paying the best player a salary." },
-    { q: "Should we count net birdies?", a: "Yes when the handicap spread is wide. A bet nobody can win is not much of a bet." },
-    { q: "Do eagles really pay double?", a: "Almost always, and a hole-in-one commonly clears the table. Set it before the shot." },
+    { q: "Should we count net birdies?", a: "Yes when the handicap spread is wide. A bet nobody can win is not much of a bet. GoLo counts gross birdies only, so net birdies are a house rule it does not track." },
+    { q: "Do eagles really pay double?", a: "Almost always, and a hole-in-one commonly clears the table. Set it before the shot. GoLo pays an eagle double when Eagle Skin is on, and has no separate ace bonus." },
     { q: "Who pays the maker?", a: "Everybody else pays. That is what makes it a bounty rather than a match." },
-    { q: "What if somebody goes on a run?", a: "Use a cap so a great round stays a great story instead of an awkward bill." },
-    { q: "Can we stack it on another game?", a: "Yes. Birdies runs underneath Nassau, a purse, or skins and GoLo nets it all." },
+    { q: "What if somebody goes on a run?", a: "Use a cap so a great round stays a great story instead of an awkward bill. GoLo has no cap setting, so agree one before the round and settle the difference yourselves." },
+    { q: "Can we stack it on another game?", a: "Yes. In GoLo it is part of the Skins game, so it runs beside a Nassau or a purse, with or without the standard skin, and GoLo nets it all." },
   ]),
   related: ["skins", "nassau", "closest-to-pin"], prev: "longest-drive", next: "skins",
 };
