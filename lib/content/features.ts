@@ -48,7 +48,7 @@ export const featureBlocks: FeatureBlock[] = [
     kicker: "ROUND SETUP",
     status: TODAY,
     title: "Ninety seconds on the first tee, then nobody touches it again.",
-    lead: "Course, tees, players, games, stakes. Set it once while the group is still stretching and the rest of the round is just tapping numbers. Save your Saturday crew as a preset and it's four taps next week.",
+    lead: "Course, tees, players, games, stakes. Set it once while the group is still stretching and the rest of the round is just tapping numbers. Save your Saturday crew as a group and next week they're in with one tap, teams and all.",
     checklist: [
       {
         lead: "One set of tees for the group",
@@ -275,7 +275,7 @@ export const roadmap: RoadmapColumn[] = [
     heading: "IN TESTING WITH REAL GROUPS",
     items: [
       "Wolf and Bingo Bango Bongo",
-      "Saved group presets",
+      "Saved groups, teams included",
       "Share card for the group chat",
       "Season stats in the Locker",
     ],
