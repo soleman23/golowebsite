@@ -16,7 +16,7 @@
    sub-nav ends at 123px: top 70px, 52px tall, a 1px border. */
 @media (min-width: 761px) {
   :global(html):has(.subNav) {
-    scroll-padding-top: calc(70px + 53px + var(--focus-ring-reach) + 5px);
+    --scroll-inset-top: calc(70px + 53px + var(--focus-ring-reach) + 5px);
   }
 }
 
@@ -54,6 +54,9 @@
   font-weight: 700;
   color: var(--text-secondary);
   transition: color 0.14s ease;
+  /* Pinned inside html's scroll-padding, like the main nav's controls: this
+     keeps focusing a link from scrolling the page (see Nav.module.css). */
+  scroll-margin: calc(-1 * var(--scroll-inset-top)) 0 var(--scroll-inset-top);
 }
 
 .subNavLink:hover {

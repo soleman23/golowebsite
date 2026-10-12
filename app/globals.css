@@ -76,6 +76,10 @@
      air. */
   --nav-height: 71px;
   --scroll-clearance: calc(var(--nav-height) + var(--focus-ring-reach) + 5px);
+  /* html's scroll-padding-top: the clearance, or more on the legal pages,
+     which also clear their sub-nav. The sticky bars' controls cancel it with
+     this (see Nav.module.css). */
+  --scroll-inset-top: var(--scroll-clearance);
 
   /* Radii */
   --radius-pill: 9999px;
@@ -103,7 +107,7 @@ html {
      bottom with the viewport's bottom, cutting the ring off. A deep-link
      target's scroll-margin-top is only the air on top of this, so the nav
      isn't counted twice. */
-  scroll-padding-top: var(--scroll-clearance);
+  scroll-padding-top: var(--scroll-inset-top);
   scroll-padding-bottom: calc(var(--focus-ring-reach) + 4px);
 }
 
