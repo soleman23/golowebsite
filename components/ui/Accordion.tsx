@@ -69,7 +69,7 @@ export function Accordion({
       // commit: only the target item expands, and it expands downward, so
       // nothing above it moves and its top is already in its final place.
       // (A rAF here would also never fire in a backgrounded tab.)
-      // .anchored's scroll-margin-top is what clears the sticky nav.
+      // html's scroll-padding-top clears the sticky nav; .anchored adds air.
       document.getElementById(id)?.scrollIntoView({ block: "start" });
     }
 

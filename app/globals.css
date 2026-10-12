@@ -70,6 +70,16 @@
   --focus-ring-offset: 2px;
   --focus-ring: var(--focus-ring-width) solid var(--accent);
   --focus-ring-reach: calc(var(--focus-ring-width) + var(--focus-ring-offset));
+  /* The sticky nav is 71px: 42px controls, 14px padding above and below, and
+     a 1px border. --scroll-clearance is the room html keeps above anything the
+     browser scrolls into view: the nav, the focus ring's reach, and 5px of
+     air. */
+  --nav-height: 71px;
+  --scroll-clearance: calc(var(--nav-height) + var(--focus-ring-reach) + 5px);
+  /* html's scroll-padding-top: the clearance, or more on the legal pages,
+     which also clear their sub-nav. The sticky bars' controls cancel it with
+     this (see Nav.module.css). */
+  --scroll-inset-top: var(--scroll-clearance);
 
   /* Radii */
   --radius-pill: 9999px;
@@ -90,6 +100,15 @@
 
 html {
   scroll-behavior: smooth;
+  /* Whatever the browser scrolls into view stops clear of the sticky nav and
+     the bottom edge, with room for the focus ring: an element keyboard focus
+     lands on, an #anchor, a scrollIntoView(). Without this, Chrome lines a
+     tall card's top up with the viewport's top, under the nav, and a card's
+     bottom with the viewport's bottom, cutting the ring off. A deep-link
+     target's scroll-margin-top is only the air on top of this, so the nav
+     isn't counted twice. */
+  scroll-padding-top: var(--scroll-inset-top);
+  scroll-padding-bottom: calc(var(--focus-ring-reach) + 4px);
 }
 
 html,

@@ -57,14 +57,14 @@ export function LegalPage({
                     className={`${styles.subNavLink} ${active ? styles.subNavActive : ""}`}
                     aria-current={active ? "page" : undefined}
                   >
-                    {d.title}
+                    <span className={styles.subNavText}>{d.title}</span>
                   </Link>
                 </li>
               );
             })}
             <li>
               <Link href="/delete-account" className={styles.subNavLink}>
-                Delete Account
+                <span className={styles.subNavText}>Delete Account</span>
               </Link>
             </li>
           </ul>

@@ -81,8 +81,9 @@
 
 .formSection {
   background: var(--page-bg);
-  /* Clears the sticky nav when a route card jumps here. */
-  scroll-margin-top: 110px;
+  /* Air under the sticky nav when a route card jumps here. html's
+     scroll-padding-top clears the nav itself. */
+  scroll-margin-top: 30px;
 }
 
 .grid {

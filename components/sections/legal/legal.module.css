@@ -11,6 +11,15 @@
   border-bottom: 1px solid var(--hairline);
 }
 
+/* While the sub-nav shows, whatever the browser scrolls into view (a focused
+   link, an #anchor) has to clear both bars, not just the main nav. Stuck, the
+   sub-nav ends at 123px: top 70px, 52px tall, a 1px border. */
+@media (min-width: 761px) {
+  :global(html):has(.subNav) {
+    --scroll-inset-top: calc(70px + 53px + var(--focus-ring-reach) + 5px);
+  }
+}
+
 .subNavInner {
   max-width: var(--max-width);
   margin: 0 auto;
@@ -45,10 +54,26 @@
   font-weight: 700;
   color: var(--text-secondary);
   transition: color 0.14s ease;
+  /* Pinned inside html's scroll-padding, like the main nav's controls: this
+     keeps focusing a link from scrolling the page (see Nav.module.css). */
+  scroll-margin: calc(-1 * var(--scroll-inset-top)) 0 var(--scroll-inset-top);
 }
 
 .subNavLink:hover {
   color: var(--text-primary);
+}
+
+/* The links fill the bar's full 52px, so a ring drawn outside the link would
+   run 4px up under the main nav. Ring the text instead, the way the main
+   nav's links look; the click target stays the full height of the bar. */
+.subNavLink:focus-visible {
+  outline: none;
+}
+
+.subNavLink:focus-visible .subNavText {
+  outline: var(--focus-ring);
+  outline-offset: var(--focus-ring-offset);
+  border-radius: 4px;
 }
 
 .subNavActive {
@@ -258,8 +283,20 @@
   line-height: 1.2;
   letter-spacing: -0.02em;
   color: var(--text-primary);
-  /* Anchors clear both sticky bars. */
-  scroll-margin-top: 150px;
+  /* Air under the sticky bars. html's scroll-padding-top clears the bars
+     themselves: both of them from 761px, where this lands at 150px as it
+     always has, and just the nav below that. */
+  scroll-margin-top: 18px;
+}
+
+/* Without :has() (Firefox before 121), html only clears the main nav, so
+   the heading's own margin covers the sub-nav and it still lands at 150px. */
+@supports not selector(:has(*)) {
+  @media (min-width: 761px) {
+    .sectionHeading {
+      scroll-margin-top: 70px;
+    }
+  }
 }
 
 .sectionNum {

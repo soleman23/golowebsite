@@ -14,6 +14,21 @@
   border-bottom: 1px solid var(--hairline);
 }
 
+/* The nav is pinned, so focus can't bring it any further into view. But
+   html's scroll-padding-top has the browser treat the top
+   --scroll-inset-top of the screen as out of view, so Shift+Tab back to a
+   nav control from further down scrolled the page 280–480px up for nothing.
+   Moving each control's scroll box down by the same inset puts it in the
+   clear area, and focusing it scrolls nothing. Not the drawer's links: the
+   drawer hangs below the nav, and the shift would push its lower links off
+   the bottom of the screen. */
+.nav > a,
+.link,
+.cta,
+.burger {
+  scroll-margin: calc(-1 * var(--scroll-inset-top)) 0 var(--scroll-inset-top);
+}
+
 .desktop {
   display: flex;
   align-items: center;
