@@ -5,10 +5,13 @@
 }
 
 .item {
+  /* Containing block for the focus ring; see .question::after. Nothing in
+     the item paints outside it (the panel clips its own answer), so it
+     doesn't clip either, and the ring can be drawn outside it. */
+  position: relative;
   background: var(--glass-surface);
   border: 1px solid var(--card-border);
   border-radius: var(--radius-card);
-  overflow: hidden;
 }
 
 /* Air above a deep-link target, so /faq#q-settle doesn't park the question
@@ -37,18 +40,21 @@
   font-family: inherit;
 }
 
-/* .item clips to its rounded corners, so the question's own ring, drawn
-   outside the button, never shows. Ring the whole card instead. Browsers
-   without :has() keep the old behaviour rather than losing the ring. */
-@supports selector(:has(*)) {
-  .question:focus-visible {
-    outline: none;
-  }
+/* The focused question rings the whole card, not just itself. The ring is
+   the button's ::after, stretched over the item's border box, so it needs
+   no :has() and looks the same in every browser. */
+.question:focus-visible {
+  outline: none;
+}
 
-  .item:has(.question:focus-visible) {
-    outline: var(--focus-ring);
-    outline-offset: var(--focus-ring-offset);
-  }
+.question:focus-visible::after {
+  content: "";
+  position: absolute;
+  inset: -1px;
+  border-radius: var(--radius-card);
+  outline: var(--focus-ring-width) solid var(--focus-ring-color);
+  outline-offset: var(--focus-ring-offset);
+  pointer-events: none;
 }
 
 .questionText {
@@ -76,10 +82,17 @@
    would be an invisible tab stop; it's hidden from the tab order and screen
    readers too, and the flip to hidden waits for the collapse to finish so it
    still animates. */
+/* .panelInner clips, and the answer used to start flush with its top edge,
+   so a link on an answer's first line would lose the top of its ring. The
+   panel tucks up under the question's padding by the ring's reach and
+   .panelInner pads it back: the clip edge moves up, the answer doesn't.
+   The tucked strip passes clicks through to the question, as before. */
 .panel {
   display: grid;
   grid-template-rows: 0fr;
+  margin-top: calc(var(--focus-ring-reach) * -1);
   visibility: hidden;
+  pointer-events: none;
   transition: grid-template-rows 0.28s ease, visibility 0s linear 0.28s;
 }
 
@@ -89,13 +102,17 @@
   transition: grid-template-rows 0.28s ease, visibility 0s;
 }
 
-/* No padding here: the answer's padding would hold the row open. */
+/* No padding here beyond the tuck: it holds the closed row open, which the
+   panel's negative margin cancels. The answer's own padding would hold it
+   open further. */
 .panelInner {
   min-height: 0;
   overflow: hidden;
+  padding-top: var(--focus-ring-reach);
 }
 
 .answer {
+  pointer-events: auto;
   padding: 0 20px 18px;
   font-size: 15px;
   line-height: 1.6;
