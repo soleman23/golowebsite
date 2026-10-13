@@ -66,11 +66,7 @@ export default function FaqPage() {
         meta={
           <>
             {siteConfig.appLive ? null : (
-              <StatusPill
-                variant="testing"
-                label={faqPrelaunchStatus}
-                className={styles.heroPill}
-              />
+              <StatusPill variant="testing" label={faqPrelaunchStatus} />
             )}
             <span className={styles.metaChip}>{faqCountLine}</span>
             <Link href="/contact" className={styles.metaLink}>
