@@ -71,7 +71,7 @@
 }
 
 .subNavLink:focus-visible .subNavText {
-  outline: var(--focus-ring);
+  outline: var(--focus-ring-width) solid var(--focus-ring-color);
   outline-offset: var(--focus-ring-offset);
   border-radius: 4px;
 }
@@ -290,11 +290,25 @@
 }
 
 /* Without :has() (Firefox before 121), html only clears the main nav, so
-   the heading's own margin covers the sub-nav and it still lands at 150px. */
+   the heading's own margin covers the sub-nav and it still lands at 150px.
+   Whatever keyboard focus lands on below the sub-nav gets the sub-nav's
+   share of the clearance the same way, and lands where it does with :has():
+   52px, the bars' 123px less the nav's 71. The TOC rail's links are left
+   alone where the rail is sticky: they scroll inside it, not the page. */
 @supports not selector(:has(*)) {
   @media (min-width: 761px) {
     .sectionHeading {
       scroll-margin-top: 70px;
+    }
+
+    .subNav ~ * :where(a, button, input, textarea, select, [tabindex]) {
+      scroll-margin-top: calc(70px + 53px - var(--nav-height));
+    }
+  }
+
+  @media (min-width: 1100px) {
+    .grid > nav :where(a) {
+      scroll-margin-top: 0;
     }
   }
 }
