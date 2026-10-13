@@ -403,43 +403,9 @@
   color: var(--text-secondary);
 }
 
+/* The table itself is DataTable's; this is only its spacing here. */
 .tableWrap {
   margin: 0 0 16px;
-  overflow-x: auto;
-  border-radius: var(--radius-card);
-  border: 1px solid var(--card-border);
-}
-
-.table {
-  width: 100%;
-  border-collapse: collapse;
-  font-size: 14.5px;
-}
-
-.table th,
-.table td {
-  padding: 11px 14px;
-  text-align: left;
-  border-bottom: 1px solid var(--card-border);
-}
-
-.table th {
-  background: var(--glass-surface);
-  font-size: 11px;
-  font-weight: 800;
-  letter-spacing: 1.2px;
-  text-transform: uppercase;
-  color: var(--text-muted);
-  white-space: nowrap;
-}
-
-.table td {
-  font-weight: 600;
-  color: var(--text-secondary);
-}
-
-.table tr:last-child td {
-  border-bottom: none;
 }
 
 .address {

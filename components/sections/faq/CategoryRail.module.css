@@ -40,8 +40,8 @@
 }
 
 .row {
-  /* Containing block for the .sr-only span in .count. Without it that
-     absolutely-positioned span isn't clipped by the chip row's overflow at mid
+  /* Containing block for the .sr-only spans in .short and .count. Without it
+     an absolutely-positioned span isn't clipped by the chip row's overflow at mid
      width — it sits at its static position out past 1400px and drags the whole
      document into a horizontal scroll, which no ancestor overflow can stop. */
   position: relative;
@@ -86,9 +86,13 @@
 }
 
 /* The short form only comes out in chip mode. Stored in sentence case;
-   the chip shows it in capitals. */
+   the chip shows it in capitals. Only the visible copy is transformed: the
+   .sr-only copy beside it is the one a screen reader reads. */
 .short {
   display: none;
+}
+
+.caps {
   text-transform: uppercase;
 }
 
@@ -172,7 +176,9 @@
        whole pixel. */
     margin: calc(var(--focus-ring-reach) * -1) calc(var(--focus-ring-reach) * -2);
     padding: var(--focus-ring-reach) calc(var(--focus-ring-reach) * 2);
-    /* Focus scrolling and snapping stop a chip where the first one rests. */
+    /* Focus scrolling and snapping stop a chip where the first one rests.
+       Focus scrolling stops on a snap point (see scrollIntoStrip), so
+       snapping never has to be switched off. */
     scroll-padding-inline: calc(var(--focus-ring-reach) * 2);
     scroll-snap-type: x proximity;
     scrollbar-width: none;
@@ -181,13 +187,6 @@
 
   .list::-webkit-scrollbar {
     display: none;
-  }
-
-  /* Snapping fights focus scrolling: once a chip is scrolled into view the
-     row snaps back to the nearest chip start, which can leave the focused
-     chip half out of the row. Keyboard focus in the row turns it off. */
-  .list:has(.row:focus-visible) {
-    scroll-snap-type: none;
   }
 
   .list > li {
