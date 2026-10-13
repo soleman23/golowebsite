@@ -51,6 +51,11 @@
     /* Let the row bleed to the screen edges so the last chip isn't clipped. */
     margin-inline: calc(var(--gutter) * -1);
     padding-inline: var(--gutter);
+    /* Snapping and focus scrolling stop a chip at the gutter, in line with
+       the content column, not at the screen edge, where its ring would be
+       cut off. Focus scrolling stops on a snap point (see scrollIntoStrip),
+       so the two agree and snapping can stay on. */
+    scroll-padding-inline: var(--gutter);
     /* overflow-x: auto clips vertically too, so the focus ring needs room
        above and below the chips. The negative margin pays it back, so the
        row takes the same space it did. */
@@ -60,15 +65,6 @@
 
   .row::-webkit-scrollbar {
     display: none;
-  }
-
-  /* While a chip has keyboard focus: the scroll-into-view on focus stops it
-     at the gutter rather than the screen edge, where its ring would be cut
-     off, and snapping is off, since it would pull the row back to the
-     nearest chip start and leave the focused chip half out of the row. */
-  .row:has(.chip:focus-visible) {
-    scroll-snap-type: none;
-    scroll-padding-inline: var(--gutter);
   }
 
   .chip {
