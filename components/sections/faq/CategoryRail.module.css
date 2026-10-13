@@ -40,8 +40,8 @@
 }
 
 .row {
-  /* Containing block for the .sr-only span in .count. Without it that
-     absolutely-positioned span isn't clipped by the chip row's overflow at mid
+  /* Containing block for the .sr-only spans in .short and .count. Without it
+     an absolutely-positioned span isn't clipped by the chip row's overflow at mid
      width — it sits at its static position out past 1400px and drags the whole
      document into a horizontal scroll, which no ancestor overflow can stop. */
   position: relative;
@@ -86,9 +86,13 @@
 }
 
 /* The short form only comes out in chip mode. Stored in sentence case;
-   the chip shows it in capitals. */
+   the chip shows it in capitals. Only the visible copy is transformed: the
+   .sr-only copy beside it is the one a screen reader reads. */
 .short {
   display: none;
+}
+
+.caps {
   text-transform: uppercase;
 }
 

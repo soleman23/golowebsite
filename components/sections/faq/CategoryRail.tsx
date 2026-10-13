@@ -81,9 +81,16 @@ export function CategoryRail({ categories }: { categories: RailCategory[] }) {
                 <span className={styles.label}>{category.label}</span>
                 {/* Only one of label/short is displayed at a time, and the
                     displayed one is the link's name: aria-hiding the short
-                    form left "4 questions" as the whole name in chip mode. */}
+                    form left "4 questions" as the whole name in chip mode.
+                    The chip shows it in capitals, and Chrome reads text
+                    after text-transform, so a screen reader got "SCORING &
+                    GAMES". It reads the sentence-case copy instead; the
+                    capitals are aria-hidden. */}
                 <span className={styles.short}>
-                  {category.short}
+                  <span className={styles.caps} aria-hidden="true">
+                    {category.short}
+                  </span>
+                  <span className="sr-only">{category.short}</span>
                 </span>
                 <span className={styles.count}>
                   {category.count}
