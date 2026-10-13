@@ -3,7 +3,7 @@
  * different data — one component, one stylesheet.
  *
  * Server component throughout except the TOC rail, which owns the scroll-spy,
- * and ScrollRegion around tables, which measures overflow.
+ * and the ScrollRegion inside DataTable, which measures a table's overflow.
  * Note the reading order: the plain-English gloss comes AFTER its section's
  * legal text in the DOM and is placed beside it with CSS, so a screen reader
  * and a no-CSS render both hit the governing words first.
@@ -20,8 +20,8 @@ import {
 } from "@/lib/content";
 import { siteConfig } from "@/lib/siteConfig";
 import { Breadcrumbs } from "@/components/ui/Breadcrumbs";
+import { DataTable } from "@/components/ui/DataTable";
 import { WarnIcon } from "@/components/ui/Icon";
-import { ScrollRegion } from "@/components/ui/ScrollRegion";
 import { FinalCTA } from "@/components/sections/FinalCTA";
 import { TocRail } from "./TocRail";
 import styles from "./legal.module.css";
@@ -296,33 +296,7 @@ function Block({ block }: { block: LegalBlock }) {
       );
 
     case "table":
-      return (
-        <ScrollRegion
-          className={styles.tableWrap}
-          label={`Scrollable table: ${block.head.join(", ")}`}
-        >
-          <table className={styles.table}>
-            <thead>
-              <tr>
-                {block.head.map((cell) => (
-                  <th key={cell} scope="col">
-                    {cell}
-                  </th>
-                ))}
-              </tr>
-            </thead>
-            <tbody>
-              {block.rows.map((row, i) => (
-                <tr key={i}>
-                  {row.map((cell, j) => (
-                    <td key={j}>{cell}</td>
-                  ))}
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </ScrollRegion>
-      );
+      return <DataTable table={block} className={styles.tableWrap} compact wrap />;
 
     case "address":
       // innerHTML, not text: the policy's address block bolds the entity name
