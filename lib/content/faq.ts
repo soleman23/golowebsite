@@ -29,8 +29,8 @@ export type FaqCategory = {
   /**
    * Short form for the rail chip below 1100px, in sentence case like `label`;
    * the chip shows it in capitals with CSS. It's also the chip's accessible
-   * name there (the full label is display: none), so it has to stand on its
-   * own.
+   * name there (the full label is display: none), read in this sentence case
+   * rather than the capitals, so it has to stand on its own.
    */
   short: string;
   label: string;
