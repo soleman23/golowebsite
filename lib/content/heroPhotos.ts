@@ -31,23 +31,23 @@ export type HeroPhoto = {
 export const heroPhotos: Record<HeroPhotoKey, HeroPhoto> = {
   faq: {
     mobileSubject: 0.55,
-    ogAlt: "A pint, a golf ball, a glove and a pencilled scorecard on a dark bar top.",
+    ogAlt: "A pint of beer, golf ball and glove on a clubhouse patio table after the round.",
   },
   blog: {
     mobileSubject: 0.56,
-    ogAlt: "A golf cart parked beside a cart path at dusk, clubs in the back.",
+    ogAlt: "A fairway winding through ponderosa pines toward a snow-capped peak at sunset.",
   },
   games: {
     mobileSubject: 0.45,
-    ogAlt: "Golf balls around the cup on a putting green at dusk, flagstick in the hole.",
+    ogAlt: "Two golf balls near the flagstick on a putting green at golden hour.",
   },
   features: {
     mobileSubject: 0.54,
-    ogAlt: "A phone showing a scorecard on a golf cart dash, next to a paper card, a pencil, a ball and tees.",
+    ogAlt: "Leather yardage book, pencil, tees and a phone on a golf cart dashboard at sunrise.",
   },
   "how-it-works": {
     mobileSubject: 0.6,
-    ogAlt: "An open car hatch in a golf course parking lot at dusk: golf shoes, a glove, four balls in a row and a bag of clubs.",
+    ogAlt: "Golf bag and shoes at an open SUV hatch in a course parking lot at dawn.",
   },
   contact: {
     mobileSubject: 0.56,
