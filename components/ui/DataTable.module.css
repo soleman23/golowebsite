@@ -1,0 +1,68 @@
+/* A wide table scrolls inside its own box rather than the page. */
+.scroll {
+  overflow-x: auto;
+  border-radius: var(--radius-card);
+  border: 1px solid var(--card-border);
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.table th,
+.table td {
+  text-align: left;
+  border-bottom: 1px solid var(--card-border);
+}
+
+.table th {
+  background: var(--glass-surface);
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 1.2px;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  white-space: nowrap;
+}
+
+.table td {
+  font-weight: 600;
+  color: var(--text-secondary);
+  white-space: nowrap;
+}
+
+.wrap td {
+  white-space: normal;
+}
+
+.table tr:last-child td {
+  border-bottom: none;
+}
+
+/* ---------- density ---------- */
+
+.comfortable {
+  font-size: 15px;
+}
+
+.comfortable th,
+.comfortable td {
+  padding: 13px 16px;
+}
+
+.compact {
+  font-size: 14.5px;
+}
+
+.compact th,
+.compact td {
+  padding: 11px 14px;
+}
+
+@media (max-width: 760px) {
+  .comfortable th,
+  .comfortable td {
+    padding: 11px 13px;
+  }
+}
