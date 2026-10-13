@@ -23,6 +23,7 @@
  * flagged inline so whoever reviews this can see what moved.
  */
 
+import type { TableData } from "@/components/ui/DataTable";
 import { siteConfig } from "@/lib/siteConfig";
 
 export type LegalBlock =
@@ -30,7 +31,7 @@ export type LegalBlock =
   | { kind: "h3"; text: string }
   | { kind: "ul"; items: string[] }
   | { kind: "dl"; items: { term: string; text: string }[] }
-  | { kind: "table"; head: string[]; rows: string[][] }
+  | ({ kind: "table" } & TableData)
   | { kind: "address"; lines: string[] };
 
 export type LegalSection = {

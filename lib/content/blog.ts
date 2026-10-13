@@ -9,6 +9,8 @@
  * rail, and sitemap entry stay unavailable.
  */
 
+import type { TableData } from "@/components/ui/DataTable";
+
 /**
  * Post bodies. Two additions to the BUILD-SPEC §3 union, both optional so
  * nothing that already type-checks stops:
@@ -32,7 +34,7 @@ export type Block =
       kind: "steps";
       items: { id?: string; tag?: string; title: string; body: string }[];
     }
-  | { kind: "table"; head: string[]; rows: string[][] }
+  | ({ kind: "table" } & TableData)
   | { kind: "keyStat"; value: string; label: string }
   | { kind: "image"; src: string; alt: string; caption?: string; position?: string }
   | {

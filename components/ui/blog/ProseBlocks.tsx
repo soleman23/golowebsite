@@ -3,12 +3,13 @@
  * a case here — post prose never lives in a page file.
  *
  * Server component: nothing in a post body is interactive. The one client leaf
- * is ScrollRegion, which only measures whether a table overflows.
+ * is the ScrollRegion inside DataTable, which only measures whether a table
+ * overflows.
  */
 
 import Image from "next/image";
 import type { Block } from "@/lib/content";
-import { ScrollRegion } from "@/components/ui/ScrollRegion";
+import { DataTable } from "@/components/ui/DataTable";
 import styles from "./ProseBlocks.module.css";
 
 export function ProseBlocks({ blocks }: { blocks: Block[] }) {
@@ -102,33 +103,7 @@ function ProseBlock({ block }: { block: Block }) {
       );
 
     case "table":
-      return (
-        <ScrollRegion
-          className={styles.tableWrap}
-          label={`Scrollable table: ${block.head.join(", ")}`}
-        >
-          <table className={styles.table}>
-            <thead>
-              <tr>
-                {block.head.map((cell) => (
-                  <th key={cell} scope="col">
-                    {cell}
-                  </th>
-                ))}
-              </tr>
-            </thead>
-            <tbody>
-              {block.rows.map((row, i) => (
-                <tr key={i}>
-                  {row.map((cell, j) => (
-                    <td key={j}>{cell}</td>
-                  ))}
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </ScrollRegion>
-      );
+      return <DataTable table={block} className={styles.tableWrap} />;
 
     case "keyStat":
       return (
