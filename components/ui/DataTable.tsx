@@ -26,15 +26,13 @@ type DataTableProps = {
 };
 
 export function DataTable({ table, className, compact = false, wrap = false }: DataTableProps) {
-  const tableClass = [
-    styles.table,
-    compact ? styles.compact : styles.comfortable,
-    wrap ? styles.wrap : "",
-  ].join(" ");
+  const tableClass = [styles.table, compact ? styles.compact : styles.comfortable, wrap && styles.wrap]
+    .filter(Boolean)
+    .join(" ");
 
   return (
     <ScrollRegion
-      className={`${styles.scroll} ${className ?? ""}`}
+      className={className ? `${styles.scroll} ${className}` : styles.scroll}
       label={`Scrollable table: ${table.head.join(", ")}`}
     >
       <table className={tableClass}>
