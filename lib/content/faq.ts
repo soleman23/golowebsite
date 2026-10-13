@@ -27,9 +27,10 @@ export type FaqItem = {
 export type FaqCategory = {
   id: string;
   /**
-   * Short uppercase form, for the rail chip below 1100px. It's also the chip's
-   * accessible name there (the full label is display: none), so it has to
-   * stand on its own.
+   * Short form for the rail chip below 1100px, in sentence case like `label`;
+   * the chip shows it in capitals with CSS. It's also the chip's accessible
+   * name there (the full label is display: none), so it has to stand on its
+   * own.
    */
   short: string;
   label: string;
@@ -40,7 +41,7 @@ export type FaqCategory = {
 export const faqCategories: FaqCategory[] = [
   {
     id: "starting",
-    short: "GETTING STARTED",
+    short: "Getting started",
     label: "Getting started",
     blurb: "Where GoLo is today, and what the first round looks like.",
     items: [
@@ -70,7 +71,7 @@ export const faqCategories: FaqCategory[] = [
   },
   {
     id: "scoring",
-    short: "SCORING & GAMES",
+    short: "Scoring & games",
     label: "Scoring & the games",
     blurb:
       "Stacking formats, entering scores, and fixing the ones you got wrong.",
@@ -100,7 +101,7 @@ export const faqCategories: FaqCategory[] = [
   },
   {
     id: "handicaps",
-    short: "HANDICAPS",
+    short: "Handicaps",
     label: "Handicaps & fairness",
     blurb:
       "How strokes get allocated so a 20 and a 5 can play the same bet.",
@@ -124,7 +125,7 @@ export const faqCategories: FaqCategory[] = [
   },
   {
     id: "bets",
-    short: "BETS & SETTLING",
+    short: "Bets & settling",
     label: "Bets, settling up & the gambling question",
     blurb:
       "What GoLo does with the money question: the math, and nothing else.",
@@ -163,7 +164,7 @@ export const faqCategories: FaqCategory[] = [
   },
   {
     id: "trips",
-    short: "TRIPS",
+    short: "Trips",
     label: "Trips & multi-day rounds",
     blurb: "Four days, five guys, one settle-up.",
     items: [
@@ -186,7 +187,7 @@ export const faqCategories: FaqCategory[] = [
   },
   {
     id: "pricing",
-    short: "PRICING",
+    short: "Pricing",
     label: "Pricing & billing",
     blurb: "The honest answer: we haven’t set it.",
     items: [
@@ -211,7 +212,7 @@ export const faqCategories: FaqCategory[] = [
   },
   {
     id: "account",
-    short: "ACCOUNT & PRIVACY",
+    short: "Account & privacy",
     label: "Account, privacy & your data",
     blurb: "What we collect, what we don’t, and how to leave.",
     items: [
@@ -249,7 +250,7 @@ export const faqCategories: FaqCategory[] = [
   },
   {
     id: "offline",
-    short: "OFFLINE & BATTERY",
+    short: "Offline & battery",
     label: "Offline, signal & battery",
     blurb: "What happens on the back nine where there are no bars.",
     items: [
@@ -272,7 +273,7 @@ export const faqCategories: FaqCategory[] = [
   },
   {
     id: "trouble",
-    short: "TROUBLESHOOTING",
+    short: "Troubleshooting",
     label: "Troubleshooting",
     blurb: "When it looks wrong, start here.",
     items: [

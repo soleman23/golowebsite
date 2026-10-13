@@ -85,9 +85,11 @@
   flex: 1 1 auto;
 }
 
-/* The short form only comes out in chip mode. */
+/* The short form only comes out in chip mode. Stored in sentence case;
+   the chip shows it in capitals. */
 .short {
   display: none;
+  text-transform: uppercase;
 }
 
 .count {
