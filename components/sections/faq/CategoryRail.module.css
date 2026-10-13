@@ -176,7 +176,9 @@
        whole pixel. */
     margin: calc(var(--focus-ring-reach) * -1) calc(var(--focus-ring-reach) * -2);
     padding: var(--focus-ring-reach) calc(var(--focus-ring-reach) * 2);
-    /* Focus scrolling and snapping stop a chip where the first one rests. */
+    /* Focus scrolling and snapping stop a chip where the first one rests.
+       Focus scrolling stops on a snap point (see scrollIntoStrip), so
+       snapping never has to be switched off. */
     scroll-padding-inline: calc(var(--focus-ring-reach) * 2);
     scroll-snap-type: x proximity;
     scrollbar-width: none;
@@ -185,13 +187,6 @@
 
   .list::-webkit-scrollbar {
     display: none;
-  }
-
-  /* Snapping fights focus scrolling: once a chip is scrolled into view the
-     row snaps back to the nearest chip start, which can leave the focused
-     chip half out of the row. Keyboard focus in the row turns it off. */
-  .list:has(.row:focus-visible) {
-    scroll-snap-type: none;
   }
 
   .list > li {
