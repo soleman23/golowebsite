@@ -4,11 +4,12 @@
  * {prefix}-hero.png (21:9), {prefix}-{mid}.png (3:2) and, for a post with a
  * phone frame, {prefix}-mobile.png (4:5), then run:
  *
- *   node scripts/generate-blog-images.mjs            every post with a hero PNG
- *                                                    in tmp/img-src/, skipping
- *                                                    the rest
- *   node scripts/generate-blog-images.mjs bandon     just the slugs named, and
- *                                                    a missing source is an error
+ *   node scripts/generate-blog-images.mjs            every post
+ *   node scripts/generate-blog-images.mjs bandon     just the slugs named
+ *
+ * Either way it builds each photo whose PNG is in tmp/img-src/ and keeps the
+ * committed file for any that isn't (the share card needs the hero PNG). A
+ * slug named on the command line with no PNGs at all is an error.
  *
  * Out come, per post, in public/images/blog/:
  *
@@ -47,10 +48,10 @@ const OUT = join(ROOT, "public/images/blog");
 const ONE_MID = ["mid"];
 const TWO_MIDS = ["mid-1", "mid-2"];
 const POSTS = {
-  "bingo-bango-bongo": { prefix: "bbb", mids: ONE_MID, ogPosition: "centre" },
-  wolf: { mids: ONE_MID, ogPosition: "right" },
-  "skins-carryover": { prefix: "skins", mids: ONE_MID, ogPosition: "right" },
-  nassau: { mids: ONE_MID, ogPosition: "right" },
+  "bingo-bango-bongo": { prefix: "bbb", mids: ONE_MID, mobile: true, ogPosition: "centre" },
+  wolf: { mids: ONE_MID, mobile: true, ogPosition: "right" },
+  "skins-carryover": { prefix: "skins", mids: ONE_MID, mobile: true, ogPosition: "right" },
+  nassau: { mids: ONE_MID, mobile: true, ogPosition: "right" },
   "who-pays-first": { mids: ONE_MID, mobile: true, ogPosition: "right" },
   pressing: { mids: ONE_MID, mobile: true, ogPosition: "right" },
   "index-vs-course-handicap": { mids: ONE_MID, mobile: true, ogPosition: "right" },
@@ -72,15 +73,26 @@ await mkdir(OUT, { recursive: true });
 
 for (const [slug, { prefix = slug, mids, mobile, ogPosition }] of Object.entries(POSTS)) {
   if (only.length && !only.includes(slug)) continue;
-  // A bare run rebuilds whatever has sources on disk; the rest were built
-  // before and their PNGs are gone. A slug named on the command line has to
-  // have its sources, so it falls through to sharp's missing-file error.
-  if (!only.length && !(await exists(join(SRC, `${prefix}-hero.png`)))) {
-    console.log(`${slug}: no ${prefix}-hero.png in tmp/img-src/, skipped`);
+  // Builds whatever has a source on disk and keeps the committed file for the
+  // rest: most PNGs are gone once their post ships, and a later frame (a phone
+  // crop, say) arrives on its own. A slug named on the command line with no
+  // sources at all is a mistake; a bare run just passes it by.
+  const variants = ["hero", ...mids, ...(mobile ? ["mobile"] : [])];
+  const present = [];
+  for (const variant of variants) {
+    if (await exists(join(SRC, `${prefix}-${variant}.png`))) present.push(variant);
+  }
+  if (!present.length) {
+    if (only.length) throw new Error(`${slug}: no ${prefix}-*.png in tmp/img-src/`);
+    console.log(`${slug}: no sources in tmp/img-src/, skipped`);
     continue;
   }
+  const missing = variants.filter((variant) => !present.includes(variant));
+  if (missing.length) {
+    console.log(`${slug}: kept the built ${missing.join(", ")}${present.includes("hero") ? "" : " and og"} (no source)`);
+  }
 
-  for (const variant of ["hero", ...mids, ...(mobile ? ["mobile"] : [])]) {
+  for (const variant of present) {
     const src = join(SRC, `${prefix}-${variant}.png`);
     const out = join(OUT, `${slug}-${variant}.webp`);
     const { width, height } = await sharp(src).metadata();
@@ -99,6 +111,7 @@ for (const [slug, { prefix = slug, mids, mobile, ogPosition }] of Object.entries
     }
   }
 
+  if (!present.includes("hero")) continue;
   const og = join(OUT, `${slug}-og.jpg`);
   await sharp(join(SRC, `${prefix}-hero.png`))
     .resize({ width: OG.width, height: OG.height, fit: "cover", position: ogPosition })
