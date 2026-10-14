@@ -82,10 +82,16 @@ export type Post = {
     alt: string;
     /**
      * object-position wherever the frame is narrower than the photo — the card
-     * thumbnail and the phone hero. Wide heroes always anchor right, where the
-     * 21:9 photos keep their subject.
+     * thumbnail and, without a `mobile` frame, the phone hero. Wide heroes
+     * always anchor right, where the 21:9 photos keep their subject.
      */
     position?: string;
+    /**
+     * 4:5 frame for the hero below 768px, where the copy sits at the foot: the
+     * same scene with the subject in its top 40%. Without one, phones crop the
+     * 21:9 photo to `position` and the subject can end up behind the title.
+     */
+    mobile?: string;
     /** 1200x630 share card cut from the hero. Without one the hero is shared. */
     og?: string;
   };
@@ -154,7 +160,7 @@ export const posts: Post[] = [
     author: "From the GoLo team",
     date: "2026-08-11",
     readMins: 5,
-    hero: { src: "/images/blog/who-pays-first-hero.webp", alt: "An open SUV tailgate in a wet clubhouse parking lot at dusk, a golf bag leaning on the bumper and golf shoes and a cap in the trunk", position: "87% 50%", og: "/images/blog/who-pays-first-og.jpg" },
+    hero: { src: "/images/blog/who-pays-first-hero.webp", alt: "An open SUV tailgate in a wet clubhouse parking lot at dusk, a golf bag leaning on the bumper and golf shoes and a cap in the trunk", position: "87% 50%", mobile: "/images/blog/who-pays-first-mobile.webp", og: "/images/blog/who-pays-first-og.jpg" },
     published: true,
     featured: true,
     body: [
@@ -417,7 +423,7 @@ export const posts: Post[] = [
     dek: "The automatic 2-down press, the 18th-tee press, and the one press that gets you left off next week’s text — plus what auto-presses do to the size of your bet.",
     crumb: "Pressing",
     author: "From the GoLo team",
-    hero: { src: "/images/blog/pressing-hero.webp", alt: "Two golf balls teed up side by side on a tee box at sunset, a driver resting beside them", position: "87% 50%", og: "/images/blog/pressing-og.jpg" },
+    hero: { src: "/images/blog/pressing-hero.webp", alt: "Two golf balls teed up side by side on a tee box at sunset, a driver resting beside them", position: "87% 50%", mobile: "/images/blog/pressing-mobile.webp", og: "/images/blog/pressing-og.jpg" },
     published: true,
     body: article(
       "A press is the most useful tool in a friendly bet and the fastest way to sour one. Called at the right moment it keeps a beaten player in the round; called at the wrong one it tells three people exactly what you think of them. The mechanics take a paragraph. The etiquette is the actual subject. If you need the format underneath first, the <a href=\"/games/nassau\">Nassau guide</a> has the rules.",
@@ -459,7 +465,7 @@ export const posts: Post[] = [
     dek: "Why a 12.4 becomes 14 strokes at one tee box and 11 at another, how those strokes land hole by hole, and which number belongs on the card.",
     crumb: "Handicaps",
     author: "From the GoLo team",
-    hero: { src: "/images/blog/index-vs-course-handicap-hero.webp", alt: "A blue tee marker on the back tee box, with the white tee markers on the forward tee further down the same hole", position: "100% 50%", og: "/images/blog/index-vs-course-handicap-og.jpg" },
+    hero: { src: "/images/blog/index-vs-course-handicap-hero.webp", alt: "A blue tee marker on the back tee box, with the white tee markers on the forward tee further down the same hole", position: "100% 50%", mobile: "/images/blog/index-vs-course-handicap-mobile.webp", og: "/images/blog/index-vs-course-handicap-og.jpg" },
     published: true,
     body: article(
       "Somebody in your group says “I’m a twelve.” That is a handicap index, and it is not the number he plays off today. Move him back one set of tees and it changes. Take him to a harder course and it changes again. Here is the difference, the formula, and which number belongs on the card when there is money on the hole.",
@@ -491,7 +497,7 @@ export const posts: Post[] = [
     author: "From the GoLo team",
     date: "2026-10-10",
     readMins: 6,
-    hero: { src: "/images/blog/sandbagging-hero.webp", alt: "A golf bag propped at the edge of a freshly raked greenside bunker, a rake lying in the sand", position: "89% 50%", og: "/images/blog/sandbagging-og.jpg" },
+    hero: { src: "/images/blog/sandbagging-hero.webp", alt: "A golf bag propped at the edge of a freshly raked greenside bunker, a rake lying in the sand", position: "89% 50%", mobile: "/images/blog/sandbagging-mobile.webp", og: "/images/blog/sandbagging-og.jpg" },
     published: true,
     body: article(
       "Somebody in your group wins more than he should. He has an 18 that never moves, he never seems to have a bad Saturday, and the money has been going one direction since March. You can accuse him, which ends badly whether you are right or wrong. Or you can make the numbers visible and let the group fix itself.",
@@ -597,7 +603,7 @@ export const posts: Post[] = [
     author: "From the GoLo team",
     date: "2026-10-09",
     readMins: 5,
-    hero: { src: "/images/blog/bandon-hero.webp", alt: "A golfer and caddie walking toward a clifftop links green as a rain squall rolls in off the ocean, the flag blowing straight out", position: "94% 50%", og: "/images/blog/bandon-og.jpg" },
+    hero: { src: "/images/blog/bandon-hero.webp", alt: "A golfer and caddie walking toward a clifftop links green as a rain squall rolls in off the ocean, the flag blowing straight out", position: "94% 50%", mobile: "/images/blog/bandon-mobile.webp", og: "/images/blog/bandon-og.jpg" },
     published: true,
     body: article(
       "You booked a links trip, you are walking every hole, and on the second morning it is blowing 30 out of the southwest with rain in it. Your golf will be fine — that is what you came for. Your bet will not. Stroke play does not survive weather like this, and the group usually finds that out somewhere around the 12th, when two of the four have stopped keeping score.",

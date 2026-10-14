@@ -14,7 +14,18 @@
     var(--page-bg);
 }
 
+/* The <picture> takes no part in the hero's flex layout; the photo inside it
+   is absolutely positioned against the hero and never sizes it, which is
+   what keeps it from shifting layout when it arrives. */
+.picture {
+  display: contents;
+}
+
 .photo {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
   object-fit: cover;
   object-position: right center;
   z-index: 0;
@@ -162,8 +173,9 @@
   color: var(--text-muted);
 }
 
-/* Phones show about a quarter of the photo's width; post.hero.position
-   centres that slice on the subject. The copy runs edge to edge, so its guard
+/* Phones show about a quarter of a 21:9 photo's width; post.hero.position
+   centres that slice on the subject. (A post with a 4:5 phone frame swaps to
+   it instead; see .withPhoneFrame.) The copy runs edge to edge, so its guard
    already spans the width and the left-to-right scrim would only dim the
    photo above it. */
 @media (max-width: 767px) {
@@ -177,6 +189,34 @@
       transparent calc(100% - 64px),
       var(--page-bg)
     );
+  }
+
+  /* A 4:5 phone frame (post.hero.mobile) is pinned to the top of the hero at
+     its own ratio, so nothing is cropped. Its subject sits in the top 40%,
+     clear of the copy at the foot, and its lower part is already near-black;
+     the mask fades the last of it into the hero's background so the frame
+     has no bottom edge where the hero runs taller than it. Where the hero is
+     shorter (wide phones), overflow clips the dark foot instead. */
+  .withPhoneFrame .photo {
+    bottom: auto;
+    height: auto;
+    aspect-ratio: 4 / 5;
+    object-position: center top;
+    mask-image: linear-gradient(to bottom, #000 72%, transparent);
+  }
+
+  /* The subject's 40% of a 4:5 frame ends half the width down, so the copy
+     never starts above that, plus the guard's fade-in. On a tall phone the
+     copy already starts lower and nothing moves; on a short one (320x568)
+     the hero grows rather than the title landing on the subject. The guard
+     follows the copy down rather than starting at the padding's top. */
+  .withPhoneFrame .inner {
+    --copy-top: max(clamp(40px, 6vw, 80px), calc(50vw + 40px));
+    padding-top: var(--copy-top);
+  }
+
+  .withPhoneFrame .inner::before {
+    top: calc(var(--copy-top) - var(--top-pad));
   }
 }
 
