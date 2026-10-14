@@ -258,7 +258,7 @@ export const posts: Post[] = [
     author: "From the GoLo team",
     date: "2026-07-28",
     readMins: 5,
-    hero: { src: "/images/blog/nassau-hero.webp", alt: "A ball teed up on the first tee beside three wooden tees, with the fairway opening ahead", position: "90% 50%", og: "/images/blog/nassau-og.jpg" },
+    hero: { src: "/images/blog/nassau-hero.webp", alt: "A ball teed up on the first tee beside three wooden tees, with the fairway opening ahead", position: "90% 50%", mobile: "/images/blog/nassau-mobile.webp", og: "/images/blog/nassau-og.jpg" },
     published: true,
     body: article(
       "A Nassau is the default bet in American golf, and almost nobody explains it before the first tee. Somebody says “five-five-five?”, everyone nods, and eighteen holes later there is an argument in the parking lot about whether the back nine was still alive. Here is the whole format, start to settle. If you only want the rules card, the <a href=\"/games/nassau\">Nassau guide</a> has it in five steps.",
@@ -300,7 +300,7 @@ export const posts: Post[] = [
     dek: "How a $5 skin turns into a $60 hole, why a tied hole is the most important thing that can happen, and the setting that decides whether your group loves the format or bans it.",
     crumb: "Skins",
     author: "From the GoLo team",
-    hero: { src: "/images/blog/skins-carryover-hero.webp", alt: "A stack of four ball markers beside the cup as a ball rolls toward the hole", position: "80% 50%", og: "/images/blog/skins-carryover-og.jpg" },
+    hero: { src: "/images/blog/skins-carryover-hero.webp", alt: "A stack of four ball markers beside the cup as a ball rolls toward the hole", position: "80% 50%", mobile: "/images/blog/skins-carryover-mobile.webp", og: "/images/blog/skins-carryover-og.jpg" },
     published: true,
     body: article(
       "Skins is the simplest bet in golf to explain and the easiest one to underestimate. One skin per hole, low score takes it, nothing complicated. Then four holes get halved in a row, somebody rolls in a twelve-footer on the 8th, and the hole is suddenly worth sixty dollars. The basic rules are in the <a href=\"/games/skins\">Skins guide</a>; this is about the carryover.",
@@ -339,7 +339,7 @@ export const posts: Post[] = [
     dek: "Pick a partner or go it alone, hole by hole. The rotation, the timing rule most groups get wrong, and when the lone-wolf gamble is worth taking.",
     crumb: "Wolf",
     author: "From the GoLo team",
-    hero: { src: "/images/blog/wolf-hero.webp", alt: "A single ball teed up at the front of the tee box with three more waiting behind it", position: "77% 50%", og: "/images/blog/wolf-og.jpg" },
+    hero: { src: "/images/blog/wolf-hero.webp", alt: "A single ball teed up at the front of the tee box with three more waiting behind it", position: "77% 50%", mobile: "/images/blog/wolf-mobile.webp", og: "/images/blog/wolf-og.jpg" },
     published: true,
     body: article(
       "Wolf is the format for a foursome that cannot agree on a bet. Nobody has a fixed partner, the teams change every hole, and one player each hole decides whether he wants help or wants all the money. It takes one hole to learn and about four to get genuinely competitive. The rotation and scoring are in the <a href=\"/games/wolf\">Wolf guide</a>; this is about the decisions.",
@@ -377,7 +377,7 @@ export const posts: Post[] = [
     dek: "Three points a hole, no strokes required. The fairest game in golf for a group with a 6 and a 22 — and why order of play does all the work.",
     crumb: "Bingo Bango Bongo",
     author: "From the GoLo team",
-    hero: { src: "/images/blog/bingo-bango-bongo-hero.webp", alt: "A golf ball rolling onto the front edge of the green while three others wait back in the fairway", position: "83% 50%", og: "/images/blog/bingo-bango-bongo-og.jpg" },
+    hero: { src: "/images/blog/bingo-bango-bongo-hero.webp", alt: "A golf ball rolling onto the front edge of the green while three others wait back in the fairway", position: "83% 50%", mobile: "/images/blog/bingo-bango-bongo-mobile.webp", og: "/images/blog/bingo-bango-bongo-og.jpg" },
     published: true,
     body: article(
       "Every group has one: a 22-handicap who is out of the bet by the 5th hole and spends the back nine watching three other people play for money. Bingo Bango Bongo fixes that without a single stroke changing hands. Three points a hole, and two have almost nothing to do with how far you hit it. The scoring rules are in the <a href=\"/games/bingo-bango-bongo\">Bingo Bango Bongo guide</a>; this is about why it works for an uneven group.",
