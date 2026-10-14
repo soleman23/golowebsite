@@ -45,6 +45,7 @@ const OUT = join(ROOT, "public/images/blog");
  * slug. Bingo Bango Bongo's alt names the three balls back in the fairway, and
  * a cut from the right loses the nearest one.
  */
+const NO_MIDS = []; // the post's mid-article figures are still stock photos
 const ONE_MID = ["mid"];
 const TWO_MIDS = ["mid-1", "mid-2"];
 const POSTS = {
@@ -57,6 +58,8 @@ const POSTS = {
   "index-vs-course-handicap": { mids: ONE_MID, mobile: true, ogPosition: "right" },
   sandbagging: { mids: TWO_MIDS, mobile: true, ogPosition: "right" },
   bandon: { mids: TWO_MIDS, mobile: true, ogPosition: "right" },
+  rangefinder: { mids: NO_MIDS, mobile: true, ogPosition: "right" },
+  "scottsdale-trip-structure": { mids: NO_MIDS, mobile: true, ogPosition: "right" },
 };
 const MASTER = { quality: 82, floor: 66, budget: 600 * 1024 };
 const OG = { width: 1200, height: 630, quality: 82, budget: 300 * 1024 };

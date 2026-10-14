@@ -567,11 +567,10 @@ export const posts: Post[] = [
     author: "From the GoLo team",
     date: "2026-10-07",
     readMins: 5,
-    // TODO photo: stock frames until the design's own land in public/images/blog/
-    // (rangefinder-hero.webp, -mid.webp, -og.jpg): a hero, a rangefinder in use
-    // or an approach shot for the first inline, and a GPS watch or a wrist
+    // TODO photo: the two inline figures are still stock frames: a rangefinder
+    // in use or an approach shot for the first, and a GPS watch or a wrist
     // glance for the second.
-    hero: { src: blogMedia.bunkerGreen, alt: "A flag on the green beyond a raked greenside bunker, in late-afternoon light", position: "50% 40%" },
+    hero: { src: "/images/blog/rangefinder-hero.webp", alt: "A laser rangefinder, a golf ball and a GPS watch lying on the fairway, a flag soft in the distance", position: "85% 50%", mobile: "/images/blog/rangefinder-mobile.webp", og: "/images/blog/rangefinder-og.jpg" },
     published: true,
     body: article(
       "If you play for ten dollars a side with the same three guys, this decision is smaller than the internet makes it. A laser gives you one exact number. A watch gives you three approximate ones without you doing anything. The honest answer depends on how you miss, how fast your group plays, and whether you will actually use the thing.",
@@ -639,11 +638,10 @@ export const posts: Post[] = [
     dek: "One running tally, stakes that escalate, and a Sunday format that keeps the guy down $60 in the fight — plus the desert rules to settle before anybody flies.",
     crumb: "Scottsdale",
     author: "From the GoLo team",
-    // TODO photo: stock frames until the design's own land in public/images/blog/
-    // (scottsdale-trip-structure-hero.webp, -mid.webp, -og.jpg): a hero, a
-    // desert course or the group on the first tee for the first inline, and the
-    // clubhouse or the settle-up for the second.
-    hero: { src: blogMedia.bunkerFairway, alt: "A raked bunker in the foreground, with a flag on a tree-lined green beyond", position: "50% 50%" },
+    // TODO photo: the two inline figures are still stock frames: a desert course
+    // or the group on the first tee for the first, and the clubhouse or the
+    // settle-up for the second.
+    hero: { src: "/images/blog/scottsdale-trip-structure-hero.webp", alt: "Four golf bags standing at the edge of a desert tee box, saguaros and a rocky ridge behind them in the low sun", position: "85% 50%", mobile: "/images/blog/scottsdale-trip-structure-mobile.webp", og: "/images/blog/scottsdale-trip-structure-og.jpg" },
     published: true,
     body: article(
       "Eight guys, four rounds, one desert. The golf takes care of itself. What ruins buddies trips is the betting: a different game every morning, nobody sure what the running total is, and by Sunday two players have quietly stopped caring because they are down $80 with no way back. Here is a four-day structure that fixes both problems.",
