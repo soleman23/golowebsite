@@ -1,7 +1,8 @@
 /**
  * Builds the blog-post photos from the source PNGs. The sources are multi-MB
  * and are not committed; drop them in tmp/img-src/ (git-ignored) as
- * {prefix}-hero.png (21:9) and {prefix}-{mid}.png (3:2), then run:
+ * {prefix}-hero.png (21:9), {prefix}-{mid}.png (3:2) and, for a post with a
+ * phone frame, {prefix}-mobile.png (4:5), then run:
  *
  *   node scripts/generate-blog-images.mjs            every post with a hero PNG
  *                                                    in tmp/img-src/, skipping
@@ -14,7 +15,10 @@
  *   {slug}-hero.webp   full-resolution master for the hero and the cards
  *   {slug}-{mid}.webp  full-resolution master for each mid-article figure:
  *                      -mid, or -mid-1 and -mid-2 for a post with two
- *   {slug}-og.jpg      1200x630 share card cut from the hero, from the right
+ *   {slug}-mobile.webp full-resolution master for the hero below 768px, where
+ *                      the copy sits at the foot: the subject is in the top
+ *                      40% of the 4:5 frame and the rest falls to near-black
+ *   {slug}-og.jpg     1200x630 share card cut from the hero, from the right
  *                      so the subject (which sits on the right) survives —
  *                      except where the alt text names something further left
  *
@@ -35,10 +39,10 @@ const SRC = join(ROOT, "tmp/img-src");
 const OUT = join(ROOT, "public/images/blog");
 
 /**
- * Post slug → its mid-article photos, where the share card is cut from, and the
- * source file prefix where that isn't the slug. Bingo Bango Bongo's alt names
- * the three balls back in the fairway, and a cut from the right loses the
- * nearest one.
+ * Post slug → its mid-article photos, whether it has a 4:5 phone frame, where
+ * the share card is cut from, and the source file prefix where that isn't the
+ * slug. Bingo Bango Bongo's alt names the three balls back in the fairway, and
+ * a cut from the right loses the nearest one.
  */
 const ONE_MID = ["mid"];
 const TWO_MIDS = ["mid-1", "mid-2"];
@@ -47,11 +51,11 @@ const POSTS = {
   wolf: { mids: ONE_MID, ogPosition: "right" },
   "skins-carryover": { prefix: "skins", mids: ONE_MID, ogPosition: "right" },
   nassau: { mids: ONE_MID, ogPosition: "right" },
-  "who-pays-first": { mids: ONE_MID, ogPosition: "right" },
-  pressing: { mids: ONE_MID, ogPosition: "right" },
-  "index-vs-course-handicap": { mids: ONE_MID, ogPosition: "right" },
-  sandbagging: { mids: TWO_MIDS, ogPosition: "right" },
-  bandon: { mids: TWO_MIDS, ogPosition: "right" },
+  "who-pays-first": { mids: ONE_MID, mobile: true, ogPosition: "right" },
+  pressing: { mids: ONE_MID, mobile: true, ogPosition: "right" },
+  "index-vs-course-handicap": { mids: ONE_MID, mobile: true, ogPosition: "right" },
+  sandbagging: { mids: TWO_MIDS, mobile: true, ogPosition: "right" },
+  bandon: { mids: TWO_MIDS, mobile: true, ogPosition: "right" },
 };
 const MASTER = { quality: 82, floor: 66, budget: 600 * 1024 };
 const OG = { width: 1200, height: 630, quality: 82, budget: 300 * 1024 };
@@ -66,7 +70,7 @@ if (unknown.length) throw new Error(`No such post: ${unknown.join(", ")}`);
 
 await mkdir(OUT, { recursive: true });
 
-for (const [slug, { prefix = slug, mids, ogPosition }] of Object.entries(POSTS)) {
+for (const [slug, { prefix = slug, mids, mobile, ogPosition }] of Object.entries(POSTS)) {
   if (only.length && !only.includes(slug)) continue;
   // A bare run rebuilds whatever has sources on disk; the rest were built
   // before and their PNGs are gone. A slug named on the command line has to
@@ -76,7 +80,7 @@ for (const [slug, { prefix = slug, mids, ogPosition }] of Object.entries(POSTS))
     continue;
   }
 
-  for (const variant of ["hero", ...mids]) {
+  for (const variant of ["hero", ...mids, ...(mobile ? ["mobile"] : [])]) {
     const src = join(SRC, `${prefix}-${variant}.png`);
     const out = join(OUT, `${slug}-${variant}.webp`);
     const { width, height } = await sharp(src).metadata();
