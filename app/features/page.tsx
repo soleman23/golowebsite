@@ -34,7 +34,7 @@ export const metadata: Metadata = pageMetadata({
   path: "/features",
   title: "Golf Scorecard App With Live Side-Game Scoring",
   description:
-    "Track golf scores, handicaps, Nassau presses and side games in one round. See how GoLo calculates balances and simplifies settling up.",
+    "Track golf scores, handicaps, presses and side games in one round. See how GoLo calculates balances and simplifies settling up.",
   image: heroOgImage("features"),
 });
 

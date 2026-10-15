@@ -356,6 +356,7 @@ export const quickAnswers: QuickAnswer[] = [
     id: "house-rules",
     question: "Can we play our own house rules?",
     answer:
+      // claim-ok: the list after "doesn't do today:" is what GoLo doesn't do
       "Most of them. Skins carryover on or off, which skins count, how the purse splits, net or gross — you set it at the first tee and the app scores it your way. What it doesn’t do today: automatic presses, presses on a Nassau (they’re on the Overall Match game), 90% allowances, or playing off the low man. Everyone gets their full course handicap.",
   },
   // Answers a pre-launch question, so it goes when the app does.

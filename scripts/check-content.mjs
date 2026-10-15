@@ -113,11 +113,14 @@ const EDUCATION = new Set([
  * In .tsx files an apostrophe in JSX text ("don't") isn't a string quote, so
  * only " and ` open strings there; the project writes strings with "" anyway.
  */
-function stripComments(source, file) {
+function scan(source, file) {
   const quotes = file.endsWith(".tsx") ? "\"`" : "\"'`";
   let out = "";
   let i = 0;
   let quote = null;
+  let opened = 0;
+  /** [start, end) of each string literal's contents, quotes excluded. */
+  const literals = [];
   while (i < source.length) {
     const c = source[i];
     const next = source[i + 1];
@@ -128,7 +131,10 @@ function stripComments(source, file) {
         i += 2;
         continue;
       }
-      if (c === quote || (c === "\n" && quote !== "`")) quote = null;
+      if (c === quote || (c === "\n" && quote !== "`")) {
+        literals.push([opened, i]);
+        quote = null;
+      }
       i += 1;
     } else if (c === "/" && next === "/") {
       while (i < source.length && source[i] !== "\n") {
@@ -141,30 +147,39 @@ function stripComments(source, file) {
       out += source.slice(i, stop).replace(/[^\n]/g, " ");
       i = stop;
     } else {
-      if (quotes.includes(c)) quote = c;
+      if (quotes.includes(c)) {
+        quote = c;
+        opened = i + 1;
+      }
       out += c;
       i += 1;
     }
   }
-  return out;
+  return { text: out, literals };
+}
+
+const stripComments = (source, file) => scan(source, file).text;
+
+/** The literal span holding `index`, if any. */
+function literalAt(literals, index) {
+  let lo = 0;
+  let hi = literals.length - 1;
+  while (lo <= hi) {
+    const mid = (lo + hi) >> 1;
+    const [start, end] = literals[mid];
+    if (index < start) hi = mid - 1;
+    else if (index >= end) lo = mid + 1;
+    else return literals[mid];
+  }
+  return undefined;
 }
 
 const lineAt = (text, index) => text.slice(0, index).split("\n").length;
 
-/** Text between the nearest unescaped double quotes around `index`. */
-function stringAt(text, index) {
-  let start = index;
-  while (start > 0 && !(text[start - 1] === '"' && text[start - 2] !== "\\")) {
-    start -= 1;
-  }
-  let end = index;
-  while (end < text.length && !(text[end] === '"' && text[end - 1] !== "\\")) {
-    end += 1;
-  }
-  return text.slice(start, end);
-}
-
-/** The sentence around a match: bounded by . ! ? quotes or newlines. */
+/**
+ * The sentence around a match: bounded by . ! ? quotes or newlines, and by a
+ * colon or a comma only for negations (see denied()).
+ */
 function sentenceAt(text, index, length) {
   const stops = /[.!?"`\n]/;
   let start = index;
@@ -178,13 +193,17 @@ const ABOUT_GOLO = /\bGoLo\b|\bthe app\b/i;
 
 /** A status anywhere in the phrase's clause says it isn't working. */
 const STATUS =
-  /\b(not built|isn['’]t built|aren['’]t built|on the list|not in the app|isn['’]t in the app|aren['’]t in the app|in testing|not yet|cut|(does not|doesn['’]t) track)\b/i;
+  /\b(not built|isn['’]t built|aren['’]t built|on the list|not in the app|isn['’]t in the app|aren['’]t in the app|in testing|not yet|we cut|was cut|were cut|been cut|cut from|(does not|doesn['’]t) track)\b/i;
 
 /** A negation counts only before the phrase, in the same clause. */
 const NEGATION =
   /\b(no|not|never|without|nor|doesn['’]t|does not|don['’]t|do not|isn['’]t|aren['’]t|won['’]t|can['’]t|cannot)\b/gi;
-/** Where a negation's reach ends. */
-const NEGATION_BREAK = /\b(?:and|but|so|while|though|although)\b|[;—–]/gi;
+/**
+ * Where a negation's reach ends: any comma or colon too, so "no paper, no
+ * pencil, GoLo works offline" isn't excused. A denied list after a colon
+ * ("What it doesn't do today: a, b, c") carries a claim-ok marker instead.
+ */
+const NEGATION_BREAK = /\b(?:and|but|so|while|though|although)\b|[;—–,:]/gi;
 /** Where a status's reach ends. */
 const STATUS_BREAK = /\bbut\b|[;—–]/gi;
 
@@ -222,10 +241,14 @@ const notLive = capabilities.filter(
 );
 
 function phraseRegex(phrase) {
-  const escaped = phrase.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
-  // Word edges only where the phrase starts or ends with a word character.
+  const escaped = phrase
+    .replace(/[.*+?^${}()|[\]\\]/g, "\\$&")
+    // A phrase wrapped across lines (Prettier-wrapped JSX, a long template).
+    .replace(/ /g, "\\s+");
+  // Word edges only where the phrase starts or ends with a word character,
+  // and a plural counts: "auto-presses", "Nassau presses", "allowances".
   const lead = /^\w/.test(phrase) ? "\\b" : "";
-  const tail = /\w$/.test(phrase) ? "\\b" : "";
+  const tail = /\w$/.test(phrase) ? "(?:e?s)?\\b" : "";
   return new RegExp(`${lead}${escaped}${tail}`, "gi");
 }
 
@@ -235,9 +258,16 @@ for (const file of files) {
   if (NOT_CLAIMS.has(file)) continue;
   const raw = read(file);
   if (raw.includes("claim-ok-file:")) continue;
-  const text = stripComments(raw, file);
+  const { text, literals } = scan(raw, file);
   const rawLines = raw.split("\n");
   const education = EDUCATION.has(file);
+  // Copy in a .ts file lives in string literals; anything else is code. A
+  // .tsx file also has JSX text, which isn't a literal, so there only the
+  // obvious code shapes are skipped: `styles.quota`, `quota: …`, `quota(…)`.
+  const isCode = (index, length) =>
+    file.endsWith(".tsx")
+      ? text[index - 1] === "." || /^\s*[:(=]/.test(text.slice(index + length))
+      : !literalAt(literals, index);
 
   for (const cap of notLive) {
     for (const phrase of cap.claimPhrases) {
@@ -249,7 +279,11 @@ for (const file of files) {
         ) {
           continue;
         }
-        if (education && !ABOUT_GOLO.test(stringAt(text, m.index))) continue;
+        if (isCode(m.index, m[0].length)) continue;
+        if (education) {
+          const [start, end] = literalAt(literals, m.index) ?? [0, 0];
+          if (!ABOUT_GOLO.test(text.slice(start, end))) continue;
+        }
         const { text: sentence, offset } = sentenceAt(
           text,
           m.index,
@@ -275,8 +309,9 @@ const LITERAL =
 
 /**
  * Every search title and description: the site description, each guide's
- * seoTitle and metaDescription, each post's own title, metaDescription and
- * dek (top-level fields only, not section and card titles), and the title and
+ * seoTitle and metaDescription, each post's own title, metaDescription, dek
+ * and excerpt (top-level fields only, not section and card titles), the site
+ * tagline (the default <title>), and the title and
  * description inside each page's pageMetadata({...}).
  */
 function metadataStrings() {
@@ -296,7 +331,11 @@ function metadataStrings() {
     new RegExp(`^${indent}(${names.join("|")}):\\s*(?:${LITERAL})`, "gm");
   const source = (file) => stripComments(read(file), file);
 
-  grab("lib/siteConfig.ts", source("lib/siteConfig.ts"), field(["description"], " {2}"));
+  grab(
+    "lib/siteConfig.ts",
+    source("lib/siteConfig.ts"),
+    field(["description", "tagline"], " {2}"),
+  );
   grab(
     "lib/content/gameDetail.ts",
     source("lib/content/gameDetail.ts"),
@@ -305,7 +344,7 @@ function metadataStrings() {
   grab(
     "lib/content/blog.ts",
     source("lib/content/blog.ts"),
-    field(["title", "metaDescription", "dek"], " {4}"),
+    field(["title", "metaDescription", "dek", "excerpt"], " {4}"),
   );
 
   // pageMetadata({...}) calls, and metadata objects exported directly.
