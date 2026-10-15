@@ -109,6 +109,13 @@ export type Post = {
     /** 1200x630 share card cut from the hero. Without one the hero is shared. */
     og?: string;
   };
+  /**
+   * Slugs for the "Keep reading" rail, in order, ahead of the same-topic and
+   * newest fill. For posts the default would pass over: the newest-first fill
+   * otherwise keeps sending readers to the same recent posts. Unpublished
+   * slugs are skipped.
+   */
+  related?: string[];
   /** false = absent from /blog and every rail, 404 on the detail route. */
   published: boolean;
   featured?: boolean;
@@ -175,6 +182,7 @@ export const posts: Post[] = [
     date: "2026-08-11",
     readMins: 5,
     hero: { src: "/images/blog/who-pays-first-hero.webp", alt: "An open SUV tailgate in a wet clubhouse parking lot at dusk, a golf bag leaning on the bumper and golf shoes and a cap in the trunk", position: "87% 50%", mobile: "/images/blog/who-pays-first-mobile.webp", og: "/images/blog/who-pays-first-og.jpg" },
+    related: ["settle-up-screen", "nassau", "pressing"],
     published: true,
     featured: true,
     body: [
@@ -255,7 +263,7 @@ export const posts: Post[] = [
       { kind: "quote", text: "Nobody minds losing ten dollars. Everybody minds asking for it twice." },
       { kind: "h2", id: "why-it-matters", text: "Why any of this matters over eleven dollars" },
       { kind: "p", html: "Because the money was never the point. The bet exists to make a twilight round on a Tuesday feel like it counts — to give the eight-footer on 12 a reason to matter. Settling is what keeps that device working. Pay fast, pay first, round against yourself, and the bet stays a game instead of becoming a small unspoken thing between two guys who used to enjoy playing together." },
-      { kind: "p", html: "And if remembering all nine sounds like work: the honest reason groups break these rules isn't character, it's arithmetic. Nobody wants to do six-way netting in a parking lot with a beer in his hand. So don't. Let something else keep the tally and just move the money." },
+      { kind: "p", html: "And if remembering all nine sounds like work: the honest reason groups break these rules isn't character, it's arithmetic. Nobody wants to do six-way netting in a parking lot with a beer in his hand. So don't. Let something else keep the tally and just move the money. Here is <a href=\"/blog/settle-up-screen\">how the netting works</a>, and <a href=\"/how-it-works\">one foursome’s round, first tee to settled</a>." },
     ],
   },
   {
@@ -393,6 +401,7 @@ export const posts: Post[] = [
     crumb: "Bingo Bango Bongo",
     author: "From the GoLo team",
     hero: { src: "/images/blog/bingo-bango-bongo-hero.webp", alt: "A golf ball rolling onto the front edge of the green while three others wait back in the fairway", position: "83% 50%", mobile: "/images/blog/bingo-bango-bongo-mobile.webp", og: "/images/blog/bingo-bango-bongo-og.jpg" },
+    related: ["sandbagging", "wolf", "index-vs-course-handicap"],
     published: true,
     body: article(
       "Every group has one: a 22-handicap who is out of the bet by the 5th hole and spends the back nine watching three other people play for money. Bingo Bango Bongo fixes that without a single stroke changing hands. Three points a hole, and two have almost nothing to do with how far you hit it. The scoring rules are in the <a href=\"/games/bingo-bango-bongo\">Bingo Bango Bongo guide</a>; this is about why it works for an uneven group.",
@@ -500,7 +509,7 @@ export const posts: Post[] = [
           { title: "Formats have allowances", body: "Handicap allowances exist because some formats amplify a high handicap. Four-ball match play is commonly played at 90%; individual match play at 100%. Casual groups can skip them if everybody knows that is the choice." },
           { title: "Cap the hole, not the round", body: "Net double bogey is the standard maximum for posting purposes, and it works as a house rule. It keeps one lost ball from distorting every bet on the card." },
         ] }] },
-        { id: "why-index-moves", title: "Why the index moves", paragraphs: ["Your index is the average of the best 8 score differentials out of your most recent 20 rounds, and it updates the day after each new score is posted. That is why it drifts down after a good week and why one bad round rarely moves it: a score only counts if it lands among your best eight of twenty, so a single 92 usually changes nothing.", "If nobody in your group carries an official index, agree on informal numbers and write them down. Consistency matters more than accuracy: a made-up 15 that everybody agrees on settles more bets than a real 12.4 that only one person remembers."], blocks: [{ kind: "summary", title: "THE SHORT VERSION", items: ["Index is portable and has a decimal. Course handicap is per tee set and is a whole number.", "Course handicap = index × (slope ÷ 113) + (course rating − par).", "Strokes land on specific holes by stroke index, not at the end of the round.", "In a match, the low handicap plays off scratch and everybody else gets the difference."] }] },
+        { id: "why-index-moves", title: "Why the index moves", paragraphs: ["Your index is the average of the best 8 score differentials out of your most recent 20 rounds, and it updates the day after each new score is posted. That is why it drifts down after a good week and why one bad round rarely moves it: a score only counts if it lands among your best eight of twenty, so a single 92 usually changes nothing.", "If nobody in your group carries an official index, agree on informal numbers and write them down. Consistency matters more than accuracy: a made-up 15 that everybody agrees on settles more bets than a real 12.4 that only one person remembers. And if somebody’s number stops matching his golf, <a href=\"/blog/sandbagging\">here is how to fix it without accusing anybody</a>."], blocks: [{ kind: "summary", title: "THE SHORT VERSION", items: ["Index is portable and has a decimal. Course handicap is per tee set and is a whole number.", "Course handicap = index × (slope ÷ 113) + (course rating − par).", "Strokes land on specific holes by stroke index, not at the end of the round.", "In a match, the low handicap plays off scratch and everybody else gets the difference."] }] },
       ],
       ),
       {
@@ -610,6 +619,7 @@ export const posts: Post[] = [
     // in use or an approach shot for the first, and a GPS watch or a wrist
     // glance for the second.
     hero: { src: "/images/blog/rangefinder-hero.webp", alt: "A laser rangefinder, a golf ball and a GPS watch lying on the fairway, a flag soft in the distance", position: "85% 50%", mobile: "/images/blog/rangefinder-mobile.webp", og: "/images/blog/rangefinder-og.jpg" },
+    related: ["bandon", "scottsdale-trip-structure", "skins-carryover"],
     published: true,
     body: article(
       "If you play for ten dollars a side with the same three guys, this decision is smaller than the internet makes it. A laser gives you one exact number. A watch gives you three approximate ones without you doing anything. The honest answer depends on how you miss, how fast your group plays, and whether you will actually use the thing.",
@@ -627,7 +637,7 @@ export const posts: Post[] = [
           { title: "Your phone is a fine third option", body: "Every course app gives front-middle-back for free. It is slower to pull out than a watch and it eats the battery you need for scoring, but if you are deciding between a phone app and nothing, the app wins." },
           { title: "Skip both if you are not clubbing consistently", body: "If your 7-iron ranges from 130 to 165, an exact number has nothing to attach to. Spend that money on a lesson and a launch monitor session, get your carry distances, and then buy the device." },
         ] }, { kind: "callout", title: "THE ONE THING TO CHECK BEFORE COMPETITION", html: "Distance-measuring devices are generally allowed under the Rules of Golf, but the committee for your event can prohibit them entirely, and slope functions must be switched off. Two minutes on the entry sheet beats a conversation on the first tee." }, { kind: "image", src: blogMedia.bunkerFairway, alt: "A raked bunker in the foreground, with a flag on a tree-lined green beyond", caption: "The best device is the one that gives you a number without slowing the group down.", position: "50% 50%" }] },
-        { id: "what-we-carry", title: "What we carry", paragraphs: ["Watch on the wrist for every shot, and one laser in the group for the times somebody genuinely needs the flag. That covers about ninety-five percent of it, keeps the round moving, and means nobody is standing on a tee box waiting for four people to shoot the same bunker.", "And keep the yardage device separate from the scoring device. A phone doing GPS all afternoon is a phone that is dead when the bet needs settling, which is the one moment of the round where the battery actually matters."], blocks: [{ kind: "summary", title: "THE SHORT VERSION", items: ["Laser for exact flag yardages, watch for front-middle-back without breaking stride.", "Play the back number, know your tired carry distances, and get the number early.", "Buy the cheap laser or the watch you will wear. Skip both if your clubbing is not settled.", "Do not let a GPS app drain the phone you are keeping the bet on."] }] },
+        { id: "what-we-carry", title: "What we carry", paragraphs: ["Watch on the wrist for every shot, and one laser in the group for the times somebody genuinely needs an exact number — a <a href=\"/games/closest-to-pin\">closest-to-the-pin</a> pot on a par 3, or a measured <a href=\"/games/longest-drive\">longest drive</a>. That covers about ninety-five percent of it, keeps the round moving, and means nobody is standing on a tee box waiting for four people to shoot the same bunker.", "And keep the yardage device separate from the scoring device. A phone doing GPS all afternoon is a phone that is dead when the bet needs settling, which is the one moment of the round where the battery actually matters."], blocks: [{ kind: "summary", title: "THE SHORT VERSION", items: ["Laser for exact flag yardages, watch for front-middle-back without breaking stride.", "Play the back number, know your tired carry distances, and get the number early.", "Buy the cheap laser or the watch you will wear. Skip both if your clubbing is not settled.", "Do not let a GPS app drain the phone you are keeping the bet on."] }] },
       ],
     ),
   },
@@ -642,6 +652,7 @@ export const posts: Post[] = [
     date: "2026-10-09",
     readMins: 5,
     hero: { src: "/images/blog/bandon-hero.webp", alt: "A golfer and caddie walking toward a clifftop links green as a rain squall rolls in off the ocean, the flag blowing straight out", position: "94% 50%", mobile: "/images/blog/bandon-mobile.webp", og: "/images/blog/bandon-og.jpg" },
+    related: ["scottsdale-trip-structure", "nassau", "index-vs-course-handicap"],
     published: true,
     body: article(
       "You booked a links trip, you are walking every hole, and on the second morning it is blowing 30 out of the southwest with rain in it. Your golf will be fine — that is what you came for. Your bet will not. Stroke play does not survive weather like this, and the group usually finds that out somewhere around the 12th, when two of the four have stopped keeping score.",
@@ -662,7 +673,7 @@ export const posts: Post[] = [
         ] }, { kind: "callout", title: "BET THE NINE, NOT THE EIGHTEEN", html: "Links weather changes inside a round. A front nine downwind and a back nine into it are two different golf courses, so make them two different bets. Anyone who gets buried in the first half starts even after the turn, and the group stays honest about the fact that the wind, not the golf, did most of it." }, { kind: "image", src: "/images/blog/bandon-mid-2.webp", alt: "A hooded caddie in the rain holding a scorecard sealed in a plastic sleeve, a golf bag on his shoulder", caption: "On foot, in weather, the scorecard is the first thing to fail. Give it to somebody with dry hands.", position: "50% 5%" }] },
         // The design says GoLo scores quota and rolls the day into one number.
         // It does neither yet (47f2b8c), so this paragraph keeps the draft.
-        { id: "one-number", title: "Thirty-six holes, one number", paragraphs: ["The practical problem out here is not the formats, it is the bookkeeping. Two rounds a day, a different game each time, and a scorecard that has been through the ocean. By dinner nobody can reconstruct the morning, so the group defaults to “call it even” — a quiet way of saying the bet did not matter.", "GoLo scores match play and <a href=\"/games/skins\">skins</a> off the same card and nets each round to one number. It does not score quota, and it does not add the morning and the afternoon together yet, so a 36-hole day is two settle-ups. You still keep your hands in your pockets and let the wind be the only thing you argue about."], blocks: [{ kind: "summary", title: "THE SHORT VERSION", items: ["Wind adds more shots to high handicaps than low ones. Net stroke play cannot absorb that.", "Match play caps a disaster at one hole. Quota with a floor at zero does the same thing.", "Split the round into two nine-hole bets, because the weather already did.", "Cap the day rather than the round, and let the caddie keep the card."] }] },
+        { id: "one-number", title: "Thirty-six holes, one number", paragraphs: ["The practical problem out here is not the formats, it is the bookkeeping. Two rounds a day, a different game each time, and a scorecard that has been through the ocean. By dinner nobody can reconstruct the morning, so the group defaults to “call it even” — a quiet way of saying the bet did not matter.", "GoLo scores match play and <a href=\"/games/skins\">skins</a> off the same card and nets each round to one number. It does not score quota, and it does not add the morning and the afternoon together yet, so a 36-hole day is two settle-ups — the <a href=\"/blog/scottsdale-trip-structure\">Scottsdale trip guide</a> makes the case for one running number across them, added up by hand. You still keep your hands in your pockets and let the wind be the only thing you argue about."], blocks: [{ kind: "summary", title: "THE SHORT VERSION", items: ["Wind adds more shots to high handicaps than low ones. Net stroke play cannot absorb that.", "Match play caps a disaster at one hole. Quota with a floor at zero does the same thing.", "Split the round into two nine-hole bets, because the weather already did.", "Cap the day rather than the round, and let the caddie keep the card."] }] },
       ],
     ),
   },
@@ -681,11 +692,12 @@ export const posts: Post[] = [
     // or the group on the first tee for the first, and the clubhouse or the
     // settle-up for the second.
     hero: { src: "/images/blog/scottsdale-trip-structure-hero.webp", alt: "Four golf bags standing at the edge of a desert tee box, saguaros and a rocky ridge behind them in the low sun", position: "85% 50%", mobile: "/images/blog/scottsdale-trip-structure-mobile.webp", og: "/images/blog/scottsdale-trip-structure-og.jpg" },
+    related: ["bandon", "nassau", "who-pays-first"],
     published: true,
     body: article(
       "Eight guys, four rounds, one desert. The golf takes care of itself. What ruins buddies trips is the betting: a different game every morning, nobody sure what the running total is, and by Sunday two players have quietly stopped caring because they are down $80 with no way back. Here is a four-day structure that fixes both problems.",
       [
-        { id: "one-ledger", title: "One ledger, four days", paragraphs: ["The single best decision a trip can make is to stop settling every night and start keeping one number per player for the whole weekend. Nightly settling turns four rounds into four unrelated afternoons; a trip ledger turns them into a tournament, and a tournament has a story.", "It also solves the mixed-ability problem: over one round the 6 beats the 19 most of the time, but over four formats the 19 gets two days that suit him."], blocks: [{ kind: "atAGlance", title: "THE TRIP AT A GLANCE", items: [{ label: "GROUP", value: "8 players, two foursomes" }, { label: "ROUNDS", value: "4, one format each" }, { label: "THE LEDGER", value: "One running total, all trip" }, { label: "STAKES", value: "$10 → $20 → $30 → adjusted" }] }] },
+        { id: "one-ledger", title: "One ledger, four days", paragraphs: ["The single best decision a trip can make is to stop settling every night and start keeping one number per player for the whole weekend. Nightly settling turns four rounds into four unrelated afternoons; a trip ledger turns them into a tournament, and a tournament has a story.", "It also solves the mixed-ability problem: over one round the 6 beats the 19 most of the time, but over four formats the 19 gets two days that suit him. The four days below run a <a href=\"/games/best-score\">stroke purse</a> and <a href=\"/games/skins\">skins</a> on Thursday, a <a href=\"/games/nassau\">four-ball Nassau</a> on Friday, then a shamble and an adjusted quota."], blocks: [{ kind: "atAGlance", title: "THE TRIP AT A GLANCE", items: [{ label: "GROUP", value: "8 players, two foursomes" }, { label: "ROUNDS", value: "4, one format each" }, { label: "THE LEDGER", value: "One running total, all trip" }, { label: "STAKES", value: "$10 → $20 → $30 → adjusted" }] }] },
         { id: "ladder", title: "The four-day ladder", blocks: [
           { kind: "steps", items: [
             { title: "Day 1 — Calibration day", body: "A $10 stroke purse plus $2 skins, individual. Cheap on purpose. You are here to find out whose index is real before there is money on it." },
@@ -706,7 +718,7 @@ export const posts: Post[] = [
           { title: "The bounty alternative", body: "If quota is a stretch for your group, run bounties instead: everybody who is down puts a price on the leader’s head, payable for any hole where you beat him straight up. Same effect, easier to explain on the range." },
           { title: "Close the ledger on 18, not at dinner", body: "Whatever Sunday’s format is, it ends when the last putt drops. No last-minute chip-offs in the parking lot, no double-or-nothing on the way to the airport. The ledger closes on the 18th green." },
         ] }, { kind: "quote", text: "A trip where two guys stop caring on Saturday is a trip that got the last round wrong." }] },
-        { id: "desert-rules", title: "Desert rules worth agreeing on Thursday", paragraphs: ["Scottsdale golf has its own physics, and every one of these turns into a bet argument if you have not settled it in advance."], blocks: [{ kind: "cardGrid", items: [
+        { id: "desert-rules", title: "Desert rules worth agreeing on Thursday", paragraphs: ["Scottsdale golf has its own physics, and every one of these turns into a bet argument if you have not settled it in advance. (Links golf has different physics; <a href=\"/blog/bandon\">the Bandon guide</a> covers what wind does to a bet.)"], blocks: [{ kind: "cardGrid", items: [
           { title: "One look in the desert, then drop", body: "Target golf punishes a pull, and a group of eight cannot afford four people searching cactus for three minutes. Agree on a one-minute look, then drop at the edge for a stroke. Pace of play is a betting rule out here." },
           { title: "Heat is a handicap", body: "Peak season is February to April for a reason. If you are booking a summer trip, tee off at dawn, play nine-hole bets, and settle at the turn — nobody makes good decisions at 108 degrees, including about money." },
           { title: "Play the tees that make the bet close", body: "The single biggest lever on a trip is tee selection. Desert courses stretch out fast; a group with a 6 and a 19 in it has a far better week from 6,400 yards than from 6,900." },
