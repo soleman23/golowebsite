@@ -47,13 +47,9 @@ export function FeaturedPost({ post }: { post: Post }) {
   return (
     <section className={styles.section} aria-label="Featured post">
       <div className={styles.inner}>
-        {post.published ? (
-          <Link href={`/blog/${post.slug}`} className={styles.card}>
-            {body}
-          </Link>
-        ) : (
-          <div className={styles.card}>{body}</div>
-        )}
+        <Link href={`/blog/${post.slug}`} className={styles.card}>
+          {body}
+        </Link>
       </div>
     </section>
   );

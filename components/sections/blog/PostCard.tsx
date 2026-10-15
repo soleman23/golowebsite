@@ -1,9 +1,7 @@
 /**
  * One post in the grid. The whole card is a single link — no nested buttons or
- * secondary links, so it's one tab stop and one target.
- *
- * An unwritten post renders the same card without a link and says so. Better
- * an honest "coming soon" than a card that drops someone on an empty page.
+ * secondary links, so it's one tab stop and one target. Only published posts
+ * reach it: drafts aren't listed anywhere (see lib/content/blog.ts).
  */
 
 import Link from "next/link";
@@ -37,15 +35,9 @@ export function PostCard({ post }: { post: Post }) {
         <span className={styles.title}>{post.title}</span>
         <span className={styles.excerpt}>{post.excerpt}</span>
         <span className={styles.foot}>
-          {post.published ? (
-            <>
-              <time dateTime={post.date}>{formatDate(post.date)}</time>
-              <span aria-hidden="true">·</span>
-              <span>{post.readMins} min read</span>
-            </>
-          ) : (
-            <span className={styles.soon}>Coming soon</span>
-          )}
+          <time dateTime={post.date}>{formatDate(post.date)}</time>
+          <span aria-hidden="true">·</span>
+          <span>{post.readMins} min read</span>
         </span>
       </span>
     </>
@@ -54,13 +46,9 @@ export function PostCard({ post }: { post: Post }) {
   return (
     // data-topic is what the /blog filter matches on — see PostGrid.module.css.
     <li className={styles.item} data-topic={post.category}>
-      {post.published ? (
-        <Link href={`/blog/${post.slug}`} className={styles.card}>
-          {body}
-        </Link>
-      ) : (
-        <div className={`${styles.card} ${styles.unwritten}`}>{body}</div>
-      )}
+      <Link href={`/blog/${post.slug}`} className={styles.card}>
+        {body}
+      </Link>
     </li>
   );
 }

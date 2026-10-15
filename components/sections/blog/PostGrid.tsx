@@ -8,7 +8,7 @@
  */
 
 import Link from "next/link";
-import { blogFilters, blogTopicIds, postsByDate } from "@/lib/content";
+import { blogFilters, blogTopicIds, publishedPosts } from "@/lib/content";
 import { BlogFilterProvider } from "./BlogFilterProvider";
 import { BlogFilterChips } from "./BlogFilterChips";
 import { PostGridHead } from "./PostGridHead";
@@ -17,7 +17,7 @@ import styles from "./PostGrid.module.css";
 
 export function PostGrid({ featuredSlug }: { featuredSlug?: string }) {
   // The featured post leads the page, so it doesn't repeat in the grid below.
-  const shown = postsByDate.filter((post) => post.slug !== featuredSlug);
+  const shown = publishedPosts.filter((post) => post.slug !== featuredSlug);
   const chips = blogFilters(featuredSlug);
 
   return (
