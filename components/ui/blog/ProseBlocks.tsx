@@ -160,6 +160,23 @@ function ProseBlock({ block }: { block: Block }) {
         </aside>
       );
 
+    case "sources":
+      // Outside sites, so rel="noopener"; same tab, like every other link here.
+      return (
+        <aside className={styles.sources}>
+          <p className={styles.sourcesTitle}>SOURCES</p>
+          <ul className={styles.sourcesList}>
+            {block.items.map((item) => (
+              <li key={item.href}>
+                <a href={item.href} rel="noopener">
+                  {item.label}
+                </a>
+              </li>
+            ))}
+          </ul>
+        </aside>
+      );
+
     default:
       return assertNever(block);
   }
