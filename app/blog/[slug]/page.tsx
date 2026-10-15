@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import {
   appCtaLabel,
   findPost,
+  postDescription,
   postLastModified,
   publishedPosts,
   type Post,
@@ -39,11 +40,6 @@ export function generateStaticParams() {
 }
 
 export const dynamicParams = false;
-
-/** One description for the meta tag, the share card and the Article node. */
-function postDescription(post: Post): string {
-  return post.metaDescription ?? post.dek ?? post.excerpt;
-}
 
 export async function generateMetadata({ params }: Params): Promise<Metadata> {
   const { slug } = await params;
