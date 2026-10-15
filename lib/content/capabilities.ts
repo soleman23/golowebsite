@@ -275,7 +275,7 @@ export const capabilities = [
     summary: "Native apps in the App Store and Google Play.",
     verified: OWNER_1015,
     roadmap: true,
-    claimPhrases: ["app store", "google play", "iphone", "android"],
+    claimPhrases: ["app store", "google play", "iphone", "android", "ios"],
   },
   {
     id: "watch-app",

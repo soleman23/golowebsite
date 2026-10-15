@@ -16,15 +16,18 @@
  *    one is not. `claim-ok: <reason>` on a line (or the line above) and
  *    `claim-ok-file: <reason>` in a file's header exempt copy gated behind
  *    siteConfig.appLive and the like.
- * 2. Metadata. Search titles, meta descriptions and the site description may
- *    not name a non-live capability at all, denied or not — a snippet has no
+ * 2. Metadata. Search titles, meta descriptions and the site description —
+ *    in pageMetadata({...}) calls and in `export const metadata` objects in
+ *    pages and layouts — may not name a non-live capability at all, denied
+ *    or not — a snippet has no
  *    room for the denial. Golf-education titles are held to that only when
  *    they're about GoLo: "Rangefinder or GPS watch?" names gear, not a GoLo
  *    feature.
  * 3. Internal links. Every "/…" href in content and components, legal copy
  *    included, in any kind of string literal, must be a page or file the site
- *    serves: a static route, a route handler, a published post, a game guide
- *    or a file in public/.
+ *    serves: a static route, a route handler that answers GET (so not the
+ *    POST-only form endpoints under /api), a published post, a game guide or
+ *    a file in public/.
  *
  * Comments are ignored throughout. Exit 1 with one line per problem.
  */
@@ -305,8 +308,11 @@ function metadataStrings() {
     field(["title", "metaDescription", "dek"], " {4}"),
   );
 
-  for (const page of walk("app", ["page.tsx"])) {
-    for (const call of source(page).matchAll(/pageMetadata\(\{[\s\S]*?\}\)/g)) {
+  // pageMetadata({...}) calls, and metadata objects exported directly.
+  const METADATA_BLOCK =
+    /pageMetadata\(\{[\s\S]*?\}\)|export\s+const\s+metadata\b[^=]*=\s*\{[\s\S]*?\n\};/g;
+  for (const page of walk("app", ["page.tsx", "layout.tsx"])) {
+    for (const call of source(page).matchAll(METADATA_BLOCK)) {
       grab(
         page,
         call[0],
@@ -335,10 +341,16 @@ for (const { file, line, field, value } of metadataStrings()) {
 
 /* ----------------------------------------------------------------- links */
 
-/** Static pages and route handlers under app/, route groups dropped. */
+/**
+ * Static pages, and route handlers a link can open (they export GET), under
+ * app/, route groups dropped.
+ */
 function staticRoutes() {
   const routes = new Set(["/"]);
+  const answersGet = (file) =>
+    /export\s+(?:async\s+)?function\s+GET\b|export\s+const\s+GET\b/.test(read(file));
   for (const entry of walk("app", ["page.tsx", "route.ts"])) {
+    if (entry.endsWith("route.ts") && !answersGet(entry)) continue;
     const dir = relative("app", entry).split("/").slice(0, -1);
     if (dir.some((part) => part.startsWith("["))) continue;
     const path = dir.filter((part) => !/^\(.*\)$/.test(part)).join("/");
