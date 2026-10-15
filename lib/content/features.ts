@@ -217,7 +217,7 @@ export const featureBlocks: FeatureBlock[] = [
     kicker: "HISTORY, STATS & YOUR LOCKER",
     status: TODAY,
     title: "A season-long record of who actually wins.",
-    lead: 'Every round is saved with its scores, its games and its money, so the guy who claims he "always" takes the back nine can be checked. Your Locker keeps the running net, your handicap trend, and your record in each format.',
+    lead: 'Every round is saved with its scores, its games and its money, so the guy who claims he "always" takes the back nine can be checked. Your Locker keeps your season and all-time net, your record in each format, and your record against each regular.',
     checklist: [
       {
         lead: "Season and all-time net",
@@ -229,7 +229,7 @@ export const featureBlocks: FeatureBlock[] = [
       },
       {
         lead: "Head-to-head",
-        rest: "your record against each regular, per format.",
+        rest: "your record against each regular.",
       },
     ],
     visualSide: "left",
@@ -254,7 +254,7 @@ export const alsoInThere: AlsoCard[] = [
   {
     title: "Receipts for the group chat",
     status: TODAY,
-    body: "One card with the final scores, the money and who paid whom — dropped straight into the text thread where the trash talk already lives. Ends the Tuesday re-litigation.",
+    body: "One card with the final scores, the money and who pays whom — dropped straight into the text thread where the trash talk already lives. Ends the Tuesday re-litigation.",
   },
 ];
 
