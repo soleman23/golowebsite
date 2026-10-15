@@ -42,6 +42,14 @@ const attributionFields = {
     .regex(/^[a-z0-9.-]+$/)
     .optional()
     .catch(undefined),
+  /** The landing URL's utm_source; the same rule lib/attribution.ts applies. */
+  landingSource: z
+    .string()
+    .trim()
+    .toLowerCase()
+    .regex(/^[a-z0-9._-]{1,64}$/)
+    .optional()
+    .catch(undefined),
 };
 
 export const textLinkSchema = z.object({
