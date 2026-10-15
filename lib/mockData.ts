@@ -377,11 +377,6 @@ export const lockerFormats: LockerFormatRow[] = [
   { format: "Junk board", record: "17–3", net: "+$96" },
 ];
 
-/** Handicap index trend, oldest → newest. Drives the sparkline bars. */
-export const lockerTrend = [
-  12.4, 12.1, 12.3, 11.9, 11.7, 11.8, 11.6, 11.4, 11.6,
-];
-
 export const transferRows: TransferRow[] = [
   {
     fromColor: "#c084fc",

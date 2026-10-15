@@ -26,6 +26,21 @@ export const appCtaShortLabel = siteConfig.appLive
   : "Get the link";
 
 /**
+ * The closing band's default lead and fine print (FinalCTA). Both follow
+ * appLive: before launch there's nothing to download, and the app runs in a
+ * browser in private testing, so neither names a store, a platform or a price.
+ * At launch, check the fine print against the pricing decision and the
+ * "store-apps" entry in capabilities.ts before it says anything more.
+ */
+export const finalCtaLead = siteConfig.appLive
+  ? "Download GoLo, set up your games before the first tee, and let the app keep the books. Your buddies’ excuses end here."
+  : "Get the launch link, set up your games before the first tee, and let GoLo keep the books. Your buddies’ excuses end here.";
+
+export const finalCtaFine = siteConfig.appLive
+  ? "On iPhone & Android"
+  : "In testing with real groups · Free while we’re in beta";
+
+/**
  * Every top-level entry is a real route. "How it works" goes to the full
  * walkthrough; the home page's #how teaser links there too.
  */
@@ -68,6 +83,7 @@ export const footerLinks: Record<FooterColumn, NavLink[]> = {
   ],
   company: [
     { label: "Blog", href: "/blog" },
+    { label: "Blog RSS feed", href: "/blog/feed.xml" },
     { label: "FAQ", href: "/faq" },
     { label: "Contact", href: "/contact" },
     { label: "Support", href: `mailto:${siteConfig.supportEmail}` },

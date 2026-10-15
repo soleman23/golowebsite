@@ -116,6 +116,15 @@ export function PostHero({ post }: { post: Post }) {
           {post.author ? <span>{post.author}</span> : null}
           {post.author ? <span aria-hidden="true"> · </span> : null}
           <time dateTime={post.date}>{formatDate(post.date)}</time>
+          {post.updated ? (
+            <>
+              <span aria-hidden="true"> · </span>
+              <span>
+                Updated{" "}
+                <time dateTime={post.updated}>{formatDate(post.updated)}</time>
+              </span>
+            </>
+          ) : null}
         </p>
       </div>
     </header>

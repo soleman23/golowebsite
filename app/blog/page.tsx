@@ -28,13 +28,22 @@ import { FinalCTA } from "@/components/sections/FinalCTA";
 import { JsonLd } from "@/components/ui/JsonLd";
 import styles from "./blog.module.css";
 
-export const metadata: Metadata = pageMetadata({
+const blogPageMetadata = pageMetadata({
   path: "/blog",
   title: "Golf Side-Game Rules, Handicaps & Etiquette",
   description:
     "Golf side-game rules, skins carryovers, Nassau presses, strategy and settling-up etiquette for friendly wagers, from GoLo.",
   image: heroOgImage("blog"),
 });
+
+/** Same metadata, plus the feed for readers that look for one. */
+export const metadata: Metadata = {
+  ...blogPageMetadata,
+  alternates: {
+    ...blogPageMetadata.alternates,
+    types: { "application/rss+xml": "/blog/feed.xml" },
+  },
+};
 
 /** Published posts only — the same list the page renders. */
 const blogJsonLd = {

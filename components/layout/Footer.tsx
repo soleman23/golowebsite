@@ -37,13 +37,14 @@ export function Footer() {
               <ul className={styles.columnLinks} aria-label={col.heading}>
                 {col.links.map((link) => (
                   <li key={link.label}>
-                    {link.href.startsWith("/") ? (
+                    {link.href.startsWith("/") && !/\.\w+$/.test(link.href) ? (
                       <Link href={link.href} className={styles.columnLink}>
                         {link.label}
                       </Link>
                     ) : (
-                      // mailto: and other non-route hrefs — a plain anchor, so
-                      // the router never tries to navigate to them.
+                      // mailto:, files like the RSS feed, and other non-page
+                      // hrefs — a plain anchor, so the router never tries to
+                      // navigate to them.
                       <a href={link.href} className={styles.columnLink}>
                         {link.label}
                       </a>

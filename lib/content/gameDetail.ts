@@ -70,6 +70,12 @@ export type GameDetail = {
    * crawlers) which one to read for what.
    */
   deeperReading?: { href: string; label: string };
+  /**
+   * ISO date of the last substantive change to the guide's rules, examples or
+   * GoLo claims; never copy polish. Becomes the sitemap's lastmod. Guides
+   * without one have no lastmod rather than a made-up one.
+   */
+  updated?: string;
   traits: string[];
   howTitle: string;
   intro: string;
@@ -127,6 +133,7 @@ function withRoster(copy: GameDetailCopy): GameDetail {
 
 const nassau: GameDetailCopy = {
   slug: "nassau",
+  updated: "2026-10-11",
   seoTitle: "How to Play a Nassau in Golf: Rules & Presses",
   deeperReading: { href: "/blog/nassau", label: "Deeper reading: the $2 Nassau, presses and house rules →" },
   kicker: "MATCH PLAY · 3 BETS IN 1",
@@ -444,6 +451,7 @@ const skins: GameDetailCopy = {
 
 const bestScore: GameDetailCopy = {
   slug: "best-score",
+  updated: "2026-10-11",
   seoTitle: "Golf Stroke Purse (Best Score): Buy-Ins & Payout Rules",
   kicker: "POT · LOW NET TAKES IT",
   tagline: "Everybody puts the same money in the middle. Eighteen holes later the lowest net score picks it up. No per-hole math, no presses — one number decides it.",
@@ -719,6 +727,7 @@ const bingoBangoBongo: GameDetailCopy = {
 
 const closestToPin: GameDetailCopy = {
   slug: "closest-to-pin", kicker: "SIDE BET · PAR 3s",
+  updated: "2026-10-15",
   seoTitle: "Closest to the Pin & Greenies: Golf Side Game Rules",
   tagline: "One tee shot, one pot. Stick it tighter than everybody else on the par 3s and collect — as long as you can still make par from there.",
   metaDescription: "How closest to the pin and greenies work: who qualifies, par-to-collect, measuring, carryovers, and how the side pot pays out.",
@@ -730,14 +739,14 @@ const closestToPin: GameDetailCopy = {
     { n: "2", title: "Tee shots only", body: "Only the ball you hit from the tee counts. Reload and you are out of the running." },
     { n: "3", title: "Closest to the flag wins", body: "Nearest ball takes the pot — on the green, in almost every house rule." },
     { n: "4", title: "Then make your par", body: "Three-putt and the pot goes to the next closest, or carries." },
-    { n: "5", title: "GoLo holds the pot", body: "Log the distance, apply the par rule, and carry anything nobody claimed." },
+    { n: "5", title: "GoLo settles the pot", body: "Record the winner on the hole and GoLo nets the pot into the settle-up with every other game. GoLo tracks the money; it never holds it." },
   ],
   scoring: {
     kicker: "SETTLE THESE FIRST", title: "Four questions, asked on the first tee — not the fourth green.", lead: "Every argument about a greenie traces back to one of these going unasked. Here’s what most groups land on.",
     rows: [
       { title: "Does it have to be on the green?", detail: "Fringe at three feet against surface at twenty", value: "ON THE GREEN" },
       { title: "Do you have to make par?", detail: "Whether closest still collects after a three-putt", value: "PAR TO COLLECT" },
-      { title: "How do you measure it?", detail: "Eyeball, pace it, or use a rangefinder", value: "LOG IT IN THE APP" },
+      { title: "How do you measure it?", detail: "Eyeball, pace it, or use a rangefinder", value: "PACE IT OFF" },
       { title: "Nobody claimed it — now what?", detail: "The pot dies or rides to the next par 3", value: "CARRY IT" },
     ],
   },
@@ -775,7 +784,7 @@ const closestToPin: GameDetailCopy = {
     glossary: { kicker: "TALK THE TALK", title: "The terms you'll hear on the tee." },
     faq: { kicker: "CLOSEST TO PIN, ANSWERED", title: "Before you tee it up." },
     related: { kicker: "STACK IT WITH", title: "Nobody plays this one on its own.", lead: "Greenies are a garnish. Put a real game underneath them and let GoLo settle the whole plate." },
-    cta: { title: "Retire the pencil on the greenie stick.", lead: "Mark the par 3s, log the distance, and let GoLo enforce par-to-collect." },
+    cta: { title: "Retire the pencil on the greenie stick.", lead: "Mark the par 3s, record each winner, and let GoLo net the pot into the settle-up." },
   },
   variations: [
     { icon: "pin", title: "Greenies on every par 3", body: "Four separate pots over 18 holes, one on each par 3." },
@@ -809,6 +818,7 @@ const closestToPin: GameDetailCopy = {
 
 const longestDrive: GameDetailCopy = {
   slug: "longest-drive", kicker: "SIDE BET · ONE MARKED HOLE",
+  updated: "2026-10-15",
   seoTitle: "Longest Drive Golf Side Game: Rules & Payouts",
   tagline: "Pick a hole, swing out of your shoes, and the longest ball that finishes in the fairway takes the pot. Short grass or nothing.",
   metaDescription: "Set up a longest-drive side bet with a marked hole, fairway-only rule, measurement, carryovers, and a clean payout.",
@@ -819,15 +829,15 @@ const longestDrive: GameDetailCopy = {
     { n: "1", title: "Mark the hole and the pot", body: "Pick it on the first tee, not on the tee box. A wide par 5 downwind is the classic choice." },
     { n: "2", title: "Tee shots only, one ball", body: "The ball you play from the tee is the ball that counts. Reload and you are out." },
     { n: "3", title: "It has to finish in the fairway", body: "A 320 in the rough loses to a 280 in the middle, every time." },
-    { n: "4", title: "Mark it as you go", body: "Log the yardage in GoLo as you walk past your ball." },
-    { n: "5", title: "GoLo settles the pot", body: "Longest in the fairway collects. Nobody in play and the pot carries." },
+    { n: "4", title: "Settle it at the ball", body: "Compare drives as you walk past them, not from the tee. The ball in the fairway that is furthest along wins." },
+    { n: "5", title: "GoLo settles the pot", body: "Record the winner and GoLo nets the pot into the settle-up. If nobody finds the fairway, your house rule decides whether it carries." },
   ],
   scoring: {
     kicker: "SETTLE THESE FIRST", title: "Four questions, asked before anybody tees off.", lead: "Longest drive falls apart on definitions. These are the four to nail down.",
     rows: [
       { title: "Does it have to be in the fairway?", detail: "A bomb in rough against a shorter ball in the middle", value: "IN THE FAIRWAY" },
       { title: "One hole, or every par 5?", detail: "A marked hole or separate pot on each long one", value: "ONE MARKED HOLE" },
-      { title: "How do you measure it?", detail: "Sprinkler heads, rangefinder, or GPS", value: "LOG IT IN THE APP" },
+      { title: "How do you measure it?", detail: "Sprinkler heads, rangefinder, or GPS", value: "RANGEFINDER" },
       { title: "Nobody found the fairway — now what?", detail: "The pot dies or rides to the next one", value: "CARRY IT" },
     ],
   },
@@ -865,7 +875,7 @@ const longestDrive: GameDetailCopy = {
     glossary: { kicker: "TALK THE TALK", title: "The words that settle the tee box." },
     faq: { kicker: "LONGEST DRIVE, ANSWERED", title: "Before you grip it any tighter." },
     related: { kicker: "STACK IT WITH", title: "A tee-box bet needs a real game underneath it.", lead: "One pot on one hole is not a round. Put a game beneath it and let GoLo settle the whole thing." },
-    cta: { title: "Settle the tee box before the beer cart gets there.", lead: "Mark the hole, log the yardages, and let fairway-only decide it." },
+    cta: { title: "Settle the tee box before the beer cart gets there.", lead: "Mark the hole, let fairway-only decide it, and let GoLo net the pot into the settle-up." },
   },
   variations: [
     { icon: "drive", title: "Every par 5", body: "A separate pot on each long hole gives four swings that matter." },
@@ -889,7 +899,7 @@ const longestDrive: GameDetailCopy = {
   faqs: gameFaqs("longest-drive", [
     { q: "Does the ball have to be in the fairway?", a: "In almost every group, yes. Fairway-only keeps it a golf shot." },
     { q: "Which hole should we mark?", a: "A wide par 5 with helping wind is traditional. Avoid forced carries and fairways that run out." },
-    { q: "How do we measure the distance?", a: "Use sprinklers, a rangefinder, or GPS and log the number as you pass the ball." },
+    { q: "How do we measure the distance?", a: "Sprinkler heads, a rangefinder or a GPS watch, compared as you pass the balls. Agree which on the tee." },
     { q: "What if nobody hits the fairway?", a: "The pot can die or carry. Carrying makes the next marked hole worth twice as much." },
     { q: "Can we play it on every hole?", a: "You can, but par 5s only is usually enough swings without slowing the round." },
     { q: "How do we keep mismatched hitters fair?", a: "Give yards, not strokes. A 20- to 30-yard allowance can create a real contest." },
@@ -899,6 +909,7 @@ const longestDrive: GameDetailCopy = {
 
 const birdies: GameDetailCopy = {
   slug: "birdies", kicker: "BOUNTY · ALL 18 HOLES",
+  updated: "2026-10-11",
   seoTitle: "Birdie Bounties in Golf: Side Game Rules & Payouts",
   tagline: "A standing price on every birdie. Card one and everybody who did not pays you. Eagles double it, and nobody has ever complained about paying.",
   metaDescription: "How a birdie bounty works: gross or net birdies, eagle multipliers, who pays whom, and a sensible cap so one hot round stays friendly.",

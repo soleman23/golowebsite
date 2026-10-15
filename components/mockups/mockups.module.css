@@ -1546,23 +1546,6 @@
   color: #fff;
 }
 
-.trend {
-  display: flex;
-  align-items: flex-end;
-  gap: 6px;
-  height: 48px;
-}
-
-.trendBar {
-  flex: 1;
-  border-radius: 4px 4px 2px 2px;
-  background: var(--accent-35);
-}
-
-.trendBar:last-child {
-  background: var(--accent);
-}
-
 .lockerTable {
   display: flex;
   flex-direction: column;

@@ -36,9 +36,9 @@ export const stats: Stat[] = [
     sub: "Skins, Nassau, Wolf & more",
   },
   {
-    value: "<30s",
-    label: "from last putt to settled",
-    sub: "while you're still on the green",
+    value: "$0",
+    label: "of your money goes through GoLo",
+    sub: "it does the math; you settle up",
   },
   {
     value: "0",

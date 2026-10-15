@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import {
   appCtaLabel,
   findPost,
+  postLastModified,
   publishedPosts,
   type Post,
 } from "@/lib/content";
@@ -54,7 +55,10 @@ export async function generateMetadata({ params }: Params): Promise<Metadata> {
   return {
     title: post.title,
     description,
-    alternates: { canonical: `/blog/${post.slug}` },
+    alternates: {
+      canonical: `/blog/${post.slug}`,
+      types: { "application/rss+xml": "/blog/feed.xml" },
+    },
     openGraph: {
       ...socialDefaults.openGraph,
       type: "article",
@@ -62,6 +66,7 @@ export async function generateMetadata({ params }: Params): Promise<Metadata> {
       title: post.title,
       description,
       publishedTime: post.date,
+      ...(post.updated ? { modifiedTime: post.updated } : {}),
       authors: [siteConfig.brandName],
       // The hero's 1200x630 cut when it has one, else the hero itself; with no
       // photo, the site-wide card. twitter:image inherits whichever this is.
@@ -100,6 +105,7 @@ function articleJsonLd(post: Post) {
         headline: post.title,
         description: postDescription(post),
         datePublished: post.date,
+        dateModified: postLastModified(post),
         author: organizationRef,
         publisher: organizationRef,
         ...(images.length ? { image: images } : {}),
