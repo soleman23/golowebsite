@@ -32,7 +32,7 @@ const blogPageMetadata = pageMetadata({
   path: "/blog",
   title: "Golf Side-Game Rules, Handicaps & Etiquette",
   description:
-    "Golf side-game rules, skins carryovers, Nassau presses, strategy and settling-up etiquette for friendly wagers, from GoLo.",
+    "Golf side-game rules, skins carryovers, pressing, strategy and settling-up etiquette for friendly wagers, from GoLo.",
   image: heroOgImage("blog"),
 });
 

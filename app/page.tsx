@@ -52,6 +52,7 @@ export const metadata: Metadata = pageMetadata({
  */
 const platforms = [
   capability("web-app").status === "live" ? "Web browser" : null,
+  // claim-ok: only once the store-apps entry is live
   capability("store-apps").status === "live" ? "iOS, Android" : null,
 ].filter(Boolean);
 

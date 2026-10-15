@@ -63,6 +63,12 @@ jobs:
         if: '!cancelled()'
         run: npm run lint:filters
 
+      # Product claims against lib/content/capabilities.ts, metadata, and
+      # internal links (scripts/check-content.mjs). Same reason as above.
+      - name: Content
+        if: '!cancelled()'
+        run: npm run lint:content
+
       # Runs even if lint failed, so one push surfaces every problem at once
       # instead of trickling them out over three round-trips.
       - name: Typecheck

@@ -50,6 +50,14 @@ export type Capability = {
   };
   /** Shown as a line in the /features roadmap column for its status. */
   roadmap?: boolean;
+  /**
+   * Phrases that would present this capability as working. While its status
+   * isn't `live`, `npm run lint` (scripts/check-content.mjs) fails on any of
+   * them in site copy unless the sentence says it isn't built, and on any of
+   * them in a title, meta description or the site description at all.
+   * Lower-case; matched case-insensitively.
+   */
+  claimPhrases?: readonly string[];
 };
 
 /** soleman23/golowebsite#27: golo `main` 291c545, GoLo 0.6.2. */
@@ -219,6 +227,12 @@ export const capabilities = [
       "Scores stay on the phone with no signal and sync to the group when it returns.",
     verified: SITE_COPY_1015,
     roadmap: true,
+    claimPhrases: [
+      "works offline",
+      "works with no signal",
+      "works without signal",
+      "works in dead spots",
+    ],
   },
 
   /* ---------------------------------------------------------- planned */
@@ -229,6 +243,12 @@ export const capabilities = [
     summary: "Each player enters their own scores instead of one scorer.",
     verified: APP_CHECK_062,
     roadmap: true,
+    claimPhrases: [
+      "enter their own scores",
+      "entering their own scores",
+      "enters their own scores",
+      "own scores",
+    ],
   },
   {
     id: "trip-tally",
@@ -237,6 +257,15 @@ export const capabilities = [
     summary: "One running tally across a trip's rounds, settled once.",
     verified: APP_CHECK_062,
     roadmap: true,
+    claimPhrases: [
+      "trip mode",
+      "trip tally",
+      "trip total",
+      "trip ledger",
+      "ledger across",
+      "across every round",
+      "across rounds",
+    ],
   },
   {
     id: "store-apps",
@@ -246,6 +275,7 @@ export const capabilities = [
     summary: "Native apps in the App Store and Google Play.",
     verified: OWNER_1015,
     roadmap: true,
+    claimPhrases: ["app store", "google play", "iphone", "android", "ios"],
   },
   {
     id: "watch-app",
@@ -254,6 +284,7 @@ export const capabilities = [
     summary: "Scoring from a watch.",
     verified: SITE_COPY_1015,
     roadmap: true,
+    claimPhrases: ["watch app", "apple watch", "on your watch"],
   },
   {
     id: "auto-press",
@@ -261,6 +292,12 @@ export const capabilities = [
     status: "planned",
     summary: "Presses that open on their own at 2 down.",
     verified: APP_CHECK_062,
+    claimPhrases: [
+      "auto-press",
+      "auto press",
+      "automatic press",
+      "presses automatically",
+    ],
   },
   {
     id: "nassau-presses",
@@ -268,6 +305,12 @@ export const capabilities = [
     status: "planned",
     summary: "Presses on the Nassau game itself.",
     verified: APP_CHECK_062,
+    claimPhrases: [
+      "press on a nassau",
+      "presses on a nassau",
+      "press the nassau",
+      "nassau press",
+    ],
   },
   {
     id: "handicap-allowances",
@@ -275,6 +318,7 @@ export const capabilities = [
     status: "planned",
     summary: "Percentage allowances such as 90%, and playing off the low man.",
     verified: APP_CHECK_062,
+    claimPhrases: ["90%", "95%", "low man", "allowance"],
   },
   {
     id: "mixed-tees",
@@ -282,6 +326,12 @@ export const capabilities = [
     status: "planned",
     summary: "Players in one group on different tees.",
     verified: APP_CHECK_062,
+    claimPhrases: [
+      "tees per player",
+      "tee per player",
+      "mixed tees",
+      "players on different tees",
+    ],
   },
   {
     id: "quota",
@@ -289,6 +339,7 @@ export const capabilities = [
     status: "planned",
     summary: "A points quota game.",
     verified: APP_CHECK_062,
+    claimPhrases: ["quota"],
   },
 
   /* ------------------------------------------------------ not offered */
@@ -298,6 +349,7 @@ export const capabilities = [
     status: "not-offered",
     summary: "Cut. Not in the app and not on the list.",
     verified: OWNER_1015,
+    claimPhrases: ["gps", "yardages"],
   },
   {
     id: "public-live-link",
@@ -305,6 +357,7 @@ export const capabilities = [
     status: "not-offered",
     summary: "A link anyone outside the round can open to follow it.",
     verified: OWNER_1015,
+    claimPhrases: ["live link", "public link", "share the link"],
   },
   {
     id: "distance-logging",
@@ -313,6 +366,13 @@ export const capabilities = [
     summary:
       "Recording the measured distance for Closest to Pin or Longest Drive.",
     verified: OWNER_1015,
+    claimPhrases: [
+      "log the distance",
+      "log the yardage",
+      "log it in the app",
+      "logs the distance",
+      "record the distance",
+    ],
   },
 ] as const satisfies readonly Capability[];
 
