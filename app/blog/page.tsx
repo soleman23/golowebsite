@@ -30,7 +30,7 @@ export const metadata: Metadata = pageMetadata({
   image: heroOgImage("blog"),
 });
 
-/** Only published posts go in the feed — an unwritten card isn't a page. */
+/** Published posts only — the same list the page renders. */
 const blogJsonLd = {
   "@context": "https://schema.org",
   "@type": "Blog",
