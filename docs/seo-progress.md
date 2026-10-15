@@ -68,6 +68,19 @@ Owner decisions: publish both drafts now, on the stock backdrop heroes; dedicate
 - Search: pressing's title front-loads "Pressing in golf"; both have meta descriptions under 155 characters without "betting".
 - Internal links: pressing → Nassau guide; handicaps → Nassau and Skins guides; the Nassau post's presses section → pressing; the Bingo Bango Bongo post → handicaps.
 
+## Implemented October 15, 2026 (soleman23/golowebsite#95, SEO-09)
+
+- Leads also record `landingSource`: the landing URL's `utm_source`, lower-cased, kept only if it matches `^[a-z0-9._-]{1,64}$` (anything else is dropped, never rejected). AI answer engines often strip the referrer but tag links (ChatGPT search adds `utm_source=chatgpt.com`), so this separates them from direct visits. Same rules as the other attribution fields: memory only on the client, one value from the query string, no cookie or storage.
+
+**Deploy order:** applied to the website's Supabase database ("golowebsite") on October 15 before merge, and both columns confirmed present and nullable:
+
+```sql
+ALTER TABLE "PhoneLead" ADD COLUMN "landingSource" TEXT;
+ALTER TABLE "NewsletterLead" ADD COLUMN "landingSource" TEXT;
+```
+
+Counsel: the open privacy-policy question about landing page and referrer host on lead rows covers this field too.
+
 ## Remaining
 
 - Search Console: re-check index coverage, selected canonicals and field Core Web Vitals against the October 8 baseline. Due between October 22 and November 5 (two to four weeks after the deploy).
