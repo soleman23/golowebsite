@@ -41,6 +41,13 @@ export const siteConfig = {
   instagramUrl: "https://www.instagram.com/gologolfapp/",
 
   /**
+   * Profiles GoLo Golf controls, for the Organization's `sameAs`. Only live,
+   * official profiles — docs/entity.md lists the candidates and when each one
+   * joins (the App Store and Google Play listings on launch day).
+   */
+  sameAs: ["https://www.instagram.com/gologolfapp/"],
+
+  /**
    * Mailing address of record. /privacy §14 holds the authoritative copy —
    * that text is legal and stays verbatim, so this is a second rendering of
    * the same facts rather than its source. Change both together.
