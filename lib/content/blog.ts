@@ -775,14 +775,16 @@ export const featuredPost: Post | undefined =
   publishedPosts.find((p) => p.featured) ?? publishedPosts[0];
 
 /**
- * Topics that hold at least one published post. A topic with none gets no chip
- * and isn't a valid ?topic= value (FilterBoot falls back to "all"), so nobody
- * is offered a filter that empties the grid. Its CSS lines stay: the filter
- * check reads blogCategoryIds, and the chip returns when a post does.
+ * Topics holding at least one of `list`. The rail only offers topics with a
+ * card in the grid — and the featured post isn't in the grid — so a topic whose
+ * only post is featured gets no chip and isn't a valid ?topic= value either
+ * (FilterBoot falls back to "all"). Nobody is offered a filter that empties the
+ * grid. Its CSS lines stay: the filter check reads blogCategoryIds, and the
+ * chip returns when a post does.
  */
-const liveCategories = blogCategories.filter((c) =>
-  publishedPosts.some((p) => p.category === c.id),
-);
+function topicsOf(list: Post[]): BlogCategory[] {
+  return blogCategories.filter((c) => list.some((p) => p.category === c.id));
+}
 
 export type BlogFilter = { id: string; label: string; count: number };
 
@@ -795,7 +797,7 @@ export function blogFilters(excludeSlug?: string): BlogFilter[] {
   const inGrid = publishedPosts.filter((p) => p.slug !== excludeSlug);
   return [
     { id: "all", label: "All posts", count: inGrid.length },
-    ...liveCategories.map((c) => ({
+    ...topicsOf(inGrid).map((c) => ({
       id: c.id,
       label: c.label,
       count: inGrid.filter((p) => p.category === c.id).length,
@@ -803,13 +805,12 @@ export function blogFilters(excludeSlug?: string): BlogFilter[] {
   ];
 }
 
-/** Every topic id the URL accepts, "all" included. */
-export const blogTopicIds: string[] = [
-  "all",
-  ...liveCategories.map((c) => c.id),
-];
+/** Every topic id the URL accepts, "all" included: the chips /blog renders. */
+export const blogTopicIds: string[] = blogFilters(featuredPost?.slug).map(
+  (f) => f.id,
+);
 
-export const blogCountLine = `${publishedPosts.length} posts · ${liveCategories.length} topics`;
+export const blogCountLine = `${publishedPosts.length} posts · ${topicsOf(publishedPosts).length} topics`;
 
 /** Hero status pill. The page renders it only while siteConfig.appLive is false. */
 export const blogPrelaunchStatus = "The app isn't live yet — these are the build notes";
