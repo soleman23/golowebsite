@@ -9,10 +9,12 @@
  * The download row follows siteConfig.appLive the same way the hero's does:
  * store buttons once there's an app to install, the phone capture until then.
  * The fine print moves with it — "free to download" is not something to print
- * under a button that can't download anything.
+ * under a button that can't download anything. Both strings live in
+ * lib/content/nav.ts.
  */
 
 import { siteConfig } from "@/lib/siteConfig";
+import { finalCtaFine, finalCtaLead } from "@/lib/content";
 import { StoreButtons } from "@/components/ui/StoreButtons";
 import { TextMeLink } from "@/components/ui/TextMeLink";
 import { TrackedCta } from "@/components/ui/TrackedCta";
@@ -41,14 +43,8 @@ type FinalCTAProps = {
 export function FinalCTA({
   kicker,
   title = "Stop doing math in the parking lot.",
-  // Before launch there's nothing to download, so the default lead doesn't say
-  // "Download"; it follows appLive like the buttons below it.
-  lead = siteConfig.appLive
-    ? "Download GoLo, set up your games before the first tee, and let the app keep the books. Your buddies’ excuses end here."
-    : "Get the launch link, set up your games before the first tee, and let GoLo keep the books. Your buddies’ excuses end here.",
-  fine = siteConfig.appLive
-    ? "Free to download · No card to start · iPhone & Android"
-    : "In testing with real groups · Free while we’re in beta · iPhone & Android",
+  lead = finalCtaLead,
+  fine = finalCtaFine,
   buttons,
   page = "home",
   layout = "center",

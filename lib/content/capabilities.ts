@@ -17,7 +17,14 @@
  * - testing      built, being tried with real groups, not yet dependable
  * - planned      on the list, not built
  * - not-offered  not in the app and not on the list (including things cut)
+ *
+ * One entry follows siteConfig.appLive instead of a fixed status: the store
+ * apps are live exactly when the launch flag says the app is downloadable, so
+ * flipping that flag moves them on the roadmap, in the FAQ and in the
+ * SoftwareApplication schema together.
  */
+
+import { siteConfig } from "@/lib/siteConfig";
 
 export type CapabilityStatus = "live" | "testing" | "planned" | "not-offered";
 
@@ -139,7 +146,12 @@ export const capabilities = [
     id: "season-stats",
     label: "Season stats in the Locker",
     status: "live",
-    summary: "Season and all-time net, handicap trend and record by format.",
+    // Owner-confirmed on 2026-10-15: season and all-time net, a record per
+    // format, an overall head-to-head record, the round archive. No handicap
+    // trend, and head-to-head isn't broken down by format.
+    summary:
+      "Season and all-time net, a record in each format, and an overall head-to-head record against each regular.",
+    limits: ["No handicap trend.", "Head-to-head isn't split by format."],
     verified: OWNER_1015,
     roadmap: true,
   },
@@ -178,6 +190,16 @@ export const capabilities = [
       "A player can save a Venmo handle, shown to the group at settle-up so they know where to send it.",
     limits: ["GoLo doesn't send or receive the payment."],
     verified: OWNER_1015,
+  },
+  {
+    id: "course-data",
+    label: "Course database",
+    status: "live",
+    summary:
+      "Pars, ratings, slopes and stroke index load from the course and tees you pick.",
+    limits: ["No GPS yardages."],
+    // The /how-it-works round picked Tetherow's Tan tees through 0.6.2's UI.
+    verified: APP_CHECK_062,
   },
   {
     id: "web-app",
@@ -219,7 +241,8 @@ export const capabilities = [
   {
     id: "store-apps",
     label: "iPhone and Android apps",
-    status: "planned",
+    // Follows the launch flag; see the note at the top of the file.
+    status: siteConfig.appLive ? "live" : "planned",
     summary: "Native apps in the App Store and Google Play.",
     verified: OWNER_1015,
     roadmap: true,
