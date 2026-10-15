@@ -16,7 +16,20 @@ export const ORGANIZATION_ID = `${siteConfig.url}/#organization`;
 export const WEBSITE_ID = `${siteConfig.url}/#website`;
 export const APP_ID = `${siteConfig.url}/#app`;
 
+export const FOUNDER_ID = `${siteConfig.url}/about#founder`;
+
 export const organizationRef = { "@id": ORGANIZATION_ID } as const;
+
+/** The founder, as /about names him. Embedded wherever the company is. */
+export function founderNode() {
+  return {
+    "@type": "Person",
+    "@id": FOUNDER_ID,
+    name: siteConfig.founder.name,
+    jobTitle: siteConfig.founder.title,
+    worksFor: organizationRef,
+  };
+}
 export const websiteRef = { "@id": WEBSITE_ID } as const;
 
 /**
@@ -42,6 +55,8 @@ export function organizationNode() {
       addressRegion: siteConfig.address.region,
       addressCountry: siteConfig.address.country,
     },
+    foundingDate: siteConfig.foundingYear,
+    founder: founderNode(),
     sameAs: siteConfig.sameAs,
   };
 }

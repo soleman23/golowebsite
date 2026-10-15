@@ -1,4 +1,5 @@
 import {
+  aboutContent,
   capabilitiesWithStatus,
   findGameDetail,
   gameDetailSlugsWithContent,
@@ -55,6 +56,7 @@ export function GET() {
     `## ${llmsCopy.sections.pages}`,
     "",
     `- [Home](${absolute("/")})`,
+    `- [${aboutContent.pageName}](${absolute("/about")})`,
     ...navLinks.map((link) => `- [${link.label}](${absolute(link.href)})`),
     "",
     `## ${llmsCopy.sections.guides}`,

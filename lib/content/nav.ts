@@ -83,6 +83,7 @@ export const footerLinks: Record<FooterColumn, NavLink[]> = {
     { label: "Delete account", href: "/delete-account" },
   ],
   company: [
+    { label: "About", href: "/about" },
     { label: "Blog", href: "/blog" },
     { label: "Blog RSS feed", href: "/blog/feed.xml" },
     { label: "FAQ", href: "/faq" },

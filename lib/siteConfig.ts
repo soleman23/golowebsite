@@ -63,6 +63,10 @@ export const siteConfig = {
     postalCode: "97702",
     country: "United States",
   },
+  /** Owner-confirmed 2026-10-15 (soleman23/golowebsite#71). */
+  foundingYear: "2026",
+  founder: { name: "Devin Sole", title: "Founder & developer" },
+
   /** One-line form for chips and cards: "GoLo Golf LLC · Bend, Oregon". */
   addressShort: "GoLo Golf LLC · Bend, Oregon",
 
