@@ -810,6 +810,11 @@ export const postsByDate: Post[] = [...posts].sort((a, b) =>
 
 export const publishedPosts: Post[] = postsByDate.filter((p) => p.published);
 
+/** One description for a post's meta tag, share card, Article node and llms.txt. */
+export function postDescription(post: Post): string {
+  return post.metaDescription ?? post.dek ?? post.excerpt;
+}
+
 /** When a post last changed: its revision date, else its publication date. */
 export function postLastModified(post: Post): string {
   return post.updated ?? post.date;
