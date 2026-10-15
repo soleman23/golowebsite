@@ -4,9 +4,10 @@
  * page file. The index, the topic counts, the JSON-LD and the sitemap are all
  * generated from `posts`, so publishing is a one-line change.
  *
- * Publication is still controlled per record. A false record remains visible
- * as an unlinked coming-soon card while its direct route, metadata, related
- * rail, and sitemap entry stay unavailable.
+ * Publication is controlled per record. An unpublished post appears nowhere:
+ * no index card, no route, no metadata, no related rail, no sitemap entry. Its
+ * title and excerpt are claims the site would be making in public, so a draft
+ * stays out of sight until every one of them has been checked.
  */
 
 import type { TableData } from "@/components/ui/DataTable";
@@ -101,7 +102,7 @@ export type Post = {
     /** 1200x630 share card cut from the hero. Without one the hero is shared. */
     og?: string;
   };
-  /** false = hidden from the index's links, 404 on the detail route. */
+  /** false = absent from /blog and every rail, 404 on the detail route. */
   published: boolean;
   featured?: boolean;
   body: Block[];
@@ -799,7 +800,19 @@ export function blogCategoryLabel(id: string): string {
 
 /** The card that leads the index: the flagged post, or the newest one. */
 export const featuredPost: Post | undefined =
-  postsByDate.find((p) => p.featured) ?? postsByDate[0];
+  publishedPosts.find((p) => p.featured) ?? publishedPosts[0];
+
+/**
+ * Topics holding at least one of `list`. The rail only offers topics with a
+ * card in the grid — and the featured post isn't in the grid — so a topic whose
+ * only post is featured gets no chip and isn't a valid ?topic= value either
+ * (FilterBoot falls back to "all"). Nobody is offered a filter that empties the
+ * grid. Its CSS lines stay: the filter check reads blogCategoryIds, and the
+ * chip returns when a post does.
+ */
+function topicsOf(list: Post[]): BlogCategory[] {
+  return blogCategories.filter((c) => list.some((p) => p.category === c.id));
+}
 
 export type BlogFilter = { id: string; label: string; count: number };
 
@@ -809,10 +822,10 @@ export type BlogFilter = { id: string; label: string; count: number };
  * otherwise "Betting etiquette 2" sits over a grid holding one card.
  */
 export function blogFilters(excludeSlug?: string): BlogFilter[] {
-  const inGrid = postsByDate.filter((p) => p.slug !== excludeSlug);
+  const inGrid = publishedPosts.filter((p) => p.slug !== excludeSlug);
   return [
     { id: "all", label: "All posts", count: inGrid.length },
-    ...blogCategories.map((c) => ({
+    ...topicsOf(inGrid).map((c) => ({
       id: c.id,
       label: c.label,
       count: inGrid.filter((p) => p.category === c.id).length,
@@ -820,13 +833,12 @@ export function blogFilters(excludeSlug?: string): BlogFilter[] {
   ];
 }
 
-/** Every topic id the URL accepts, "all" included. */
-export const blogTopicIds: string[] = [
-  "all",
-  ...blogCategories.map((c) => c.id),
-];
+/** Every topic id the URL accepts, "all" included: the chips /blog renders. */
+export const blogTopicIds: string[] = blogFilters(featuredPost?.slug).map(
+  (f) => f.id,
+);
 
-export const blogCountLine = `${postsByDate.length} posts · ${blogCategories.length} topics`;
+export const blogCountLine = `${publishedPosts.length} posts · ${topicsOf(publishedPosts).length} topics`;
 
 /** Hero status pill. The page renders it only while siteConfig.appLive is false. */
 export const blogPrelaunchStatus = "The app isn't live yet — these are the build notes";
