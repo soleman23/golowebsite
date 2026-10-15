@@ -79,6 +79,13 @@ export type Post = {
   author?: string;
   /** ISO date — drives <time>, JSON-LD publishedTime and the sitemap. */
   date: string;
+  /**
+   * ISO date of the last substantive change — facts, rules, product claims or
+   * a worked example — never typos, photos or layout. Drives the visible
+   * "Updated" date, Article dateModified, article:modified_time and the
+   * sitemap's lastmod. Leave it off a post that hasn't changed since `date`.
+   */
+  updated?: string;
   readMins: number;
   /**
    * Undefined until the photo is actually in public/images/blog/. The card
@@ -264,6 +271,7 @@ export const posts: Post[] = [
     crumb: "Nassau",
     author: "From the GoLo team",
     date: "2026-07-28",
+    updated: "2026-10-11",
     readMins: 5,
     hero: { src: "/images/blog/nassau-hero.webp", alt: "A ball teed up on the first tee beside three wooden tees, with the fairway opening ahead", position: "90% 50%", mobile: "/images/blog/nassau-mobile.webp", og: "/images/blog/nassau-og.jpg" },
     published: true,
@@ -468,6 +476,7 @@ export const posts: Post[] = [
     excerpt:
       "Why a 12.4 becomes 14 strokes at one tee box and 11 at another — and how those strokes land hole by hole.",
     date: "2026-10-10",
+    updated: "2026-10-15",
     readMins: 5,
     dek: "Why a 12.4 becomes 14 strokes at one tee box and 11 at another, how those strokes land hole by hole, and which number belongs on the card.",
     crumb: "Handicaps",
@@ -516,6 +525,7 @@ export const posts: Post[] = [
     crumb: "Sandbagging",
     author: "From the GoLo team",
     date: "2026-10-10",
+    updated: "2026-10-15",
     readMins: 6,
     hero: { src: "/images/blog/sandbagging-hero.webp", alt: "A golf bag propped at the edge of a freshly raked greenside bunker, a rake lying in the sand", position: "89% 50%", mobile: "/images/blog/sandbagging-mobile.webp", og: "/images/blog/sandbagging-og.jpg" },
     published: true,
@@ -785,6 +795,11 @@ export const postsByDate: Post[] = [...posts].sort((a, b) =>
 );
 
 export const publishedPosts: Post[] = postsByDate.filter((p) => p.published);
+
+/** When a post last changed: its revision date, else its publication date. */
+export function postLastModified(post: Post): string {
+  return post.updated ?? post.date;
+}
 
 /**
  * Only a published post resolves. The detail route 404s on everything else,

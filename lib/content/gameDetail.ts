@@ -70,6 +70,12 @@ export type GameDetail = {
    * crawlers) which one to read for what.
    */
   deeperReading?: { href: string; label: string };
+  /**
+   * ISO date of the last substantive change to the guide's rules, examples or
+   * GoLo claims; never copy polish. Becomes the sitemap's lastmod. Guides
+   * without one have no lastmod rather than a made-up one.
+   */
+  updated?: string;
   traits: string[];
   howTitle: string;
   intro: string;
@@ -127,6 +133,7 @@ function withRoster(copy: GameDetailCopy): GameDetail {
 
 const nassau: GameDetailCopy = {
   slug: "nassau",
+  updated: "2026-10-11",
   seoTitle: "How to Play a Nassau in Golf: Rules & Presses",
   deeperReading: { href: "/blog/nassau", label: "Deeper reading: the $2 Nassau, presses and house rules →" },
   kicker: "MATCH PLAY · 3 BETS IN 1",
@@ -444,6 +451,7 @@ const skins: GameDetailCopy = {
 
 const bestScore: GameDetailCopy = {
   slug: "best-score",
+  updated: "2026-10-11",
   seoTitle: "Golf Stroke Purse (Best Score): Buy-Ins & Payout Rules",
   kicker: "POT · LOW NET TAKES IT",
   tagline: "Everybody puts the same money in the middle. Eighteen holes later the lowest net score picks it up. No per-hole math, no presses — one number decides it.",
@@ -719,6 +727,7 @@ const bingoBangoBongo: GameDetailCopy = {
 
 const closestToPin: GameDetailCopy = {
   slug: "closest-to-pin", kicker: "SIDE BET · PAR 3s",
+  updated: "2026-10-15",
   seoTitle: "Closest to the Pin & Greenies: Golf Side Game Rules",
   tagline: "One tee shot, one pot. Stick it tighter than everybody else on the par 3s and collect — as long as you can still make par from there.",
   metaDescription: "How closest to the pin and greenies work: who qualifies, par-to-collect, measuring, carryovers, and how the side pot pays out.",
@@ -809,6 +818,7 @@ const closestToPin: GameDetailCopy = {
 
 const longestDrive: GameDetailCopy = {
   slug: "longest-drive", kicker: "SIDE BET · ONE MARKED HOLE",
+  updated: "2026-10-15",
   seoTitle: "Longest Drive Golf Side Game: Rules & Payouts",
   tagline: "Pick a hole, swing out of your shoes, and the longest ball that finishes in the fairway takes the pot. Short grass or nothing.",
   metaDescription: "Set up a longest-drive side bet with a marked hole, fairway-only rule, measurement, carryovers, and a clean payout.",
@@ -899,6 +909,7 @@ const longestDrive: GameDetailCopy = {
 
 const birdies: GameDetailCopy = {
   slug: "birdies", kicker: "BOUNTY · ALL 18 HOLES",
+  updated: "2026-10-11",
   seoTitle: "Birdie Bounties in Golf: Side Game Rules & Payouts",
   tagline: "A standing price on every birdie. Card one and everybody who did not pays you. Eagles double it, and nobody has ever complained about paying.",
   metaDescription: "How a birdie bounty works: gross or net birdies, eagle multipliers, who pays whom, and a sensible cap so one hot round stays friendly.",
