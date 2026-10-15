@@ -15,7 +15,7 @@ import styles from "./KeepReadingPosts.module.css";
 /** The post's own picks first, then the same category, then the newest. */
 function relatedTo(post: Post): Post[] {
   const others = publishedPosts.filter((p) => p.slug !== post.slug);
-  const picked = (post.related ?? [])
+  const picked = [...new Set(post.related ?? [])]
     .map((slug) => others.find((p) => p.slug === slug))
     .filter((p): p is Post => Boolean(p));
   const rest = others.filter((p) => !picked.includes(p));
