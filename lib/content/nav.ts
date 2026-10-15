@@ -37,7 +37,8 @@ export const finalCtaLead = siteConfig.appLive
   : "Get the launch link, set up your games before the first tee, and let GoLo keep the books. Your buddies’ excuses end here.";
 
 export const finalCtaFine = siteConfig.appLive
-  ? "On iPhone & Android"
+  ? // claim-ok: only rendered once appLive is set, at launch
+    "On iPhone & Android"
   : "In testing with real groups · Free while we’re in beta";
 
 /**
