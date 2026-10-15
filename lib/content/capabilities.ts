@@ -146,7 +146,9 @@ export const capabilities = [
     id: "season-stats",
     label: "Season stats in the Locker",
     status: "live",
-    summary: "Season and all-time net, handicap trend and record by format.",
+    // Owner-confirmed as "season/all-time net, head-to-head records".
+    summary:
+      "Season and all-time net, and each player's head-to-head record against their regulars.",
     verified: OWNER_1015,
     roadmap: true,
   },
