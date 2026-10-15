@@ -25,13 +25,13 @@ Before launch, add "In private testing" wherever a status field exists. Don't de
 
 ## Profiles
 
-`sameAs` in `lib/siteConfig.ts` feeds the Organization's structured data. A profile goes into `sameAs` only when it's live, official and controlled by GoLo Golf.
+`sameAs` in `lib/siteConfig.ts` feeds the Organization's structured data: the company's own profiles, live and official, nothing else. The App Store and Google Play listings describe the app, not the company, so they belong to the home page's `SoftwareApplication` node instead. That node picks them up on its own from `NEXT_PUBLIC_APP_STORE_URL` and `NEXT_PUBLIC_GOOGLE_PLAY_URL` once the store apps are live.
 
 | Profile | URL | Status | In `sameAs` |
 |---|---|---|---|
 | Instagram | https://www.instagram.com/gologolfapp/ | Live | Yes |
-| Apple App Store | — | At launch | Add on launch day |
-| Google Play | — | At launch | Add on launch day |
+| Apple App Store | — | At launch | No: on the SoftwareApplication, from the env var |
+| Google Play | — | At launch | No: on the SoftwareApplication, from the env var |
 | Product Hunt | — | Optional, at launch | Only if a listing is made |
 | Other social accounts | — | Only if someone will actually post there | Only when live |
 
@@ -56,9 +56,8 @@ Use this file's description for every profile, link back to https://www.golo.gol
    - FAQ: "Is GoLo available yet?" answers yes, and the tablet answer names the apps.
    - /features: the "When does it launch?" quick answer disappears, the roadmap heading drops "We're in beta", and the "Free while we're in beta" pill and pricing note disappear.
    - Prelaunch status pills disappear from /blog and /faq.
-   - Home `SoftwareApplication`: `operatingSystem` gains "iOS, Android".
+   - Home `SoftwareApplication`: `operatingSystem` gains "iOS, Android", and `sameAs` lists both store listings.
 5. **What doesn't change on its own.** Do these in the launch PR:
-   - Add both store URLs to `sameAs` in `lib/siteConfig.ts`.
    - Pricing: once it's decided, update the FAQ pricing answers and add an `offers` block to the home `SoftwareApplication` with the real price. Don't add `aggregateRating` until real ratings exist.
    - Check the closing-band fine print in `lib/content/nav.ts` ("On iPhone & Android") against the pricing decision.
    - Update `web-app` in `capabilities.ts` if the browser version is retired.
