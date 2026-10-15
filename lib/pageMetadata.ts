@@ -14,7 +14,7 @@ import { defaultOgImage, siteConfig } from "@/lib/siteConfig";
 export const socialDefaults = {
   openGraph: {
     type: "website",
-    siteName: siteConfig.name,
+    siteName: siteConfig.brandName,
     images: [defaultOgImage],
   },
   twitter: { card: "summary_large_image" },

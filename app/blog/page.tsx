@@ -11,6 +11,12 @@ import {
 } from "@/lib/content";
 import { pageMetadata } from "@/lib/pageMetadata";
 import { siteConfig } from "@/lib/siteConfig";
+import {
+  organizationRef,
+  organizationSummary,
+  websiteNode,
+  websiteRef,
+} from "@/lib/schema";
 import { PageHero } from "@/components/ui/PageHero";
 import { StatusPill } from "@/components/ui/StatusPill";
 import { FilterBoot } from "@/components/ui/FilterBoot";
@@ -33,18 +39,27 @@ export const metadata: Metadata = pageMetadata({
 /** Only published posts go in the feed — an unwritten card isn't a page. */
 const blogJsonLd = {
   "@context": "https://schema.org",
-  "@type": "Blog",
-  name: `${siteConfig.name} Blog`,
-  url: `${siteConfig.url}/blog`,
-  mainEntity: {
-    "@type": "ItemList",
-    itemListElement: publishedPosts.map((post, i) => ({
-      "@type": "ListItem",
-      position: i + 1,
-      url: `${siteConfig.url}/blog/${post.slug}`,
-      name: post.title,
-    })),
-  },
+  "@graph": [
+    {
+      "@type": "Blog",
+      "@id": `${siteConfig.url}/blog#blog`,
+      name: `${siteConfig.brandName} Blog`,
+      url: `${siteConfig.url}/blog`,
+      publisher: organizationRef,
+      isPartOf: websiteRef,
+      mainEntity: {
+        "@type": "ItemList",
+        itemListElement: publishedPosts.map((post, i) => ({
+          "@type": "ListItem",
+          position: i + 1,
+          url: `${siteConfig.url}/blog/${post.slug}`,
+          name: post.title,
+        })),
+      },
+    },
+    organizationSummary(),
+    websiteNode(),
+  ],
 };
 
 /**

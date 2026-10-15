@@ -6,12 +6,14 @@ import {
   publishedPosts,
   type Post,
 } from "@/lib/content";
-import {
-  defaultOgImage,
-  organizationLogo,
-  siteConfig,
-} from "@/lib/siteConfig";
+import { defaultOgImage, siteConfig } from "@/lib/siteConfig";
 import { socialDefaults } from "@/lib/pageMetadata";
+import {
+  organizationRef,
+  organizationSummary,
+  websiteNode,
+  websiteRef,
+} from "@/lib/schema";
 import { PostHero } from "@/components/sections/blog/PostHero";
 import { ProseBlocks } from "@/components/ui/blog/ProseBlocks";
 import { ShareRow } from "@/components/sections/blog/ShareRow";
@@ -37,12 +39,17 @@ export function generateStaticParams() {
 
 export const dynamicParams = false;
 
+/** One description for the meta tag, the share card and the Article node. */
+function postDescription(post: Post): string {
+  return post.metaDescription ?? post.dek ?? post.excerpt;
+}
+
 export async function generateMetadata({ params }: Params): Promise<Metadata> {
   const { slug } = await params;
   const post = findPost(slug);
   if (!post) return {};
 
-  const description = post.metaDescription ?? post.dek ?? post.excerpt;
+  const description = postDescription(post);
 
   return {
     title: post.title,
@@ -55,7 +62,7 @@ export async function generateMetadata({ params }: Params): Promise<Metadata> {
       title: post.title,
       description,
       publishedTime: post.date,
-      authors: ["GoLo Golf"],
+      authors: [siteConfig.brandName],
       // The hero's 1200x630 cut when it has one, else the hero itself; with no
       // photo, the site-wide card. twitter:image inherits whichever this is.
       images: post.hero
@@ -69,22 +76,47 @@ export async function generateMetadata({ params }: Params): Promise<Metadata> {
   };
 }
 
+/**
+ * The article, its page, and the company and site it belongs to, as one graph.
+ * Publisher and author are the Organization by @id (lib/schema.ts) — the same
+ * GoLo Golf the home page describes — until posts carry a named author.
+ *
+ * Images: the 1200x630 share cut first, then the 21:9 hero, so a consumer that
+ * wants a conventional ratio finds one.
+ */
 function articleJsonLd(post: Post) {
   const url = `${siteConfig.url}/blog/${post.slug}`;
+  const images = post.hero
+    ? [post.hero.og, post.hero.src]
+        .filter((src): src is string => Boolean(src))
+        .map((src) => `${siteConfig.url}${src}`)
+    : [];
   return {
     "@context": "https://schema.org",
-    "@type": "Article",
-    headline: post.title,
-    description: post.dek ?? post.excerpt,
-    datePublished: post.date,
-    author: { "@type": "Organization", name: "GoLo Golf" },
-    publisher: {
-      "@type": "Organization",
-      name: siteConfig.name,
-      logo: organizationLogo,
-    },
-    ...(post.hero ? { image: `${siteConfig.url}${post.hero.src}` } : {}),
-    mainEntityOfPage: { "@type": "WebPage", "@id": url },
+    "@graph": [
+      {
+        "@type": "Article",
+        "@id": `${url}#article`,
+        headline: post.title,
+        description: postDescription(post),
+        datePublished: post.date,
+        author: organizationRef,
+        publisher: organizationRef,
+        ...(images.length ? { image: images } : {}),
+        inLanguage: "en",
+        isPartOf: websiteRef,
+        mainEntityOfPage: { "@id": url },
+      },
+      {
+        "@type": "WebPage",
+        "@id": url,
+        url,
+        name: post.title,
+        isPartOf: websiteRef,
+      },
+      organizationSummary(),
+      websiteNode(),
+    ],
   };
 }
 

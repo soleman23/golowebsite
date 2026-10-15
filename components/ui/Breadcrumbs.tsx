@@ -30,7 +30,10 @@ export function Breadcrumbs({ items, className }: BreadcrumbsProps) {
       "@type": "ListItem",
       position: i + 1,
       name: item.label,
-      ...(item.href ? { item: `${siteConfig.url}${item.href}` } : {}),
+      // "/" is the bare origin, the way the home page declares its canonical.
+      ...(item.href
+        ? { item: item.href === "/" ? siteConfig.url : `${siteConfig.url}${item.href}` }
+        : {}),
     })),
   };
 
