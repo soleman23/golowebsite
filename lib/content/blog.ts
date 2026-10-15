@@ -42,7 +42,13 @@ export type Block =
       title?: string;
       items: { title: string; body: string; eyebrow?: string }[];
     }
-  | { kind: "summary"; title: string; items: string[] };
+  | { kind: "summary"; title: string; items: string[] }
+  /**
+   * Governing-body pages behind a post's rule statements (handicap formula,
+   * allowances, maximum hole score). Only for rules, not for opinion or house
+   * customs, and only pages that say what the post says.
+   */
+  | { kind: "sources"; items: { label: string; href: string }[] };
 
 export const blogCategoryIds = [
   "rules",
@@ -467,7 +473,8 @@ export const posts: Post[] = [
     author: "From the GoLo team",
     hero: { src: "/images/blog/index-vs-course-handicap-hero.webp", alt: "A blue tee marker on the back tee box, with the white tee markers on the forward tee further down the same hole", position: "100% 50%", mobile: "/images/blog/index-vs-course-handicap-mobile.webp", og: "/images/blog/index-vs-course-handicap-og.jpg" },
     published: true,
-    body: article(
+    body: [
+      ...article(
       "Somebody in your group says “I’m a twelve.” That is a handicap index, and it is not the number he plays off today. Move him back one set of tees and it changes. Take him to a harder course and it changes again. Here is the difference, the formula, and which number belongs on the card when there is money on the hole.",
       [
         { id: "index-vs-course", title: "The index is the number you own. The course handicap is the number you play.", paragraphs: ["Your handicap index measures your demonstrated ability on a course of average difficulty. It travels with you and it has a decimal, because it is a calculation, not a scorecard entry. Nobody gets strokes equal to their index.", "Your course handicap converts that ability into strokes for the exact tees you are playing, on the exact course you are playing. It is a whole number, it changes when the tees change, and it is the one that decides who gives what."], blocks: [{ kind: "atAGlance", title: "THE THREE NUMBERS", items: [{ label: "HANDICAP INDEX", value: "Portable, one decimal, e.g. 12.4" }, { label: "COURSE HANDICAP", value: "Whole number, per tee set" }, { label: "PLAYING HANDICAP", value: "Course handicap × format allowance" }, { label: "STROKE INDEX", value: "Which holes the strokes land on" }] }] },
@@ -483,9 +490,21 @@ export const posts: Post[] = [
           { title: "Formats have allowances", body: "Handicap allowances exist because some formats amplify a high handicap. Four-ball match play is commonly played at 90%; individual match play at 100%. Casual groups can skip them if everybody knows that is the choice." },
           { title: "Cap the hole, not the round", body: "Net double bogey is the standard maximum for posting purposes, and it works as a house rule. It keeps one lost ball from distorting every bet on the card." },
         ] }] },
-        { id: "why-index-moves", title: "Why the index moves", paragraphs: ["Your index is the average of the best 8 score differentials out of your most recent 20 rounds, and it is revised daily as new scores come in. That is why it drifts down after a good week and why one bad round rarely moves it: a score only counts if it lands among your best eight of twenty, so a single 92 usually changes nothing.", "If nobody in your group carries an official index, agree on informal numbers and write them down. Consistency matters more than accuracy: a made-up 15 that everybody agrees on settles more bets than a real 12.4 that only one person remembers."], blocks: [{ kind: "summary", title: "THE SHORT VERSION", items: ["Index is portable and has a decimal. Course handicap is per tee set and is a whole number.", "Course handicap = index × (slope ÷ 113) + (course rating − par).", "Strokes land on specific holes by stroke index, not at the end of the round.", "In a match, the low handicap plays off scratch and everybody else gets the difference."] }] },
+        { id: "why-index-moves", title: "Why the index moves", paragraphs: ["Your index is the average of the best 8 score differentials out of your most recent 20 rounds, and it updates the day after each new score is posted. That is why it drifts down after a good week and why one bad round rarely moves it: a score only counts if it lands among your best eight of twenty, so a single 92 usually changes nothing.", "If nobody in your group carries an official index, agree on informal numbers and write them down. Consistency matters more than accuracy: a made-up 15 that everybody agrees on settles more bets than a real 12.4 that only one person remembers."], blocks: [{ kind: "summary", title: "THE SHORT VERSION", items: ["Index is portable and has a decimal. Course handicap is per tee set and is a whole number.", "Course handicap = index × (slope ÷ 113) + (course rating − par).", "Strokes land on specific holes by stroke index, not at the end of the round.", "In a match, the low handicap plays off scratch and everybody else gets the difference."] }] },
       ],
-    ),
+      ),
+      {
+        kind: "sources",
+        items: [
+          { label: "USGA: how to calculate a Course Handicap and Playing Handicap", href: "https://www.usga.org/content/usga/home-page/handicapping/world-handicap-system/world-handicap-system-usga-golf-faqs/faqs---calculate-course-handicap-and-playing-handicap.html" },
+          { label: "Rules of Handicapping, Appendix G: Course Rating and Slope Rating", href: "https://www.usga.org/handicapping/roh/Content/rules/Appendix%20G%20Golf%20Course%20CourseRatingSlopeRating.htm" },
+          { label: "USGA: how a Handicap Index is calculated from the best 8 of 20", href: "https://www.usga.org/content/usga/home-page/handicapping/world-handicap-system/world-handicap-system-usga-golf-faqs/faqs---my-handicap-did-not-change.html" },
+          { label: "USGA: the World Handicap System, including daily revisions", href: "https://www.usga.org/content/usga/home-page/handicapping/world-handicap-system/World-Handicap-System-5-Things-You-Need-to-Know.html" },
+          { label: "Rules of Handicapping, Appendix C: Handicap Allowances", href: "https://www.usga.org/handicapping/roh/Content/rules/Appendix%20C%20Handicap%20Allowances.htm" },
+          { label: "Rules of Handicapping, Rule 3.1b: net double bogey", href: "https://www.usga.org/handicapping/roh/Content/rules/3%201b%20After%20a%20Handicap%20Index%20Has%20Been%20Established.htm" },
+        ],
+      },
+    ],
   },
   {
     slug: "sandbagging",
@@ -499,7 +518,8 @@ export const posts: Post[] = [
     readMins: 6,
     hero: { src: "/images/blog/sandbagging-hero.webp", alt: "A golf bag propped at the edge of a freshly raked greenside bunker, a rake lying in the sand", position: "89% 50%", mobile: "/images/blog/sandbagging-mobile.webp", og: "/images/blog/sandbagging-og.jpg" },
     published: true,
-    body: article(
+    body: [
+      ...article(
       "Somebody in your group wins more than he should. He has an 18 that never moves, he never seems to have a bad Saturday, and the money has been going one direction since March. You can accuse him, which ends badly whether you are right or wrong. Or you can make the numbers visible and let the group fix itself.",
       [
         { id: "innocent-first", title: "Rule out the innocent explanations first", paragraphs: ["Most players who look like sandbaggers are not. Before you start counting anybody’s scorecards, count these out."], blocks: [
@@ -544,7 +564,7 @@ export const posts: Post[] = [
             { title: "Everybody posts every round", body: "Announce it as a group habit, not a policy aimed at anyone. If all four of you enter every score, the indexes converge on reality within a month and the problem quietly disappears." },
             { title: "Cap the strokes you give", body: "Play an allowance — 90% in four-ball, or simply cap the maximum strokes anybody can receive at, say, eight. A capped bet limits what a bad number can cost you without ever naming it." },
             { title: "Rotate formats toward the stroke-free ones", body: "Bingo Bango Bongo, gross skins, and match play with a hard cap all reduce the value of an inflated index. Keep them in the rotation and nobody has to explain why." },
-            { title: "Use the lowest index of the last twelve months", body: "This is how club events handle it. If a player was a 12 in September, he plays as a 12 in April. It is the single most effective rule you can adopt, and it sounds like housekeeping rather than an accusation." },
+            { title: "Use the lowest index of the last twelve months", body: "If a player was a 12 in September, he plays as a 12 in April. It is the single most effective rule you can adopt, and it sounds like housekeeping rather than an accusation." },
           ] },
           { kind: "callout", title: "BEFORE YOU SAY ANYTHING", html: "An accusation costs more than the money. If you are wrong you have insulted a friend over $20; if you are right, you have made the next twenty rounds awkward for four people. Change the structure first and see whether the results change with it. They usually do." },
           { kind: "image", src: "/images/blog/sandbagging-mid-2.webp", alt: "Four golfers walking up a misty fairway together at sunrise, carrying their bags", caption: "The group that posts every round together never has this conversation.", position: "50% 55%" },
@@ -553,7 +573,15 @@ export const posts: Post[] = [
           { kind: "summary", title: "THE SHORT VERSION", items: ["An honest handicap plays to its number about one round in five. Track that.", "Rule out improvement, laziness, slope, and home-course knowledge first.", "Fix it structurally: post every round, cap the strokes, rotate stroke-free formats, and play off the lowest index of the last twelve months.", "If you must raise it, do it privately, about the bet, and offer a number instead of a verdict."] },
         ] },
       ],
-    ),
+      ),
+      {
+        kind: "sources",
+        items: [
+          { label: "USGA: how a Handicap Index is calculated from the best 8 of 20", href: "https://www.usga.org/content/usga/home-page/handicapping/world-handicap-system/world-handicap-system-usga-golf-faqs/faqs---my-handicap-did-not-change.html" },
+          { label: "USGA: Course Handicap, and how often a player plays to it", href: "https://www.usga.org/content/usga/home-page/handicapping/world-handicap-system/topics/course-handicap.html" },
+        ],
+      },
+    ],
   },
   {
     slug: "rangefinder",
