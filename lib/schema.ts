@@ -42,7 +42,7 @@ export function organizationNode() {
       addressRegion: siteConfig.address.region,
       addressCountry: siteConfig.address.country,
     },
-    sameAs: [siteConfig.instagramUrl],
+    sameAs: siteConfig.sameAs,
   };
 }
 

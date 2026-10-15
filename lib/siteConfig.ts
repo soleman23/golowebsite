@@ -18,6 +18,8 @@ function heroBackdrop(value: string | undefined): HeroBackdrop {
     : "sunset";
 }
 
+const INSTAGRAM_URL = "https://www.instagram.com/gologolfapp/";
+
 export const siteConfig = {
   name: "GoLo",
   /** The full brand, for structured data and anywhere "GoLo" alone is ambiguous. */
@@ -38,7 +40,15 @@ export const siteConfig = {
   supportEmail: "info@golo.golf",
 
   instagramHandle: "@gologolfapp",
-  instagramUrl: "https://www.instagram.com/gologolfapp/",
+  instagramUrl: INSTAGRAM_URL,
+
+  /**
+   * The company's own profiles, for the Organization's `sameAs`. Only live,
+   * official profiles — docs/entity.md lists the candidates. Store listings
+   * aren't company profiles; they describe the app, and its structured data
+   * picks them up from the store URLs below at launch.
+   */
+  sameAs: [INSTAGRAM_URL],
 
   /**
    * Mailing address of record. /privacy §14 holds the authoritative copy —

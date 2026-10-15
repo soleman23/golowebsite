@@ -56,6 +56,18 @@ const platforms = [
   capability("store-apps").status === "live" ? "iOS, Android" : null,
 ].filter(Boolean);
 
+/**
+ * The store listings are the app's other identities, so they go on the
+ * SoftwareApplication, not the Organization: once the store apps are live and
+ * their URLs are set (they fall back to "#get"), not before.
+ */
+const storeListings =
+  capability("store-apps").status === "live"
+    ? [siteConfig.appStoreUrl, siteConfig.googlePlayUrl].filter((url) =>
+        url.startsWith("https://"),
+      )
+    : [];
+
 const homeJsonLd = {
   "@context": "https://schema.org",
   "@graph": [
@@ -70,6 +82,7 @@ const homeJsonLd = {
       ...(platforms.length ? { operatingSystem: platforms.join(", ") } : {}),
       url: siteConfig.url,
       publisher: organizationRef,
+      ...(storeListings.length ? { sameAs: storeListings } : {}),
     },
   ],
 };
