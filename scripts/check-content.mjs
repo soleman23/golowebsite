@@ -5,10 +5,12 @@
  *
  * 1. Claims. lib/content/capabilities.ts records what GoLo does. For every
  *    capability that isn't live, its `claimPhrases` may not appear in site
- *    copy as something GoLo does. A phrase passes only when the copy denies
- *    it: a negation in front of it in the same clause ("no GPS yardages",
- *    "doesn't do today: automatic presses, …"), or a status in the same
- *    sentence ("on the list, not built", "in testing"). In blog posts and game
+ *    copy as something GoLo does. A phrase passes only when its own clause
+ *    denies it: a negation in front of it ("no GPS yardages", "doesn't do
+ *    today: automatic presses, …"; "and", "but", "so" and ";" end its reach)
+ *    or a status in the same clause ("iPhone and Android apps are on the list,
+ *    not built"; only ";", dashes and "but" end that clause, since "and" so
+ *    often joins the very things being denied). In blog posts and game
  *    guides only copy about GoLo counts — a string that mentions GoLo or "the
  *    app" — so explaining an auto-press as golf is fine and saying GoLo does
  *    one is not. `claim-ok: <reason>` on a line (or the line above) and
@@ -20,8 +22,9 @@
  *    they're about GoLo: "Rangefinder or GPS watch?" names gear, not a GoLo
  *    feature.
  * 3. Internal links. Every "/…" href in content and components, legal copy
- *    included, must be a page or file the site serves: a static route, a
- *    route handler, a published post or a game guide.
+ *    included, in any kind of string literal, must be a page or file the site
+ *    serves: a static route, a route handler, a published post, a game guide
+ *    or a file in public/.
  *
  * Comments are ignored throughout. Exit 1 with one line per problem.
  */
@@ -170,22 +173,41 @@ function sentenceAt(text, index, length) {
 
 const ABOUT_GOLO = /\bGoLo\b|\bthe app\b/i;
 
-/** A status anywhere in the sentence says the capability isn't working. */
+/** A status anywhere in the phrase's clause says it isn't working. */
 const STATUS =
   /\b(not built|isn['’]t built|aren['’]t built|on the list|not in the app|isn['’]t in the app|aren['’]t in the app|in testing|not yet|cut|(does not|doesn['’]t) track)\b/i;
 
 /** A negation counts only before the phrase, in the same clause. */
 const NEGATION =
   /\b(no|not|never|without|nor|doesn['’]t|does not|don['’]t|do not|isn['’]t|aren['’]t|won['’]t|can['’]t|cannot)\b/gi;
-const CLAUSE_BREAK = /\b(and|but|so|while|though|although)\b|[;—–]/i;
+/** Where a negation's reach ends. */
+const NEGATION_BREAK = /\b(?:and|but|so|while|though|although)\b|[;—–]/gi;
+/** Where a status's reach ends. */
+const STATUS_BREAK = /\bbut\b|[;—–]/gi;
 
-function denied(sentence, offset) {
-  if (STATUS.test(sentence)) return true;
-  const before = sentence.slice(0, offset);
-  const last = [...before.matchAll(NEGATION)].at(-1);
-  if (!last) return false;
-  // Something like "no setup required and GPS yardages" starts a new clause.
-  return !CLAUSE_BREAK.test(before.slice(last.index + last[0].length));
+/** The stretch of `sentence` around [offset, offset + length) between breaks. */
+function clauseAt(sentence, offset, length, breaks) {
+  let start = 0;
+  let end = sentence.length;
+  for (const m of sentence.matchAll(breaks)) {
+    if (m.index + m[0].length <= offset) start = m.index + m[0].length;
+    else if (m.index >= offset + length) {
+      end = m.index;
+      break;
+    }
+  }
+  return { text: sentence.slice(start, end), offset: offset - start };
+}
+
+function denied(sentence, offset, length) {
+  // "GoLo works offline; trip mode is not built" denies only trip mode, and
+  // "no setup required and GPS yardages" doesn't deny the yardages.
+  if (STATUS.test(clauseAt(sentence, offset, length, STATUS_BREAK).text)) {
+    return true;
+  }
+  const clause = clauseAt(sentence, offset, length, NEGATION_BREAK);
+  NEGATION.lastIndex = 0;
+  return NEGATION.test(clause.text.slice(0, clause.offset));
 }
 
 const problems = [];
@@ -230,7 +252,7 @@ for (const file of files) {
           m.index,
           m[0].length,
         );
-        if (denied(sentence, offset)) continue;
+        if (denied(sentence, offset, m[0].length)) continue;
         report(
           file,
           line,
@@ -329,20 +351,32 @@ const guideSlugs = [
   ...read("lib/content/gameDetail.ts").matchAll(/^ {2}slug: "([a-z0-9-]+)",/gm),
 ].map((m) => m[1]);
 
+/** Everything in public/ is served at its path. */
+const publicFiles = walk("public", [""]).map(
+  (path) => `/${relative("public", path)}`,
+);
+
 const pages = new Set([
   ...staticRoutes(),
+  ...publicFiles,
   ...publishedPosts.map((p) => `/blog/${p.slug}`),
   ...guideSlugs.map((slug) => `/games/${slug}`),
 ]);
 
-const HREF = /href(?:=\\?"|:\s*"|=\{")(\/[^"\\]*)/g;
+/**
+ * href="/…", href={"/…"}, href: '/…', href={`/…`}, and the \"-escaped form
+ * inside HTML strings. A template with ${…} in the path is dynamic; skipped.
+ */
+const HREF = /href\s*(?:=|:)\s*\{?\s*\\?(["'`])(\/[^"'`\\]*)/g;
 
 for (const file of files) {
   const text = stripComments(read(file), file);
   for (const m of text.matchAll(HREF)) {
-    const target = m[1].split(/[?#]/)[0].replace(/\/$/, "") || "/";
+    const href = m[2];
+    if (href.includes("${")) continue;
+    const target = href.split(/[?#]/)[0].replace(/\/$/, "") || "/";
     if (!pages.has(target)) {
-      report(file, lineAt(text, m.index), `link to ${m[1]}, which isn't a page`);
+      report(file, lineAt(text, m.index), `link to ${href}, which isn't a page`);
     }
   }
 }
