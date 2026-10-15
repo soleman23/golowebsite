@@ -166,22 +166,29 @@ export const faqCategories: FaqCategory[] = [
     id: "trips",
     short: "Trips",
     label: "Trips & multi-day rounds",
-    blurb: "Four days, five guys, one settle-up.",
+    blurb: "What works across several rounds today, and what isn’t built yet.",
+    // A tally across rounds is "Multi-day trip tallies" on the /features
+    // roadmap: not built. Each round settles on its own (GoLo 0.6.2, checked in
+    // soleman23/golowebsite#27). Don't describe a trip mode until it ships.
     items: [
       {
         id: "q-trips",
         q: "What about multi-day trips?",
-        a: "Trip mode keeps a running tally across every round so a four-day Scottsdale or Myrtle Beach trip settles once, on the 18th green of the last day — not in a confusing pile of daily Venmos.",
+        a: "Today each round settles on its own. A running tally across a trip’s rounds is on the list, not built. Until it is, settle each round in the app, or write down each player’s number after every round and net the totals once on the last day — the Scottsdale trip guide shows how.",
+        link: {
+          label: "THE FOUR-DAY TRIP STRUCTURE →",
+          href: "/blog/scottsdale-trip-structure",
+        },
       },
       {
         id: "q-roster",
         q: "Can the group change from day to day?",
-        a: "Yes. Each round has its own roster, and the trip tally follows each player across the days they actually played. Guys who join for one round only carry that round’s number.",
+        a: "Yes. Each round has its own roster, so someone who only plays Thursday is only in Thursday’s round and Thursday’s settle-up.",
       },
       {
         id: "q-games-per-day",
         q: "Can we run different games each day?",
-        a: "Every round is set up on its own, so Tuesday can be a Nassau and Wednesday can be Wolf and skins. The trip total nets all of it.",
+        a: "Yes. Every round is set up on its own, so Tuesday can be a Nassau and Wednesday can be skins and a Best Score purse. Each round nets its own games; adding the days together is the trip tally that isn’t built yet.",
       },
     ],
   },
