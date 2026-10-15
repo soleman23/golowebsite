@@ -95,7 +95,7 @@ export const faqCategories: FaqCategory[] = [
       {
         id: "q-pickup",
         q: "What if somebody picks up and never holes out?",
-        a: "Record their maximum for the hole — most groups use double par or the ESC cap. Net scoring stays honest and the hole still counts in the games that need a number.",
+        a: "Record their maximum for the hole — whatever the group agreed, usually net double bogey (the handicap system’s cap) or double par. Net scoring stays honest and the hole still counts in the games that need a number.",
       },
     ],
   },
