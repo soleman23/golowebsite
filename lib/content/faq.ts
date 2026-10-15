@@ -55,7 +55,7 @@ export const faqCategories: FaqCategory[] = [
       {
         id: "q-everyone",
         q: "Do all four of us need the app?",
-        a: "No. One person runs the whole round and the rest just play. Share the live link or the final summary to the group chat so everyone can follow along and check the receipts.",
+        a: "No. One person keeps the card and the rest just play. Anyone signed in can join the round and follow it live on their own phone, and the share card sends the final scores and the money to the group chat.",
       },
       {
         id: "q-start-round",
@@ -274,7 +274,7 @@ export const faqCategories: FaqCategory[] = [
       {
         id: "q-devices",
         q: "Can I use it on a tablet or a cart screen?",
-        a: "It runs in a browser, so any decent screen works. The scoring layout is built phone-first, thumb-first — that’s the one we design against.",
+        a: "Today GoLo runs in a browser, so any decent screen works; iPhone and Android apps are on the list, not built. The scoring layout is built phone-first, thumb-first — that’s the one we design against.",
       },
     ],
   },

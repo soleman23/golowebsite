@@ -180,6 +180,16 @@ export const capabilities = [
     verified: OWNER_1015,
   },
   {
+    id: "course-data",
+    label: "Course database",
+    status: "live",
+    summary:
+      "Pars, ratings, slopes and stroke index load from the course and tees you pick.",
+    limits: ["No GPS yardages."],
+    // The /how-it-works round picked Tetherow's Tan tees through 0.6.2's UI.
+    verified: APP_CHECK_062,
+  },
+  {
     id: "web-app",
     label: "Runs in a browser",
     status: "live",

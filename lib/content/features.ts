@@ -211,7 +211,7 @@ export const featureBlocks: FeatureBlock[] = [
   {
     id: "history-locker",
     kicker: "HISTORY, STATS & YOUR LOCKER",
-    status: { variant: "planned", label: "HISTORY LIVE · STATS EXPANDING" },
+    status: TODAY,
     title: "A season-long record of who actually wins.",
     lead: 'Every round is saved with its scores, its games and its money, so the guy who claims he "always" takes the back nine can be checked. Your Locker keeps the running net, your handicap trend, and your record in each format.',
     checklist: [
@@ -244,12 +244,12 @@ export type AlsoCard = {
 export const alsoInThere: AlsoCard[] = [
   {
     title: "Course database",
-    status: { variant: "planned", label: "GPS YARDAGES NEXT" },
-    body: "Pars, ratings, slopes and stroke index for the courses you actually play — so the strokes land right without anyone typing in a scorecard. Live GPS yardages are the next thing we're building.",
+    status: TODAY,
+    body: "Pars, ratings, slopes and stroke index for the courses you actually play — so the strokes land right without anyone typing in a scorecard. No GPS yardages: your watch or laser already does that.",
   },
   {
     title: "Receipts for the group chat",
-    status: { variant: "testing", label: "IN TESTING" },
+    status: TODAY,
     body: "One card with the final scores, the money and who paid whom — dropped straight into the text thread where the trash talk already lives. Ends the Tuesday re-litigation.",
   },
 ];
