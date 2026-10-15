@@ -1,23 +1,29 @@
 #!/usr/bin/env node
 /**
- * Content checks that copy review keeps missing. `npm run lint` runs this, so
- * CI runs it on every PR.
+ * Content checks that copy review keeps missing. `npm run lint` runs this, and
+ * CI runs it as its own step.
  *
  * 1. Claims. lib/content/capabilities.ts records what GoLo does. For every
  *    capability that isn't live, its `claimPhrases` may not appear in site
- *    copy unless the same sentence says it isn't there ("not built", "on the
- *    list", "doesn't", "no", …). In the golf-education files (blog posts, game
- *    guides) only sentences about GoLo count, so explaining an auto-press as
- *    golf is fine and saying GoLo does one is not. A line holding a
- *    `claim-ok: <reason>` comment, or the line under one, is skipped — for
- *    copy gated behind siteConfig.appLive and the like — and a file whose
- *    header says `claim-ok-file: <reason>` is skipped whole.
- * 2. Metadata. Titles, meta descriptions and the site description may not
- *    name a non-live capability at all, qualified or not.
- * 3. Internal links. Every "/…" href in content and components must be a page
- *    the site builds: a static route, a published post or a game guide.
+ *    copy as something GoLo does. A phrase passes only when the copy denies
+ *    it: a negation in front of it in the same clause ("no GPS yardages",
+ *    "doesn't do today: automatic presses, …"), or a status in the same
+ *    sentence ("on the list, not built", "in testing"). In blog posts and game
+ *    guides only copy about GoLo counts — a string that mentions GoLo or "the
+ *    app" — so explaining an auto-press as golf is fine and saying GoLo does
+ *    one is not. `claim-ok: <reason>` on a line (or the line above) and
+ *    `claim-ok-file: <reason>` in a file's header exempt copy gated behind
+ *    siteConfig.appLive and the like.
+ * 2. Metadata. Search titles, meta descriptions and the site description may
+ *    not name a non-live capability at all, denied or not — a snippet has no
+ *    room for the denial. Golf-education titles are held to that only when
+ *    they're about GoLo: "Rangefinder or GPS watch?" names gear, not a GoLo
+ *    feature.
+ * 3. Internal links. Every "/…" href in content and components, legal copy
+ *    included, must be a page or file the site serves: a static route, a
+ *    route handler, a published post or a game guide.
  *
- * Exit 1 with one line per problem; exit 0 silently apart from a summary.
+ * Comments are ignored throughout. Exit 1 with one line per problem.
  */
 
 import { readFileSync, readdirSync, statSync, existsSync } from "node:fs";
@@ -74,56 +80,117 @@ function walk(dir, ext) {
   });
 }
 
-/** Not copy: the registry itself, legal text, and image alt text. */
-const SKIP = new Set([
+/** Every file with copy or links in it. */
+const files = [
+  ...walk("lib/content", [".ts"]),
+  ...walk("components", [".tsx"]),
+  ...walk("app", [".tsx", ".ts"]),
+];
+
+/** Not product copy: the registry itself, legal text, and image alt text. */
+const NOT_CLAIMS = new Set([
   "lib/content/capabilities.ts",
   "lib/content/legal.ts",
   "lib/content/heroPhotos.ts",
 ]);
 
-/** Golf education: only sentences about GoLo make claims. */
+/** Golf education: only copy about GoLo makes claims. */
 const EDUCATION = new Set([
   "lib/content/blog.ts",
   "lib/content/gameDetail.ts",
   "lib/content/games.ts",
 ]);
 
-const files = [
-  ...walk("lib/content", [".ts"]),
-  ...walk("components", [".tsx"]),
-  ...walk("app", [".tsx"]),
-].filter((f) => !SKIP.has(f));
-
-/** Comments blanked out, line numbers kept. */
-function stripComments(source) {
-  const blank = (m) => m.replace(/[^\n]/g, " ");
-  return source
-    .replace(/\/\*[\s\S]*?\*\//g, blank)
-    .replace(/^[ \t]*\/\/.*$/gm, blank)
-    .replace(/\{\/\*[\s\S]*?\*\/\}/g, blank);
+/**
+ * Comments blanked out, line numbers kept. A small scanner rather than a
+ * regex, so a trailing `// note` goes but the "//" inside a URL string stays.
+ * In .tsx files an apostrophe in JSX text ("don't") isn't a string quote, so
+ * only " and ` open strings there; the project writes strings with "" anyway.
+ */
+function stripComments(source, file) {
+  const quotes = file.endsWith(".tsx") ? "\"`" : "\"'`";
+  let out = "";
+  let i = 0;
+  let quote = null;
+  while (i < source.length) {
+    const c = source[i];
+    const next = source[i + 1];
+    if (quote) {
+      out += c;
+      if (c === "\\") {
+        out += next ?? "";
+        i += 2;
+        continue;
+      }
+      if (c === quote || (c === "\n" && quote !== "`")) quote = null;
+      i += 1;
+    } else if (c === "/" && next === "/") {
+      while (i < source.length && source[i] !== "\n") {
+        out += " ";
+        i += 1;
+      }
+    } else if (c === "/" && next === "*") {
+      const end = source.indexOf("*/", i + 2);
+      const stop = end === -1 ? source.length : end + 2;
+      out += source.slice(i, stop).replace(/[^\n]/g, " ");
+      i = stop;
+    } else {
+      if (quotes.includes(c)) quote = c;
+      out += c;
+      i += 1;
+    }
+  }
+  return out;
 }
 
 const lineAt = (text, index) => text.slice(0, index).split("\n").length;
 
-/** The sentence around `index`: bounded by . ! ? quotes, backticks or newlines. */
+/** Text between the nearest unescaped double quotes around `index`. */
+function stringAt(text, index) {
+  let start = index;
+  while (start > 0 && !(text[start - 1] === '"' && text[start - 2] !== "\\")) {
+    start -= 1;
+  }
+  let end = index;
+  while (end < text.length && !(text[end] === '"' && text[end - 1] !== "\\")) {
+    end += 1;
+  }
+  return text.slice(start, end);
+}
+
+/** The sentence around a match: bounded by . ! ? quotes or newlines. */
 function sentenceAt(text, index, length) {
   const stops = /[.!?"`\n]/;
   let start = index;
   while (start > 0 && !stops.test(text[start - 1])) start -= 1;
   let end = index + length;
   while (end < text.length && !stops.test(text[end])) end += 1;
-  return text.slice(start, end);
+  return { text: text.slice(start, end), offset: index - start };
 }
 
-const ABOUT_GOLO = /\bGoLo\b|\bthe app\b|\bin the app\b/i;
-const QUALIFIED =
-  /\b(not built|isn['’]t built|aren['’]t built|on the list|not in the app|isn['’]t in the app|not yet|yet|doesn['’]t|does not|don['’]t|do not|isn['’]t|aren['’]t|won['’]t|not|no|never|planned|cut|testing|building|without)\b/i;
+const ABOUT_GOLO = /\bGoLo\b|\bthe app\b/i;
+
+/** A status anywhere in the sentence says the capability isn't working. */
+const STATUS =
+  /\b(not built|isn['’]t built|aren['’]t built|on the list|not in the app|isn['’]t in the app|aren['’]t in the app|in testing|not yet|cut|(does not|doesn['’]t) track)\b/i;
+
+/** A negation counts only before the phrase, in the same clause. */
+const NEGATION =
+  /\b(no|not|never|without|nor|doesn['’]t|does not|don['’]t|do not|isn['’]t|aren['’]t|won['’]t|can['’]t|cannot)\b/gi;
+const CLAUSE_BREAK = /\b(and|but|so|while|though|although)\b|[;—–]/i;
+
+function denied(sentence, offset) {
+  if (STATUS.test(sentence)) return true;
+  const before = sentence.slice(0, offset);
+  const last = [...before.matchAll(NEGATION)].at(-1);
+  if (!last) return false;
+  // Something like "no setup required and GPS yardages" starts a new clause.
+  return !CLAUSE_BREAK.test(before.slice(last.index + last[0].length));
+}
 
 const problems = [];
 const report = (file, line, message) =>
   problems.push(`${file}:${line}  ${message}`);
-
-/* ----------------------------------------------------------------- claims */
 
 const notLive = capabilities.filter(
   (c) => c.status !== "live" && c.claimPhrases?.length,
@@ -137,12 +204,15 @@ function phraseRegex(phrase) {
   return new RegExp(`${lead}${escaped}${tail}`, "gi");
 }
 
+/* ----------------------------------------------------------------- claims */
+
 for (const file of files) {
+  if (NOT_CLAIMS.has(file)) continue;
   const raw = read(file);
-  const text = stripComments(raw);
+  if (raw.includes("claim-ok-file:")) continue;
+  const text = stripComments(raw, file);
   const rawLines = raw.split("\n");
   const education = EDUCATION.has(file);
-  if (raw.includes("claim-ok-file:")) continue;
 
   for (const cap of notLive) {
     for (const phrase of cap.claimPhrases) {
@@ -154,9 +224,13 @@ for (const file of files) {
         ) {
           continue;
         }
-        const sentence = sentenceAt(text, m.index, m[0].length);
-        if (education && !ABOUT_GOLO.test(sentence)) continue;
-        if (QUALIFIED.test(sentence)) continue;
+        if (education && !ABOUT_GOLO.test(stringAt(text, m.index))) continue;
+        const { text: sentence, offset } = sentenceAt(
+          text,
+          m.index,
+          m[0].length,
+        );
+        if (denied(sentence, offset)) continue;
         report(
           file,
           line,
@@ -169,24 +243,55 @@ for (const file of files) {
 
 /* --------------------------------------------------------------- metadata */
 
-/** [file, field, text] for every search title and description on the site. */
+/** A string literal's text: "…", '…' or `…` (with ${…} left as it is). */
+const LITERAL =
+  String.raw`"((?:[^"\\]|\\.)*)"|'((?:[^'\\]|\\.)*)'|` +
+  "`((?:[^`\\\\]|\\\\.)*)`";
+
+/**
+ * Every search title and description: the site description, each guide's
+ * seoTitle and metaDescription, each post's own title, metaDescription and
+ * dek (top-level fields only, not section and card titles), and the title and
+ * description inside each page's pageMetadata({...}).
+ */
 function metadataStrings() {
   const out = [];
-  const grab = (file, fields) => {
-    const text = stripComments(read(file));
-    const re = new RegExp(
-      `\\b(${fields.join("|")}):\\s*"((?:[^"\\\\]|\\\\.)*)"`,
-      "g",
-    );
-    for (const m of text.matchAll(re)) {
-      out.push({ file, line: lineAt(text, m.index), field: m[1], value: m[2] });
+  const grab = (file, text, pattern, offset = 0) => {
+    for (const m of text.matchAll(pattern)) {
+      const value = m[2] ?? m[3] ?? m[4] ?? "";
+      out.push({
+        file,
+        line: lineAt(read(file), offset + m.index),
+        field: m[1],
+        value,
+      });
     }
   };
-  grab("lib/siteConfig.ts", ["description"]);
-  grab("lib/content/gameDetail.ts", ["seoTitle", "metaDescription"]);
-  grab("lib/content/blog.ts", ["title", "metaDescription", "dek"]);
+  const field = (names, indent) =>
+    new RegExp(`^${indent}(${names.join("|")}):\\s*(?:${LITERAL})`, "gm");
+  const source = (file) => stripComments(read(file), file);
+
+  grab("lib/siteConfig.ts", source("lib/siteConfig.ts"), field(["description"], " {2}"));
+  grab(
+    "lib/content/gameDetail.ts",
+    source("lib/content/gameDetail.ts"),
+    field(["seoTitle", "metaDescription"], " {2}"),
+  );
+  grab(
+    "lib/content/blog.ts",
+    source("lib/content/blog.ts"),
+    field(["title", "metaDescription", "dek"], " {4}"),
+  );
+
   for (const page of walk("app", ["page.tsx"])) {
-    grab(page, ["title", "description"]);
+    for (const call of source(page).matchAll(/pageMetadata\(\{[\s\S]*?\}\)/g)) {
+      grab(
+        page,
+        call[0],
+        new RegExp(`\\b(title|description):\\s*(?:${LITERAL})`, "g"),
+        call.index,
+      );
+    }
   }
   return out;
 }
@@ -208,10 +313,11 @@ for (const { file, line, field, value } of metadataStrings()) {
 
 /* ----------------------------------------------------------------- links */
 
+/** Static pages and route handlers under app/, route groups dropped. */
 function staticRoutes() {
   const routes = new Set(["/"]);
-  for (const page of walk("app", ["page.tsx"])) {
-    const dir = relative("app", page).split("/").slice(0, -1);
+  for (const entry of walk("app", ["page.tsx", "route.ts"])) {
+    const dir = relative("app", entry).split("/").slice(0, -1);
     if (dir.some((part) => part.startsWith("["))) continue;
     const path = dir.filter((part) => !/^\(.*\)$/.test(part)).join("/");
     routes.add(path ? `/${path}` : "/");
@@ -232,7 +338,7 @@ const pages = new Set([
 const HREF = /href(?:=\\?"|:\s*"|=\{")(\/[^"\\]*)/g;
 
 for (const file of files) {
-  const text = stripComments(read(file));
+  const text = stripComments(read(file), file);
   for (const m of text.matchAll(HREF)) {
     const target = m[1].split(/[?#]/)[0].replace(/\/$/, "") || "/";
     if (!pages.has(target)) {

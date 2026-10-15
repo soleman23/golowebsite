@@ -222,7 +222,12 @@ export const capabilities = [
       "Scores stay on the phone with no signal and sync to the group when it returns.",
     verified: SITE_COPY_1015,
     roadmap: true,
-    claimPhrases: ["no signal", "dead spot", "dead-spot", "works offline"],
+    claimPhrases: [
+      "works offline",
+      "works with no signal",
+      "works without signal",
+      "works in dead spots",
+    ],
   },
 
   /* ---------------------------------------------------------- planned */
