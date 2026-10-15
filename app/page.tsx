@@ -21,7 +21,7 @@ import { Testimonials } from "@/components/sections/Testimonials";
 import { FinalCTA } from "@/components/sections/FinalCTA";
 import { FAQ } from "@/components/sections/FAQ";
 import { JsonLd } from "@/components/ui/JsonLd";
-import { quotes } from "@/lib/content";
+import { capability, quotes } from "@/lib/content";
 
 export const metadata: Metadata = pageMetadata({
   path: "/",
@@ -38,13 +38,23 @@ export const metadata: Metadata = pageMetadata({
  *
  * No `aggregateRating` and no `datePublished` — the app isn't released and has
  * no ratings, and inventing either is the kind of thing that gets structured
- * data ignored site-wide. `price: "0"` is true today and stays true while
- * siteConfig.appLive is false; revisit it with the pricing page at launch.
+ * data ignored site-wide. No `offers` either: nothing can be downloaded or
+ * bought yet and pricing isn't set, and an Offer says otherwise. Add one at
+ * launch, from the pricing decision, not before.
+ *
+ * `operatingSystem` comes from the capability registry, so it says "Web
+ * browser" while the app runs in a browser and gains iOS and Android only when
+ * the store apps are live there.
  *
  * The home page carries no FAQPage even though it ends with an FAQ section —
  * those same questions are the canonical /faq block, and the same Q/A marked
  * up on two URLs is a demotion risk.
  */
+const platforms = [
+  capability("web-app").status === "live" ? "Web browser" : null,
+  capability("store-apps").status === "live" ? "iOS, Android" : null,
+].filter(Boolean);
+
 const homeJsonLd = {
   "@context": "https://schema.org",
   "@graph": [
@@ -56,14 +66,9 @@ const homeJsonLd = {
       name: siteConfig.name,
       description: siteConfig.description,
       applicationCategory: "SportsApplication",
-      operatingSystem: "iOS, Android",
+      ...(platforms.length ? { operatingSystem: platforms.join(", ") } : {}),
       url: siteConfig.url,
       publisher: organizationRef,
-      offers: {
-        "@type": "Offer",
-        price: "0",
-        priceCurrency: "USD",
-      },
     },
   ],
 };
