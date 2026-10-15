@@ -10,6 +10,8 @@
  * install. `destination_configured: false` therefore means a real
  * misconfiguration (appLive flipped, store URLs never set) rather than the
  * expected pre-launch state, and is worth alerting on.
+ *
+ * claim-ok-file: rendered only once siteConfig.appLive is set, at launch.
  */
 
 import { siteConfig } from "@/lib/siteConfig";
