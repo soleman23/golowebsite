@@ -12,6 +12,7 @@
  */
 
 import { siteConfig } from "@/lib/siteConfig";
+import { capability } from "./capabilities";
 
 export type FaqItem = {
   /** Anchor id — the whole point of this page. `/faq#q-settle` opens this one. */
@@ -274,7 +275,12 @@ export const faqCategories: FaqCategory[] = [
       {
         id: "q-devices",
         q: "Can I use it on a tablet or a cart screen?",
-        a: "Today GoLo runs in a browser, so any decent screen works; iPhone and Android apps are on the list, not built. The scoring layout is built phone-first, thumb-first — that’s the one we design against.",
+        // Follows the store-apps entry in capabilities.ts, which follows
+        // siteConfig.appLive.
+        a:
+          capability("store-apps").status === "live"
+            ? "GoLo is on iPhone and Android. The scoring layout is built phone-first, thumb-first — that’s the one we design against."
+            : "Today GoLo runs in a browser, so any decent screen works; iPhone and Android apps are on the list, not built. The scoring layout is built phone-first, thumb-first — that’s the one we design against.",
       },
     ],
   },

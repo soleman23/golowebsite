@@ -17,7 +17,14 @@
  * - testing      built, being tried with real groups, not yet dependable
  * - planned      on the list, not built
  * - not-offered  not in the app and not on the list (including things cut)
+ *
+ * One entry follows siteConfig.appLive instead of a fixed status: the store
+ * apps are live exactly when the launch flag says the app is downloadable, so
+ * flipping that flag moves them on the roadmap, in the FAQ and in the
+ * SoftwareApplication schema together.
  */
+
+import { siteConfig } from "@/lib/siteConfig";
 
 export type CapabilityStatus = "live" | "testing" | "planned" | "not-offered";
 
@@ -229,7 +236,8 @@ export const capabilities = [
   {
     id: "store-apps",
     label: "iPhone and Android apps",
-    status: "planned",
+    // Follows the launch flag; see the note at the top of the file.
+    status: siteConfig.appLive ? "live" : "planned",
     summary: "Native apps in the App Store and Google Play.",
     verified: OWNER_1015,
     roadmap: true,
