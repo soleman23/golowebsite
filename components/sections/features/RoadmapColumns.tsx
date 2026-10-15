@@ -4,7 +4,7 @@
  * a plain dot and dimmer text, so nothing unbuilt reads as finished.
  */
 
-import { roadmap } from "@/lib/content";
+import { roadmap, roadmapIntro } from "@/lib/content";
 import { StatusPill } from "@/components/ui/StatusPill";
 import styles from "./RoadmapColumns.module.css";
 
@@ -12,15 +12,11 @@ export function RoadmapColumns() {
   return (
     <section className={styles.section} aria-labelledby="roadmap-heading">
       <div className={styles.inner}>
-        <p className={styles.kicker}>WHERE THE APP ACTUALLY IS</p>
+        <p className={styles.kicker}>{roadmapIntro.kicker}</p>
         <h2 id="roadmap-heading" className={styles.title}>
-          We&rsquo;re in beta, so here&rsquo;s the honest list.
+          {roadmapIntro.title}
         </h2>
-        <p className={styles.lead}>
-          Nothing on this page is a mockup of something we hope to build
-          someday, but not everything is finished either. Three columns, no
-          marketing.
-        </p>
+        <p className={styles.lead}>{roadmapIntro.lead}</p>
 
         <div className={styles.columns}>
           {roadmap.map((column) => (
