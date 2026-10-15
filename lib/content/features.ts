@@ -15,6 +15,10 @@
 
 import type { StatusVariant } from "@/components/ui/StatusPill";
 import type { CheckListItem } from "@/components/ui/CheckList";
+import {
+  capabilitiesWithStatus,
+  type CapabilityStatus,
+} from "./capabilities";
 
 /** Keys into the visual map in app/features/page.tsx. */
 export type FeatureVisual =
@@ -258,37 +262,27 @@ export type RoadmapColumn = {
   items: string[];
 };
 
+/**
+ * Generated from the capability registry (capabilities.ts): every capability
+ * flagged `roadmap` lands in the column for its status. Change a status there,
+ * not a list here.
+ */
+const roadmapLines = (status: CapabilityStatus): string[] =>
+  capabilitiesWithStatus(status)
+    .filter((c) => c.roadmap)
+    .map((c) => c.label);
+
 export const roadmap: RoadmapColumn[] = [
-  {
-    status: "today",
-    heading: "IN THE APP TODAY",
-    items: [
-      "Hole-by-hole scoring, net and gross",
-      "Nassau, skins, Best Score, junk board",
-      "Presses on the Overall Match game",
-      "Handicap strokes by stroke index",
-      "Netted settle-up and round history",
-    ],
-  },
+  { status: "today", heading: "IN THE APP TODAY", items: roadmapLines("live") },
   {
     status: "testing",
     heading: "IN TESTING WITH REAL GROUPS",
-    items: [
-      "Wolf and Bingo Bango Bongo",
-      "Saved groups, teams included",
-      "Share card for the group chat",
-      "Season stats in the Locker",
-    ],
+    items: roadmapLines("testing"),
   },
   {
     status: "planned",
     heading: "ON THE LIST, NOT BUILT",
-    items: [
-      "GPS yardages and shot distances",
-      "Everyone entering their own scores",
-      "Multi-day trip tallies",
-      "Watch app",
-    ],
+    items: roadmapLines("planned"),
   },
 ];
 
