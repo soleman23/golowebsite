@@ -12,12 +12,16 @@ import { publishedPosts, type Post } from "@/lib/content";
 import { PostCard } from "./PostCard";
 import styles from "./KeepReadingPosts.module.css";
 
-/** Same category first, then whatever else is newest. */
+/** The post's own picks first, then the same category, then the newest. */
 function relatedTo(post: Post): Post[] {
   const others = publishedPosts.filter((p) => p.slug !== post.slug);
-  const sameTopic = others.filter((p) => p.category === post.category);
-  const rest = others.filter((p) => p.category !== post.category);
-  return [...sameTopic, ...rest].slice(0, 3);
+  const picked = (post.related ?? [])
+    .map((slug) => others.find((p) => p.slug === slug))
+    .filter((p): p is Post => Boolean(p));
+  const rest = others.filter((p) => !picked.includes(p));
+  const sameTopic = rest.filter((p) => p.category === post.category);
+  const newest = rest.filter((p) => p.category !== post.category);
+  return [...picked, ...sameTopic, ...newest].slice(0, 3);
 }
 
 export function KeepReadingPosts({ post }: { post: Post }) {
