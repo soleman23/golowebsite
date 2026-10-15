@@ -1,0 +1,148 @@
+.heroIcon {
+  display: grid;
+  width: 116px;
+  height: 116px;
+  place-items: center;
+  border: 1px solid var(--accent-border);
+  border-radius: 28px;
+  background: var(--accent-soft);
+  color: var(--accent);
+  box-shadow: 0 0 54px var(--accent-glow);
+}
+
+.section {
+  background: var(--page-bg);
+  border-top: 1px solid rgba(255, 255, 255, 0.07);
+}
+
+.inner {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: clamp(48px, 7vw, 88px) var(--gutter);
+}
+
+.kicker {
+  margin: 0 0 11px;
+  color: var(--accent);
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 1.6px;
+}
+
+.sectionTitle {
+  max-width: 760px;
+  margin: 0;
+  color: var(--text-primary);
+  font-size: clamp(30px, 4vw, 46px);
+  line-height: 1.06;
+  letter-spacing: -0.025em;
+  text-wrap: balance;
+}
+
+.prose {
+  max-width: 680px;
+  margin-top: 22px;
+}
+
+.prose p {
+  margin: 0 0 16px;
+  color: var(--text-secondary);
+  font-size: 17px;
+  line-height: 1.7;
+  text-wrap: pretty;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 14px;
+  margin-top: 30px;
+}
+
+.panel,
+.contact {
+  border: 1px solid var(--card-border);
+  border-radius: var(--radius-section);
+  background: var(--glass-surface);
+}
+
+.panel {
+  padding: clamp(22px, 3vw, 28px);
+}
+
+.panel p:not(.kicker):not(.role) {
+  margin: 0 0 14px;
+  color: var(--text-secondary);
+  line-height: 1.6;
+}
+
+.panelTitle {
+  margin: 0;
+  color: var(--text-primary);
+  font-size: 22px;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+}
+
+.role {
+  margin: 4px 0 14px;
+  color: var(--text-faint);
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.link {
+  color: var(--accent);
+  font-weight: 700;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.contact {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  margin-top: 30px;
+  padding: clamp(22px, 3vw, 30px);
+  border-color: var(--accent-border);
+}
+
+.contact p {
+  margin: 0;
+  color: var(--text-secondary);
+  line-height: 1.6;
+  overflow-wrap: anywhere;
+}
+
+.contact .contactLine {
+  margin-bottom: 6px;
+  color: var(--text-primary);
+  font-weight: 700;
+}
+
+.button {
+  display: inline-flex;
+  flex: 0 0 auto;
+  align-items: center;
+  min-height: 50px;
+  padding: 0 18px;
+  border-radius: 13px;
+  background: var(--accent);
+  color: var(--accent-ink);
+  font-size: 13px;
+  font-weight: 800;
+}
+
+@media (max-width: 960px) {
+  .grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+@media (max-width: 760px) {
+  .contact {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+}

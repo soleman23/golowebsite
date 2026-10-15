@@ -16,4 +16,5 @@ export * from "./blog";
 export * from "./legal";
 export * from "./utility";
 export * from "./heroPhotos";
+export * from "./about";
 export * from "./llms";
