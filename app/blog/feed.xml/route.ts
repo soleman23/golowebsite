@@ -9,6 +9,11 @@ import { siteConfig } from "@/lib/siteConfig";
  * Static: rebuilt with the site, served as a file. Each item carries the
  * card's excerpt rather than the full post, so the reader comes to the page
  * for the tables, the steps and the worked examples.
+ *
+ * No <lastBuildDate>: the content layer has no date for "the feed changed"
+ * (publishing an older-dated draft or fixing an excerpt doesn't move the
+ * newest post's date), and a wrong channel date is worse than none. Readers
+ * compare item guids.
  */
 export const dynamic = "force-static";
 
@@ -55,9 +60,6 @@ export function GET() {
     `    <description>${xml(blogHero.lead)}</description>`,
     "    <language>en</language>",
     `    <atom:link href="${siteConfig.url}${FEED_PATH}" rel="self" type="application/rss+xml"/>`,
-    ...(publishedPosts[0]
-      ? [`    <lastBuildDate>${rssDate(publishedPosts[0].date)}</lastBuildDate>`]
-      : []),
     items,
     "  </channel>",
     "</rss>",
