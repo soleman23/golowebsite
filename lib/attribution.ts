@@ -11,13 +11,19 @@
  * undercount.
  *
  * The path only, never the query string (it can carry anything), and the
- * referrer's host only, never its path.
+ * referrer's host only, never its path. The one query value kept is
+ * `utm_source`, and only when it looks like a source name (a host or a short
+ * slug): AI answer engines often strip the referrer but tag their links —
+ * ChatGPT search appends utm_source=chatgpt.com — so without it those visits
+ * read as direct.
  */
 
 export type LandingAttribution = {
   landingPath: string;
   /** Absent for direct visits, stripped referrers and in-site reloads. */
   referrerHost?: string;
+  /** The landing URL's utm_source, if it's a plain source name. */
+  landingSource?: string;
 };
 
 let landing: LandingAttribution | undefined;
@@ -40,12 +46,24 @@ function externalReferrerHost(): string | undefined {
   }
 }
 
+/** Lower-case letters, digits, dots, hyphens and underscores; up to 64. */
+const SOURCE_NAME = /^[a-z0-9._-]{1,64}$/;
+
+function landingSourceParam(): string | undefined {
+  const value = new URLSearchParams(window.location.search)
+    .get("utm_source")
+    ?.trim()
+    .toLowerCase();
+  return value && SOURCE_NAME.test(value) ? value : undefined;
+}
+
 /** Records the landing once per page load. LandingCapture calls it on mount. */
 export function captureLanding(): void {
   if (landing || typeof window === "undefined") return;
   landing = {
     landingPath: window.location.pathname,
     referrerHost: externalReferrerHost(),
+    landingSource: landingSourceParam(),
   };
 }
 

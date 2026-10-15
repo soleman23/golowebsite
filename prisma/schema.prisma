@@ -14,44 +14,48 @@ datasource db {
 
 /// A phone number submitted via a "text me the link" form (hero or a closing band).
 model PhoneLead {
-  id           String   @id @default(cuid())
-  phone        String
+  id            String   @id @default(cuid())
+  phone         String
   // Whether a real SMS was dispatched (false when running in stub mode).
-  smsSent      Boolean  @default(false)
+  smsSent       Boolean  @default(false)
   /// The form's placement: "hero", or "final_cta_<page>" for a closing band.
-  source       String   @default("hero")
-  userAgent    String?
+  source        String   @default("hero")
+  userAgent     String?
   /// First path of the visit and the outside host that referred it
   /// (lib/attribution.ts). Null on older rows, direct visits and stripped
   /// referrers.
-  landingPath  String?
-  referrerHost String?
-  createdAt    DateTime @default(now())
+  landingPath   String?
+  referrerHost  String?
+  /// The landing URL's utm_source when it's a plain source name, e.g.
+  /// "chatgpt.com". Null on older rows and untagged visits.
+  landingSource String?
+  createdAt     DateTime @default(now())
 
   @@index([createdAt])
 }
 
 /// An email address submitted via the newsletter band on /blog.
 model NewsletterLead {
-  id           String   @id @default(cuid())
+  id            String   @id @default(cuid())
   /// Unique so a repeat signup is an upsert, not a duplicate row. The route
   /// answers "you're on the list" either way — never leak who is a member.
-  email        String   @unique
-  source       String   @default("blog")
+  email         String   @unique
+  source        String   @default("blog")
   /// As on PhoneLead. Set on the first signup only; a repeat leaves it alone.
-  landingPath  String?
-  referrerHost String?
-  createdAt    DateTime @default(now())
+  landingPath   String?
+  referrerHost  String?
+  landingSource String?
+  createdAt     DateTime @default(now())
 
   @@index([createdAt])
 }
 
 /// A message submitted via the /contact page form.
 model ContactMessage {
-  id      String @id @default(cuid())
-  name    String
-  email   String
-  message String
+  id        String   @id @default(cuid())
+  name      String
+  email     String
+  message   String
   /// Which of the six contact topics the sender picked (see lib/content/contact.ts).
   /// Nullable: messages predate the picker, and the API still accepts a post without one.
   topic     String?
