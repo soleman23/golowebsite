@@ -17,7 +17,7 @@ import styles from "./about.module.css";
 
 export const metadata: Metadata = pageMetadata({
   path: "/about",
-  title: "About GoLo Golf",
+  title: c.pageName,
   description:
     "Who makes GoLo, why it exists, where it is today, and what it doesn't do: GoLo Golf LLC in Bend, Oregon, founded in 2026.",
 });
@@ -34,7 +34,7 @@ const aboutJsonLd = {
       "@type": "AboutPage",
       "@id": `${siteConfig.url}/about`,
       url: `${siteConfig.url}/about`,
-      name: "About GoLo Golf",
+      name: c.pageName,
       about: organizationRef,
       mainEntity: organizationRef,
       isPartOf: websiteRef,
@@ -71,27 +71,34 @@ export default function AboutPage() {
               <p key={p}>{p}</p>
             ))}
           </div>
+        </div>
+      </section>
 
+      <section className={styles.section} aria-labelledby="about-company">
+        <div className={styles.inner}>
+          <h2 id="about-company" className={styles.kicker}>
+            {c.panelsHeading}
+          </h2>
           <div className={styles.grid}>
-            <article className={styles.panel}>
-              <p className={styles.kicker}>{c.who.kicker}</p>
-              <h3 className={styles.panelTitle}>{c.who.name}</h3>
+            <div className={styles.panel}>
+              <h3 className={styles.kicker}>{c.who.kicker}</h3>
+              <p className={styles.panelTitle}>{c.who.name}</p>
               <p className={styles.role}>{c.who.title}</p>
               <p>{c.who.body}</p>
-            </article>
+            </div>
 
-            <article className={styles.panel}>
-              <p className={styles.kicker}>{c.status.kicker}</p>
+            <div className={styles.panel}>
+              <h3 className={styles.kicker}>{c.status.kicker}</h3>
               <p>{c.status.body}</p>
               <Link href={c.status.link.href} className={styles.link}>
                 {c.status.link.label}
               </Link>
-            </article>
+            </div>
 
-            <article className={styles.panel}>
-              <p className={styles.kicker}>{c.money.kicker}</p>
+            <div className={styles.panel}>
+              <h3 className={styles.kicker}>{c.money.kicker}</h3>
               <p>{c.money.body}</p>
-            </article>
+            </div>
           </div>
         </div>
       </section>
@@ -113,7 +120,7 @@ export default function AboutPage() {
 
           <div className={styles.contact}>
             <div>
-              <p className={styles.kicker}>{c.contact.kicker}</p>
+              <h2 className={styles.kicker}>{c.contact.kicker}</h2>
               <p className={styles.contactLine}>{c.contact.line}</p>
               <p>
                 <a href={`mailto:${c.contact.email}`} className={styles.link}>
@@ -121,7 +128,7 @@ export default function AboutPage() {
                 </a>
                 {" · "}
                 <a href={c.contact.instagram.url} className={styles.link}>
-                  {c.contact.instagram.handle} on Instagram
+                  {c.contact.instagram.label}
                 </a>
               </p>
             </div>

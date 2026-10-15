@@ -23,6 +23,7 @@
 
 .kicker {
   margin: 0 0 11px;
+  line-height: 1.4;
   color: var(--accent);
   font-size: 11px;
   font-weight: 800;
@@ -70,7 +71,7 @@
   padding: clamp(22px, 3vw, 28px);
 }
 
-.panel p:not(.kicker):not(.role) {
+.panel p:not(.role):not(.panelTitle) {
   margin: 0 0 14px;
   color: var(--text-secondary);
   line-height: 1.6;
@@ -108,7 +109,7 @@
   border-color: var(--accent-border);
 }
 
-.contact p {
+.contact p:not(.kicker) {
   margin: 0;
   color: var(--text-secondary);
   line-height: 1.6;
