@@ -154,7 +154,12 @@ export const capabilities = [
     id: "season-stats",
     label: "Season stats in the Locker",
     status: "live",
-    summary: "Season and all-time net, handicap trend and record by format.",
+    // Owner-confirmed on 2026-10-15: season and all-time net, a record per
+    // format, an overall head-to-head record, the round archive. No handicap
+    // trend, and head-to-head isn't broken down by format.
+    summary:
+      "Season and all-time net, a record in each format, and an overall head-to-head record against each regular.",
+    limits: ["No handicap trend.", "Head-to-head isn't split by format."],
     verified: OWNER_1015,
     roadmap: true,
   },

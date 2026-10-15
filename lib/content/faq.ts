@@ -46,13 +46,23 @@ export const faqCategories: FaqCategory[] = [
     label: "Getting started",
     blurb: "Where GoLo is today, and what the first round looks like.",
     items: [
-      {
-        id: "q-available",
-        q: "Is GoLo available yet?",
-        a: "Not yet. We’re building it and testing with real groups on real courses before we put it in anybody’s hands. There’s no App Store link today — when there is, it goes on the home page first.",
-        noteTag: "STATUS",
-        note: "In private testing. No public launch date announced.",
-      },
+      // Follows the store-apps entry in capabilities.ts (and so
+      // siteConfig.appLive), like q-devices below.
+      capability("store-apps").status === "live"
+        ? {
+            id: "q-available",
+            q: "Is GoLo available yet?",
+            // claim-ok: only once the store-apps entry is live
+            a: "Yes. GoLo is on iPhone and Android, and the store links are on the home page.",
+            link: { label: "GET THE APP →", href: "/#get" },
+          }
+        : {
+            id: "q-available",
+            q: "Is GoLo available yet?",
+            a: "Not yet. We’re building it and testing with real groups on real courses before we put it in anybody’s hands. There’s no App Store link today — when there is, it goes on the home page first.",
+            noteTag: "STATUS",
+            note: "In private testing. No public launch date announced.",
+          },
       {
         id: "q-everyone",
         q: "Do all four of us need the app?",
@@ -202,7 +212,7 @@ export const faqCategories: FaqCategory[] = [
       {
         id: "q-cost",
         q: "What will GoLo cost?",
-        a: "We haven’t set pricing. GoLo isn’t publicly launched, so there’s nothing to buy and no plan to compare yet. When we decide, it gets announced here and on the home page before anyone is asked for a dollar.",
+        a: "We haven’t set pricing, so there’s nothing to buy and no plan to compare yet. When we decide, it gets announced here and on the home page before anyone is asked for a dollar.",
         noteTag: "NO PRICING YET",
         note: "No plans, no tiers, no trial — nothing is for sale today.",
       },
@@ -280,7 +290,7 @@ export const faqCategories: FaqCategory[] = [
         a:
           capability("store-apps").status === "live"
             ? // claim-ok: only once the store-apps entry is live
-              "GoLo is on iPhone and Android. The scoring layout is built phone-first, thumb-first — that’s the one we design against."
+              "GoLo is built for iPhone and Android phones, thumb-first. Tablets and cart screens aren’t what we design against, so we don’t promise how it looks on one."
             : "Today GoLo runs in a browser, so any decent screen works; iPhone and Android apps are on the list, not built. The scoring layout is built phone-first, thumb-first — that’s the one we design against.",
       },
     ],

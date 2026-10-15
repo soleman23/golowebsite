@@ -84,6 +84,7 @@ export const footerLinks: Record<FooterColumn, NavLink[]> = {
   ],
   company: [
     { label: "Blog", href: "/blog" },
+    { label: "Blog RSS feed", href: "/blog/feed.xml" },
     { label: "FAQ", href: "/faq" },
     { label: "Contact", href: "/contact" },
     { label: "Support", href: `mailto:${siteConfig.supportEmail}` },

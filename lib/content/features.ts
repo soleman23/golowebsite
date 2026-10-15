@@ -17,8 +17,12 @@ import type { StatusVariant } from "@/components/ui/StatusPill";
 import type { CheckListItem } from "@/components/ui/CheckList";
 import {
   capabilitiesWithStatus,
+  capability,
   type CapabilityStatus,
 } from "./capabilities";
+
+/** True from launch day: follows siteConfig.appLive through the registry. */
+const launched = capability("store-apps").status === "live";
 
 /** Keys into the visual map in app/features/page.tsx. */
 export type FeatureVisual =
@@ -213,7 +217,7 @@ export const featureBlocks: FeatureBlock[] = [
     kicker: "HISTORY, STATS & YOUR LOCKER",
     status: TODAY,
     title: "A season-long record of who actually wins.",
-    lead: 'Every round is saved with its scores, its games and its money, so the guy who claims he "always" takes the back nine can be checked. Your Locker keeps the running net, your handicap trend, and your record in each format.',
+    lead: 'Every round is saved with its scores, its games and its money, so the guy who claims he "always" takes the back nine can be checked. Your Locker keeps your season and all-time net, your record in each format, and your record against each regular.',
     checklist: [
       {
         lead: "Season and all-time net",
@@ -225,7 +229,7 @@ export const featureBlocks: FeatureBlock[] = [
       },
       {
         lead: "Head-to-head",
-        rest: "your record against each regular, per format.",
+        rest: "your record against each regular.",
       },
     ],
     visualSide: "left",
@@ -250,7 +254,7 @@ export const alsoInThere: AlsoCard[] = [
   {
     title: "Receipts for the group chat",
     status: TODAY,
-    body: "One card with the final scores, the money and who paid whom — dropped straight into the text thread where the trash talk already lives. Ends the Tuesday re-litigation.",
+    body: "One card with the final scores, the money and who pays whom — dropped straight into the text thread where the trash talk already lives. Ends the Tuesday re-litigation.",
   },
 ];
 
@@ -271,6 +275,15 @@ const roadmapLines = (status: CapabilityStatus): string[] =>
   capabilitiesWithStatus(status)
     .filter((c) => c.roadmap)
     .map((c) => c.label);
+
+/** The roadmap section's heading copy. "In beta" stops being true at launch. */
+export const roadmapIntro = {
+  kicker: "WHERE THE APP ACTUALLY IS",
+  title: launched
+    ? "Here’s the honest list."
+    : "We’re in beta, so here’s the honest list.",
+  lead: "Nothing on this page is a mockup of something we hope to build someday, but not everything is finished either. Three columns, no marketing.",
+};
 
 export const roadmap: RoadmapColumn[] = [
   { status: "today", heading: "IN THE APP TODAY", items: roadmapLines("live") },
@@ -345,10 +358,15 @@ export const quickAnswers: QuickAnswer[] = [
     answer:
       "Most of them. Skins carryover on or off, which skins count, how the purse splits, net or gross — you set it at the first tee and the app scores it your way. What it doesn’t do today: automatic presses, presses on a Nassau (they’re on the Overall Match game), 90% allowances, or playing off the low man. Everyone gets their full course handicap.",
   },
-  {
-    id: "launch-and-cost",
-    question: "When does it launch, and what will it cost?",
-    answer:
-      "We’re in beta with real groups and we don’t have a public date yet — when we do, it’ll be on the blog and in the newsletter before it’s anywhere else. It’s free while we’re in beta.",
-  },
+  // Answers a pre-launch question, so it goes when the app does.
+  ...(launched
+    ? []
+    : [
+        {
+          id: "launch-and-cost",
+          question: "When does it launch, and what will it cost?",
+          answer:
+            "We’re in beta with real groups and we don’t have a public date yet — when we do, it’ll be on the blog and in the newsletter before it’s anywhere else. It’s free while we’re in beta.",
+        },
+      ]),
 ];
