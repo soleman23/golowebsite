@@ -289,7 +289,8 @@ export const faqCategories: FaqCategory[] = [
         // siteConfig.appLive.
         a:
           capability("store-apps").status === "live"
-            ? "GoLo is built for iPhone and Android phones, thumb-first. Tablets and cart screens aren’t what we design against, so we don’t promise how it looks on one."
+            ? // claim-ok: only once the store-apps entry is live
+              "GoLo is built for iPhone and Android phones, thumb-first. Tablets and cart screens aren’t what we design against, so we don’t promise how it looks on one."
             : "Today GoLo runs in a browser, so any decent screen works; iPhone and Android apps are on the list, not built. The scoring layout is built phone-first, thumb-first — that’s the one we design against.",
       },
     ],

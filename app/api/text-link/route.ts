@@ -30,7 +30,13 @@ export async function POST(request: Request) {
     );
   }
 
-  const { phone, source = "hero", landingPath, referrerHost } = parsed.data;
+  const {
+    phone,
+    source = "hero",
+    landingPath,
+    referrerHost,
+    landingSource,
+  } = parsed.data;
 
   try {
     assertDatabaseConfigured();
@@ -43,6 +49,7 @@ export async function POST(request: Request) {
         source,
         landingPath,
         referrerHost,
+        landingSource,
         userAgent: request.headers.get("user-agent") ?? undefined,
       },
     });
