@@ -38,15 +38,18 @@ Use the Branded row from the query groups. Keep a running table, adding one row 
 |---|---:|---:|---:|
 | | | | |
 
-Off-topic GOLO queries (diet, putters, dice, board) don't count as demand for GoLo. Report them separately only if they grow.
+Off-topic GOLO queries don't count as demand for GoLo. That's any GOLO query without golf or app context: diet, weight loss, supplements, putters, dice, board. Report them separately only if they grow.
 
 ## 3. Content discovery
 
 For each page first published in the last 60 days:
 
-| URL | Published | First impression (Performance, filtered to the page) | Indexed on (URL Inspection) | Days to index |
+| URL | Published | First impression date | Days to first impression | Indexed when checked (URL Inspection, with the date checked) |
 |---|---|---|---|---|
 | | | | | |
+
+- **First impression date:** Performance → Search results, a Page filter for the URL, and the Dates tab over a range starting at publication. Take the earliest date with impressions. This is reproducible later.
+- **Indexed:** URL Inspection reports the current status and the last crawl, not the day the page entered the index, so don't record an "indexed on" date. Record "on Google" or the reason it isn't, and the date you checked. Last month's report holds the earlier status.
 
 ## 4. AI referral visibility
 
@@ -70,7 +73,7 @@ For each page first published in the last 60 days:
   |---|---:|
   | Total (chart) | |
 
-  Then the Pages tab: impressions per page. List the top pages and any guide or post that's new this month. If the report doesn't appear, Search Console is saying the site hasn't had enough AI-feature impressions. Write that, not "0".
+  Then the Pages tab: impressions per page. List the top pages and any guide or post that's new this month. If the report doesn't appear, check eligibility before blaming volume. Google lists two causes: too few AI-feature impressions, or a site that's kept out of AI features by its preview controls (`nosnippet`, `data-nosnippet`, `max-snippet`, `noindex`). Check the home page and a post for those. `curl -s https://www.golo.golf/ | grep -i -E 'nosnippet|max-snippet|noindex'` should print nothing. If the site is eligible, write "not shown: too few impressions", not "0". If a control is excluding it, open an issue.
 
 ## 5. AI answer accuracy
 
@@ -86,11 +89,11 @@ Starter prompts. Keep the set fixed so months compare; add new ones at the end.
 
 Record one row per prompt and engine:
 
-| # | Engine | golo.golf cited? | Page cited | Describes GoLo correctly? | Notes |
+| # | Engine | golo.golf cited? | Page cited | Describes GoLo correctly? (yes / no / n/a) | Notes |
 |---|---|---|---|---|---|
 | | | | | | |
 
-"Correctly" means all three of these hold, and nothing in the answer contradicts them:
+Use "n/a" when the answer doesn't mention GoLo at all, which is normal for the generic Nassau, trip and handicap prompts. That's a visibility result, recorded in the "cited?" column, not an accuracy one. When the answer does describe GoLo, "Correctly" means all three of these hold, and nothing in the answer contradicts them:
 
 - It describes GoLo as a scorekeeper for side games.
 - It says GoLo doesn't hold or move money.

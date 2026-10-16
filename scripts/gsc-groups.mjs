@@ -41,17 +41,18 @@ import { join } from "node:path";
  */
 export const QUERY_GROUPS = [
   {
-    // GOLO is also a diet company, putters and a dice game. "golo board"
-    // showed in the October 8 baseline; it's watched below, not branded.
-    name: "Off-topic GOLO",
-    // "GOLO Release" is the diet supplement, but "golo golf release date" is
-    // launch interest, so "release" counts only without golf or app context.
+    // GOLO is also a diet company ("golo weight loss", "golo release"),
+    // putters and a dice game, and their wording is open-ended. So a GOLO
+    // query is branded only with golf or app context, or on its own; every
+    // other GOLO query is off-topic. "golo board" showed in the October 8
+    // baseline; it's watched below, not branded.
+    name: "Branded",
     test: (q) =>
       /\bgo ?lo\b/.test(q) &&
-      (/\b(diet|board|putters?|dice|pills?|recipes?)\b/.test(q) ||
-        (/\brelease\b/.test(q) && !/\b(golf|app)\b/.test(q))),
+      (/^(the )?go ?lo$/.test(q) ||
+        /\b(golf\w*|app|apps|scor\w*|side games?|bets?|betting|wagers?|nassau|skins)\b/.test(q)),
   },
-  { name: "Branded", test: (q) => /\bgo ?lo\b/.test(q) },
+  { name: "Off-topic GOLO", test: (q) => /\bgo ?lo\b/.test(q) },
   { name: "Nassau", test: (q) => /\bnassau\b/.test(q) },
   {
     name: "Settle-up",
