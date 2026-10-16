@@ -13,16 +13,16 @@ The unpublished `forty-rounds` post in `lib/content/blog.ts` makes claims that n
    | `date` | YYYY-MM-DD |
    | `group` | a private label (`G1`, `G2`…), never a name |
    | `group_size` | players in the round |
-   | `own_team` | `y` if anyone from GoLo played in the group |
+   | `own_team` | `y` if anyone from GoLo played in the group, `n` if not, blank if unknown |
    | `formats` | games played, separated by `;` (`nassau;skins;junk`) |
    | `app_version` | the build used, e.g. `0.4.1` |
    | `finished` | `y` if the round reached a complete card |
    | `stopped_hole` | hole where scoring stopped; blank if finished |
    | `settled` | `app`, `memory` or `none` |
-   | `wager_changed` | `y` if the group changed the bet mid-round |
+   | `wager_changed` | `y` or `n`: did the group change the bet mid-round; blank if unknown |
    | `course`, `notes` | optional; read for nothing and never printed |
 
-   A round you can't reconstruct goes in with what's known. Don't fill gaps from memory of the draft.
+   A round you can't reconstruct goes in with what's known: leave `own_team` or `wager_changed` blank rather than guess, and the summary counts the unknowns separately. `date`, `finished` and `settled` are required. Don't fill gaps from memory of the draft.
 
 2. **Run** `node scripts/testing-summary.mjs ~/private/golo-testing-log.csv`. It checks every row and prints the summary with counts only. It refuses a path inside the repo.
 3. **Save** the output as `docs/research/testing-summary.md`, then add a "Product decisions" section by hand. One line per decision: date, what was cut or added, and why. Example: "2026-05: GPS yardages cut. Watches and lasers already cover it."
@@ -50,6 +50,11 @@ Status is one of: supported (with its source), changed (with the new value), or 
 | N14 | "rebuilt scoring twice" | "What broke" | Product decisions | Unverified |
 | N15 | "first fifteen rounds asking, last twenty-five watching" | callout | Owner: was there a switch, and at which round? | Unverified |
 | N16 | "Two players opened" post-round stats | "What they ignored" | Owner: is there usage data, or is this recollection? | Unverified |
+| N17 | "Forty rounds of watching… worth more than four hundred hours of designing" | first image caption | Rhetorical, not a measured figure | Remove, or keep only if N1 holds and "four hundred hours" is cut |
+| N18 | The settle-up moment "lasts about ninety seconds" | second image caption | Owner: is it timed anywhere? The live settle-up post uses "ninety seconds" as a figure of speech too. | Unverified; remove unless measured |
+| N19 | A group text thread "with eight years of history" | in-app chat card | Rhetorical | Remove |
+
+**Default:** any number in the draft that isn't in this table is removed, not carried over.
 
 ## Product claims
 
@@ -71,6 +76,22 @@ These must also match `lib/content/capabilities.ts` (the registry) and `/feature
 | P12 | "Nobody has asked for any of them since" | — | Is there a record (support messages, feedback)? | Unverified |
 | P13 | "Three things got used in every single round" | — | Is there a record, or is it an impression? | Unverified |
 
+## Usage and behaviour claims
+
+The draft also says what testers did and why. A yes to "was it built?" in the table above doesn't back up any of these. Each one needs a record (session data, notes made at the time, messages) or it's removed. Recollection alone doesn't count for a published study.
+
+| # | Draft claim | Where | Needs | Default |
+|---|---|---|---|---|
+| B1 | Groups answered half the setup on the first tee and the rest on the 4th | "Setup was a conversation" | Notes or session data | Remove |
+| B2 | Groups score on the next tee or in the bar, backfilling in bursts | "Nobody scores on the green" | Score timestamps, or notes | Remove |
+| B3 | Groups quietly stopped entering scores on the 4th tee and blamed themselves | callout | Notes, ties to N8 | Remove |
+| B4 | GPS: everyone already had a watch or laser; it doubled scope, ate battery, improved nobody's round | "The three features we cut" | Decision notes (scope and battery are internal facts); the rest is a judgment | Keep only the decision and its recorded reason |
+| B5 | Scanning: groups spent longer correcting a misread 5 than typing four numbers, and never opened it again | same | Usage data or notes | Remove |
+| B6 | Chat: groups already had a text thread, so a second one wasn't wanted | same | Decision notes | Keep only the recorded reason |
+| B7 | Nobody mentioned the streak, even when it broke | "What they ignored" | Feedback records | Remove |
+| B8 | Groups sent each other the settle screenshot instead of using the feed | same | Notes or messages | Remove |
+| B9 | The live bet state, press logging and settle screen were used in every round without prompting | "What we kept" | Usage data, ties to P13 | Remove |
+
 ## Words and framing
 
 | # | Draft text | Issue |
@@ -85,6 +106,7 @@ These must also match `lib/content/capabilities.ts` (the registry) and `/feature
 
 - Every N row is supported, changed or removed, with its source.
 - Every P row agrees with the registry, or the registry is updated first with `verified` set.
+- Every B row is backed by a record or removed.
 - `docs/research/testing-summary.md` exists and has no personal data.
 
 That closes #74. #75 then rewrites the post from the supported rows only.
