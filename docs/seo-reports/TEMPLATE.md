@@ -16,8 +16,10 @@ Rules:
 Source: Search Console → Performance → Search results, for this month and for last month as two separate exports. Then:
 
 ```bash
-node scripts/gsc-groups.mjs <this-month-export> --baseline <last-month-export>
+node scripts/gsc-groups.mjs <this-month-export> --baseline <last-month-export> --sitemap <month-end-sitemap.xml>
 ```
+
+The guide and post tables list every page in the sitemap you pass. Use the sitemap as it stood on the month's last day, saved then with `curl -s https://www.golo.golf/sitemap.xml > ~/gsc/sitemap-YYYY-MM.xml`. A live sitemap fetched later lists pages published after the month ended, and they'd show as "not in the export". If no snapshot was saved, use the live one and strike any page published after the period ends.
 
 | | Clicks | Impressions | CTR | Position |
 |---|---:|---:|---:|---:|

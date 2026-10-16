@@ -14,7 +14,8 @@
  *
  * Prints Markdown tables to paste into docs/seo-progress.md or a report. It
  * changes nothing. The export leaves out pages with no impressions, so the
- * guide and post tables are built from the sitemap (the live one by default)
+ * guide and post tables are built from the sitemap (the live one by default;
+ * for a past period, pass a snapshot saved on its last day)
  * and list every guide and post, "not in the export" included.
  *
  * Caveats the tables can't show, so say them in the write-up:
@@ -198,7 +199,17 @@ const pathOf = (url) => new URL(url).pathname.replace(/\/$/, "") || "/";
  * from the export had no impressions in the window, which is itself a finding.
  */
 function rowTable(title, rows, roster) {
-  const byPath = new Map(rows.map((r) => [pathOf(r.key), r]));
+  // A domain property can export one path under several URLs (www and apex,
+  // http and https, a trailing slash). Sum them so no row's traffic is lost.
+  const byPath = new Map();
+  for (const r of rows) {
+    const path = pathOf(r.key);
+    const seen = byPath.get(path) ?? { clicks: 0, impressions: 0, weighted: 0 };
+    seen.clicks += r.clicks;
+    seen.impressions += r.impressions;
+    seen.weighted += r.position * r.impressions;
+    byPath.set(path, seen);
+  }
   const paths = [...new Set([...roster.map(pathOf), ...byPath.keys()])];
   const lines = [`### ${title}`, "", "| Page | Impressions | Clicks | CTR | Position |", "|---|---:|---:|---:|---:|"];
   const ranked = paths.sort((a, b) => (byPath.get(b)?.impressions ?? -1) - (byPath.get(a)?.impressions ?? -1));
@@ -206,7 +217,7 @@ function rowTable(title, rows, roster) {
     const r = byPath.get(path);
     lines.push(
       r
-        ? `| ${path} | ${r.impressions} | ${r.clicks} | ${pct(r.clicks, r.impressions)} | ${r.position.toFixed(1)} |`
+        ? `| ${path} | ${r.impressions} | ${r.clicks} | ${pct(r.clicks, r.impressions)} | ${pos(r)} |`
         : `| ${path} | not in the export | – | – | – |`,
     );
   }
@@ -232,6 +243,11 @@ async function main(argv) {
   const baselineArg = b === -1 ? null : args.splice(b, 2)[1];
   const s = args.indexOf("--sitemap");
   const sitemapArg = s === -1 ? "https://www.golo.golf/sitemap.xml" : args.splice(s, 2)[1];
+  if (s === -1) {
+    console.error(
+      "note: listing guides and posts from the live sitemap. For a past period, pass --sitemap with a snapshot from the period's last day.",
+    );
+  }
   const [currentArg] = args;
   if (!currentArg) {
     console.error("usage: node scripts/gsc-groups.mjs <export-folder> [--baseline <export-folder>] [--sitemap <file-or-url>]");
@@ -264,7 +280,7 @@ async function main(argv) {
     const pageOrder = ["Guides", "Posts", "Core pages"];
     const basePages = baselineArg && locate(baselineArg, "Pages.csv");
     const base = basePages ? summarize(readExport(basePages), pageGroup, pageOrder) : null;
-    out.push(groupTable("Page groups", "Pages", summarize(rows, pageGroup, pageOrder), base));
+    out.push(groupTable("Page groups", "URLs", summarize(rows, pageGroup, pageOrder), base));
     const roster = await readSitemap(sitemapArg);
     for (const group of ["Guides", "Posts"]) {
       out.push(

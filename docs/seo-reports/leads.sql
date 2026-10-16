@@ -82,6 +82,7 @@ classified AS (
         OR lower(coalesce("referrerHost", '')) ~ '(^|\.)(chatgpt\.com|chat\.openai\.com|perplexity\.ai|gemini\.google\.com|copilot\.microsoft\.com|claude\.ai|you\.com|phind\.com)$'
         THEN 'AI assistants'
       WHEN lower(coalesce("referrerHost", '')) ~ '(^|\.)(google\.[a-z.]+|bing\.com|duckduckgo\.com|search\.yahoo\.com|ecosia\.org|search\.brave\.com)$'
+        OR lower(coalesce("landingSource", '')) ~ '^(google|bing|duckduckgo|yahoo|ecosia|brave)(\.[a-z.]+)?$'
         THEN 'Search'
       WHEN lower(coalesce("referrerHost", '')) ~ '(^|\.)(instagram\.com|facebook\.com|reddit\.com|x\.com|t\.co|threads\.net|tiktok\.com|youtube\.com|linkedin\.com|lnkd\.in)$'
         OR lower(coalesce("landingSource", '')) ~ '^(instagram|ig|facebook|fb|reddit|x|twitter|threads|tiktok|youtube|linkedin)(\.com|\.net)?$'

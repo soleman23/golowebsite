@@ -13,7 +13,7 @@ Both are 28 days. The deploy went live on October 8, 2026.
 - **Before:** September 10 to October 7, 2026, the 28 days before the deploy.
 - **After:** the 28 days ending on the run date: run date minus 27 days, through the run date.
 
-Search Console's data usually runs about two days behind. If the last days of the After window are empty, end it on the latest day with data, and record both dates.
+Search Console's data usually runs about two days behind. If the last days are empty, keep the window at 28 days: end it on the latest day with data, and start it 27 days before that. For example, a November 4 run with data through November 2 uses October 6 – November 2. Record the run date and both window dates, and work out the overlap from the dates you actually used. The table below assumes no lag.
 
 | Run date | After window | Days shared with Before |
 |---|---|---|
