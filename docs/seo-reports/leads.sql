@@ -61,8 +61,14 @@ GROUP BY kind, recorded_as, host
 ORDER BY leads DESC, kind, host;
 
 -- 2. All leads by landing path and form placement.
---    PhoneLead.source is the form's placement ("hero", "final_cta_<page>");
---    NewsletterLead.source is "blog". landingPath is null on rows from before
+--    Both fields arrive from the browser, and a crafted request can put any
+--    text in them, so only known values are shown: the site's own paths and
+--    the placements the forms set. Anything else is collapsed to "(other …)"
+--    and can't carry personal data into a report. When a post or guide is
+--    published, add its slug to the lists below. Until then it shows as
+--    "(unlisted post)".
+--    PhoneLead.source is "hero" or "final_cta_<page>"; NewsletterLead.source is
+--    "blog" or "post". landingPath is null on rows from before
 --    October 10, 2026 and when it wasn't captured.
 WITH bounds AS (
   SELECT TIMESTAMP :'start_at' AS start_at, TIMESTAMP :'end_at' AS end_at
@@ -71,10 +77,32 @@ leads AS (
   SELECT 'phone' AS kind, "createdAt", "landingPath", "source" FROM "PhoneLead"
   UNION ALL
   SELECT 'newsletter', "createdAt", "landingPath", "source" FROM "NewsletterLead"
+),
+labelled AS (
+  SELECT
+    kind,
+    CASE
+      WHEN "landingPath" IS NULL THEN '(not recorded)'
+      WHEN "landingPath" ~ '^/(features|how-it-works|games|blog|faq|about|contact|privacy|terms|cookies|acceptable-use|delete-account)?$'
+        THEN "landingPath"
+      WHEN "landingPath" ~ '^/games/(skins|nassau|best-score|wolf|bingo-bango-bongo|closest-to-pin|longest-drive|birdies)$'
+        THEN "landingPath"
+      WHEN "landingPath" ~ '^/blog/(settle-up-screen|pressing|index-vs-course-handicap|sandbagging|bandon|scottsdale-trip-structure|rangefinder|who-pays-first|nassau|skins-carryover|wolf|bingo-bango-bongo)$'
+        THEN "landingPath"
+      WHEN "landingPath" LIKE '/blog/%' THEN '/blog/(unlisted post)'
+      WHEN "landingPath" LIKE '/games/%' THEN '/games/(unlisted guide)'
+      ELSE '(other path)'
+    END AS landing_path,
+    CASE
+      WHEN "source" ~ '^(hero|blog|post|final_cta_(home|faq|features|how_it_works|blog|contact|post|games|privacy|terms|cookies|acceptable-use|game_(skins|nassau|best-score|wolf|bingo-bango-bongo|closest-to-pin|longest-drive|birdies)))$'
+        THEN "source"
+      ELSE '(other placement)'
+    END AS placement
+  FROM leads, bounds
+  WHERE "createdAt" >= bounds.start_at AND "createdAt" < bounds.end_at
 )
-SELECT kind, coalesce("landingPath", '(not recorded)') AS landing_path, "source" AS placement, count(*) AS leads
-FROM leads, bounds
-WHERE "createdAt" >= bounds.start_at AND "createdAt" < bounds.end_at
+SELECT kind, landing_path, placement, count(*) AS leads
+FROM labelled
 GROUP BY kind, landing_path, placement
 ORDER BY leads DESC, kind, landing_path;
 

@@ -49,6 +49,7 @@ The October 8 baseline in `docs/seo-progress.md` covers three months, not 28 day
 2. Open each reason under "Why pages aren't indexed" and record every URL.
 3. Give every non-indexed URL a reason, marked either "expected" or with a linked issue:
    - **Expected:** the three redirects: the apex domain, `http://`, and the trailing slash. For example, `http://www.golo.golf/blog/` takes two hops: a 301 to `https://www.golo.golf/blog/`, then a 308 to `/blog`.
+   - **Expected:** the legacy redirects in `next.config.mjs` under "Page with redirect": `/privacy-policy`, `/terms-of-service`, `/tos`, `/faqs`, `/game/*`, `/games/nassau-explained`, `/games/stroke-purse` and `/blog/who-pays`. Each is permanent and should land on its destination in one hop: `curl -s -o /dev/null -w '%{http_code} %{redirect_url}\n' https://www.golo.golf/faqs` shows 308 and the new URL. A redirect that chains, loops or lands on a 404 is a defect.
    - **Expected:** "Alternate page with proper canonical tag", provided the canonical is the URL we declare.
    - **Expected:** `/cookies` and `/acceptable-use` under "Excluded by 'noindex' tag". Both are noindex on purpose.
    - **Expected for now:** a sitemap URL first published fewer than 21 days before the run date and still "Discovered" or "Crawled – currently not indexed".
