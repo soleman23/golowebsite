@@ -7,14 +7,22 @@
 -- Run it with psql, which prints all three results and sets the month once
 -- (start inclusive, end exclusive):
 --
---   psql "$DATABASE_URL" -v start_at=2026-11-01 -v end_at=2026-12-01 -f docs/seo-reports/leads.sql
+--   psql "$DIRECT_URL" -v start_at=2026-11-01 -v end_at=2026-12-01 -f docs/seo-reports/leads.sql
 --
--- The first statement makes the session read-only, so nothing below can
--- write, whatever role the connection uses.
+-- Use DIRECT_URL (port 5432), not DATABASE_URL. DATABASE_URL is the
+-- transaction-mode pooler (6543) with Prisma-only parameters
+-- (?pgbouncer=true&connection_limit=1) that psql rejects.
+--
+-- All three queries run inside one READ ONLY transaction, so nothing here
+-- can write, whatever role the connection uses, and nothing is left behind
+-- on the connection afterwards. Don't replace this with a session-level
+-- SET: on a pooled connection it can outlive this script and make the
+-- site's own lead INSERTs fail.
 --
 -- The Supabase SQL editor shows only the last result and doesn't know psql
--- variables. If you use it, run one query at a time, with the SET line, and
--- replace :'start_at' and :'end_at' with quoted dates ('2026-11-01').
+-- variables. If you use it, run one query at a time as
+-- BEGIN TRANSACTION READ ONLY; <query>; COMMIT; and replace :'start_at' and
+-- :'end_at' with quoted dates ('2026-11-01').
 --
 -- Months here are UTC ("createdAt" is stored in UTC). Search Console's days
 -- are Pacific time, so a month's edges differ by 7–8 hours between the two.
@@ -22,7 +30,7 @@
 -- The AI host list matches the GA4 "AI assistants" channel group (#66). Keep
 -- the two in step: change both or neither.
 
-SET default_transaction_read_only = on;
+BEGIN TRANSACTION READ ONLY;
 
 -- 1. AI-referred leads, by host and by how the host was recorded.
 --    landingSource is the landing URL's utm_source (ChatGPT search adds
@@ -138,3 +146,5 @@ SELECT bucket, kind, count(*) AS leads
 FROM classified
 GROUP BY bucket, kind
 ORDER BY bucket, kind;
+
+COMMIT;

@@ -53,7 +53,7 @@ For each page first published in the last 60 days:
 
 ## 4. AI referral visibility
 
-- **Leads.** Run `docs/seo-reports/leads.sql` with psql, as its header shows. The session is read-only and all three queries print. Query 1 gives leads whose `landingSource` or `referrerHost` is an AI assistant host.
+- **Leads.** Run `docs/seo-reports/leads.sql` with psql over `DIRECT_URL`, as its header shows. All three queries run in one read-only transaction and all three print. Query 1 gives leads whose `landingSource` or `referrerHost` is an AI assistant host.
 
   | Kind | Recorded as | Host | Leads |
   |---|---|---|---:|
