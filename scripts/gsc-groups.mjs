@@ -33,7 +33,8 @@
 const EXPORT_ROW_CAP = 1000;
 
 import { existsSync, readFileSync, statSync } from "node:fs";
-import { join } from "node:path";
+import { join, resolve } from "node:path";
+import { pathToFileURL } from "node:url";
 
 /**
  * Query groups, first match wins, so order matters: "nassau press" is Nassau,
@@ -319,4 +320,5 @@ async function main(argv) {
   console.log(out.join("\n\n"));
 }
 
-if (import.meta.url === `file://${process.argv[1]}`) main(process.argv.slice(2));
+// pathToFileURL encodes the path, so this also runs from a folder with spaces.
+if (process.argv[1] && import.meta.url === pathToFileURL(resolve(process.argv[1])).href) main(process.argv.slice(2));
