@@ -15,8 +15,8 @@ The unpublished `forty-rounds` post in `lib/content/blog.ts` makes claims that n
    | `group_size` | players in the round; blank if unknown |
    | `own_team` | `y` if anyone from GoLo played in the group, `n` if not, blank if unknown |
    | `formats` | games played, separated by `;`, from this list only: `nassau`, `skins`, `wolf`, `bingo-bango-bongo`, `best-score`, `closest-to-pin`, `longest-drive`, `birdies`, `junk`, `overall-match`, `best-ball`, `scramble`, `match-play`, `stroke-play`, `quota`. A game not on the list is `other-1`, `other-2`… (the same number for the same game every time, so different games stay distinct); blank if unknown |
-   | `app_version` | the build used, `x.y` or `x.y.z`; blank if unknown |
-   | `finished` | `y` or `n`: did the round reach a complete card (required) |
+   | `app_version` | the build used, like `0.6` or `0.6.2` (one or two digits per part); blank if unknown |
+   | `finished` | `y` or `n`: did the round reach a complete card **in GoLo** (required). A round finished on paper or in another app is `n`, with `stopped_hole` where GoLo entry stopped. |
    | `stopped_hole` | hole where scoring stopped; required if unfinished, blank if finished |
    | `settled` | `app`, `memory` or `none` (required) |
    | `wager_changed` | `y` or `n`: did the group change the bet mid-round; blank if unknown |
@@ -45,7 +45,7 @@ Status is one of: supported (with its source), changed (with the new value), or 
 | N3 | 11 groups | "THE TEST", table, paragraph | Summary: Distinct groups, exact only if "Rounds with no group label" is 0 | Unverified |
 | N4 | "none of them ours" | "THE TEST" | Summary: Rounds with someone from GoLo playing = 0 **and** "Rounds where that isn't known" = 0. A "y" on a row with no group label still counts. | Unverified |
 | N5 | 6 formats | "THE TEST", table | Summary: Distinct formats. It's exact only if it isn't "at least" (a bare `other` was used; renumber those rounds as `other-1`…) **and** "Rounds with formats not known" is 0. | Unverified |
-| N6 | 31 finished with a complete card | table, summary | Summary: Finished | Unverified |
+| N6 | 31 finished with a complete card, and "Score entry survives a round" | table, summary | Summary: Finished. `finished` means a complete card in GoLo, so the conclusion holds only for those rounds. If the owner's records can't tell a GoLo card from a paper one, mark them `n`, or drop the conclusion. | Unverified |
 | N7 | 6 abandoned before the turn | table | Summary: Stopped before the turn | Unverified |
 | N8 | 5 of the 6 quit on holes 3–5 | table, key stat, summary | Summary: Stopped on holes 3–5 for the numerator, and N7's resolved value for the denominator. Both change together: "5 of 6" holds only if N7 stays 6. | Unverified |
 | N9 | "The nine that fell apart" (40 − 31) | paragraph | N1 − N6. The draft's 6 before the turn leaves 3 unaccounted for: check them against "Stopped on the back nine" | Unverified |

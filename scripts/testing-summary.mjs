@@ -24,7 +24,9 @@
  *                 different unlisted games stay distinct; a bare "other"
  *                 makes the distinct-format count a minimum
  *   app_version   e.g. 0.4.1; blank allowed
- *   finished      y/n: did the round reach a complete card (required)
+ *   finished      y/n: did the round reach a complete card entered in GoLo
+ *                 (required). A card finished on paper is n, with
+ *                 stopped_hole where GoLo entry stopped
  *   stopped_hole  hole where scoring stopped: required if finished is n,
  *                 blank if y
  *   settled       app | memory | none (required)
@@ -77,7 +79,9 @@ const FORMATS = [
   "other",
 ];
 
-const VERSION = /^\d+\.\d+(\.\d+)?$/;
+// One or two digits per part, like GoLo's 0.6.2. A dotted phone number
+// (555.123.4567) has longer groups and fails, so it can't reach the summary.
+const VERSION = /^\d{1,2}\.\d{1,2}(\.\d{1,2})?$/;
 const NUMBERED_OTHER = /^other-\d{1,2}$/;
 
 /** Records with the physical line each one starts on, blank lines dropped. */
@@ -103,6 +107,12 @@ function parseCsv(text) {
         i++;
       } else if (c === '"') {
         quoted = false;
+        // After a closing quote only a comma or a line end may follow;
+        // "G1"x would otherwise read as G1x.
+        const next = text[i + 1];
+        if (next !== undefined && next !== "," && next !== "\n" && next !== "\r") {
+          throw new Error(`log has text after a closing quote on line ${line}`);
+        }
       } else {
         field += c;
       }
@@ -184,7 +194,7 @@ function readLog(path) {
         fail(`format "${f}" isn't one of: ${FORMATS.join(", ")}, or other-1, other-2…`);
       }
     }
-    if (round.version !== null && !VERSION.test(round.version)) fail(`app_version "${round.version}" isn't x.y or x.y.z`);
+    if (round.version !== null && !VERSION.test(round.version)) fail(`app_version "${round.version}" isn't a version like 0.6 or 0.6.2`);
     if (!["app", "memory", "none"].includes(round.settled)) fail("settled must be app, memory or none");
     if (round.finished === true && round.stoppedHole !== null) fail("finished but has a stopped_hole");
     if (round.finished === false && !(Number.isInteger(round.stoppedHole) && round.stoppedHole >= 1 && round.stoppedHole <= 18)) {
