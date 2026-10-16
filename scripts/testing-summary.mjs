@@ -8,29 +8,31 @@
  *   node scripts/testing-summary.mjs ~/private/golo-testing-log.csv
  *
  * The log is private and stays outside the repo: it refuses a path inside it.
- * The output has counts only. No names, phone numbers, courses or group
- * labels are ever printed.
+ * The summary is public, so nothing free-form reaches it: it prints counts,
+ * dates, formats from a fixed list and version numbers that match x.y or
+ * x.y.z. Group labels, courses and notes are never printed.
  *
- * Log columns (header row required, any order; docs/research/testing-claims.md
- * has the full spec):
- *   date          YYYY-MM-DD
- *   group         a private label ("G1", "G2"…), never a name
- *   group_size    players in the round
- *   own_team      y if anyone from GoLo played in the group, n if not,
- *                 blank if unknown
- *   formats       games played, separated by ";" (e.g. "nassau;skins")
- *   app_version   e.g. 0.4.1
- *   finished      y if the round reached a complete card
- *   stopped_hole  hole where scoring stopped, blank if finished
- *   settled       app | memory | none
- *   wager_changed y or n: did the group change the bet mid-round; blank if
- *                 unknown
+ * Log columns (header row required, any order, no duplicates;
+ * docs/research/testing-claims.md has the full spec). Blank means unknown
+ * wherever it's allowed, and unknowns are counted, never guessed:
+ *   date          YYYY-MM-DD (required)
+ *   group         a private label ("G1", "G2"…), never a name; blank allowed
+ *   group_size    players in the round; blank allowed
+ *   own_team      y/n: did anyone from GoLo play in the group; blank allowed
+ *   formats       games played, ";"-separated, from FORMATS below; blank allowed
+ *   app_version   e.g. 0.4.1; blank allowed
+ *   finished      y/n: did the round reach a complete card (required)
+ *   stopped_hole  hole where scoring stopped: required if finished is n,
+ *                 blank if y
+ *   settled       app | memory | none (required)
+ *   wager_changed y/n: did the group change the bet mid-round; blank allowed
+ *   stakes        y/n: was the group playing for money; blank allowed
  *   course        optional; read for nothing, never printed
  *   notes         optional; read for nothing, never printed
  */
 
 import { readFileSync, realpathSync } from "node:fs";
-import { relative, resolve } from "node:path";
+import { isAbsolute, relative, resolve, sep } from "node:path";
 import { fileURLToPath } from "node:url";
 
 const repoRoot = fileURLToPath(new URL("..", import.meta.url));
@@ -46,15 +48,51 @@ const REQUIRED = [
   "stopped_hole",
   "settled",
   "wager_changed",
+  "stakes",
 ];
 
+/**
+ * The only format names the public summary can show. A cell outside this list
+ * is an error, not a new row, so a name typed into the wrong column can't leak.
+ */
+const FORMATS = [
+  "nassau",
+  "skins",
+  "wolf",
+  "bingo-bango-bongo",
+  "best-score",
+  "closest-to-pin",
+  "longest-drive",
+  "birdies",
+  "junk",
+  "overall-match",
+  "best-ball",
+  "scramble",
+  "match-play",
+  "stroke-play",
+  "quota",
+  "other",
+];
+
+const VERSION = /^\d+\.\d+(\.\d+)?$/;
+
+/** Records with the physical line each one starts on, blank lines dropped. */
 function parseCsv(text) {
-  const rows = [];
+  const records = [];
   let row = [];
   let field = "";
   let quoted = false;
+  let line = 1;
+  let start = 1;
+  const end = () => {
+    row.push(field);
+    if (row.some((cell) => cell.trim() !== "")) records.push({ line: start, cells: row });
+    row = [];
+    field = "";
+  };
   for (let i = 0; i < text.length; i++) {
     const c = text[i];
+    if (c === "\n" || (c === "\r" && text[i + 1] !== "\n")) line++;
     if (quoted) {
       if (c === '"' && text[i + 1] === '"') {
         field += '"';
@@ -70,24 +108,22 @@ function parseCsv(text) {
       row.push(field);
       field = "";
     } else if (c === "\n" || c === "\r") {
-      if (c === "\r" && text[i + 1] === "\n") i++;
-      row.push(field);
-      rows.push(row);
-      row = [];
-      field = "";
+      if (c === "\r" && text[i + 1] === "\n") {
+        i++;
+        line++;
+      }
+      end();
+      start = line;
     } else {
       field += c;
     }
   }
-  if (quoted) throw new Error("log has a quoted field with no closing quote");
-  if (field || row.length) {
-    row.push(field);
-    rows.push(row);
-  }
-  return rows.filter((r) => r.some((cell) => cell.trim() !== ""));
+  if (quoted) throw new Error(`log has a quoted field opened on line ${start} that never closes`);
+  if (field || row.length) end();
+  return records;
 }
 
-/** true, false, or null for a blank (unknown); anything else is an error. */
+/** true, false, or null for a blank (unknown); anything else is undefined. */
 function yesNo(value) {
   const v = value.trim().toLowerCase();
   if (v === "") return null;
@@ -103,37 +139,49 @@ function isCalendarDate(value) {
 }
 
 function readLog(path) {
-  const [header, ...rows] = parseCsv(readFileSync(path, "utf8").replace(/^﻿/, ""));
-  const cols = header.map((h) => h.trim().toLowerCase());
+  const [header, ...records] = parseCsv(readFileSync(path, "utf8").replace(/^﻿/, ""));
+  if (!header) throw new Error("log is empty");
+  const cols = header.cells.map((h) => h.trim().toLowerCase());
+  const duplicates = [...new Set(cols.filter((c, i) => c && cols.indexOf(c) !== i))];
+  if (duplicates.length) throw new Error(`log has duplicate columns: ${duplicates.join(", ")}`);
   const missing = REQUIRED.filter((name) => !cols.includes(name));
   if (missing.length) throw new Error(`log is missing columns: ${missing.join(", ")}`);
+
   const problems = [];
-  const rounds = rows.map((r, i) => {
-    const get = (name) => (r[cols.indexOf(name)] ?? "").trim();
-    const line = i + 2;
+  const rounds = records.map(({ line, cells }) => {
+    const get = (name) => (cells[cols.indexOf(name)] ?? "").trim();
+    const fail = (message) => problems.push(`line ${line}: ${message}`);
+    const formats = [...new Set(get("formats").toLowerCase().split(";").map((f) => f.trim()).filter(Boolean))];
+    const size = get("group_size");
     const round = {
       date: get("date"),
-      group: get("group"),
-      size: Number(get("group_size")),
+      group: get("group") || null,
+      size: size === "" ? null : Number(size),
       ownTeam: yesNo(get("own_team")),
       // A format counts once per round, however often a row repeats it.
-      formats: [...new Set(get("formats").toLowerCase().split(";").map((f) => f.trim()).filter(Boolean))],
-      version: get("app_version"),
+      formats: formats.length ? formats : null,
+      version: get("app_version") || null,
       finished: yesNo(get("finished")),
       stoppedHole: get("stopped_hole") === "" ? null : Number(get("stopped_hole")),
       settled: get("settled").toLowerCase(),
       wagerChanged: yesNo(get("wager_changed")),
+      stakes: yesNo(get("stakes")),
     };
-    if (!isCalendarDate(round.date)) problems.push(`line ${line}: date "${round.date}" isn't a real YYYY-MM-DD date`);
-    if (round.finished === undefined || round.finished === null) problems.push(`line ${line}: finished must be y or n`);
-    if (round.ownTeam === undefined) problems.push(`line ${line}: own_team must be y, n or blank`);
-    if (round.wagerChanged === undefined) problems.push(`line ${line}: wager_changed must be y, n or blank`);
-    if (!round.group) problems.push(`line ${line}: no group label`);
-    if (!Number.isInteger(round.size) || round.size < 1) problems.push(`line ${line}: group_size isn't a whole number`);
-    if (!round.formats.length) problems.push(`line ${line}: no formats`);
-    if (!["app", "memory", "none"].includes(round.settled)) problems.push(`line ${line}: settled must be app, memory or none`);
-    if (round.finished === true && round.stoppedHole !== null) problems.push(`line ${line}: finished but has a stopped_hole`);
-    if (round.finished === false && !(round.stoppedHole >= 1 && round.stoppedHole <= 18)) problems.push(`line ${line}: unfinished round needs stopped_hole 1–18`);
+    if (!isCalendarDate(round.date)) fail(`date "${round.date}" isn't a real YYYY-MM-DD date`);
+    if (round.finished === undefined || round.finished === null) fail("finished must be y or n");
+    for (const [name, value] of [["own_team", round.ownTeam], ["wager_changed", round.wagerChanged], ["stakes", round.stakes]]) {
+      if (value === undefined) fail(`${name} must be y, n or blank`);
+    }
+    if (round.size !== null && (!Number.isInteger(round.size) || round.size < 1)) fail("group_size must be a whole number or blank");
+    for (const f of round.formats ?? []) {
+      if (!FORMATS.includes(f)) fail(`format "${f}" isn't one of: ${FORMATS.join(", ")}`);
+    }
+    if (round.version !== null && !VERSION.test(round.version)) fail(`app_version "${round.version}" isn't x.y or x.y.z`);
+    if (!["app", "memory", "none"].includes(round.settled)) fail("settled must be app, memory or none");
+    if (round.finished === true && round.stoppedHole !== null) fail("finished but has a stopped_hole");
+    if (round.finished === false && !(Number.isInteger(round.stoppedHole) && round.stoppedHole >= 1 && round.stoppedHole <= 18)) {
+      fail("unfinished round needs stopped_hole 1–18");
+    }
     return round;
   });
   if (problems.length) throw new Error(`log has problems:\n  ${problems.join("\n  ")}`);
@@ -144,24 +192,26 @@ function readLog(path) {
 function summarize(rounds) {
   const count = (pred) => rounds.filter(pred).length;
   const dates = rounds.map((r) => r.date).sort();
-  const groups = new Set(rounds.map((r) => r.group));
-  const ownGroups = new Set(rounds.filter((r) => r.ownTeam === true).map((r) => r.group));
+  const groups = new Set(rounds.map((r) => r.group).filter(Boolean));
+  const ownGroups = new Set(rounds.filter((r) => r.ownTeam === true && r.group).map((r) => r.group));
   const formats = new Map();
-  for (const r of rounds) for (const f of r.formats) formats.set(f, (formats.get(f) ?? 0) + 1);
+  for (const r of rounds) for (const f of r.formats ?? []) formats.set(f, (formats.get(f) ?? 0) + 1);
   const versions = [...new Set(rounds.map((r) => r.version).filter(Boolean))].sort((a, b) =>
     a.localeCompare(b, undefined, { numeric: true }),
   );
-  const unfinished = rounds.filter((r) => !r.finished);
+  const unfinished = rounds.filter((r) => r.finished === false);
   const byHole = new Map();
   for (const r of unfinished) byHole.set(r.stoppedHole, (byHole.get(r.stoppedHole) ?? 0) + 1);
-  const sizes = rounds.map((r) => r.size).sort((a, b) => a - b);
+  const sizes = rounds.map((r) => r.size).filter((s) => s !== null).sort((a, b) => a - b);
+  const settledRow = (label, finished) =>
+    `| ${label} | ${["app", "memory", "none"].map((s) => count((r) => r.finished === finished && r.settled === s)).join(" | ")} |`;
 
   const out = [
     "# Testing summary",
     "",
     "Aggregated from the owner's private per-round log by `scripts/testing-summary.mjs`.",
     "No names, phone numbers, courses or group labels are kept here. The raw log",
-    "stays outside this repository.",
+    "stays outside this repository. \"Not known\" rows count blanks in the log.",
     "",
     `Generated: ${new Date().toISOString().slice(0, 10)}.`,
     "",
@@ -173,20 +223,31 @@ function summarize(rounds) {
     `| First round | ${dates[0]} |`,
     `| Last round | ${dates[dates.length - 1]} |`,
     `| Distinct groups | ${groups.size} |`,
+    `| Rounds with no group label | ${count((r) => r.group === null)} |`,
     `| Groups with someone from GoLo playing | ${ownGroups.size} |`,
     `| Rounds where that isn't known | ${count((r) => r.ownTeam === null)} |`,
-    `| Group size, smallest – largest | ${sizes[0]} – ${sizes[sizes.length - 1]} |`,
+    `| Group size, smallest – largest | ${sizes.length ? `${sizes[0]} – ${sizes[sizes.length - 1]}` : "not known"} |`,
+    `| Rounds with group size not known | ${count((r) => r.size === null)} |`,
     `| Distinct formats | ${formats.size} |`,
+    `| Rounds with formats not known | ${count((r) => r.formats === null)} |`,
     `| App versions | ${versions.join(", ") || "not recorded"} |`,
-    `| Finished with a complete card | ${count((r) => r.finished)} |`,
-    `| Stopped before the turn (holes 1–9) | ${count((r) => !r.finished && r.stoppedHole <= 9)} |`,
-    `| Stopped on holes 3–5 | ${count((r) => !r.finished && r.stoppedHole >= 3 && r.stoppedHole <= 5)} |`,
-    `| Stopped on the back nine (holes 10–18) | ${count((r) => !r.finished && r.stoppedHole >= 10)} |`,
-    `| Settled in the app | ${count((r) => r.settled === "app")} |`,
-    `| Settled from memory | ${count((r) => r.settled === "memory")} |`,
-    `| Not settled | ${count((r) => r.settled === "none")} |`,
+    `| Rounds with app version not known | ${count((r) => r.version === null)} |`,
+    `| Played for money | ${count((r) => r.stakes === true)} |`,
+    `| Not played for money | ${count((r) => r.stakes === false)} |`,
+    `| Stakes not known | ${count((r) => r.stakes === null)} |`,
+    `| Finished with a complete card | ${count((r) => r.finished === true)} |`,
+    `| Stopped before the turn (holes 1–9) | ${count((r) => r.finished === false && r.stoppedHole <= 9)} |`,
+    `| Stopped on holes 3–5 | ${count((r) => r.finished === false && r.stoppedHole >= 3 && r.stoppedHole <= 5)} |`,
+    `| Stopped on the back nine (holes 10–18) | ${count((r) => r.finished === false && r.stoppedHole >= 10)} |`,
     `| Changed the wager mid-round | ${count((r) => r.wagerChanged === true)} |`,
     `| Rounds where a wager change isn't known | ${count((r) => r.wagerChanged === null)} |`,
+    "",
+    "## How rounds were settled",
+    "",
+    "| | In the app | From memory | Not settled |",
+    "|---|---:|---:|---:|",
+    settledRow("Finished", true),
+    settledRow("Unfinished", false),
     "",
     "## Formats",
     "",
@@ -217,7 +278,8 @@ function main([path]) {
     process.exit(2);
   }
   const within = relative(realpathSync(repoRoot), real);
-  if (!within.startsWith("..")) {
+  const outside = within === ".." || within.startsWith(`..${sep}`) || isAbsolute(within);
+  if (!outside) {
     console.error(`${path} is inside the repository. Keep the raw log outside it; the repo is public.`);
     process.exit(2);
   }

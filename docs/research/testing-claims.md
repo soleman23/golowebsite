@@ -10,19 +10,22 @@ The unpublished `forty-rounds` post in `lib/content/blog.ts` makes claims that n
 
    | Column | Value |
    |---|---|
-   | `date` | YYYY-MM-DD |
-   | `group` | a private label (`G1`, `G2`…), never a name |
-   | `group_size` | players in the round |
+   | `date` | YYYY-MM-DD (required) |
+   | `group` | a private label (`G1`, `G2`…), never a name; blank if unknown |
+   | `group_size` | players in the round; blank if unknown |
    | `own_team` | `y` if anyone from GoLo played in the group, `n` if not, blank if unknown |
-   | `formats` | games played, separated by `;` (`nassau;skins;junk`) |
-   | `app_version` | the build used, e.g. `0.4.1` |
-   | `finished` | `y` if the round reached a complete card |
-   | `stopped_hole` | hole where scoring stopped; blank if finished |
-   | `settled` | `app`, `memory` or `none` |
+   | `formats` | games played, separated by `;`, from this list only: `nassau`, `skins`, `wolf`, `bingo-bango-bongo`, `best-score`, `closest-to-pin`, `longest-drive`, `birdies`, `junk`, `overall-match`, `best-ball`, `scramble`, `match-play`, `stroke-play`, `quota`, `other`; blank if unknown |
+   | `app_version` | the build used, `x.y` or `x.y.z`; blank if unknown |
+   | `finished` | `y` or `n`: did the round reach a complete card (required) |
+   | `stopped_hole` | hole where scoring stopped; required if unfinished, blank if finished |
+   | `settled` | `app`, `memory` or `none` (required) |
    | `wager_changed` | `y` or `n`: did the group change the bet mid-round; blank if unknown |
+   | `stakes` | `y` or `n`: was the group playing for money; blank if unknown |
    | `course`, `notes` | optional; read for nothing and never printed |
 
-   A round you can't reconstruct goes in with what's known: leave `own_team` or `wager_changed` blank rather than guess, and the summary counts the unknowns separately. `date`, `finished` and `settled` are required. Don't fill gaps from memory of the draft.
+   A round you can't reconstruct goes in with what's known. Leave any field blank rather than guess, except `date`, `finished`, `settled` and (for an unfinished round) `stopped_hole`. The summary counts every unknown separately. Don't fill gaps from memory of the draft.
+
+   The summary is public, so the script lets nothing free-form through: formats must come from the list above, and versions must look like `0.4.1`. A name typed into the wrong column stops the run instead of reaching the summary.
 
 2. **Run** `node scripts/testing-summary.mjs ~/private/golo-testing-log.csv`. It checks every row and prints the summary with counts only. It refuses a path inside the repo.
 3. **Save** the output as `docs/research/testing-summary.md`, then add a "Product decisions" section by hand. One line per decision: date, what was cut or added, and why. Example: "2026-05: GPS yardages cut. Watches and lasers already cover it."
@@ -34,6 +37,7 @@ Status is one of: supported (with its source), changed (with the new value), or 
 
 | # | Draft claim | Where in the draft | Settled by | Status |
 |---|---|---|---|---|
+| N0 | "before writing any marketing" (tested first, marketed after) | title, intro | Dated records: the last test round against the first marketing copy. This repo's first commit, the marketing site with copy, is 2026-07-14 (`22fcfbe`). The claim holds only if every logged round is earlier, and no earlier marketing exists elsewhere. | Unverified |
 | N1 | 40 rounds | title, intro, "THE TEST", table, summary | Summary: Rounds logged | Unverified |
 | N2 | "over one season" | "THE TEST" | Summary: First and last round | Unverified |
 | N3 | 11 groups | "THE TEST", table, paragraph | Summary: Distinct groups | Unverified |
@@ -44,7 +48,7 @@ Status is one of: supported (with its source), changed (with the new value), or 
 | N8 | 5 of the 6 quit on holes 3–5 | table, key stat, summary | Summary: Stopped on holes 3–5 | Unverified |
 | N9 | "The nine that fell apart" (40 − 31) | paragraph | N1 − N6. The draft's 6 before the turn leaves 3 unaccounted for: check them against "Stopped on the back nine" | Unverified |
 | N10 | 27 settled in the app | table | Summary: Settled in the app | Unverified |
-| N11 | 4 settled from memory | table | Summary: Settled from memory. 27 + 4 = 31, so the draft assumes every finished round settled and no unfinished one did. Check that. | Unverified |
+| N11 | 4 settled from memory | table | Summary: "How rounds were settled", split by finished and unfinished. 27 + 4 = 31 assumes every finished round settled and no unfinished one did; the split shows whether that's true. | Unverified |
 | N12 | 9 groups changed the wager mid-round | table, "What broke" | Summary: Changed the wager. The draft says "nine of forty **groups**", but there were 11 groups: it means rounds | Unverified, and the wording is wrong either way |
 | N13 | 3 features cut | dek, "THE TEST", heading, summary | Product decisions | Unverified |
 | N14 | "rebuilt scoring twice" | "What broke" | Product decisions | Unverified |
@@ -53,6 +57,7 @@ Status is one of: supported (with its source), changed (with the new value), or 
 | N17 | "Forty rounds of watching… worth more than four hundred hours of designing" | first image caption | Rhetorical, not a measured figure | Remove, or keep only if N1 holds and "four hundred hours" is cut |
 | N18 | The settle-up moment "lasts about ninety seconds" | second image caption | Owner: is it timed anywhere? The live settle-up post uses "ninety seconds" as a figure of speech too. | Unverified; remove unless measured |
 | N19 | A group text thread "with eight years of history" | in-app chat card | Rhetorical | Remove |
+| N20 | "real Saturday rounds, real money" | intro | Summary: Played for money (and Stakes not known). Saturdays need the dates; drop "Saturday" unless they hold. | Unverified |
 
 **Default:** any number in the draft that isn't in this table is removed, not carried over.
 
@@ -94,19 +99,22 @@ The draft also says what testers did and why. A yes to "was it built?" in the ta
 
 ## Words and framing
 
-| # | Draft text | Issue |
-|---|---|---|
-| W1 | "real Saturday rounds, real money" | Fine as a description of the groups' own bets, but the post must not suggest GoLo touched the money. SEO-17 should add the registry's limit: GoLo never holds, moves or processes money. |
-| W2 | Quote: "Nobody wants a golf app. They want the argument to be over." | Who said it? A quote needs a real, consenting source. Otherwise turn it into plain prose in our own voice. |
-| W3 | Date 2026-04-23 | Draft date only. Publish with the real publication date (#75). |
-| W4 | Hero alt "Golfers testing a scoring app during a real round" and mid-article alts | The images are stock course photos, and the alts describe scenes that aren't in them. Replace the images or rewrite the alts (#75). |
-| W5 | Title "We tested GoLo on 40 rounds…" | Keep it only if N1 is supported. Otherwise "What N real rounds taught us…", or drop the numbers and run it as qualitative build notes (#74). |
+Each row is resolved one of two ways: here, before #74 closes, or as a named task that #75 must finish before publishing.
+
+| # | Draft text | Issue | Resolved when | Status |
+|---|---|---|---|---|
+| W1 | "real Saturday rounds, real money" | Whether money was at stake is N20. However that lands, the post must not suggest GoLo touched the money. | N20 is settled, and #75 adds the registry's limit: GoLo never holds, moves or processes money | Open |
+| W2 | Quote: "Nobody wants a golf app. They want the argument to be over." | Who said it? A quote needs a real, consenting source. | The owner names a source who agrees to be quoted, or it's marked for rewriting as plain prose in our own voice | Open |
+| W3 | Date 2026-04-23 | Draft date only. | Assigned to #75: publish with the real publication date | Assigned to #75 |
+| W4 | Hero alt "Golfers testing a scoring app during a real round" and mid-article alts | The images are stock course photos, and the alts describe scenes that aren't in them. | Assigned to #75: replace the images or rewrite the alts | Assigned to #75 |
+| W5 | Title "We tested GoLo on 40 rounds before writing any marketing" | The count is N1; "before writing any marketing" is N0. | The title is decided from N0 and N1: keep it only if both hold; otherwise "What N real rounds taught us…", or drop the numbers and run it as qualitative build notes | Open |
 
 ## Done when
 
 - Every N row is supported, changed or removed, with its source.
 - Every P row agrees with the registry, or the registry is updated first with `verified` set.
 - Every B row is backed by a record or removed.
+- Every W row is resolved, or assigned to #75 with its task named.
 - `docs/research/testing-summary.md` exists and has no personal data.
 
 That closes #74. #75 then rewrites the post from the supported rows only.
