@@ -24,21 +24,23 @@
  *                 different unlisted games stay distinct; a bare "other"
  *                 makes the distinct-format count a minimum
  *   app_version   e.g. 0.4.1; blank allowed
- *   finished      y/n: did the round reach a complete card entered in GoLo
- *                 (required). A card finished on paper is n, with
- *                 stopped_hole where GoLo entry stopped
- *   stopped_hole  hole where scoring stopped: required if finished is n,
- *                 blank if y
+ *   finished      y/n: did the round reach a complete card entered in GoLo.
+ *                 A card finished on paper is n, with stopped_hole where
+ *                 GoLo entry stopped. Blank if the records can't tell.
+ *   stopped_hole  hole where GoLo scoring stopped: required if finished is
+ *                 n, blank otherwise
  *   settled       app | memory | none (required)
  *   wager_changed y/n: did the group change the bet mid-round; blank allowed
  *   stakes        y/n: was the group playing for money; blank allowed
+ *   on_course     y/n: was it a round played on a course (not a demo or a
+ *                 desk test); blank allowed
  *   course        optional; read for nothing, never printed
  *   notes         optional; read for nothing, never printed
  */
 
 import { readFileSync, realpathSync } from "node:fs";
 import { isAbsolute, relative, resolve, sep } from "node:path";
-import { fileURLToPath, pathToFileURL } from "node:url";
+import { fileURLToPath } from "node:url";
 
 const repoRoot = fileURLToPath(new URL("..", import.meta.url));
 
@@ -54,7 +56,11 @@ const REQUIRED = [
   "settled",
   "wager_changed",
   "stakes",
+  "on_course",
 ];
+
+/** Largest group size the summary will print; anything bigger is an error. */
+const MAX_GROUP_SIZE = 8;
 
 /**
  * The only format names the public summary can show. A cell outside this list
@@ -182,13 +188,22 @@ function readLog(path) {
       settled: get("settled").toLowerCase(),
       wagerChanged: yesNo(get("wager_changed")),
       stakes: yesNo(get("stakes")),
+      onCourse: yesNo(get("on_course")),
     };
     if (!isCalendarDate(round.date)) fail(`date "${round.date}" isn't a real YYYY-MM-DD date`);
-    if (round.finished === undefined || round.finished === null) fail("finished must be y or n");
-    for (const [name, value] of [["own_team", round.ownTeam], ["wager_changed", round.wagerChanged], ["stakes", round.stakes]]) {
+    for (const [name, value] of [
+      ["finished", round.finished],
+      ["own_team", round.ownTeam],
+      ["wager_changed", round.wagerChanged],
+      ["stakes", round.stakes],
+      ["on_course", round.onCourse],
+    ]) {
       if (value === undefined) fail(`${name} must be y, n or blank`);
     }
-    if (round.size !== null && (!Number.isInteger(round.size) || round.size < 1)) fail("group_size must be a whole number or blank");
+    // Capped so a phone number pasted into this column can't be printed.
+    if (round.size !== null && (!Number.isInteger(round.size) || round.size < 1 || round.size > MAX_GROUP_SIZE)) {
+      fail(`group_size must be 1–${MAX_GROUP_SIZE} or blank`);
+    }
     for (const f of round.formats ?? []) {
       if (!FORMATS.includes(f) && !NUMBERED_OTHER.test(f)) {
         fail(`format "${f}" isn't one of: ${FORMATS.join(", ")}, or other-1, other-2…`);
@@ -196,7 +211,7 @@ function readLog(path) {
     }
     if (round.version !== null && !VERSION.test(round.version)) fail(`app_version "${round.version}" isn't a version like 0.6 or 0.6.2`);
     if (!["app", "memory", "none"].includes(round.settled)) fail("settled must be app, memory or none");
-    if (round.finished === true && round.stoppedHole !== null) fail("finished but has a stopped_hole");
+    if (round.finished !== false && round.stoppedHole !== null) fail("stopped_hole is only for an unfinished round");
     if (round.finished === false && !(Number.isInteger(round.stoppedHole) && round.stoppedHole >= 1 && round.stoppedHole <= 18)) {
       fail("unfinished round needs stopped_hole 1–18");
     }
@@ -250,14 +265,21 @@ function summarize(rounds) {
     `| Rounds where that isn't known | ${count((r) => r.ownTeam === null)} |`,
     `| Group size, smallest – largest | ${sizes.length ? `${sizes[0]} – ${sizes[sizes.length - 1]}` : "not known"} |`,
     `| Rounds with group size not known | ${count((r) => r.size === null)} |`,
-    `| Distinct formats | ${bareOther ? `at least ${formats.size} (a bare "other" can hide several)` : formats.size} |`,
+    // A bare "other" may be one of the numbered others, or several new games,
+    // so the most that's certain is every other label counted once.
+    `| Distinct formats | ${bareOther ? `at least ${Math.max(1, formats.size - 1)} (a bare "other" was used; renumber it)` : formats.size} |`,
     `| Rounds with formats not known | ${count((r) => r.formats === null)} |`,
     `| App versions | ${versions.join(", ") || "not recorded"} |`,
     `| Rounds with app version not known | ${count((r) => r.version === null)} |`,
     `| Played for money | ${count((r) => r.stakes === true)} |`,
     `| Not played for money | ${count((r) => r.stakes === false)} |`,
     `| Stakes not known | ${count((r) => r.stakes === null)} |`,
-    `| Finished with a complete card | ${count((r) => r.finished === true)} |`,
+    `| On a course | ${count((r) => r.onCourse === true)} |`,
+    `| Not on a course (demo or desk test) | ${count((r) => r.onCourse === false)} |`,
+    `| On a course not known | ${count((r) => r.onCourse === null)} |`,
+    `| Finished with a complete card in GoLo | ${count((r) => r.finished === true)} |`,
+    `| Unfinished in GoLo | ${count((r) => r.finished === false)} |`,
+    `| Completion not known | ${count((r) => r.finished === null)} |`,
     `| Stopped before the turn (holes 1–9) | ${count((r) => r.finished === false && r.stoppedHole <= 9)} |`,
     `| Stopped on holes 3–5 | ${count((r) => r.finished === false && r.stoppedHole >= 3 && r.stoppedHole <= 5)} |`,
     `| Stopped on the back nine (holes 10–18) | ${count((r) => r.finished === false && r.stoppedHole >= 10)} |`,
@@ -270,6 +292,7 @@ function summarize(rounds) {
     "|---|---:|---:|---:|",
     settledRow("Finished", true),
     settledRow("Unfinished", false),
+    settledRow("Completion not known", null),
     "",
     "## Formats",
     "",
@@ -313,5 +336,14 @@ function main([path]) {
   }
 }
 
-// pathToFileURL encodes the path, so this also runs from a folder with spaces.
-if (process.argv[1] && import.meta.url === pathToFileURL(resolve(process.argv[1])).href) main(process.argv.slice(2));
+/** True when this file is the script node was asked to run, symlinks and spaces included. */
+function isEntryPoint() {
+  if (!process.argv[1]) return false;
+  try {
+    return realpathSync(fileURLToPath(import.meta.url)) === realpathSync(resolve(process.argv[1]));
+  } catch {
+    return false;
+  }
+}
+
+if (isEntryPoint()) main(process.argv.slice(2));
