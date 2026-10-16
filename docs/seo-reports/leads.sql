@@ -77,16 +77,15 @@ leads AS (
 classified AS (
   SELECT
     kind,
+    -- landingSource (an explicit utm_source) decides first, as in query 1;
+    -- referrerHost only when there's no recognized tag.
     CASE
-      WHEN lower(coalesce("landingSource", '')) ~ '(^|\.)(chatgpt\.com|chat\.openai\.com|perplexity\.ai|gemini\.google\.com|copilot\.microsoft\.com|claude\.ai|you\.com|phind\.com)$'
-        OR lower(coalesce("referrerHost", '')) ~ '(^|\.)(chatgpt\.com|chat\.openai\.com|perplexity\.ai|gemini\.google\.com|copilot\.microsoft\.com|claude\.ai|you\.com|phind\.com)$'
-        THEN 'AI assistants'
-      WHEN lower(coalesce("referrerHost", '')) ~ '(^|\.)(google\.[a-z.]+|bing\.com|duckduckgo\.com|search\.yahoo\.com|ecosia\.org|search\.brave\.com)$'
-        OR lower(coalesce("landingSource", '')) ~ '^(google|bing|duckduckgo|yahoo|ecosia|brave)(\.[a-z.]+)?$'
-        THEN 'Search'
-      WHEN lower(coalesce("referrerHost", '')) ~ '(^|\.)(instagram\.com|facebook\.com|reddit\.com|x\.com|t\.co|threads\.net|tiktok\.com|youtube\.com|linkedin\.com|lnkd\.in)$'
-        OR lower(coalesce("landingSource", '')) ~ '^(instagram|ig|facebook|fb|reddit|x|twitter|threads|tiktok|youtube|linkedin)(\.com|\.net)?$'
-        THEN 'Social'
+      WHEN lower(coalesce("landingSource", '')) ~ '(^|\.)(chatgpt\.com|chat\.openai\.com|perplexity\.ai|gemini\.google\.com|copilot\.microsoft\.com|claude\.ai|you\.com|phind\.com)$' THEN 'AI assistants'
+      WHEN lower(coalesce("landingSource", '')) ~ '^(google|bing|duckduckgo|yahoo|ecosia|brave)(\.[a-z.]+)?$' THEN 'Search'
+      WHEN lower(coalesce("landingSource", '')) ~ '^(instagram|ig|facebook|fb|reddit|x|twitter|threads|tiktok|youtube|linkedin)(\.com|\.net)?$' THEN 'Social'
+      WHEN lower(coalesce("referrerHost", '')) ~ '(^|\.)(chatgpt\.com|chat\.openai\.com|perplexity\.ai|gemini\.google\.com|copilot\.microsoft\.com|claude\.ai|you\.com|phind\.com)$' THEN 'AI assistants'
+      WHEN lower(coalesce("referrerHost", '')) ~ '(^|\.)(google\.[a-z.]+|bing\.com|duckduckgo\.com|search\.yahoo\.com|ecosia\.org|search\.brave\.com)$' THEN 'Search'
+      WHEN lower(coalesce("referrerHost", '')) ~ '(^|\.)(instagram\.com|facebook\.com|reddit\.com|x\.com|t\.co|threads\.net|tiktok\.com|youtube\.com|linkedin\.com|lnkd\.in)$' THEN 'Social'
       WHEN "landingSource" IS NOT NULL OR "referrerHost" IS NOT NULL
         THEN 'Other referrer or tag'
       ELSE 'Direct or not recorded'

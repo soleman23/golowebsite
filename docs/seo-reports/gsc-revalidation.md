@@ -52,6 +52,8 @@ The October 8 baseline in `docs/seo-progress.md` covers three months, not 28 day
    - **Expected:** "Alternate page with proper canonical tag", provided the canonical is the URL we declare.
    - **Expected:** `/cookies` and `/acceptable-use` under "Excluded by 'noindex' tag". Both are noindex on purpose.
    - **Expected for now:** a sitemap URL first published fewer than 21 days before the run date and still "Discovered" or "Crawled – currently not indexed".
+   - **Expected:** `/terms` under "Excluded by 'noindex' tag", but only while `NEXT_PUBLIC_TERMS_PUBLISHED` is off. Check with `curl -s https://www.golo.golf/terms | grep -o '<meta name="robots"[^>]*>'`: a `noindex` there means it's off. On October 16, production served `/terms` without `noindex` and listed it in the sitemap, so today it should be indexed. `/tos` and `/terms-of-service` 308 to it.
+   - **Expected:** a "Not found (404)" URL that was never meant to exist (a typo or an old guess), provided it isn't in the sitemap and no page on the site links to it. Use the report's referring-page details, and run `npm run lint:content`, which fails on broken internal links. A 404 that's in the sitemap or linked from the site is a defect.
    - **Defect: open an issue.** Any non-indexed URL whose reason isn't one of the expected cases above. That includes a Google-selected canonical that differs from ours, a soft 404, an unexpected `noindex`, a robots.txt block, a server or redirect error, and a sitemap URL 21 days or older that isn't indexed, with or without a reason.
 
 ### 3. URL Inspection

@@ -40,6 +40,13 @@ import { fileURLToPath } from "node:url";
  * Query groups, first match wins, so order matters: "nassau press" is Nassau,
  * not Other games. Every query lands in exactly one group.
  */
+/**
+ * Words that mark another GOLO, even with golf or app context: "golo golf
+ * putter" is the putter brand, and "golo app diet" is the diet company.
+ */
+const OFF_TOPIC_TERMS =
+  /\b(diet\w*|weight|loss|supplements?|meal|pills?|recipes?|metabolic|putters?|dice|board)\b/;
+
 export const QUERY_GROUPS = [
   {
     // GOLO is also a diet company ("golo weight loss", "golo release"),
@@ -50,6 +57,7 @@ export const QUERY_GROUPS = [
     name: "Branded",
     test: (q) =>
       /\bgo ?lo\b/.test(q) &&
+      !OFF_TOPIC_TERMS.test(q) &&
       (/^(the )?go ?lo$/.test(q) ||
         /\b(golf\w*|app|apps|scor\w*|side games?|bets?|betting|wagers?|nassau|skins)\b/.test(q)),
   },
