@@ -21,8 +21,11 @@ declare global {
 function configure(measurementId: string) {
   if (window.__goloAnalyticsConfigured) return;
   window.dataLayer = window.dataLayer ?? [];
-  window.gtag = window.gtag ?? function gtag(...args: unknown[]) {
-    window.dataLayer?.push(args);
+  // gtag.js only processes Arguments objects; an array from `...args` is
+  // skipped, so nothing is ever sent (soleman23/golowebsite#99).
+  window.gtag = window.gtag ?? function gtag() {
+    // eslint-disable-next-line prefer-rest-params
+    window.dataLayer?.push(arguments);
   };
   window.gtag("js", new Date());
   window.gtag("config", measurementId);
