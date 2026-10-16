@@ -35,29 +35,31 @@ The unpublished `forty-rounds` post in `lib/content/blog.ts` makes claims that n
 
 Status is one of: supported (with its source), changed (with the new value), or removed.
 
+**Exact or "at least".** A count from the summary is exact only when the matching "not known" row is 0. Otherwise it's a minimum: publish it as "at least N", or resolve the blanks first. The rows below say which "not known" row applies.
+
 | # | Draft claim | Where in the draft | Settled by | Status |
 |---|---|---|---|---|
 | N0 | "before writing any marketing" (tested first, marketed after) | title, intro | Dated records: the last test round against the first marketing copy. This repo's first commit, the marketing site with copy, is 2026-07-14 (`22fcfbe`). The claim holds only if every logged round is earlier, and no earlier marketing exists elsewhere. | Unverified |
 | N1 | 40 rounds | title, intro, "THE TEST", table, summary | Summary: Rounds logged | Unverified |
 | N2 | "over one season" | "THE TEST" | Summary: First and last round | Unverified |
-| N3 | 11 groups | "THE TEST", table, paragraph | Summary: Distinct groups | Unverified |
+| N3 | 11 groups | "THE TEST", table, paragraph | Summary: Distinct groups, exact only if "Rounds with no group label" is 0 | Unverified |
 | N4 | "none of them ours" | "THE TEST" | Summary: Rounds with someone from GoLo playing = 0 **and** "Rounds where that isn't known" = 0. A "y" on a row with no group label still counts. | Unverified |
-| N5 | 6 formats | "THE TEST", table | Summary: Distinct formats, only when it's an exact number. "At least N" means a bare `other` was used; renumber those rounds as `other-1`… first. | Unverified |
+| N5 | 6 formats | "THE TEST", table | Summary: Distinct formats. It's exact only if it isn't "at least" (a bare `other` was used; renumber those rounds as `other-1`…) **and** "Rounds with formats not known" is 0. | Unverified |
 | N6 | 31 finished with a complete card | table, summary | Summary: Finished | Unverified |
 | N7 | 6 abandoned before the turn | table | Summary: Stopped before the turn | Unverified |
-| N8 | 5 of the 6 quit on holes 3–5 | table, key stat, summary | Summary: Stopped on holes 3–5 | Unverified |
+| N8 | 5 of the 6 quit on holes 3–5 | table, key stat, summary | Summary: Stopped on holes 3–5 for the numerator, and N7's resolved value for the denominator. Both change together: "5 of 6" holds only if N7 stays 6. | Unverified |
 | N9 | "The nine that fell apart" (40 − 31) | paragraph | N1 − N6. The draft's 6 before the turn leaves 3 unaccounted for: check them against "Stopped on the back nine" | Unverified |
 | N10 | 27 settled in the app | table | Summary: Settled in the app | Unverified |
 | N11 | 4 settled from memory | table | Summary: "How rounds were settled", split by finished and unfinished. 27 + 4 = 31 assumes every finished round settled and no unfinished one did; the split shows whether that's true. | Unverified |
-| N12 | 9 groups changed the wager mid-round | table, "What broke" | Summary: Changed the wager. The draft says "nine of forty **groups**", but there were 11 groups: it means rounds | Unverified, and the wording is wrong either way |
+| N12 | 9 groups changed the wager mid-round | table, "What broke" | Summary: Changed the wager, exact only if "Rounds where a wager change isn't known" is 0. The draft says "nine of forty **groups**", but there were 11 groups: it means rounds | Unverified, and the wording is wrong either way |
 | N13 | 3 features cut | dek, "THE TEST", heading, summary | Product decisions | Unverified |
 | N14 | "rebuilt scoring twice" | "What broke" | Product decisions | Unverified |
-| N15 | "first fifteen rounds asking, last twenty-five watching" | callout | Owner: was there a switch, and at which round? | Unverified |
+| N15 | "first fifteen rounds asking, last twenty-five watching" | callout | Owner: was there a switch, and at which round (k)? The second number is then N1 − k, not a fixed 25. | Unverified |
 | N16 | "Two players opened" post-round stats | "What they ignored" | Owner: is there usage data, or is this recollection? | Unverified |
 | N17 | "Forty rounds of watching… worth more than four hundred hours of designing" | first image caption | Rhetorical, not a measured figure | Remove, or keep only if N1 holds and "four hundred hours" is cut |
 | N18 | The settle-up moment "lasts about ninety seconds" | second image caption | Owner: is it timed anywhere? The live settle-up post uses "ninety seconds" as a figure of speech too. | Unverified; remove unless measured |
 | N19 | A group text thread "with eight years of history" | in-app chat card | Rhetorical | Remove |
-| N20 | "real Saturday rounds, real money" | intro | Summary: Played for money (and Stakes not known). Saturday is the summary's "Rounds on a Saturday" against Rounds logged; drop "Saturday" unless they're equal or the copy says "mostly" with the number. | Unverified |
+| N20 | "real Saturday rounds, real money" | intro | Summary: Played for money (and Stakes not known). Saturday is the summary's "Rounds on a Saturday" against Rounds logged; keep "Saturday" only if every round was one. "Mostly" needs more than half of Rounds logged, with the number given; otherwise give the number alone or drop the word. | Unverified |
 
 **Default:** any number in the draft that isn't in this table is removed, not carried over.
 
