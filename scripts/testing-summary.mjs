@@ -19,7 +19,10 @@
  *   group         a private label ("G1", "G2"…), never a name; blank allowed
  *   group_size    players in the round; blank allowed
  *   own_team      y/n: did anyone from GoLo play in the group; blank allowed
- *   formats       games played, ";"-separated, from FORMATS below; blank allowed
+ *   formats       games played, ";"-separated, from FORMATS below; blank allowed.
+ *                 A game not on the list is "other-1", "other-2"… so two
+ *                 different unlisted games stay distinct; a bare "other"
+ *                 makes the distinct-format count a minimum
  *   app_version   e.g. 0.4.1; blank allowed
  *   finished      y/n: did the round reach a complete card (required)
  *   stopped_hole  hole where scoring stopped: required if finished is n,
@@ -75,6 +78,7 @@ const FORMATS = [
 ];
 
 const VERSION = /^\d+\.\d+(\.\d+)?$/;
+const NUMBERED_OTHER = /^other-\d{1,2}$/;
 
 /** Records with the physical line each one starts on, blank lines dropped. */
 function parseCsv(text) {
@@ -151,6 +155,8 @@ function readLog(path) {
   const rounds = records.map(({ line, cells }) => {
     const get = (name) => (cells[cols.indexOf(name)] ?? "").trim();
     const fail = (message) => problems.push(`line ${line}: ${message}`);
+    // A missing or extra comma shifts every later value into the wrong column.
+    if (cells.length !== cols.length) fail(`has ${cells.length} fields, the header has ${cols.length}`);
     const formats = [...new Set(get("formats").toLowerCase().split(";").map((f) => f.trim()).filter(Boolean))];
     const size = get("group_size");
     const round = {
@@ -174,7 +180,9 @@ function readLog(path) {
     }
     if (round.size !== null && (!Number.isInteger(round.size) || round.size < 1)) fail("group_size must be a whole number or blank");
     for (const f of round.formats ?? []) {
-      if (!FORMATS.includes(f)) fail(`format "${f}" isn't one of: ${FORMATS.join(", ")}`);
+      if (!FORMATS.includes(f) && !NUMBERED_OTHER.test(f)) {
+        fail(`format "${f}" isn't one of: ${FORMATS.join(", ")}, or other-1, other-2…`);
+      }
     }
     if (round.version !== null && !VERSION.test(round.version)) fail(`app_version "${round.version}" isn't x.y or x.y.z`);
     if (!["app", "memory", "none"].includes(round.settled)) fail("settled must be app, memory or none");
@@ -194,6 +202,8 @@ function summarize(rounds) {
   const dates = rounds.map((r) => r.date).sort();
   const groups = new Set(rounds.map((r) => r.group).filter(Boolean));
   const ownGroups = new Set(rounds.filter((r) => r.ownTeam === true && r.group).map((r) => r.group));
+  const bareOther = rounds.some((r) => r.formats?.includes("other"));
+  const isSaturday = (date) => new Date(`${date}T00:00:00Z`).getUTCDay() === 6;
   const formats = new Map();
   for (const r of rounds) for (const f of r.formats ?? []) formats.set(f, (formats.get(f) ?? 0) + 1);
   const versions = [...new Set(rounds.map((r) => r.version).filter(Boolean))].sort((a, b) =>
@@ -222,13 +232,15 @@ function summarize(rounds) {
     `| Rounds logged | ${rounds.length} |`,
     `| First round | ${dates[0]} |`,
     `| Last round | ${dates[dates.length - 1]} |`,
+    `| Rounds on a Saturday | ${count((r) => isSaturday(r.date))} |`,
     `| Distinct groups | ${groups.size} |`,
     `| Rounds with no group label | ${count((r) => r.group === null)} |`,
-    `| Groups with someone from GoLo playing | ${ownGroups.size} |`,
+    `| Rounds with someone from GoLo playing | ${count((r) => r.ownTeam === true)} |`,
+    `| Groups with someone from GoLo playing (labelled groups) | ${ownGroups.size} |`,
     `| Rounds where that isn't known | ${count((r) => r.ownTeam === null)} |`,
     `| Group size, smallest – largest | ${sizes.length ? `${sizes[0]} – ${sizes[sizes.length - 1]}` : "not known"} |`,
     `| Rounds with group size not known | ${count((r) => r.size === null)} |`,
-    `| Distinct formats | ${formats.size} |`,
+    `| Distinct formats | ${bareOther ? `at least ${formats.size} (a bare "other" can hide several)` : formats.size} |`,
     `| Rounds with formats not known | ${count((r) => r.formats === null)} |`,
     `| App versions | ${versions.join(", ") || "not recorded"} |`,
     `| Rounds with app version not known | ${count((r) => r.version === null)} |`,

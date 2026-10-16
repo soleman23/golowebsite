@@ -14,7 +14,7 @@ The unpublished `forty-rounds` post in `lib/content/blog.ts` makes claims that n
    | `group` | a private label (`G1`, `G2`…), never a name; blank if unknown |
    | `group_size` | players in the round; blank if unknown |
    | `own_team` | `y` if anyone from GoLo played in the group, `n` if not, blank if unknown |
-   | `formats` | games played, separated by `;`, from this list only: `nassau`, `skins`, `wolf`, `bingo-bango-bongo`, `best-score`, `closest-to-pin`, `longest-drive`, `birdies`, `junk`, `overall-match`, `best-ball`, `scramble`, `match-play`, `stroke-play`, `quota`, `other`; blank if unknown |
+   | `formats` | games played, separated by `;`, from this list only: `nassau`, `skins`, `wolf`, `bingo-bango-bongo`, `best-score`, `closest-to-pin`, `longest-drive`, `birdies`, `junk`, `overall-match`, `best-ball`, `scramble`, `match-play`, `stroke-play`, `quota`. A game not on the list is `other-1`, `other-2`… (the same number for the same game every time, so different games stay distinct); blank if unknown |
    | `app_version` | the build used, `x.y` or `x.y.z`; blank if unknown |
    | `finished` | `y` or `n`: did the round reach a complete card (required) |
    | `stopped_hole` | hole where scoring stopped; required if unfinished, blank if finished |
@@ -41,8 +41,8 @@ Status is one of: supported (with its source), changed (with the new value), or 
 | N1 | 40 rounds | title, intro, "THE TEST", table, summary | Summary: Rounds logged | Unverified |
 | N2 | "over one season" | "THE TEST" | Summary: First and last round | Unverified |
 | N3 | 11 groups | "THE TEST", table, paragraph | Summary: Distinct groups | Unverified |
-| N4 | "none of them ours" | "THE TEST" | Summary: Groups with someone from GoLo playing = 0 | Unverified |
-| N5 | 6 formats | "THE TEST", table | Summary: Distinct formats | Unverified |
+| N4 | "none of them ours" | "THE TEST" | Summary: Rounds with someone from GoLo playing = 0 **and** "Rounds where that isn't known" = 0. A "y" on a row with no group label still counts. | Unverified |
+| N5 | 6 formats | "THE TEST", table | Summary: Distinct formats, only when it's an exact number. "At least N" means a bare `other` was used; renumber those rounds as `other-1`… first. | Unverified |
 | N6 | 31 finished with a complete card | table, summary | Summary: Finished | Unverified |
 | N7 | 6 abandoned before the turn | table | Summary: Stopped before the turn | Unverified |
 | N8 | 5 of the 6 quit on holes 3–5 | table, key stat, summary | Summary: Stopped on holes 3–5 | Unverified |
@@ -57,7 +57,7 @@ Status is one of: supported (with its source), changed (with the new value), or 
 | N17 | "Forty rounds of watching… worth more than four hundred hours of designing" | first image caption | Rhetorical, not a measured figure | Remove, or keep only if N1 holds and "four hundred hours" is cut |
 | N18 | The settle-up moment "lasts about ninety seconds" | second image caption | Owner: is it timed anywhere? The live settle-up post uses "ninety seconds" as a figure of speech too. | Unverified; remove unless measured |
 | N19 | A group text thread "with eight years of history" | in-app chat card | Rhetorical | Remove |
-| N20 | "real Saturday rounds, real money" | intro | Summary: Played for money (and Stakes not known). Saturdays need the dates; drop "Saturday" unless they hold. | Unverified |
+| N20 | "real Saturday rounds, real money" | intro | Summary: Played for money (and Stakes not known). Saturday is the summary's "Rounds on a Saturday" against Rounds logged; drop "Saturday" unless they're equal or the copy says "mostly" with the number. | Unverified |
 
 **Default:** any number in the draft that isn't in this table is removed, not carried over.
 
@@ -76,7 +76,7 @@ These must also match `lib/content/capabilities.ts` (the registry) and `/feature
 | P7 | Setup is now one screen with sane defaults | Not in the registry | True of the current build? | Unverified |
 | P8 | Score entry accepts scores out of order | Not in the registry | True of the current build? | Unverified |
 | P9 | The live bet state shows on the scoring screen | Not in the registry | True of the current build? | Unverified |
-| P10 | One-tap logging for a press or a carry, stamped to the hole | `overall-match-presses`: live, called, on Overall Match only. Nassau doesn't take presses. | Does the copy hold once it says presses are on Overall Match? | Must be reworded to match the registry |
+| P10 | One-tap logging for a press or a carry, stamped to the hole | Presses: `overall-match-presses` is live, called, on Overall Match only, and Nassau doesn't take presses. Carries: not in the registry, and `/how-it-works` says skins "carry automatically on tied holes", which isn't a tap. | Presses: does the copy hold once it says Overall Match? Carries: is there a manual carry log in the app? | Presses must be reworded to match the registry. The carry half is removed unless the app or the owner confirms a manual carry log. |
 | P11 | The settle screen gives the fewest payments | `settle-up`: live | — | Supported by the registry |
 | P12 | "Nobody has asked for any of them since" | — | Is there a record (support messages, feedback)? | Unverified |
 | P13 | "Three things got used in every single round" | — | Is there a record, or is it an impression? | Unverified |
