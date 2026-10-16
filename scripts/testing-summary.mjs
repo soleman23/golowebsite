@@ -16,7 +16,8 @@
  * docs/research/testing-claims.md has the full spec). Blank means unknown
  * wherever it's allowed, and unknowns are counted, never guessed:
  *   date          YYYY-MM-DD (required)
- *   group         a private label ("G1", "G2"…), never a name; blank allowed
+ *   group         a private label: G and a number ("G1", "G12"), never a
+ *                 name; "g 1" reads as G1; blank allowed
  *   group_size    players in the round; blank allowed
  *   own_team      y/n: did anyone from GoLo play in the group; blank allowed
  *   formats       games played, ";"-separated, from FORMATS below; blank allowed.
@@ -25,15 +26,17 @@
  *                 makes the distinct-format count a minimum
  *   app_version   e.g. 0.4.1; blank allowed
  *   finished      y/n: did the round reach a complete card entered in GoLo.
- *                 A card finished on paper is n, with stopped_hole where
- *                 GoLo entry stopped. Blank if the records can't tell.
- *   stopped_hole  hole where GoLo scoring stopped: required if finished is
- *                 n, blank otherwise
- *   settled       app | memory | none (required)
+ *                 A card finished on paper is n. Blank if the records can't
+ *                 tell.
+ *   stopped_hole  the last hole with a score entered in GoLo, 0 if none
+ *                 (stopped during setup): required if finished is n, blank
+ *                 otherwise
+ *   settled       app | memory | none; blank allowed
  *   wager_changed y/n: did the group change the bet mid-round; blank allowed
  *   stakes        y/n: was the group playing for money; blank allowed
  *   on_course     y/n: was it a round played on a course (not a demo or a
- *                 desk test); blank allowed
+ *                 desk test); blank allowed. Rows marked n are left out of
+ *                 every count and reported only as a number
  *   course        optional; read for nothing, never printed
  *   notes         optional; read for nothing, never printed
  */
@@ -87,6 +90,28 @@ const FORMATS = [
 
 // One or two digits per part, like GoLo's 0.6.2. A dotted phone number
 // (555.123.4567) has longer groups and fails, so it can't reach the summary.
+/**
+ * Formats GoLo runs today, per lib/content/capabilities.ts (game-library,
+ * overall-match-presses, and the scramble team handicap). The summary shows
+ * which logged formats are in it, so the study can't imply GoLo runs the rest.
+ */
+const IN_GOLO = new Set([
+  "nassau",
+  "skins",
+  "wolf",
+  "bingo-bango-bongo",
+  "best-score",
+  "closest-to-pin",
+  "longest-drive",
+  "birdies",
+  "junk",
+  "overall-match",
+  "scramble",
+]);
+
+const WHOLE_NUMBER = /^\d+$/;
+const GROUP_LABEL = /^G\d{1,3}$/;
+
 const VERSION = /^\d{1,2}\.\d{1,2}(\.\d{1,2})?$/;
 const NUMBERED_OTHER = /^other-\d{1,2}$/;
 
@@ -122,7 +147,9 @@ function parseCsv(text) {
       } else {
         field += c;
       }
-    } else if (c === '"') {
+    } else if (c === '"' && field === "") {
+      // Only a quote at the start of a field opens one. Mid-field it's a
+      // literal character: an inch mark in "a 6" putt" mustn't swallow rows.
       quoted = true;
     } else if (c === ",") {
       row.push(field);
@@ -175,22 +202,25 @@ function readLog(path) {
     if (cells.length !== cols.length) fail(`has ${cells.length} fields, the header has ${cols.length}`);
     const formats = [...new Set(get("formats").toLowerCase().split(";").map((f) => f.trim()).filter(Boolean))];
     const size = get("group_size");
+    const stop = get("stopped_hole");
+    const group = get("group").toUpperCase().replace(/\s+/g, "");
     const round = {
       date: get("date"),
-      group: get("group") || null,
-      size: size === "" ? null : Number(size),
+      group: group || null,
+      size: size === "" ? null : WHOLE_NUMBER.test(size) ? Number(size) : NaN,
       ownTeam: yesNo(get("own_team")),
       // A format counts once per round, however often a row repeats it.
       formats: formats.length ? formats : null,
       version: get("app_version") || null,
       finished: yesNo(get("finished")),
-      stoppedHole: get("stopped_hole") === "" ? null : Number(get("stopped_hole")),
-      settled: get("settled").toLowerCase(),
+      stoppedHole: stop === "" ? null : WHOLE_NUMBER.test(stop) ? Number(stop) : NaN,
+      settled: get("settled").toLowerCase() || null,
       wagerChanged: yesNo(get("wager_changed")),
       stakes: yesNo(get("stakes")),
       onCourse: yesNo(get("on_course")),
     };
     if (!isCalendarDate(round.date)) fail(`date "${round.date}" isn't a real YYYY-MM-DD date`);
+    if (round.group !== null && !GROUP_LABEL.test(round.group)) fail("group must be G and a number (G1, G12) or blank");
     for (const [name, value] of [
       ["finished", round.finished],
       ["own_team", round.ownTeam],
@@ -210,10 +240,10 @@ function readLog(path) {
       }
     }
     if (round.version !== null && !VERSION.test(round.version)) fail(`app_version "${round.version}" isn't a version like 0.6 or 0.6.2`);
-    if (!["app", "memory", "none"].includes(round.settled)) fail("settled must be app, memory or none");
+    if (round.settled !== null && !["app", "memory", "none"].includes(round.settled)) fail("settled must be app, memory, none or blank");
     if (round.finished !== false && round.stoppedHole !== null) fail("stopped_hole is only for an unfinished round");
-    if (round.finished === false && !(Number.isInteger(round.stoppedHole) && round.stoppedHole >= 1 && round.stoppedHole <= 18)) {
-      fail("unfinished round needs stopped_hole 1–18");
+    if (round.finished === false && !(Number.isInteger(round.stoppedHole) && round.stoppedHole >= 0 && round.stoppedHole <= 17)) {
+      fail("unfinished round needs stopped_hole 0–17 (the last hole scored in GoLo; 0 if none)");
     }
     return round;
   });
@@ -222,8 +252,14 @@ function readLog(path) {
   return rounds;
 }
 
-function summarize(rounds) {
+function summarize(logged) {
+  // Demo and desk-test rows aren't rounds of golf, so they count nowhere.
+  const rounds = logged.filter((r) => r.onCourse !== false);
+  if (!rounds.length) throw new Error("log has no rounds that weren't marked as demos (on_course n)");
   const count = (pred) => rounds.filter(pred).length;
+  const seen = new Map();
+  for (const r of rounds) if (r.group) seen.set(`${r.date}|${r.group}`, (seen.get(`${r.date}|${r.group}`) ?? 0) + 1);
+  const repeated = [...seen.values()].filter((n) => n > 1).reduce((a, n) => a + n, 0);
   const dates = rounds.map((r) => r.date).sort();
   const groups = new Set(rounds.map((r) => r.group).filter(Boolean));
   const ownGroups = new Set(rounds.filter((r) => r.ownTeam === true && r.group).map((r) => r.group));
@@ -238,8 +274,10 @@ function summarize(rounds) {
   const byHole = new Map();
   for (const r of unfinished) byHole.set(r.stoppedHole, (byHole.get(r.stoppedHole) ?? 0) + 1);
   const sizes = rounds.map((r) => r.size).filter((s) => s !== null).sort((a, b) => a - b);
-  const settledRow = (label, finished) =>
-    `| ${label} | ${["app", "memory", "none"].map((s) => count((r) => r.finished === finished && r.settled === s)).join(" | ")} |`;
+  const settledRow = (label, match) =>
+    `| ${label} | ${["app", "memory", "none", null].map((s) => count((r) => match(r) && r.settled === s)).join(" | ")} |`;
+  const golo = [...formats.keys()].filter((f) => IN_GOLO.has(f));
+  const unscored = (r) => r.finished === false;
 
   const out = [
     "# Testing summary",
@@ -255,6 +293,8 @@ function summarize(rounds) {
     "| Measure | Value |",
     "|---|---:|",
     `| Rounds logged | ${rounds.length} |`,
+    `| Demo or desk-test rows left out | ${logged.length - rounds.length} |`,
+    `| Rows sharing a date and group with another row | ${repeated} |`,
     `| First round | ${dates[0]} |`,
     `| Last round | ${dates[dates.length - 1]} |`,
     `| Rounds on a Saturday | ${count((r) => isSaturday(r.date))} |`,
@@ -268,6 +308,7 @@ function summarize(rounds) {
     // A bare "other" may be one of the numbered others, or several new games,
     // so the most that's certain is every other label counted once.
     `| Distinct formats | ${bareOther ? `at least ${Math.max(1, formats.size - 1)} (a bare "other" was used; renumber it)` : formats.size} |`,
+    `| Distinct formats GoLo runs today | ${golo.length} |`,
     `| Rounds with formats not known | ${count((r) => r.formats === null)} |`,
     `| App versions | ${versions.join(", ") || "not recorded"} |`,
     `| Rounds with app version not known | ${count((r) => r.version === null)} |`,
@@ -275,34 +316,35 @@ function summarize(rounds) {
     `| Not played for money | ${count((r) => r.stakes === false)} |`,
     `| Stakes not known | ${count((r) => r.stakes === null)} |`,
     `| On a course | ${count((r) => r.onCourse === true)} |`,
-    `| Not on a course (demo or desk test) | ${count((r) => r.onCourse === false)} |`,
     `| On a course not known | ${count((r) => r.onCourse === null)} |`,
     `| Finished with a complete card in GoLo | ${count((r) => r.finished === true)} |`,
     `| Unfinished in GoLo | ${count((r) => r.finished === false)} |`,
     `| Completion not known | ${count((r) => r.finished === null)} |`,
-    `| Stopped before the turn (holes 1–9) | ${count((r) => r.finished === false && r.stoppedHole <= 9)} |`,
-    `| Stopped on holes 3–5 | ${count((r) => r.finished === false && r.stoppedHole >= 3 && r.stoppedHole <= 5)} |`,
-    `| Stopped on the back nine (holes 10–18) | ${count((r) => r.finished === false && r.stoppedHole >= 10)} |`,
+    `| Stopped during setup (no hole scored) | ${count((r) => unscored(r) && r.stoppedHole === 0)} |`,
+    `| Stopped before the turn (last hole scored 0–8) | ${count((r) => unscored(r) && r.stoppedHole <= 8)} |`,
+    `| First unscored hole 3–5 (last hole scored 2–4) | ${count((r) => unscored(r) && r.stoppedHole >= 2 && r.stoppedHole <= 4)} |`,
+    `| Stopped on the back nine (last hole scored 9–17) | ${count((r) => unscored(r) && r.stoppedHole >= 9)} |`,
     `| Changed the wager mid-round | ${count((r) => r.wagerChanged === true)} |`,
     `| Rounds where a wager change isn't known | ${count((r) => r.wagerChanged === null)} |`,
     "",
     "## How rounds were settled",
     "",
-    "| | In the app | From memory | Not settled |",
-    "|---|---:|---:|---:|",
-    settledRow("Finished", true),
-    settledRow("Unfinished", false),
-    settledRow("Completion not known", null),
+    "| | In the app | From memory | Not settled | Settlement not known |",
+    "|---|---:|---:|---:|---:|",
+    settledRow("Finished", (r) => r.finished === true),
+    settledRow("Unfinished", (r) => r.finished === false),
+    settledRow("Completion not known", (r) => r.finished === null),
+    settledRow("All rounds", () => true),
     "",
     "## Formats",
     "",
-    "| Format | Rounds it was played in |",
-    "|---|---:|",
-    ...[...formats].sort((a, b) => b[1] - a[1]).map(([f, n]) => `| ${f} | ${n} |`),
+    "| Format | Rounds it was played in | GoLo runs it today |",
+    "|---|---:|---|",
+    ...[...formats].sort((a, b) => b[1] - a[1]).map(([f, n]) => `| ${f} | ${n} | ${IN_GOLO.has(f) ? "yes" : "no"} |`),
     "",
     "## Where unfinished rounds stopped",
     "",
-    "| Hole | Rounds |",
+    "| Last hole scored | Rounds |",
     "|---:|---:|",
     ...[...byHole].sort((a, b) => a[0] - b[0]).map(([h, n]) => `| ${h} | ${n} |`),
   ];

@@ -11,20 +11,20 @@ The unpublished `forty-rounds` post in `lib/content/blog.ts` makes claims that n
    | Column | Value |
    |---|---|
    | `date` | YYYY-MM-DD (required) |
-   | `group` | a private label (`G1`, `G2`…), never a name; blank if unknown |
-   | `group_size` | players in the round; blank if unknown |
+   | `group` | a private label: `G` and a number (`G1`, `G12`), never a name. `g 1` reads as `G1`. Use the same label for the same group every time; blank if unknown |
+   | `group_size` | players in the round, 1–8; blank if unknown |
    | `own_team` | `y` if anyone from GoLo played in the group, `n` if not, blank if unknown |
    | `formats` | games played, separated by `;`, from this list only: `nassau`, `skins`, `wolf`, `bingo-bango-bongo`, `best-score`, `closest-to-pin`, `longest-drive`, `birdies`, `junk`, `overall-match`, `best-ball`, `scramble`, `match-play`, `stroke-play`, `quota`. A game not on the list is `other-1`, `other-2`… (the same number for the same game every time, so different games stay distinct); blank if unknown |
    | `app_version` | the build used, like `0.6` or `0.6.2` (one or two digits per part); blank if unknown |
    | `finished` | `y` or `n`: did the round reach a complete card **in GoLo**. A round finished on paper or in another app is `n`, with `stopped_hole` where GoLo entry stopped. Blank if the records can't tell; never guess `n`. |
-   | `stopped_hole` | hole where GoLo scoring stopped; required if `finished` is `n`, blank otherwise |
-   | `settled` | `app`, `memory` or `none` (required) |
+   | `stopped_hole` | the **last hole with a score entered in GoLo**, `0` if none (stopped during setup). Required if `finished` is `n`, blank otherwise |
+   | `settled` | `app`, `memory` or `none`; blank if unknown |
    | `wager_changed` | `y` or `n`: did the group change the bet mid-round; blank if unknown |
    | `stakes` | `y` or `n`: was the group playing for money; blank if unknown |
-   | `on_course` | `y` if it was a round played on a course, `n` for a demo or desk test; blank if unknown |
+   | `on_course` | `y` if it was a round played on a course, `n` for a demo or desk test; blank if unknown. Rows marked `n` are left out of every count. |
    | `course`, `notes` | optional; read for nothing and never printed |
 
-   A round you can't reconstruct goes in with what's known. Leave any field blank rather than guess, except `date`, `settled` and (for a round marked unfinished) `stopped_hole`. The summary counts every unknown separately. Don't fill gaps from memory of the draft.
+   A round you can't reconstruct goes in with what's known. Leave any field blank rather than guess, except `date` and (for a round marked unfinished) `stopped_hole`. Log each round once; if records overlap, merge them into one row. The summary counts every unknown separately. Don't fill gaps from memory of the draft.
 
    The summary is public, so the script lets nothing free-form through: formats must come from the list above, and versions must look like `0.4.1`. A name typed into the wrong column stops the run instead of reaching the summary.
 
@@ -40,20 +40,20 @@ Status is one of: supported (with its source), changed (with the new value), or 
 
 | # | Draft claim | Where in the draft | Settled by | Status |
 |---|---|---|---|---|
-| N0 | "before writing any marketing" (tested first, marketed after) | title, intro | Dated records: the last test round against the first marketing copy. This repo's first commit, the marketing site with copy, is 2026-07-14 (`22fcfbe`). The claim holds only if every logged round is earlier, and no earlier marketing exists elsewhere. | Unverified |
-| N1 | 40 rounds | title, intro, "THE TEST", table, summary | Summary: Rounds logged | Unverified |
+| N0 | "before writing any marketing" (tested first, marketed after) | title, intro | Dated records: the last test round against the first marketing. The earliest public marketing date visible today is the oldest published post, `bingo-bango-bongo`, dated 2026-06-18 (`lib/content/blog.ts`); this repo's first commit is 2026-07-14 (`22fcfbe`). The claim holds only if every logged round is before 2026-06-18, and no earlier marketing exists elsewhere. | Unverified |
+| N1 | 40 rounds | title, intro, "THE TEST", table, summary | Summary: Rounds logged (demo and desk-test rows are already left out). Exact only if "Rows sharing a date and group with another row" is 0, or the owner confirms those were separate rounds. "Carried around a golf course" also needs "On a course not known" = 0. | Unverified |
 | N2 | "over one season" | "THE TEST" | Summary: First and last round | Unverified |
 | N3 | 11 groups | "THE TEST", table, paragraph | Summary: Distinct groups, exact only if "Rounds with no group label" is 0 | Unverified |
 | N4 | "none of them ours" | "THE TEST" | Summary: Rounds with someone from GoLo playing = 0 **and** "Rounds where that isn't known" = 0. A "y" on a row with no group label still counts. | Unverified |
-| N5 | 6 formats | "THE TEST", table | Summary: Distinct formats. It's exact only if it isn't "at least" (a bare `other` was used; renumber those rounds as `other-1`…) **and** "Rounds with formats not known" is 0. | Unverified |
+| N5 | 6 formats | "THE TEST", table | Summary: Distinct formats. It's exact only if it isn't "at least" (a bare `other` was used; renumber those rounds as `other-1`…) **and** "Rounds with formats not known" is 0. If "Distinct formats GoLo runs today" is lower, the post must not imply GoLo runs the others. | Unverified |
 | N6 | 31 finished with a complete card, and "Score entry survives a round" | table, summary | Summary: Finished. `finished` means a complete card in GoLo, so the conclusion holds only for those rounds. If the records can't tell a GoLo card from a paper one, leave `finished` blank. N6 and N7–N9 are then exact only if "Completion not known" is 0. | Unverified |
-| N7 | 6 abandoned before the turn | table | Summary: Stopped before the turn, exact only if "Completion not known" is 0 | Unverified |
-| N8 | 5 of the 6 quit on holes 3–5 | table, key stat, summary | Summary: Stopped on holes 3–5 for the numerator, and N7's resolved value for the denominator. Both change together: "5 of 6" holds only if N7 stays 6. | Unverified |
-| N9 | "The nine that fell apart" (40 − 31) | paragraph | N1 − N6. The draft's 6 before the turn leaves 3 unaccounted for: check them against "Stopped on the back nine" | Unverified |
-| N10 | 27 settled in the app | table | Summary: Settled in the app | Unverified |
+| N7 | 6 abandoned before the turn | table | Summary: "Stopped before the turn (last hole scored 0–8)", exact only if "Completion not known" is 0 | Unverified |
+| N8 | 5 of the 6 quit on holes 3–5 | table, key stat, summary | "Quit on hole h" means h was the first hole not scored. Numerator: "First unscored hole 3–5 (last hole scored 2–4)". Denominator: N7's resolved value. "5 of 6" holds only if both match. | Unverified |
+| N9 | "The nine that fell apart" (40 − 31) | paragraph | Summary: "Unfinished in GoLo", exact only if "Completion not known" is 0. N1 − N6 isn't the same number once completion can be unknown. | Unverified |
+| N10 | 27 settled in the app | table | Summary: "How rounds were settled", the All rounds row, In the app column. Exact only if that row's Settlement not known is 0. | Unverified |
 | N11 | 4 settled from memory | table | Summary: "How rounds were settled", split by finished and unfinished. 27 + 4 = 31 assumes every finished round settled and no unfinished one did; the split shows whether that's true. | Unverified |
 | N12 | 9 groups changed the wager mid-round | table, "What broke" | Summary: Changed the wager, exact only if "Rounds where a wager change isn't known" is 0. The draft says "nine of forty **groups**", but there were 11 groups: it means rounds | Unverified, and the wording is wrong either way |
-| N13 | 3 features cut | dek, "THE TEST", heading, summary | Product decisions | Unverified |
+| N13 | 3 features cut, "because nobody used them" | excerpt, dek, "THE TEST", heading, summary | Product decisions for the count. The excerpt and dek's reason contradicts B4 (GPS was cut because watches and lasers already cover it) and needs B5–B6's records; otherwise the excerpt and dek drop the reason. | Unverified |
 | N14 | "rebuilt scoring twice" | "What broke" | Product decisions | Unverified |
 | N15 | "first fifteen rounds asking, last twenty-five watching" | callout | Owner: was there a switch, and at which round (k)? The second number is then N1 − k, not a fixed 25. | Unverified |
 | N16 | "Two players opened" post-round stats | "What they ignored" | Owner: is there usage data, or is this recollection? | Unverified |
@@ -61,6 +61,8 @@ Status is one of: supported (with its source), changed (with the new value), or 
 | N18 | The settle-up moment "lasts about ninety seconds" | second image caption | Owner: is it timed anywhere? The live settle-up post uses "ninety seconds" as a figure of speech too. | Unverified; remove unless measured |
 | N19 | A group text thread "with eight years of history" | in-app chat card | Rhetorical | Remove |
 | N20 | "real Saturday rounds, real money" | intro | "Real money" only if Played for money equals Rounds logged; otherwise give the count ("N of M rounds were played for money") or drop it. "Real rounds" (here and in the intro's "not demos, not internal testing") only if On a course equals Rounds logged. Saturday is the summary's "Rounds on a Saturday" against Rounds logged; keep "Saturday" only if every round was one. "Mostly" needs more than half of Rounds logged, with the number given; otherwise give the number alone or drop the word. | Unverified |
+| N21 | "with the numbers from all forty rounds" | dek | N1, plus every "not known" row being 0. Otherwise drop "all". | Unverified |
+| N22 | "we tracked one thing above everything else" | "The only question that mattered" | Owner: were completion and dropouts recorded at the time, or reconstructed for this log? If reconstructed, the post says so in its methodology section (#75) and drops "tracked". | Unverified |
 
 **Default:** any number in the draft that isn't in this table is removed, not carried over.
 
@@ -83,6 +85,7 @@ These must also match `lib/content/capabilities.ts` (the registry) and `/feature
 | P11 | The settle screen gives the fewest payments | `settle-up`: live | — | Supported by the registry |
 | P12 | "Nobody has asked for any of them since" | — | Is there a record (support messages, feedback)? | Unverified |
 | P13 | "Three things got used in every single round" | — | Is there a record, or is it an impression? | Unverified |
+| P14 | "We had no way to let them" (change the bet mid-round) and "We treated the bet as a setting chosen once" | "What broke" | Implies GoLo now lets a group change stakes mid-round. Not in the registry, apart from called presses on Overall Match. Owner: can a group change a game's stake mid-round in the current build? | Reword as past tense with no current-capability claim unless the registry gains the entry |
 
 ## Usage and behaviour claims
 
@@ -100,6 +103,7 @@ The draft also says what testers did and why. A yes to "was it built?" in the ta
 | B8 | Groups sent each other the settle screenshot instead of using the feed | same | Notes or messages | Remove |
 | B9 | The live bet state, press logging and settle screen were used in every round without prompting | "What we kept" | Usage data, ties to P13 | Remove |
 | B10 | Everyone else "already has a stats app they do not use either" | "What they ignored" | A survey or notes. N16's usage data doesn't cover it. | Remove |
+| B11 | Early dropouts were "not from boredom, but because setup had spilled into the round" | key stat | Notes or messages at the time that give the cause | Remove the cause, and keep only the counts (N8) |
 
 ## Words and framing
 
