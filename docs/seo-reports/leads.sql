@@ -32,7 +32,12 @@ ai AS (
       WHEN lower(coalesce("referrerHost", '')) ~ '(^|\.)(chatgpt\.com|chat\.openai\.com|perplexity\.ai|gemini\.google\.com|copilot\.microsoft\.com|claude\.ai|you\.com|phind\.com)$'
         THEN 'referrer'
     END AS recorded_as,
-    lower(coalesce("landingSource", "referrerHost")) AS host
+    CASE
+      WHEN lower(coalesce("landingSource", '')) ~ '(^|\.)(chatgpt\.com|chat\.openai\.com|perplexity\.ai|gemini\.google\.com|copilot\.microsoft\.com|claude\.ai|you\.com|phind\.com)$'
+        THEN lower("landingSource")
+      WHEN lower(coalesce("referrerHost", '')) ~ '(^|\.)(chatgpt\.com|chat\.openai\.com|perplexity\.ai|gemini\.google\.com|copilot\.microsoft\.com|claude\.ai|you\.com|phind\.com)$'
+        THEN lower("referrerHost")
+    END AS host
   FROM leads, bounds
   WHERE "createdAt" >= bounds.start_at AND "createdAt" < bounds.end_at
 )

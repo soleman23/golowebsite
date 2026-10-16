@@ -108,7 +108,7 @@ The lead table is the volume source. GA4 key events cover only the opted-in samp
 
 ## 7. Outreach log
 
-One row per message the owner sent this month, from the targets in `docs/outreach.md`. Record no contact details, only the target's name as listed there.
+One row per message the owner sent this month, from the SEO-22 target list (`docs/outreach.md`, added by soleman23/golowebsite#80's PR). Record no contact details, only the target's name as listed there.
 
 | Date sent | Target | Page offered | Reply | Link or mention earned (URL) |
 |---|---|---|---|---|

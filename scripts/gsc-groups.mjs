@@ -10,9 +10,12 @@
  *
  *   node scripts/gsc-groups.mjs <export-folder>
  *   node scripts/gsc-groups.mjs <export-folder> --baseline <older-export-folder>
+ *   node scripts/gsc-groups.mjs <export-folder> --sitemap <sitemap.xml file or URL>
  *
  * Prints Markdown tables to paste into docs/seo-progress.md or a report. It
- * reads only the files it's given and changes nothing.
+ * changes nothing. The export leaves out pages with no impressions, so the
+ * guide and post tables are built from the sitemap (the live one by default)
+ * and list every guide and post, "not in the export" included.
  *
  * Caveats the tables can't show, so say them in the write-up:
  * - Search Console leaves anonymized queries out of the query table, so query
@@ -34,7 +37,12 @@ export const QUERY_GROUPS = [
     // GOLO is also a diet company, putters and a dice game. "golo board"
     // showed in the October 8 baseline; it's watched below, not branded.
     name: "Off-topic GOLO",
-    test: (q) => /\bgo ?lo\b/.test(q) && /\b(diet|board|putters?|dice|pills?|release|recipes?)\b/.test(q),
+    // "GOLO Release" is the diet supplement, but "golo golf release date" is
+    // launch interest, so "release" counts only without golf or app context.
+    test: (q) =>
+      /\bgo ?lo\b/.test(q) &&
+      (/\b(diet|board|putters?|dice|pills?|recipes?)\b/.test(q) ||
+        (/\brelease\b/.test(q) && !/\b(golf|app)\b/.test(q))),
   },
   { name: "Branded", test: (q) => /\bgo ?lo\b/.test(q) },
   { name: "Nassau", test: (q) => /\bnassau\b/.test(q) },
@@ -183,21 +191,50 @@ function groupTable(title, unit, current, baseline) {
   return lines.join("\n");
 }
 
-function rowTable(title, rows) {
+const pathOf = (url) => new URL(url).pathname.replace(/\/$/, "") || "/";
+
+/**
+ * One row per roster page, exported metrics merged in. A roster page missing
+ * from the export had no impressions in the window, which is itself a finding.
+ */
+function rowTable(title, rows, roster) {
+  const byPath = new Map(rows.map((r) => [pathOf(r.key), r]));
+  const paths = [...new Set([...roster.map(pathOf), ...byPath.keys()])];
   const lines = [`### ${title}`, "", "| Page | Impressions | Clicks | CTR | Position |", "|---|---:|---:|---:|---:|"];
-  for (const r of [...rows].sort((a, b) => b.impressions - a.impressions)) {
-    lines.push(`| ${new URL(r.key).pathname} | ${r.impressions} | ${r.clicks} | ${pct(r.clicks, r.impressions)} | ${r.position.toFixed(1)} |`);
+  const ranked = paths.sort((a, b) => (byPath.get(b)?.impressions ?? -1) - (byPath.get(a)?.impressions ?? -1));
+  for (const path of ranked) {
+    const r = byPath.get(path);
+    lines.push(
+      r
+        ? `| ${path} | ${r.impressions} | ${r.clicks} | ${pct(r.clicks, r.impressions)} | ${r.position.toFixed(1)} |`
+        : `| ${path} | not in the export | – | – | – |`,
+    );
   }
   return lines.join("\n");
 }
 
-function main(argv) {
+/** Page URLs from a sitemap file or URL; empty (with a warning) if unreadable. */
+async function readSitemap(source) {
+  try {
+    const xml = /^https?:\/\//.test(source)
+      ? await (await fetch(source)).text()
+      : readFileSync(source, "utf8");
+    return [...xml.matchAll(/<loc>([^<]+)<\/loc>/g)].map((m) => m[1].trim());
+  } catch (error) {
+    console.error(`warning: couldn't read the sitemap (${error.message}); guide and post tables show exported pages only`);
+    return [];
+  }
+}
+
+async function main(argv) {
   const args = [...argv];
   const b = args.indexOf("--baseline");
   const baselineArg = b === -1 ? null : args.splice(b, 2)[1];
+  const s = args.indexOf("--sitemap");
+  const sitemapArg = s === -1 ? "https://www.golo.golf/sitemap.xml" : args.splice(s, 2)[1];
   const [currentArg] = args;
   if (!currentArg) {
-    console.error("usage: node scripts/gsc-groups.mjs <export-folder> [--baseline <export-folder>]");
+    console.error("usage: node scripts/gsc-groups.mjs <export-folder> [--baseline <export-folder>] [--sitemap <file-or-url>]");
     process.exit(2);
   }
 
@@ -228,8 +265,16 @@ function main(argv) {
     const basePages = baselineArg && locate(baselineArg, "Pages.csv");
     const base = basePages ? summarize(readExport(basePages), pageGroup, pageOrder) : null;
     out.push(groupTable("Page groups", "Pages", summarize(rows, pageGroup, pageOrder), base));
-    out.push(rowTable("Guides", rows.filter((r) => pageGroup(r.key) === "Guides")));
-    out.push(rowTable("Posts", rows.filter((r) => pageGroup(r.key) === "Posts")));
+    const roster = await readSitemap(sitemapArg);
+    for (const group of ["Guides", "Posts"]) {
+      out.push(
+        rowTable(
+          group,
+          rows.filter((r) => pageGroup(r.key) === group),
+          roster.filter((url) => pageGroup(url) === group),
+        ),
+      );
+    }
   }
 
   if (!out.length) {

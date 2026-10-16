@@ -71,7 +71,7 @@ Inspect each URL below. For each one, record whether it's indexed, whether Googl
 
 **Posts (12, publication date in brackets):**
 
-- `https://www.golo.golf/blog/settle-up-screen` (2026-10-15; under 21 days at any run date in the window)
+- `https://www.golo.golf/blog/settle-up-screen` (2026-10-15; under 21 days for runs through November 4. On November 5 it is 21 days old, so the 21-day rule applies)
 - `https://www.golo.golf/blog/pressing` (2026-10-10)
 - `https://www.golo.golf/blog/index-vs-course-handicap` (2026-10-10)
 - `https://www.golo.golf/blog/sandbagging` (2026-10-10)
