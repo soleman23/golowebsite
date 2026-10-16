@@ -17,7 +17,7 @@
  * wherever it's allowed, and unknowns are counted, never guessed:
  *   date          YYYY-MM-DD (required)
  *   group         a private label: G and a number ("G1", "G12"), never a
- *                 name; "g 1" reads as G1; blank allowed
+ *                 name; "g 1" and "G01" read as G1; blank allowed
  *   group_size    players in the round; blank allowed
  *   own_team      y/n: did anyone from GoLo play in the group; blank allowed
  *   formats       games played, ";"-separated, from FORMATS below; blank allowed.
@@ -28,9 +28,11 @@
  *   finished      y/n: did the round reach a complete card entered in GoLo.
  *                 A card finished on paper is n. Blank if the records can't
  *                 tell.
- *   stopped_hole  the last hole with a score entered in GoLo, 0 if none
- *                 (stopped during setup): required if finished is n, blank
- *                 otherwise
+ *   holes         9 or 18: the round's length; blank allowed
+ *   stopped_hole  how many holes had a score entered in GoLo, counted from
+ *                 the group's first hole (so a 10th-tee start works), 0 if
+ *                 none (stopped during setup): required if finished is n,
+ *                 blank otherwise
  *   settled       app | memory | none; blank allowed
  *   wager_changed y/n: did the group change the bet mid-round; blank allowed
  *   stakes        y/n: was the group playing for money; blank allowed
@@ -55,6 +57,7 @@ const REQUIRED = [
   "formats",
   "app_version",
   "finished",
+  "holes",
   "stopped_hole",
   "settled",
   "wager_changed",
@@ -107,13 +110,18 @@ const IN_GOLO = new Set([
   "junk",
   "overall-match",
   "scramble",
+  // Teams playing best ball are in the app (lib/content/features.ts and the
+  // real round on /how-it-works).
+  "best-ball",
 ]);
 
 const WHOLE_NUMBER = /^\d+$/;
-const GROUP_LABEL = /^G\d{1,3}$/;
+// Leading zeros are dropped, so G01 and G1 are the same group; G0 isn't one.
+const GROUP_LABEL = /^G0*([1-9]\d{0,2})$/;
 
 const VERSION = /^\d{1,2}\.\d{1,2}(\.\d{1,2})?$/;
-const NUMBERED_OTHER = /^other-\d{1,2}$/;
+// Same rule for unlisted games: other-01 is other-1; other-0 isn't valid.
+const NUMBERED_OTHER = /^other-0*([1-9]\d?)$/;
 
 /** Records with the physical line each one starts on, blank lines dropped. */
 function parseCsv(text) {
@@ -200,14 +208,30 @@ function readLog(path) {
     const fail = (message) => problems.push(`line ${line}: ${message}`);
     // A missing or extra comma shifts every later value into the wrong column.
     if (cells.length !== cols.length) fail(`has ${cells.length} fields, the header has ${cols.length}`);
-    const formats = [...new Set(get("formats").toLowerCase().split(";").map((f) => f.trim()).filter(Boolean))];
+    const formats = [
+      ...new Set(
+        get("formats")
+          .toLowerCase()
+          .split(";")
+          .map((f) => f.trim())
+          .filter(Boolean)
+          .map((f) => {
+            const n = NUMBERED_OTHER.exec(f);
+            return n ? `other-${n[1]}` : f;
+          }),
+      ),
+    ];
     const size = get("group_size");
     const stop = get("stopped_hole");
-    const group = get("group").toUpperCase().replace(/\s+/g, "");
+    const rawGroup = get("group").toUpperCase().replace(/\s+/g, "");
+    const groupMatch = GROUP_LABEL.exec(rawGroup);
+    const group = groupMatch ? `G${groupMatch[1]}` : rawGroup;
+    const holes = get("holes");
     const round = {
       date: get("date"),
       group: group || null,
       size: size === "" ? null : WHOLE_NUMBER.test(size) ? Number(size) : NaN,
+      holes: holes === "" ? null : holes === "9" || holes === "18" ? Number(holes) : NaN,
       ownTeam: yesNo(get("own_team")),
       // A format counts once per round, however often a row repeats it.
       formats: formats.length ? formats : null,
@@ -219,7 +243,10 @@ function readLog(path) {
       stakes: yesNo(get("stakes")),
       onCourse: yesNo(get("on_course")),
     };
-    if (!isCalendarDate(round.date)) fail(`date "${round.date}" isn't a real YYYY-MM-DD date`);
+    // Errors name the column, never the value: a stray comma shifts private
+    // text into these columns, and error output tends to get pasted around.
+    if (!isCalendarDate(round.date)) fail("date isn't a real YYYY-MM-DD date");
+    if (Number.isNaN(round.holes)) fail("holes must be 9, 18 or blank");
     if (round.group !== null && !GROUP_LABEL.test(round.group)) fail("group must be G and a number (G1, G12) or blank");
     for (const [name, value] of [
       ["finished", round.finished],
@@ -236,14 +263,15 @@ function readLog(path) {
     }
     for (const f of round.formats ?? []) {
       if (!FORMATS.includes(f) && !NUMBERED_OTHER.test(f)) {
-        fail(`format "${f}" isn't one of: ${FORMATS.join(", ")}, or other-1, other-2…`);
+        fail(`formats has a value that isn't one of: ${FORMATS.join(", ")}, or other-1, other-2…`);
       }
     }
-    if (round.version !== null && !VERSION.test(round.version)) fail(`app_version "${round.version}" isn't a version like 0.6 or 0.6.2`);
+    if (round.version !== null && !VERSION.test(round.version)) fail("app_version isn't a version like 0.6 or 0.6.2");
     if (round.settled !== null && !["app", "memory", "none"].includes(round.settled)) fail("settled must be app, memory, none or blank");
     if (round.finished !== false && round.stoppedHole !== null) fail("stopped_hole is only for an unfinished round");
-    if (round.finished === false && !(Number.isInteger(round.stoppedHole) && round.stoppedHole >= 0 && round.stoppedHole <= 17)) {
-      fail("unfinished round needs stopped_hole 0–17 (the last hole scored in GoLo; 0 if none)");
+    const maxScored = (round.holes ?? 18) - 1;
+    if (round.finished === false && !(Number.isInteger(round.stoppedHole) && round.stoppedHole >= 0 && round.stoppedHole <= maxScored)) {
+      fail(`unfinished round needs stopped_hole 0–${maxScored} (holes scored in GoLo; 0 if none)`);
     }
     return round;
   });
@@ -264,6 +292,8 @@ function summarize(logged) {
   const groups = new Set(rounds.map((r) => r.group).filter(Boolean));
   const ownGroups = new Set(rounds.filter((r) => r.ownTeam === true && r.group).map((r) => r.group));
   const bareOther = rounds.some((r) => r.formats?.includes("other"));
+  // A bare "other" can only duplicate a numbered one, never a listed game.
+  const numberedOther = rounds.some((r) => r.formats?.some((f) => f.startsWith("other-")));
   const isSaturday = (date) => new Date(`${date}T00:00:00Z`).getUTCDay() === 6;
   const formats = new Map();
   for (const r of rounds) for (const f of r.formats ?? []) formats.set(f, (formats.get(f) ?? 0) + 1);
@@ -307,7 +337,7 @@ function summarize(logged) {
     `| Rounds with group size not known | ${count((r) => r.size === null)} |`,
     // A bare "other" may be one of the numbered others, or several new games,
     // so the most that's certain is every other label counted once.
-    `| Distinct formats | ${bareOther ? `at least ${Math.max(1, formats.size - 1)} (a bare "other" was used; renumber it)` : formats.size} |`,
+    `| Distinct formats | ${bareOther ? `at least ${numberedOther ? formats.size - 1 : formats.size} (a bare "other" was used; renumber it)` : formats.size} |`,
     `| Distinct formats GoLo runs today | ${golo.length} |`,
     `| Rounds with formats not known | ${count((r) => r.formats === null)} |`,
     `| App versions | ${versions.join(", ") || "not recorded"} |`,
@@ -320,10 +350,14 @@ function summarize(logged) {
     `| Finished with a complete card in GoLo | ${count((r) => r.finished === true)} |`,
     `| Unfinished in GoLo | ${count((r) => r.finished === false)} |`,
     `| Completion not known | ${count((r) => r.finished === null)} |`,
+    `| 18-hole rounds | ${count((r) => r.holes === 18)} |`,
+    `| Nine-hole rounds | ${count((r) => r.holes === 9)} |`,
+    `| Round length not known | ${count((r) => r.holes === null)} |`,
     `| Stopped during setup (no hole scored) | ${count((r) => unscored(r) && r.stoppedHole === 0)} |`,
-    `| Stopped before the turn (last hole scored 0–8) | ${count((r) => unscored(r) && r.stoppedHole <= 8)} |`,
-    `| First unscored hole 3–5 (last hole scored 2–4) | ${count((r) => unscored(r) && r.stoppedHole >= 2 && r.stoppedHole <= 4)} |`,
-    `| Stopped on the back nine (last hole scored 9–17) | ${count((r) => unscored(r) && r.stoppedHole >= 9)} |`,
+    `| Quit on the 3rd–5th hole played (2–4 holes scored) | ${count((r) => unscored(r) && r.stoppedHole >= 2 && r.stoppedHole <= 4)} |`,
+    `| 18-hole rounds stopped before the turn (0–8 holes scored) | ${count((r) => unscored(r) && r.holes === 18 && r.stoppedHole <= 8)} |`,
+    `| 18-hole rounds stopped on the back nine (9–17 holes scored) | ${count((r) => unscored(r) && r.holes === 18 && r.stoppedHole >= 9)} |`,
+    `| Unfinished rounds of unknown length | ${count((r) => unscored(r) && r.holes === null)} |`,
     `| Changed the wager mid-round | ${count((r) => r.wagerChanged === true)} |`,
     `| Rounds where a wager change isn't known | ${count((r) => r.wagerChanged === null)} |`,
     "",
@@ -344,7 +378,7 @@ function summarize(logged) {
     "",
     "## Where unfinished rounds stopped",
     "",
-    "| Last hole scored | Rounds |",
+    "| Holes scored | Rounds |",
     "|---:|---:|",
     ...[...byHole].sort((a, b) => a[0] - b[0]).map(([h, n]) => `| ${h} | ${n} |`),
   ];
