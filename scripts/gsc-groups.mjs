@@ -32,9 +32,9 @@
 /** Search Console's UI export limit, in rows. */
 const EXPORT_ROW_CAP = 1000;
 
-import { existsSync, readFileSync, statSync } from "node:fs";
+import { existsSync, readFileSync, realpathSync, statSync } from "node:fs";
 import { join, resolve } from "node:path";
-import { pathToFileURL } from "node:url";
+import { fileURLToPath } from "node:url";
 
 /**
  * Query groups, first match wins, so order matters: "nassau press" is Nassau,
@@ -320,5 +320,14 @@ async function main(argv) {
   console.log(out.join("\n\n"));
 }
 
-// pathToFileURL encodes the path, so this also runs from a folder with spaces.
-if (process.argv[1] && import.meta.url === pathToFileURL(resolve(process.argv[1])).href) main(process.argv.slice(2));
+/** True when this file is the script node was asked to run, symlinks and spaces included. */
+function isEntryPoint() {
+  if (!process.argv[1]) return false;
+  try {
+    return realpathSync(fileURLToPath(import.meta.url)) === realpathSync(resolve(process.argv[1]));
+  } catch {
+    return false;
+  }
+}
+
+if (isEntryPoint()) main(process.argv.slice(2));
