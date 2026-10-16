@@ -51,18 +51,28 @@ export const QUERY_GROUPS = [
   {
     // GOLO is also a diet company ("golo weight loss", "golo release"),
     // putters and a dice game, and their wording is open-ended. So a GOLO
-    // query is branded only with golf or app context, or on its own; every
-    // other GOLO query is off-topic. "golo board" showed in the October 8
-    // baseline; it's watched below, not branded.
+    // query is branded only with golf context, or on its own. "golo board"
+    // showed in the October 8 baseline; it's watched below, not branded.
     name: "Branded",
     test: (q) =>
       /\bgo ?lo\b/.test(q) &&
       !OFF_TOPIC_TERMS.test(q) &&
       (/^(the )?go ?lo$/.test(q) ||
-        /\b(golf\w*|app|apps|scor\w*|side games?|bets?|betting|wagers?|nassau|skins)\b/.test(q)),
+        /\b(golf\w*|scor\w*|side games?|bets?|betting|wagers?|nassau|skins)\b/.test(q)),
+  },
+  {
+    // The diet company has an app too, so "golo app" or "golo login" without
+    // golf context could be either. Reported on its own, counted as neither.
+    name: "Ambiguous GOLO",
+    test: (q) => /\bgo ?lo\b/.test(q) && !OFF_TOPIC_TERMS.test(q) && /\b(apps?|login|log in|download|reviews?)\b/.test(q),
   },
   { name: "Off-topic GOLO", test: (q) => /\bgo ?lo\b/.test(q) },
-  { name: "Nassau", test: (q) => /\bnassau\b/.test(q) },
+  {
+    // Nassau County and the Bahamas share the name; those searches are about
+    // places, not the game.
+    name: "Nassau",
+    test: (q) => /\bnassau\b/.test(q) && !/\b(county|bahamas|resorts?|country club|tee times?|courses? near)\b/.test(q),
+  },
   {
     name: "Settle-up",
     test: (q) => /\b(settle|settling|who owes|who pays|pay ?up|split the (pot|bet|money|winnings)|venmo)\b/.test(q),
@@ -265,12 +275,34 @@ async function readSitemap(source) {
   }
 }
 
+function fail(message) {
+  console.error(message);
+  process.exit(2);
+}
+
+/** Removes `--name <value>` from args and returns the value; null if absent. */
+function takeFlag(args, name) {
+  const i = args.indexOf(name);
+  if (i === -1) return null;
+  const value = args[i + 1];
+  if (!value || value.startsWith("--")) fail(`${name} needs a value`);
+  args.splice(i, 2);
+  return value;
+}
+
+/** An export folder or CSV that exists and holds Queries.csv or Pages.csv. */
+function checkExport(arg, label) {
+  if (!existsSync(arg)) fail(`${label} ${arg}: no such file or folder`);
+  if (!locate(arg, "Queries.csv") && !locate(arg, "Pages.csv")) {
+    fail(`${label} ${arg}: no Queries.csv or Pages.csv (unzip the export first)`);
+  }
+}
+
 async function main(argv) {
   const args = [...argv];
-  const b = args.indexOf("--baseline");
-  const baselineArg = b === -1 ? null : args.splice(b, 2)[1];
+  const baselineArg = takeFlag(args, "--baseline");
   const s = args.indexOf("--sitemap");
-  const sitemapArg = s === -1 ? "https://www.golo.golf/sitemap.xml" : args.splice(s, 2)[1];
+  const sitemapArg = takeFlag(args, "--sitemap") ?? "https://www.golo.golf/sitemap.xml";
   if (s === -1) {
     console.error(
       "note: listing guides and posts from the live sitemap. For a past period, pass --sitemap with a snapshot from the period's last day.",
@@ -278,9 +310,10 @@ async function main(argv) {
   }
   const [currentArg] = args;
   if (!currentArg) {
-    console.error("usage: node scripts/gsc-groups.mjs <export-folder> [--baseline <export-folder>] [--sitemap <file-or-url>]");
-    process.exit(2);
+    fail("usage: node scripts/gsc-groups.mjs <export-folder> [--baseline <export-folder>] [--sitemap <file-or-url>]");
   }
+  checkExport(currentArg, "export");
+  if (baselineArg) checkExport(baselineArg, "--baseline");
 
   const out = [];
   const queryOrder = QUERY_GROUPS.map((g) => g.name);

@@ -22,7 +22,7 @@ Search Console's data usually runs about two days behind. If the last days are e
 | November 4 | Oct 8 – Nov 4 | 0 |
 | November 5 | Oct 9 – Nov 5 | 0 |
 
-Note the overlap in the write-up. Running on November 4 or 5 gives two windows that don't overlap. With the two-day lag, an After window that ends on November 2 or 3 shares one or two days with the deploy week.
+Note the overlap in the write-up. With no lag, running on November 4 or 5 gives two windows that don't overlap. With the usual two-day lag, a November 4 run ends on November 2, starts on October 6, and shares two days (October 6–7) with the Before window; a November 5 run shares one (October 7). Record the overlap from the dates you actually used.
 
 The October 8 baseline in `docs/seo-progress.md` covers three months, not 28 days, so it isn't the Before window. Re-pull Before from Search Console on the run date.
 

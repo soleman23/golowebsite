@@ -1,22 +1,35 @@
 -- Lead attribution for the monthly SEO/AIO report (docs/seo-reports/TEMPLATE.md).
 --
--- Read-only: every statement is a SELECT, and none reads a phone number,
--- email address or user agent. Run it in the Supabase SQL editor for the
--- "golowebsite" project, or with psql as a read-only role. Never commit
--- credentials or the rows themselves; paste only the counts into the report.
+-- Every query is a SELECT, and none reads a phone number, email address or
+-- user agent. Never commit credentials or the rows themselves; paste only
+-- the counts into the report.
 --
--- Set the month in the `bounds` CTE of each query (start inclusive, end
--- exclusive, UTC). "createdAt" is stored in UTC.
+-- Run it with psql, which prints all three results and sets the month once
+-- (start inclusive, end exclusive):
+--
+--   psql "$DATABASE_URL" -v start_at=2026-11-01 -v end_at=2026-12-01 -f docs/seo-reports/leads.sql
+--
+-- The first statement makes the session read-only, so nothing below can
+-- write, whatever role the connection uses.
+--
+-- The Supabase SQL editor shows only the last result and doesn't know psql
+-- variables. If you use it, run one query at a time, with the SET line, and
+-- replace :'start_at' and :'end_at' with quoted dates ('2026-11-01').
+--
+-- Months here are UTC ("createdAt" is stored in UTC). Search Console's days
+-- are Pacific time, so a month's edges differ by 7–8 hours between the two.
 --
 -- The AI host list matches the GA4 "AI assistants" channel group (#66). Keep
 -- the two in step: change both or neither.
+
+SET default_transaction_read_only = on;
 
 -- 1. AI-referred leads, by host and by how the host was recorded.
 --    landingSource is the landing URL's utm_source (ChatGPT search adds
 --    utm_source=chatgpt.com); referrerHost is the outside referrer's host.
 --    A lead can carry both, so it's counted once, under the first that matches.
 WITH bounds AS (
-  SELECT TIMESTAMP '2026-11-01' AS start_at, TIMESTAMP '2026-12-01' AS end_at
+  SELECT TIMESTAMP :'start_at' AS start_at, TIMESTAMP :'end_at' AS end_at
 ),
 leads AS (
   SELECT 'phone' AS kind, "createdAt", "landingSource", "referrerHost" FROM "PhoneLead"
@@ -52,7 +65,7 @@ ORDER BY leads DESC, kind, host;
 --    NewsletterLead.source is "blog". landingPath is null on rows from before
 --    October 10, 2026 and when it wasn't captured.
 WITH bounds AS (
-  SELECT TIMESTAMP '2026-11-01' AS start_at, TIMESTAMP '2026-12-01' AS end_at
+  SELECT TIMESTAMP :'start_at' AS start_at, TIMESTAMP :'end_at' AS end_at
 ),
 leads AS (
   SELECT 'phone' AS kind, "createdAt", "landingPath", "source" FROM "PhoneLead"
@@ -67,7 +80,7 @@ ORDER BY leads DESC, kind, landing_path;
 
 -- 3. All leads by where the visit came from, in broad buckets.
 WITH bounds AS (
-  SELECT TIMESTAMP '2026-11-01' AS start_at, TIMESTAMP '2026-12-01' AS end_at
+  SELECT TIMESTAMP :'start_at' AS start_at, TIMESTAMP :'end_at' AS end_at
 ),
 leads AS (
   SELECT 'phone' AS kind, "createdAt", "landingSource", "referrerHost" FROM "PhoneLead"
@@ -84,7 +97,7 @@ classified AS (
       WHEN lower(coalesce("landingSource", '')) ~ '^(google|bing|duckduckgo|yahoo|ecosia|brave)(\.[a-z.]+)?$' THEN 'Search'
       WHEN lower(coalesce("landingSource", '')) ~ '^(instagram|ig|facebook|fb|reddit|x|twitter|threads|tiktok|youtube|linkedin)(\.com|\.net)?$' THEN 'Social'
       WHEN lower(coalesce("referrerHost", '')) ~ '(^|\.)(chatgpt\.com|chat\.openai\.com|perplexity\.ai|gemini\.google\.com|copilot\.microsoft\.com|claude\.ai|you\.com|phind\.com)$' THEN 'AI assistants'
-      WHEN lower(coalesce("referrerHost", '')) ~ '(^|\.)(google\.[a-z.]+|bing\.com|duckduckgo\.com|search\.yahoo\.com|ecosia\.org|search\.brave\.com)$' THEN 'Search'
+      WHEN lower(coalesce("referrerHost", '')) ~ '^(www\.)?google\.[a-z.]+$|^com\.google\.android\.googlequicksearchbox$|(^|\.)(bing\.com|duckduckgo\.com|search\.yahoo\.com|ecosia\.org|search\.brave\.com)$' THEN 'Search'
       WHEN lower(coalesce("referrerHost", '')) ~ '(^|\.)(instagram\.com|facebook\.com|reddit\.com|x\.com|t\.co|threads\.net|tiktok\.com|youtube\.com|linkedin\.com|lnkd\.in)$' THEN 'Social'
       WHEN "landingSource" IS NOT NULL OR "referrerHost" IS NOT NULL
         THEN 'Other referrer or tag'

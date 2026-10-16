@@ -6,7 +6,7 @@ Rules:
 
 - Every number names its source and date range. Write "not available" where a source has nothing. Never estimate.
 - Exports and query results stay outside the repo. Paste only the counts.
-- No phone numbers, emails, names or other personal data, ever. The SQL below doesn't select any.
+- No phone numbers, emails or other personal data, ever, and no names of private individuals. The SQL below doesn't select any. The one exception is the outreach log (section 7): it names the public outlet or show as `docs/outreach.md` lists it, never a person's contact details.
 - If an AI answer gets GoLo wrong, first read the GoLo page it cited, if any. Open a content issue only when that page contradicts `lib/content/capabilities.ts` or is ambiguous enough to explain the error. If the page is right, or nothing was cited, record it as a model error in the Notes column and change nothing. Never add hidden "AI text".
 
 **Period:** <first day> – <last day>. **Compared with:** <previous month>. **Filed:** <date>, by <who>.
@@ -38,7 +38,7 @@ Use the Branded row from the query groups. Keep a running table, adding one row 
 |---|---:|---:|---:|
 | | | | |
 
-Off-topic GOLO queries don't count as demand for GoLo. That's any GOLO query without golf or app context: diet, weight loss, supplements, putters, dice, board. Report them separately only if they grow.
+Off-topic GOLO queries don't count as demand for GoLo. That's any GOLO query with a diet, weight-loss, supplement, putter, dice or board word, or with no golf context at all. "Ambiguous GOLO" ("golo app", "golo login" with no golf word) could be either company, since the diet company has an app too. Report it next to Branded, but don't add it in.
 
 ## 3. Content discovery
 
@@ -53,7 +53,7 @@ For each page first published in the last 60 days:
 
 ## 4. AI referral visibility
 
-- **Leads.** Query 1 in `docs/seo-reports/leads.sql`: leads whose `landingSource` or `referrerHost` is an AI assistant host.
+- **Leads.** Run `docs/seo-reports/leads.sql` with psql, as its header shows. The session is read-only and all three queries print. Query 1 gives leads whose `landingSource` or `referrerHost` is an AI assistant host.
 
   | Kind | Recorded as | Host | Leads |
   |---|---|---|---:|
