@@ -52,7 +52,7 @@ The October 8 baseline in `docs/seo-progress.md` covers three months, not 28 day
    - **Expected:** "Alternate page with proper canonical tag", provided the canonical is the URL we declare.
    - **Expected:** `/cookies` and `/acceptable-use` under "Excluded by 'noindex' tag". Both are noindex on purpose.
    - **Expected for now:** a sitemap URL first published fewer than 21 days before the run date and still "Discovered" or "Crawled – currently not indexed".
-   - **Defect: open an issue.** A Google-selected canonical that differs from ours; a soft 404; a sitemap URL older than 21 days that isn't indexed and has no reason.
+   - **Defect: open an issue.** Any non-indexed URL whose reason isn't one of the expected cases above. That includes a Google-selected canonical that differs from ours, a soft 404, an unexpected `noindex`, a robots.txt block, a server or redirect error, and a sitemap URL 21 days or older that isn't indexed, with or without a reason.
 
 ### 3. URL Inspection
 
@@ -103,7 +103,7 @@ Experience → Core Web Vitals, mobile and desktop. If Search Console says there
 ## Decision rules
 
 - Don't rewrite content because of this data.
-- Act only on indexation defects: a wrong canonical, a soft 404, or a sitemap URL that isn't indexed after 21+ days with no reason. Open one issue per defect and link it from the write-up.
+- Act only on indexation defects: every non-indexed URL that the triage step can't mark expected (see "Defect" above). Open one issue per defect and link it from the write-up.
 
 ## Write-up skeleton for `docs/seo-progress.md`
 

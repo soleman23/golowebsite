@@ -7,7 +7,7 @@ Rules:
 - Every number names its source and date range. Write "not available" where a source has nothing. Never estimate.
 - Exports and query results stay outside the repo. Paste only the counts.
 - No phone numbers, emails, names or other personal data, ever. The SQL below doesn't select any.
-- If an AI answer gets GoLo wrong, open a content issue against the page it cited and fix the page's facts. Never add hidden "AI text".
+- If an AI answer gets GoLo wrong, first read the GoLo page it cited, if any. Open a content issue only when that page contradicts `lib/content/capabilities.ts` or is ambiguous enough to explain the error. If the page is right, or nothing was cited, record it as a model error in the Notes column and change nothing. Never add hidden "AI text".
 
 **Period:** <first day> – <last day>. **Compared with:** <previous month>. **Filed:** <date>, by <who>.
 
@@ -73,7 +73,7 @@ For each page first published in the last 60 days:
   |---|---:|
   | Total (chart) | |
 
-  Then the Pages tab: impressions per page. List the top pages and any guide or post that's new this month. If the report doesn't appear, check eligibility before blaming volume. Google lists two causes: too few AI-feature impressions, or a site that's kept out of AI features by its preview controls (`nosnippet`, `data-nosnippet`, `max-snippet`, `noindex`). Check the home page and a post for those. `curl -s https://www.golo.golf/ | grep -i -E 'nosnippet|max-snippet|noindex'` should print nothing. If the site is eligible, write "not shown: too few impressions", not "0". If a control is excluding it, open an issue.
+  Then the Pages tab: impressions per page. List the top pages and any guide or post that's new this month. If the report doesn't appear, check eligibility before blaming volume. Google lists two causes: too few AI-feature impressions, or a site that's kept out of AI features by its preview controls (`nosnippet`, `data-nosnippet`, `max-snippet`, `noindex`). Check the home page and a post for those. Google accepts these in the page's HTML and in an `X-Robots-Tag` response header, so check both: `curl -s -i https://www.golo.golf/ | grep -i -E 'nosnippet|max-snippet|noindex'` (`-i` includes the headers) should print nothing. If the site is eligible, write "not shown: too few impressions", not "0". If a control is excluding it, open an issue.
 
 ## 5. AI answer accuracy
 
@@ -101,7 +101,7 @@ Use "n/a" when the answer doesn't mention GoLo at all, which is normal for the g
 
 It also says nothing about what GoLo does that contradicts `lib/content/capabilities.ts`. For example, an answer that says GoLo sends payments, gives GPS yardages or runs automatic presses is a "no", even if the three points above are right.
 
-Any "no" in that column needs an issue link in Notes.
+Any "no" needs a Notes entry: either an issue link (the cited page contradicts the registry or is ambiguous) or "model error, cited page correct" (or "no page cited").
 
 ## 6. Conversions
 
