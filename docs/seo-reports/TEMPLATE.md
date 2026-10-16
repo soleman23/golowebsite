@@ -58,11 +58,19 @@ For each page first published in the last 60 days:
 
 - **GA4 "AI assistants" channel** (set up in #66). Reports → Acquisition → Traffic acquisition, with the custom channel group selected. This is a sample of visitors who chose analytics in Privacy choices: there's no banner, and GPC is respected. Treat it as a direction, not a volume.
 
-  | Channel | Sessions | Key events (generate_lead) |
-  |---|---:|---:|
-  | AI assistants | | |
+  | Channel | Sessions | generate_lead events | Key events (generate_lead) |
+  |---|---:|---:|---:|
+  | AI assistants | | | |
 
-- **A Search Console AI-surface report,** if Google offers one by then. When this template was written (October 2026), AI Overviews and AI Mode traffic was counted in the Web totals with no separate breakdown. If that's still true, write "not available".
+  Key events count only from the day `generate_lead` was marked as one (#66); GA doesn't apply it to earlier data. Record that date here: <date>. For a month that began before it, report the `generate_lead` event count and leave the key-event column as "not set up until <date>".
+
+- **Search Console Generative AI performance report** (rolled out to all sites by August 31, 2026; covers AI Overviews and AI Mode). It reports impressions only, no clicks. Open it from Search Console's Performance reports, or from the "Open the Generative AI performance report" link on [Google's help page](https://support.google.com/webmasters/answer/16984139). Use Search type Web and this month's dates:
+
+  | | Impressions |
+  |---|---:|
+  | Total (chart) | |
+
+  Then the Pages tab: impressions per page. List the top pages and any guide or post that's new this month. If the report doesn't appear, Search Console is saying the site hasn't had enough AI-feature impressions. Write that, not "0".
 
 ## 5. AI answer accuracy
 
@@ -82,11 +90,13 @@ Record one row per prompt and engine:
 |---|---|---|---|---|---|
 | | | | | | |
 
-"Correctly" means all three of these:
+"Correctly" means all three of these hold, and nothing in the answer contradicts them:
 
 - It describes GoLo as a scorekeeper for side games.
 - It says GoLo doesn't hold or move money.
 - It gives the current status: in private testing, store apps not out yet. After launch, check against `lib/content/capabilities.ts` instead.
+
+It also says nothing about what GoLo does that contradicts `lib/content/capabilities.ts`. For example, an answer that says GoLo sends payments, gives GPS yardages or runs automatic presses is a "no", even if the three points above are right.
 
 Any "no" in that column needs an issue link in Notes.
 

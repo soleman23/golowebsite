@@ -24,7 +24,13 @@
  *   the Performance chart, not from this sum.
  * - A group's position is the impression-weighted mean of its queries'
  *   average positions: a summary, not a number Search Console reports.
+ * - The UI export stops at 1,000 rows. A file that hits the cap is missing
+ *   rows beyond the anonymized ones, and the script says so. Past that size,
+ *   pull the full table from the Search Console API or bulk export.
  */
+
+/** Search Console's UI export limit, in rows. */
+const EXPORT_ROW_CAP = 1000;
 
 import { existsSync, readFileSync, statSync } from "node:fs";
 import { join } from "node:path";
@@ -131,6 +137,11 @@ function readExport(path) {
   const clicks = col("clicks");
   const impressions = col("impressions");
   const position = col("position");
+  if (rows.length >= EXPORT_ROW_CAP) {
+    console.error(
+      `warning: ${path} has ${rows.length} rows, Search Console's export cap. Rows past the cap are missing, so group totals are low. Use the API or bulk export.`,
+    );
+  }
   return rows.map((r) => ({
     key: r[0],
     clicks: Number(r[clicks]),
@@ -227,10 +238,17 @@ function rowTable(title, rows, roster) {
 /** Page URLs from a sitemap file or URL; empty (with a warning) if unreadable. */
 async function readSitemap(source) {
   try {
-    const xml = /^https?:\/\//.test(source)
-      ? await (await fetch(source)).text()
-      : readFileSync(source, "utf8");
-    return [...xml.matchAll(/<loc>([^<]+)<\/loc>/g)].map((m) => m[1].trim());
+    let xml;
+    if (/^https?:\/\//.test(source)) {
+      const response = await fetch(source);
+      if (!response.ok) throw new Error(`HTTP ${response.status}`);
+      xml = await response.text();
+    } else {
+      xml = readFileSync(source, "utf8");
+    }
+    const urls = [...xml.matchAll(/<loc>([^<]+)<\/loc>/g)].map((m) => m[1].trim());
+    if (!urls.length) throw new Error("no <loc> entries");
+    return urls;
   } catch (error) {
     console.error(`warning: couldn't read the sitemap (${error.message}); guide and post tables show exported pages only`);
     return [];
