@@ -145,15 +145,15 @@ export const capabilities = [
     status: "live",
     // The payment list is greedy: debtors and creditors are sorted biggest
     // first once, then both lists are walked, each payment settling the
-    // smaller of the two balances, until every balance is zero. That never
-    // takes more than one payment fewer than the number of players, but it
-    // isn't always the minimum: nets of +4, +3, −2, −2, −3 come out as 4 payments where 3
+    // smaller of the two balances, until every balance is zero. For n players
+    // that never needs more than n − 1 payments, but it isn't always the
+    // minimum: nets of +4, +3, −2, −2, −3 come out as 4 payments where 3
     // would do (the +3 and −3 can settle on their own).
     summary:
       "Every game netted into one number per player, then a short list of payments that squares the group; each round is saved.",
     limits: [
       "Each round settles on its own.",
-      "Never more than one payment fewer than the number of players, but not always the fewest possible.",
+      "For n players, never more than n − 1 payments, but not always the fewest possible.",
       "GoLo never holds, moves or processes money.",
     ],
     verified: APP_CHECK_100,

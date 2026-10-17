@@ -10,7 +10,7 @@ Specific people and places whose audience would care about GoLo's first-party ma
 
 ## Read before pitching
 
-1. **"Fewest payments."** Settled in soleman23/golowebsite#103. GoLo's settle-up is greedy: never more than one payment fewer than the number of players, not always the minimum (finding the true minimum is a hard problem). The site and the post now say "a short list of payments", and keep "fewest" only for the post's worked example, which is minimal. Pitch it the same way. An audience that knows the math (Hacker News, design and dev writers) will respect the caveat, and would catch its absence.
+1. **"Fewest payments."** Settled in soleman23/golowebsite#103. GoLo's settle-up is greedy: for n players, never more than n − 1 payments, and not always the minimum (finding the true minimum is a hard problem). The site and the post now say "a short list of payments", and keep "fewest" only for the post's worked example, which is minimal. Pitch it the same way. An audience that knows the math (Hacker News, design and dev writers) will respect the caveat, and would catch its absence.
 2. **Competitors are in these spaces too.** Other golf side-game and settle-up apps have posted on the forums below and appeared as podcast guests. That's a reason to lead with the build note's substance, not with the app.
 3. **Contact routes.** This file links to where each route is published instead of copying addresses into a public repo. Several are personal inboxes the hosts list in their show notes. Use them for listener mail as invited, not for a pitch campaign.
 
