@@ -29,9 +29,9 @@ Each line is stated as the commit or PR states it.
 | 2026-07-23 | Per-bet detail moved from the scoring screen into the leaderboard (a bet-detail sheet). Match Play status and side-game flags stay on the scoring screen. | No reason recorded. | golo PR #14, `636957f` |
 | 2026-08-01 | Every side game settles in integer cents. Splits use largest-remainder division that sums back exactly. | Engines computed in floating-point dollars, so splits left residue: "A $10 purse across three players antes $3.33 each and pays out $9.99." | golo `76e0631` (GOLO-044) |
 | 2026-09-26 | Saving Setup again on a round in play keeps its presses and the closures they made. A game with presses in play can't be turned off or have its players or amount changed. | Re-saving Setup mid-round deleted every press and its closures, so settle-up paid without them. Found in review the same day. | golo #285 → PR #291 (GOLO-104) |
-| 2026-09-28 | A Skins carry rides to the card's last hole; only a tie there splits it. | Mid-round, the live money view split a carry among players tied on the latest hole, showing money the next outright winner would take. | golo PR #313 (GOLO-109) |
-| 2026-10-06 | A press can't be called from a hole behind the scored card ("Go to the latest hole to press"). | — (refusal added) | golo PR #353 (GOLO-129) |
-| 2026-10-07 | Setup re-asks every player to agree only when the side-game terms materially change. | Before, every save re-locked the terms. | golo PR #452 (GOLO-186) |
+| 2026-09-28 | A Skins carry rides to the card's last hole; only a tie there splits it. | Mid-round, the live money view split a carry among players tied on the latest hole, showing money the next outright winner would take. The PR's example: after hole 3, two players showed +$1.50 each; hole 4 then went to a third player outright, while the label said the skin was riding. | golo PR #313 (GOLO-109) |
+| 2026-10-06 | A press can't be called from a hole behind the scored card ("Go to the latest hole to press"). | A press starts on the hole after the one on screen. A scorer who stepped back to an earlier hole was offered one, so it bet on holes already played, and with a close it froze the original match at the wrong standing. Presses can't be undone. | golo PR #353 (GOLO-129) |
+| 2026-10-07 | Setup re-asks every player to agree only when the side-game terms materially change: a stake, a game, a player's name or handicap, or the card. Player colours and in-play state (presses, flags) don't count. | Before, every save re-locked the terms. | golo PR #452 (GOLO-186) |
 | 2026-10-07 | Settled money shows to the cent ("$12.50", not "$12.5"). | — | golo `71ed3db` (GOLO-164) |
 
 ### What the app does today (`main`, `acd6eee`)
@@ -50,7 +50,7 @@ Each line is stated as the commit or PR states it.
 
 ### Website correction
 
-On 2026-10-16 the site said GoLo settles up "in the fewest payments". The app's method doesn't guarantee that. Fifteen claims and the share card were corrected, and a lint rule now blocks the wording (#103, #105).
+On 2026-10-16 the site said GoLo settles up "in the fewest payments". The app's method doesn't guarantee that. The app's own function shows the gap: balances of +4, +3, −2, −2, −3 come out as 4 payments, where 3 would do (the +3 and −3 can settle on their own). Fifteen claims and the share card were corrected, and a lint rule now blocks the wording (#103, #105).
 
 ## Unsupported claims removed
 
