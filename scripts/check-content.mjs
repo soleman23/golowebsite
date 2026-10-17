@@ -23,6 +23,11 @@
  *    room for the denial. Golf-education titles are held to that only when
  *    they're about GoLo: "Rangefinder or GPS watch?" names gear, not a GoLo
  *    feature.
+ *    Overclaims work the same way for every capability, live or not: its
+ *    `overclaims` are phrases that overstate what it does ("fewest payments"
+ *    for a greedy settle-up). They fail anywhere in copy, blog posts
+ *    included, unless the clause denies them or the line carries claim-ok,
+ *    and in metadata at all.
  * 3. Internal links. Every "/…" href in content and components, legal copy
  *    included, in any kind of string literal, must be a page or file the site
  *    serves: a static route, a route handler that answers GET (so not the
@@ -240,6 +245,9 @@ const notLive = capabilities.filter(
   (c) => c.status !== "live" && c.claimPhrases?.length,
 );
 
+/** Capabilities with phrases that overstate them, whatever their status. */
+const overclaimed = capabilities.filter((c) => c.overclaims?.length);
+
 function phraseRegex(phrase) {
   const escaped = phrase
     .replace(/[.*+?^${}()|[\]\\]/g, "\\$&")
@@ -294,6 +302,34 @@ for (const file of files) {
           file,
           line,
           `"${m[0]}" presents ${cap.id} (${cap.status}) as working: "${sentence.trim().slice(0, 140)}"`,
+        );
+      }
+    }
+  }
+
+  // Overclaims count in blog posts and guides too: no golf advice says
+  // "fewest payments" without meaning the app.
+  for (const cap of overclaimed) {
+    for (const phrase of cap.overclaims) {
+      for (const m of text.matchAll(phraseRegex(phrase))) {
+        const line = lineAt(text, m.index);
+        if (
+          rawLines[line - 1]?.includes("claim-ok:") ||
+          rawLines[line - 2]?.includes("claim-ok:")
+        ) {
+          continue;
+        }
+        if (isCode(m.index, m[0].length)) continue;
+        const { text: sentence, offset } = sentenceAt(
+          text,
+          m.index,
+          m[0].length,
+        );
+        if (denied(sentence, offset, m[0].length)) continue;
+        report(
+          file,
+          line,
+          `"${m[0]}" overstates ${cap.id}: "${sentence.trim().slice(0, 140)}"`,
         );
       }
     }
@@ -364,6 +400,13 @@ function metadataStrings() {
 }
 
 for (const { file, line, field, value } of metadataStrings()) {
+  for (const cap of overclaimed) {
+    for (const phrase of cap.overclaims) {
+      if (phraseRegex(phrase).test(value)) {
+        report(file, line, `${field} overstates ${cap.id}: "${value.slice(0, 120)}"`);
+      }
+    }
+  }
   if (EDUCATION.has(file) && !ABOUT_GOLO.test(value)) continue;
   for (const cap of notLive) {
     for (const phrase of cap.claimPhrases) {
@@ -444,5 +487,5 @@ if (problems.length) {
 }
 
 console.log(
-  `✔ Content: no claims for ${notLive.length} non-live capabilities, ${pages.size} link targets resolve`,
+  `✔ Content: no claims for ${notLive.length} non-live capabilities, no overclaims for ${overclaimed.length}, ${pages.size} link targets resolve`,
 );

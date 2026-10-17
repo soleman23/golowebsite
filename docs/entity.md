@@ -15,7 +15,7 @@ Use this wording everywhere a profile or listing asks for a description. It matc
 
 **Long (about 60 words):**
 
-> GoLo Golf makes GoLo, a golf scorekeeping app for groups that play side games. One phone keeps the card; GoLo runs Nassau, skins, Wolf and the rest, applies handicap strokes, and works out who owes whom in the fewest payments. It does not hold, move or process money. GoLo Golf LLC is based in Bend, Oregon.
+> GoLo Golf makes GoLo, a golf scorekeeping app for groups that play side games. One phone keeps the card; GoLo runs Nassau, skins, Wolf and the rest, applies handicap strokes, and works out who owes whom in a short list of payments. It does not hold, move or process money. GoLo Golf LLC is based in Bend, Oregon.
 
 **Short (under 160 characters):**
 
