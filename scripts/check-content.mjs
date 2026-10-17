@@ -32,6 +32,10 @@
  *    serves: a static route, a route handler that answers GET (so not the
  *    POST-only form endpoints under /api), a published post, a game guide or
  *    a file in public/.
+ * 4. Report lists. Every published post and game guide must be in the lead
+ *    report's landing-path allow-list (docs/seo-reports/leads.sql) and the
+ *    Search Console run sheet's URL list (docs/seo-reports/gsc-revalidation.md),
+ *    and neither may list a slug the site doesn't serve.
  *
  * Comments are ignored throughout. Exit 1 with one line per problem.
  */
@@ -492,6 +496,52 @@ for (const file of files) {
   }
 }
 
+/* ----------------------------------------------------------- report lists */
+
+/**
+ * The lead report allow-lists landing paths, and the Search Console run sheet
+ * lists the URLs to inspect. Both are written by hand, so a new post or guide
+ * goes missing from them unless something checks. Every published post and
+ * guide must be in both, and neither may list a slug the site doesn't serve.
+ */
+const LEADS_SQL = "docs/seo-reports/leads.sql";
+const RUN_SHEET = "docs/seo-reports/gsc-revalidation.md";
+const leadsSql = read(LEADS_SQL);
+const runSheet = read(RUN_SHEET);
+
+for (const [section, served] of [
+  ["blog", publishedPosts.map((p) => p.slug)],
+  ["games", guideSlugs],
+]) {
+  const allow = leadsSql.match(
+    new RegExp(`'\\^/${section}/\\(([a-z0-9|-]+)\\)\\$'`),
+  );
+  if (!allow) {
+    report(LEADS_SQL, 1, `no /${section}/(…) landing-path allow-list found`);
+    continue;
+  }
+  const allowed = allow[1].split("|");
+  const line = lineAt(leadsSql, allow.index);
+  for (const slug of served.filter((s) => !allowed.includes(s))) {
+    report(LEADS_SQL, line, `/${section}/${slug} is published but not in the allow-list`);
+  }
+  for (const slug of allowed.filter((s) => !served.includes(s))) {
+    report(LEADS_SQL, line, `/${section}/${slug} is in the allow-list but isn't a page`);
+  }
+
+  const listed = [
+    ...runSheet.matchAll(
+      new RegExp(`^- \`https://www\\.golo\\.golf/${section}/([a-z0-9-]+)\``, "gm"),
+    ),
+  ].map((m) => m[1]);
+  for (const slug of served.filter((s) => !listed.includes(s))) {
+    report(RUN_SHEET, 1, `/${section}/${slug} is published but not in the URL list`);
+  }
+  for (const slug of listed.filter((s) => !served.includes(s))) {
+    report(RUN_SHEET, 1, `/${section}/${slug} is in the URL list but isn't a page`);
+  }
+}
+
 /* ----------------------------------------------------------------- result */
 
 if (problems.length) {
@@ -504,5 +554,5 @@ if (problems.length) {
 }
 
 console.log(
-  `✔ Content: no claims for ${notLive.length} non-live capabilities, no overclaims for ${overclaimed.length}, ${pages.size} link targets resolve`,
+  `✔ Content: no claims for ${notLive.length} non-live capabilities, no overclaims for ${overclaimed.length}, ${pages.size} link targets resolve, report lists match ${publishedPosts.length} posts and ${guideSlugs.length} guides`,
 );
