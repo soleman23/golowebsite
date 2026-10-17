@@ -74,7 +74,8 @@ ORDER BY leads DESC, kind, host;
 --    the placements the forms set. Anything else is collapsed to "(other …)"
 --    and can't carry personal data into a report. When a post or guide is
 --    published, add its slug to the lists below. Until then it shows as
---    "(unlisted post)".
+--    "(unlisted post)". `npm run lint:content` fails while a published post
+--    or guide is missing from them.
 --    PhoneLead.source is "hero" or "final_cta_<page>"; NewsletterLead.source is
 --    "blog" or "post". landingPath is null on rows from before
 --    October 10, 2026 and when it wasn't captured.
@@ -95,7 +96,7 @@ labelled AS (
         THEN "landingPath"
       WHEN "landingPath" ~ '^/games/(skins|nassau|best-score|wolf|bingo-bango-bongo|closest-to-pin|longest-drive|birdies)$'
         THEN "landingPath"
-      WHEN "landingPath" ~ '^/blog/(settle-up-screen|pressing|index-vs-course-handicap|sandbagging|bandon|scottsdale-trip-structure|rangefinder|who-pays-first|nassau|skins-carryover|wolf|bingo-bango-bongo)$'
+      WHEN "landingPath" ~ '^/blog/(what-we-got-wrong|settle-up-screen|pressing|index-vs-course-handicap|sandbagging|bandon|scottsdale-trip-structure|rangefinder|who-pays-first|nassau|skins-carryover|wolf|bingo-bango-bongo)$'
         THEN "landingPath"
       WHEN "landingPath" LIKE '/blog/%' THEN '/blog/(unlisted post)'
       WHEN "landingPath" LIKE '/games/%' THEN '/games/(unlisted guide)'

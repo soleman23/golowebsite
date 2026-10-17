@@ -61,6 +61,9 @@ The October 8 baseline in `docs/seo-progress.md` covers three months, not 28 day
 
 Inspect each URL below. For each one, record whether it's indexed, whether Google's selected canonical matches the canonical we declare, and the last crawl date.
 
+<!-- url-list-checked-until: 2026-11-05 -->
+Until November 5, 2026, `npm run lint:content` fails while a published post or guide is missing from the two lists below, or while they list a page the site doesn't serve. After that date, the lists are the record of this run and the check stops. If the run happens earlier, change the date in the comment above to the run date.
+
 **Guides (8):**
 
 - `https://www.golo.golf/games/skins`
@@ -72,8 +75,9 @@ Inspect each URL below. For each one, record whether it's indexed, whether Googl
 - `https://www.golo.golf/games/longest-drive`
 - `https://www.golo.golf/games/birdies`
 
-**Posts (12, publication date in brackets):**
+**Posts (13, publication date in brackets):**
 
+- `https://www.golo.golf/blog/what-we-got-wrong` (2026-10-16; under 21 days for runs through November 5. On November 6 it is 21 days old)
 - `https://www.golo.golf/blog/settle-up-screen` (2026-10-15; under 21 days for runs through November 4. On November 5 it is 21 days old, so the 21-day rule applies)
 - `https://www.golo.golf/blog/pressing` (2026-10-10)
 - `https://www.golo.golf/blog/index-vs-course-handicap` (2026-10-10)
@@ -87,13 +91,13 @@ Inspect each URL below. For each one, record whether it's indexed, whether Googl
 - `https://www.golo.golf/blog/wolf` (2026-07-02)
 - `https://www.golo.golf/blog/bingo-bango-bongo` (2026-06-18)
 
-The issue counts 11 posts. `settle-up-screen` was published on October 15, after the issue was written, so it's on this list too. Before the run, check the sitemap for anything newer:
+The issue counts 11 posts. `settle-up-screen` (October 15) and `what-we-got-wrong` (October 16) were published after the issue was written, so they're on this list too. Before the run, check the sitemap for anything newer:
 
 ```bash
 curl -s https://www.golo.golf/sitemap.xml | grep -o '<loc>[^<]*' | sed 's/<loc>//'
 ```
 
-On October 16 the sitemap listed 31 URLs.
+On October 17 the sitemap listed 32 URLs.
 
 ### 4. Sitemap
 
