@@ -114,9 +114,13 @@ export default function AboutPage() {
               <p key={p}>{p}</p>
             ))}
           </div>
-          <Link href={c.honesty.link.href} className={styles.link}>
-            {c.honesty.link.label}
-          </Link>
+          <p className={styles.links}>
+            {c.honesty.links.map((l) => (
+              <Link key={l.href} href={l.href} className={styles.link}>
+                {l.label}
+              </Link>
+            ))}
+          </p>
 
           <div className={styles.contact}>
             <div>

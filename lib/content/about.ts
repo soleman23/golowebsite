@@ -60,10 +60,14 @@ export const aboutContent = {
     kicker: "HOW THIS SITE STAYS HONEST",
     title: "Unfinished things are labelled unfinished.",
     paragraphs: [
-      "What the app does is kept in one list, with each feature marked live, in testing or not built. The site’s automated checks fail when a page calls an unfinished feature working or names one in a search title. Where something isn’t finished, the page says so.",
+      "What the app does is kept in one list, with each feature marked live, in testing or not built. The site’s automated checks fail when a page calls an unfinished feature working, overstates a live one or names an unfinished one in a search title. Where something isn’t finished, the page says so.",
       "The worked example on How it works is a real round played through the app, on its own screens.",
+      "When the app gets something wrong, we write it up. The build notes go through the worst fixes in the commit log: payouts computed in floating point, presses lost when Setup was saved again, a skins carry paid out before it was won, and an overstated claim about settle-up on this site.",
     ],
-    link: { label: "See the round →", href: "/how-it-works" },
+    links: [
+      { label: "See the round →", href: "/how-it-works" },
+      { label: "Read what we got wrong →", href: "/blog/what-we-got-wrong" },
+    ],
   },
 
   contact: {
