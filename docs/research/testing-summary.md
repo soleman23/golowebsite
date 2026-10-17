@@ -2,7 +2,13 @@
 
 What the GoLo testing study (#75) may say, and what it may not. Resolved October 16, 2026, for soleman23/golowebsite#74.
 
-**Basis.** No reliable private testing records exist: no per-round log, no completion or settlement counts, no session data. The owner decided on 2026-10-16 that unverifiable claims are removed or rewritten, never reconstructed. So this summary rests on the one record that does exist, the app's own repository: soleman23/golo, `main` at `acd6eee` (GoLo 1.0.0, the production branch), with its commits, issues and pull requests from 2026-06-18 to 2026-10-15. Every claim in the draft is resolved in `docs/research/testing-claims.md`. This file has no personal data.
+**Basis.** No reliable private testing records exist: no per-round log, no completion or settlement counts, no session data. The owner decided on 2026-10-16 that unverifiable claims are removed or rewritten, never reconstructed. So this summary rests only on these sources:
+
+1. **The app's repository:** soleman23/golo, `main` at `acd6eee` (GoLo 1.0.0, the production branch), with its commits, issues and pull requests from 2026-06-18 to 2026-10-15. This is the source for the timeline, the changes and what the app does today.
+2. **This website's repository:** the capability registry (`lib/content/capabilities.ts`), including the owner's confirmation on 2026-10-15 that GPS yardages were cut, and the correction history in soleman23/golowebsite#103 and #105.
+3. **The owner's decision of 2026-10-16** on how to treat claims without a record.
+
+Every claim in the draft is resolved in `docs/research/testing-claims.md`. This file has no personal data.
 
 ## Verified facts
 
@@ -44,8 +50,9 @@ Each line is stated as the commit or PR states it.
   - Every player agrees again.
   - The change reprices the whole game.
   - It's refused once that game has presses in play.
-- **Settle-up:** greedy. Debtors and creditors are sorted biggest first once, then both lists are walked, each payment settling the smaller of the two balances. That never takes more than one payment fewer than the number of players, and it isn't always the minimum (#103).
+- **Settle-up:** greedy. Debtors and creditors are sorted biggest first once, then both lists are walked, each payment settling the smaller of the two balances. For n players it never needs more than n − 1 payments, and it isn't always the minimum (#103).
 - **Streaks:** a "Hot hand" badge for three money-positive rounds in a row, in a six-badge Trophy Case.
+- **Money:** GoLo never holds, moves or processes money (registry `settle-up` limits).
 - **Not in the app:** GPS yardages (the owner confirmed "cut", 2026-10-15), scorecard scanning, in-app chat, a feed of other groups' rounds, and shot stats (fairways, putts, strokes gained).
 
 ### Website correction
@@ -69,5 +76,5 @@ Each of these is in the draft, and there's no record behind it:
 
 - Any test round: its date, course, group, size, formats, app version, whether it finished, where it stopped, or how it settled.
 - How testers used, ignored or reacted to any feature.
-- Anything built or decided before 2026-06-18, or outside the golo repository.
+- Anything built or decided before 2026-06-18, or outside the three sources above.
 - The reasons behind several decisions: moving bet detail to the leaderboard, and dropping GPS. The positioning on `/features` ("your watch or laser already does that") is today's stance, not a recorded reason.

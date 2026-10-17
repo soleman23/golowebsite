@@ -6,7 +6,10 @@ The unpublished `forty-rounds` post in `lib/content/blog.ts` makes claims that n
 
 **The repo is public.** The raw log, names, phone numbers, messages and group identities stay outside it. Only the aggregated summary and this matrix are committed.
 
-## Owner steps
+## Owner steps (archived)
+
+**Not used for this study**: no reliable records exist. Keep these steps for a future test run that is recorded at the time, and write its output to a new, dated file (for example `docs/research/testing-log-summary-2027.md`). **Never** overwrite `docs/research/testing-summary.md`, which holds the verified record for this study.
+
 
 1. **Build the log.** Make a CSV outside the repo, e.g. `~/private/golo-testing-log.csv`, with one row per test round. Use whatever records exist: the app's round history, notes, messages. Columns:
 
@@ -119,10 +122,10 @@ Each row is resolved one of two ways: here, before #74 closes, or as a named tas
 
 | # | Draft text | Issue | Resolved when | Status |
 |---|---|---|---|---|
-| W1 | "real Saturday rounds, real money" | Whether money was at stake is N20. However that lands, the post must not suggest GoLo touched the money. | N20 is settled, and #75 adds the registry's limit: GoLo never holds, moves or processes money | Removed: "real Saturday rounds, real money" goes with N20 |
+| W1 | "real Saturday rounds, real money" | Whether money was at stake is N20. However that lands, the post must not suggest GoLo touched the money. | N20 is settled, and #75 adds the registry's limit: GoLo never holds, moves or processes money | Removed: "real Saturday rounds, real money" goes with N20. Assigned to #75: the post must say GoLo never holds, moves or processes money |
 | W2 | Quote: "Nobody wants a golf app. They want the argument to be over." | Who said it? A quote needs a real, consenting source. | The owner names a source who agrees to be quoted, or it's marked for rewriting as plain prose in our own voice | Removed: no verified speaker |
-| W3 | Date 2026-04-23 | Draft date only. | Assigned to #75: publish with the real publication date | Changed in #75: published with the real publication date |
-| W4 | Hero alt "Golfers testing a scoring app during a real round" and mid-article alts | The images are stock course photos, and the alts describe scenes that aren't in them. | Assigned to #75: replace the images or rewrite the alts | Changed in #75: a new hero whose alt describes what's in the photo; no mid-article figures that misdescribe themselves |
+| W3 | Date 2026-04-23 | Draft date only. | Assigned to #75: publish with the real publication date | Assigned to #75: publish with the real publication date |
+| W4 | Hero alt "Golfers testing a scoring app during a real round" and mid-article alts | The images are stock course photos, and the alts describe scenes that aren't in them. | Assigned to #75: replace the images or rewrite the alts | Assigned to #75: a hero whose alt describes what's in the photo, and no mid-article figures that misdescribe themselves |
 | W5 | Title "We tested GoLo on 40 rounds before writing any marketing" | The count is N1; "before writing any marketing" is N0. | The title is decided from N0 and N1: keep it only if both hold; otherwise "What N real rounds taught us…", or drop the numbers and run it as qualitative build notes | Removed: the 40-rounds title and framing are abandoned (N1 has no record) |
 
 ## Done when
@@ -133,4 +136,4 @@ Each row is resolved one of two ways: here, before #74 closes, or as a named tas
 - Every W row is resolved, or assigned to #75 with its task named.
 - `docs/research/testing-summary.md` exists and has no personal data.
 
-All five hold as of October 16, 2026. #75 rewrites the post from the supported and changed rows only.
+As of October 16, 2026, every N, P and B row is resolved, W2 and W5 are removed, and W1, W3 and W4 are assigned to #75 with their tasks named. #75 rewrites the post from the supported and changed rows only.
