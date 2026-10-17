@@ -33,12 +33,13 @@
  *    POST-only form endpoints under /api), a published post, a game guide or
  *    a file in public/.
  * 4. Report lists. Every published post and game guide must be in the lead
- *    report's landing-path allow-list (docs/seo-reports/leads.sql), and it may
- *    not list a slug the site doesn't serve. The same goes for the URL
+ *    report's landing-path allow-list (docs/seo-reports/leads.sql). It may
+ *    keep a retired slug, since leads from before the page went still carry
+ *    its path. Every published post and guide must also be in the URL
  *    Inspection lists in the Search Console run sheet
- *    (docs/seo-reports/gsc-revalidation.md), but only until the date in its
- *    `url-list-checked-until` comment: after the run, those lists are a record
- *    of it.
+ *    (docs/seo-reports/gsc-revalidation.md), and they may list nothing else,
+ *    but only until the date in its `url-list-checked-until` comment: after
+ *    the run, those lists are a record of it.
  *
  * Comments are ignored throughout. Exit 1 with one line per problem.
  */
@@ -80,6 +81,10 @@ const { capabilities } = await import(
 );
 const { publishedPosts } = await import(
   new URL("../lib/content/blog.ts", import.meta.url).href
+);
+/** The guides the route, the sitemap and llms.txt serve. */
+const { gameDetailSlugsWithContent: guideSlugs } = await import(
+  new URL("../lib/content/gameDetail.ts", import.meta.url).href
 );
 
 /* ------------------------------------------------------------------ files */
@@ -465,10 +470,6 @@ function staticRoutes() {
   return routes;
 }
 
-const guideSlugs = [
-  ...read("lib/content/gameDetail.ts").matchAll(/^ {2}slug: "([a-z0-9-]+)",/gm),
-].map((m) => m[1]);
-
 /** Everything in public/ is served at its path. */
 const publicFiles = walk("public", [""]).map(
   (path) => `/${relative("public", path)}`,
@@ -505,12 +506,15 @@ for (const file of files) {
  * The lead report allow-lists landing paths, and the Search Console run sheet
  * lists the URLs to inspect. Both are written by hand, so a new post or guide
  * goes missing from them unless something checks. The lead report runs every
- * month, so it's always checked. The run sheet is for one run: only its URL
+ * month, so it's always checked, against its live SQL only (comments are
+ * blanked first), and a slug that's no longer served may stay: older leads
+ * still carry the path. The run sheet is for one run: only its URL
  * Inspection section counts, and only until its `url-list-checked-until` date.
  */
 const LEADS_SQL = "docs/seo-reports/leads.sql";
 const RUN_SHEET = "docs/seo-reports/gsc-revalidation.md";
-const leadsSql = read(LEADS_SQL);
+/** `--` comments blanked to spaces, so offsets and line numbers still match. */
+const leadsSql = read(LEADS_SQL).replace(/--.*$/gm, (c) => " ".repeat(c.length));
 const runSheetText = read(RUN_SHEET);
 const inspection = runSheetText.match(/^### 3\. URL Inspection\n[\s\S]*?(?=^#{1,3} )/m);
 const checkedUntil = inspection?.[0].match(
@@ -538,9 +542,6 @@ for (const [section, served] of [
   const line = lineAt(leadsSql, allow.index);
   for (const slug of served.filter((s) => !allowed.includes(s))) {
     report(LEADS_SQL, line, `/${section}/${slug} is published but not in the allow-list`);
-  }
-  for (const slug of allowed.filter((s) => !served.includes(s))) {
-    report(LEADS_SQL, line, `/${section}/${slug} is in the allow-list but isn't a page`);
   }
 
   if (!runSheet) continue;
