@@ -60,6 +60,10 @@ const POSTS = {
   bandon: { mids: TWO_MIDS, mobile: true, ogPosition: "right" },
   rangefinder: { mids: NO_MIDS, mobile: true, ogPosition: "right" },
   "scottsdale-trip-structure": { mids: NO_MIDS, mobile: true, ogPosition: "right" },
+  // Cut from the site's own sunset backdrop (public/images/sunset.png), not a
+  // generated image: the flag sits left of centre, so the card is cut from the
+  // centre.
+  "what-we-got-wrong": { mids: NO_MIDS, mobile: true, ogPosition: "centre" },
 };
 const MASTER = { quality: 82, floor: 66, budget: 600 * 1024 };
 const OG = { width: 1200, height: 630, quality: 82, budget: 300 * 1024 };
