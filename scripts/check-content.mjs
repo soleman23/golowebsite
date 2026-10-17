@@ -26,8 +26,7 @@
  *    Overclaims work the same way for every capability, live or not: its
  *    `overclaims` are phrases that overstate what it does ("fewest payments"
  *    for a greedy settle-up). They fail anywhere in copy, blog posts
- *    included, unless the clause denies them or the line carries claim-ok,
- *    and in metadata at all.
+ *    included, unless the line carries claim-ok, and in metadata at all.
  * 3. Internal links. Every "/…" href in content and components, legal copy
  *    included, in any kind of string literal, must be a page or file the site
  *    serves: a static route, a route handler that answers GET (so not the
@@ -308,7 +307,9 @@ for (const file of files) {
   }
 
   // Overclaims count in blog posts and guides too: no golf advice says
-  // "fewest payments" without meaning the app.
+  // "fewest payments" without meaning the app. Only claim-ok excuses one:
+  // the clause-level denial logic is too loose for this ("don't send ten
+  // Venmos when GoLo finds the fewest payments" reads as a denial).
   for (const cap of overclaimed) {
     for (const phrase of cap.overclaims) {
       for (const m of text.matchAll(phraseRegex(phrase))) {
@@ -320,12 +321,7 @@ for (const file of files) {
           continue;
         }
         if (isCode(m.index, m[0].length)) continue;
-        const { text: sentence, offset } = sentenceAt(
-          text,
-          m.index,
-          m[0].length,
-        );
-        if (denied(sentence, offset, m[0].length)) continue;
+        const { text: sentence } = sentenceAt(text, m.index, m[0].length);
         report(
           file,
           line,
