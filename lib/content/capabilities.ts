@@ -143,10 +143,11 @@ export const capabilities = [
     id: "settle-up",
     label: "Netted settle-up and round history",
     status: "live",
-    // The payment list is greedy: the biggest debt pays the biggest credit,
-    // repeated until every balance is zero. That never takes more than one
-    // payment fewer than the number of players, but it isn't always the
-    // minimum: nets of +4, +3, −2, −2, −3 come out as 4 payments where 3
+    // The payment list is greedy: debtors and creditors are sorted biggest
+    // first once, then both lists are walked, each payment settling the
+    // smaller of the two balances, until every balance is zero. That never
+    // takes more than one payment fewer than the number of players, but it
+    // isn't always the minimum: nets of +4, +3, −2, −2, −3 come out as 4 payments where 3
     // would do (the +3 and −3 can settle on their own).
     summary:
       "Every game netted into one number per player, then a short list of payments that squares the group; each round is saved.",
@@ -175,6 +176,10 @@ export const capabilities = [
       "as few transfers as possible",
       "optimal set of payments",
       "optimal set of transfers",
+      "smallest set of payments",
+      "smallest set of transfers",
+      "smallest number of payments",
+      "smallest number of transfers",
     ],
   },
   {

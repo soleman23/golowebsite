@@ -332,6 +332,27 @@ for (const file of files) {
   }
 }
 
+/**
+ * The default share card is a PNG rendered from this page, so its words ship
+ * on every route without passing through the content files above.
+ */
+const SHARE_CARD = "scripts/og-image.html";
+{
+  const raw = read(SHARE_CARD);
+  // Visible text only: no comments, styles, scripts or tags.
+  const text = raw
+    .replace(/<!--[\s\S]*?-->/g, " ")
+    .replace(/<(style|script)[\s\S]*?<\/\1>/gi, " ")
+    .replace(/<[^>]+>/g, " ");
+  for (const cap of overclaimed) {
+    for (const phrase of cap.overclaims) {
+      for (const m of text.matchAll(phraseRegex(phrase))) {
+        report(SHARE_CARD, lineAt(raw, raw.indexOf(m[0])), `"${m[0]}" overstates ${cap.id} on the share card`);
+      }
+    }
+  }
+}
+
 /* --------------------------------------------------------------- metadata */
 
 /** A string literal's text: "…", '…' or `…` (with ${…} left as it is). */
