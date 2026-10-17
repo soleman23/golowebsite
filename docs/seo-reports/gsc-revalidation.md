@@ -61,6 +61,9 @@ The October 8 baseline in `docs/seo-progress.md` covers three months, not 28 day
 
 Inspect each URL below. For each one, record whether it's indexed, whether Google's selected canonical matches the canonical we declare, and the last crawl date.
 
+<!-- url-list-checked-until: 2026-11-05 -->
+Until November 5, 2026, `npm run lint:content` fails while a published post or guide is missing from the two lists below, or while they list a page the site doesn't serve. After that date, the lists are the record of this run and the check stops. If the run happens earlier, change the date in the comment above to the run date.
+
 **Guides (8):**
 
 - `https://www.golo.golf/games/skins`
@@ -88,7 +91,7 @@ Inspect each URL below. For each one, record whether it's indexed, whether Googl
 - `https://www.golo.golf/blog/wolf` (2026-07-02)
 - `https://www.golo.golf/blog/bingo-bango-bongo` (2026-06-18)
 
-The issue counts 11 posts. `settle-up-screen` (October 15) and `what-we-got-wrong` (October 16) were published after the issue was written, so they're on this list too. `npm run lint:content` fails while a published post or guide is missing from this list. Before the run, check the sitemap for anything newer:
+The issue counts 11 posts. `settle-up-screen` (October 15) and `what-we-got-wrong` (October 16) were published after the issue was written, so they're on this list too. Before the run, check the sitemap for anything newer:
 
 ```bash
 curl -s https://www.golo.golf/sitemap.xml | grep -o '<loc>[^<]*' | sed 's/<loc>//'

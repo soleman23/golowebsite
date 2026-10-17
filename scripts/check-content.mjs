@@ -33,9 +33,12 @@
  *    POST-only form endpoints under /api), a published post, a game guide or
  *    a file in public/.
  * 4. Report lists. Every published post and game guide must be in the lead
- *    report's landing-path allow-list (docs/seo-reports/leads.sql) and the
- *    Search Console run sheet's URL list (docs/seo-reports/gsc-revalidation.md),
- *    and neither may list a slug the site doesn't serve.
+ *    report's landing-path allow-list (docs/seo-reports/leads.sql), and it may
+ *    not list a slug the site doesn't serve. The same goes for the URL
+ *    Inspection lists in the Search Console run sheet
+ *    (docs/seo-reports/gsc-revalidation.md), but only until the date in its
+ *    `url-list-checked-until` comment: after the run, those lists are a record
+ *    of it.
  *
  * Comments are ignored throughout. Exit 1 with one line per problem.
  */
@@ -501,13 +504,24 @@ for (const file of files) {
 /**
  * The lead report allow-lists landing paths, and the Search Console run sheet
  * lists the URLs to inspect. Both are written by hand, so a new post or guide
- * goes missing from them unless something checks. Every published post and
- * guide must be in both, and neither may list a slug the site doesn't serve.
+ * goes missing from them unless something checks. The lead report runs every
+ * month, so it's always checked. The run sheet is for one run: only its URL
+ * Inspection section counts, and only until its `url-list-checked-until` date.
  */
 const LEADS_SQL = "docs/seo-reports/leads.sql";
 const RUN_SHEET = "docs/seo-reports/gsc-revalidation.md";
 const leadsSql = read(LEADS_SQL);
-const runSheet = read(RUN_SHEET);
+const runSheetText = read(RUN_SHEET);
+const inspection = runSheetText.match(/^### 3\. URL Inspection\n[\s\S]*?(?=^#{1,3} )/m);
+const checkedUntil = inspection?.[0].match(
+  /<!-- url-list-checked-until: (\d{4}-\d{2}-\d{2}) -->/,
+)?.[1];
+if (!inspection || !checkedUntil) {
+  report(RUN_SHEET, 1, "no URL Inspection section with a url-list-checked-until date");
+}
+const today = new Date().toISOString().slice(0, 10);
+const runSheet = checkedUntil && today <= checkedUntil ? inspection[0] : null;
+const runSheetLine = inspection ? lineAt(runSheetText, inspection.index) : 1;
 
 for (const [section, served] of [
   ["blog", publishedPosts.map((p) => p.slug)],
@@ -529,16 +543,17 @@ for (const [section, served] of [
     report(LEADS_SQL, line, `/${section}/${slug} is in the allow-list but isn't a page`);
   }
 
+  if (!runSheet) continue;
   const listed = [
     ...runSheet.matchAll(
       new RegExp(`^- \`https://www\\.golo\\.golf/${section}/([a-z0-9-]+)\``, "gm"),
     ),
   ].map((m) => m[1]);
   for (const slug of served.filter((s) => !listed.includes(s))) {
-    report(RUN_SHEET, 1, `/${section}/${slug} is published but not in the URL list`);
+    report(RUN_SHEET, runSheetLine, `/${section}/${slug} is published but not in the URL Inspection lists`);
   }
   for (const slug of listed.filter((s) => !served.includes(s))) {
-    report(RUN_SHEET, 1, `/${section}/${slug} is in the URL list but isn't a page`);
+    report(RUN_SHEET, runSheetLine, `/${section}/${slug} is in the URL Inspection lists but isn't a page`);
   }
 }
 
@@ -554,5 +569,5 @@ if (problems.length) {
 }
 
 console.log(
-  `✔ Content: no claims for ${notLive.length} non-live capabilities, no overclaims for ${overclaimed.length}, ${pages.size} link targets resolve, report lists match ${publishedPosts.length} posts and ${guideSlugs.length} guides`,
+  `✔ Content: no claims for ${notLive.length} non-live capabilities, no overclaims for ${overclaimed.length}, ${pages.size} link targets resolve, report lists match ${publishedPosts.length} posts and ${guideSlugs.length} guides${runSheet ? ` (run sheet until ${checkedUntil})` : ""}`,
 );
