@@ -58,6 +58,14 @@ export type Capability = {
    * Lower-case; matched case-insensitively.
    */
   claimPhrases?: readonly string[];
+  /**
+   * Phrases that overstate a capability even while it's live: it does
+   * something, just not this. `npm run lint` fails on any of them in site
+   * copy and metadata, whatever the status, unless the sentence denies it or
+   * the line carries `claim-ok: <reason>` (a worked example that really is
+   * the minimum, say). Lower-case; matched case-insensitively.
+   */
+  overclaims?: readonly string[];
 };
 
 /** soleman23/golowebsite#27: golo `main` 291c545, GoLo 0.6.2. */
@@ -65,6 +73,17 @@ const APP_CHECK_062 = {
   by: "app-check",
   date: "2026-10-11",
   appVersion: "0.6.2",
+} as const;
+
+/**
+ * soleman23/golowebsite#103: golo `main` acd6eee (GoLo 1.0.0, the production
+ * branch), src/engines/payouts.js calculateSettlementCents, called from
+ * src/pages/PayoutsPage.jsx.
+ */
+const APP_CHECK_100 = {
+  by: "app-check",
+  date: "2026-10-16",
+  appVersion: "1.0.0",
 } as const;
 
 /** Owner's answers on 2026-10-15 (soleman23/golowebsite#61). */
@@ -124,14 +143,44 @@ export const capabilities = [
     id: "settle-up",
     label: "Netted settle-up and round history",
     status: "live",
+    // The payment list is greedy: debtors and creditors are sorted biggest
+    // first once, then both lists are walked, each payment settling the
+    // smaller of the two balances, until every balance is zero. That never
+    // takes more than one payment fewer than the number of players, but it
+    // isn't always the minimum: nets of +4, +3, −2, −2, −3 come out as 4 payments where 3
+    // would do (the +3 and −3 can settle on their own).
     summary:
-      "Every game netted into one number per player, then the fewest payments that square the group; each round is saved.",
+      "Every game netted into one number per player, then a short list of payments that squares the group; each round is saved.",
     limits: [
       "Each round settles on its own.",
+      "Never more than one payment fewer than the number of players, but not always the fewest possible.",
       "GoLo never holds, moves or processes money.",
     ],
-    verified: APP_CHECK_062,
+    verified: APP_CHECK_100,
     roadmap: true,
+    overclaims: [
+      "fewest payments",
+      "fewest transfers",
+      "fewest possible payments",
+      "fewest possible transfers",
+      "fewest legible payments",
+      "minimum number of payments",
+      "minimal set of payments",
+      "minimal set of transfers",
+      "fewest number of payments",
+      "fewest number of transfers",
+      "fewest transactions",
+      "minimum number of transfers",
+      "minimum number of transactions",
+      "as few payments as possible",
+      "as few transfers as possible",
+      "optimal set of payments",
+      "optimal set of transfers",
+      "smallest set of payments",
+      "smallest set of transfers",
+      "smallest number of payments",
+      "smallest number of transfers",
+    ],
   },
   {
     id: "saved-groups",

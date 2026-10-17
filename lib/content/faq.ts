@@ -144,7 +144,7 @@ export const faqCategories: FaqCategory[] = [
       {
         id: "q-settle",
         q: "How does the settle-up work?",
-        a: "When the last putt drops, GoLo totals every game, figures out who’s up and who’s down, and reduces it to the fewest transfers that square the group. Nobody sends four separate payments — you get one clean “pay this person” instruction.",
+        a: "When the last putt drops, GoLo totals every game, figures out who’s up and who’s down, and reduces it to a short list of payments that square the group. Nobody sends a payment per bet — each player gets a short list of who to pay, or who pays them.",
       },
       {
         id: "q-gambling",

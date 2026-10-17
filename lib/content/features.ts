@@ -193,7 +193,7 @@ export const featureBlocks: FeatureBlock[] = [
     kicker: "AUTO SETTLE-UP",
     status: TODAY,
     title: "Four players, six debts, three payments.",
-    lead: "Nassau, presses, skins, the purse and every greenie get netted into one number per player, then reduced to the fewest transfers that make everyone whole. You read the list out loud in the parking lot and it's over — no daisy chain, no arithmetic with a beer in your hand.",
+    lead: "Nassau, presses, skins, the purse and every greenie get netted into one number per player, then reduced to a short list of payments that make everyone whole. You read the list out loud in the parking lot and it's over — no daisy chain, no arithmetic with a beer in your hand.",
     checklist: [
       { lead: "Who pays whom", rest: "names and amounts, in plain order." },
       {
@@ -338,7 +338,7 @@ export const quickAnswers: QuickAnswer[] = [
     id: "move-the-money",
     question: "Does GoLo move the money?",
     answer:
-      "No. GoLo tracks who owes what and reduces it to the fewest payments — then you settle in cash, Venmo, Zelle or however your group already does it. Nothing runs through us, and we never see a payment.",
+      "No. GoLo tracks who owes what and reduces it to a short list of payments — then you settle in cash, Venmo, Zelle or however your group already does it. Nothing runs through us, and we never see a payment.",
   },
   {
     id: "everyone-need-the-app",

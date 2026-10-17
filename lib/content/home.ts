@@ -113,7 +113,7 @@ export const features: Feature[] = [
     kicker: "AUTO SETTLE-UP",
     title: "The math is done before the handshake.",
     bodyHtml:
-      "Skins, Nassau, Best Score, closest-to-pin and long drive — all netted into the <strong>fewest possible transfers</strong>. No daisy-chain of Venmos. Just “you pay him, he pays her,” done.",
+      "Skins, Nassau, Best Score, closest-to-pin and long drive — all netted into <strong>one short list of payments</strong>. No daisy-chain of Venmos. Just “you pay him, he pays her,” done.",
     checklist: [
       {
         lead: "One net number per person",
@@ -211,7 +211,7 @@ export const steps: Step[] = [
     n: "3",
     icon: "swap",
     title: "Settle up",
-    body: "GoLo nets every game into the fewest transfers. Everyone pays the right person before you leave the green.",
+    body: "GoLo nets every game into a short list of payments. Everyone pays the right person before you leave the green.",
   },
 ];
 

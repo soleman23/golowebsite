@@ -10,7 +10,7 @@ Specific people and places whose audience would care about GoLo's first-party ma
 
 ## Read before pitching
 
-1. **"Fewest payments."** The post and the site say GoLo settles a round in the fewest payments. The post's own example is a true minimum. In general, though, settling "as much as each payment can" guarantees at most n − 1 payments, not the fewest; the exact minimum is a hard problem. An audience that knows the math (Hacker News, design and dev writers) will spot this. Hold technical pitches until soleman23/golowebsite#103 settles the wording. Golf audiences won't care either way.
+1. **"Fewest payments."** Settled in soleman23/golowebsite#103. GoLo's settle-up is greedy: never more than one payment fewer than the number of players, not always the minimum (finding the true minimum is a hard problem). The site and the post now say "a short list of payments", and keep "fewest" only for the post's worked example, which is minimal. Pitch it the same way. An audience that knows the math (Hacker News, design and dev writers) will respect the caveat, and would catch its absence.
 2. **Competitors are in these spaces too.** Other golf side-game and settle-up apps have posted on the forums below and appeared as podcast guests. That's a reason to lead with the build note's substance, not with the app.
 3. **Contact routes.** This file links to where each route is published instead of copying addresses into a public repo. Several are personal inboxes the hosts list in their show notes. Use them for listener mail as invited, not for a pitch campaign.
 
@@ -35,7 +35,7 @@ Checked October 16, 2026. "Last activity" is the latest date seen then. Re-check
 
 ### Build-in-public and product-design writers
 
-Hold these until the wording in soleman23/golowebsite#103 is settled; see "Read before pitching". Rows 7–9 are communities: use them only if the owner already has an account there and takes part. Don't open an account to post this.
+Pitch the settle-up method with its caveat; see "Read before pitching". Rows 7–9 are communities: use them only if the owner already has an account there and takes part. Don't open an account to post this.
 
 | # | Target | Last activity | Why they'd care | Source page | Contact route |
 |---|---|---|---|---|---|

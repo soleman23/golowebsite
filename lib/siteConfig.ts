@@ -28,7 +28,7 @@ export const siteConfig = {
   description:
     // "Friendly wagers", not "betting": the Terms say GoLo is not a betting app,
     // and search titles and descriptions hold that line until counsel signs off.
-    "GoLo is the golf scorekeeper for friendly wagers: it runs every side game, does the handicap math, and settles the group in the fewest payments.",
+    "GoLo is the golf scorekeeper for friendly wagers: it runs every side game, does the handicap math, and settles the group with a short list of payments.",
   url: process.env.NEXT_PUBLIC_SITE_URL || "https://www.golo.golf",
   gaMeasurementId: process.env.NEXT_PUBLIC_GA_ID || "G-36182P0H4D",
   analyticsEnabled: boolFlag(

@@ -28,7 +28,7 @@ export const aboutContent = {
     title: "Two problems any group playing for a few dollars knows.",
     paragraphs: [
       "During the round, the games get hard to keep straight. A Nassau, skins with carryovers and closest to the pin on the par 3s are separate tallies, and nobody can hold all of them in their head by the 14th tee.",
-      "After the round, settling up turns into an argument about who owes whom and how much. GoLo handles both: it keeps every game’s score as you play, then nets everything into the fewest payments.",
+      "After the round, settling up turns into an argument about who owes whom and how much. GoLo handles both: it keeps every game’s score as you play, then nets everything into a short list of payments.",
     ],
   },
 
