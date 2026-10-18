@@ -81,10 +81,22 @@ ALTER TABLE "NewsletterLead" ADD COLUMN "landingSource" TEXT;
 
 Counsel: the open privacy-policy question about landing page and referrer host on lead rows covers this field too.
 
+## GA4 set up, October 16–18, 2026 (soleman23/golowebsite#66, SEO-08)
+
+GA4 is the "GoLo Golf" property, G-36182P0H4D. It received nothing before October 16: the gtag shim pushed arrays, which gtag.js ignores, and #100 fixed it. Treat any GA4 number dated before October 16 as no data, not zero.
+
+- **Channel group.** "AI assistants" (Admin → Data display → Channel groups, created October 16) is the default channels plus an AI assistants channel above Referral, matching session source `(.*\.)?(chatgpt\.com|chat\.openai\.com|perplexity\.ai|gemini\.google\.com|copilot\.microsoft\.com|claude\.ai|you\.com|phind\.com)`. On October 18, the Traffic acquisition report offers it as "Session AI assistants"; its one session so far is Direct.
+- **Exploration.** "Landing page × channel × key events" (Explore, created October 16).
+- **First data.** On October 17, the owner allowed analytics on /privacy in Chrome (no Global Privacy Control, no blocker) and submitted their own number in the home hero's "Text me the link when it's live". `/api/text-link` returned 200. gtag sent `generate_lead` with `method=text_me_link` and `placement=hero`, no other parameters, and Realtime showed it within a minute. The processed Events report for September 20 – October 17 lists 18 events from 1 user: `page_view` 5, `session_start` 5, `user_engagement` 4, and `first_visit`, `form_start`, `generate_lead` and `scroll` 1 each.
+- **Key event.** `generate_lead` was marked as a key event on October 18, from the Events report's row menu. Admin → Events → Recent events was still empty 24 hours after the event arrived. Admin → Events → Key events now lists it as active on the "GoLo Golf Website" stream.
+  - Key events don't apply to past data, so the October 17 lead isn't counted as one. The next opted-in lead is the first.
+  - `newsletter_signup` hasn't arrived yet. Mark it as a secondary key event once it does.
+- **Contact form.** The contact form sends `contact_submit`, not `generate_lead`. It isn't a key event.
+
 ## Remaining
 
 - Search Console: re-check index coverage, selected canonicals and field Core Web Vitals against the October 8 baseline. Due between October 22 and November 5 (two to four weeks after the deploy).
-- GA4 is live as of the October 8 build (NEXT_PUBLIC_ANALYTICS_ENABLED=true in hPanel; measurement ID G-36182P0H4D, the siteConfig default). Still to do in GA: mark generate_lead as a key event.
+- GA4 has been on since the October 8 build (NEXT_PUBLIC_ANALYTICS_ENABLED=true in hPanel; measurement ID G-36182P0H4D, the siteConfig default), but it only receives data since the October 16 fix (#100). `generate_lead` is a key event as of October 18; see above. Still to do: mark `newsletter_signup` as a secondary key event once it first arrives.
 - GA4 will undercount, by design. Analytics is opt-in: no data until a visitor grants it in the "Privacy choices" control (footer link → /privacy#analytics-choices). There is no banner, and Global Privacy Control or no choice keeps it off. Read GA as a small opted-in sample, not traffic; use Search Console clicks and the lead table (now with landing page and referrer) for volume. A consent banner would raise the sample, but that is a product and counsel decision, not an SEO task.
 - Privacy policy: the download-link bullet mentions "related technical records", and the usage section lists "referring pages". Counsel to confirm that covers landing page and referrer host on lead rows, or add them explicitly.
 - Verifiable authorship / reviewer information; do not invent credentials or people.
