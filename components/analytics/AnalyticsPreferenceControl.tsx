@@ -10,9 +10,9 @@ import { useEffect, useState } from "react";
 import {
   ANALYTICS_PREFERENCE_EVENT,
   ANALYTICS_STORAGE_KEY,
-  canSaveChoice,
   getAnalyticsChoice,
   hasGlobalPrivacyControl,
+  isChoiceUnsaved,
   setAnalyticsChoice,
   type AnalyticsChoice,
 } from "@/lib/analyticsPreference";
@@ -28,7 +28,7 @@ export function AnalyticsPreferenceControl({
 }) {
   const [choice, setChoice] = useState<AnalyticsChoice | null>(null);
   const [gpc, setGpc] = useState(false);
-  const [saveable, setSaveable] = useState(true);
+  const [unsaved, setUnsaved] = useState(false);
   const enabled =
     process.env.NODE_ENV === "production" && siteConfig.analyticsEnabled;
 
@@ -36,24 +36,38 @@ export function AnalyticsPreferenceControl({
     const reconcile = () => {
       setChoice(getAnalyticsChoice());
       setGpc(hasGlobalPrivacyControl());
-      setSaveable(canSaveChoice());
+      setUnsaved(isChoiceUnsaved());
     };
+    // key === null: another tab cleared site storage, choice included.
     const onStorage = (event: StorageEvent) => {
-      if (event.key === ANALYTICS_STORAGE_KEY) reconcile();
+      if (event.key === ANALYTICS_STORAGE_KEY || event.key === null) reconcile();
+    };
+    // Storage events aren't replayed into a page restored from the
+    // back/forward cache, and GPC can change while a tab is in the background.
+    const onPageShow = (event: PageTransitionEvent) => {
+      if (event.persisted) reconcile();
+    };
+    const onVisible = () => {
+      if (document.visibilityState === "visible") reconcile();
     };
 
     reconcile();
     window.addEventListener(ANALYTICS_PREFERENCE_EVENT, reconcile);
     window.addEventListener("storage", onStorage);
+    window.addEventListener("pageshow", onPageShow);
+    document.addEventListener("visibilitychange", onVisible);
     return () => {
       window.removeEventListener(ANALYTICS_PREFERENCE_EVENT, reconcile);
       window.removeEventListener("storage", onStorage);
+      window.removeEventListener("pageshow", onPageShow);
+      document.removeEventListener("visibilitychange", onVisible);
     };
   }, []);
 
   const choose = (next: AnalyticsChoice) => {
     setAnalyticsChoice(next, measurementId);
     setChoice(next);
+    setUnsaved(isChoiceUnsaved());
   };
 
   const status = !enabled
@@ -78,7 +92,7 @@ export function AnalyticsPreferenceControl({
           <h2 id="analytics-choice-heading">{copy.title}</h2>
           <p className={styles.copy} role="status">
             {status}
-            {!saveable && choice ? ` ${copy.unsaved}` : ""}
+            {unsaved && choice ? ` ${copy.unsaved}` : ""}
           </p>
           {choice === "granted" && !gpc ? (
             <p className={styles.note}>{copy.withdrawNote}</p>

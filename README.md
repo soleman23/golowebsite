@@ -142,15 +142,18 @@ nofollow`, stay out of the sitemap, and remain unlinked.
 | Storage blocked | Nothing until the visitor chooses; the choice lasts for the page only | The notice, every page load |
 
 - The choice lives in localStorage as `golo.analytics.consent.v2` (`granted` /
-  `denied`). The pre-Clarity key `golo.analytics.preference` is migrated: a
-  decline carries over, a grant is dropped and asked again.
+  `denied`). The pre-Clarity key `golo.analytics.preference` is read, never
+  deleted: a decline there carries over, a grant there is asked again. Every
+  decline is also written to the old key, because pages from the earlier
+  opt-out build read only that key and treat a missing value as allowed.
 - "Privacy choices" in the footer links to `/privacy#analytics-choices`, the
   persistent control. The same control is on `/cookies`.
 - Withdrawal reloads the page because neither vendor documents a full stop for
   an already-loaded tag: Google documents `ga-disable-<ID>` only when set before
   gtag runs, and Clarity's denied consent keeps a cookieless mode running.
 - Before either script loads, `dropUnusedQueryParams()` removes every query
-  parameter except `filter`, `topic` and `utm_*` from the address bar, so an
+  parameter except `filter`, `topic` and any `utm_*` (GA4's campaign fields,
+  `utm_id` and `utm_source_platform` included) from the address bar, so an
   inbound URL carrying an email or token never reaches GA's `page_location` or
   a Clarity recording. GA's `page_referrer` is sent without its query string.
 - The GA tag is configured with `allow_google_signals: false` and

@@ -45,15 +45,27 @@ export function AnalyticsConsentBanner({
     const reconcile = () => {
       setOpen(getAnalyticsChoice() === null && !hasGlobalPrivacyControl());
     };
+    // key === null: another tab cleared site storage, choice included.
     const onStorage = (event: StorageEvent) => {
-      if (event.key === ANALYTICS_STORAGE_KEY) reconcile();
+      if (event.key === ANALYTICS_STORAGE_KEY || event.key === null) reconcile();
+    };
+    // Missed storage events (back/forward cache) and GPC changes.
+    const onPageShow = (event: PageTransitionEvent) => {
+      if (event.persisted) reconcile();
+    };
+    const onVisible = () => {
+      if (document.visibilityState === "visible") reconcile();
     };
     reconcile();
     window.addEventListener(ANALYTICS_PREFERENCE_EVENT, reconcile);
     window.addEventListener("storage", onStorage);
+    window.addEventListener("pageshow", onPageShow);
+    document.addEventListener("visibilitychange", onVisible);
     return () => {
       window.removeEventListener(ANALYTICS_PREFERENCE_EVENT, reconcile);
       window.removeEventListener("storage", onStorage);
+      window.removeEventListener("pageshow", onPageShow);
+      document.removeEventListener("visibilitychange", onVisible);
     };
   }, [enabled]);
 

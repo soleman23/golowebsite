@@ -27,18 +27,25 @@ declare global {
   }
 }
 
-let reloadScheduled = false;
+let pendingReload: (() => void) | null = null;
 
 /** Reloads the page the next time this tab is hidden (once). */
 function reloadWhenHidden() {
-  if (reloadScheduled) return;
-  reloadScheduled = true;
+  if (pendingReload) return;
   const onHide = () => {
     if (document.visibilityState !== "hidden") return;
-    document.removeEventListener("visibilitychange", onHide);
+    cancelPendingReload();
     window.location.reload();
   };
+  pendingReload = onHide;
   document.addEventListener("visibilitychange", onHide);
+}
+
+/** Analytics was allowed again before the tab was hidden: no reload due. */
+function cancelPendingReload() {
+  if (!pendingReload) return;
+  document.removeEventListener("visibilitychange", pendingReload);
+  pendingReload = null;
 }
 
 function configure(measurementId: string) {
@@ -132,6 +139,7 @@ export function AnalyticsLoader({
       return;
     }
     if (next) {
+      cancelPendingReload();
       dropUnusedQueryParams();
       configure(measurementId);
       if (clarityProjectId) configureClarity();
@@ -142,8 +150,9 @@ export function AnalyticsLoader({
   useEffect(() => {
     reconcile();
     const onChoice = () => reconcile();
+    // key === null: another tab cleared site storage, the grant included.
     const onStorage = (event: StorageEvent) => {
-      if (event.key === ANALYTICS_STORAGE_KEY) reconcile(true);
+      if (event.key === ANALYTICS_STORAGE_KEY || event.key === null) reconcile(true);
     };
     // Storage events aren't replayed into a page restored from the
     // back/forward cache, and GPC can change while a tab sits in the background.

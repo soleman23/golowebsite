@@ -13,21 +13,25 @@ export type AnalyticsChoice = "granted" | "denied";
  * v2 covers GA4 and Clarity together. The older key ("golo.analytics.preference")
  * was saved before session recordings existed, so a grant under it doesn't
  * cover them and is asked again; a decline under it still holds.
+ *
+ * The older key is never deleted, and every decline is mirrored into it:
+ * pages still open from the earlier, opt-out build read only that key and
+ * treat a missing value as "allowed", so deleting it, or declining only under
+ * v2, would switch analytics on in those tabs.
  */
 export const ANALYTICS_STORAGE_KEY = "golo.analytics.consent.v2";
 const LEGACY_STORAGE_KEY = "golo.analytics.preference";
 export const ANALYTICS_PREFERENCE_EVENT = "golo:analytics-preference";
 
-/** Query parameters the site itself uses; every other one is dropped before analytics loads. */
-const KEPT_QUERY_PARAMS = new Set([
-  "filter",
-  "topic",
-  "utm_source",
-  "utm_medium",
-  "utm_campaign",
-  "utm_term",
-  "utm_content",
-]);
+/**
+ * Query parameters kept when analytics loads: the site's own filters and
+ * every GA4 campaign parameter (utm_*, including utm_id and
+ * utm_source_platform). Every other one is dropped.
+ */
+const KEPT_QUERY_PARAMS = new Set(["filter", "topic"]);
+function isKeptQueryParam(key: string): boolean {
+  return KEPT_QUERY_PARAMS.has(key) || key.startsWith("utm_");
+}
 
 declare global {
   interface Navigator {
@@ -50,7 +54,6 @@ declare global {
  * comes back.
  */
 let unsavedChoice: AnalyticsChoice | null = null;
-let storageWorks: boolean | null = null;
 
 function readStorage(key: string): string | null {
   try {
@@ -70,29 +73,26 @@ function writeStorage(key: string, value: string | null): boolean {
   }
 }
 
-/** Whether a choice can be saved in this browser. Checked once per page. */
-export function canSaveChoice(): boolean {
-  if (typeof window === "undefined") return false;
-  if (storageWorks === null) {
-    const probe = "golo.storage-probe";
-    storageWorks = writeStorage(probe, "1") && readStorage(probe) === "1";
-    writeStorage(probe, null);
-  }
-  return storageWorks;
-}
-
 export function hasGlobalPrivacyControl(): boolean {
   return typeof navigator !== "undefined" && navigator.globalPrivacyControl === true;
 }
 
-/** Carries a decline from the pre-Clarity key forward; drops a grant. */
+/**
+ * Carries a decline from the pre-Clarity key forward; ignores a grant, which
+ * didn't cover session recordings. Leaves the older key in place (see above).
+ */
 function migrateLegacyChoice(): void {
-  const legacy = readStorage(LEGACY_STORAGE_KEY);
-  if (legacy === null) return;
-  if (legacy === "denied" && readStorage(ANALYTICS_STORAGE_KEY) === null) {
+  if (
+    readStorage(LEGACY_STORAGE_KEY) === "denied" &&
+    readStorage(ANALYTICS_STORAGE_KEY) === null
+  ) {
     writeStorage(ANALYTICS_STORAGE_KEY, "denied");
   }
-  writeStorage(LEGACY_STORAGE_KEY, null);
+}
+
+/** Whether the last choice could only be held in memory (storage refused it). */
+export function isChoiceUnsaved(): boolean {
+  return unsavedChoice !== null;
 }
 
 /** The saved choice, or null when the visitor hasn't chosen yet. */
@@ -161,7 +161,7 @@ export function dropUnusedQueryParams(): void {
   const url = new URL(window.location.href);
   let changed = false;
   for (const key of [...url.searchParams.keys()]) {
-    if (!KEPT_QUERY_PARAMS.has(key)) {
+    if (!isKeptQueryParam(key)) {
       url.searchParams.delete(key);
       changed = true;
     }
@@ -205,7 +205,14 @@ export function applyAnalyticsState(
  * describes what Microsoft's terms allow.
  */
 export function grantClarity(): void {
-  window.clarity?.("consentv2", { ad_Storage: "denied", analytics_Storage: "granted" });
+  if (!window.clarity) return;
+  // Stopped earlier on this page without a reload (a decline storage
+  // couldn't save): start it again before granting.
+  if (window.__goloClarityStopped) {
+    window.clarity("start");
+    window.__goloClarityStopped = false;
+  }
+  window.clarity("consentv2", { ad_Storage: "denied", analytics_Storage: "granted" });
 }
 
 /**
@@ -233,13 +240,18 @@ export function setAnalyticsChoice(
   measurementId: string,
 ): boolean {
   migrateLegacyChoice();
-  if (writeStorage(ANALYTICS_STORAGE_KEY, choice) && canSaveChoice()) {
+  // Saved means the consent key itself reads back the new value. A separate
+  // probe key can fail on a full quota while overwriting this one succeeds.
+  writeStorage(ANALYTICS_STORAGE_KEY, choice);
+  if (readStorage(ANALYTICS_STORAGE_KEY) === choice) {
     unsavedChoice = null;
   } else {
     unsavedChoice = choice;
     // An older saved grant must not outlive a decline that couldn't be saved.
     if (choice === "denied") writeStorage(ANALYTICS_STORAGE_KEY, null);
   }
+  // Mirror a decline for tabs still running the earlier build (see the key).
+  if (choice === "denied") writeStorage(LEGACY_STORAGE_KEY, "denied");
   const allowed = choice === "granted" && !hasGlobalPrivacyControl();
   applyAnalyticsState(measurementId, allowed);
   window.dispatchEvent(
