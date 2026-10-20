@@ -17,6 +17,8 @@ import type { useReportWebVitals } from "next/web-vitals";
 import { track } from "@/lib/analytics";
 
 const SCROLL_MARKS = [25, 50, 75, 90] as const;
+/** GA4 drops event parameter values longer than this, rather than cutting them. */
+const GA_VALUE_MAX = 100;
 /** Cap per page view, so one broken script can't flood the property. */
 const MAX_ERRORS_PER_PAGE = 5;
 
@@ -34,7 +36,7 @@ function linkLocation(link: Element): "nav" | "footer" | "main" {
 /** The link's visible label: site copy, never visitor input. */
 function linkText(link: HTMLAnchorElement): string {
   const label = link.getAttribute("aria-label") ?? link.textContent ?? "";
-  return label.replace(/\s+/g, " ").trim().slice(0, 100);
+  return label.replace(/\s+/g, " ").trim().slice(0, GA_VALUE_MAX);
 }
 
 type WebVitalsHandler = Parameters<typeof useReportWebVitals>[0];
@@ -81,7 +83,7 @@ function SessionTrackingInner() {
   // Scroll depth, 404s and errors are per page view: reset on navigation.
   useEffect(() => {
     if (document.querySelector("[data-not-found]")) {
-      track("page_not_found", { page_path: pathname });
+      track("page_not_found", { page_path: pathname.slice(0, GA_VALUE_MAX) });
     }
 
     const passed = new Set<number>();
@@ -107,8 +109,7 @@ function SessionTrackingInner() {
     const report = (description: string) => {
       if (errors >= MAX_ERRORS_PER_PAGE) return;
       errors += 1;
-      // GA4 drops event parameter values over 100 characters.
-      track("exception", { description: description.slice(0, 100), fatal: false });
+      track("exception", { description: description.slice(0, GA_VALUE_MAX), fatal: false });
     };
     const onError = (event: ErrorEvent) => {
       // Extensions throw into the page too; they aren't the site's errors.
@@ -151,7 +152,7 @@ function SessionTrackingInner() {
       }
       if (url.host !== window.location.host) return;
       track("link_click", {
-        link_url: `${url.pathname}${url.hash}`,
+        link_url: `${url.pathname}${url.hash}`.slice(0, GA_VALUE_MAX),
         link_text: linkText(link),
         location,
       });
