@@ -25,10 +25,13 @@ export function getAnalyticsPreference(): AnalyticsPreference | null {
   return value === "granted" || value === "denied" ? value : null;
 }
 
-/** Prior opt-in: analytics stays off until the visitor explicitly grants it. */
+/**
+ * Opt-out: analytics is on unless the visitor turned it off here or the
+ * browser sends Global Privacy Control.
+ */
 export function isAnalyticsAllowedForVisit(): boolean {
   if (typeof window === "undefined") return false;
-  return !hasGlobalPrivacyControl() && getAnalyticsPreference() === "granted";
+  return !hasGlobalPrivacyControl() && getAnalyticsPreference() !== "denied";
 }
 
 function expireCookie(name: string, domain?: string) {

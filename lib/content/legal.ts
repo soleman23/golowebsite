@@ -723,10 +723,10 @@ export const cookiesDoc: LegalDoc = {
   title: "Cookie Policy",
   kicker: "LEGAL · WEBSITE PREFERENCES",
   lead:
-    "What golo.golf stores in your browser, when Google Analytics is allowed to load, and how to change that choice.",
+    "What golo.golf stores in your browser, when Google Analytics loads, and how to turn it off.",
   dateLabel: "Draft updated",
-  effective: "August 25, 2026",
-  effectiveISO: "2026-08-25",
+  effective: "October 19, 2026",
+  effectiveISO: "2026-10-19",
   entity: siteConfig.legalName,
   intro: [
     {
@@ -740,13 +740,13 @@ export const cookiesDoc: LegalDoc = {
   ],
   short: {
     tag: "THE SHORT VERSION",
-    title: "One preference, one optional analytics service.",
-    sub: "The site works without analytics. Your choice is stored in this browser and Global Privacy Control overrides analytics for the visit.",
+    title: "One preference, one analytics service you can turn off.",
+    sub: "The site works without analytics. Google Analytics is on by default; turning it off is stored in this browser, and Global Privacy Control turns it off for the visit.",
     lines: [
       { tag: "NECESSARY", text: "We store your analytics choice locally so the site can remember it." },
-      { tag: "ANALYTICS", text: "Google Analytics stays off until you explicitly allow it, and Global Privacy Control keeps it off for the visit." },
+      { tag: "ANALYTICS", text: "Google Analytics loads by default. It stays off if you turn it off below or your browser sends Global Privacy Control." },
       { tag: "NO ADS", text: "No advertising, retargeting, or data-broker cookies are used." },
-      { tag: "YOUR CONTROL", text: "Use the control below at any time; withdrawing consent removes accessible first-party Google Analytics cookies." },
+      { tag: "YOUR CONTROL", text: "Use the control below at any time; turning analytics off removes accessible first-party Google Analytics cookies." },
     ],
   },
   sections: [
@@ -757,7 +757,7 @@ export const cookiesDoc: LegalDoc = {
       plain: "This document is about the public website in this browser.",
       blocks: [
         { kind: "p", html: "Browser storage includes cookies and local storage. Cookies are small values a site may send with later requests. Local storage remains in your browser and is not sent automatically with each request." },
-        { kind: "p", html: "The website can be browsed, including its games, blog, FAQ, contact information, and legal pages, without accepting analytics." },
+        { kind: "p", html: "The website can be browsed, including its games, blog, FAQ, contact information, and legal pages, with analytics turned off." },
       ],
     },
     {
@@ -767,21 +767,21 @@ export const cookiesDoc: LegalDoc = {
       plain: "We remember granted or denied so you do not have to choose on every page.",
       blocks: [
         { kind: "p", html: "GoLo stores an analytics preference in local storage under a GoLo-specific key. Its value is either <strong>granted</strong> or <strong>denied</strong>. This value is used only to decide whether the website may request and use Google Analytics." },
-        { kind: "p", html: "Removing the value restores the default-off behavior on the next visit. A Global Privacy Control signal still overrides a stored grant for the current visit." },
+        { kind: "p", html: "With no stored value, analytics is on. Removing the value turns analytics back on at the next visit. A Global Privacy Control signal still keeps analytics off for the current visit, whatever value is stored." },
       ],
     },
     {
       num: "03",
       id: "analytics",
       title: "Google Analytics",
-      plain: "No Google script request is made before an explicit grant, while analytics is denied, or while the site-wide kill switch is off.",
+      plain: "The Google tag loads by default. No Google script request is made while analytics is turned off, while Global Privacy Control is on, or while the site-wide kill switch is off.",
       blocks: [
-        { kind: "p", html: "When analytics is enabled for the site and you have explicitly allowed it, the site requests the Google Analytics 4 tag and may receive first-party cookies whose names begin with <strong>_ga</strong>, including a property-specific cookie such as <strong>_ga_&lt;container-id&gt;</strong>. These are used to distinguish browser sessions and understand aggregate website use. A stored grant cannot enable analytics while the site-wide kill switch is off." },
+        { kind: "p", html: "When analytics is enabled for the site and you have not turned it off, the site requests the Google Analytics 4 tag and may receive first-party cookies whose names begin with <strong>_ga</strong>, including a property-specific cookie such as <strong>_ga_&lt;container-id&gt;</strong>. These are used to distinguish browser sessions and understand aggregate website use. No stored value can enable analytics while the site-wide kill switch is off." },
         { kind: "p", html: "GoLo does not send names, email addresses, phone numbers, free-form contact messages, or other directly identifying form values as analytics event parameters." },
         { kind: "table", head: ["Storage", "Purpose", "When created"], rows: [
           ["Local preference", "Remember granted or denied", "After you change the analytics setting"],
-          ["_ga", "Distinguish a browser for aggregate measurement", "Only while analytics is allowed"],
-          ["_ga_<container-id>", "Maintain GA4 session state", "Only while analytics is allowed"],
+          ["_ga", "Distinguish a browser for aggregate measurement", "On your first visit, unless analytics is off"],
+          ["_ga_<container-id>", "Maintain GA4 session state", "On your first visit, unless analytics is off"],
         ] },
       ],
     },
@@ -789,12 +789,12 @@ export const cookiesDoc: LegalDoc = {
       num: "04",
       id: "controls",
       title: "Your Controls",
-      plain: "Withdrawing consent is immediate for new events and clears first-party GA cookies we can access.",
+      plain: "Turning analytics off is immediate for new events and clears first-party GA cookies we can access.",
       blocks: [
-        { kind: "p", html: "Use the analytics control on this page to grant or deny analytics. If you withdraw consent after the Google tag has loaded, GoLo sets Google’s property disable flag, stops GoLo analytics events, and expires accessible first-party cookies whose names begin with _ga." },
+        { kind: "p", html: "Use the analytics control on this page to turn analytics on or off. If you turn it off after the Google tag has loaded, GoLo sets Google’s property disable flag, stops GoLo analytics events, and expires accessible first-party cookies whose names begin with _ga." },
         { kind: "p", html: "You may also clear site data in your browser. Browser extensions, network filters, and privacy settings may block analytics independently of the GoLo control." },
         { kind: "h3", text: "Global Privacy Control" },
-        { kind: "p", html: "If your browser sends a Global Privacy Control signal, GoLo treats analytics as denied for that visit even if this browser previously stored a grant. The stored value is not overwritten merely because GPC is present." },
+        { kind: "p", html: "If your browser sends a Global Privacy Control signal, GoLo treats analytics as off for that visit, whatever this browser has stored. The stored value is not overwritten merely because GPC is present." },
       ],
     },
     {

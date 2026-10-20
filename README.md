@@ -127,9 +127,10 @@ directly reviewable while their flags are `false`, but carry `noindex,
 nofollow`, stay out of the sitemap, and remain unlinked.
 
 `NEXT_PUBLIC_ANALYTICS_ENABLED` is an explicit kill switch and defaults to
-`false`. Even when enabled, analytics requires a visitor's explicit grant at
-`/privacy#analytics-choices`; an unset preference or Global Privacy Control
-keeps analytics off. Withdrawing consent clears accessible `_ga*` cookies.
+`false`. When enabled, analytics is on by default (opt-out). A visitor who
+turns it off at `/privacy#analytics-choices`, or whose browser sends Global
+Privacy Control, gets no Google request. Turning it off clears accessible
+`_ga*` cookies.
 
 \* If the three Twilio values are absent, the SMS endpoint runs in **stub mode**:
 it still validates the number and records the lead, returns success, but sends
