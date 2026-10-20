@@ -9,7 +9,11 @@ import {
   grantClarity,
   isAnalyticsAllowedForVisit,
 } from "@/lib/analyticsPreference";
-import { SessionTracking } from "@/components/analytics/SessionTracking";
+import { useReportWebVitals } from "next/web-vitals";
+import {
+  SessionTracking,
+  reportWebVital,
+} from "@/components/analytics/SessionTracking";
 
 type GtagFn = (command: string, ...args: unknown[]) => void;
 
@@ -97,6 +101,10 @@ export function AnalyticsLoader({
       window.removeEventListener("storage", onStorage);
     };
   }, [reconcile]);
+
+  // Here rather than in SessionTracking, which remounts each time analytics
+  // is turned back on; see reportWebVital.
+  useReportWebVitals(reportWebVital);
 
   if (!allowed) return null;
 

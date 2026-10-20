@@ -58,7 +58,8 @@ export function Nav() {
   }, [pathname]);
 
   return (
-    <nav className={styles.nav} aria-label="Primary">
+    // data-site-nav: SessionTracking reports links in here as location "nav".
+    <nav className={styles.nav} aria-label="Primary" data-site-nav>
       <Logo />
 
       {/* Desktop links */}

@@ -43,7 +43,7 @@ declare global {
  * - contact_click      a mailto: or tel: link was clicked
  * - page_not_found     the 404 page was shown
  * - web_vitals         a Core Web Vitals reading (LCP, INP, CLS, FCP, TTFB)
- * - exception          an uncaught script error (GA4 recommended event)
+ * - exception          an uncaught script error, first 100 characters (GA4 recommended event)
  */
 export type AnalyticsEvent =
   | "generate_lead"

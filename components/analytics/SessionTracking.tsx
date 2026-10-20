@@ -13,17 +13,21 @@
 
 import { Suspense, useEffect } from "react";
 import { usePathname, useSearchParams } from "next/navigation";
-import { useReportWebVitals } from "next/web-vitals";
+import type { useReportWebVitals } from "next/web-vitals";
 import { track } from "@/lib/analytics";
 
 const SCROLL_MARKS = [25, 50, 75, 90] as const;
 /** Cap per page view, so one broken script can't flood the property. */
 const MAX_ERRORS_PER_PAGE = 5;
 
-/** Where on the page a link sits: the site nav, the footer, or the content. */
+/**
+ * Where on the page a link sits: the site nav, the footer, or the content.
+ * The nav is matched by its marker, not by <header> or <nav>: page heroes
+ * are <header>s and breadcrumbs are <nav>s, and both are page content.
+ */
 function linkLocation(link: Element): "nav" | "footer" | "main" {
   if (link.closest("footer")) return "footer";
-  if (link.closest("header, nav")) return "nav";
+  if (link.closest("[data-site-nav]")) return "nav";
   return "main";
 }
 
@@ -39,8 +43,13 @@ type WebVitalsHandler = Parameters<typeof useReportWebVitals>[0];
  * Module-level so its identity never changes: Next re-registers a new
  * callback on every render and replays metrics already collected to it,
  * which would resend them on each client-side navigation.
+ *
+ * Registered by AnalyticsLoader, which is always mounted, not here: Next's
+ * hook adds observers on every mount and never removes them, so turning
+ * analytics off and on would double every later metric. track() drops the
+ * sends while analytics is off.
  */
-const reportWebVital: WebVitalsHandler = (metric) => {
+export const reportWebVital: WebVitalsHandler = (metric) => {
   track("web_vitals", {
     metric_name: metric.name,
     // CLS is a unitless score around 0.1; scale it so it survives rounding.
@@ -68,8 +77,6 @@ function SessionTrackingInner() {
   // The /games and /blog filters change only the query string. GA counts
   // that as a new page view, so the per-page counters reset with it.
   const search = useSearchParams().toString();
-
-  useReportWebVitals(reportWebVital);
 
   // Scroll depth, 404s and errors are per page view: reset on navigation.
   useEffect(() => {
@@ -100,7 +107,8 @@ function SessionTrackingInner() {
     const report = (description: string) => {
       if (errors >= MAX_ERRORS_PER_PAGE) return;
       errors += 1;
-      track("exception", { description: description.slice(0, 150), fatal: false });
+      // GA4 drops event parameter values over 100 characters.
+      track("exception", { description: description.slice(0, 100), fatal: false });
     };
     const onError = (event: ErrorEvent) => {
       // Extensions throw into the page too; they aren't the site's errors.
