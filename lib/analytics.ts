@@ -36,6 +36,14 @@ declare global {
  * - newsletter_error   a newsletter signup failed (validation or server)
  * - share_click        a share control on a blog post was clicked
  * - cta_click          a hero or closing CTA button was clicked
+ *
+ * Sent by components/analytics/SessionTracking.tsx for every page:
+ * - scroll_depth       the reader passed 25, 50, 75 or 90% of a page
+ * - link_click         an internal link was clicked (nav, footer or body)
+ * - contact_click      a mailto: or tel: link was clicked
+ * - page_not_found     the 404 page was shown
+ * - web_vitals         a Core Web Vitals reading (LCP, INP, CLS, FCP, TTFB)
+ * - exception          an uncaught script error, first 100 characters (GA4 recommended event)
  */
 export type AnalyticsEvent =
   | "generate_lead"
@@ -48,7 +56,13 @@ export type AnalyticsEvent =
   | "newsletter_signup"
   | "newsletter_error"
   | "share_click"
-  | "cta_click";
+  | "cta_click"
+  | "scroll_depth"
+  | "link_click"
+  | "contact_click"
+  | "page_not_found"
+  | "web_vitals"
+  | "exception";
 
 export function track(
   event: AnalyticsEvent,

@@ -723,7 +723,7 @@ export const cookiesDoc: LegalDoc = {
   title: "Cookie Policy",
   kicker: "LEGAL · WEBSITE PREFERENCES",
   lead:
-    "What golo.golf stores in your browser, when Google Analytics loads, and how to turn it off.",
+    "What golo.golf stores in your browser, when Google Analytics and Microsoft Clarity load, and how to turn them off.",
   dateLabel: "Draft updated",
   effective: "October 19, 2026",
   effectiveISO: "2026-10-19",
@@ -735,18 +735,18 @@ export const cookiesDoc: LegalDoc = {
     },
     {
       kind: "p",
-      html: "The marketing site does not currently use Supabase authentication cookies, advertising cookies, or cross-site marketing pixels. The inventory below reflects the website behavior that is actually implemented.",
+      html: "The marketing site does not currently use Supabase authentication cookies, advertising pixels, or retargeting tags. Microsoft Clarity, described in section 04, can set Microsoft cookies that Microsoft also uses for advertising. The inventory below reflects the website behavior that is actually implemented.",
     },
   ],
   short: {
     tag: "THE SHORT VERSION",
-    title: "One preference, one analytics service you can turn off.",
-    sub: "The site works without analytics. Google Analytics is on by default; turning it off is stored in this browser, and Global Privacy Control turns it off for the visit.",
+    title: "One preference, two analytics services, one switch.",
+    sub: "The site works without analytics. Google Analytics and Microsoft Clarity are on by default; turning them off is stored in this browser, and Global Privacy Control turns them off for the visit.",
     lines: [
       { tag: "NECESSARY", text: "We store your analytics choice locally so the site can remember it." },
-      { tag: "ANALYTICS", text: "Google Analytics loads by default. It stays off if you turn it off below or your browser sends Global Privacy Control." },
-      { tag: "NO ADS", text: "No advertising, retargeting, or data-broker cookies are used." },
-      { tag: "YOUR CONTROL", text: "Use the control below at any time; turning analytics off removes accessible first-party Google Analytics cookies." },
+      { tag: "ANALYTICS", text: "Google Analytics counts visits and events. Microsoft Clarity records how pages are used (clicks, scrolling, mouse movement) as session replays and heatmaps, with form inputs masked." },
+      { tag: "NO AD TAGS", text: "GoLo adds no advertising, retargeting, or data-broker tags. Clarity’s Microsoft cookies are listed in section 04." },
+      { tag: "YOUR CONTROL", text: "One control below turns both services off at any time, stops a recording in progress, and removes accessible first-party analytics cookies." },
     ],
   },
   sections: [
@@ -766,7 +766,7 @@ export const cookiesDoc: LegalDoc = {
       title: "Preference Storage",
       plain: "We remember granted or denied so you do not have to choose on every page.",
       blocks: [
-        { kind: "p", html: "GoLo stores an analytics preference in local storage under a GoLo-specific key. Its value is either <strong>granted</strong> or <strong>denied</strong>. This value is used only to decide whether the website may request and use Google Analytics." },
+        { kind: "p", html: "GoLo stores an analytics preference in local storage under a GoLo-specific key. Its value is either <strong>granted</strong> or <strong>denied</strong>. This value is used only to decide whether the website may request and use Google Analytics and Microsoft Clarity." },
         { kind: "p", html: "With no stored value, analytics is on. Removing the value turns analytics back on at the next visit. A Global Privacy Control signal still keeps analytics off for the current visit, whatever value is stored." },
       ],
     },
@@ -777,7 +777,7 @@ export const cookiesDoc: LegalDoc = {
       plain: "The Google tag loads by default. No Google script request is made while analytics is turned off, while Global Privacy Control is on, or while the site-wide kill switch is off.",
       blocks: [
         { kind: "p", html: "When analytics is enabled for the site and you have not turned it off, the site requests the Google Analytics 4 tag and may receive first-party cookies whose names begin with <strong>_ga</strong>, including a property-specific cookie such as <strong>_ga_&lt;container-id&gt;</strong>. These are used to distinguish browser sessions and understand aggregate website use. No stored value can enable analytics while the site-wide kill switch is off." },
-        { kind: "p", html: "GoLo does not send names, email addresses, phone numbers, free-form contact messages, or other directly identifying form values as analytics event parameters." },
+        { kind: "p", html: "Besides page views, the site sends events for scroll depth, link and contact-link clicks, FAQ and filter use, form submissions and errors, store-button and share clicks, page-not-found views, page-speed measurements, and script errors. GoLo does not send names, email addresses, phone numbers, free-form contact messages, or other directly identifying form values as analytics event parameters." },
         { kind: "table", head: ["Storage", "Purpose", "When created"], rows: [
           ["Local preference", "Remember granted or denied", "After you change the analytics setting"],
           ["_ga", "Distinguish a browser for aggregate measurement", "On your first visit, unless analytics is off"],
@@ -787,18 +787,32 @@ export const cookiesDoc: LegalDoc = {
     },
     {
       num: "04",
+      id: "clarity",
+      title: "Microsoft Clarity",
+      plain: "Clarity records how pages are used so we can see where the site confuses people. It loads and stops with Google Analytics.",
+      blocks: [
+        { kind: "p", html: "When analytics is on, the site also loads Microsoft Clarity. Clarity records page interactions such as clicks, taps, scrolling, mouse movement, and the page layout you saw, and turns them into session replays and heatmaps. Text typed into form fields is masked before it leaves your browser. GoLo uses Clarity to find and fix confusing pages, not to identify visitors." },
+        { kind: "p", html: "Clarity sets the first-party cookies below. Its script can also set cookies on Microsoft domains (CLID, MUID, MR, SM and ANONCHK). Microsoft says MUID identifies browsers across Microsoft sites and is used for advertising, site analytics, and other operational purposes. GoLo’s consent signal to Clarity grants analytics storage and denies advertising storage. Microsoft’s handling of that data is governed by the Microsoft Privacy Statement." },
+        { kind: "table", head: ["Storage", "Purpose", "When created"], rows: [
+          ["_clck", "Keep a Clarity ID for this browser on this site", "On your first visit, unless analytics is off"],
+          ["_clsk", "Join the pages of one visit into one recording", "On your first visit, unless analytics is off"],
+        ] },
+      ],
+    },
+    {
+      num: "05",
       id: "controls",
       title: "Your Controls",
-      plain: "Turning analytics off is immediate for new events and clears first-party GA cookies we can access.",
+      plain: "Turning analytics off is immediate for new events and recordings, and clears the first-party analytics cookies we can access.",
       blocks: [
-        { kind: "p", html: "Use the analytics control on this page to turn analytics on or off. If you turn it off after the Google tag has loaded, GoLo sets Google’s property disable flag, stops GoLo analytics events, and expires accessible first-party cookies whose names begin with _ga." },
+        { kind: "p", html: "Use the analytics control on this page to turn analytics on or off. It covers Google Analytics and Microsoft Clarity together. If you turn it off after the scripts have loaded, GoLo sets Google’s property disable flag, stops GoLo analytics events, tells Clarity to stop recording and erase its cookies, and expires accessible first-party cookies named _ga, _ga_*, _clck, and _clsk. Cookies on Microsoft domains can only be cleared in your browser’s settings." },
         { kind: "p", html: "You may also clear site data in your browser. Browser extensions, network filters, and privacy settings may block analytics independently of the GoLo control." },
         { kind: "h3", text: "Global Privacy Control" },
         { kind: "p", html: "If your browser sends a Global Privacy Control signal, GoLo treats analytics as off for that visit, whatever this browser has stored. The stored value is not overwritten merely because GPC is present." },
       ],
     },
     {
-      num: "05",
+      num: "06",
       id: "changes-contact",
       title: "Changes and Contact",
       plain: "If the website adds another browser-storage purpose, this inventory must change first.",

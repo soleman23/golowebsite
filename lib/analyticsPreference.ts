@@ -12,6 +12,9 @@ declare global {
     __goloAnalyticsAllowed?: boolean;
     __goloAnalyticsConfigured?: boolean;
     [key: `ga-disable-${string}`]: boolean | undefined;
+    /** Microsoft Clarity's command queue (session recordings, heatmaps). */
+    clarity?: ((...args: unknown[]) => void) & { q?: unknown[] };
+    __goloClarityStopped?: boolean;
   }
 }
 
@@ -39,12 +42,17 @@ function expireCookie(name: string, domain?: string) {
   document.cookie = `${name}=; Max-Age=0; path=/; SameSite=Lax${domainPart}`;
 }
 
-export function clearGoogleAnalyticsCookies(): void {
+/** First-party cookies set by Google Analytics (_ga, _ga_*) and Clarity (_clck, _clsk). */
+function isAnalyticsCookie(name: string): boolean {
+  return name === "_ga" || name.startsWith("_ga_") || name === "_clck" || name === "_clsk";
+}
+
+export function clearAnalyticsCookies(): void {
   if (typeof document === "undefined") return;
   const names = document.cookie
     .split(";")
     .map((part) => part.trim().split("=")[0])
-    .filter((name) => name === "_ga" || name.startsWith("_ga_"));
+    .filter(isAnalyticsCookie);
 
   const host = window.location.hostname;
   const parent = host.split(".").length > 1 ? `.${host.replace(/^www\./, "")}` : undefined;
@@ -62,7 +70,36 @@ export function applyAnalyticsState(
   if (typeof window === "undefined") return;
   window.__goloAnalyticsAllowed = allowed;
   window[`ga-disable-${measurementId}`] = !allowed;
-  if (!allowed) clearGoogleAnalyticsCookies();
+  if (!allowed) {
+    revokeClarity();
+    clearAnalyticsCookies();
+  }
+}
+
+/**
+ * Analytics storage only. Ad storage stays denied: a granted ad_Storage lets
+ * Microsoft share Clarity data with Microsoft Ads, which the privacy policy
+ * rules out. The legacy `clarity("consent")` call would grant both.
+ */
+export function grantClarity(): void {
+  if (!window.clarity) return;
+  if (window.__goloClarityStopped) {
+    window.clarity("start");
+    window.__goloClarityStopped = false;
+  }
+  window.clarity("consentv2", { ad_Storage: "denied", analytics_Storage: "granted" });
+}
+
+/**
+ * Denies both storage types, erases Clarity's cookies, and stops it: without
+ * the stop, a denied Clarity keeps recording this page in no-cookie mode.
+ */
+function revokeClarity(): void {
+  if (!window.clarity || window.__goloClarityStopped) return;
+  window.clarity("consentv2", { ad_Storage: "denied", analytics_Storage: "denied" });
+  window.clarity("consent", false);
+  window.clarity("stop");
+  window.__goloClarityStopped = true;
 }
 
 export function setAnalyticsPreference(
