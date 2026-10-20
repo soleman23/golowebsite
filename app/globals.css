@@ -119,6 +119,9 @@ html,
 body {
   margin: 0;
   padding: 0;
+  /* Set by AnalyticsConsentBanner while it's open, so the fixed bar never
+     hides the end of the page. */
+  padding-bottom: var(--consent-banner-height, 0px);
 }
 
 body {

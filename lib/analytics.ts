@@ -8,7 +8,9 @@
  *
  * NEVER pass personally identifiable information (names, emails, phone
  * numbers) as event params — it violates Google's terms and can get the
- * property purged. Send categorical values only.
+ * property purged. Send categorical values only. track() also masks
+ * email- and number-shaped text in every string param (redactForAnalytics),
+ * but that's a backstop, not permission.
  */
 
 type GtagFn = (command: string, ...args: unknown[]) => void;
@@ -42,7 +44,8 @@ declare global {
  * - link_click         an internal link was clicked (nav, footer or body)
  * - contact_click      a mailto: or tel: link was clicked
  * - page_not_found     the 404 page was shown
- * - web_vitals         a Core Web Vitals reading (LCP, INP, CLS, FCP, TTFB)
+ * - web_vitals         one page-speed reading: the three Core Web Vitals (LCP,
+ *                      INP, CLS) or one of two supporting metrics (FCP, TTFB)
  * - exception          an uncaught script error, first 100 characters (GA4 recommended event)
  */
 export type AnalyticsEvent =
@@ -64,11 +67,35 @@ export type AnalyticsEvent =
   | "web_vitals"
   | "exception";
 
+/** GA4 drops, rather than cuts, event parameter values longer than this. */
+export const GA_VALUE_MAX = 100;
+
+const EMAIL = /[^\s@<>()"',;:]+@[^\s@<>()"',;:]+\.[a-z]{2,}/gi;
+/** Seven or more digits, allowing the separators a phone or card number uses. */
+const LONG_NUMBER = /\+?\d(?:[\s().-]*\d){6,}/g;
+
+/**
+ * Last line of defence for free text (link labels, error messages, paths):
+ * masks anything shaped like an email address or a phone, card or account
+ * number, then cuts to GA4's length limit. Categorical values pass through
+ * unchanged.
+ */
+export function redactForAnalytics(value: string): string {
+  return value
+    .replace(EMAIL, "[email]")
+    .replace(LONG_NUMBER, "[number]")
+    .slice(0, GA_VALUE_MAX);
+}
+
 export function track(
   event: AnalyticsEvent,
   params: Record<string, string | number | boolean> = {},
 ): void {
   if (typeof window === "undefined") return;
   if (window.__goloAnalyticsAllowed !== true) return;
-  window.gtag?.("event", event, params);
+  const safe: Record<string, string | number | boolean> = {};
+  for (const [key, value] of Object.entries(params)) {
+    safe[key] = typeof value === "string" ? redactForAnalytics(value) : value;
+  }
+  window.gtag?.("event", event, safe);
 }

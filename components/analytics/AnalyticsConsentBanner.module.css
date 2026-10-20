@@ -1,0 +1,111 @@
+/*
+ * Fixed to the bottom of the viewport. Solid page background and no
+ * backdrop-filter: blur on fixed elements triggers the Chromium compositing
+ * bug that blanks this page on scroll (see CLAUDE.md).
+ */
+.bar {
+  position: fixed;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 60;
+  padding: 0 16px 16px;
+  pointer-events: none;
+}
+
+.inner {
+  display: flex;
+  max-width: 980px;
+  margin: 0 auto;
+  padding: 20px 24px;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  border: 1px solid var(--accent-border);
+  border-radius: var(--radius-card);
+  /* Solid: at 0.9 the hero headline showed through and fought the copy. */
+  background: var(--page-bg);
+  box-shadow: var(--shadow-cta);
+  pointer-events: auto;
+}
+
+.text {
+  min-width: 0;
+}
+
+.kicker {
+  margin: 0 0 6px;
+  color: var(--accent);
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 1.5px;
+}
+
+.title {
+  margin: 0;
+  color: var(--text-primary);
+  font-size: 18px;
+  font-weight: 800;
+}
+
+.body {
+  max-width: 620px;
+  margin: 6px 0 0;
+  color: var(--text-secondary);
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.link {
+  color: var(--accent);
+  font-weight: 700;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.later {
+  margin: 6px 0 0;
+  color: var(--text-muted);
+  font-size: 12px;
+}
+
+.actions {
+  display: flex;
+  flex: 0 0 auto;
+  gap: 9px;
+}
+
+/* Same weight for both: neither choice is nudged or preselected. */
+.button {
+  min-height: 46px;
+  padding: 0 18px;
+  border: 1px solid var(--accent-border);
+  border-radius: 12px;
+  background: var(--nav-bg);
+  color: var(--text-primary);
+  cursor: pointer;
+  font: inherit;
+  font-size: 13px;
+  font-weight: 800;
+}
+
+.button:hover {
+  border-color: var(--accent);
+}
+
+@media (max-width: 760px) {
+  .bar { padding: 0; }
+  .inner {
+    align-items: stretch;
+    flex-direction: column;
+    gap: 14px;
+    padding: 16px;
+    border-right: 0;
+    border-bottom: 0;
+    border-left: 0;
+    border-radius: var(--radius-card) var(--radius-card) 0 0;
+  }
+  .title { font-size: 16px; }
+  .body { font-size: 13px; }
+  .button { flex: 1 1 0; }
+}

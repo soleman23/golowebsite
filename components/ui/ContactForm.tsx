@@ -147,7 +147,8 @@ export function ContactForm({ topic, onTopicChange }: ContactFormProps) {
 
   if (status === "success") {
     return (
-      <div className={styles.card}>
+      // Masked in Clarity recordings: this card repeats the visitor's email.
+      <div className={styles.card} data-clarity-mask="true">
         <div className={styles.successCard} role="status" aria-live="polite">
           <div className={styles.successMark} aria-hidden="true">
             ✓
@@ -167,7 +168,13 @@ export function ContactForm({ topic, onTopicChange }: ContactFormProps) {
   const submitting = status === "submitting";
 
   return (
-    <form className={styles.card} onSubmit={handleSubmit} noValidate>
+    // Masked in Clarity recordings, field errors included.
+    <form
+      className={styles.card}
+      data-clarity-mask="true"
+      onSubmit={handleSubmit}
+      noValidate
+    >
       <p className={styles.kicker}>SEND IT OVER</p>
       <h2 className={styles.title}>What&rsquo;s going on?</h2>
       <p className={styles.lead}>

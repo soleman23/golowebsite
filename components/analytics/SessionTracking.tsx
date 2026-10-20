@@ -2,8 +2,8 @@
 
 /**
  * Site-wide session events GA4's enhanced measurement doesn't cover: scroll
- * depth below 90%, internal link and contact clicks, 404s, Core Web Vitals
- * and uncaught script errors.
+ * depth at 25/50/75/90%, internal link and contact clicks, 404s, page-speed
+ * readings and uncaught script errors.
  *
  * Rendered by AnalyticsLoader only while analytics is allowed, so nothing here
  * runs for a visitor who turned analytics off or sends GPC. Every event goes
@@ -14,11 +14,9 @@
 import { Suspense, useEffect } from "react";
 import { usePathname, useSearchParams } from "next/navigation";
 import type { useReportWebVitals } from "next/web-vitals";
-import { track } from "@/lib/analytics";
+import { GA_VALUE_MAX, track } from "@/lib/analytics";
 
 const SCROLL_MARKS = [25, 50, 75, 90] as const;
-/** GA4 drops event parameter values longer than this, rather than cutting them. */
-const GA_VALUE_MAX = 100;
 /** Cap per page view, so one broken script can't flood the property. */
 const MAX_ERRORS_PER_PAGE = 5;
 
@@ -52,13 +50,15 @@ type WebVitalsHandler = Parameters<typeof useReportWebVitals>[0];
  * sends while analytics is off.
  */
 export const reportWebVital: WebVitalsHandler = (metric) => {
+  // Two numeric params so each can be a correctly typed GA4 custom metric:
+  // CLS is a unitless layout-shift score (good is 0.1 or less); the rest
+  // (LCP, INP, FCP, TTFB) are durations in milliseconds.
   track("web_vitals", {
     metric_name: metric.name,
-    // CLS is a unitless score around 0.1; scale it so it survives rounding.
-    metric_value: Math.round(
-      metric.name === "CLS" ? metric.value * 1000 : metric.value,
-    ),
     metric_rating: metric.rating,
+    ...(metric.name === "CLS"
+      ? { cls_score: Math.round(metric.value * 10000) / 10000 }
+      : { metric_ms: Math.round(metric.value) }),
   });
 };
 

@@ -6,8 +6,10 @@ import {
   ANALYTICS_PREFERENCE_EVENT,
   ANALYTICS_STORAGE_KEY,
   applyAnalyticsState,
+  dropUnusedQueryParams,
   grantClarity,
   isAnalyticsAllowedForVisit,
+  referrerWithoutQuery,
 } from "@/lib/analyticsPreference";
 import { useReportWebVitals } from "next/web-vitals";
 import {
@@ -34,7 +36,15 @@ function configure(measurementId: string) {
     window.dataLayer?.push(arguments);
   };
   window.gtag("js", new Date());
-  window.gtag("config", measurementId);
+  const referrer = referrerWithoutQuery();
+  window.gtag("config", measurementId, {
+    // No advertising features: no Google signals join, and every hit is
+    // flagged non-personalized (npa=1). The property has no Ads links either.
+    allow_google_signals: false,
+    allow_ad_personalization_signals: false,
+    // The referring page's path is useful; its query string can carry anything.
+    ...(referrer ? { page_referrer: referrer } : {}),
+  });
   window.__goloAnalyticsConfigured = true;
 }
 
@@ -69,8 +79,8 @@ export function AnalyticsLoader({
   /** Empty = no Clarity. */
   clarityProjectId: string;
 }) {
-  // False during SSR and the first client render guarantees a denied visitor
-  // never initiates a Google request before local storage and GPC are checked.
+  // False during SSR and the first client render: no script is requested
+  // until the saved choice and GPC have been read in the browser.
   const [allowed, setAllowed] = useState(false);
 
   const reconcile = useCallback(() => {
@@ -82,7 +92,18 @@ export function AnalyticsLoader({
 
     const next = isAnalyticsAllowedForVisit();
     applyAnalyticsState(measurementId, next);
+    // Withdrawn (here or in another tab) after the scripts loaded. The stop
+    // signals above take effect at once, but Google documents ga-disable only
+    // for pages where it's set before gtag runs, and Clarity documents no full
+    // stop. A fresh page without the scripts is what guarantees collection
+    // has ended. Safe when the choice couldn't be saved: with no choice on the
+    // new page nothing loads, and the question is asked again.
+    if (!next && window.__goloAnalyticsConfigured) {
+      window.location.reload();
+      return;
+    }
     if (next) {
+      dropUnusedQueryParams();
       configure(measurementId);
       if (clarityProjectId) configureClarity();
     }

@@ -107,7 +107,7 @@ Copy from [`.env.example`](.env.example). Never commit `.env`.
 | `NEXT_PUBLIC_TERMS_PUBLISHED`  | No       | **Public**  | `true`/`false` (default **false**) — see below      |
 | `NEXT_PUBLIC_COOKIES_PUBLISHED`| No       | **Public**  | `true`/`false` (default **false**)                   |
 | `NEXT_PUBLIC_ACCEPTABLE_USE_PUBLISHED` | No | **Public** | `true`/`false` (default **false**)                 |
-| `NEXT_PUBLIC_ANALYTICS_ENABLED`| No       | **Public**  | GA + Clarity kill switch (default **false**); opt-out when on |
+| `NEXT_PUBLIC_ANALYTICS_ENABLED`| No       | **Public**  | GA + Clarity kill switch (default **false**); explicit opt-in when on |
 | `NEXT_PUBLIC_GA_ID`            | No       | **Public**  | GA4 measurement ID                                  |
 | `NEXT_PUBLIC_CLARITY_ID`       | No       | **Public**  | Microsoft Clarity project ID (default `z0fu5ddehq`) |
 
@@ -127,33 +127,121 @@ interim website Terms but must be approved or replaced before
 directly reviewable while their flags are `false`, but carry `noindex,
 nofollow`, stay out of the sitemap, and remain unlinked.
 
-`NEXT_PUBLIC_ANALYTICS_ENABLED` is an explicit kill switch and defaults to
-`false`. When enabled, analytics is on by default (opt-out). A visitor who
-turns it off at `/privacy#analytics-choices`, or whose browser sends Global
-Privacy Control, gets no Google or Clarity request. Turning it off stops a
-Clarity recording and clears accessible `_ga*`, `_clck` and `_clsk` cookies.
-`components/analytics/SessionTracking.tsx` adds the site-wide events (scroll
-depth, link clicks, 404s, Web Vitals, script errors); `lib/analytics.ts` lists
-every event name.
+### Analytics (Google Analytics 4 and Microsoft Clarity)
 
-### Where the analytics live
+`NEXT_PUBLIC_ANALYTICS_ENABLED` is a site-wide kill switch and defaults to
+`false`. When it's `true`, both tools are **explicit opt-in**, as one choice:
+
+| State | What loads | What the visitor sees |
+| --- | --- | --- |
+| No choice yet | Nothing. No Google or Clarity script, request or cookie. | The analytics notice at the bottom of the screen, Allow and Decline at equal weight, nothing preselected |
+| Allowed | GA4 (`gtag.js`) and Clarity, on every page | No notice |
+| Declined | Nothing | No notice |
+| Withdrawn (declined after allowing) | Stop signals, then a page reload without either script; `_ga`, `_ga_*`, `_clck`, `_clsk` cleared | Privacy choices shows "Declined" |
+| Global Privacy Control | Nothing, even with a saved grant | No notice; Privacy choices explains GPC and disables Allow |
+| Storage blocked | Nothing until the visitor chooses; the choice lasts for the page only | The notice, every page load |
+
+- The choice lives in localStorage as `golo.analytics.consent.v2` (`granted` /
+  `denied`). The pre-Clarity key `golo.analytics.preference` is migrated: a
+  decline carries over, a grant is dropped and asked again.
+- "Privacy choices" in the footer links to `/privacy#analytics-choices`, the
+  persistent control. The same control is on `/cookies`.
+- Withdrawal reloads the page because neither vendor documents a full stop for
+  an already-loaded tag: Google documents `ga-disable-<ID>` only when set before
+  gtag runs, and Clarity's denied consent keeps a cookieless mode running.
+- Before either script loads, `dropUnusedQueryParams()` removes every query
+  parameter except `filter`, `topic` and `utm_*` from the address bar, so an
+  inbound URL carrying an email or token never reaches GA's `page_location` or
+  a Clarity recording. GA's `page_referrer` is sent without its query string.
+- The GA tag is configured with `allow_google_signals: false` and
+  `allow_ad_personalization_signals: false` (every hit carries `npa=1`).
+  Clarity gets `consentv2` with `analytics_Storage: granted`,
+  `ad_Storage: denied`.
+- `track()` in `lib/analytics.ts` masks email- and number-shaped text in every
+  string param and cuts values to GA4's 100-character limit. Never pass form
+  values, names, emails or phone numbers to it anyway.
+- The phone, newsletter and contact forms (with their error and confirmation
+  messages) carry `data-clarity-mask="true"`. Clarity's project masking is
+  "Balanced" (inputs plus email- and number-shaped text). Keep it at Balanced
+  or Strict: the policies say form entries are masked.
+
+Copy for the notice and the control is in `lib/content/analyticsConsent.ts`;
+the disclosures are `/privacy#website-analytics` (published) and `/cookies`.
+`/cookies` stays `noindex` and unlinked until `NEXT_PUBLIC_COOKIES_PUBLISHED`
+is `true` in hPanel; the Privacy Policy carries the full disclosure either way.
+Keep the policies, this README and the consent copy in lockstep.
+
+#### Events
+
+Automatic (GA4 enhanced measurement, configured on the web stream):
+`page_view` (initial load and every client-side URL change, including the
+`/games` and `/blog` filter query), `scroll` (90%, once per page),
+`click` (outbound links), `form_start` / `form_submit` (form id, name,
+destination and field metadata, never values), `file_download`. Site search
+(`view_search_results`) never fires: its query parameters are stripped.
+
+Sent by the site:
+
+| Event | Params | Fires when |
+| --- | --- | --- |
+| `generate_lead` | `method`, `placement` | A phone number was accepted for the download text (key event) |
+| `lead_form_error` | `form`, `stage`, `placement` | That submission failed (validation, server, network) |
+| `contact_submit` | `form`, `topic` | The contact form was sent |
+| `newsletter_signup` / `newsletter_error` | `page` / `reason` | A newsletter address was accepted / failed |
+| `store_button_click` | `store`, `placement`, `destination_configured` | An App Store / Google Play button was clicked |
+| `cta_click` | `page`, `cta` | A hero or closing CTA was clicked |
+| `faq_open` | `page`, `question_id` | An FAQ answer was opened |
+| `game_filter` / `blog_filter` | `filter` / `category` | A filter chip was selected |
+| `share_click` | `post`, `channel` | A blog share control was used |
+| `scroll_depth` | `percent_scrolled` (25, 50, 75, 90) | Each mark, once per page view |
+| `link_click` | `link_url` (path + hash), `link_text`, `location` (nav, footer, main) | An internal link was clicked |
+| `contact_click` | `method` (email, phone), `location` | A `mailto:` / `tel:` link was clicked; the address is never sent |
+| `page_not_found` | `page_path` | The 404 page rendered |
+| `web_vitals` | `metric_name`, `metric_rating`, plus `metric_ms` (LCP, INP, FCP, TTFB) or `cls_score` (CLS) | Each page-speed reading. LCP, INP and CLS are the three Core Web Vitals; FCP and TTFB are supporting metrics |
+| `exception` | `description` (100 chars, redacted), `fatal: false` | An uncaught error or rejection, max 5 per page |
+
+New event names go in the `AnalyticsEvent` union first. A new parameter isn't
+reportable until it's registered in GA4 (Admin → Custom definitions;
+event-scoped; display names can't contain hyphens).
+
+#### Where the dashboards live
 
 | Tool | Property | Owner | Open it |
 | --- | --- | --- | --- |
-| Google Analytics 4 | "GoLo Golf", stream "GoLo Golf Website", `G-36182P0H4D` | devin@golo.golf | [analytics.google.com](https://analytics.google.com/analytics/web/#/a402913756p547817615/reports/intelligenthome) (third signed-in Google account, `authuser=2`) |
-| Microsoft Clarity | "GoLo Golf Website", project `z0fu5ddehq` | devin@golo.golf (signed in with Google) | [clarity.microsoft.com](https://clarity.microsoft.com/projects/view/z0fu5ddehq/dashboard) |
-| Search Console | Domain property `golo.golf` | devin@golo.golf | [search.google.com](https://search.google.com/search-console?resource_id=sc-domain%3Agolo.golf) |
+| Google Analytics 4 | Account "GoLo Golf" (402913756), property "GoLo Golf" (547817615), web stream "GoLo Golf Website", `G-36182P0H4D` | devin@golo.golf | [Admin](https://analytics.google.com/analytics/web/#/a402913756p547817615/admin) (the third signed-in Google account in the owner's Chrome, `authuser=2`) |
+| Microsoft Clarity | Project "GoLo Golf Website", `z0fu5ddehq` | devin@golo.golf (Google sign-in) | [Dashboard](https://clarity.microsoft.com/projects/view/z0fu5ddehq/dashboard) |
+| Search Console | Domain property `golo.golf` | devin@golo.golf | [Search Console](https://search.google.com/search-console?resource_id=sc-domain%3Agolo.golf) |
 
-GA4 settings that matter for analysis: event data retention is 14 months (the
-free maximum; the default 2 months caps Explorations), and every event
-parameter in `lib/analytics.ts` is registered as an event-scoped custom
-dimension, plus a `Web vital value` custom metric. A new parameter isn't
-reportable until it gets one (Admin → Custom definitions; display names can't
-contain hyphens).
+GA4 settings checked October 19, 2026: event and user data retention 14
+months (Explorations only; standard reports are aggregated and unaffected);
+Google signals off; user-provided data collection off; no Google Ads links;
+granular location and device data on; property-level ads personalization
+allowed (the tag sends `npa=1` regardless); email redaction on; all four
+account data-sharing settings on, which the Privacy Policy discloses. 20
+event-scoped custom dimensions are registered for the params above.
 
-Clarity uses "Balanced" masking, which hides text typed into form fields and
-other sensitive text before it leaves the browser. Keep it at Balanced or
-Strict: the Cookie Policy says form inputs are masked.
+Custom metrics: `web_vitals` now sends `metric_ms` and `cls_score` instead of
+the single mixed-unit `metric_value`. When this ships, register `metric_ms` as
+"Web vital time" (Time → Milliseconds) and `cls_score` as "CLS score"
+(Standard), and archive "Web vital value" (`metric_value`, no longer sent).
+
+Clarity settings checked the same day: Balanced masking; cookies on; bot
+detection on; Microsoft Ads, Google Ads and Google Analytics integrations not
+connected. Microsoft keeps recordings 30 days, and heatmaps, dashboard data
+and labeled or favorited recordings 9 months.
+
+**Change these together, or update the Privacy Policy:** the data-sharing
+settings, masking mode, any Ads/GA integration, and retention.
+
+#### After changing analytics code
+
+Build with `NEXT_PUBLIC_ANALYTICS_ENABLED=true` and, unless you mean to send
+test data to production, `NEXT_PUBLIC_GA_ID=G-TESTONLY00` (a placeholder ID
+still exercises the tag; enhanced-measurement events need the real ID). Then,
+in a fresh browser profile: no Google or Clarity request before a choice;
+one `page_view` per navigation after Allow; nothing after Decline; a reload
+and cleared cookies after withdrawing. Localhost visits with the real IDs show
+up in both dashboards (hostname `localhost`).
 
 \* If the three Twilio values are absent, the SMS endpoint runs in **stub mode**:
 it still validates the number and records the lead, returns success, but sends
