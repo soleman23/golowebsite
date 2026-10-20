@@ -90,6 +90,22 @@ function migrateLegacyChoice(): void {
   }
 }
 
+/**
+ * Whether a storage event (from another tab) can change the choice. A
+ * "denied" written to the older key by a tab still on the earlier build is a
+ * decline here too, so it's copied to v2 before anyone re-reads the choice.
+ * A null key means another tab cleared site storage.
+ */
+export function isConsentStorageEvent(event: StorageEvent): boolean {
+  if (event.key === LEGACY_STORAGE_KEY) {
+    if (event.newValue === "denied" && readStorage(ANALYTICS_STORAGE_KEY) !== "denied") {
+      writeStorage(ANALYTICS_STORAGE_KEY, "denied");
+    }
+    return true;
+  }
+  return event.key === ANALYTICS_STORAGE_KEY || event.key === null;
+}
+
 /** Whether the last choice could only be held in memory (storage refused it). */
 export function isChoiceUnsaved(): boolean {
   return unsavedChoice !== null;

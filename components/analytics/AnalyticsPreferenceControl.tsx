@@ -9,12 +9,12 @@
 import { useEffect, useState } from "react";
 import {
   ANALYTICS_PREFERENCE_EVENT,
-  ANALYTICS_STORAGE_KEY,
   getAnalyticsChoice,
   hasGlobalPrivacyControl,
   isChoiceUnsaved,
   setAnalyticsChoice,
   type AnalyticsChoice,
+  isConsentStorageEvent,
 } from "@/lib/analyticsPreference";
 // Straight from the module, not the barrel: this is a client component.
 import { analyticsChoiceControl as copy } from "@/lib/content/analyticsConsent";
@@ -38,9 +38,9 @@ export function AnalyticsPreferenceControl({
       setGpc(hasGlobalPrivacyControl());
       setUnsaved(isChoiceUnsaved());
     };
-    // key === null: another tab cleared site storage, choice included.
+    // Includes a cleared storage and a decline from a tab on the earlier build.
     const onStorage = (event: StorageEvent) => {
-      if (event.key === ANALYTICS_STORAGE_KEY || event.key === null) reconcile();
+      if (isConsentStorageEvent(event)) reconcile();
     };
     // Storage events aren't replayed into a page restored from the
     // back/forward cache, and GPC can change while a tab is in the background.

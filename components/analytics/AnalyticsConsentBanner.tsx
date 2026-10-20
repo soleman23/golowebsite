@@ -16,10 +16,10 @@ import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import {
   ANALYTICS_PREFERENCE_EVENT,
-  ANALYTICS_STORAGE_KEY,
   getAnalyticsChoice,
   hasGlobalPrivacyControl,
   setAnalyticsChoice,
+  isConsentStorageEvent,
 } from "@/lib/analyticsPreference";
 // Straight from the module, not the barrel: this is a client component.
 import {
@@ -45,9 +45,9 @@ export function AnalyticsConsentBanner({
     const reconcile = () => {
       setOpen(getAnalyticsChoice() === null && !hasGlobalPrivacyControl());
     };
-    // key === null: another tab cleared site storage, choice included.
+    // Includes a cleared storage and a decline from a tab on the earlier build.
     const onStorage = (event: StorageEvent) => {
-      if (event.key === ANALYTICS_STORAGE_KEY || event.key === null) reconcile();
+      if (isConsentStorageEvent(event)) reconcile();
     };
     // Missed storage events (back/forward cache) and GPC changes.
     const onPageShow = (event: PageTransitionEvent) => {

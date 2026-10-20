@@ -4,13 +4,13 @@ import Script from "next/script";
 import { useCallback, useEffect, useState } from "react";
 import {
   ANALYTICS_PREFERENCE_EVENT,
-  ANALYTICS_STORAGE_KEY,
   applyAnalyticsState,
   dropUnusedQueryParams,
   grantClarity,
   isAnalyticsAllowedForVisit,
   referrerWithoutQuery,
   savedGrantOutlivesDecline,
+  isConsentStorageEvent,
 } from "@/lib/analyticsPreference";
 import { useReportWebVitals } from "next/web-vitals";
 import {
@@ -150,9 +150,9 @@ export function AnalyticsLoader({
   useEffect(() => {
     reconcile();
     const onChoice = () => reconcile();
-    // key === null: another tab cleared site storage, the grant included.
+    // Includes a cleared storage and a decline from a tab on the earlier build.
     const onStorage = (event: StorageEvent) => {
-      if (event.key === ANALYTICS_STORAGE_KEY || event.key === null) reconcile(true);
+      if (isConsentStorageEvent(event)) reconcile(true);
     };
     // Storage events aren't replayed into a page restored from the
     // back/forward cache, and GPC can change while a tab sits in the background.
