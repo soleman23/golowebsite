@@ -104,6 +104,15 @@ export function getAnalyticsChoice(): AnalyticsChoice | null {
   return value === "granted" || value === "denied" ? value : null;
 }
 
+/**
+ * True when a reload would bring analytics back: a decline is held only in
+ * memory and a saved grant couldn't be removed. AnalyticsLoader then keeps
+ * the in-page stop instead of reloading.
+ */
+export function savedGrantOutlivesDecline(): boolean {
+  return unsavedChoice === "denied" && readStorage(ANALYTICS_STORAGE_KEY) === "granted";
+}
+
 /** Only an explicit grant, and never while the browser sends GPC. */
 export function isAnalyticsAllowedForVisit(): boolean {
   if (typeof window === "undefined") return false;
@@ -157,7 +166,10 @@ export function dropUnusedQueryParams(): void {
       changed = true;
     }
   }
-  if (changed) window.history.replaceState(window.history.state, "", url);
+  // null state, not history.state: Next's patched replaceState skips its own
+  // URL sync when handed its internal state, and the router would later put
+  // the stripped parameters back.
+  if (changed) window.history.replaceState(null, "", url);
 }
 
 /** The referring page without its query string or fragment, for GA's page_referrer. */
@@ -225,6 +237,8 @@ export function setAnalyticsChoice(
     unsavedChoice = null;
   } else {
     unsavedChoice = choice;
+    // An older saved grant must not outlive a decline that couldn't be saved.
+    if (choice === "denied") writeStorage(ANALYTICS_STORAGE_KEY, null);
   }
   const allowed = choice === "granted" && !hasGlobalPrivacyControl();
   applyAnalyticsState(measurementId, allowed);

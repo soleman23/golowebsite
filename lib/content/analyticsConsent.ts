@@ -16,7 +16,7 @@ export const analyticsConsentBanner = {
   kicker: "OPTIONAL ANALYTICS",
   title: "Can we see how this site gets used?",
   body:
-    "If you allow it, Google Analytics measures visits and clicks, and Microsoft Clarity makes session recordings and heatmaps of how pages are used. Anything typed into a form is masked. Nothing loads until you choose, and the site works the same either way.",
+    "If you allow it, Google Analytics measures visits and clicks, and Microsoft Clarity makes session recordings and heatmaps of how pages are used. Anything typed into a form is masked. Google and Microsoft may also use this data for their own purposes. Nothing loads unless you allow it, and the site works the same either way.",
   allow: "Allow analytics",
   decline: "Decline",
   details: "How this works",

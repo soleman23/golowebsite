@@ -112,19 +112,22 @@ html {
      target's scroll-margin-top is only the air on top of this, so the nav
      isn't counted twice. */
   scroll-padding-top: var(--scroll-inset-top);
-  scroll-padding-bottom: calc(var(--focus-ring-reach) + 4px);
+  /* Plus the analytics notice while it's open, so focus never lands under it. */
+  scroll-padding-bottom: calc(
+    var(--consent-banner-height, 0px) + var(--focus-ring-reach) + 4px
+  );
 }
 
 html,
 body {
   margin: 0;
   padding: 0;
-  /* Set by AnalyticsConsentBanner while it's open, so the fixed bar never
-     hides the end of the page. */
-  padding-bottom: var(--consent-banner-height, 0px);
 }
 
 body {
+  /* Set on <html> by AnalyticsConsentBanner while it's open, so the fixed bar
+     never hides the end of the page. Body only: on both, the space doubles. */
+  padding-bottom: var(--consent-banner-height, 0px);
   background: var(--page-bg);
   color: var(--text-primary);
   font-family: var(--font-sans);

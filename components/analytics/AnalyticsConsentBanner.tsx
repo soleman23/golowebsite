@@ -75,6 +75,18 @@ export function AnalyticsConsentBanner({
     };
   }, [open]);
 
+  // The focused button unmounts with the bar; hand focus to the next stop in
+  // the tab order (the nav's first link) rather than dropping it on <body>.
+  const choose = (choice: "granted" | "denied") => {
+    const hadFocus = bar.current?.contains(document.activeElement) ?? false;
+    setAnalyticsChoice(choice, measurementId);
+    if (hadFocus) {
+      document
+        .querySelector<HTMLElement>("[data-site-nav] a[href]")
+        ?.focus({ preventScroll: true });
+    }
+  };
+
   if (!open) return null;
 
   return (
@@ -100,14 +112,14 @@ export function AnalyticsConsentBanner({
           <button
             type="button"
             className={styles.button}
-            onClick={() => setAnalyticsChoice("granted", measurementId)}
+            onClick={() => choose("granted")}
           >
             {copy.allow}
           </button>
           <button
             type="button"
             className={styles.button}
-            onClick={() => setAnalyticsChoice("denied", measurementId)}
+            onClick={() => choose("denied")}
           >
             {copy.decline}
           </button>

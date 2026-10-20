@@ -10,6 +10,7 @@ import {
   grantClarity,
   isAnalyticsAllowedForVisit,
   referrerWithoutQuery,
+  savedGrantOutlivesDecline,
 } from "@/lib/analyticsPreference";
 import { useReportWebVitals } from "next/web-vitals";
 import {
@@ -24,6 +25,20 @@ declare global {
     gtag?: GtagFn;
     dataLayer?: unknown[];
   }
+}
+
+let reloadScheduled = false;
+
+/** Reloads the page the next time this tab is hidden (once). */
+function reloadWhenHidden() {
+  if (reloadScheduled) return;
+  reloadScheduled = true;
+  const onHide = () => {
+    if (document.visibilityState !== "hidden") return;
+    document.removeEventListener("visibilitychange", onHide);
+    window.location.reload();
+  };
+  document.addEventListener("visibilitychange", onHide);
 }
 
 function configure(measurementId: string) {
@@ -83,7 +98,12 @@ export function AnalyticsLoader({
   // until the saved choice and GPC have been read in the browser.
   const [allowed, setAllowed] = useState(false);
 
-  const reconcile = useCallback(() => {
+  /**
+   * Applies the current choice. `fromElsewhere` marks a change this tab
+   * didn't make: another tab's choice (storage event), a page restored from
+   * the back/forward cache, or the tab becoming visible again (a GPC change).
+   */
+  const reconcile = useCallback((fromElsewhere = false) => {
     if (!enabled) {
       applyAnalyticsState(measurementId, false);
       setAllowed(false);
@@ -92,14 +112,23 @@ export function AnalyticsLoader({
 
     const next = isAnalyticsAllowedForVisit();
     applyAnalyticsState(measurementId, next);
-    // Withdrawn (here or in another tab) after the scripts loaded. The stop
-    // signals above take effect at once, but Google documents ga-disable only
-    // for pages where it's set before gtag runs, and Clarity documents no full
-    // stop. A fresh page without the scripts is what guarantees collection
-    // has ended. Safe when the choice couldn't be saved: with no choice on the
-    // new page nothing loads, and the question is asked again.
+    // Withdrawn after the scripts loaded. The stop signals above take effect
+    // at once, but Google documents ga-disable only for pages where it's set
+    // before gtag runs, and Clarity documents no full stop. A fresh page
+    // without the scripts is what guarantees collection has ended.
     if (!next && window.__goloAnalyticsConfigured) {
-      window.location.reload();
+      setAllowed(false);
+      // A decline that couldn't be saved, over a grant that couldn't be
+      // removed: a reload would load analytics again, so keep the stop.
+      if (savedGrantOutlivesDecline()) return;
+      // Withdrawn in this tab: reload now. From elsewhere, this tab may hold a
+      // half-typed form; collection has already stopped, so reload the next
+      // time the tab is hidden instead of wiping it.
+      if (!fromElsewhere || document.visibilityState === "hidden") {
+        window.location.reload();
+      } else {
+        reloadWhenHidden();
+      }
       return;
     }
     if (next) {
@@ -112,14 +141,27 @@ export function AnalyticsLoader({
 
   useEffect(() => {
     reconcile();
+    const onChoice = () => reconcile();
     const onStorage = (event: StorageEvent) => {
-      if (event.key === ANALYTICS_STORAGE_KEY) reconcile();
+      if (event.key === ANALYTICS_STORAGE_KEY) reconcile(true);
     };
-    window.addEventListener(ANALYTICS_PREFERENCE_EVENT, reconcile);
+    // Storage events aren't replayed into a page restored from the
+    // back/forward cache, and GPC can change while a tab sits in the background.
+    const onPageShow = (event: PageTransitionEvent) => {
+      if (event.persisted) reconcile(true);
+    };
+    const onVisible = () => {
+      if (document.visibilityState === "visible") reconcile(true);
+    };
+    window.addEventListener(ANALYTICS_PREFERENCE_EVENT, onChoice);
     window.addEventListener("storage", onStorage);
+    window.addEventListener("pageshow", onPageShow);
+    document.addEventListener("visibilitychange", onVisible);
     return () => {
-      window.removeEventListener(ANALYTICS_PREFERENCE_EVENT, reconcile);
+      window.removeEventListener(ANALYTICS_PREFERENCE_EVENT, onChoice);
       window.removeEventListener("storage", onStorage);
+      window.removeEventListener("pageshow", onPageShow);
+      document.removeEventListener("visibilitychange", onVisible);
     };
   }, [reconcile]);
 

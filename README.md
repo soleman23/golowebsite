@@ -227,8 +227,8 @@ the single mixed-unit `metric_value`. When this ships, register `metric_ms` as
 
 Clarity settings checked the same day: Balanced masking; cookies on; bot
 detection on; Microsoft Ads, Google Ads and Google Analytics integrations not
-connected. Microsoft keeps recordings 30 days, and heatmaps, dashboard data
-and labeled or favorited recordings 9 months.
+connected. Microsoft keeps recordings 30 days, and heatmaps, dashboard data,
+labeled or favorited recordings and a random sample it selects 9 months.
 
 **Change these together, or update the Privacy Policy:** the data-sharing
 settings, masking mode, any Ads/GA integration, and retention.
