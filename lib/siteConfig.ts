@@ -35,12 +35,15 @@ export const siteConfig = {
    * Microsoft Clarity (session recordings and heatmaps) is off: its terms let
    * Microsoft use the data for any purpose in its privacy statement,
    * including advertising profiles, and no Clarity setting limits that. The
-   * project ("GoLo Golf Website", z0fu5ddehq) still exists. Setting
-   * NEXT_PUBLIC_CLARITY_ID would load it again, so don't without first
-   * restoring the Clarity disclosures in lib/content/legal.ts and the consent
-   * copy.
+   * project ("GoLo Golf Website", z0fu5ddehq) still exists.
+   *
+   * Deliberately not read from NEXT_PUBLIC_CLARITY_ID: env files made from the
+   * earlier .env.example set it to the project ID, and honoring that would
+   * keep recording while the policies say Clarity is gone. Bringing Clarity
+   * back is a code change here, made together with restored disclosures in
+   * lib/content/legal.ts and the consent copy.
    */
-  clarityProjectId: process.env.NEXT_PUBLIC_CLARITY_ID || "",
+  clarityProjectId: "",
   analyticsEnabled: boolFlag(
     process.env.NEXT_PUBLIC_ANALYTICS_ENABLED,
     false,
