@@ -189,12 +189,14 @@ function isAnalyticsCookie(name: string): boolean {
  * sets on Microsoft's own domains are out of reach here; only the browser's
  * site-data controls can remove those.
  */
-export function clearAnalyticsCookies(): void {
+export function clearAnalyticsCookies(
+  which: (name: string) => boolean = isAnalyticsCookie,
+): void {
   if (typeof document === "undefined") return;
   const names = document.cookie
     .split(";")
     .map((part) => part.trim().split("=")[0])
-    .filter(isAnalyticsCookie);
+    .filter(which);
 
   const host = window.location.hostname;
   const parent = host.split(".").length > 1 ? `.${host.replace(/^www\./, "")}` : undefined;
@@ -203,6 +205,11 @@ export function clearAnalyticsCookies(): void {
     expireCookie(name, host);
     if (parent && parent !== host) expireCookie(name, parent);
   }
+}
+
+/** Clarity's first-party cookies, left over from when the site used Clarity. */
+export function clearClarityCookies(): void {
+  clearAnalyticsCookies((name) => name === "_clck" || name === "_clsk");
 }
 
 /**

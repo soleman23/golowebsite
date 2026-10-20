@@ -67,5 +67,6 @@ they leave the counts in place and can't target the test hits cleanly.
 | IP blocking | Settings → IP blocking: exclude the owner's IP | Yes | Future sessions only |
 | Delete the project | Settings → delete project | No | Deletes everything in the project, including real sessions; Microsoft documents no other way to delete data. A new project means a new ID in `lib/siteConfig.ts`. Microsoft's handling of its own copies under its controller terms isn't documented |
 
-If Clarity is turned off (see the separate branch), deleting the project is the
-cleanest way to end the window's data, at the cost of losing everything in it.
+Clarity was turned off on October 20, 2026. Deleting the project is the
+cleanest way to end the window's data, at the cost of losing everything in it;
+otherwise recordings expire around November 19 and the rest within 9 months.

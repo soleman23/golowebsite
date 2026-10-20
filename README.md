@@ -106,9 +106,9 @@ Copy from [`.env.example`](.env.example). Never commit `.env`.
 | `NEXT_PUBLIC_APP_LIVE`         | No       | **Public**  | `true`/`false` (default **false**) — see below      |
 | `NEXT_PUBLIC_TERMS_PUBLISHED`  | No       | **Public**  | `true`/`false` (default **false**) — see below      |
 | `NEXT_PUBLIC_ACCEPTABLE_USE_PUBLISHED` | No | **Public** | `true`/`false` (default **false**)                 |
-| `NEXT_PUBLIC_ANALYTICS_ENABLED`| No       | **Public**  | GA + Clarity kill switch (default **false**); explicit opt-in when on |
+| `NEXT_PUBLIC_ANALYTICS_ENABLED`| No       | **Public**  | GA kill switch (default **false**); explicit opt-in when on |
 | `NEXT_PUBLIC_GA_ID`            | No       | **Public**  | GA4 measurement ID                                  |
-| `NEXT_PUBLIC_CLARITY_ID`       | No       | **Public**  | Microsoft Clarity project ID (default `z0fu5ddehq`) |
+| `NEXT_PUBLIC_CLARITY_ID`       | No       | **Public**  | Leave unset: Clarity is off (default empty); see below |
 
 ### Launch controls
 
@@ -127,7 +127,17 @@ directly reviewable while its flag is `false`, but carries `noindex,
 nofollow`, stays out of the sitemap, and remains unlinked. The Cookie Policy
 is always published.
 
-### Analytics (Google Analytics 4 and Microsoft Clarity)
+### Analytics (Google Analytics 4)
+
+Microsoft Clarity was removed on October 20, 2026: its Terms of Use let
+Microsoft use the data for any purpose in its privacy statement, including
+advertising profiles, and no Clarity setting limits that. The project
+("GoLo Golf Website", `z0fu5ddehq`) still exists with data from October 19–20;
+`docs/analytics-data-notes.md` covers it. The consent code still supports a
+Clarity ID, so setting `NEXT_PUBLIC_CLARITY_ID` would load it again: don't,
+without restoring its disclosures first. With no ID, the loader deletes old
+`_clck` / `_clsk` cookies for every visitor. Where the notes below mention
+Clarity, they describe that dormant support.
 
 `NEXT_PUBLIC_ANALYTICS_ENABLED` is a site-wide kill switch and defaults to
 `false`. When it's `true`, both tools are **explicit opt-in**, as one choice:
@@ -222,7 +232,7 @@ event-scoped; display names can't contain hyphens).
 | Tool | Property | Owner | Open it |
 | --- | --- | --- | --- |
 | Google Analytics 4 | Account "GoLo Golf" (402913756), property "GoLo Golf" (547817615), web stream "GoLo Golf Website", `G-36182P0H4D` | devin@golo.golf | [Admin](https://analytics.google.com/analytics/web/#/a402913756p547817615/admin) (the third signed-in Google account in the owner's Chrome, `authuser=2`) |
-| Microsoft Clarity | Project "GoLo Golf Website", `z0fu5ddehq` | devin@golo.golf (Google sign-in) | [Dashboard](https://clarity.microsoft.com/projects/view/z0fu5ddehq/dashboard) |
+| Microsoft Clarity (off since October 20, 2026) | Project "GoLo Golf Website", `z0fu5ddehq` | devin@golo.golf (Google sign-in) | [Dashboard](https://clarity.microsoft.com/projects/view/z0fu5ddehq/dashboard) |
 | Search Console | Domain property `golo.golf` | devin@golo.golf | [Search Console](https://search.google.com/search-console?resource_id=sc-domain%3Agolo.golf) |
 
 GA4 settings checked October 19–20, 2026: event and user data retention 14
