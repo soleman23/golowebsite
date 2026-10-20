@@ -112,9 +112,7 @@ export const contactLegalLinks: ContactLegalLink[] = [
     ? [{ label: "Terms", href: "/terms" }]
     : []),
   { label: "Privacy", href: "/privacy" },
-  ...(siteConfig.cookiesPublished
-    ? [{ label: "Cookies", href: "/cookies" }]
-    : []),
+  { label: "Cookies", href: "/cookies" },
   ...(siteConfig.acceptableUsePublished
     ? [{ label: "Acceptable use", href: "/acceptable-use" }]
     : []),

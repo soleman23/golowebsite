@@ -97,10 +97,6 @@ export const siteConfig = {
 
   /** Legal publication switches control indexing, navigation, and sitemap. */
   termsPublished: boolFlag(process.env.NEXT_PUBLIC_TERMS_PUBLISHED, false),
-  cookiesPublished: boolFlag(
-    process.env.NEXT_PUBLIC_COOKIES_PUBLISHED,
-    false,
-  ),
   acceptableUsePublished: boolFlag(
     process.env.NEXT_PUBLIC_ACCEPTABLE_USE_PUBLISHED,
     false,

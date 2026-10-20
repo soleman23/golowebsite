@@ -274,7 +274,7 @@ const privacySections: LegalSection[] = [
       { kind: "h3", text: "Why we use them" },
       { kind: "p", html: "To understand how the website is used, find pages or steps that confuse people, improve the website’s content and usability, and find and fix errors and slow pages. GoLo does not use these tools to identify individual visitors or for advertising." },
       { kind: "h3", text: "Cookies and browser storage" },
-      { kind: "p", html: "If you allow analytics, these first-party cookies are set on golo.golf. Lifetimes are the ones we observed in Chrome; Google’s own default for its cookies is two years, which Chrome limits to 400 days. Microsoft does not publish lifetimes for Clarity’s cookies." },
+      { kind: "p", html: "If you allow analytics, these first-party cookies are set on golo.golf. Lifetimes are the ones we observed in Chrome; Google’s own default for its cookies is two years, which Chrome limits to 400 days. Microsoft does not publish lifetimes for Clarity’s cookies. The <a href=\"/cookies\">Cookie Policy</a> lists the same storage." },
       { kind: "table", head: ["Name", "Set by", "Purpose", "Lifetime"], rows: [
         ["_ga", "Google Analytics", "Distinguishes one browser from another", "Up to 2 years (400 days in Chrome)"],
         [GA_SESSION_COOKIE, "Google Analytics", "Keeps track of the current visit (session)", "Up to 2 years (400 days in Chrome)"],
@@ -284,7 +284,7 @@ const privacySections: LegalSection[] = [
       { kind: "p", html: "Your choice itself is saved in your browser’s local storage under the name <strong>golo.analytics.consent.v2</strong>, as “granted” or “denied,” whichever way you choose, so the website can respect it on your next visit. The same value is also saved under the older name <strong>golo.analytics.preference</strong>, so pages still open from an earlier version of the website respect a decline too. Both stay until you change your choice or clear your browser’s site data." },
       { kind: "p", html: "Clarity’s script may also set or read cookies on Microsoft’s own domains, such as MUID, CLID, ANONCHK, MR, and SM. Microsoft describes MUID as identifying browsers across Microsoft sites for advertising, site analytics, and other operational purposes, and CLID as identifying a browser across sites that use Clarity. GoLo can’t see or delete cookies on Microsoft’s domains, and we have not confirmed which of them are set in practice." },
       { kind: "h3", text: "What Google and Microsoft receive and how they may use it" },
-      { kind: "p", html: "When the tools are on, your browser sends the information above, with your IP address, directly to Google and Microsoft. Google processes Google Analytics data to provide the service to GoLo. GoLo’s Google Analytics account is currently set to also let Google use the data to improve Google’s products and services, to include aggregated, de-identified data in benchmarking and modeling, to give Google’s technical support staff access, and to use account data to offer GoLo recommendations. Learn more in <a href=\"https://policies.google.com/technologies/partner-sites\" rel=\"noopener noreferrer\">How Google uses information from sites or apps that use our services</a>." },
+      { kind: "p", html: "When the tools are on, your browser sends the information above, with your IP address, directly to Google and Microsoft. Google processes Google Analytics data to provide the service to GoLo. GoLo has turned off the Google Analytics setting that would let Google use this data to improve Google’s own products and services. GoLo’s account is currently set to let Google include aggregated, de-identified data in benchmarking and modeling, give Google’s technical support staff access when GoLo asks for help, and use account data to offer GoLo recommendations. Learn more in <a href=\"https://policies.google.com/technologies/partner-sites\" rel=\"noopener noreferrer\">How Google uses information from sites or apps that use our services</a>." },
       { kind: "p", html: "Under Microsoft’s Clarity Terms of Use, GoLo and Microsoft each decide independently how they use Clarity data. Microsoft collects or receives personal data from GoLo’s website through Clarity to provide Microsoft Advertising and its other products and services, and its terms let it use that data for any purpose described in the Microsoft Privacy Statement, including improving its products and creating user profiles for purposes that include advertising. GoLo tells Clarity that advertising storage is denied and has not connected Clarity to any advertising account, but GoLo cannot confirm how Microsoft applies that signal. See the <a href=\"https://privacy.microsoft.com/en-us/privacystatement\" rel=\"noopener noreferrer\">Microsoft Privacy Statement</a>." },
       { kind: "h3", text: "Your choices" },
       {
@@ -476,8 +476,9 @@ export const privacyDoc: LegalDoc = {
   kicker: "LEGAL",
   lead: "What GoLo collects, how it gets used, and exactly what happens when you delete your account. Every section has a plain-English note beside the legal language.",
   dateLabel: "Last updated",
-  effective: "October 19, 2026",
-  effectiveISO: "2026-10-19",
+  // Set to the day this version deploys.
+  effective: "October 20, 2026",
+  effectiveISO: "2026-10-20",
   entity: siteConfig.addressShort,
   intro: privacyIntro,
   short: {
@@ -791,7 +792,9 @@ export const termsDoc: LegalDoc = {
 
 export const cookiesDoc: LegalDoc = {
   slug: "cookies",
-  published: siteConfig.cookiesPublished,
+  // Final and accurate since October 2026: always published (indexed, in the
+  // sitemap and linked). NEXT_PUBLIC_COOKIES_PUBLISHED no longer exists.
+  published: true,
   title: "Cookie Policy",
   kicker: "LEGAL · WEBSITE PREFERENCES",
   lead:

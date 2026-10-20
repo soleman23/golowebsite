@@ -43,6 +43,10 @@ export const analyticsChoiceControl = {
   },
   unsaved:
     "This browser isn't letting the site save choices, so this one lasts until the page is closed or reloaded.",
+  policyLinks: [
+    { label: "Privacy Policy: website analytics", href: "/privacy#website-analytics" },
+    { label: "Cookie Policy", href: "/cookies" },
+  ],
   withdrawNote:
     "Declining after you've allowed analytics reloads the page so both tools stop, and clears the analytics cookies this site can reach.",
 };

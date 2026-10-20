@@ -105,7 +105,6 @@ Copy from [`.env.example`](.env.example). Never commit `.env`.
 | `NEXT_PUBLIC_HERO_BACKDROP`    | No       | **Public**  | `sunset` \| `course` \| `turf`                      |
 | `NEXT_PUBLIC_APP_LIVE`         | No       | **Public**  | `true`/`false` (default **false**) — see below      |
 | `NEXT_PUBLIC_TERMS_PUBLISHED`  | No       | **Public**  | `true`/`false` (default **false**) — see below      |
-| `NEXT_PUBLIC_COOKIES_PUBLISHED`| No       | **Public**  | `true`/`false` (default **false**)                   |
 | `NEXT_PUBLIC_ACCEPTABLE_USE_PUBLISHED` | No | **Public** | `true`/`false` (default **false**)                 |
 | `NEXT_PUBLIC_ANALYTICS_ENABLED`| No       | **Public**  | GA + Clarity kill switch (default **false**); explicit opt-in when on |
 | `NEXT_PUBLIC_GA_ID`            | No       | **Public**  | GA4 measurement ID                                  |
@@ -123,9 +122,10 @@ everywhere at once. Don't flip one without the other: `store_button_click` fires
 
 `NEXT_PUBLIC_TERMS_PUBLISHED` gates `/terms`. The current copy is authorized as
 interim website Terms but must be approved or replaced before
-`NEXT_PUBLIC_APP_LIVE` becomes `true`. Cookie and Acceptable Use drafts remain
-directly reviewable while their flags are `false`, but carry `noindex,
-nofollow`, stay out of the sitemap, and remain unlinked.
+`NEXT_PUBLIC_APP_LIVE` becomes `true`. The Acceptable Use draft remains
+directly reviewable while its flag is `false`, but carries `noindex,
+nofollow`, stays out of the sitemap, and remains unlinked. The Cookie Policy
+is always published.
 
 ### Analytics (Google Analytics 4 and Microsoft Clarity)
 
@@ -177,9 +177,12 @@ nofollow`, stay out of the sitemap, and remain unlinked.
 
 Copy for the notice and the control is in `lib/content/analyticsConsent.ts`;
 the disclosures are `/privacy#website-analytics` (published) and `/cookies`.
-`/cookies` stays `noindex` and unlinked until `NEXT_PUBLIC_COOKIES_PUBLISHED`
-is `true` in hPanel; the Privacy Policy carries the full disclosure either way.
+Both are published and linked: the footer has "Privacy choices" and "Cookie
+Policy", and the control on `/privacy` and `/cookies` links to the other page.
+(`NEXT_PUBLIC_COOKIES_PUBLISHED` was removed; an old value in hPanel is ignored.)
 Keep the policies, this README and the consent copy in lockstep.
+`docs/analytics-data-notes.md` records data that isn't normal opted-in traffic
+(the October 19–20 opt-out window and test hits) and the options for it.
 
 #### Events
 
@@ -222,18 +225,20 @@ event-scoped; display names can't contain hyphens).
 | Microsoft Clarity | Project "GoLo Golf Website", `z0fu5ddehq` | devin@golo.golf (Google sign-in) | [Dashboard](https://clarity.microsoft.com/projects/view/z0fu5ddehq/dashboard) |
 | Search Console | Domain property `golo.golf` | devin@golo.golf | [Search Console](https://search.google.com/search-console?resource_id=sc-domain%3Agolo.golf) |
 
-GA4 settings checked October 19, 2026: event and user data retention 14
+GA4 settings checked October 19–20, 2026: event and user data retention 14
 months (Explorations only; standard reports are aggregated and unaffected);
 Google signals off; user-provided data collection off; no Google Ads links;
 granular location and device data on; property-level ads personalization
-allowed (the tag sends `npa=1` regardless); email redaction on; all four
-account data-sharing settings on, which the Privacy Policy discloses. 20
-event-scoped custom dimensions are registered for the params above.
+allowed (the tag sends `npa=1` regardless); email redaction on. Account
+data-sharing: "Google products & services" turned off on October 20;
+"Modeling contributions & business insights", "Technical support" and
+"Recommendations for your business" still on. The Privacy Policy describes
+exactly this. 20 event-scoped custom dimensions are registered for the
+params above.
 
-Custom metrics: `web_vitals` now sends `metric_ms` and `cls_score` instead of
-the single mixed-unit `metric_value`. When this ships, register `metric_ms` as
-"Web vital time" (Time → Milliseconds) and `cls_score` as "CLS score"
-(Standard), and archive "Web vital value" (`metric_value`, no longer sent).
+Custom metrics: "Web vital time" (`metric_ms`, Time → Milliseconds) and "CLS
+score" (`cls_score`, Standard), created October 19, 2026. The earlier
+mixed-unit "Web vital value" (`metric_value`) is archived.
 
 Clarity settings checked the same day: Balanced masking; cookies on; bot
 detection on; Microsoft Ads, Google Ads and Google Analytics integrations not

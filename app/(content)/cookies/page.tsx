@@ -12,9 +12,6 @@ export const metadata: Metadata = {
     description:
       "Browser storage and analytics controls for the GoLo public website.",
   }),
-  ...(siteConfig.cookiesPublished
-    ? {}
-    : { robots: { index: false, follow: false } }),
 };
 
 export default function CookiesPage() {
