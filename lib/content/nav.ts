@@ -74,9 +74,7 @@ export const footerLinks: Record<FooterColumn, NavLink[]> = {
       : []),
     { label: "Privacy Policy", href: "/privacy" },
     { label: "Privacy choices", href: "/privacy#analytics-choices" },
-    ...(siteConfig.cookiesPublished
-      ? [{ label: "Cookie Policy", href: "/cookies" }]
-      : []),
+    { label: "Cookie Policy", href: "/cookies" },
     ...(siteConfig.acceptableUsePublished
       ? [{ label: "Acceptable Use", href: "/acceptable-use" }]
       : []),

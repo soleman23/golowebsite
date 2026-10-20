@@ -3,18 +3,20 @@ import { looksPersonal } from "@/lib/analytics";
 /**
  * The visitor's analytics choice, and turning the two providers on and off.
  *
- * Explicit opt-in: Google Analytics and Microsoft Clarity (session recordings
- * and heatmaps) load only after the visitor allows them, as one choice. With
- * no saved choice, a declined choice, or a Global Privacy Control signal,
- * neither script is requested and nothing is sent, cookieless pings included.
+ * Explicit opt-in: Google Analytics loads only after the visitor allows it.
+ * With no saved choice, a declined choice, or a Global Privacy Control signal,
+ * no script is requested and nothing is sent, cookieless pings included.
+ * Microsoft Clarity used the same choice until October 20, 2026; it is off
+ * (siteConfig.clarityProjectId is empty) and its code paths here are dormant.
  */
 
 export type AnalyticsChoice = "granted" | "denied";
 
 /**
- * v2 covers GA4 and Clarity together. The older key ("golo.analytics.preference")
- * was saved before session recordings existed, so a grant under it doesn't
- * cover them and is asked again; a decline under it still holds.
+ * v2 was introduced to cover GA4 and Clarity together (Clarity is now off).
+ * The older key ("golo.analytics.preference") was saved before session
+ * recordings existed, so a grant under it doesn't cover them and is asked
+ * again; a decline under it still holds.
  *
  * The older key is never deleted, and every decline is mirrored into it:
  * pages still open from the earlier, opt-out build read only that key and
@@ -189,12 +191,14 @@ function isAnalyticsCookie(name: string): boolean {
  * sets on Microsoft's own domains are out of reach here; only the browser's
  * site-data controls can remove those.
  */
-export function clearAnalyticsCookies(): void {
+export function clearAnalyticsCookies(
+  which: (name: string) => boolean = isAnalyticsCookie,
+): void {
   if (typeof document === "undefined") return;
   const names = document.cookie
     .split(";")
     .map((part) => part.trim().split("=")[0])
-    .filter(isAnalyticsCookie);
+    .filter(which);
 
   const host = window.location.hostname;
   const parent = host.split(".").length > 1 ? `.${host.replace(/^www\./, "")}` : undefined;
@@ -203,6 +207,11 @@ export function clearAnalyticsCookies(): void {
     expireCookie(name, host);
     if (parent && parent !== host) expireCookie(name, parent);
   }
+}
+
+/** Clarity's first-party cookies, left over from when the site used Clarity. */
+export function clearClarityCookies(): void {
+  clearAnalyticsCookies((name) => name === "_clck" || name === "_clsk");
 }
 
 /**

@@ -32,12 +32,18 @@ export const siteConfig = {
   url: process.env.NEXT_PUBLIC_SITE_URL || "https://www.golo.golf",
   gaMeasurementId: process.env.NEXT_PUBLIC_GA_ID || "G-36182P0H4D",
   /**
-   * Microsoft Clarity project "GoLo Golf Website" (session recordings and
-   * heatmaps), owned by devin@golo.golf. Loads under the same switch and
-   * visitor preference as GA. Override per environment with
-   * NEXT_PUBLIC_CLARITY_ID.
+   * Microsoft Clarity (session recordings and heatmaps) is off: its terms let
+   * Microsoft use the data for any purpose in its privacy statement,
+   * including advertising profiles, and no Clarity setting limits that. The
+   * project ("GoLo Golf Website", z0fu5ddehq) still exists.
+   *
+   * Deliberately not read from NEXT_PUBLIC_CLARITY_ID: env files made from the
+   * earlier .env.example set it to the project ID, and honoring that would
+   * keep recording while the policies say Clarity is gone. Bringing Clarity
+   * back is a code change here, made together with restored disclosures in
+   * lib/content/legal.ts and the consent copy.
    */
-  clarityProjectId: process.env.NEXT_PUBLIC_CLARITY_ID || "z0fu5ddehq",
+  clarityProjectId: "",
   analyticsEnabled: boolFlag(
     process.env.NEXT_PUBLIC_ANALYTICS_ENABLED,
     false,
@@ -97,10 +103,6 @@ export const siteConfig = {
 
   /** Legal publication switches control indexing, navigation, and sitemap. */
   termsPublished: boolFlag(process.env.NEXT_PUBLIC_TERMS_PUBLISHED, false),
-  cookiesPublished: boolFlag(
-    process.env.NEXT_PUBLIC_COOKIES_PUBLISHED,
-    false,
-  ),
   acceptableUsePublished: boolFlag(
     process.env.NEXT_PUBLIC_ACCEPTABLE_USE_PUBLISHED,
     false,

@@ -105,11 +105,10 @@ Copy from [`.env.example`](.env.example). Never commit `.env`.
 | `NEXT_PUBLIC_HERO_BACKDROP`    | No       | **Public**  | `sunset` \| `course` \| `turf`                      |
 | `NEXT_PUBLIC_APP_LIVE`         | No       | **Public**  | `true`/`false` (default **false**) — see below      |
 | `NEXT_PUBLIC_TERMS_PUBLISHED`  | No       | **Public**  | `true`/`false` (default **false**) — see below      |
-| `NEXT_PUBLIC_COOKIES_PUBLISHED`| No       | **Public**  | `true`/`false` (default **false**)                   |
 | `NEXT_PUBLIC_ACCEPTABLE_USE_PUBLISHED` | No | **Public** | `true`/`false` (default **false**)                 |
-| `NEXT_PUBLIC_ANALYTICS_ENABLED`| No       | **Public**  | GA + Clarity kill switch (default **false**); explicit opt-in when on |
+| `NEXT_PUBLIC_ANALYTICS_ENABLED`| No       | **Public**  | GA kill switch (default **false**); explicit opt-in when on |
 | `NEXT_PUBLIC_GA_ID`            | No       | **Public**  | GA4 measurement ID                                  |
-| `NEXT_PUBLIC_CLARITY_ID`       | No       | **Public**  | Microsoft Clarity project ID (default `z0fu5ddehq`) |
+| `NEXT_PUBLIC_CLARITY_ID`       | No       | **Public**  | Ignored: Clarity is off in code; see below |
 
 ### Launch controls
 
@@ -123,63 +122,84 @@ everywhere at once. Don't flip one without the other: `store_button_click` fires
 
 `NEXT_PUBLIC_TERMS_PUBLISHED` gates `/terms`. The current copy is authorized as
 interim website Terms but must be approved or replaced before
-`NEXT_PUBLIC_APP_LIVE` becomes `true`. Cookie and Acceptable Use drafts remain
-directly reviewable while their flags are `false`, but carry `noindex,
-nofollow`, stay out of the sitemap, and remain unlinked.
+`NEXT_PUBLIC_APP_LIVE` becomes `true`. The Acceptable Use draft remains
+directly reviewable while its flag is `false`, but carries `noindex,
+nofollow`, stays out of the sitemap, and remains unlinked. The Cookie Policy
+is always published.
 
-### Analytics (Google Analytics 4 and Microsoft Clarity)
+### Analytics (Google Analytics 4)
+
+Google Analytics 4 is the site's only analytics tool. Microsoft Clarity was
+removed on October 20, 2026 (see "Microsoft Clarity (off)" below).
 
 `NEXT_PUBLIC_ANALYTICS_ENABLED` is a site-wide kill switch and defaults to
-`false`. When it's `true`, both tools are **explicit opt-in**, as one choice:
+`false`. When it's `true`, GA4 is **explicit opt-in**:
 
 | State | What loads | What the visitor sees |
 | --- | --- | --- |
-| No choice yet | Nothing. No Google or Clarity script, request or cookie. | The analytics notice at the bottom of the screen, Allow and Decline at equal weight, nothing preselected |
-| Allowed | GA4 (`gtag.js`) and Clarity, on every page | No notice |
+| No choice yet | Nothing. No Google script, request or cookie. | The analytics notice at the bottom of the screen, Allow and Decline at equal weight, nothing preselected |
+| Allowed | GA4 (`gtag.js`) on every page | No notice |
 | Declined | Nothing | No notice |
-| Withdrawn (declined after allowing) | Stop signals, then a page reload without either script (other open tabs stop at once and reload the next time they're hidden; no reload when an unsaved decline sits over a saved grant that can't be removed); `_ga`, `_ga_*`, `_clck`, `_clsk` cleared | Privacy choices shows "Declined" |
+| Withdrawn (declined after allowing) | `ga-disable` set, then a page reload without the script (other open tabs stop at once and reload the next time they're hidden; no reload when an unsaved decline sits over a saved grant that can't be removed); `_ga`, `_ga_*` cleared | Privacy choices shows "Declined" |
 | Global Privacy Control | Nothing, even with a saved grant | No notice; Privacy choices explains GPC and disables Allow |
 | Storage blocked | Nothing until the visitor chooses; the choice lasts for the page only | The notice, every page load |
 
 - The choice lives in localStorage as `golo.analytics.consent.v2` (`granted` /
-  `denied`). The pre-Clarity key `golo.analytics.preference` is read, never
+  `denied`). The older key `golo.analytics.preference` is read, never
   deleted: a decline there carries over (and beats a v2 grant, since every
   choice is mirrored into the old key, so a "denied" there is newer), a grant
   there is asked again. The mirroring matters because pages from the earlier
   opt-out build read only that key and treat a missing value as allowed.
 - "Privacy choices" in the footer links to `/privacy#analytics-choices`, the
   persistent control. The same control is on `/cookies`.
-- Withdrawal reloads the page because neither vendor documents a full stop for
-  an already-loaded tag: Google documents `ga-disable-<ID>` only when set before
-  gtag runs, and Clarity's denied consent keeps a cookieless mode running.
+- Withdrawal reloads the page because Google documents `ga-disable-<ID>` only
+  when it's set before gtag runs; a fresh page without the script is what
+  guarantees collection has ended.
 - On every page load (whatever the choice, so the history entry itself is
-  clean) and again before either script loads, `dropUnusedQueryParams()`
-  rewrites the address bar so only these survive: GA4's campaign fields (`utm_id`, `utm_source`,
-  `utm_medium`, `utm_campaign`, `utm_term`, `utm_content`,
+  clean) and again before GA loads, `dropUnusedQueryParams()` rewrites the
+  address bar so only these survive: GA4's campaign fields (`utm_id`,
+  `utm_source`, `utm_medium`, `utm_campaign`, `utm_term`, `utm_content`,
   `utm_source_platform`, `utm_creative_format`, `utm_marketing_tactic`) whose
   value has no `@`, no long digit run and at most 100 characters, plus a slug
   `filter` on `/games` and `topic` on `/blog` and `/contact`. GA's
   `page_referrer` drops its query string, and its path too when the path
   looks personal. A path segment that looks personal becomes `redacted` (only
   404s can have one) and such a fragment is dropped. An inbound URL carrying an
-  email address, or a token in a parameter the site doesn't use, never reaches GA's `page_location` or a Clarity recording.
+  email address, or a token in a parameter the site doesn't use, never reaches
+  GA's `page_location`.
 - The GA tag is configured with `allow_google_signals: false` and
   `allow_ad_personalization_signals: false` (every hit carries `npa=1`).
-  Clarity gets `consentv2` with `analytics_Storage: granted`,
-  `ad_Storage: denied`.
 - `track()` in `lib/analytics.ts` masks email- and number-shaped text in every
   string param and cuts values to GA4's 100-character limit. Never pass form
   values, names, emails or phone numbers to it anyway.
-- The phone, newsletter and contact forms (with their error and confirmation
-  messages) carry `data-clarity-mask="true"`. Clarity's project masking is
-  "Balanced" (inputs plus email- and number-shaped text). Keep it at Balanced
-  or Strict: the policies say form entries are masked.
+
+#### Microsoft Clarity (off)
+
+Clarity's Terms of Use let Microsoft use the data for any purpose in its
+privacy statement, including advertising profiles, and no Clarity setting
+limits that, so it was removed on October 20, 2026. The project ("GoLo Golf
+Website", `z0fu5ddehq`) still exists with data from October 19–20;
+`docs/analytics-data-notes.md` covers it.
+
+- `siteConfig.clarityProjectId` is the empty string in code and
+  `NEXT_PUBLIC_CLARITY_ID` is not read, so an old value in an env file or
+  hPanel can't turn Clarity back on.
+- With no project ID, the loader deletes old `_clck` / `_clsk` cookies for
+  every visitor on load.
+- The consent code keeps dormant Clarity support (`consentv2` with
+  `ad_Storage: denied`, the stop-and-reload path) and the forms keep
+  `data-clarity-mask="true"`. Bringing Clarity back is a code change in
+  `lib/siteConfig.ts`, made together with restored disclosures in
+  `lib/content/legal.ts` and `lib/content/analyticsConsent.ts`.
 
 Copy for the notice and the control is in `lib/content/analyticsConsent.ts`;
 the disclosures are `/privacy#website-analytics` (published) and `/cookies`.
-`/cookies` stays `noindex` and unlinked until `NEXT_PUBLIC_COOKIES_PUBLISHED`
-is `true` in hPanel; the Privacy Policy carries the full disclosure either way.
+Both are published and linked: the footer has "Privacy choices" and "Cookie
+Policy", and the control on `/privacy` and `/cookies` links to the other page.
+(`NEXT_PUBLIC_COOKIES_PUBLISHED` was removed; an old value in hPanel is ignored.)
 Keep the policies, this README and the consent copy in lockstep.
+`docs/analytics-data-notes.md` records data that isn't normal opted-in traffic
+(the October 19–20 opt-out window and test hits) and the options for it.
 
 #### Events
 
@@ -219,23 +239,24 @@ event-scoped; display names can't contain hyphens).
 | Tool | Property | Owner | Open it |
 | --- | --- | --- | --- |
 | Google Analytics 4 | Account "GoLo Golf" (402913756), property "GoLo Golf" (547817615), web stream "GoLo Golf Website", `G-36182P0H4D` | devin@golo.golf | [Admin](https://analytics.google.com/analytics/web/#/a402913756p547817615/admin) (the third signed-in Google account in the owner's Chrome, `authuser=2`) |
-| Microsoft Clarity | Project "GoLo Golf Website", `z0fu5ddehq` | devin@golo.golf (Google sign-in) | [Dashboard](https://clarity.microsoft.com/projects/view/z0fu5ddehq/dashboard) |
+| Microsoft Clarity (off since October 20, 2026) | Project "GoLo Golf Website", `z0fu5ddehq` | devin@golo.golf (Google sign-in) | [Dashboard](https://clarity.microsoft.com/projects/view/z0fu5ddehq/dashboard) |
 | Search Console | Domain property `golo.golf` | devin@golo.golf | [Search Console](https://search.google.com/search-console?resource_id=sc-domain%3Agolo.golf) |
 
-GA4 settings checked October 19, 2026: event and user data retention 14
+GA4 settings checked October 19–20, 2026: event and user data retention 14
 months (Explorations only; standard reports are aggregated and unaffected);
 Google signals off; user-provided data collection off; no Google Ads links;
 granular location and device data on; property-level ads personalization
-allowed (the tag sends `npa=1` regardless); email redaction on; all four
-account data-sharing settings on, which the Privacy Policy discloses. 20
-event-scoped custom dimensions are registered for the params above.
+allowed (the tag sends `npa=1` regardless); email redaction on. Account
+data-sharing: all four settings turned off on October 20 ("Google products &
+services", "Modeling contributions & business insights", "Technical support"
+and "Recommendations for your business"). The Privacy Policy describes exactly
+this. 20 event-scoped custom dimensions are registered for the params above.
 
-Custom metrics: `web_vitals` now sends `metric_ms` and `cls_score` instead of
-the single mixed-unit `metric_value`. When this ships, register `metric_ms` as
-"Web vital time" (Time → Milliseconds) and `cls_score` as "CLS score"
-(Standard), and archive "Web vital value" (`metric_value`, no longer sent).
+Custom metrics: "Web vital time" (`metric_ms`, Time → Milliseconds) and "CLS
+score" (`cls_score`, Standard), created October 19, 2026. The earlier
+mixed-unit "Web vital value" (`metric_value`) is archived.
 
-Clarity settings checked the same day: Balanced masking; cookies on; bot
+Clarity settings as of October 19–20, while it was in use: Balanced masking; cookies on; bot
 detection on; Microsoft Ads, Google Ads and Google Analytics integrations not
 connected. Microsoft keeps recordings 30 days, and heatmaps, dashboard data,
 labeled or favorited recordings and a random sample it selects 9 months.
@@ -248,10 +269,10 @@ settings, masking mode, any Ads/GA integration, and retention.
 Build with `NEXT_PUBLIC_ANALYTICS_ENABLED=true` and, unless you mean to send
 test data to production, `NEXT_PUBLIC_GA_ID=G-TESTONLY00` (a placeholder ID
 still exercises the tag; enhanced-measurement events need the real ID). Then,
-in a fresh browser profile: no Google or Clarity request before a choice;
+in a fresh browser profile: no Google request before a choice and never a Clarity one;
 one `page_view` per navigation after Allow; nothing after Decline; a reload
-and cleared cookies after withdrawing. Localhost visits with the real IDs show
-up in both dashboards (hostname `localhost`).
+and cleared cookies after withdrawing. Localhost visits with the real GA ID show
+up in GA (hostname `localhost`).
 
 \* If the three Twilio values are absent, the SMS endpoint runs in **stub mode**:
 it still validates the number and records the lead, returns success, but sends

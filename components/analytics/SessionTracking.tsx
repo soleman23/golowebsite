@@ -17,6 +17,11 @@ import type { useReportWebVitals } from "next/web-vitals";
 import { track } from "@/lib/analytics";
 
 const SCROLL_MARKS = [25, 50, 75, 90] as const;
+/**
+ * The last 404 path reported. The URL cleanup can re-render the 404 with a
+ * masked path (usePathname changes to /redacted), which would count it twice.
+ */
+let lastNotFound: string | null = null;
 /** Cap per page view, so one broken script can't flood the property. */
 const MAX_ERRORS_PER_PAGE = 5;
 
@@ -82,12 +87,18 @@ function SessionTrackingInner() {
 
   // Scroll depth, 404s and errors are per page view: reset on navigation.
   useEffect(() => {
-    if (document.querySelector("[data-not-found]")) {
+    if (!document.querySelector("[data-not-found]")) {
+      lastNotFound = null;
+    } else {
       // track() redacts, then cuts to GA's limit; cutting first could split
       // an email address so the redaction no longer recognized it.
       // window.location, not usePathname(): the router can still hold the
       // landing path from before the URL cleanup masked it.
-      track("page_not_found", { page_path: window.location.pathname });
+      const path = window.location.pathname;
+      if (path !== lastNotFound) {
+        lastNotFound = path;
+        track("page_not_found", { page_path: path });
+      }
     }
 
     const passed = new Set<number>();

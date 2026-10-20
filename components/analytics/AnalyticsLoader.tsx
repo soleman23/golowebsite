@@ -5,6 +5,7 @@ import { useCallback, useEffect, useState } from "react";
 import {
   ANALYTICS_PREFERENCE_EVENT,
   applyAnalyticsState,
+  clearClarityCookies,
   dropUnusedQueryParams,
   grantClarity,
   isAnalyticsAllowedForVisit,
@@ -155,6 +156,9 @@ export function AnalyticsLoader({
     // dropUnusedQueryParams), and apply the choice.
     const start = window.setTimeout(() => {
       if (enabled) dropUnusedQueryParams();
+      // Without a Clarity project, its old cookies serve nobody: delete them
+      // for every visitor, whatever their choice.
+      if (!clarityProjectId) clearClarityCookies();
       reconcile();
     }, 0);
     const onChoice = () => reconcile();
@@ -181,7 +185,7 @@ export function AnalyticsLoader({
       window.removeEventListener("pageshow", onPageShow);
       document.removeEventListener("visibilitychange", onVisible);
     };
-  }, [reconcile, enabled]);
+  }, [reconcile, enabled, clarityProjectId]);
 
   // Here rather than in SessionTracking, which remounts each time analytics
   // is turned back on; see reportWebVital.

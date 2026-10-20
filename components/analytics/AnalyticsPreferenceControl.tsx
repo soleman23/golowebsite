@@ -7,6 +7,8 @@
  */
 
 import { useEffect, useState } from "react";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
 import {
   ANALYTICS_PREFERENCE_EVENT,
   getAnalyticsChoice,
@@ -29,6 +31,11 @@ export function AnalyticsPreferenceControl({
   const [choice, setChoice] = useState<AnalyticsChoice | null>(null);
   const [gpc, setGpc] = useState(false);
   const [unsaved, setUnsaved] = useState(false);
+  // The control sits on both policy pages; don't link to the page it's on.
+  const pathname = usePathname();
+  const policyLinks = copy.policyLinks.filter(
+    (link) => link.href.split("#")[0] !== pathname,
+  );
   const enabled =
     process.env.NODE_ENV === "production" && siteConfig.analyticsEnabled;
 
@@ -97,6 +104,16 @@ export function AnalyticsPreferenceControl({
           {choice === "granted" && !gpc ? (
             <p className={styles.note}>{copy.withdrawNote}</p>
           ) : null}
+          <p className={styles.links}>
+            {policyLinks.map((link, i) => (
+              <span key={link.href}>
+                {i > 0 ? " · " : null}
+                <Link href={link.href} className={styles.link}>
+                  {link.label}
+                </Link>
+              </span>
+            ))}
+          </p>
         </div>
         <div className={styles.actions} role="group" aria-label={copy.groupLabel}>
           <button

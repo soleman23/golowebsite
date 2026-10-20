@@ -25,12 +25,15 @@
  * DESIGN COPY, NOT LEGAL COPY. Straight from the prototype and never reviewed
  * by a lawyer, which is why siteConfig.termsPublished gates the route out of
  * the sitemap, the nav and the search index. Where the prototype contradicted
- * the reviewed privacy policy, the privacy policy won — those spots are
+ * the published privacy policy, the privacy policy won — those spots are
  * flagged inline so whoever reviews this can see what moved.
  */
 
 import type { TableData } from "@/components/ui/DataTable";
 import { siteConfig } from "@/lib/siteConfig";
+
+/** The day the Clarity removal deployed. Set it to the actual deploy date. */
+const CLARITY_ENDED = "October 20, 2026";
 
 /** GA4's session cookie is named after the measurement ID: _ga_ + the ID without "G-". */
 const GA_SESSION_COOKIE = `_ga_${siteConfig.gaMeasurementId.replace(/^G-/, "")}`;
@@ -162,7 +165,7 @@ const privacySections: LegalSection[] = [
         ],
       },
       { kind: "p", html: "We do not use this information to track you across unaffiliated companies’ apps or websites for targeted advertising." },
-      { kind: "p", html: "On the golo.golf website, usage information is collected through Google Analytics and Microsoft Clarity only if you allow it. Google and Microsoft may use some of that information for their own purposes, including, for Microsoft, advertising. See <a href=\"#website-analytics\">Website Analytics and Session Recordings</a>." },
+      { kind: "p", html: "On the golo.golf website, usage information is collected through Google Analytics only if you allow it. See <a href=\"#website-analytics\">Website Analytics</a>." },
       { kind: "h3", text: "Information from third parties" },
       { kind: "p", html: "We may receive information from:" },
       {
@@ -243,7 +246,7 @@ const privacySections: LegalSection[] = [
           "<strong>OpenStreetMap’s Nominatim service or another geocoding provider</strong>, for converting a location or search term into a city, region, or coordinates;",
           "<strong>golf-course and golf-association data providers</strong>, including authorized USGA/GHIN services when enabled, for course, tee, rating, handicap, and score-posting functions;",
           "<strong>email, text-message, and push-delivery providers</strong>, for messages requested by you or needed to operate the Service; and",
-          "<strong>analytics, logging, and crash-reporting providers</strong>, for performance measurement, diagnostics, security, and troubleshooting, including <strong>Google (Google Analytics)</strong> and <strong>Microsoft (Clarity)</strong> on the website if you allow them, as described in <a href=\"#website-analytics\">Website Analytics and Session Recordings</a>; Google and Microsoft also use some of that data for their own purposes, as described there.",
+          `<strong>analytics, logging, and crash-reporting providers</strong>, for performance measurement, diagnostics, security, and troubleshooting, including <strong>Google (Google Analytics)</strong> on the website if you allow it, as described in <a href="#website-analytics">Website Analytics</a>, which also covers the <strong>Microsoft (Clarity)</strong> session recordings the website used until ${CLARITY_ENDED}.`,
         ],
       },
       { kind: "p", html: "These providers may process information only for the services they provide to GoLo or as otherwise permitted by their own terms and applicable law." },
@@ -254,59 +257,50 @@ const privacySections: LegalSection[] = [
   {
     num: "05",
     id: "website-analytics",
-    title: "Website Analytics and Session Recordings",
+    title: "Website Analytics",
     tocLabel: "Website Analytics",
     blocks: [
-      { kind: "p", html: "This section applies to the public website at golo.golf. The website can use two optional tools: <strong>Google Analytics</strong>, provided by Google LLC, and <strong>Microsoft Clarity</strong>, provided by Microsoft Corporation. They load only after you choose <strong>Allow analytics</strong>, either in the notice shown on your first visit or under <a href=\"#analytics-choices\">Privacy choices</a>, and one choice covers both. Until you allow them, and if you decline, neither tool is loaded and nothing is sent to Google or Microsoft for analytics. The website works the same either way." },
-      { kind: "h3", text: "What the tools collect" },
+      { kind: "p", html: "This section applies to the public website at golo.golf. The website can use one optional tool, <strong>Google Analytics</strong>, provided by Google LLC. It loads only after you choose <strong>Allow analytics</strong>, either in the notice shown on your first visit or under <a href=\"#analytics-choices\">Privacy choices</a>. Until you allow it, and if you decline, it isn’t loaded and nothing is sent to Google for analytics. The website works the same either way." },
+      { kind: "h3", text: "What Google Analytics collects" },
       {
         kind: "ul",
         items: [
-          "<strong>Pages and navigation:</strong> the pages you view and in what order, when you view them, how long a visit lasts, and the website you came from (Google Analytics receives its address without the query string).",
+          "<strong>Pages and navigation:</strong> the pages you view and in what order, when you view them, how long a visit lasts, and the website you came from (its address without the query string).",
           "<strong>Interactions:</strong> clicks and taps on links and buttons, how far you scroll, when you start or submit a form (not what you type), and use of features such as FAQ answers, filters, share buttons, and app-store buttons.",
-          "<strong>Device and approximate location:</strong> browser, device type, operating system, screen size, and language, and an approximate location, such as country, region, or city, that Google and Microsoft estimate from your IP address.",
-          "<strong>Performance and errors:</strong> page-loading and responsiveness measurements, and script errors on our pages. Error messages we send to Google Analytics have anything that looks like an email address or phone number removed first; Clarity records script errors on its own.",
-          "<strong>Session recordings and heatmaps (Clarity only):</strong> Clarity records the content of the web pages you are shown, along with your mouse movements, clicks, taps, scrolling, and window resizing, and uses them to rebuild a replay of your visit and to build heatmaps of where visitors click and scroll. A replay is a reconstruction of our web pages inside Clarity, not a video of your screen. It does not capture other tabs, other apps, your camera, or your microphone.",
-          "<strong>Identifiers:</strong> random identifiers stored in cookies, listed below, that let each tool recognize the same browser across pages and later visits.",
+          "<strong>Device and approximate location:</strong> browser, device type, operating system, screen size, and language, and an approximate location, such as country, region, or city, that Google estimates from your IP address.",
+          "<strong>Performance and errors:</strong> page-loading and responsiveness measurements, and script errors on our pages, with anything that looks like an email address or phone number removed first.",
+          "<strong>Identifiers:</strong> random identifiers stored in cookies, listed below, that let Google Analytics recognize the same browser across pages and later visits.",
         ],
       },
-      { kind: "p", html: "What you type into the website’s forms is not sent to either tool. Our Google Analytics events contain labels, such as which link or button was used or which contact topic was chosen, not anything you typed. Clarity masks the contents of input fields, and our phone-number, newsletter, and contact forms, including their error and confirmation messages, are marked so Clarity masks them too; Clarity’s masking setting also hides text it recognizes as an email address or number. Masked content is replaced in your browser before anything is sent, and appears in recordings as placeholder characters. As each page loads, whether or not you allow analytics, the website also removes from the page address any query parameter it doesn’t use and any campaign parameter whose value contains an @ or a long run of digits, as an email address or phone number would, or is over 100 characters; a part of the path that looks like one is replaced with “redacted”, and such a fragment is dropped." },
-      { kind: "h3", text: "Why we use them" },
-      { kind: "p", html: "To understand how the website is used, find pages or steps that confuse people, improve the website’s content and usability, and find and fix errors and slow pages. GoLo does not use these tools to identify individual visitors or for advertising." },
+      { kind: "p", html: "What you type into the website’s forms is not sent to Google Analytics. Our events contain labels, such as which link or button was used or which contact topic was chosen, not anything you typed. As each page loads, whether or not you allow analytics, the website also removes from the page address any query parameter it doesn’t use and any campaign parameter whose value contains an @ or a long run of digits, as an email address or phone number would, or is over 100 characters; a part of the path that looks like one is replaced with “redacted”, and such a fragment is dropped." },
+      { kind: "h3", text: "Why we use it" },
+      { kind: "p", html: "To understand how the website is used, find pages or steps that confuse people, improve the website’s content and usability, and find and fix errors and slow pages. GoLo does not use Google Analytics to identify individual visitors or for advertising." },
       { kind: "h3", text: "Cookies and browser storage" },
-      { kind: "p", html: "If you allow analytics, these first-party cookies are set on golo.golf. Lifetimes are the ones we observed in Chrome; Google’s own default for its cookies is two years, which Chrome limits to 400 days. Microsoft does not publish lifetimes for Clarity’s cookies." },
+      { kind: "p", html: "If you allow analytics, these first-party cookies are set on golo.golf. Google’s default lifetime for them is two years, which Chrome limits to 400 days. The <a href=\"/cookies\">Cookie Policy</a> lists the same storage." },
       { kind: "table", head: ["Name", "Set by", "Purpose", "Lifetime"], rows: [
         ["_ga", "Google Analytics", "Distinguishes one browser from another", "Up to 2 years (400 days in Chrome)"],
         [GA_SESSION_COOKIE, "Google Analytics", "Keeps track of the current visit (session)", "Up to 2 years (400 days in Chrome)"],
-        ["_clck", "Microsoft Clarity", "Keeps a Clarity identifier and settings for this browser", "About 1 year"],
-        ["_clsk", "Microsoft Clarity", "Joins the pages of one visit into one recording", "About 1 day"],
       ] },
       { kind: "p", html: "Your choice itself is saved in your browser’s local storage under the name <strong>golo.analytics.consent.v2</strong>, as “granted” or “denied,” whichever way you choose, so the website can respect it on your next visit. The same value is also saved under the older name <strong>golo.analytics.preference</strong>, so pages still open from an earlier version of the website respect a decline too. Both stay until you change your choice or clear your browser’s site data." },
-      { kind: "p", html: "Clarity’s script may also set or read cookies on Microsoft’s own domains, such as MUID, CLID, ANONCHK, MR, and SM. Microsoft describes MUID as identifying browsers across Microsoft sites for advertising, site analytics, and other operational purposes, and CLID as identifying a browser across sites that use Clarity. GoLo can’t see or delete cookies on Microsoft’s domains, and we have not confirmed which of them are set in practice." },
-      { kind: "h3", text: "What Google and Microsoft receive and how they may use it" },
-      { kind: "p", html: "When the tools are on, your browser sends the information above, with your IP address, directly to Google and Microsoft. Google processes Google Analytics data to provide the service to GoLo. GoLo’s Google Analytics account is currently set to also let Google use the data to improve Google’s products and services, to include aggregated, de-identified data in benchmarking and modeling, to give Google’s technical support staff access, and to use account data to offer GoLo recommendations. Learn more in <a href=\"https://policies.google.com/technologies/partner-sites\" rel=\"noopener noreferrer\">How Google uses information from sites or apps that use our services</a>." },
-      { kind: "p", html: "Under Microsoft’s Clarity Terms of Use, GoLo and Microsoft each decide independently how they use Clarity data. Microsoft collects or receives personal data from GoLo’s website through Clarity to provide Microsoft Advertising and its other products and services, and its terms let it use that data for any purpose described in the Microsoft Privacy Statement, including improving its products and creating user profiles for purposes that include advertising. GoLo tells Clarity that advertising storage is denied and has not connected Clarity to any advertising account, but GoLo cannot confirm how Microsoft applies that signal. See the <a href=\"https://privacy.microsoft.com/en-us/privacystatement\" rel=\"noopener noreferrer\">Microsoft Privacy Statement</a>." },
+      { kind: "h3", text: "What Google receives and how it may use it" },
+      { kind: "p", html: "When Google Analytics is on, your browser sends the information above, with your IP address, directly to Google. Google processes it to provide the service to GoLo. On October 20, 2026, GoLo turned off all of the Google Analytics data-sharing settings, so Google does not use data collected since then to improve its own products and services, include it in benchmarking or modeling, give its technical support staff access to it, or make recommendations to GoLo. Before that date, those settings were on. GoLo has also turned off Google signals and ad-personalization signals in its tag. Learn more in <a href=\"https://policies.google.com/technologies/partner-sites\" rel=\"noopener noreferrer\">How Google uses information from sites or apps that use our services</a>." },
       { kind: "h3", text: "Your choices" },
       {
         kind: "ul",
         items: [
-          "Allow or decline at any time under <a href=\"#analytics-choices\">Privacy choices</a>, linked from the footer of every page. The choice is saved in this browser and covers both tools.",
-          `If you decline after allowing, the page reloads without either tool (other open tabs stop collecting at once and reload the next time you leave them), and the website deletes the Google Analytics and Clarity cookies it can reach (_ga, ${GA_SESSION_COOKIE}, _clck, _clsk). Cookies on Google’s or Microsoft’s own domains can only be removed in your browser’s settings. Declining stops new collection; it doesn’t delete what was already sent.`,
-          "If your browser sends a <strong>Global Privacy Control</strong> signal, the website keeps both tools off, even if you allowed them earlier. This is how GoLo has chosen to treat that signal on this website.",
+          "Allow or decline at any time under <a href=\"#analytics-choices\">Privacy choices</a>, linked from the footer of every page. The choice is saved in this browser.",
+          `If you decline after allowing, the page reloads without Google Analytics (other open tabs stop collecting at once and reload the next time you leave them), and the website deletes the Google Analytics cookies it can reach (_ga, ${GA_SESSION_COOKIE}). Cookies on Google’s own domains can only be removed in your browser’s settings. Declining stops new collection; it doesn’t delete what was already sent.`,
+          "If your browser sends a <strong>Global Privacy Control</strong> signal, the website keeps Google Analytics off, even if you allowed it earlier. This is how GoLo has chosen to treat that signal on this website.",
           "If your browser won’t let the website store your choice, the website can’t remember it: an Allow lasts only until the page is closed or reloaded, and you will be asked again.",
-          "Choices saved by an earlier version of the website: a saved decline still applies; a saved allow didn’t cover session recordings, so you will be asked again.",
           "Google offers a browser add-on that blocks Google Analytics on all websites: <a href=\"https://tools.google.com/dlpage/gaoptout\" rel=\"noopener noreferrer\">Google Analytics opt-out add-on</a>.",
         ],
       },
       { kind: "h3", text: "How long the data is kept" },
-      {
-        kind: "ul",
-        items: [
-          "<strong>Google Analytics:</strong> GoLo keeps event- and user-level data available for analysis for 14 months. Google’s aggregated standard reports are not limited by that setting.",
-          "<strong>Microsoft Clarity:</strong> Microsoft states that recordings are kept for 30 days, except recordings GoLo labels or saves as favorites and a random sample Microsoft selects, which are kept up to 9 months; heatmap and dashboard data are kept 9 months. These are the periods for GoLo’s Clarity project; Microsoft’s own use of the data is covered by the Microsoft Privacy Statement.",
-        ],
-      },
-      { kind: "p", html: "To ask about or request deletion of website analytics data, email <strong><a href=\"mailto:info@golo.golf\">info@golo.golf</a></strong>. Neither tool identifies visitors to GoLo by name, so we may need the identifier from your browser’s cookies to find data about you. Clarity currently offers no way to delete one visitor’s data short of deleting the whole project, so we may not be able to remove a single recording before it expires." },
+      { kind: "p", html: "GoLo keeps Google Analytics event- and user-level data available for analysis for 14 months. Google’s aggregated standard reports are not limited by that setting. To ask about or request deletion of website analytics data, email <strong><a href=\"mailto:info@golo.golf\">info@golo.golf</a></strong>. Google Analytics doesn’t identify visitors to GoLo by name, so we may need the identifier from your browser’s _ga cookie to find data about you." },
+      { kind: "h3", text: "Before opt-in (October 19, 2026)" },
+      { kind: "p", html: "On October 19, 2026, from about 6:07 PM to 9:12 PM Pacific, Google Analytics loaded for visitors who had not declined and whose browser did not send a Global Privacy Control signal. Since then it loads only after you allow it." },
+      { kind: "h3", text: "Earlier session recordings (Microsoft Clarity)" },
+      { kind: "p", html: `From October 19, 2026 to ${CLARITY_ENDED}, the website also offered Microsoft Clarity, provided by Microsoft Corporation, under the same choice. If you allowed analytics in that period, Clarity recorded how you used our pages (the page content you were shown and your clicks, taps, scrolling and mouse movement, with form entries masked) as session replays and heatmaps, and set the cookies _clck and _clsk, which the website now deletes on your next visit. On October 19, from about 7:04 PM to 9:12 PM Pacific, Clarity ran unless a visitor declined or their browser sent a Global Privacy Control signal. Microsoft collected or received that personal data through Clarity to provide Microsoft Advertising and its other products and services, and its Clarity Terms of Use let it use the data for any purpose described in the <a href=\"https://privacy.microsoft.com/en-us/privacystatement\" rel=\"noopener noreferrer\">Microsoft Privacy Statement</a>, including creating user profiles for purposes that include advertising. Microsoft states that recordings are kept for 30 days, and heatmaps, dashboard data and a sample of recordings for up to 9 months. Questions go to <strong><a href=\"mailto:info@golo.golf\">info@golo.golf</a></strong>.` },
     ],
   },
   {
@@ -314,8 +308,8 @@ const privacySections: LegalSection[] = [
     id: "section-5",
     title: "Selling, Sharing, and Advertising",
     blocks: [
-      { kind: "p", html: "GoLo does not sell personal information for money, does not show ads, and does not use personal information to target advertising to you. GoLo has not linked its website analytics to any advertising account, has turned off Google signals and ad-personalization signals in its Google Analytics tag, and tells Microsoft Clarity that advertising storage is denied." },
-      { kind: "p", html: "Google and Microsoft can use some information they receive through these website tools under their own terms, as described in <a href=\"#website-analytics\">Website Analytics and Session Recordings</a>. In particular, Microsoft’s Clarity terms allow Microsoft to use personal data it collects through Clarity for any purpose described in the Microsoft Privacy Statement, including Microsoft Advertising and building profiles for purposes that include advertising. Depending on where you live, a privacy law could treat a disclosure like that as a “sale” or “sharing” of personal information. GoLo has not concluded that it is, but it treats the risk seriously: neither tool loads unless you allow it, and both stay off when your browser sends a Global Privacy Control signal." },
+      { kind: "p", html: "GoLo does not sell personal information for money, does not show ads, and does not use personal information to target advertising to you. GoLo has not linked its website analytics to any advertising account, has turned off Google signals and ad-personalization signals in its Google Analytics tag, and no longer uses Microsoft Clarity." },
+      { kind: "p", html: `Google can use some information it receives through Google Analytics under its own terms, within the account settings described in <a href="#website-analytics">Website Analytics</a>. From October 19, 2026 to ${CLARITY_ENDED}, the website also used Microsoft Clarity, whose terms allow Microsoft to use personal data it collects through Clarity for any purpose described in the Microsoft Privacy Statement, including Microsoft Advertising and building profiles for purposes that include advertising. Depending on where you live, a privacy law could treat a disclosure like that as a “sale” or “sharing” of personal information. GoLo has not concluded that it is. GoLo stopped using Clarity for that reason; Google Analytics loads only if you allow it and stays off when your browser sends a Global Privacy Control signal.` },
       { kind: "p", html: "If these practices change, we will update this policy and provide any notice, consent, or opt-out required by law before beginning the new practice." },
     ],
   },
@@ -332,7 +326,7 @@ const privacySections: LegalSection[] = [
           "<strong>Precise device location:</strong> cached by the current app on the device for up to 24 hours. GoLo does not intentionally build a long-term precise-location history. Routine server or provider logs may retain request data for a limited period.",
           "<strong>Push tokens:</strong> while notifications are enabled or until the token is revoked, expires, or the account is deleted.",
           "<strong>Support, download-link, email, and text-message records:</strong> <!-- -->generally up to 24 months after the communication, unless a longer period is needed to resolve an issue or comply with law.",
-          "<strong>Website analytics and session recordings:</strong> as described in <a href=\"#website-analytics\">Website Analytics and Session Recordings</a>: up to 14 months for analysis in Google Analytics (Google’s aggregated reports aren’t limited by that setting), and 30 days for most Clarity recordings (up to 9 months for heatmaps, recordings we save, and a sample Microsoft keeps).",
+          "<strong>Website analytics:</strong> as described in <a href=\"#website-analytics\">Website Analytics</a>: up to 14 months for analysis in Google Analytics (Google’s aggregated reports aren’t limited by that setting). Earlier Clarity recordings: 30 days for most, up to 9 months for heatmaps and a sample Microsoft keeps.",
           "<strong>Other analytics, logs, and crash diagnostics:</strong> generally up to 24 months, unless a shorter provider setting is available and appropriate.",
           "<strong>Backups:</strong> deleted information may remain in encrypted or access-restricted backups for up to 90 days before it is overwritten.",
         ],
@@ -356,7 +350,7 @@ const privacySections: LegalSection[] = [
           "disconnect an optional golf-association connection;",
           "delete individual round-history items where available;",
           "initiate account deletion under<!-- --> <strong>You → Account → Delete Account</strong>; and",
-          "allow, decline, or withdraw website analytics and session recordings under <a href=\"#analytics-choices\">Privacy choices</a>, linked from the footer of every page.",
+          "allow, decline, or withdraw website analytics under <a href=\"#analytics-choices\">Privacy choices</a>, linked from the footer of every page.",
         ],
       },
       { kind: "p", html: "If you cannot access your account, or to make another privacy request, email<!-- --> <strong><a href=\"mailto:info@golo.golf\">info@golo.golf</a></strong>. We may need to verify your identity before completing a request. We will not discriminate against you for exercising a privacy right." },
@@ -448,9 +442,9 @@ const privacyPlain: Record<string, string> = {
   "section-4":
     "Your group sees what you share with them. Beyond that it's the providers who run the app, plus the legal cases nobody gets a choice about.",
   "website-analytics":
-    "Off unless you allow it. If you do, Google Analytics counts visits and clicks, and Microsoft Clarity rebuilds visits as replays and heatmaps, with form entries masked. Decline any time under Privacy choices.",
+    "Off unless you allow it. If you do, Google Analytics counts visits and clicks, never what you type. Decline any time under Privacy choices.",
   "section-5":
-    "We don't sell your information for money or use it to target ads. Google's and Microsoft's own terms let them use some analytics data, which is why those tools are opt-in and GPC turns them off.",
+    "We don't sell your information for money or use it to target ads. Google's own terms let it use some analytics data, which is why it's opt-in and GPC turns it off. We dropped Clarity because Microsoft's terms go further.",
   "section-6":
     "We keep things while your account is live, then delete them — with the specific windows spelled out below, website analytics included.",
   "section-7":
@@ -476,8 +470,9 @@ export const privacyDoc: LegalDoc = {
   kicker: "LEGAL",
   lead: "What GoLo collects, how it gets used, and exactly what happens when you delete your account. Every section has a plain-English note beside the legal language.",
   dateLabel: "Last updated",
-  effective: "October 19, 2026",
-  effectiveISO: "2026-10-19",
+  // Set to the day this version deploys.
+  effective: CLARITY_ENDED,
+  effectiveISO: "2026-10-20",
   entity: siteConfig.addressShort,
   intro: privacyIntro,
   short: {
@@ -703,9 +698,9 @@ export const termsDoc: LegalDoc = {
       num: "11",
       id: "termination",
       title: "Termination and Account Deletion",
-      // Prototype said "instant and permanent". /privacy §8 — the reviewed
+      // Prototype said "instant and permanent". /privacy §8 — the published
       // document — says in-app or by email, completed within 30 days, with
-      // shared rounds de-identified. The reviewed text wins.
+      // shared rounds de-identified. The published text wins.
       plain:
         "Delete your account from the app any time. Shared rounds stay for the other players with your name removed.",
       blocks: [
@@ -791,34 +786,37 @@ export const termsDoc: LegalDoc = {
 
 export const cookiesDoc: LegalDoc = {
   slug: "cookies",
-  published: siteConfig.cookiesPublished,
+  // Final and accurate since October 2026: always published (indexed, in the
+  // sitemap and linked). NEXT_PUBLIC_COOKIES_PUBLISHED no longer exists.
+  published: true,
   title: "Cookie Policy",
   kicker: "LEGAL · WEBSITE PREFERENCES",
   lead:
-    "What golo.golf stores in your browser, when Google Analytics and Microsoft Clarity are allowed to load, and how to change that choice.",
+    "What golo.golf stores in your browser, when Google Analytics is allowed to load, and how to change that choice.",
   dateLabel: "Last updated",
-  effective: "October 19, 2026",
-  effectiveISO: "2026-10-19",
+  // Set to the day this version deploys.
+  effective: CLARITY_ENDED,
+  effectiveISO: "2026-10-20",
   entity: siteConfig.legalName,
   intro: [
     {
       kind: "p",
-      html: "This Cookie Policy describes browser storage used by the public marketing website at golo.golf. It does not describe cookies used by the GoLo mobile app or a future authenticated web application. The <a href=\"/privacy#website-analytics\">Privacy Policy</a> covers the same tools in more detail, including what they collect and how Google and Microsoft may use it.",
+      html: "This Cookie Policy describes browser storage used by the public marketing website at golo.golf. It does not describe cookies used by the GoLo mobile app or a future authenticated web application. The <a href=\"/privacy#website-analytics\">Privacy Policy</a> covers Google Analytics in more detail, including what it collects and how Google may use it.",
     },
     {
       kind: "p",
-      html: "The website does not use Supabase authentication cookies, advertising pixels, or retargeting tags. Clarity may set cookies on Microsoft’s own domains, which Microsoft says can be used for advertising; see section 04. The inventory below reflects the website behavior that is actually implemented, as observed in Chrome on October 19, 2026.",
+      html: "The website does not use Supabase authentication cookies, advertising pixels, or retargeting tags. The inventory below reflects the website behavior that is actually implemented.",
     },
   ],
   short: {
     tag: "THE SHORT VERSION",
     title: "Nothing optional loads until you say so.",
-    sub: "One choice covers Google Analytics and Microsoft Clarity. Until you allow them, and whenever your browser sends Global Privacy Control, neither loads.",
+    sub: "The one optional tool is Google Analytics. Until you allow it, and whenever your browser sends Global Privacy Control, it doesn't load.",
     lines: [
       { tag: "NECESSARY", text: "Your analytics choice is saved in this browser so the site can respect it next time." },
-      { tag: "OPTIONAL", text: "If you allow it, Google Analytics measures visits and clicks, and Microsoft Clarity records session replays and heatmaps, with form entries masked." },
-      { tag: "NO AD TAGS", text: "GoLo adds no advertising pixels or retargeting tags. Clarity may set cookies on Microsoft's own domains; see section 04." },
-      { tag: "YOUR CONTROL", text: "Change your choice below at any time. Declining reloads the page without either tool and deletes the analytics cookies this site can reach." },
+      { tag: "OPTIONAL", text: "If you allow it, Google Analytics measures visits and clicks. What you type into a form is never sent." },
+      { tag: "NO AD TAGS", text: "GoLo adds no advertising pixels or retargeting tags." },
+      { tag: "YOUR CONTROL", text: "Change your choice below at any time. Declining reloads the page without Google Analytics and deletes the analytics cookies this site can reach." },
     ],
   },
   sections: [
@@ -838,8 +836,8 @@ export const cookiesDoc: LegalDoc = {
       title: "Your Saved Choice",
       plain: "We remember allowed or declined so you aren't asked on every page.",
       blocks: [
-        { kind: "p", html: "When you choose, GoLo saves <strong>granted</strong> or <strong>denied</strong> in local storage under the name <strong>golo.analytics.consent.v2</strong>. It is used only to decide whether Google Analytics and Microsoft Clarity may load, and it stays until you change it or clear your browser’s site data." },
-        { kind: "p", html: "With no saved choice, neither tool loads and the website asks you. If your browser won’t let the website save the choice, it lasts only until the page is closed or reloaded. A choice saved by an earlier version of the website under the older name <strong>golo.analytics.preference</strong> is honored this way: a decline carries over, and an allow, which didn’t cover session recordings, is asked again. Your current choice is also written under that older name, so pages still open from the earlier version respect a decline." },
+        { kind: "p", html: "When you choose, GoLo saves <strong>granted</strong> or <strong>denied</strong> in local storage under the name <strong>golo.analytics.consent.v2</strong>. It is used only to decide whether Google Analytics may load, and it stays until you change it or clear your browser’s site data." },
+        { kind: "p", html: "With no saved choice, nothing loads and the website asks you. If your browser won’t let the website save the choice, it lasts only until the page is closed or reloaded. Your current choice is also written under the older name <strong>golo.analytics.preference</strong>, so pages still open from an earlier version of the website respect a decline." },
       ],
     },
     {
@@ -859,27 +857,22 @@ export const cookiesDoc: LegalDoc = {
     {
       num: "04",
       id: "clarity",
-      title: "Microsoft Clarity",
-      plain: "Loads with Google Analytics, only after you allow it. It rebuilds visits as replays and heatmaps, with form entries masked.",
+      title: "Earlier Session Recordings",
+      plain: "The website no longer uses Microsoft Clarity; its old cookies are deleted on your next visit.",
       blocks: [
-        { kind: "p", html: "If you allow analytics, the website also loads Microsoft Clarity. Clarity records the content of the pages you are shown and your mouse movements, clicks, taps, scrolling, and resizing, and rebuilds them as session replays and heatmaps. It is not a video of your screen and does not capture other tabs, other apps, your camera, or your microphone. Form fields, and the website’s form messages, are masked before anything is sent." },
-        { kind: "table", head: ["Name", "Purpose", "Lifetime"], rows: [
-          ["_clck", "Keeps a Clarity identifier and settings for this browser", "About 1 year (observed)"],
-          ["_clsk", "Joins the pages of one visit into one recording", "About 1 day (observed)"],
-        ] },
-        { kind: "p", html: "Microsoft does not publish lifetimes for these cookies; the ones above are what we observed in Chrome. Clarity’s script may also set or read cookies on Microsoft’s own domains, such as MUID, CLID, ANONCHK, MR, and SM. Microsoft describes MUID as identifying browsers across Microsoft sites for advertising, site analytics, and other operational purposes, and CLID as identifying a browser across sites that use Clarity. GoLo can’t see or delete those cookies and hasn’t confirmed which are set in practice. GoLo tells Clarity that advertising storage is denied, but Microsoft’s Clarity terms allow it to use Clarity data for any purpose described in its privacy statement, including advertising; see the <a href=\"https://privacy.microsoft.com/en-us/privacystatement\" rel=\"noopener noreferrer\">Microsoft Privacy Statement</a>." },
+        { kind: "p", html: `From October 19, 2026 to ${CLARITY_ENDED}, the website also offered Microsoft Clarity session recordings and heatmaps under the same choice. Clarity set the first-party cookies <strong>_clck</strong> (a Clarity identifier, about 1 year) and <strong>_clsk</strong> (joins one visit's pages, about 1 day), and its script could also set cookies on Microsoft’s own domains, such as MUID and CLID. The website now deletes _clck and _clsk on your next visit. Cookies on Microsoft’s domains can only be removed in your browser’s settings. See the <a href="https://privacy.microsoft.com/en-us/privacystatement" rel="noopener noreferrer">Microsoft Privacy Statement</a>.` },
       ],
     },
     {
       num: "05",
       id: "controls",
       title: "Your Controls",
-      plain: "Change your choice below at any time. GPC keeps both tools off.",
+      plain: "Change your choice below at any time. GPC keeps Google Analytics off.",
       blocks: [
-        { kind: "p", html: `Use the control on this page (also under Privacy choices in the footer) to allow or decline. If you decline after allowing, GoLo tells both tools to stop, deletes the first-party cookies named _ga, ${GA_SESSION_COOKIE}, _clck, and _clsk, and reloads the page so neither tool is running. Cookies on Google’s or Microsoft’s own domains can only be removed through your browser’s settings, and declining doesn’t delete data already sent.` },
+        { kind: "p", html: `Use the control on this page (also under Privacy choices in the footer) to allow or decline. If you decline after allowing, GoLo tells Google Analytics to stop, deletes the first-party cookies named _ga and ${GA_SESSION_COOKIE}, and reloads the page so it isn’t running. Cookies on Google’s own domains can only be removed through your browser’s settings, and declining doesn’t delete data already sent.` },
         { kind: "p", html: "You can also clear site data in your browser. Browser extensions, network filters, and privacy settings may block analytics regardless of the GoLo control." },
         { kind: "h3", text: "Global Privacy Control" },
-        { kind: "p", html: "If your browser sends a Global Privacy Control signal, GoLo keeps Google Analytics and Microsoft Clarity off on this website, even if this browser saved an allow. The saved value isn’t changed, so the choice applies again if the signal stops. This is how GoLo has chosen to treat the signal on this website." },
+        { kind: "p", html: "If your browser sends a Global Privacy Control signal, GoLo keeps Google Analytics off on this website, even if this browser saved an allow. The saved value isn’t changed, so the choice applies again if the signal stops. This is how GoLo has chosen to treat the signal on this website." },
       ],
     },
     {
