@@ -94,7 +94,8 @@ export function NewsletterBand({ page = "blog" }: { page?: string }) {
           </p>
         </div>
 
-        <div className={styles.formCol}>
+        {/* Masked in Clarity recordings: the form, its errors and the confirmation. */}
+        <div className={styles.formCol} data-clarity-mask="true">
           {status === "success" ? (
             <p className={styles.done} role="status" aria-live="polite">
               <span className={styles.doneMark} aria-hidden="true">

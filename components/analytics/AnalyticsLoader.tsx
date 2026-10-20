@@ -4,10 +4,13 @@ import Script from "next/script";
 import { useCallback, useEffect, useState } from "react";
 import {
   ANALYTICS_PREFERENCE_EVENT,
-  ANALYTICS_STORAGE_KEY,
   applyAnalyticsState,
+  dropUnusedQueryParams,
   grantClarity,
   isAnalyticsAllowedForVisit,
+  referrerWithoutQuery,
+  savedGrantOutlivesDecline,
+  isConsentStorageEvent,
 } from "@/lib/analyticsPreference";
 import { useReportWebVitals } from "next/web-vitals";
 import {
@@ -24,6 +27,27 @@ declare global {
   }
 }
 
+let pendingReload: (() => void) | null = null;
+
+/** Reloads the page the next time this tab is hidden (once). */
+function reloadWhenHidden() {
+  if (pendingReload) return;
+  const onHide = () => {
+    if (document.visibilityState !== "hidden") return;
+    cancelPendingReload();
+    window.location.reload();
+  };
+  pendingReload = onHide;
+  document.addEventListener("visibilitychange", onHide);
+}
+
+/** Analytics was allowed again before the tab was hidden: no reload due. */
+function cancelPendingReload() {
+  if (!pendingReload) return;
+  document.removeEventListener("visibilitychange", pendingReload);
+  pendingReload = null;
+}
+
 function configure(measurementId: string) {
   if (window.__goloAnalyticsConfigured) return;
   window.dataLayer = window.dataLayer ?? [];
@@ -34,7 +58,15 @@ function configure(measurementId: string) {
     window.dataLayer?.push(arguments);
   };
   window.gtag("js", new Date());
-  window.gtag("config", measurementId);
+  const referrer = referrerWithoutQuery();
+  window.gtag("config", measurementId, {
+    // No advertising features: no Google signals join, and every hit is
+    // flagged non-personalized (npa=1). The property has no Ads links either.
+    allow_google_signals: false,
+    allow_ad_personalization_signals: false,
+    // The referring page's path is useful; its query string can carry anything.
+    ...(referrer ? { page_referrer: referrer } : {}),
+  });
   window.__goloAnalyticsConfigured = true;
 }
 
@@ -69,11 +101,16 @@ export function AnalyticsLoader({
   /** Empty = no Clarity. */
   clarityProjectId: string;
 }) {
-  // False during SSR and the first client render guarantees a denied visitor
-  // never initiates a Google request before local storage and GPC are checked.
+  // False during SSR and the first client render: no script is requested
+  // until the saved choice and GPC have been read in the browser.
   const [allowed, setAllowed] = useState(false);
 
-  const reconcile = useCallback(() => {
+  /**
+   * Applies the current choice. `fromElsewhere` marks a change this tab
+   * didn't make: another tab's choice (storage event), a page restored from
+   * the back/forward cache, or the tab becoming visible again (a GPC change).
+   */
+  const reconcile = useCallback((fromElsewhere = false) => {
     if (!enabled) {
       applyAnalyticsState(measurementId, false);
       setAllowed(false);
@@ -82,7 +119,28 @@ export function AnalyticsLoader({
 
     const next = isAnalyticsAllowedForVisit();
     applyAnalyticsState(measurementId, next);
+    // Withdrawn after the scripts loaded. The stop signals above take effect
+    // at once, but Google documents ga-disable only for pages where it's set
+    // before gtag runs, and Clarity documents no full stop. A fresh page
+    // without the scripts is what guarantees collection has ended.
+    if (!next && window.__goloAnalyticsConfigured) {
+      setAllowed(false);
+      // A decline that couldn't be saved, over a grant that couldn't be
+      // removed: a reload would load analytics again, so keep the stop.
+      if (savedGrantOutlivesDecline()) return;
+      // Withdrawn in this tab: reload now. From elsewhere, this tab may hold a
+      // half-typed form; collection has already stopped, so reload the next
+      // time the tab is hidden instead of wiping it.
+      if (!fromElsewhere || document.visibilityState === "hidden") {
+        window.location.reload();
+      } else {
+        reloadWhenHidden();
+      }
+      return;
+    }
     if (next) {
+      cancelPendingReload();
+      dropUnusedQueryParams();
       configure(measurementId);
       if (clarityProjectId) configureClarity();
     }
@@ -90,17 +148,40 @@ export function AnalyticsLoader({
   }, [enabled, measurementId, clarityProjectId]);
 
   useEffect(() => {
-    reconcile();
+    // Deferred one task: React runs this effect before Next's Router effect
+    // patches history.replaceState, and the unpatched call would wipe Next's
+    // history state (Back would then change the URL but not the page). Then
+    // clean the landing URL for everyone, before any choice (see
+    // dropUnusedQueryParams), and apply the choice.
+    const start = window.setTimeout(() => {
+      if (enabled) dropUnusedQueryParams();
+      reconcile();
+    }, 0);
+    const onChoice = () => reconcile();
+    // Includes a cleared storage and a decline from a tab on the earlier build.
     const onStorage = (event: StorageEvent) => {
-      if (event.key === ANALYTICS_STORAGE_KEY) reconcile();
+      if (isConsentStorageEvent(event)) reconcile(true);
     };
-    window.addEventListener(ANALYTICS_PREFERENCE_EVENT, reconcile);
+    // Storage events aren't replayed into a page restored from the
+    // back/forward cache, and GPC can change while a tab sits in the background.
+    const onPageShow = (event: PageTransitionEvent) => {
+      if (event.persisted) reconcile(true);
+    };
+    const onVisible = () => {
+      if (document.visibilityState === "visible") reconcile(true);
+    };
+    window.addEventListener(ANALYTICS_PREFERENCE_EVENT, onChoice);
     window.addEventListener("storage", onStorage);
+    window.addEventListener("pageshow", onPageShow);
+    document.addEventListener("visibilitychange", onVisible);
     return () => {
-      window.removeEventListener(ANALYTICS_PREFERENCE_EVENT, reconcile);
+      window.clearTimeout(start);
+      window.removeEventListener(ANALYTICS_PREFERENCE_EVENT, onChoice);
       window.removeEventListener("storage", onStorage);
+      window.removeEventListener("pageshow", onPageShow);
+      document.removeEventListener("visibilitychange", onVisible);
     };
-  }, [reconcile]);
+  }, [reconcile, enabled]);
 
   // Here rather than in SessionTracking, which remounts each time analytics
   // is turned back on; see reportWebVital.

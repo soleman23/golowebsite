@@ -37,6 +37,14 @@
   line-height: 1.55;
 }
 
+.note {
+  max-width: 580px;
+  margin: 8px 0 0;
+  color: var(--text-muted);
+  font-size: 13px;
+  line-height: 1.5;
+}
+
 .actions {
   display: flex;
   flex: 0 0 auto;

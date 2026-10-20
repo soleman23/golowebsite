@@ -114,6 +114,8 @@ export function TextMeLink({
   return (
     <form
       className={`${styles.wrap} ${align === "center" ? styles.center : ""}`}
+      // Masked in Clarity recordings, status and error text included.
+      data-clarity-mask="true"
       onSubmit={handleSubmit}
       noValidate
     >

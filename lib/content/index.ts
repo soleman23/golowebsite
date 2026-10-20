@@ -14,6 +14,7 @@ export * from "./faq";
 export * from "./contact";
 export * from "./blog";
 export * from "./legal";
+export * from "./analyticsConsent";
 export * from "./utility";
 export * from "./heroPhotos";
 export * from "./about";

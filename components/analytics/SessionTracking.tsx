@@ -2,11 +2,11 @@
 
 /**
  * Site-wide session events GA4's enhanced measurement doesn't cover: scroll
- * depth below 90%, internal link and contact clicks, 404s, Core Web Vitals
- * and uncaught script errors.
+ * depth at 25/50/75/90%, internal link and contact clicks, 404s, page-speed
+ * readings and uncaught script errors.
  *
  * Rendered by AnalyticsLoader only while analytics is allowed, so nothing here
- * runs for a visitor who turned analytics off or sends GPC. Every event goes
+ * runs for a visitor who hasn't allowed analytics, declined it, or sends GPC. Every event goes
  * through track(), which drops anything not in the AnalyticsEvent union.
  * Renders nothing.
  */
@@ -17,8 +17,6 @@ import type { useReportWebVitals } from "next/web-vitals";
 import { track } from "@/lib/analytics";
 
 const SCROLL_MARKS = [25, 50, 75, 90] as const;
-/** GA4 drops event parameter values longer than this, rather than cutting them. */
-const GA_VALUE_MAX = 100;
 /** Cap per page view, so one broken script can't flood the property. */
 const MAX_ERRORS_PER_PAGE = 5;
 
@@ -36,7 +34,7 @@ function linkLocation(link: Element): "nav" | "footer" | "main" {
 /** The link's visible label: site copy, never visitor input. */
 function linkText(link: HTMLAnchorElement): string {
   const label = link.getAttribute("aria-label") ?? link.textContent ?? "";
-  return label.replace(/\s+/g, " ").trim().slice(0, GA_VALUE_MAX);
+  return label.replace(/\s+/g, " ").trim();
 }
 
 type WebVitalsHandler = Parameters<typeof useReportWebVitals>[0];
@@ -52,13 +50,15 @@ type WebVitalsHandler = Parameters<typeof useReportWebVitals>[0];
  * sends while analytics is off.
  */
 export const reportWebVital: WebVitalsHandler = (metric) => {
+  // Two numeric params so each can be a correctly typed GA4 custom metric:
+  // CLS is a unitless layout-shift score (good is 0.1 or less); the rest
+  // (LCP, INP, FCP, TTFB) are durations in milliseconds.
   track("web_vitals", {
     metric_name: metric.name,
-    // CLS is a unitless score around 0.1; scale it so it survives rounding.
-    metric_value: Math.round(
-      metric.name === "CLS" ? metric.value * 1000 : metric.value,
-    ),
     metric_rating: metric.rating,
+    ...(metric.name === "CLS"
+      ? { cls_score: Math.round(metric.value * 10000) / 10000 }
+      : { metric_ms: Math.round(metric.value) }),
   });
 };
 
@@ -83,7 +83,11 @@ function SessionTrackingInner() {
   // Scroll depth, 404s and errors are per page view: reset on navigation.
   useEffect(() => {
     if (document.querySelector("[data-not-found]")) {
-      track("page_not_found", { page_path: pathname.slice(0, GA_VALUE_MAX) });
+      // track() redacts, then cuts to GA's limit; cutting first could split
+      // an email address so the redaction no longer recognized it.
+      // window.location, not usePathname(): the router can still hold the
+      // landing path from before the URL cleanup masked it.
+      track("page_not_found", { page_path: window.location.pathname });
     }
 
     const passed = new Set<number>();
@@ -109,7 +113,7 @@ function SessionTrackingInner() {
     const report = (description: string) => {
       if (errors >= MAX_ERRORS_PER_PAGE) return;
       errors += 1;
-      track("exception", { description: description.slice(0, GA_VALUE_MAX), fatal: false });
+      track("exception", { description, fatal: false });
     };
     const onError = (event: ErrorEvent) => {
       // Extensions throw into the page too; they aren't the site's errors.
@@ -152,7 +156,7 @@ function SessionTrackingInner() {
       }
       if (url.host !== window.location.host) return;
       track("link_click", {
-        link_url: `${url.pathname}${url.hash}`.slice(0, GA_VALUE_MAX),
+        link_url: `${url.pathname}${url.hash}`,
         link_text: linkText(link),
         location,
       });

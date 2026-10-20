@@ -4,6 +4,7 @@ import { socialDefaults } from "@/lib/pageMetadata";
 import { Nav } from "@/components/layout/Nav";
 import { Footer } from "@/components/layout/Footer";
 import { AnalyticsLoader } from "@/components/analytics/AnalyticsLoader";
+import { AnalyticsConsentBanner } from "@/components/analytics/AnalyticsConsentBanner";
 import { LandingCapture } from "@/components/layout/LandingCapture";
 import "./globals.css";
 
@@ -56,6 +57,12 @@ export default function RootLayout({
         <a href="#main" className="skip-link">
           Skip to content
         </a>
+        {/* Early in the tab order so a keyboard user meets the choice before
+            the nav; it's fixed to the bottom of the screen visually. */}
+        <AnalyticsConsentBanner
+          enabled={GA_ENABLED}
+          measurementId={GA_MEASUREMENT_ID}
+        />
         <Nav />
         <main id="main">{children}</main>
         <Footer />
