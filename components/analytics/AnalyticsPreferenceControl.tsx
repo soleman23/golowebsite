@@ -45,15 +45,16 @@ export function AnalyticsPreferenceControl({
     setPreference(next);
   };
 
+  // Opt-out: on unless this browser chose "denied" or sends GPC.
+  const on = enabled && preference !== "denied" && !gpc;
+
   const status = !enabled
     ? "Analytics is currently disabled on this site. A saved preference cannot turn it on."
     : gpc
-    ? "Global Privacy Control is on. It overrides saved consent and keeps analytics off for this visit."
-    : preference === "denied"
-      ? "Analytics is off in this browser."
-      : preference === "granted"
-        ? "Analytics is on in this browser."
-        : "Analytics is off until you allow it.";
+    ? "Global Privacy Control is on. It keeps analytics off for this visit, whatever is saved here."
+    : on
+      ? "Analytics is on in this browser. You can turn it off here at any time."
+      : "Analytics is off in this browser.";
 
   return (
     <section
@@ -70,20 +71,20 @@ export function AnalyticsPreferenceControl({
         <div className={styles.actions} role="group" aria-label="Analytics preference">
           <button
             type="button"
-            className={`${styles.button} ${enabled && preference === "granted" && !gpc ? styles.active : ""}`}
-            aria-pressed={enabled && preference === "granted" && !gpc}
+            className={`${styles.button} ${on ? styles.active : ""}`}
+            aria-pressed={on}
             disabled={!enabled || gpc}
             onClick={() => choose("granted")}
           >
-            Allow analytics
+            Turn analytics on
           </button>
           <button
             type="button"
-            className={`${styles.button} ${!enabled || preference !== "granted" || gpc ? styles.active : ""}`}
-            aria-pressed={!enabled || preference !== "granted" || gpc}
+            className={`${styles.button} ${!on ? styles.active : ""}`}
+            aria-pressed={!on}
             onClick={() => choose("denied")}
           >
-            Keep analytics off
+            Turn analytics off
           </button>
         </div>
       </div>
