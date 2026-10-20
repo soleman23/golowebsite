@@ -148,10 +148,15 @@ export function AnalyticsLoader({
   }, [enabled, measurementId, clarityProjectId]);
 
   useEffect(() => {
-    // Clean the landing URL for everyone, before any choice; see
-    // dropUnusedQueryParams.
-    if (enabled) dropUnusedQueryParams();
-    reconcile();
+    // Deferred one task: React runs this effect before Next's Router effect
+    // patches history.replaceState, and the unpatched call would wipe Next's
+    // history state (Back would then change the URL but not the page). Then
+    // clean the landing URL for everyone, before any choice (see
+    // dropUnusedQueryParams), and apply the choice.
+    const start = window.setTimeout(() => {
+      if (enabled) dropUnusedQueryParams();
+      reconcile();
+    }, 0);
     const onChoice = () => reconcile();
     // Includes a cleared storage and a decline from a tab on the earlier build.
     const onStorage = (event: StorageEvent) => {
@@ -170,6 +175,7 @@ export function AnalyticsLoader({
     window.addEventListener("pageshow", onPageShow);
     document.addEventListener("visibilitychange", onVisible);
     return () => {
+      window.clearTimeout(start);
       window.removeEventListener(ANALYTICS_PREFERENCE_EVENT, onChoice);
       window.removeEventListener("storage", onStorage);
       window.removeEventListener("pageshow", onPageShow);

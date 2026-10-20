@@ -104,11 +104,14 @@ export function hasGlobalPrivacyControl(): boolean {
 /**
  * Carries a decline from the pre-Clarity key forward; ignores a grant, which
  * didn't cover session recordings. Leaves the older key in place (see above).
+ * A grant here also writes "granted" to the older key, so a "denied" found
+ * there next to a v2 grant was written later, by a tab on the earlier build,
+ * and wins.
  */
 function migrateLegacyChoice(): void {
   if (
     readStorage(LEGACY_STORAGE_KEY) === "denied" &&
-    readStorage(ANALYTICS_STORAGE_KEY) === null
+    readStorage(ANALYTICS_STORAGE_KEY) !== "denied"
   ) {
     writeStorage(ANALYTICS_STORAGE_KEY, "denied");
   }
@@ -331,8 +334,9 @@ export function setAnalyticsChoice(
     // An older saved grant must not outlive a decline that couldn't be saved.
     if (choice === "denied") writeStorage(ANALYTICS_STORAGE_KEY, null);
   }
-  // Mirror a decline for tabs still running the earlier build (see the key).
-  if (choice === "denied") writeStorage(LEGACY_STORAGE_KEY, "denied");
+  // Mirror the choice into the older key (see the key and migrateLegacyChoice).
+  // "granted" there changes nothing for the earlier, opt-out build.
+  writeStorage(LEGACY_STORAGE_KEY, choice);
   const allowed = choice === "granted" && !hasGlobalPrivacyControl();
   applyAnalyticsState(measurementId, allowed);
   window.dispatchEvent(

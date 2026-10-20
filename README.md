@@ -143,8 +143,9 @@ nofollow`, stay out of the sitemap, and remain unlinked.
 
 - The choice lives in localStorage as `golo.analytics.consent.v2` (`granted` /
   `denied`). The pre-Clarity key `golo.analytics.preference` is read, never
-  deleted: a decline there carries over, a grant there is asked again. Every
-  decline is also written to the old key, because pages from the earlier
+  deleted: a decline there carries over (and beats a v2 grant, since every
+  choice is mirrored into the old key, so a "denied" there is newer), a grant
+  there is asked again. The mirroring matters because pages from the earlier
   opt-out build read only that key and treat a missing value as allowed.
 - "Privacy choices" in the footer links to `/privacy#analytics-choices`, the
   persistent control. The same control is on `/cookies`.
