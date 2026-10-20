@@ -32,10 +32,12 @@ export const siteConfig = {
   url: process.env.NEXT_PUBLIC_SITE_URL || "https://www.golo.golf",
   gaMeasurementId: process.env.NEXT_PUBLIC_GA_ID || "G-36182P0H4D",
   /**
-   * Microsoft Clarity project (session recordings and heatmaps). Loads under
-   * the same switch and visitor preference as GA. Empty = Clarity off.
+   * Microsoft Clarity project "GoLo Golf Website" (session recordings and
+   * heatmaps), owned by devin@golo.golf. Loads under the same switch and
+   * visitor preference as GA. Override per environment with
+   * NEXT_PUBLIC_CLARITY_ID.
    */
-  clarityProjectId: process.env.NEXT_PUBLIC_CLARITY_ID || "",
+  clarityProjectId: process.env.NEXT_PUBLIC_CLARITY_ID || "z0fu5ddehq",
   analyticsEnabled: boolFlag(
     process.env.NEXT_PUBLIC_ANALYTICS_ENABLED,
     false,

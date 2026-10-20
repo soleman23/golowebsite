@@ -109,7 +109,7 @@ Copy from [`.env.example`](.env.example). Never commit `.env`.
 | `NEXT_PUBLIC_ACCEPTABLE_USE_PUBLISHED` | No | **Public** | `true`/`false` (default **false**)                 |
 | `NEXT_PUBLIC_ANALYTICS_ENABLED`| No       | **Public**  | GA + Clarity kill switch (default **false**); opt-out when on |
 | `NEXT_PUBLIC_GA_ID`            | No       | **Public**  | GA4 measurement ID                                  |
-| `NEXT_PUBLIC_CLARITY_ID`       | No       | **Public**  | Microsoft Clarity project ID; empty = no Clarity    |
+| `NEXT_PUBLIC_CLARITY_ID`       | No       | **Public**  | Microsoft Clarity project ID (default `z0fu5ddehq`) |
 
 ### Launch controls
 
@@ -135,6 +135,25 @@ Clarity recording and clears accessible `_ga*`, `_clck` and `_clsk` cookies.
 `components/analytics/SessionTracking.tsx` adds the site-wide events (scroll
 depth, link clicks, 404s, Web Vitals, script errors); `lib/analytics.ts` lists
 every event name.
+
+### Where the analytics live
+
+| Tool | Property | Owner | Open it |
+| --- | --- | --- | --- |
+| Google Analytics 4 | "GoLo Golf", stream "GoLo Golf Website", `G-36182P0H4D` | devin@golo.golf | [analytics.google.com](https://analytics.google.com/analytics/web/#/a402913756p547817615/reports/intelligenthome) (third signed-in Google account, `authuser=2`) |
+| Microsoft Clarity | "GoLo Golf Website", project `z0fu5ddehq` | devin@golo.golf (signed in with Google) | [clarity.microsoft.com](https://clarity.microsoft.com/projects/view/z0fu5ddehq/dashboard) |
+| Search Console | Domain property `golo.golf` | devin@golo.golf | [search.google.com](https://search.google.com/search-console?resource_id=sc-domain%3Agolo.golf) |
+
+GA4 settings that matter for analysis: event data retention is 14 months (the
+free maximum; the default 2 months caps Explorations), and every event
+parameter in `lib/analytics.ts` is registered as an event-scoped custom
+dimension, plus a `Web vital value` custom metric. A new parameter isn't
+reportable until it gets one (Admin → Custom definitions; display names can't
+contain hyphens).
+
+Clarity uses "Balanced" masking, which hides text typed into form fields and
+other sensitive text before it leaves the browser. Keep it at Balanced or
+Strict: the Cookie Policy says form inputs are masked.
 
 \* If the three Twilio values are absent, the SMS endpoint runs in **stub mode**:
 it still validates the number and records the lead, returns success, but sends
