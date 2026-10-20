@@ -75,6 +75,16 @@ const EMAIL = /[^\s@<>()"',;:]+@[^\s@<>()"',;:]+\.[a-z]{2,}/gi;
 const LONG_NUMBER = /\+?\d(?:[\s().-]*\d){6,}/g;
 
 /**
+ * Whether a value looks like it carries personal data: anything with an @,
+ * or a phone-, card- or account-length run of digits. Stricter than the
+ * redaction below (any @, not only a full address), for URL values that are
+ * dropped whole rather than masked.
+ */
+export function looksPersonal(value: string): boolean {
+  return value.includes("@") || /\+?\d(?:[\s().-]*\d){6,}/.test(value);
+}
+
+/**
  * Last line of defence for free text (link labels, error messages, paths):
  * masks anything shaped like an email address or a phone, card or account
  * number, then cuts to GA4's length limit. Categorical values pass through

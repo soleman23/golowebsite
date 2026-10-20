@@ -1,3 +1,5 @@
+import { looksPersonal } from "@/lib/analytics";
+
 /**
  * The visitor's analytics choice, and turning the two providers on and off.
  *
@@ -23,14 +25,33 @@ export const ANALYTICS_STORAGE_KEY = "golo.analytics.consent.v2";
 const LEGACY_STORAGE_KEY = "golo.analytics.preference";
 export const ANALYTICS_PREFERENCE_EVENT = "golo:analytics-preference";
 
+/** GA4's campaign parameters (manual tagging). */
+const CAMPAIGN_PARAMS = new Set([
+  "utm_id",
+  "utm_source",
+  "utm_medium",
+  "utm_campaign",
+  "utm_term",
+  "utm_content",
+  "utm_source_platform",
+  "utm_creative_format",
+  "utm_marketing_tactic",
+]);
+/** The site's own filter parameters, only on the routes that read them. */
+const ROUTE_PARAMS: Record<string, string> = { filter: "/games", topic: "/blog" };
+/** A filter or topic id: lower-case slug. */
+const SLUG = /^[a-z0-9-]{1,40}$/;
+
 /**
- * Query parameters kept when analytics loads: the site's own filters and
- * every GA4 campaign parameter (utm_*, including utm_id and
- * utm_source_platform). Every other one is dropped.
+ * Whether a query parameter survives when analytics loads: GA4 campaign
+ * fields whose value carries nothing personal (no @, no long digit run,
+ * 100 characters at most), and filter/topic slugs on their own routes.
  */
-const KEPT_QUERY_PARAMS = new Set(["filter", "topic"]);
-function isKeptQueryParam(key: string): boolean {
-  return KEPT_QUERY_PARAMS.has(key) || key.startsWith("utm_");
+function isKeptQueryParam(key: string, value: string, pathname: string): boolean {
+  if (CAMPAIGN_PARAMS.has(key)) {
+    return value.length <= 100 && !looksPersonal(value);
+  }
+  return ROUTE_PARAMS[key] === pathname && SLUG.test(value);
 }
 
 declare global {
@@ -97,13 +118,22 @@ function migrateLegacyChoice(): void {
  * A null key means another tab cleared site storage.
  */
 export function isConsentStorageEvent(event: StorageEvent): boolean {
-  if (event.key === LEGACY_STORAGE_KEY) {
-    if (event.newValue === "denied" && readStorage(ANALYTICS_STORAGE_KEY) !== "denied") {
-      writeStorage(ANALYTICS_STORAGE_KEY, "denied");
-    }
-    return true;
+  const relevant =
+    event.key === LEGACY_STORAGE_KEY ||
+    event.key === ANALYTICS_STORAGE_KEY ||
+    event.key === null;
+  if (!relevant) return false;
+  // Another tab's write is newer than a choice this page could only hold in
+  // memory, so the stored value wins from here on.
+  unsavedChoice = null;
+  if (
+    event.key === LEGACY_STORAGE_KEY &&
+    event.newValue === "denied" &&
+    readStorage(ANALYTICS_STORAGE_KEY) !== "denied"
+  ) {
+    writeStorage(ANALYTICS_STORAGE_KEY, "denied");
   }
-  return event.key === ANALYTICS_STORAGE_KEY || event.key === null;
+  return true;
 }
 
 /** Whether the last choice could only be held in memory (storage refused it). */
@@ -176,8 +206,8 @@ export function clearAnalyticsCookies(): void {
 export function dropUnusedQueryParams(): void {
   const url = new URL(window.location.href);
   let changed = false;
-  for (const key of [...url.searchParams.keys()]) {
-    if (!isKeptQueryParam(key)) {
+  for (const [key, value] of [...url.searchParams.entries()]) {
+    if (!isKeptQueryParam(key, value, url.pathname)) {
       url.searchParams.delete(key);
       changed = true;
     }

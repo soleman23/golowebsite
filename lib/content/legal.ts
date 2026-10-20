@@ -32,6 +32,9 @@
 import type { TableData } from "@/components/ui/DataTable";
 import { siteConfig } from "@/lib/siteConfig";
 
+/** GA4's session cookie is named after the measurement ID: _ga_ + the ID without "G-". */
+const GA_SESSION_COOKIE = `_ga_${siteConfig.gaMeasurementId.replace(/^G-/, "")}`;
+
 export type LegalBlock =
   | { kind: "p"; html: string }
   | { kind: "h3"; text: string }
@@ -267,14 +270,14 @@ const privacySections: LegalSection[] = [
           "<strong>Identifiers:</strong> random identifiers stored in cookies, listed below, that let each tool recognize the same browser across pages and later visits.",
         ],
       },
-      { kind: "p", html: "What you type into the website’s forms is not sent to either tool. Our Google Analytics events contain labels, such as which link or button was used or which contact topic was chosen, not anything you typed. Clarity masks the contents of input fields, and our phone-number, newsletter, and contact forms, including their error and confirmation messages, are marked so Clarity masks them too; Clarity’s masking setting also hides text it recognizes as an email address or number. Masked content is replaced in your browser before anything is sent, and appears in recordings as placeholder characters. Before either tool loads, the website also removes from the page address any query parameters the website doesn’t use." },
+      { kind: "p", html: "What you type into the website’s forms is not sent to either tool. Our Google Analytics events contain labels, such as which link or button was used or which contact topic was chosen, not anything you typed. Clarity masks the contents of input fields, and our phone-number, newsletter, and contact forms, including their error and confirmation messages, are marked so Clarity masks them too; Clarity’s masking setting also hides text it recognizes as an email address or number. Masked content is replaced in your browser before anything is sent, and appears in recordings as placeholder characters. Before either tool loads, the website also removes from the page address any query parameter it doesn’t use, and any campaign parameter whose value looks like an email address or phone number." },
       { kind: "h3", text: "Why we use them" },
       { kind: "p", html: "To understand how the website is used, find pages or steps that confuse people, improve the website’s content and usability, and find and fix errors and slow pages. GoLo does not use these tools to identify individual visitors or for advertising." },
       { kind: "h3", text: "Cookies and browser storage" },
       { kind: "p", html: "If you allow analytics, these first-party cookies are set on golo.golf. Lifetimes are the ones we observed in Chrome; Google’s own default for its cookies is two years, which Chrome limits to 400 days. Microsoft does not publish lifetimes for Clarity’s cookies." },
       { kind: "table", head: ["Name", "Set by", "Purpose", "Lifetime"], rows: [
         ["_ga", "Google Analytics", "Distinguishes one browser from another", "Up to 2 years (400 days in Chrome)"],
-        ["_ga_36182P0H4D", "Google Analytics", "Keeps track of the current visit (session)", "Up to 2 years (400 days in Chrome)"],
+        [GA_SESSION_COOKIE, "Google Analytics", "Keeps track of the current visit (session)", "Up to 2 years (400 days in Chrome)"],
         ["_clck", "Microsoft Clarity", "Keeps a Clarity identifier and settings for this browser", "About 1 year"],
         ["_clsk", "Microsoft Clarity", "Joins the pages of one visit into one recording", "About 1 day"],
       ] },
@@ -288,7 +291,7 @@ const privacySections: LegalSection[] = [
         kind: "ul",
         items: [
           "Allow or decline at any time under <a href=\"#analytics-choices\">Privacy choices</a>, linked from the footer of every page. The choice is saved in this browser and covers both tools.",
-          "If you decline after allowing, the page reloads without either tool, and the website deletes the Google Analytics and Clarity cookies it can reach (_ga, _ga_36182P0H4D, _clck, _clsk). Cookies on Google’s or Microsoft’s own domains can only be removed in your browser’s settings. Declining stops new collection; it doesn’t delete what was already sent.",
+          `If you decline after allowing, the page reloads without either tool, and the website deletes the Google Analytics and Clarity cookies it can reach (_ga, ${GA_SESSION_COOKIE}, _clck, _clsk). Cookies on Google’s or Microsoft’s own domains can only be removed in your browser’s settings. Declining stops new collection; it doesn’t delete what was already sent.`,
           "If your browser sends a <strong>Global Privacy Control</strong> signal, the website keeps both tools off, even if you allowed them earlier. This is how GoLo has chosen to treat that signal on this website.",
           "If your browser won’t let the website store your choice, the website can’t remember it: an Allow lasts only until the page is closed or reloaded, and you will be asked again.",
           "Choices saved by an earlier version of the website: a saved decline still applies; a saved allow didn’t cover session recordings, so you will be asked again.",
@@ -848,7 +851,7 @@ export const cookiesDoc: LegalDoc = {
         { kind: "p", html: "If you allow analytics, the website loads the Google Analytics 4 tag, which sends page views and interactions (described in the Privacy Policy) to Google and sets the first-party cookies below. The tag is configured with Google signals and ad-personalization signals turned off. GoLo does not send names, email addresses, phone numbers, messages, or anything typed into a form as analytics data." },
         { kind: "table", head: ["Name", "Purpose", "Lifetime"], rows: [
           ["_ga", "Distinguishes one browser from another", "Up to 2 years (400 days in Chrome)"],
-          ["_ga_36182P0H4D", "Keeps track of the current visit (session)", "Up to 2 years (400 days in Chrome)"],
+          [GA_SESSION_COOKIE, "Keeps track of the current visit (session)", "Up to 2 years (400 days in Chrome)"],
         ] },
         { kind: "p", html: "Google’s own default lifetime for these cookies is two years; Chrome limits any cookie to 400 days. See <a href=\"https://policies.google.com/technologies/partner-sites\" rel=\"noopener noreferrer\">how Google uses information from sites that use its services</a>." },
       ],
@@ -873,7 +876,7 @@ export const cookiesDoc: LegalDoc = {
       title: "Your Controls",
       plain: "Change your choice below at any time. GPC keeps both tools off.",
       blocks: [
-        { kind: "p", html: "Use the control on this page (also under Privacy choices in the footer) to allow or decline. If you decline after allowing, GoLo tells both tools to stop, deletes the first-party cookies named _ga, _ga_36182P0H4D, _clck, and _clsk, and reloads the page so neither tool is running. Cookies on Google’s or Microsoft’s own domains can only be removed through your browser’s settings, and declining doesn’t delete data already sent." },
+        { kind: "p", html: `Use the control on this page (also under Privacy choices in the footer) to allow or decline. If you decline after allowing, GoLo tells both tools to stop, deletes the first-party cookies named _ga, ${GA_SESSION_COOKIE}, _clck, and _clsk, and reloads the page so neither tool is running. Cookies on Google’s or Microsoft’s own domains can only be removed through your browser’s settings, and declining doesn’t delete data already sent.` },
         { kind: "p", html: "You can also clear site data in your browser. Browser extensions, network filters, and privacy settings may block analytics regardless of the GoLo control." },
         { kind: "h3", text: "Global Privacy Control" },
         { kind: "p", html: "If your browser sends a Global Privacy Control signal, GoLo keeps Google Analytics and Microsoft Clarity off on this website, even if this browser saved an allow. The saved value isn’t changed, so the choice applies again if the signal stops. This is how GoLo has chosen to treat the signal on this website." },
