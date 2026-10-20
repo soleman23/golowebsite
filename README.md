@@ -159,7 +159,8 @@ nofollow`, stay out of the sitemap, and remain unlinked.
   value has no `@`, no long digit run and at most 100 characters, plus a slug
   `filter` on `/games` and `topic` on `/blog` and `/contact`. GA's
   `page_referrer` drops its query string, and its path too when the path
-  looks personal. An inbound URL carrying an
+  looks personal. A path segment that looks personal becomes `redacted` (only
+  404s can have one) and such a fragment is dropped. An inbound URL carrying an
   email or token never reaches GA's `page_location` or a Clarity recording.
 - The GA tag is configured with `allow_google_signals: false` and
   `allow_ad_personalization_signals: false` (every hit carries `npa=1`).

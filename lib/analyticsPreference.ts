@@ -200,9 +200,10 @@ export function clearAnalyticsCookies(): void {
 }
 
 /**
- * Removes query parameters the site doesn't use from the address bar, so a
- * landing URL carrying something personal (an email, a token from another
- * site) never reaches GA's page_location or a Clarity recording. Runs on every
+ * Removes query parameters the site doesn't use from the address bar, and
+ * masks a path segment or drops a fragment that looks personal, so a landing
+ * URL carrying something personal (an email, a token from another site)
+ * never reaches GA's page_location or a Clarity recording. Runs on every
  * page load, whatever the choice, so the history entry itself is clean: a
  * visitor who allows analytics later and comes Back to it can't expose it.
  * Runs again before either script loads. Lead attribution has already read
@@ -218,10 +219,33 @@ export function dropUnusedQueryParams(): void {
       changed = true;
     }
   }
+  // No real route has an @ or a long digit run in its path, so a path
+  // segment that looks personal can only be a 404; masking it keeps the 404.
+  const segments = url.pathname.split("/");
+  const masked = segments.map((segment) =>
+    looksPersonal(safeDecode(segment)) ? "redacted" : segment,
+  );
+  if (masked.some((segment, i) => segment !== segments[i])) {
+    url.pathname = masked.join("/");
+    changed = true;
+  }
+  // Fragments are only in-page anchors here; drop one that looks personal.
+  if (url.hash && looksPersonal(safeDecode(url.hash))) {
+    url.hash = "";
+    changed = true;
+  }
   // null state, not history.state: Next's patched replaceState skips its own
   // URL sync when handed its internal state, and the router would later put
   // the stripped parameters back.
   if (changed) window.history.replaceState(null, "", url);
+}
+
+function safeDecode(value: string): string {
+  try {
+    return decodeURIComponent(value);
+  } catch {
+    return value;
+  }
 }
 
 /**
@@ -233,7 +257,7 @@ export function referrerWithoutQuery(): string {
   if (!document.referrer) return "";
   try {
     const ref = new URL(document.referrer);
-    const path = decodeURIComponent(ref.pathname);
+    const path = safeDecode(ref.pathname);
     return looksPersonal(path) ? ref.origin : `${ref.origin}${ref.pathname}`;
   } catch {
     return "";
