@@ -148,6 +148,9 @@ export function AnalyticsLoader({
   }, [enabled, measurementId, clarityProjectId]);
 
   useEffect(() => {
+    // Clean the landing URL for everyone, before any choice; see
+    // dropUnusedQueryParams.
+    if (enabled) dropUnusedQueryParams();
     reconcile();
     const onChoice = () => reconcile();
     // Includes a cleared storage and a decline from a tab on the earlier build.
@@ -172,7 +175,7 @@ export function AnalyticsLoader({
       window.removeEventListener("pageshow", onPageShow);
       document.removeEventListener("visibilitychange", onVisible);
     };
-  }, [reconcile]);
+  }, [reconcile, enabled]);
 
   // Here rather than in SessionTracking, which remounts each time analytics
   // is turned back on; see reportWebVital.

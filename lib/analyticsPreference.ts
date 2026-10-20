@@ -37,8 +37,11 @@ const CAMPAIGN_PARAMS = new Set([
   "utm_creative_format",
   "utm_marketing_tactic",
 ]);
-/** The site's own filter parameters, only on the routes that read them. */
-const ROUTE_PARAMS: Record<string, string> = { filter: "/games", topic: "/blog" };
+/** The site's own parameters, only on the routes that read them. */
+const ROUTE_PARAMS: Record<string, string[]> = {
+  filter: ["/games"],
+  topic: ["/blog", "/contact"],
+};
 /** A filter or topic id: lower-case slug. */
 const SLUG = /^[a-z0-9-]{1,40}$/;
 
@@ -51,7 +54,7 @@ function isKeptQueryParam(key: string, value: string, pathname: string): boolean
   if (CAMPAIGN_PARAMS.has(key)) {
     return value.length <= 100 && !looksPersonal(value);
   }
-  return ROUTE_PARAMS[key] === pathname && SLUG.test(value);
+  return (ROUTE_PARAMS[key]?.includes(pathname) ?? false) && SLUG.test(value);
 }
 
 declare global {
@@ -118,22 +121,22 @@ function migrateLegacyChoice(): void {
  * A null key means another tab cleared site storage.
  */
 export function isConsentStorageEvent(event: StorageEvent): boolean {
-  const relevant =
-    event.key === LEGACY_STORAGE_KEY ||
-    event.key === ANALYTICS_STORAGE_KEY ||
-    event.key === null;
-  if (!relevant) return false;
-  // Another tab's write is newer than a choice this page could only hold in
-  // memory, so the stored value wins from here on.
-  unsavedChoice = null;
-  if (
-    event.key === LEGACY_STORAGE_KEY &&
-    event.newValue === "denied" &&
-    readStorage(ANALYTICS_STORAGE_KEY) !== "denied"
-  ) {
+  const legacyDenial = event.key === LEGACY_STORAGE_KEY && event.newValue === "denied";
+  // A v2 change, a cleared storage or a legacy decline is newer than a choice
+  // this page could only hold in memory, so the stored value wins from here
+  // on. A legacy grant or removal isn't consent here, so it can't erase an
+  // unsaved decline.
+  if (event.key === ANALYTICS_STORAGE_KEY || event.key === null || legacyDenial) {
+    unsavedChoice = null;
+  }
+  if (legacyDenial && readStorage(ANALYTICS_STORAGE_KEY) !== "denied") {
     writeStorage(ANALYTICS_STORAGE_KEY, "denied");
   }
-  return true;
+  return (
+    event.key === LEGACY_STORAGE_KEY ||
+    event.key === ANALYTICS_STORAGE_KEY ||
+    event.key === null
+  );
 }
 
 /** Whether the last choice could only be held in memory (storage refused it). */
@@ -199,9 +202,12 @@ export function clearAnalyticsCookies(): void {
 /**
  * Removes query parameters the site doesn't use from the address bar, so a
  * landing URL carrying something personal (an email, a token from another
- * site) never reaches GA's page_location or a Clarity recording. Runs before
- * either script loads. Lead attribution has already read the landing URL by
- * then (LandingCapture mounts first) and keeps only utm_source anyway.
+ * site) never reaches GA's page_location or a Clarity recording. Runs on every
+ * page load, whatever the choice, so the history entry itself is clean: a
+ * visitor who allows analytics later and comes Back to it can't expose it.
+ * Runs again before either script loads. Lead attribution has already read
+ * the landing URL by then (LandingCapture mounts first) and keeps only
+ * utm_source anyway; the contact topic and filters are read earlier too.
  */
 export function dropUnusedQueryParams(): void {
   const url = new URL(window.location.href);
@@ -218,12 +224,17 @@ export function dropUnusedQueryParams(): void {
   if (changed) window.history.replaceState(null, "", url);
 }
 
-/** The referring page without its query string or fragment, for GA's page_referrer. */
+/**
+ * The referring page for GA's page_referrer: without its query string or
+ * fragment, and cut back to its origin when the path itself looks personal
+ * (an email or a long number in it).
+ */
 export function referrerWithoutQuery(): string {
   if (!document.referrer) return "";
   try {
     const ref = new URL(document.referrer);
-    return `${ref.origin}${ref.pathname}`;
+    const path = decodeURIComponent(ref.pathname);
+    return looksPersonal(path) ? ref.origin : `${ref.origin}${ref.pathname}`;
   } catch {
     return "";
   }

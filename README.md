@@ -151,13 +151,16 @@ nofollow`, stay out of the sitemap, and remain unlinked.
 - Withdrawal reloads the page because neither vendor documents a full stop for
   an already-loaded tag: Google documents `ga-disable-<ID>` only when set before
   gtag runs, and Clarity's denied consent keeps a cookieless mode running.
-- Before either script loads, `dropUnusedQueryParams()` rewrites the address
-  bar so only these survive: GA4's campaign fields (`utm_id`, `utm_source`,
+- On every page load (whatever the choice, so the history entry itself is
+  clean) and again before either script loads, `dropUnusedQueryParams()`
+  rewrites the address bar so only these survive: GA4's campaign fields (`utm_id`, `utm_source`,
   `utm_medium`, `utm_campaign`, `utm_term`, `utm_content`,
   `utm_source_platform`, `utm_creative_format`, `utm_marketing_tactic`) whose
   value has no `@`, no long digit run and at most 100 characters, plus a slug
-  `filter` on `/games` and `topic` on `/blog`. An inbound URL carrying an
-  email or token never reaches GA's `page_location` or a Clarity recording. GA's `page_referrer` is sent without its query string.
+  `filter` on `/games` and `topic` on `/blog` and `/contact`. GA's
+  `page_referrer` drops its query string, and its path too when the path
+  looks personal. An inbound URL carrying an
+  email or token never reaches GA's `page_location` or a Clarity recording.
 - The GA tag is configured with `allow_google_signals: false` and
   `allow_ad_personalization_signals: false` (every hit carries `npa=1`).
   Clarity gets `consentv2` with `analytics_Storage: granted`,
