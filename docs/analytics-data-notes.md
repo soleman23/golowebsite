@@ -36,7 +36,11 @@ Created while building and verifying #114 and #115. None of it is a real visitor
 - Sessions whose entry URL is on `localhost`, about 02:20–05:30 UTC on
   October 20 (Clarity shows them as "Entry: localhost").
 - Production test sessions: 02:03 UTC October 20 (`/games`), around 04:15 UTC,
-  and 15:05 UTC October 20 (`/contact`, synthetic form entries, replay check).
+  and 15:03–15:05 UTC October 20 (`/contact`, synthetic form entries, replay
+  check).
+- Clarity user ID `1mllpb1` is the owner's own Chrome. Its 02:37 UTC
+  October 20 session (7:37 PM PDT October 19, 39 minutes on the home page),
+  inside the no-consent window, is the owner's, not an outside visitor's.
 
 ## Options
 
