@@ -6,7 +6,7 @@
  * readings and uncaught script errors.
  *
  * Rendered by AnalyticsLoader only while analytics is allowed, so nothing here
- * runs for a visitor who turned analytics off or sends GPC. Every event goes
+ * runs for a visitor who hasn't allowed analytics, declined it, or sends GPC. Every event goes
  * through track(), which drops anything not in the AnalyticsEvent union.
  * Renders nothing.
  */
@@ -85,7 +85,9 @@ function SessionTrackingInner() {
     if (document.querySelector("[data-not-found]")) {
       // track() redacts, then cuts to GA's limit; cutting first could split
       // an email address so the redaction no longer recognized it.
-      track("page_not_found", { page_path: pathname });
+      // window.location, not usePathname(): the router can still hold the
+      // landing path from before the URL cleanup masked it.
+      track("page_not_found", { page_path: window.location.pathname });
     }
 
     const passed = new Set<number>();

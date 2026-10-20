@@ -137,7 +137,7 @@ nofollow`, stay out of the sitemap, and remain unlinked.
 | No choice yet | Nothing. No Google or Clarity script, request or cookie. | The analytics notice at the bottom of the screen, Allow and Decline at equal weight, nothing preselected |
 | Allowed | GA4 (`gtag.js`) and Clarity, on every page | No notice |
 | Declined | Nothing | No notice |
-| Withdrawn (declined after allowing) | Stop signals, then a page reload without either script; `_ga`, `_ga_*`, `_clck`, `_clsk` cleared | Privacy choices shows "Declined" |
+| Withdrawn (declined after allowing) | Stop signals, then a page reload without either script (other open tabs stop at once and reload the next time they're hidden; no reload when an unsaved decline sits over a saved grant that can't be removed); `_ga`, `_ga_*`, `_clck`, `_clsk` cleared | Privacy choices shows "Declined" |
 | Global Privacy Control | Nothing, even with a saved grant | No notice; Privacy choices explains GPC and disables Allow |
 | Storage blocked | Nothing until the visitor chooses; the choice lasts for the page only | The notice, every page load |
 
@@ -162,7 +162,7 @@ nofollow`, stay out of the sitemap, and remain unlinked.
   `page_referrer` drops its query string, and its path too when the path
   looks personal. A path segment that looks personal becomes `redacted` (only
   404s can have one) and such a fragment is dropped. An inbound URL carrying an
-  email or token never reaches GA's `page_location` or a Clarity recording.
+  email address, or a token in a parameter the site doesn't use, never reaches GA's `page_location` or a Clarity recording.
 - The GA tag is configured with `allow_google_signals: false` and
   `allow_ad_personalization_signals: false` (every hit carries `npa=1`).
   Clarity gets `consentv2` with `analytics_Storage: granted`,

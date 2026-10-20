@@ -124,7 +124,11 @@ function migrateLegacyChoice(): void {
  * A null key means another tab cleared site storage.
  */
 export function isConsentStorageEvent(event: StorageEvent): boolean {
-  const legacyDenial = event.key === LEGACY_STORAGE_KEY && event.newValue === "denied";
+  // Decided from what's stored now, not from event.newValue: a suspended tab
+  // can deliver a stale "denied" after the visitor has already allowed again
+  // (both keys "granted"), and acting on the event would undo that Allow.
+  const legacyDenial =
+    event.key === LEGACY_STORAGE_KEY && readStorage(LEGACY_STORAGE_KEY) === "denied";
   // A v2 change, a cleared storage or a legacy decline is newer than a choice
   // this page could only hold in memory, so the stored value wins from here
   // on. A legacy grant or removal isn't consent here, so it can't erase an
@@ -132,9 +136,8 @@ export function isConsentStorageEvent(event: StorageEvent): boolean {
   if (event.key === ANALYTICS_STORAGE_KEY || event.key === null || legacyDenial) {
     unsavedChoice = null;
   }
-  if (legacyDenial && readStorage(ANALYTICS_STORAGE_KEY) !== "denied") {
-    writeStorage(ANALYTICS_STORAGE_KEY, "denied");
-  }
+  // Copies a current legacy decline to v2 (see migrateLegacyChoice).
+  if (legacyDenial) migrateLegacyChoice();
   return (
     event.key === LEGACY_STORAGE_KEY ||
     event.key === ANALYTICS_STORAGE_KEY ||
