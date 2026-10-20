@@ -6,6 +6,7 @@ import {
   ANALYTICS_PREFERENCE_EVENT,
   ANALYTICS_STORAGE_KEY,
   applyAnalyticsState,
+  grantClarity,
   isAnalyticsAllowedForVisit,
 } from "@/lib/analyticsPreference";
 import { SessionTracking } from "@/components/analytics/SessionTracking";
@@ -33,22 +34,25 @@ function configure(measurementId: string) {
   window.__goloAnalyticsConfigured = true;
 }
 
-/** Clarity's own queue stub, so calls made before its tag loads aren't lost. */
+/**
+ * Clarity's own queue stub, so calls made before its tag loads aren't lost,
+ * then an explicit analytics-only grant. The grant is queued on the first
+ * load too: Clarity needs a consent signal for full sessions from EEA, UK and
+ * Swiss visits.
+ */
 function configureClarity() {
-  if (window.clarity) {
-    // Turned back on after being turned off on this page: resume recording.
-    window.clarity("consent");
-    return;
+  if (!window.clarity) {
+    // Clarity's tag drains `clarity.q`; like gtag, it expects Arguments objects.
+    const q: unknown[] = [];
+    window.clarity = Object.assign(
+      function clarity() {
+        // eslint-disable-next-line prefer-rest-params
+        q.push(arguments);
+      },
+      { q },
+    );
   }
-  // Clarity's tag drains `clarity.q`; like gtag, it expects Arguments objects.
-  const q: unknown[] = [];
-  window.clarity = Object.assign(
-    function clarity() {
-      // eslint-disable-next-line prefer-rest-params
-      q.push(arguments);
-    },
-    { q },
-  );
+  grantClarity();
 }
 
 export function AnalyticsLoader({

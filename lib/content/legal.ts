@@ -792,7 +792,7 @@ export const cookiesDoc: LegalDoc = {
       plain: "Clarity records how pages are used so we can see where the site confuses people. It loads and stops with Google Analytics.",
       blocks: [
         { kind: "p", html: "When analytics is on, the site also loads Microsoft Clarity. Clarity records page interactions such as clicks, taps, scrolling, mouse movement, and the page layout you saw, and turns them into session replays and heatmaps. Text typed into form fields is masked before it leaves your browser. GoLo uses Clarity to find and fix confusing pages, not to identify visitors." },
-        { kind: "p", html: "Clarity sets the first-party cookies below. Its script can also set cookies on Microsoft domains (CLID, MUID, MR, SM and ANONCHK). Microsoft says MUID identifies browsers across Microsoft sites and is used for advertising, site analytics, and other operational purposes. Microsoft’s handling of that data is governed by the Microsoft Privacy Statement." },
+        { kind: "p", html: "Clarity sets the first-party cookies below. Its script can also set cookies on Microsoft domains (CLID, MUID, MR, SM and ANONCHK). Microsoft says MUID identifies browsers across Microsoft sites and is used for advertising, site analytics, and other operational purposes. GoLo’s consent signal to Clarity grants analytics storage and denies advertising storage. Microsoft’s handling of that data is governed by the Microsoft Privacy Statement." },
         { kind: "table", head: ["Storage", "Purpose", "When created"], rows: [
           ["_clck", "Keep a Clarity ID for this browser on this site", "On your first visit, unless analytics is off"],
           ["_clsk", "Join the pages of one visit into one recording", "On your first visit, unless analytics is off"],

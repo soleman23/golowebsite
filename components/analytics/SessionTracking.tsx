@@ -11,8 +11,8 @@
  * Renders nothing.
  */
 
-import { useEffect } from "react";
-import { usePathname } from "next/navigation";
+import { Suspense, useEffect } from "react";
+import { usePathname, useSearchParams } from "next/navigation";
 import { useReportWebVitals } from "next/web-vitals";
 import { track } from "@/lib/analytics";
 
@@ -33,19 +33,43 @@ function linkText(link: HTMLAnchorElement): string {
   return label.replace(/\s+/g, " ").trim().slice(0, 100);
 }
 
-export function SessionTracking() {
-  const pathname = usePathname();
+type WebVitalsHandler = Parameters<typeof useReportWebVitals>[0];
 
-  useReportWebVitals((metric) => {
-    track("web_vitals", {
-      metric_name: metric.name,
-      // CLS is a unitless score around 0.1; scale it so it survives rounding.
-      metric_value: Math.round(
-        metric.name === "CLS" ? metric.value * 1000 : metric.value,
-      ),
-      metric_rating: metric.rating,
-    });
+/**
+ * Module-level so its identity never changes: Next re-registers a new
+ * callback on every render and replays metrics already collected to it,
+ * which would resend them on each client-side navigation.
+ */
+const reportWebVital: WebVitalsHandler = (metric) => {
+  track("web_vitals", {
+    metric_name: metric.name,
+    // CLS is a unitless score around 0.1; scale it so it survives rounding.
+    metric_value: Math.round(
+      metric.name === "CLS" ? metric.value * 1000 : metric.value,
+    ),
+    metric_rating: metric.rating,
   });
+};
+
+/**
+ * useSearchParams needs a Suspense boundary, or the static pages it renders
+ * on would bail out of prerendering.
+ */
+export function SessionTracking() {
+  return (
+    <Suspense fallback={null}>
+      <SessionTrackingInner />
+    </Suspense>
+  );
+}
+
+function SessionTrackingInner() {
+  const pathname = usePathname();
+  // The /games and /blog filters change only the query string. GA counts
+  // that as a new page view, so the per-page counters reset with it.
+  const search = useSearchParams().toString();
+
+  useReportWebVitals(reportWebVital);
 
   // Scroll depth, 404s and errors are per page view: reset on navigation.
   useEffect(() => {
@@ -80,7 +104,7 @@ export function SessionTracking() {
     };
     const onError = (event: ErrorEvent) => {
       // Extensions throw into the page too; they aren't the site's errors.
-      if (/^(chrome|moz|safari)-extension:/.test(event.filename ?? "")) return;
+      if (/^(chrome|moz|safari|safari-web)-extension:/.test(event.filename ?? "")) return;
       report(event.message || "Unknown error");
     };
     const onRejection = (event: PromiseRejectionEvent) => {
@@ -97,7 +121,7 @@ export function SessionTracking() {
       window.removeEventListener("error", onError);
       window.removeEventListener("unhandledrejection", onRejection);
     };
-  }, [pathname]);
+  }, [pathname, search]);
 
   // One delegated listener for every link on every page. Outbound links are
   // left to enhanced measurement's own `click` event.

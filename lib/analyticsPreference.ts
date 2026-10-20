@@ -14,6 +14,7 @@ declare global {
     [key: `ga-disable-${string}`]: boolean | undefined;
     /** Microsoft Clarity's command queue (session recordings, heatmaps). */
     clarity?: ((...args: unknown[]) => void) & { q?: unknown[] };
+    __goloClarityStopped?: boolean;
   }
 }
 
@@ -70,10 +71,35 @@ export function applyAnalyticsState(
   window.__goloAnalyticsAllowed = allowed;
   window[`ga-disable-${measurementId}`] = !allowed;
   if (!allowed) {
-    // Stops a Clarity recording already in progress and erases its cookies.
-    window.clarity?.("consent", false);
+    revokeClarity();
     clearAnalyticsCookies();
   }
+}
+
+/**
+ * Analytics storage only. Ad storage stays denied: a granted ad_Storage lets
+ * Microsoft share Clarity data with Microsoft Ads, which the privacy policy
+ * rules out. The legacy `clarity("consent")` call would grant both.
+ */
+export function grantClarity(): void {
+  if (!window.clarity) return;
+  if (window.__goloClarityStopped) {
+    window.clarity("start");
+    window.__goloClarityStopped = false;
+  }
+  window.clarity("consentv2", { ad_Storage: "denied", analytics_Storage: "granted" });
+}
+
+/**
+ * Denies both storage types, erases Clarity's cookies, and stops it: without
+ * the stop, a denied Clarity keeps recording this page in no-cookie mode.
+ */
+function revokeClarity(): void {
+  if (!window.clarity || window.__goloClarityStopped) return;
+  window.clarity("consentv2", { ad_Storage: "denied", analytics_Storage: "denied" });
+  window.clarity("consent", false);
+  window.clarity("stop");
+  window.__goloClarityStopped = true;
 }
 
 export function setAnalyticsPreference(
