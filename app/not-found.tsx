@@ -5,7 +5,7 @@ import styles from "./not-found.module.css";
 
 export default function NotFound() {
   return (
-    <section className={styles.page} aria-labelledby="not-found-heading">
+    <section className={styles.page} aria-labelledby="not-found-heading" data-not-found>
       <div className={styles.glow} aria-hidden="true" />
       <div className={styles.inner}>
         <p className={styles.kicker}>{notFoundContent.kicker}</p>

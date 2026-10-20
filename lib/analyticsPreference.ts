@@ -12,6 +12,8 @@ declare global {
     __goloAnalyticsAllowed?: boolean;
     __goloAnalyticsConfigured?: boolean;
     [key: `ga-disable-${string}`]: boolean | undefined;
+    /** Microsoft Clarity's command queue (session recordings, heatmaps). */
+    clarity?: ((...args: unknown[]) => void) & { q?: unknown[] };
   }
 }
 
@@ -39,12 +41,17 @@ function expireCookie(name: string, domain?: string) {
   document.cookie = `${name}=; Max-Age=0; path=/; SameSite=Lax${domainPart}`;
 }
 
-export function clearGoogleAnalyticsCookies(): void {
+/** First-party cookies set by Google Analytics (_ga, _ga_*) and Clarity (_clck, _clsk). */
+function isAnalyticsCookie(name: string): boolean {
+  return name === "_ga" || name.startsWith("_ga_") || name === "_clck" || name === "_clsk";
+}
+
+export function clearAnalyticsCookies(): void {
   if (typeof document === "undefined") return;
   const names = document.cookie
     .split(";")
     .map((part) => part.trim().split("=")[0])
-    .filter((name) => name === "_ga" || name.startsWith("_ga_"));
+    .filter(isAnalyticsCookie);
 
   const host = window.location.hostname;
   const parent = host.split(".").length > 1 ? `.${host.replace(/^www\./, "")}` : undefined;
@@ -62,7 +69,11 @@ export function applyAnalyticsState(
   if (typeof window === "undefined") return;
   window.__goloAnalyticsAllowed = allowed;
   window[`ga-disable-${measurementId}`] = !allowed;
-  if (!allowed) clearGoogleAnalyticsCookies();
+  if (!allowed) {
+    // Stops a Clarity recording already in progress and erases its cookies.
+    window.clarity?.("consent", false);
+    clearAnalyticsCookies();
+  }
 }
 
 export function setAnalyticsPreference(

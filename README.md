@@ -107,8 +107,9 @@ Copy from [`.env.example`](.env.example). Never commit `.env`.
 | `NEXT_PUBLIC_TERMS_PUBLISHED`  | No       | **Public**  | `true`/`false` (default **false**) — see below      |
 | `NEXT_PUBLIC_COOKIES_PUBLISHED`| No       | **Public**  | `true`/`false` (default **false**)                   |
 | `NEXT_PUBLIC_ACCEPTABLE_USE_PUBLISHED` | No | **Public** | `true`/`false` (default **false**)                 |
-| `NEXT_PUBLIC_ANALYTICS_ENABLED`| No       | **Public**  | GA kill switch (default **false**); consent is still required |
+| `NEXT_PUBLIC_ANALYTICS_ENABLED`| No       | **Public**  | GA + Clarity kill switch (default **false**); opt-out when on |
 | `NEXT_PUBLIC_GA_ID`            | No       | **Public**  | GA4 measurement ID                                  |
+| `NEXT_PUBLIC_CLARITY_ID`       | No       | **Public**  | Microsoft Clarity project ID; empty = no Clarity    |
 
 ### Launch controls
 
@@ -129,8 +130,11 @@ nofollow`, stay out of the sitemap, and remain unlinked.
 `NEXT_PUBLIC_ANALYTICS_ENABLED` is an explicit kill switch and defaults to
 `false`. When enabled, analytics is on by default (opt-out). A visitor who
 turns it off at `/privacy#analytics-choices`, or whose browser sends Global
-Privacy Control, gets no Google request. Turning it off clears accessible
-`_ga*` cookies.
+Privacy Control, gets no Google or Clarity request. Turning it off stops a
+Clarity recording and clears accessible `_ga*`, `_clck` and `_clsk` cookies.
+`components/analytics/SessionTracking.tsx` adds the site-wide events (scroll
+depth, link clicks, 404s, Web Vitals, script errors); `lib/analytics.ts` lists
+every event name.
 
 \* If the three Twilio values are absent, the SMS endpoint runs in **stub mode**:
 it still validates the number and records the lead, returns success, but sends

@@ -8,6 +8,7 @@ import {
   applyAnalyticsState,
   isAnalyticsAllowedForVisit,
 } from "@/lib/analyticsPreference";
+import { SessionTracking } from "@/components/analytics/SessionTracking";
 
 type GtagFn = (command: string, ...args: unknown[]) => void;
 
@@ -32,12 +33,33 @@ function configure(measurementId: string) {
   window.__goloAnalyticsConfigured = true;
 }
 
+/** Clarity's own queue stub, so calls made before its tag loads aren't lost. */
+function configureClarity() {
+  if (window.clarity) {
+    // Turned back on after being turned off on this page: resume recording.
+    window.clarity("consent");
+    return;
+  }
+  // Clarity's tag drains `clarity.q`; like gtag, it expects Arguments objects.
+  const q: unknown[] = [];
+  window.clarity = Object.assign(
+    function clarity() {
+      // eslint-disable-next-line prefer-rest-params
+      q.push(arguments);
+    },
+    { q },
+  );
+}
+
 export function AnalyticsLoader({
   enabled,
   measurementId,
+  clarityProjectId,
 }: {
   enabled: boolean;
   measurementId: string;
+  /** Empty = no Clarity. */
+  clarityProjectId: string;
 }) {
   // False during SSR and the first client render guarantees a denied visitor
   // never initiates a Google request before local storage and GPC are checked.
@@ -52,9 +74,12 @@ export function AnalyticsLoader({
 
     const next = isAnalyticsAllowedForVisit();
     applyAnalyticsState(measurementId, next);
-    if (next) configure(measurementId);
+    if (next) {
+      configure(measurementId);
+      if (clarityProjectId) configureClarity();
+    }
     setAllowed(next);
-  }, [enabled, measurementId]);
+  }, [enabled, measurementId, clarityProjectId]);
 
   useEffect(() => {
     reconcile();
@@ -72,11 +97,21 @@ export function AnalyticsLoader({
   if (!allowed) return null;
 
   return (
-    <Script
-      id="golo-google-analytics"
-      src={`https://www.googletagmanager.com/gtag/js?id=${measurementId}`}
-      strategy="afterInteractive"
-      onLoad={() => configure(measurementId)}
-    />
+    <>
+      <Script
+        id="golo-google-analytics"
+        src={`https://www.googletagmanager.com/gtag/js?id=${measurementId}`}
+        strategy="afterInteractive"
+        onLoad={() => configure(measurementId)}
+      />
+      {clarityProjectId && (
+        <Script
+          id="golo-clarity"
+          src={`https://www.clarity.ms/tag/${encodeURIComponent(clarityProjectId)}`}
+          strategy="afterInteractive"
+        />
+      )}
+      <SessionTracking />
+    </>
   );
 }

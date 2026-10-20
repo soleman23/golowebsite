@@ -63,6 +63,7 @@ export default function RootLayout({
         <AnalyticsLoader
           enabled={GA_ENABLED}
           measurementId={GA_MEASUREMENT_ID}
+          clarityProjectId={siteConfig.clarityProjectId}
         />
       </body>
     </html>
