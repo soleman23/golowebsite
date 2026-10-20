@@ -3,16 +3,17 @@ import { looksPersonal } from "@/lib/analytics";
 /**
  * The visitor's analytics choice, and turning the two providers on and off.
  *
- * Explicit opt-in: Google Analytics and Microsoft Clarity (session recordings
- * and heatmaps) load only after the visitor allows them, as one choice. With
- * no saved choice, a declined choice, or a Global Privacy Control signal,
- * neither script is requested and nothing is sent, cookieless pings included.
+ * Explicit opt-in: Google Analytics loads only after the visitor allows it.
+ * With no saved choice, a declined choice, or a Global Privacy Control signal,
+ * no script is requested and nothing is sent, cookieless pings included.
+ * Microsoft Clarity used the same choice until October 20, 2026; it is off
+ * (siteConfig.clarityProjectId is empty) and its code paths here are dormant.
  */
 
 export type AnalyticsChoice = "granted" | "denied";
 
 /**
- * v2 covers GA4 and Clarity together. The older key ("golo.analytics.preference")
+ * v2 was introduced to cover GA4 and Clarity together (Clarity is now off). The older key ("golo.analytics.preference")
  * was saved before session recordings existed, so a grant under it doesn't
  * cover them and is asked again; a decline under it still holds.
  *
