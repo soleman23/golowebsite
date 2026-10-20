@@ -283,7 +283,7 @@ const privacySections: LegalSection[] = [
       ] },
       { kind: "p", html: "Your choice itself is saved in your browser’s local storage under the name <strong>golo.analytics.consent.v2</strong>, as “granted” or “denied,” whichever way you choose, so the website can respect it on your next visit. The same value is also saved under the older name <strong>golo.analytics.preference</strong>, so pages still open from an earlier version of the website respect a decline too. Both stay until you change your choice or clear your browser’s site data." },
       { kind: "h3", text: "What Google receives and how it may use it" },
-      { kind: "p", html: "When Google Analytics is on, your browser sends the information above, with your IP address, directly to Google. Google processes it to provide the service to GoLo. GoLo has turned off all of the Google Analytics data-sharing settings, so Google does not use this data to improve its own products and services, to include in benchmarking or modeling, for technical support access, or for recommendations to GoLo. GoLo has also turned off Google signals and ad-personalization signals in its tag. Learn more in <a href=\"https://policies.google.com/technologies/partner-sites\" rel=\"noopener noreferrer\">How Google uses information from sites or apps that use our services</a>." },
+      { kind: "p", html: "When Google Analytics is on, your browser sends the information above, with your IP address, directly to Google. Google processes it to provide the service to GoLo. On October 20, 2026, GoLo turned off all of the Google Analytics data-sharing settings, so Google does not use data collected since then to improve its own products and services, include it in benchmarking or modeling, give its technical support staff access to it, or make recommendations to GoLo. Before that date, those settings were on. GoLo has also turned off Google signals and ad-personalization signals in its tag. Learn more in <a href=\"https://policies.google.com/technologies/partner-sites\" rel=\"noopener noreferrer\">How Google uses information from sites or apps that use our services</a>." },
       { kind: "h3", text: "Your choices" },
       {
         kind: "ul",
@@ -698,9 +698,9 @@ export const termsDoc: LegalDoc = {
       num: "11",
       id: "termination",
       title: "Termination and Account Deletion",
-      // Prototype said "instant and permanent". /privacy §8 — the reviewed
+      // Prototype said "instant and permanent". /privacy §8 — the published
       // document — says in-app or by email, completed within 30 days, with
-      // shared rounds de-identified. The reviewed text wins.
+      // shared rounds de-identified. The published text wins.
       plain:
         "Delete your account from the app any time. Shared rounds stay for the other players with your name removed.",
       blocks: [

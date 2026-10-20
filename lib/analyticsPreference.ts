@@ -13,9 +13,10 @@ import { looksPersonal } from "@/lib/analytics";
 export type AnalyticsChoice = "granted" | "denied";
 
 /**
- * v2 was introduced to cover GA4 and Clarity together (Clarity is now off). The older key ("golo.analytics.preference")
- * was saved before session recordings existed, so a grant under it doesn't
- * cover them and is asked again; a decline under it still holds.
+ * v2 was introduced to cover GA4 and Clarity together (Clarity is now off).
+ * The older key ("golo.analytics.preference") was saved before session
+ * recordings existed, so a grant under it doesn't cover them and is asked
+ * again; a decline under it still holds.
  *
  * The older key is never deleted, and every decline is mirrored into it:
  * pages still open from the earlier, opt-out build read only that key and

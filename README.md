@@ -247,11 +247,10 @@ months (Explorations only; standard reports are aggregated and unaffected);
 Google signals off; user-provided data collection off; no Google Ads links;
 granular location and device data on; property-level ads personalization
 allowed (the tag sends `npa=1` regardless); email redaction on. Account
-data-sharing: all four settings off ("Google products & services",
-"Modeling contributions & business insights", "Technical support" and
-"Recommendations for your business"; all off since October 20). The Privacy
-Policy describes exactly this. 20 event-scoped custom dimensions are registered for the
-params above.
+data-sharing: all four settings turned off on October 20 ("Google products &
+services", "Modeling contributions & business insights", "Technical support"
+and "Recommendations for your business"). The Privacy Policy describes exactly
+this. 20 event-scoped custom dimensions are registered for the params above.
 
 Custom metrics: "Web vital time" (`metric_ms`, Time → Milliseconds) and "CLS
 score" (`cls_score`, Standard), created October 19, 2026. The earlier
