@@ -8,7 +8,7 @@
  * route deliberately won't say otherwise. Nothing here should ever tell a
  * visitor whether some address is a member.
  *
- * The hidden "website" input is a honeypot (lib/subscribeGuard.ts): kept out
+ * The hidden "hp_note" input is a honeypot (lib/subscribeGuard.ts): kept out
  * of sight, the tab order and the accessibility tree, so only a bot fills it,
  * and the route quietly drops any submission that does.
  */
@@ -37,7 +37,7 @@ export function NewsletterBand({ page = "blog" }: { page?: string }) {
     const parsed = subscribeSchema.safeParse({
       email,
       source: page,
-      website: honeypotRef.current?.value ?? "",
+      hp_note: honeypotRef.current?.value ?? "",
       ...landingAttribution(),
     });
     if (!parsed.success) {
@@ -149,14 +149,18 @@ export function NewsletterBand({ page = "blog" }: { page?: string }) {
               </div>
 
               <div className={styles.honeypot} aria-hidden="true">
-                <label htmlFor={`${uid}-website`}>Leave this field empty</label>
+                <label htmlFor={`${uid}-hp`}>Leave this field empty</label>
+                {/* A meaningless name plus the 1Password and LastPass opt-outs,
+                    so no autofill puts a real visitor's details in here. */}
                 <input
-                  id={`${uid}-website`}
+                  id={`${uid}-hp`}
                   ref={honeypotRef}
                   type="text"
-                  name="website"
+                  name="hp_note"
                   tabIndex={-1}
                   autoComplete="off"
+                  data-1p-ignore
+                  data-lpignore="true"
                   defaultValue=""
                 />
               </div>

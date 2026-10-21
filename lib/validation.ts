@@ -136,7 +136,7 @@ export const subscribeSchema = z.object({
    * bot. /api/subscribe checks it before this parse (lib/subscribeGuard.ts)
    * and never stores it.
    */
-  website: z.string().max(200).optional(),
+  hp_note: z.string().max(200).optional(),
   ...attributionFields,
 }).transform(withCampaignTags);
 

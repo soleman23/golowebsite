@@ -9,8 +9,9 @@
  *
  * Before any of that, lib/subscribeGuard.ts: a 4 KB body cap, an Origin
  * check, a rate limit and a honeypot. Every request that gets past the Origin
- * and size checks counts against the limit, dropped ones included. Blocks are
- * logged as a reason code only, never the address, IP or key.
+ * and size checks counts against its client's limit, dropped ones included;
+ * only a sign-up that passes validation counts against the global ceiling.
+ * Blocks are logged as a reason code only, never the address, IP or key.
  */
 
 import { NextResponse } from "next/server";
@@ -22,45 +23,65 @@ import { siteConfig } from "@/lib/siteConfig";
 import {
   MAX_BODY_BYTES,
   clientKey,
+  createLogThrottle,
   createRateLimiter,
+  headerShape,
   isAllowedOrigin,
   isHoneypotFilled,
   readBodyText,
+  requestHost,
+  type RateLimitResult,
 } from "@/lib/subscribeGuard";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
-// Module scope, so it lives as long as the process (see subscribeGuard.ts).
+// Module scope, so they live as long as the process (see subscribeGuard.ts).
 const limiter = createRateLimiter();
-const originPolicy = {
-  siteUrl: siteConfig.url,
-  production: process.env.NODE_ENV === "production",
-};
+const shapeLogDue = createLogThrottle();
+const production = process.env.NODE_ENV === "production";
 
 function tooLarge() {
   console.warn("[subscribe] blocked: too_large");
   return NextResponse.json({ error: "Request too large." }, { status: 413 });
 }
 
+function tooMany(limit: Exclude<RateLimitResult, { ok: true }>) {
+  console.warn(`[subscribe] blocked: rate_limit_${limit.scope}`);
+  return NextResponse.json(
+    { error: "Too many sign-up attempts. Please try again in a few minutes." },
+    { status: 429, headers: { "Retry-After": String(limit.retryAfterSeconds) } },
+  );
+}
+
 export async function POST(request: Request) {
-  if (!isAllowedOrigin(request.headers.get("origin"), originPolicy)) {
+  // Which header carries the client on the live host: the shape only, on the
+  // first request after a start and then at most hourly.
+  if (shapeLogDue()) {
+    console.info(`[subscribe] client-ip headers: ${headerShape(request.headers)}`);
+  }
+
+  const originAllowed = isAllowedOrigin(request.headers.get("origin"), {
+    siteUrl: siteConfig.url,
+    production,
+    host: requestHost(request.headers),
+  });
+  if (!originAllowed) {
     console.warn("[subscribe] blocked: origin");
-    return NextResponse.json({ error: "Forbidden." }, { status: 403 });
+    return NextResponse.json(
+      { error: "This sign-up form only works on golo.golf." },
+      { status: 403 },
+    );
   }
 
   if (Number(request.headers.get("content-length")) > MAX_BODY_BYTES) {
     return tooLarge();
   }
 
+  // Also refuses everyone while the global ceiling is full, before the body
+  // is read, so a flood still gets a cheap 429.
   const limit = limiter.hit(clientKey(request.headers));
-  if (!limit.ok) {
-    console.warn(`[subscribe] blocked: rate_limit_${limit.scope}`);
-    return NextResponse.json(
-      { error: "Too many sign-up attempts. Please try again in a few minutes." },
-      { status: 429, headers: { "Retry-After": String(limit.retryAfterSeconds) } },
-    );
-  }
+  if (!limit.ok) return tooMany(limit);
 
   const body = await readBodyText(request.body);
   if (body === null) return tooLarge();
@@ -103,9 +124,15 @@ export async function POST(request: Request) {
     landingMedium,
     landingCampaign,
     landingContent,
-    // Not `website`: the honeypot is never stored, and the create below names
+    // Not `hp_note`: the honeypot is never stored, and the create below names
     // its columns one by one rather than spreading parsed.data.
   } = parsed.data;
+
+  // Only a sign-up that would actually be saved counts against the global
+  // ceiling, so junk can't close it for everybody.
+  const charged = limiter.charge();
+  if (!charged.ok) return tooMany(charged);
+
   let alreadyOnList = false;
 
   try {

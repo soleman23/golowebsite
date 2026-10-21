@@ -76,8 +76,9 @@ jobs:
         run: npm run test:attribution
 
       # Newsletter abuse guard: rate limits, client keys, Origin check,
-      # honeypot, body cap (scripts/test-subscribe-guard.mjs). Hermetic, no
-      # server.
+      # honeypot, body cap (scripts/test-subscribe-guard.mjs), then the real
+      # /api/subscribe handler with a fake database and mailer
+      # (scripts/test-subscribe-route.mjs). Hermetic, no server.
       - name: Subscribe guard tests
         if: '!cancelled()'
         run: npm run test:guard
