@@ -147,6 +147,7 @@ const privacySections: LegalSection[] = [
           "<strong>Participant information entered by another user:</strong> a round organizer may enter another participant’s name, email address, phone number, handicap, or payment handle to organize a round and match that participant to an account. Users should provide another person’s information only when they have permission to do so.",
           "<strong>Communications:</strong> information included in support requests, emails, feedback, or other messages sent to us.",
           "<strong>Website download-link requests:</strong> the phone number you enter when you ask us to text you an app download link, together with delivery status and related technical records.",
+          "<strong>Where a website sign-up came from:</strong> when you join the newsletter or ask for a download link on the website, we also keep where that visit started: the path of the first page you landed on (not the rest of its web address), the domain of the website that referred you, and up to four names from the link you followed, if it carried them: its source, medium, campaign, and placement. We store the source only if, once converted to lower case, it is at most 64 characters of letters, digits, dots, hyphens, and underscores, with no @ sign, no run of seven or more digits (even if separated by spaces, dots, hyphens, or underscores), no UUID, and no run of 16 or more characters made only of the letters a–f and digits. We store the medium, campaign, and placement only when, together with the source, they exactly match a combination from GoLo’s own list of tagged-link names; otherwise we store none of the three. Apart from the page path and these names, we keep nothing from the link. We use these details only to count, in aggregate, which pages, websites, and links bring sign-ups.",
         ],
       },
       { kind: "h3", text: "Location and course-search information" },
@@ -326,6 +327,7 @@ const privacySections: LegalSection[] = [
           "<strong>Precise device location:</strong> cached by the current app on the device for up to 24 hours. GoLo does not intentionally build a long-term precise-location history. Routine server or provider logs may retain request data for a limited period.",
           "<strong>Push tokens:</strong> while notifications are enabled or until the token is revoked, expires, or the account is deleted.",
           "<strong>Support, download-link, email, and text-message records:</strong> <!-- -->generally up to 24 months after the communication, unless a longer period is needed to resolve an issue or comply with law.",
+          "<strong>Newsletter sign-up records:</strong> the email address you signed up with, when and where on the website you signed up, and where that visit came from: kept until you ask us to delete them, as described in <a href=\"#section-7\">Your Choices and Privacy Rights</a>, unless a longer period is needed to resolve an issue or comply with law. Unsubscribing from newsletter emails stops the emails; to have the sign-up record itself deleted, ask us. Details of where a website sign-up came from are kept with the newsletter or download-link record they belong to, and deleted with it.",
           "<strong>Website analytics:</strong> as described in <a href=\"#website-analytics\">Website Analytics</a>: up to 14 months for analysis in Google Analytics (Google’s aggregated reports aren’t limited by that setting). Earlier Clarity recordings: 30 days for most, up to 9 months for heatmaps and a sample Microsoft keeps.",
           "<strong>Other analytics, logs, and crash diagnostics:</strong> generally up to 24 months, unless a shorter provider setting is available and appropriate.",
           "<strong>Backups:</strong> deleted information may remain in encrypted or access-restricted backups for up to 90 days before it is overwritten.",
@@ -470,7 +472,8 @@ export const privacyDoc: LegalDoc = {
   kicker: "LEGAL",
   lead: "What GoLo collects, how it gets used, and exactly what happens when you delete your account. Every section has a plain-English note beside the legal language.",
   dateLabel: "Last updated",
-  // Set to the day this version deploys.
+  // Set to the day this version deploys (#120: sign-up attribution and
+  // newsletter retention, on top of #122).
   effective: "October 21, 2026",
   effectiveISO: "2026-10-21",
   entity: siteConfig.addressShort,

@@ -9,6 +9,7 @@ import { z } from "zod";
 // file rides along with the home page's phone-capture form, so anything it
 // imports lands in the home bundle.
 import { contactTopicIds } from "@/lib/content/contactTopics";
+import { campaignTags, sourceName } from "@/lib/campaigns";
 
 // Accepts common US-style phone formats: digits, spaces, dashes, parens, +.
 // Requires 10–15 digits once stripped.
@@ -32,6 +33,8 @@ const attributionFields = {
     .trim()
     .max(200)
     .startsWith("/")
+    // A path only: a crafted request can't add a query string or fragment.
+    .refine((path) => !/[?#]/.test(path))
     .optional()
     .catch(undefined),
   referrerHost: z
@@ -42,22 +45,54 @@ const attributionFields = {
     .regex(/^[a-z0-9.-]+$/)
     .optional()
     .catch(undefined),
-  /** The landing URL's utm_source; the same rule lib/attribution.ts applies. */
+  /**
+   * The landing URL's utm_source; the same rule lib/attribution.ts applies:
+   * `^[a-z0-9._-]{1,64}$` after trim and lower-case, and nothing that looks
+   * personal (no "@", no run of 7+ digits). A phone-shaped utm_source is
+   * dropped here even though the address-bar scrub runs after the landing is
+   * read.
+   */
   landingSource: z
-    .string()
-    .trim()
-    .toLowerCase()
-    .regex(/^[a-z0-9._-]{1,64}$/)
-    .optional()
+    .unknown()
+    .transform((value) => sourceName(value))
     .catch(undefined),
+  /**
+   * The landing URL's utm_medium, utm_campaign and utm_content. Read here as
+   * plain strings; withCampaignTags below keeps them only as a combination
+   * from the link dictionary (lib/campaigns.ts).
+   */
+  landingMedium: z.unknown().optional(),
+  landingCampaign: z.unknown().optional(),
+  landingContent: z.unknown().optional(),
 };
 
-export const textLinkSchema = z.object({
-  phone: phoneSchema,
-  /** Which placement the number came from. Not user input — the form sets it. */
-  source: z.string().trim().max(40).optional(),
-  ...attributionFields,
-});
+/**
+ * Replaces the three raw campaign values with the dictionary's verdict: all
+ * three as given (trimmed, lower-cased) when they form a combination defined
+ * for the landing's source, otherwise all three null. Never fails the parse.
+ */
+function withCampaignTags<
+  T extends {
+    landingSource?: string;
+    landingMedium?: unknown;
+    landingCampaign?: unknown;
+    landingContent?: unknown;
+  },
+>({ landingMedium, landingCampaign, landingContent, ...rest }: T) {
+  return {
+    ...(rest as Omit<T, "landingMedium" | "landingCampaign" | "landingContent">),
+    ...campaignTags(rest.landingSource, landingMedium, landingCampaign, landingContent),
+  };
+}
+
+export const textLinkSchema = z
+  .object({
+    phone: phoneSchema,
+    /** Which placement the number came from. Not user input — the form sets it. */
+    source: z.string().trim().max(40).optional(),
+    ...attributionFields,
+  })
+  .transform(withCampaignTags);
 
 export const contactSchema = z.object({
   name: z.string().trim().min(1, "We need something to call you.").max(120),
@@ -97,7 +132,7 @@ export const subscribeSchema = z.object({
   /** Which page the signup came from. Not user input — the form sets it. */
   source: z.string().trim().max(40).optional(),
   ...attributionFields,
-});
+}).transform(withCampaignTags);
 
 export type ContactInput = z.infer<typeof contactSchema>;
 export type TextLinkInput = z.infer<typeof textLinkSchema>;

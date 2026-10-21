@@ -93,12 +93,36 @@ GA4 is the "GoLo Golf" property, G-36182P0H4D. It received nothing before Octobe
   - `newsletter_signup` hasn't arrived yet. Mark it as a secondary key event once it does.
 - **Contact form.** The contact form sends `contact_submit`, not `generate_lead`. It isn't a key event.
 
+## Implemented October 21, 2026 (soleman23/golowebsite#120)
+
+Approved by the owner on October 21 under soleman23/golo#790; the link design is soleman23/golo `marketing/social/MEASUREMENT.md` §2.
+
+- Leads also record `landingMedium`, `landingCampaign` and `landingContent`: the landing URL's `utm_medium`, `utm_campaign` and `utm_content`, read from the same first landing as `landingSource`. Same rules as the other attribution fields: memory only on the client, no cookie or storage, so the cookie policy is unchanged.
+- The three are kept only as a complete combination from the link dictionary (`lib/campaigns.ts`) for the landing's source: `instagram` / `organic_social` / a social campaign / `bio` or `story_` + `^[a-z]{2}[0-9]{2}_[a-z]$`; `tiktok` / `organic_social` / a social campaign / `bio`; `youtube` / `organic_social` / a social campaign / `channel`; `hostinger_reach` / `email` / an email campaign / `header` or `cta_button`. Anything else stores all three as null; a failed check never rejects the lead. Values are trimmed and lower-cased first.
+- Campaign IDs are a list in `lib/campaigns.ts`, each marked social or email. Today the only one is `golo_prelaunch_2026q4` (social). Add a new ID in the same change that first uses it in a link; until then it's stored as null.
+- `landingSource` keeps its pattern and is also dropped when it looks personal (an `@` or a run of seven or more digits, `looksPersonal` in `lib/analytics.ts`) or like an identifier (a UUID or a run of 16+ hex characters), so a phone-shaped or ID-shaped `utm_source` is no longer stored. `landingPath` is kept only as a path: the server drops a value containing `?` or `#`. The browser applies the same checks before sending (`lib/attribution.ts`); the server's (`lib/validation.ts`) are the ones that count.
+- A repeat newsletter sign-up still leaves the row alone (`update: {}`), new fields included.
+- Privacy Policy, "Information you provide": new item "Where a website sign-up came from", which names landing page, referrer domain and the four link names explicitly (this also settles the "related technical records" question below for those fields). "Data Retention": new item "Newsletter sign-up records": kept until the subscriber asks for deletion (via Your Choices and Privacy Rights); unsubscribing stops emails but doesn't delete the record; attribution details are kept and deleted with the sign-up or download-link record. "Last updated" is October 21, 2026, the deploy date (the same day as #122).
+- Tests: `npm run test:attribution` (`scripts/test-attribution.mjs`, also a CI step) parses payloads through both routes' schemas, with no server or database. It covers the full Instagram bio set kept; unknown medium, unlisted campaign, `john_smith`, a 10-digit value, a UUID, `<script>`, over-long values and impossible combinations stored as null; `utm_source=5415551234`, a UUID source and a long hex source dropped; `utm_source=chatgpt.com` kept; a `landingPath` with `?` or `#` dropped without rejecting the submission.
+- Lint, typecheck and production build verified. No database touched.
+
+**Deploy order:** apply the six columns to the website's Supabase database ("golowebsite") **before** merging, since Hostinger builds `main` automatically and the new code writes the new columns on insert. The columns are nullable, so adding them first doesn't affect the live build:
+
+```sql
+ALTER TABLE "PhoneLead" ADD COLUMN "landingMedium" TEXT, ADD COLUMN "landingCampaign" TEXT, ADD COLUMN "landingContent" TEXT;
+ALTER TABLE "NewsletterLead" ADD COLUMN "landingMedium" TEXT, ADD COLUMN "landingCampaign" TEXT, ADD COLUMN "landingContent" TEXT;
+```
+
+Then confirm all six exist and are nullable and record it in the PR. After deploy, run the diagnostic sign-up from MEASUREMENT §2 with a new designated test address, record it on golo#790, and delete the row. Not yet applied.
+
+Counsel: the new privacy item and the newsletter retention item join the open privacy-policy question below.
+
 ## Remaining
 
 - Search Console: re-check index coverage, selected canonicals and field Core Web Vitals against the October 8 baseline. Due between October 22 and November 5 (two to four weeks after the deploy).
 - GA4 has been on since the October 8 build (NEXT_PUBLIC_ANALYTICS_ENABLED=true in hPanel; measurement ID G-36182P0H4D, the siteConfig default), but it only receives data since the October 16 fix (#100). `generate_lead` is a key event as of October 18; see above. Still to do: mark `newsletter_signup` as a secondary key event once it first arrives.
 - GA4 is explicit opt-in (notice on first visit, Privacy choices in the footer), back from the brief October 19 opt-out. Microsoft Clarity was turned off on October 20 (#116). Read GA as an opted-in sample, not total traffic: visitors who decline or ignore the notice, send Global Privacy Control, or block trackers aren't counted. Search Console clicks and the lead table (landing page and referrer) remain the volume cross-check. October 19–20 data includes the opt-out period and localhost test visits; `docs/analytics-data-notes.md` has the exact window, the test traffic and the exclusion options.
-- Privacy policy: the download-link bullet mentions "related technical records", and the usage section lists "referring pages". Counsel to confirm that covers landing page and referrer host on lead rows, or add them explicitly.
+- Privacy policy: the download-link bullet mentions "related technical records", and the usage section lists "referring pages". Counsel to confirm that covers landing page and referrer host on lead rows, or add them explicitly. Since #120 the "Where a website sign-up came from" item lists them explicitly, with the campaign fields; counsel to review that item and the new newsletter retention item (kept until the subscriber asks for deletion; unsubscribing doesn't delete the record).
 - Verifiable authorship / reviewer information; do not invent credentials or people.
 - Dedicated hero and mid-article photos for /blog/pressing and /blog/index-vs-course-handicap (source PNGs into tmp/img-src/, then scripts/generate-blog-images.mjs).
 - Add maintained article revision dates when substantively editing content.
