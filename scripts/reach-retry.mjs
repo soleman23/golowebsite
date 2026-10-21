@@ -71,7 +71,7 @@ try {
   }
 } catch (err) {
   // The code and the first line only: a Prisma error can echo the query.
-  console.error("Reach retry failed:", err?.code ?? err?.errorCode ?? err?.name ?? "error", String(err?.message ?? "").split("\n")[0].slice(0, 200));
+  console.error("Reach retry failed:", err?.code ?? err?.errorCode ?? err?.name ?? "error", (String(err?.message ?? "").split("\n").find((line) => line.trim()) ?? "").trim().slice(0, 200));
   process.exitCode = 1;
 } finally {
   await prisma.$disconnect();
