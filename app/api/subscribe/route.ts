@@ -34,7 +34,9 @@ export async function POST(request: Request) {
 
   const client = getReachClient();
   const { status, body } = await handleSubscribe(payload, {
-    store: prismaSubscribeStore(prisma, assertDatabaseConfigured),
+    store: prismaSubscribeStore(prisma, assertDatabaseConfigured, {
+      syncEnabled: client !== null,
+    }),
     notify: sendNewsletterNotification,
     reach: client ? { client, syncStore: prismaLeadSyncStore(prisma) } : null,
     schedule: (task) => after(task),

@@ -8,7 +8,13 @@
  * limits (soleman23/golo#791). None of these is ever NEXT_PUBLIC_.
  *
  * Endpoints (developers.hostinger.com OpenAPI, read 2026-10-21):
- * - list:   GET  /api/reach/v1/profiles/{profileUuid}/contacts?search=&subscription_status=
+ * - list:   GET  /api/reach/v1/profiles/{profileUuid}/contacts?search=&subscription_status=&per_page=
+ *   Paginated (per_page default 25, max 100; `meta.total` counts all
+ *   matches), and `search` is a search term, not an exact filter. We ask for
+ *   100 and match the address exactly ourselves. If Reach reports more
+ *   matches than it returned, or the pagination info is missing, the lookup
+ *   counts as a failure, never as "not in Reach": an address on page two
+ *   could be the unsubscribed one.
  * - create: POST /api/reach/v1/profiles/{profileUuid}/contacts {email}
  *   "If double opt-in is enabled, the contact will be created with a pending
  *   status and a confirmation email will be sent." Double opt-in is a profile
@@ -69,16 +75,30 @@ export function getReachClient(env: Env = process.env): ReachClient | null {
   return config ? createHttpReachClient(config) : null;
 }
 
-/** Contacts from a list response, whichever envelope Reach uses; null if none fits. */
-function contactsOf(body: unknown): unknown[] | null {
-  if (Array.isArray(body)) return body;
-  if (body && typeof body === "object") {
-    const data = (body as { data?: unknown }).data;
-    if (Array.isArray(data)) return data;
-    if (data && typeof data === "object") {
-      const inner = (data as { data?: unknown }).data;
-      if (Array.isArray(inner)) return inner;
-    }
+const PER_PAGE = 100;
+
+/** `total` from a `meta` object, if it's a whole number. */
+function totalOf(meta: unknown): number | null {
+  const total = (meta as { total?: unknown } | null | undefined)?.total;
+  return typeof total === "number" && Number.isInteger(total) && total >= 0 ? total : null;
+}
+
+/**
+ * The contacts from a list response and its `meta.total` (at the top level
+ * or beside a nested `data`). Null if either is missing: without the total
+ * we can't know the page holds every match.
+ */
+function pageOf(body: unknown): { contacts: unknown[]; total: number } | null {
+  if (!body || typeof body !== "object" || Array.isArray(body)) return null;
+  const outer = body as { data?: unknown; meta?: unknown };
+  if (Array.isArray(outer.data)) {
+    const total = totalOf(outer.meta);
+    return total === null ? null : { contacts: outer.data, total };
+  }
+  if (outer.data && typeof outer.data === "object") {
+    const inner = outer.data as { data?: unknown; meta?: unknown };
+    const total = totalOf(inner.meta) ?? totalOf(outer.meta);
+    if (Array.isArray(inner.data) && total !== null) return { contacts: inner.data, total };
   }
   return null;
 }
@@ -124,13 +144,18 @@ export function createHttpReachClient(
     email: string,
     status: ReachContactStatus,
   ): Promise<boolean | string> {
-    const params = new URLSearchParams({ search: email, subscription_status: status });
+    const params = new URLSearchParams({
+      search: email,
+      subscription_status: status,
+      per_page: String(PER_PAGE),
+    });
     const res = await call(`${contactsUrl}?${params}`, { method: "GET" });
     if (typeof res === "string") return res;
     if (!res.ok) return `http_${res.status}`;
-    const contacts = contactsOf(await res.json().catch(() => undefined));
-    if (!contacts) return "bad_response";
-    return hasEmail(contacts, email);
+    const page = pageOf(await res.json().catch(() => undefined));
+    if (!page) return "bad_response";
+    if (page.total > page.contacts.length) return "incomplete_page";
+    return hasEmail(page.contacts, email);
   }
 
   return {

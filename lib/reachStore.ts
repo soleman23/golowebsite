@@ -25,13 +25,35 @@ const syncFields = {
 
 const RETRYABLE: ReachSyncStatus[] = ["pending", "failed"];
 
+/**
+ * `syncEnabled` false (REACH_SYNC_ENABLED off) keeps every Reach column out
+ * of the query: nothing is written to or read from them, so a deploy that
+ * reaches a database without the #121 columns still saves sign-ups while the
+ * switch is off. (Add the columns first anyway; docs/seo-progress.md.)
+ */
 export function prismaSubscribeStore(
   prisma: PrismaClient,
   beforeSave: () => void = () => {},
+  { syncEnabled }: { syncEnabled: boolean } = { syncEnabled: false },
 ): SubscribeStore {
   return {
     async save(lead: NewLead) {
       beforeSave();
+      if (!syncEnabled) {
+        const { reachSyncStatus: _unused, ...withoutReach } = lead;
+        void _unused;
+        const existing = await prisma.newsletterLead.findUnique({
+          where: { email: lead.email },
+          select: { id: true },
+        });
+        const row = await prisma.newsletterLead.upsert({
+          where: { email: lead.email },
+          update: {},
+          create: withoutReach,
+          select: { id: true },
+        });
+        return { id: row.id, created: !existing, reachSyncStatus: null };
+      }
       const existing = await prisma.newsletterLead.findUnique({
         where: { email: lead.email },
         select: { id: true },
@@ -87,6 +109,13 @@ export function prismaLeadSyncStore(prisma: PrismaClient): LeadSyncStore {
       return prisma.newsletterLead.count({
         where: { reachSyncStatus: "failed", reachSyncAttempts: { gte: maxAttempts } },
       });
+    },
+    async requeueFailed() {
+      const { count } = await prisma.newsletterLead.updateMany({
+        where: { reachSyncStatus: "failed" },
+        data: { reachSyncStatus: "pending", reachSyncAttempts: 0, reachLastAttemptAt: null },
+      });
+      return count;
     },
   };
 }

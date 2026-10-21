@@ -14,7 +14,9 @@
  *   subscribed or confirmed) is never added again, by a retry or a repeat
  *   sign-up.
  * - A saved sign-up is never lost to a Reach failure: it stays "failed" and
- *   the retry job tries again with backoff, up to MAX_ATTEMPTS.
+ *   the retry job tries again with backoff, up to MAX_ATTEMPTS (about 28.6
+ *   hours from the first attempt to the last). After a longer outage,
+ *   requeueFailed puts failed rows back in the queue.
  * - We never copy Reach's subscriber state. reachSyncStatus says only what
  *   this site has done: pending | synced | failed | skipped_ineligible, or
  *   null for a row that was never queued.
@@ -70,11 +72,17 @@ export const NEWSLETTER_SOURCES = ["blog", "post"] as const;
  */
 export const NEWSLETTER_CONSENT_SINCE = new Date("2026-08-15T22:17:54Z");
 
-export const MAX_ATTEMPTS = 6;
+/**
+ * 11 attempts. The waits between them are 5, 10, 20, 40, 80, 160 and 320
+ * minutes, then 6 h three times: 1,715 minutes, about 28.6 hours from the
+ * first attempt to the last, so a Reach outage of a day doesn't strand a
+ * sign-up. (Plus up to one retry-cron interval per wait.)
+ */
+export const MAX_ATTEMPTS = 11;
 const BACKOFF_BASE_MS = 5 * 60 * 1000;
 const BACKOFF_CAP_MS = 6 * 60 * 60 * 1000;
 
-/** Wait before attempt n+1 after n attempts: 5 min, 10, 20, 40, 80, … capped at 6 h. */
+/** Wait before attempt n+1 after n attempts: 5 min, doubling, capped at 6 h. */
 export function backoffMs(attempts: number): number {
   if (attempts <= 0) return 0;
   return Math.min(BACKOFF_BASE_MS * 2 ** (attempts - 1), BACKOFF_CAP_MS);
@@ -121,6 +129,12 @@ export interface LeadSyncStore {
   listRetryable(maxAttempts: number, limit: number): Promise<SyncLead[]>;
   /** Failed rows that have used every attempt. */
   countExhausted(maxAttempts: number): Promise<number>;
+  /**
+   * Every "failed" row back to "pending" with no attempts and no last
+   * attempt. Returns how many. Suppression still applies: each one is looked
+   * up in Reach again before anything is created.
+   */
+  requeueFailed(): Promise<number>;
 }
 
 export type SyncLog = (message: string, fields?: Record<string, unknown>) => void;
@@ -272,6 +286,29 @@ export async function retryReachSync(
     });
   }
   return summary;
+}
+
+/**
+ * `reach:retry -- --requeue-failed --confirm`: after an outage longer than
+ * the retry window, puts failed rows back in the queue. Refuses unless
+ * REACH_SYNC_ENABLED=true and --confirm is given. Counts only.
+ */
+export async function requeueFailed(opts: {
+  store: LeadSyncStore;
+  args: string[];
+  env: Record<string, string | undefined>;
+  print: (line: string) => void;
+}): Promise<{ mode: "requeued" | "refused"; count: number; exitCode: number }> {
+  const { store, args, env, print } = opts;
+  if (!(isReachSyncFlagOn(env) && args.includes("--confirm"))) {
+    print(
+      "Refused: --requeue-failed needs REACH_SYNC_ENABLED=true and --confirm. Nothing was changed.",
+    );
+    return { mode: "refused", count: 0, exitCode: 2 };
+  }
+  const count = await store.requeueFailed();
+  print(`Re-queued failed rows as pending: ${count}.`);
+  return { mode: "requeued", count, exitCode: 0 };
 }
 
 /** A lead that was never queued, as the backfill reads it. No address. */

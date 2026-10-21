@@ -19,7 +19,7 @@ globalThis.fetch = async () => {
 };
 
 const { handleSubscribe } = await import("../lib/subscribe.ts");
-const { syncLead, retryReachSync, runBackfill, MAX_ATTEMPTS, NEWSLETTER_CONSENT_SINCE } =
+const { syncLead, retryReachSync, runBackfill, requeueFailed, backoffMs, MAX_ATTEMPTS, NEWSLETTER_CONSENT_SINCE } =
   await import("../lib/reachSync.ts");
 const { createStubReachClient } = await import("../lib/reachStub.ts");
 const { getReachClient, createHttpReachClient, REACH_BASE_URL } = await import("../lib/reach.ts");
@@ -82,6 +82,15 @@ function memoryDb() {
       },
       async countExhausted(max) {
         return [...rows.values()].filter((r) => r.reachSyncStatus === "failed" && r.reachSyncAttempts >= max).length;
+      },
+      async requeueFailed() {
+        let n = 0;
+        for (const row of rows.values()) {
+          if (row.reachSyncStatus !== "failed") continue;
+          Object.assign(row, { reachSyncStatus: "pending", reachSyncAttempts: 0, reachLastAttemptAt: null });
+          n += 1;
+        }
+        return n;
       },
     },
     backfillStore: {
@@ -375,7 +384,9 @@ await test("HTTP client (fake fetch): endpoints, bearer token, suppression parsi
     const u = new URL(String(url));
     if (init.method === "POST") return new Response("{}", { status: 200 });
     const status = u.searchParams.get("subscription_status");
-    const body = status === "unsubscribed" ? { data: [{ email: "Gone@Example.test" }] } : { data: [] };
+    const body = status === "unsubscribed"
+      ? { data: [{ email: "Gone@Example.test" }], meta: { total: 1 } }
+      : { data: [], meta: { total: 0 } };
     return new Response(JSON.stringify(body), { status: 200 });
   };
   const client = createHttpReachClient({ token: "tok-123", profileUuid: "prof-1" }, fakeFetch);
@@ -384,6 +395,7 @@ await test("HTTP client (fake fetch): endpoints, bearer token, suppression parsi
   expect(requests.length === 4, `${requests.length} list calls`);
   for (const r of requests) {
     expect(r.url.startsWith(`${REACH_BASE_URL}/api/reach/v1/profiles/prof-1/contacts?`), `url ${r.url}`);
+    expect(new URL(r.url).searchParams.get("per_page") === "100", `per_page in ${r.url}`);
     expect(r.init.headers.Authorization === "Bearer tok-123", "no bearer token");
   }
   const created = await client.createContact("new@example.test");
@@ -400,6 +412,97 @@ await test("HTTP client (fake fetch): endpoints, bearer token, suppression parsi
   const odd = createHttpReachClient({ token: "t", profileUuid: "p" }, async () => new Response("{\"x\":1}", { status: 200 }));
   const unknown = await odd.findContact("a@example.test");
   expect(!unknown.ok && unknown.error === "bad_response", "unparseable list treated as absent");
+});
+
+/** A fake Reach list endpoint: `pages[status]` is the response body, or a number for an HTTP error. */
+function fakeList(pages) {
+  return createHttpReachClient({ token: "t", profileUuid: "p" }, async (url) => {
+    const status = new URL(String(url)).searchParams.get("subscription_status");
+    const page = pages[status] ?? { data: [], meta: { total: 0 } };
+    return typeof page === "number"
+      ? new Response("{}", { status: page })
+      : new Response(JSON.stringify(page), { status: 200 });
+  });
+}
+
+await test("HTTP lookup: one status lookup failing is a failure, not absent", async () => {
+  for (const broken of [500, { data: [] }, { nope: true }, "garbage"]) {
+    const page = broken === "garbage" ? { data: "x", meta: { total: 0 } } : broken;
+    for (const status of ["unsubscribed", "pending", "subscribed", "confirmed"]) {
+      const result = await fakeList({ [status]: page }).findContact("gone@example.test");
+      expect(!result.ok, `${status} → ${JSON.stringify(broken)} read as ${JSON.stringify(result)}`);
+    }
+  }
+});
+
+await test("HTTP lookup: a near-miss address doesn't match", async () => {
+  const result = await fakeList({
+    unsubscribed: {
+      data: [{ email: "xgone@example.test" }, { email: "gone@example.testx" }, { email: "gone+1@example.test" }],
+      meta: { total: 3 },
+    },
+  }).findContact("gone@example.test");
+  expect(result.ok && result.status === null, `near-miss read as ${JSON.stringify(result)}`);
+  const exact = await fakeList({
+    unsubscribed: { data: [{ email: "xgone@example.test" }, { email: " GONE@example.test " }], meta: { total: 2 } },
+  }).findContact("gone@example.test");
+  expect(exact.ok && exact.status === "unsubscribed", `trimmed, case-insensitive match missed: ${JSON.stringify(exact)}`);
+});
+
+await test("HTTP lookup: more matches than returned (or no total) is a failure", async () => {
+  const hundred = Array.from({ length: 100 }, (_, i) => ({ email: `gone${i}@example.test` }));
+  const more = await fakeList({ unsubscribed: { data: hundred, meta: { total: 101 } } }).findContact("gone@example.test");
+  expect(!more.ok && more.error === "incomplete_page", `total > rows read as ${JSON.stringify(more)}`);
+  const noTotal = await fakeList({ pending: { data: [] } }).findContact("gone@example.test");
+  expect(!noTotal.ok, `missing meta.total read as ${JSON.stringify(noTotal)}`);
+  const nested = await fakeList({ confirmed: { data: { data: [{ email: "gone@example.test" }], meta: { total: 1 } } } }).findContact("gone@example.test");
+  expect(nested.ok && nested.status === "confirmed", `nested envelope: ${JSON.stringify(nested)}`);
+});
+
+await test("retry window covers at least 24 hours", async () => {
+  let total = 0;
+  for (let n = 1; n < MAX_ATTEMPTS; n += 1) total += backoffMs(n);
+  expect(total >= 24 * HOUR, `${(total / HOUR).toFixed(1)} h from first to last attempt`);
+  expect(backoffMs(MAX_ATTEMPTS - 1) === 6 * HOUR, "the 6 h cap is never reached");
+});
+
+await test("--requeue-failed: refused without the switch and --confirm, then re-sends after an outage", async () => {
+  const h = harness();
+  h.stub.failCreate("http_503", 999);
+  await h.signUp("outage@example.test");
+  await h.flush();
+  for (let i = 1; i <= MAX_ATTEMPTS + 2; i += 1) await h.retry(at(i * 24 * HOUR));
+  const row = h.db.byEmail("outage@example.test");
+  expect(row.reachSyncStatus === "failed" && row.reachSyncAttempts === MAX_ATTEMPTS, "not exhausted");
+  for (const [args, env] of [
+    [["--requeue-failed"], { REACH_SYNC_ENABLED: "true" }],
+    [["--requeue-failed", "--confirm"], {}],
+    [["--requeue-failed", "--confirm"], { REACH_SYNC_ENABLED: "TRUE" }],
+  ]) {
+    const r = await requeueFailed({ store: h.db.syncStore, args, env, print: () => {} });
+    expect(r.mode === "refused" && r.exitCode !== 0, `${args} ${JSON.stringify(env)}: ${r.mode}`);
+  }
+  expect(h.db.byEmail("outage@example.test").reachSyncStatus === "failed", "a refused requeue changed the row");
+  h.stub.failCreate("none", 0);
+  const ok = await requeueFailed({
+    store: h.db.syncStore,
+    args: ["--requeue-failed", "--confirm"],
+    env: { REACH_SYNC_ENABLED: "true" },
+    print: () => {},
+  });
+  expect(ok.mode === "requeued" && ok.count === 1, `requeue ${JSON.stringify(ok)}`);
+  const s = await h.retry(at(40 * 24 * HOUR));
+  expect(s.created === 1, `retry after requeue ${JSON.stringify(s)}`);
+  // Suppression still wins after a requeue.
+  const h2 = harness();
+  h2.stub.failCreate("http_503", 999);
+  await h2.signUp("requeue-gone@example.test");
+  await h2.flush();
+  h2.stub.contacts.set("requeue-gone@example.test", "unsubscribed");
+  await requeueFailed({ store: h2.db.syncStore, args: ["--confirm"], env: { REACH_SYNC_ENABLED: "true" }, print: () => {} });
+  const creates = h2.stub.creates();
+  await h2.retry(at(HOUR));
+  expect(h2.stub.creates() === creates, "requeue re-added an unsubscribed address");
 });
 
 await test("no log line carries an address or the token", async () => {
