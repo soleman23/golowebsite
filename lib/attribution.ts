@@ -11,12 +11,20 @@
  * undercount.
  *
  * The path only, never the query string (it can carry anything), and the
- * referrer's host only, never its path. The one query value kept is
- * `utm_source`, and only when it looks like a source name (a host or a short
- * slug): AI answer engines often strip the referrer but tag their links —
- * ChatGPT search appends utm_source=chatgpt.com — so without it those visits
- * read as direct.
+ * referrer's host only, never its path. From the query string, only the four
+ * utm_ tags are read:
+ *
+ * - `utm_source`, when it looks like a source name (a host or a short slug,
+ *   nothing that looks personal): AI answer engines often strip the referrer
+ *   but tag their links — ChatGPT search appends utm_source=chatgpt.com — so
+ *   without it those visits read as direct.
+ * - `utm_medium`, `utm_campaign` and `utm_content`, only as a combination
+ *   from GoLo's own link dictionary for that source (lib/campaigns.ts), so
+ *   sign-ups can be counted by campaign and placement (#120). Anything else
+ *   isn't sent. The server applies both checks again (lib/validation.ts).
  */
+
+import { campaignTags, sourceName, type CampaignTags } from "@/lib/campaigns";
 
 export type LandingAttribution = {
   landingPath: string;
@@ -24,7 +32,7 @@ export type LandingAttribution = {
   referrerHost?: string;
   /** The landing URL's utm_source, if it's a plain source name. */
   landingSource?: string;
-};
+} & CampaignTags;
 
 let landing: LandingAttribution | undefined;
 
@@ -46,24 +54,21 @@ function externalReferrerHost(): string | undefined {
   }
 }
 
-/** Lower-case letters, digits, dots, hyphens and underscores; up to 64. */
-const SOURCE_NAME = /^[a-z0-9._-]{1,64}$/;
-
-function landingSourceParam(): string | undefined {
-  const value = new URLSearchParams(window.location.search)
-    .get("utm_source")
-    ?.trim()
-    .toLowerCase();
-  return value && SOURCE_NAME.test(value) ? value : undefined;
-}
-
 /** Records the landing once per page load. LandingCapture calls it on mount. */
 export function captureLanding(): void {
   if (landing || typeof window === "undefined") return;
+  const query = new URLSearchParams(window.location.search);
+  const landingSource = sourceName(query.get("utm_source"));
   landing = {
     landingPath: window.location.pathname,
     referrerHost: externalReferrerHost(),
-    landingSource: landingSourceParam(),
+    landingSource,
+    ...campaignTags(
+      landingSource,
+      query.get("utm_medium"),
+      query.get("utm_campaign"),
+      query.get("utm_content"),
+    ),
   };
 }
 

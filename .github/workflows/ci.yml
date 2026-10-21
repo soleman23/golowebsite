@@ -69,6 +69,12 @@ jobs:
         if: '!cancelled()'
         run: npm run lint:content
 
+      # Lead attribution: the link dictionary and the landingSource rule
+      # (scripts/test-attribution.mjs). Hermetic, no database.
+      - name: Attribution tests
+        if: '!cancelled()'
+        run: npm run test:attribution
+
       # Runs even if lint failed, so one push surfaces every problem at once
       # instead of trickling them out over three round-trips.
       - name: Typecheck

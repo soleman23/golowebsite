@@ -36,6 +36,9 @@ export async function POST(request: Request) {
     landingPath,
     referrerHost,
     landingSource,
+    landingMedium,
+    landingCampaign,
+    landingContent,
   } = parsed.data;
 
   try {
@@ -50,6 +53,9 @@ export async function POST(request: Request) {
         landingPath,
         referrerHost,
         landingSource,
+        landingMedium,
+        landingCampaign,
+        landingContent,
         userAgent: request.headers.get("user-agent") ?? undefined,
       },
     });

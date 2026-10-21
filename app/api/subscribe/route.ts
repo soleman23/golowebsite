@@ -46,6 +46,9 @@ export async function POST(request: Request) {
     landingPath,
     referrerHost,
     landingSource,
+    landingMedium,
+    landingCampaign,
+    landingContent,
   } = parsed.data;
   let alreadyOnList = false;
 
@@ -62,7 +65,16 @@ export async function POST(request: Request) {
     await prisma.newsletterLead.upsert({
       where: { email },
       update: {},
-      create: { email, source, landingPath, referrerHost, landingSource },
+      create: {
+        email,
+        source,
+        landingPath,
+        referrerHost,
+        landingSource,
+        landingMedium,
+        landingCampaign,
+        landingContent,
+      },
     });
   } catch (err) {
     console.error("[subscribe] failed to save lead:", err);
