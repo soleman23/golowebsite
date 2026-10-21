@@ -7,6 +7,22 @@ const nextConfig = {
   output: "standalone",
 
   /**
+   * Scripts the hPanel Node.js cron runs from the deployed build
+   * (hbuilds/current/nodejs is the standalone output, with no npm and no
+   * source tree). Copied in at their repo paths, so on the server
+   * `scripts/reach-retry.mjs` sits beside `lib/` exactly as it does here.
+   * lib/reach*.ts is the Reach sync (#121); until it lands the glob matches
+   * nothing and the script only ever reports that sync is off.
+   */
+  outputFileTracingIncludes: {
+    "/api/subscribe": [
+      "./scripts/reach-retry.mjs",
+      "./scripts/register-ts.mjs",
+      "./lib/reach*.ts",
+    ],
+  },
+
+  /**
    * Old and guessable URLs, folded into the canonical ones. All permanent
    * (308) — these paths are never coming back, so the redirect is the answer
    * forever and search engines should move the equity across.
