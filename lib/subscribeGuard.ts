@@ -19,14 +19,17 @@
  * - The limits are per Node process. Hostinger runs the site as one process
  *   (as does ecosystem.config.js), so per process is the whole site. A second
  *   process would double both limits, and a restart clears them.
- * - The client is X-Real-IP when present, else the first X-Forwarded-For
- *   entry. Next sets X-Forwarded-For to the socket address when it's missing,
- *   so behind a proxy that sends neither, every visitor would share the
- *   proxy's key. Which header carries the client on Hostinger is still to be
- *   confirmed on the live host (headerShape logs it, values never).
- * - Either header can be spoofed by a non-browser client. That only rotates
- *   its key: each fake address gets its own 5, and the global ceiling caps
- *   what gets saved either way.
+ * - The client is the LAST X-Forwarded-For entry: the one the nearest proxy
+ *   appended, which a client can't choose. X-Real-IP isn't used: on the live
+ *   host (2026-10-21) a client-sent X-Real-IP reached the app unchanged, as
+ *   did a client-sent first X-Forwarded-For entry, and both let one machine
+ *   dodge the per-client limit. Next sets X-Forwarded-For to the socket
+ *   address when it's missing, so if no proxy appends one, every visitor
+ *   shares the proxy's key; headerShape logs which IP headers arrive (names
+ *   only) so the live host can show that.
+ * - A spoofed header that does get through only rotates a key: each fake
+ *   address gets its own 5, and the global ceiling caps what gets saved
+ *   either way.
  * - The global ceiling is an off-switch. Junk (honeypot, invalid input)
  *   doesn't charge it, but a flood of valid-looking sign-ups closes it, and it
  *   stays closed for as long as the flood lasts. Real visitors then get the
@@ -192,29 +195,44 @@ export function createRateLimiter({
 export type RateLimiter = ReturnType<typeof createRateLimiter>;
 
 /** The part of `Headers` the guard reads, so tests can pass a plain object. */
-export type HeaderReader = { get(name: string): string | null };
+export type HeaderReader = {
+  get(name: string): string | null;
+  /** Header names, when the reader has them (Headers does). */
+  keys?(): Iterable<string>;
+};
 
 /**
- * The client's address as the proxy reports it: X-Real-IP when present, else
- * the first X-Forwarded-For entry, else null.
+ * The client's address as the nearest proxy reports it: the last
+ * X-Forwarded-For entry (a proxy appends to the end, so entries before it
+ * may be whatever the client sent), else null.
  */
 export function clientAddress(headers: HeaderReader): string | null {
-  const real = headers.get("x-real-ip")?.trim();
-  if (real) return real;
-  return headers.get("x-forwarded-for")?.split(",")[0]?.trim() || null;
+  const entries = (headers.get("x-forwarded-for") ?? "")
+    .split(",")
+    .map((entry) => entry.trim())
+    .filter((entry) => entry !== "");
+  return entries.at(-1) ?? null;
 }
+
+/** Header names that could carry a client address, for headerShape. */
+const IP_HEADER_NAME = /(^|-)(ip|forwarded|client|real|connecting|cdn)(-|$)/i;
 
 /**
  * Which address headers a request carried, and how many X-Forwarded-For
- * entries: the shape only, never a value. Logged so the live host can show
- * which header holds the client.
+ * entries: names and counts only, never a value. Logged so the live host can
+ * show which header holds the client.
  */
 export function headerShape(headers: HeaderReader): string {
   const real = headers.get("x-real-ip")?.trim() ? "yes" : "no";
   const forwarded = (headers.get("x-forwarded-for") ?? "")
     .split(",")
     .filter((entry) => entry.trim() !== "").length;
-  return `x-real-ip=${real} xff_entries=${forwarded}`;
+  const names = headers.keys
+    ? [...new Set([...headers.keys()].map((name) => name.toLowerCase()))]
+        .filter((name) => IP_HEADER_NAME.test(name))
+        .sort()
+    : [];
+  return `x-real-ip=${real} xff_entries=${forwarded} ip_headers=${names.join(",") || "none"}`;
 }
 
 /**
