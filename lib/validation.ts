@@ -33,6 +33,8 @@ const attributionFields = {
     .trim()
     .max(200)
     .startsWith("/")
+    // A path only: a crafted request can't add a query string or fragment.
+    .refine((path) => !/[?#]/.test(path))
     .optional()
     .catch(undefined),
   referrerHost: z

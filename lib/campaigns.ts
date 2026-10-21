@@ -68,11 +68,18 @@ function normalize(value: unknown): string | undefined {
 /**
  * The landing's utm_source, if it's a plain source name: a host or a short
  * slug, with nothing that looks like personal data (no "@", no run of seven
- * or more digits). Otherwise undefined.
+ * or more digits) and nothing that looks like an identifier (a UUID or a long
+ * hex run). Otherwise undefined.
  */
+/** A UUID, or any run of 16 or more hex characters: an identifier, not a source name. */
+const IDENTIFIER = /[0-9a-f]{8}-[0-9a-f]{4}-|[0-9a-f]{16,}/;
+
 export function sourceName(value: unknown): string | undefined {
   const source = normalize(value);
-  return source && SOURCE_NAME.test(source) && !looksPersonal(source)
+  return source &&
+    SOURCE_NAME.test(source) &&
+    !looksPersonal(source) &&
+    !IDENTIFIER.test(source)
     ? source
     : undefined;
 }

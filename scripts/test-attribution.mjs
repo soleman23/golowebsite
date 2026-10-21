@@ -123,11 +123,15 @@ const cases = [
     { landingSource: "instagram", ...NONE },
   ],
   [
-    // The source rule is the pattern plus looksPersonal (#120), which a UUID
-    // passes; it isn't a dictionary source, so the tags are still null.
-    "UUID source gives null tags",
+    // An identifier isn't a source name: the source is dropped too (#120).
+    "UUID source gives null",
     { ...INSTAGRAM_BIO, landingSource: "3f2c8a1e-9b4d-4c6e-8f7a-2d1b0c9e8a7f" },
-    { landingSource: "3f2c8a1e-9b4d-4c6e-8f7a-2d1b0c9e8a7f", ...NONE },
+    { landingSource: undefined, ...NONE },
+  ],
+  [
+    "long hex source gives null",
+    { ...INSTAGRAM_BIO, landingSource: "a1b2c3d4e5f60718293a4b5c" },
+    { landingSource: undefined, ...NONE },
   ],
   [
     "<script> content gives null",
@@ -246,9 +250,20 @@ for (const [form, schema, base] of forms) {
   }
 }
 
+// The page path is a path only: a query string or fragment drops it (#120),
+// and the submission still goes through.
+for (const [form, schema, base] of forms) {
+  for (const path of ["/blog?email=x", "/blog#top"]) {
+    const parsed = schema.safeParse({ ...base, ...INSTAGRAM_BIO, landingPath: path });
+    if (!parsed.success) failures.push(`${form}: landingPath ${path}: submission rejected`);
+    else if (parsed.data.landingPath !== undefined) failures.push(`${form}: landingPath ${path} kept, expected it dropped`);
+    else passed += 1;
+  }
+}
+
 if (failures.length) {
   for (const line of failures) console.error(line);
   console.error(`\n${failures.length} failed, ${passed} passed.`);
   process.exit(1);
 }
-console.log(`Attribution: ${passed} cases passed (${cases.length} per form × ${forms.length} forms).`);
+console.log(`Attribution: ${passed} cases passed (${cases.length} attribution + 2 page-path cases per form × ${forms.length} forms).`);
