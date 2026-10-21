@@ -75,6 +75,12 @@ jobs:
         if: '!cancelled()'
         run: npm run test:attribution
 
+      # Newsletter → Hostinger Reach sync (scripts/test-reach-sync.mjs): stub
+      # client, in-memory leads. Hermetic, no database, no network.
+      - name: Reach sync tests
+        if: '!cancelled()'
+        run: npm run test:reach
+
       # Runs even if lint failed, so one push surfaces every problem at once
       # instead of trickling them out over three round-trips.
       - name: Typecheck

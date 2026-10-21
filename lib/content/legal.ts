@@ -509,6 +509,33 @@ export const privacyDoc: LegalDoc = {
   cta: { title: "That's the whole policy. Now go win the back nine." },
 };
 
+/**
+ * DRAFT, NOT PUBLISHED, NOT RENDERED. Proposed Privacy Policy wording for the
+ * newsletter's Hostinger Reach sync (soleman23/golowebsite#121, owner
+ * decisions on soleman23/golo#791). Nothing imports this: privacyDoc above is
+ * the published policy and is unchanged by #121 so far.
+ *
+ * Before any of it moves into privacyDoc: the owner approves the exact words,
+ * every "[TO VERIFY …]" is settled (by Hostinger support or the staging test
+ * with designated addresses) and its marker removed or the sentence dropped,
+ * the "[OWNER TO DECIDE …]" is answered, and "Last updated" is revised. Ship
+ * it with the code that turns sync on, not before.
+ */
+export const reachPrivacyDraft = {
+  status: "DRAFT: not rendered, not approved (#121)",
+  /** "Information you provide" list: after "Website download-link requests". */
+  informationYouProvide:
+    "<strong>Newsletter sign-ups:</strong> the email address you enter to join the GoLo newsletter on our website, with when and where you signed up. You’re only added to the list after you confirm by clicking the link in the confirmation email. [TO VERIFY (Hostinger support or staging test): that a contact added through Reach’s API is held as pending, and gets the confirmation email, until it confirms.] Every newsletter email includes an unsubscribe link.",
+  /** "Service providers" list: before the "email, text-message, and push-delivery providers" item. */
+  serviceProvider:
+    "<strong>Hostinger (Hostinger Reach)</strong>, for sending the GoLo newsletter and its sign-up confirmation emails, and for keeping the record of who has unsubscribed; [TO VERIFY (Hostinger support or staging test): that Reach keeps unsubscribed contacts as suppressed rather than deleting them.]",
+  /** "Data Retention" list: after the "Newsletter sign-up records" item. */
+  retention:
+    "<strong>Newsletter subscriptions:</strong> while you’re subscribed. After you unsubscribe, Hostinger Reach keeps your address on a suppression list so you aren’t emailed again. [TO VERIFY (Hostinger support or staging test): that unsubscribed contacts are kept as suppressed, and for how long.] If you ask us to delete your newsletter sign-up record, we also delete your contact from Hostinger Reach, which anonymises deleted contacts. [OWNER TO DECIDE: deleting the contact in Reach on request; no process for it exists yet.] [TO VERIFY (Hostinger support or staging test): that Reach anonymises deleted contacts; its docs don’t say.]",
+  /** The newsletter band's copy needs no change: "Unsubscribe from any email" stays true. */
+  newsletterBand: null,
+} as const;
+
 /* ─────────────────────────── /terms ─────────────────────────── */
 
 export const termsDoc: LegalDoc = {

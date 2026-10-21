@@ -117,6 +117,33 @@ Then confirm all six exist and are nullable and record it in the PR. After deplo
 
 Counsel: the new privacy item and the newsletter retention item join the open privacy-policy question below.
 
+## Prepared October 21, 2026 (soleman23/golowebsite#121): newsletter sync to Hostinger Reach, OFF
+
+Owner decisions on soleman23/golo#791: double opt-in, no welcome automation, Reach is the unsubscribe authority, retries never re-add a suppressed address, explicit newsletter sign-ups only. **Connection and live sync stay blocked** until the owner confirms the Reach workspace, plan and limits. Built and tested against a stub Reach client only; no Reach endpoint was called, no token exists, no database was touched.
+
+- **Off by default.** `lib/reach.ts` returns no client unless the server env has `REACH_SYNC_ENABLED` set to exactly `true` and both `REACH_API_TOKEN` and `REACH_PROFILE_UUID`. While off, `/api/subscribe` behaves as before and leaves the new status null, and `npm run reach:retry` exits without doing anything. None of the three is `NEXT_PUBLIC_`.
+- **Who is eligible.** Only `NewsletterLead` rows from the newsletter band (`source` `blog` or `post`). Contact-form messages, `PhoneLead` rows and app accounts never reach the sync. A row with any other source is marked `skipped_ineligible` before any Reach call.
+- **On sign-up** (sync on): a new eligible row is saved as `pending`, the visitor gets `200`, and the sync runs after the response (`after()` from `next/server`), so Reach can neither delay nor fail the sign-up. A repeat sign-up never calls Reach, whatever the row's state, so it can't trigger a second confirmation email; failed rows belong to the retry job.
+- **Suppression first** (`lib/reachSync.ts` `syncLead`). Reach is asked about the address before anything is added (the list endpoint's `search` + `subscription_status`, checked for `unsubscribed`, `pending`, `subscribed` and `confirmed`, exact address match). If Reach knows it in any of those states, nothing is created and the row is `synced`. Only an address Reach doesn't know is created (`POST …/contacts {email}`). A lookup that fails or can't be parsed counts as a failure, never as absent.
+- **Retries.** `npm run reach:retry` (`scripts/reach-retry.mjs`; for a server cron once sync is on, e.g. every 15 minutes) retries `pending` and `failed` rows with backoff (5 min, doubling, capped at 6 h), up to 6 attempts. Each attempt is claimed atomically, so two runs can't call Reach for the same row. Logs carry lead ids and short error codes, never an address or the token.
+- **Backfill.** `npm run reach:backfill` is a dry run: it counts never-queued rows that meet the consent rule and prints counts only (it doesn't read addresses). Consent rule: source `blog`/`post`, created on or after **2026-08-15 22:17:54 UTC**, the committer date of 3004c51, which added the band, `/api/subscribe` and `NewsletterLead` together. The band's consent copy is unchanged in every later revision (703a236, d036669). `--apply` refuses unless `REACH_SYNC_ENABLED=true` and `--confirm` are both given, and only queues rows for the retry job. Not run under #121: only after the owner reviews the dry-run counts.
+- **No welcome automation** anywhere in the code. Reach's own confirmation email is the only automatic message, provided double opt-in is on in the Reach profile (owner step; the staging check confirms the contact is created as pending).
+- **Privacy wording** is a draft only: `reachPrivacyDraft` in `lib/content/legal.ts`, not rendered, with every unverified sentence (double opt-in for API contacts, Reach's suppression list, anonymisation of deleted contacts) marked `[TO VERIFY …]`. The published policy is unchanged.
+- **Tests:** `npm run test:reach` (`scripts/test-reach-sync.mjs`, also a CI step; part of `npm test`). Stub client, in-memory leads, global `fetch` that throws. Covers a new sign-up (200 first, then one find and one create), repeat sign-ups of pending, synced and failed rows (no second create), a 5xx and a timeout (row `failed`, visitor 200, retry after backoff succeeds), unsubscribed in Reach (never re-added by sign-up, repeat or retry, including a failed row that Reach later shows unsubscribed), already pending/subscribed/confirmed (no create), ineligible sources (no client call), sync off (no queue, no call), the flag gate, a race between two attempts (one create), give-up after 6 attempts, backfill dry run (counts only, no addresses or ids, no writes) and `--apply` refusals, and the HTTP client against a fake fetch.
+
+**Deploy order:** apply the columns to the website's Supabase database ("golowebsite") **before** merging, since Hostinger builds `main` automatically and the new code selects `reachSyncStatus` on every sign-up. Existing rows get `reachSyncStatus` null (never queued), so nothing old is synced by adding them:
+
+```sql
+ALTER TABLE "NewsletterLead" ADD COLUMN "reachLastAttemptAt" TIMESTAMP(3),
+ADD COLUMN "reachSyncAttempts" INTEGER NOT NULL DEFAULT 0,
+ADD COLUMN "reachSyncStatus" TEXT;
+CREATE INDEX "NewsletterLead_reachSyncStatus_idx" ON "NewsletterLead"("reachSyncStatus");
+```
+
+(From `prisma migrate diff` against the schema before #121; no database used.) Then confirm the three columns and the index exist and record it in the PR. Not yet applied.
+
+**To turn sync on (owner, later):** confirm the workspace, plan and limits on golo#791; turn on double opt-in in the Reach profile; attach no automation to the list; create the narrowest-scope token; set `REACH_API_TOKEN`, `REACH_PROFILE_UUID` and `REACH_SYNC_ENABLED=true` in the server environment; add the retry cron; run the staging check with designated test addresses (one confirmation email, no welcome email, unsubscribing in Reach stops a retry from re-adding, test contacts removed afterwards); ship the approved privacy wording with "Last updated" revised.
+
 ## Remaining
 
 - Search Console: re-check index coverage, selected canonicals and field Core Web Vitals against the October 8 baseline. Due between October 22 and November 5 (two to four weeks after the deploy).
