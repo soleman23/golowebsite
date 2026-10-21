@@ -127,3 +127,7 @@ Counsel: the new privacy item and the newsletter retention item join the open pr
 - Dedicated hero and mid-article photos for /blog/pressing and /blog/index-vs-course-handicap (source PNGs into tmp/img-src/, then scripts/generate-blog-images.mjs).
 - Add maintained article revision dates when substantively editing content.
 - Evaluate performance opportunities after content and discovery work.
+
+## October 21, 2026: scheduled jobs on Hostinger (for #121)
+
+The deployed site is the standalone build (`hbuilds/current/nodejs`: `server.js`, `.next`, a trimmed `node_modules`, `public`), with no source tree and no npm, so `npm run reach:retry` can't run there as-is. hPanel's **Node.js cron** runs `node --env-file=<site>/hbuilds/config/.env <site>/hbuilds/current/nodejs/<script>`, which gives a script the site's own server environment and nothing else. `next.config.mjs` `outputFileTracingIncludes` now copies `scripts/reach-retry.mjs`, `scripts/register-ts.mjs` and the Reach sync files (`lib/reach.ts`, `lib/reachSync.ts`, `lib/reachStore.ts`) into the standalone build, so the cron's script path is `scripts/reach-retry.mjs`. The script checks `REACH_SYNC_ENABLED` before loading anything: while it isn't exactly `true` it prints "Nothing done" and exits 0, without touching Prisma or the database. `npm run check:cron` (a CI step after the build) runs it from `.next/standalone` with plain node, switch off and, once the sync files exist, switch on against an unreachable database, so a missing runtime import fails CI instead of the production cron.
