@@ -129,6 +129,11 @@ const cases = [
     { landingSource: undefined, ...NONE },
   ],
   [
+    "underscore-separated phone source gives null",
+    { ...INSTAGRAM_BIO, landingSource: "541_555_1234" },
+    { landingSource: undefined, ...NONE },
+  ],
+  [
     "long hex source gives null",
     { ...INSTAGRAM_BIO, landingSource: "a1b2c3d4e5f60718293a4b5c" },
     { landingSource: undefined, ...NONE },
