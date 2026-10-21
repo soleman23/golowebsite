@@ -12,13 +12,15 @@
  *   node --env-file=<site>/hbuilds/config/.env <site>/hbuilds/current/nodejs/scripts/reach-retry.mjs
  * so it reads the same server environment as the site (DATABASE_URL and the
  * REACH_* variables) and nothing else. next.config.mjs copies this file,
- * register-ts.mjs and lib/reach*.ts into the standalone build for that.
+ * register-ts.mjs and the Reach lib files into the standalone build for that
+ * (scripts/check-standalone-cron.mjs checks they are enough).
  *
  * The switch is checked before anything else is loaded: unless
  * REACH_SYNC_ENABLED is exactly "true" it prints "Nothing done" and exits 0
  * without importing the Reach client, Prisma or the database. With the
  * switch on it also needs REACH_API_TOKEN and REACH_PROFILE_UUID
- * (lib/reach.ts). Prints counts and lead ids only, never an address.
+ * (lib/reach.ts), and exits 1 without them. Prints counts and lead ids only,
+ * never an address; an error prints its code and first line, not a stack.
  */
 
 const args = process.argv.slice(2);
@@ -41,8 +43,9 @@ const { retryReachSync, requeueFailed } = await import("../lib/reachSync.ts");
 
 const client = getReachClient(process.env);
 if (!client) {
+  // On but half-configured: fail the cron so it shows.
   console.log("Reach sync is on but its token or profile is missing. Nothing done.");
-  process.exit(0);
+  process.exit(1);
 }
 
 const { PrismaClient } = await import("@prisma/client");
@@ -66,6 +69,10 @@ try {
     // the summary and the log, not on every run until someone requeues.
     process.exitCode = summary.failed > 0 ? 1 : 0;
   }
+} catch (err) {
+  // The code and the first line only: a Prisma error can echo the query.
+  console.error("Reach retry failed:", err?.code ?? err?.errorCode ?? err?.name ?? "error", String(err?.message ?? "").split("\n")[0].slice(0, 200));
+  process.exitCode = 1;
 } finally {
   await prisma.$disconnect();
 }

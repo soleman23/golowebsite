@@ -11,14 +11,20 @@ const nextConfig = {
    * (hbuilds/current/nodejs is the standalone output, with no npm and no
    * source tree). Copied in at their repo paths, so on the server
    * `scripts/reach-retry.mjs` sits beside `lib/` exactly as it does here.
-   * lib/reach*.ts is the Reach sync (#121); until it lands the glob matches
-   * nothing and the script only ever reports that sync is off.
+   * The key only picks which route's trace carries them: /api/subscribe is a
+   * Node.js, always-dynamic route, so it is always traced. The lib files are
+   * the Reach sync (#121); until it lands they don't exist and the script
+   * only ever reports that sync is off. Anything they import at runtime has
+   * to be listed too: scripts/check-standalone-cron.mjs fails the build check
+   * if an import is missing.
    */
   outputFileTracingIncludes: {
     "/api/subscribe": [
       "./scripts/reach-retry.mjs",
       "./scripts/register-ts.mjs",
-      "./lib/reach*.ts",
+      "./lib/reach.ts",
+      "./lib/reachSync.ts",
+      "./lib/reachStore.ts",
     ],
   },
 
