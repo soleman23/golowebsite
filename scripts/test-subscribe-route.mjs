@@ -121,7 +121,7 @@ function nextEmail() {
 
 /**
  * A POST as the browser form sends it: same-origin, from www.golo.golf through
- * a proxy that sets X-Real-IP.
+ * a proxy that appends the client to X-Forwarded-For.
  */
 function post({
   address = nextAddress(),
@@ -131,7 +131,7 @@ function post({
   json = { email: nextEmail(), source: "blog", hp_note: "" },
   headers = {},
 } = {}) {
-  const all = { "content-type": "application/json", host, "x-real-ip": address, ...headers };
+  const all = { "content-type": "application/json", host, "x-forwarded-for": address, ...headers };
   if (origin !== null) all.origin = origin;
   return POST(
     new Request(`https://${host}/api/subscribe`, {
@@ -263,6 +263,19 @@ const cases = [
     },
   ],
   [
+    "rotating fake X-Real-IP or first X-Forwarded-For entries doesn't dodge the client limit",
+    async () => {
+      const address = nextAddress();
+      const statuses = [];
+      for (let i = 0; i <= PER_CLIENT_LIMIT; i += 1) {
+        const fake = `203.0.113.${i + 1}`;
+        const res = await post({ address, body: "{}", headers: { "x-real-ip": fake, "x-forwarded-for": `${fake}, ${address}` } });
+        statuses.push(res.status);
+      }
+      assert.deepEqual(statuses, [...Array(PER_CLIENT_LIMIT).fill(400), 429]);
+    },
+  ],
+  [
     "a limited client doesn't hold up the next one",
     async () => assert.equal((await post()).status, 200),
   ],
@@ -366,7 +379,7 @@ const cases = [
     "the client-ip header shape was logged once in the whole run, without values",
     () => {
       const shapes = world.logs.filter((line) => line.includes("client-ip headers"));
-      assert.deepEqual(shapes, ["[subscribe] client-ip headers: x-real-ip=yes xff_entries=0"]);
+      assert.deepEqual(shapes, ["[subscribe] client-ip headers: x-real-ip=no xff_entries=1 ip_headers=x-forwarded-for"]);
     },
   ],
   [

@@ -43,7 +43,7 @@ const SALT = new Uint8Array(32).fill(7);
 /** A Headers stand-in: lower-cased names, null when absent. */
 function headers(values) {
   const map = new Map(Object.entries(values).map(([k, v]) => [k.toLowerCase(), v]));
-  return { get: (name) => map.get(name.toLowerCase()) ?? null };
+  return { get: (name) => map.get(name.toLowerCase()) ?? null, keys: () => map.keys() };
 }
 
 /** A limiter on a clock the test moves by hand. */
@@ -205,7 +205,7 @@ const cases = [
     () => {
       const { limiter } = limiterAt();
       const ip = "203.0.113.7";
-      const key = clientKey(headers({ "X-Real-IP": ip }));
+      const key = clientKey(headers({ "X-Forwarded-For": ip }));
       assert.match(key, /^[A-Za-z0-9_-]{16}$/);
       limiter.hit(key);
       for (const stored of limiter.trackedKeys()) {
@@ -216,40 +216,38 @@ const cases = [
   [
     "client key is stable per address and salt, and differs across both",
     () => {
-      const a = clientKey(headers({ "x-real-ip": "203.0.113.7" }), SALT);
-      assert.equal(clientKey(headers({ "x-real-ip": "203.0.113.7" }), SALT), a);
-      assert.notEqual(clientKey(headers({ "x-real-ip": "203.0.113.8" }), SALT), a);
-      assert.notEqual(clientKey(headers({ "x-real-ip": "203.0.113.7" }), new Uint8Array(32)), a);
+      const a = clientKey(headers({ "x-forwarded-for": "203.0.113.7" }), SALT);
+      assert.equal(clientKey(headers({ "x-forwarded-for": "203.0.113.7" }), SALT), a);
+      assert.notEqual(clientKey(headers({ "x-forwarded-for": "203.0.113.8" }), SALT), a);
+      assert.notEqual(clientKey(headers({ "x-forwarded-for": "203.0.113.7" }), new Uint8Array(32)), a);
     },
   ],
   [
     "client key ignores IPv6 letter case",
     () => {
       assert.equal(
-        clientKey(headers({ "x-real-ip": "2001:DB8::AB" }), SALT),
-        clientKey(headers({ "x-real-ip": "2001:db8::ab" }), SALT),
+        clientKey(headers({ "x-forwarded-for": "2001:DB8::AB" }), SALT),
+        clientKey(headers({ "x-forwarded-for": "2001:db8::ab" }), SALT),
       );
     },
   ],
   [
-    "X-Real-IP wins over X-Forwarded-For",
+    "X-Real-IP is ignored: a client can set it (seen on the live host)",
     () => {
-      const both = headers({ "x-real-ip": "198.51.100.4", "x-forwarded-for": "10.0.0.1, 10.0.0.2" });
-      assert.equal(clientAddress(both), "198.51.100.4");
-      assert.equal(clientKey(both, SALT), clientKey(headers({ "x-real-ip": "198.51.100.4" }), SALT));
+      const spoofed = headers({ "x-real-ip": "198.51.100.4", "x-forwarded-for": "10.0.0.1, 192.0.2.9" });
+      assert.equal(clientAddress(spoofed), "192.0.2.9");
+      assert.equal(clientAddress(headers({ "x-real-ip": "198.51.100.4" })), null);
     },
   ],
   [
-    "without X-Real-IP, the first X-Forwarded-For entry is the client",
+    "the last X-Forwarded-For entry is the client: earlier ones may be the client's own",
     () => {
+      assert.equal(clientAddress(headers({ "x-forwarded-for": " 198.51.100.4 , 10.0.0.1, 192.0.2.9 " })), "192.0.2.9");
+      assert.equal(clientAddress(headers({ "x-forwarded-for": "192.0.2.9," })), "192.0.2.9");
+      // Rotating a fake first entry doesn't rotate the key.
       assert.equal(
-        clientAddress(headers({ "x-forwarded-for": " 198.51.100.4 , 10.0.0.1, 10.0.0.2" })),
-        "198.51.100.4",
-      );
-      assert.equal(clientAddress(headers({ "x-real-ip": " ", "x-forwarded-for": "198.51.100.4" })), "198.51.100.4");
-      assert.equal(
-        clientKey(headers({ "x-forwarded-for": "198.51.100.4, 10.0.0.1" }), SALT),
-        clientKey(headers({ "x-real-ip": "198.51.100.4" }), SALT),
+        clientKey(headers({ "x-forwarded-for": "203.0.113.1, 192.0.2.9" }), SALT),
+        clientKey(headers({ "x-forwarded-for": "203.0.113.2, 192.0.2.9" }), SALT),
       );
     },
   ],
@@ -258,16 +256,26 @@ const cases = [
     () => {
       assert.equal(clientAddress(headers({})), null);
       assert.equal(clientKey(headers({})), UNKNOWN_CLIENT);
-      assert.equal(clientKey(headers({ "x-forwarded-for": "", "x-real-ip": "" })), UNKNOWN_CLIENT);
+      assert.equal(clientKey(headers({ "x-forwarded-for": " , ", "x-real-ip": "203.0.113.7" })), UNKNOWN_CLIENT);
     },
   ],
   [
     "header shape names which headers came, never their values",
     () => {
-      const shape = headerShape(headers({ "x-real-ip": "203.0.113.7", "x-forwarded-for": "203.0.113.7, 10.0.0.1" }));
-      assert.equal(shape, "x-real-ip=yes xff_entries=2");
-      assert.equal(headerShape(headers({})), "x-real-ip=no xff_entries=0");
-      assert.equal(headerShape(headers({ "x-forwarded-for": "10.0.0.1" })), "x-real-ip=no xff_entries=1");
+      const shape = headerShape(
+        headers({
+          "x-real-ip": "203.0.113.7",
+          "x-forwarded-for": "203.0.113.7, 10.0.0.1",
+          "CF-Connecting-IP": "203.0.113.7",
+          "true-client-ip": "203.0.113.7",
+          accept: "*/*",
+          "content-type": "application/json",
+        }),
+      );
+      assert.equal(shape, "x-real-ip=yes xff_entries=2 ip_headers=cf-connecting-ip,true-client-ip,x-forwarded-for,x-real-ip");
+      assert.ok(!shape.includes("203.0.113"), "a value leaked into the shape");
+      assert.equal(headerShape(headers({})), "x-real-ip=no xff_entries=0 ip_headers=none");
+      assert.equal(headerShape({ get: () => "10.0.0.1" }), "x-real-ip=yes xff_entries=1 ip_headers=none");
     },
   ],
   [
