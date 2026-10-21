@@ -1,0 +1,17 @@
+name: probe-client-key
+# Throwaway (closed unmerged): one invalid POST from a second network, to see
+# whether golo.golf's rate-limit key separates clients (400) or is shared (429).
+on:
+  pull_request:
+    branches: [main]
+permissions:
+  contents: read
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    steps:
+      - run: |
+          for i in 1 2; do
+            curl -s -o /dev/null -w "probe ${i}: %{http_code}\n" -X POST https://www.golo.golf/api/subscribe -H 'content-type: application/json' --data '{}'
+          done
+          date -u
