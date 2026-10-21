@@ -22,7 +22,11 @@ inside the window as collected without consent, and report it separately.
 
 ## Test traffic
 
-Created while building and verifying #114 and #115. None of it is a real visitor.
+Created while building and verifying #114 and #115 (October 19–20), and by later
+verification runs for the marketing work in soleman23/golo#789 and #790
+(October 21). None of it is a real visitor. Where an entry says requests were
+*sent*, that was observed in the browser; whether GA4 processed them into
+reports is stated separately.
 
 **GA4**
 - Hostname `localhost`: local production builds that used the real
@@ -56,13 +60,18 @@ Created while building and verifying #114 and #115. None of it is a real visitor
     `utm_campaign=golo_prelaunch_2026q4` and `utm_content=bio`, chose "Allow
     analytics", went to `/blog` through the nav, and submitted the newsletter
     form once with a designated `qa+` test address on golo.golf.
-  - **GA4 received:** `page_view` for `/` and `/blog`, `form_start`,
-    `web_vitals`, and the sign-up's batched events, where `newsletter_signup`
-    is expected. A few of these were also sent to `www.google.com/g/collect`.
-  - **Effect on reports:** 1 user and session attributed to
-    `instagram / organic_social`, campaign `golo_prelaunch_2026q4`, with one
-    newsletter sign-up, on October 21. Nothing else used that campaign yet,
-    so every count for it on that day is this test.
+  - **Requests the browser sent (observed):** `page_view` for `/` and
+    `/blog`, `form_start` and `web_vitals`, plus batched requests whose event
+    names travel in the request body and weren't recorded. `newsletter_signup`
+    is expected among them but wasn't observed. A few requests also went to
+    `www.google.com/g/collect`. Processed events in GA4 reports haven't been
+    checked yet; they take 24 to 48 hours.
+  - **Expected effect on reports (unverified):** 1 user and session
+    attributed to `instagram / organic_social`, campaign
+    `golo_prelaunch_2026q4`, on October 21, and possibly one
+    `newsletter_signup` event if GA4 received and processed it (`seo-progress.md`
+    still records that event as not yet seen). Nothing else used that campaign
+    yet, so any count for it on that day is this test.
   - **Not filtered.**
   - **Elsewhere:** one internal sign-up notification email was sent, and one
     test `NewsletterLead` row was created at 18:57:40 UTC. The owner deletes
