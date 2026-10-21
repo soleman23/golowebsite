@@ -78,7 +78,8 @@ export function sourceName(value: unknown): string | undefined {
   const source = normalize(value);
   return source &&
     SOURCE_NAME.test(source) &&
-    !looksPersonal(source) &&
+    // Underscores count as separators too: 541_555_1234 is still a phone number.
+    !looksPersonal(source.replace(/_/g, "-")) &&
     !IDENTIFIER.test(source)
     ? source
     : undefined;
