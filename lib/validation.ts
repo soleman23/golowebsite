@@ -131,6 +131,12 @@ export const subscribeSchema = z.object({
     .transform((value) => value.toLowerCase()),
   /** Which page the signup came from. Not user input — the form sets it. */
   source: z.string().trim().max(40).optional(),
+  /**
+   * Honeypot: a field the form hides from people, so any value came from a
+   * bot. /api/subscribe checks it before this parse (lib/subscribeGuard.ts)
+   * and never stores it.
+   */
+  website: z.string().max(200).optional(),
   ...attributionFields,
 }).transform(withCampaignTags);
 

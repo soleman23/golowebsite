@@ -117,6 +117,21 @@ Then confirm all six exist and are nullable and record it in the PR. After deplo
 
 Counsel: the new privacy item and the newsletter retention item join the open privacy-policy question below.
 
+## Implemented October 21, 2026 (newsletter abuse guard, branch feat/subscribe-abuse-guard)
+
+Groundwork for #124, which will make each new newsletter sign-up send a Hostinger Reach confirmation to the submitted address (plan: 1,000 unique recipients and 7,000 emails a month). Today each new sign-up already sends an internal notification through Resend. Without a guard, a script could post arbitrary addresses and burn either. This has to be live before the Reach sync is.
+
+- `POST /api/subscribe` runs four checks before it parses or saves anything (`lib/subscribeGuard.ts`): a 4 KB body cap (413, enforced while reading, so a chunked body without Content-Length can't get around it); an Origin check (403 `Forbidden.`); a rate limit (429, "Too many sign-up attempts. Please try again in a few minutes.", with `Retry-After`); and a honeypot.
+- Rate limit: 5 requests per client and 60 for the whole process, each over a sliding 10-minute window. Every request that passes the Origin and size checks counts, including honeypot drops and failed validations; a refused request doesn't, so the wait never grows. At most 10,000 client keys are held, least recently seen evicted first, and expired ones are pruned on every request.
+- The client is the first `X-Forwarded-For` entry, else `X-Real-IP`, else one shared "unknown" key. The address is never stored: the limiter holds a 16-character HMAC-SHA256 of it under a random per-process salt. A client can set its own `X-Forwarded-For`, but that only rotates its key; the 60-per-window ceiling caps the total either way. The flip side is that a flood can hold real sign-ups off for up to 10 minutes.
+- Origin: a request whose Origin isn't `NEXT_PUBLIC_SITE_URL` or its www/apex twin (www.golo.golf and golo.golf) is refused; outside production, `http://localhost` and `http://127.0.0.1` on any port are allowed too. No Origin at all is allowed (curl and servers don't send one), and the rate limit covers those. A local `next start` runs as production, so it needs `NEXT_PUBLIC_SITE_URL=http://localhost:3000` to submit the form.
+- Honeypot: the newsletter form has a hidden `website` input, clipped out of view (not `display: none`), out of the tab order, `aria-hidden` and `autocomplete="off"`. If it holds anything the route answers `{ ok: true }` exactly like a sign-up, but saves nothing and sends nothing. The field is in `subscribeSchema` so the form can send it; it's never written to the database (the insert names its columns one by one).
+- Logs carry a reason code only (`[subscribe] blocked: origin`, `too_large`, `rate_limit_client`, `rate_limit_global`; `[subscribe] dropped: honeypot`), never the address, IP or key. No cookie, script, CAPTCHA or new service; the cookie policy is unchanged.
+- Assumes one Node process, as Hostinger runs today: the counters live in memory, so a restart clears them and a second process would double both limits.
+- The global ceiling bounds the rate, not the month: hit continuously, 60 per 10 minutes is 8,640 a day, above the Reach quota. Decide on a daily ceiling, or a cap on the Reach side, before #124 sends anything.
+- Tests: `npm run test:guard` (`scripts/test-subscribe-guard.mjs`, part of `npm test` and a CI step), 29 cases on an injected clock with no server: the per-client limit and its reset, the sliding window, the global ceiling across 61 keys, pruning, eviction at the key cap, hashed keys (the raw IP never stored), `X-Forwarded-For` first entry, `X-Real-IP` fallback and the unknown key, allowed and refused origins in production and development, a missing Origin, the honeypot empty and filled, and the 4 KB cap.
+- Lint, typecheck and production build verified. Not deployed; no database touched.
+
 ## Remaining
 
 - Search Console: re-check index coverage, selected canonicals and field Core Web Vitals against the October 8 baseline. Due between October 22 and November 5 (two to four weeks after the deploy).

@@ -75,6 +75,13 @@ jobs:
         if: '!cancelled()'
         run: npm run test:attribution
 
+      # Newsletter abuse guard: rate limits, client keys, Origin check,
+      # honeypot, body cap (scripts/test-subscribe-guard.mjs). Hermetic, no
+      # server.
+      - name: Subscribe guard tests
+        if: '!cancelled()'
+        run: npm run test:guard
+
       # Runs even if lint failed, so one push surfaces every problem at once
       # instead of trickling them out over three round-trips.
       - name: Typecheck

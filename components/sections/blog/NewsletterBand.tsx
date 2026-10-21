@@ -7,6 +7,10 @@
  * An address already on the list comes back as a plain success, because the
  * route deliberately won't say otherwise. Nothing here should ever tell a
  * visitor whether some address is a member.
+ *
+ * The hidden "website" input is a honeypot (lib/subscribeGuard.ts): kept out
+ * of sight, the tab order and the accessibility tree, so only a bot fills it,
+ * and the route quietly drops any submission that does.
  */
 
 import { useId, useRef, useState } from "react";
@@ -24,6 +28,7 @@ export function NewsletterBand({ page = "blog" }: { page?: string }) {
 
   const uid = useId();
   const inputRef = useRef<HTMLInputElement>(null);
+  const honeypotRef = useRef<HTMLInputElement>(null);
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -32,6 +37,7 @@ export function NewsletterBand({ page = "blog" }: { page?: string }) {
     const parsed = subscribeSchema.safeParse({
       email,
       source: page,
+      website: honeypotRef.current?.value ?? "",
       ...landingAttribution(),
     });
     if (!parsed.success) {
@@ -140,6 +146,19 @@ export function NewsletterBand({ page = "blog" }: { page?: string }) {
                 >
                   {status === "submitting" ? "Joining…" : "Join the list"}
                 </button>
+              </div>
+
+              <div className={styles.honeypot} aria-hidden="true">
+                <label htmlFor={`${uid}-website`}>Leave this field empty</label>
+                <input
+                  id={`${uid}-website`}
+                  ref={honeypotRef}
+                  type="text"
+                  name="website"
+                  tabIndex={-1}
+                  autoComplete="off"
+                  defaultValue=""
+                />
               </div>
 
               {/* Always in the flow, so an error doesn't shove the fine print. */}
