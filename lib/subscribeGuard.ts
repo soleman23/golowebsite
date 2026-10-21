@@ -81,6 +81,11 @@ export type RateLimitResult =
   | { ok: true }
   | { ok: false; scope: "client" | "global"; retryAfterSeconds: number };
 
+/** A charge that went through can be taken back once (see `charge`). */
+export type ChargeResult =
+  | { ok: true; release: () => void }
+  | Exclude<RateLimitResult, { ok: true }>;
+
 export type RateLimiterOptions = {
   windowMs?: number;
   perClientLimit?: number;
@@ -123,7 +128,7 @@ export function createRateLimiter({
     return Math.max(1, Math.ceil((oldest + windowMs - at) / 1000));
   }
 
-  function globalFull(at: number): RateLimitResult | null {
+  function globalFull(at: number): Exclude<RateLimitResult, { ok: true }> | null {
     return saves.length >= globalLimit
       ? { ok: false, scope: "global", retryAfterSeconds: retryAfter(saves[0], at) }
       : null;
@@ -155,15 +160,26 @@ export function createRateLimiter({
 
     /**
      * Checks the global ceiling again (the body was read in between) and, if
-     * it allows, records one sign-up against it.
+     * it allows, records one sign-up against it. `release` takes that back,
+     * for a sign-up that turned out not to save anything new (a repeat, or a
+     * database error), so neither can close the ceiling.
      */
-    charge(): RateLimitResult {
+    charge(): ChargeResult {
       const at = now();
       prune(at - windowMs);
       const full = globalFull(at);
       if (full) return full;
       saves.push(at);
-      return { ok: true };
+      let released = false;
+      return {
+        ok: true,
+        release() {
+          if (released) return;
+          released = true;
+          const index = saves.indexOf(at);
+          if (index !== -1) saves.splice(index, 1);
+        },
+      };
     },
 
     /** The keys currently held, least recently seen first. For tests. */

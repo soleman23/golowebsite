@@ -128,8 +128,9 @@ export async function POST(request: Request) {
     // its columns one by one rather than spreading parsed.data.
   } = parsed.data;
 
-  // Only a sign-up that would actually be saved counts against the global
-  // ceiling, so junk can't close it for everybody.
+  // Only a sign-up that saves a new address counts against the global
+  // ceiling (a repeat or a failed save gives its slot back below), so junk
+  // can't close it for everybody.
   const charged = limiter.charge();
   if (!charged.ok) return tooMany(charged);
 
@@ -160,12 +161,18 @@ export async function POST(request: Request) {
       },
     });
   } catch (err) {
-    console.error("[subscribe] failed to save lead:", err);
+    // Nothing was saved, so it doesn't count against the global ceiling.
+    charged.release();
+    // The error code only: a Prisma error can echo the query, address included.
+    console.error("[subscribe] failed to save lead:", (err as { code?: string })?.code ?? "unknown");
     return NextResponse.json(
       { error: "We couldn't sign you up right now. Please try again." },
       { status: 500 },
     );
   }
+
+  // A repeat saved nothing new: give its global slot back.
+  if (alreadyOnList) charged.release();
 
   // Only announce genuinely new signups — a repeat shouldn't page anybody.
   if (!alreadyOnList) {

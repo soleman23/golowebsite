@@ -26,6 +26,8 @@ const world = {
   creates: [],
   notifications: [],
   logs: [],
+  /** The next N saves throw, as a database outage would. */
+  failSaves: 0,
 };
 globalThis.__subscribeRouteTest = world;
 
@@ -36,6 +38,10 @@ const STUBS = {
     export const prisma = {
       newsletterLead: {
         async findUnique({ where }) {
+          if (world.failSaves > 0) {
+            world.failSaves -= 1;
+            throw Object.assign(new Error("Invalid invocation: where email = " + where.email), { code: "P1001" });
+          }
           return world.leads.has(where.email) ? { id: world.leads.get(where.email) } : null;
         },
         async upsert({ where, create }) {
@@ -271,7 +277,10 @@ const cases = [
     "body over 4 KB with a Content-Length: 413",
     async () => {
       const big = JSON.stringify({ email: nextEmail(), pad: "x".repeat(MAX_BODY_BYTES) });
-      assert.equal((await post({ body: big })).status, 413);
+      // Request doesn't set Content-Length for a string body, so set it, or
+      // this would only exercise the streamed cap.
+      const res = await post({ body: big, headers: { "content-length": String(Buffer.byteLength(big)) } });
+      assert.equal(res.status, 413);
     },
   ],
   [
@@ -302,6 +311,20 @@ const cases = [
     },
   ],
   [
+    "a failed save gives its global slot back, and logs no address",
+    async () => {
+      const before = world.creates.length;
+      world.failSaves = GLOBAL_LIMIT + 5;
+      for (let i = 0; i < GLOBAL_LIMIT + 5; i += 1) {
+        assert.equal((await post()).status, 500);
+      }
+      assert.equal(world.failSaves, 0);
+      assert.equal(world.creates.length, before);
+      assert.equal(world.logs.at(-1), "[subscribe] failed to save lead: P1001");
+      assert.equal((await post()).status, 200);
+    },
+  ],
+  [
     "global ceiling: sign-up 61 in the window gets 429, and then everyone does",
     async () => {
       // The sign-ups earlier cases saved count too, so this fills sooner.
@@ -322,9 +345,9 @@ const cases = [
   [
     "exactly GLOBAL_LIMIT sign-ups were charged across the run",
     () => {
-      // One charge per new lead, one for the repeat sign-up (charged before
-      // the upsert finds it), none for honeypots or invalid requests.
-      assert.equal(world.creates.length + 1, GLOBAL_LIMIT);
+      // One charge per new lead; none for the repeat sign-up or the failed
+      // saves (both give their slot back), honeypots or invalid requests.
+      assert.equal(world.creates.length, GLOBAL_LIMIT);
     },
   ],
   [
