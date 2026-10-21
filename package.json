@@ -26,6 +26,7 @@
     "test": "npm run test:attribution && npm run test:reach",
     "test:attribution": "node --disable-warning=MODULE_TYPELESS_PACKAGE_JSON scripts/test-attribution.mjs",
     "test:reach": "node --disable-warning=MODULE_TYPELESS_PACKAGE_JSON scripts/test-reach-sync.mjs",
+    "check:cron": "node scripts/check-standalone-cron.mjs",
     "reach:retry": "node --env-file-if-exists=.env --disable-warning=MODULE_TYPELESS_PACKAGE_JSON scripts/reach-retry.mjs",
     "reach:backfill": "node --env-file-if-exists=.env --disable-warning=MODULE_TYPELESS_PACKAGE_JSON scripts/reach-backfill.mjs",
     "postinstall": "prisma generate",

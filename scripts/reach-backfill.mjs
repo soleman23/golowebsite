@@ -30,6 +30,10 @@ try {
     print: (line) => console.log(line),
   });
   process.exitCode = result.exitCode;
+} catch (err) {
+  if (err?.code !== "P2022") throw err;
+  console.log("The Reach columns aren't in this database yet: apply the SQL in docs/seo-progress.md first. Nothing was changed.");
+  process.exitCode = 2;
 } finally {
   await prisma.$disconnect();
 }

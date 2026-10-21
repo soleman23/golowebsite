@@ -16,7 +16,10 @@
  * - A saved sign-up is never lost to a Reach failure: it stays "failed" and
  *   the retry job tries again with backoff, up to MAX_ATTEMPTS (about 28.6
  *   hours from the first attempt to the last). After a longer outage,
- *   requeueFailed puts failed rows back in the queue.
+ *   requeueFailed puts rows that used every attempt back in the queue.
+ * - At most DAILY_ADD_LIMIT addresses go to Reach in any 24 hours, so a
+ *   flood of sign-ups can't spend the plan's monthly recipients. Over the
+ *   limit a row simply waits, unclaimed, for a later run.
  * - We never copy Reach's subscriber state. reachSyncStatus says only what
  *   this site has done: pending | synced | failed | skipped_ineligible, or
  *   null for a row that was never queued.
@@ -82,6 +85,22 @@ export const MAX_ATTEMPTS = 11;
 const BACKOFF_BASE_MS = 5 * 60 * 1000;
 const BACKOFF_CAP_MS = 6 * 60 * 60 * 1000;
 
+/**
+ * Rows the sync may hand to Reach in any rolling 24 hours (counted as rows
+ * it marked synced, which over-counts: an address Reach already had counts
+ * too). The plan allows 1,000 unique recipients a month (golo#791), so 50 a
+ * day keeps a flood of sign-ups, real or scripted, well inside it.
+ */
+export const DAILY_ADD_LIMIT = 50;
+const DAY_MS = 24 * 60 * 60 * 1000;
+
+/**
+ * --requeue-failed leaves a row alone if its last attempt was this recent:
+ * it may still be in flight, and requeuing it would let a second run add the
+ * address while the first is adding it.
+ */
+export const REQUEUE_QUIET_MS = 30 * 60 * 1000;
+
 /** Wait before attempt n+1 after n attempts: 5 min, doubling, capped at 6 h. */
 export function backoffMs(attempts: number): number {
   if (attempts <= 0) return 0;
@@ -127,14 +146,20 @@ export interface LeadSyncStore {
   setStatus(id: string, status: ReachSyncStatus): Promise<void>;
   /** Pending or failed rows with fewer than maxAttempts attempts, fewest first. */
   listRetryable(maxAttempts: number, limit: number): Promise<SyncLead[]>;
-  /** Failed rows that have used every attempt. */
+  /**
+   * Pending or failed rows that have used every attempt. Pending counts too:
+   * a run that died after claiming the last attempt leaves the row pending.
+   */
   countExhausted(maxAttempts: number): Promise<number>;
   /**
-   * Every "failed" row back to "pending" with no attempts and no last
+   * Rows that used every attempt (pending or failed) and whose last attempt
+   * was before `quietBefore`, back to "pending" with no attempts and no last
    * attempt. Returns how many. Suppression still applies: each one is looked
    * up in Reach again before anything is created.
    */
-  requeueFailed(): Promise<number>;
+  requeueFailed(maxAttempts: number, quietBefore: Date): Promise<number>;
+  /** Rows marked synced whose last attempt was at or after `since`. */
+  countSyncedSince(since: Date): Promise<number>;
 }
 
 export type SyncLog = (message: string, fields?: Record<string, unknown>) => void;
@@ -145,6 +170,7 @@ export type SyncOutcome =
   | "not_queued"
   | "exhausted"
   | "backoff"
+  | "deferred"
   | "claimed_elsewhere"
   | "already_present"
   | "suppressed"
@@ -157,6 +183,8 @@ export type SyncDeps = {
   now?: () => Date;
   log?: SyncLog;
   maxAttempts?: number;
+  /** Adds allowed per rolling 24 hours; DAILY_ADD_LIMIT unless a test sets it. */
+  dailyLimit?: number;
 };
 
 const silent: SyncLog = () => {};
@@ -192,6 +220,12 @@ export async function syncLead(id: string, deps: SyncDeps): Promise<SyncOutcome>
     at.getTime() - lead.reachLastAttemptAt.getTime() < backoffMs(lead.reachSyncAttempts)
   ) {
     return "backoff";
+  }
+
+  // Before claiming, so a row held back by the limit keeps its attempts.
+  const dailyLimit = deps.dailyLimit ?? DAILY_ADD_LIMIT;
+  if ((await store.countSyncedSince(new Date(at.getTime() - DAY_MS))) >= dailyLimit) {
+    return "deferred";
   }
 
   if (!(await store.claimAttempt(id, lead.reachSyncAttempts, at))) {
@@ -245,26 +279,40 @@ export async function syncLead(id: string, deps: SyncDeps): Promise<SyncOutcome>
 export type RetrySummary = Record<SyncOutcome, number> & {
   checked: number;
   exhausted: number;
+  /** True if the run stopped early (per-run cap, time budget or daily limit). */
+  stoppedEarly: boolean;
 };
 
+/** Outcomes that cost no Reach call. */
+const NO_CALL: SyncOutcome[] = ["backoff", "claimed_elsewhere", "not_queued", "ineligible", "not_found", "exhausted"];
+
 /**
- * The retry job: every pending or failed lead that's due, oldest attempt
- * count first. The caller decides whether sync is enabled; this only runs
- * the rules. Logs a count of leads that have used every attempt, without
- * addresses.
+ * The retry job: pending and failed leads, fewest attempts first. Rows still
+ * in their backoff cost nothing and are skipped; at most `limit` leads (25)
+ * reach Reach per run, and no new one starts after `budgetMs` (4 minutes),
+ * so a run stays well inside a 15-minute cron. A "deferred" (daily limit
+ * reached) ends the run. The caller decides whether sync is enabled; this
+ * only runs the rules. Logs a count of leads that have used every attempt,
+ * without addresses.
  */
 export async function retryReachSync(
-  deps: SyncDeps & { limit?: number },
+  deps: SyncDeps & { limit?: number; budgetMs?: number; scan?: number },
 ): Promise<RetrySummary> {
   const maxAttempts = deps.maxAttempts ?? MAX_ATTEMPTS;
   const log = deps.log ?? silent;
+  const now = deps.now ?? (() => new Date());
+  const limit = deps.limit ?? 25;
+  const startedAt = now().getTime();
+  const budgetMs = deps.budgetMs ?? 4 * 60 * 1000;
   const summary: RetrySummary = {
     checked: 0,
     exhausted: 0,
+    stoppedEarly: false,
     not_found: 0,
     ineligible: 0,
     not_queued: 0,
     backoff: 0,
+    deferred: 0,
     claimed_elsewhere: 0,
     already_present: 0,
     suppressed: 0,
@@ -272,11 +320,21 @@ export async function retryReachSync(
     failed: 0,
   };
 
-  const leads = await deps.store.listRetryable(maxAttempts, deps.limit ?? 100);
+  const leads = await deps.store.listRetryable(maxAttempts, deps.scan ?? 500);
+  let worked = 0;
   for (const lead of leads) {
+    if (worked >= limit || now().getTime() - startedAt >= budgetMs) {
+      summary.stoppedEarly = true;
+      break;
+    }
     summary.checked += 1;
     const outcome = await syncLead(lead.id, { ...deps, maxAttempts });
     summary[outcome] += 1;
+    if (outcome === "deferred") {
+      summary.stoppedEarly = true;
+      break;
+    }
+    if (!NO_CALL.includes(outcome)) worked += 1;
   }
 
   summary.exhausted = await deps.store.countExhausted(maxAttempts);
@@ -285,29 +343,42 @@ export async function retryReachSync(
       count: summary.exhausted,
     });
   }
+  if (summary.deferred > 0) {
+    log("[reach] daily add limit reached; the rest wait for a later run", {
+      limit: deps.dailyLimit ?? DAILY_ADD_LIMIT,
+    });
+  }
   return summary;
 }
 
 /**
  * `reach:retry -- --requeue-failed --confirm`: after an outage longer than
- * the retry window, puts failed rows back in the queue. Refuses unless
- * REACH_SYNC_ENABLED=true and --confirm is given. Counts only.
+ * the retry window, puts rows that used every attempt back in the queue,
+ * except any attempted in the last REQUEUE_QUIET_MS (it may still be in
+ * flight). Refuses unless REACH_SYNC_ENABLED=true and --confirm is given.
+ * Counts only.
  */
 export async function requeueFailed(opts: {
   store: LeadSyncStore;
   args: string[];
   env: Record<string, string | undefined>;
   print: (line: string) => void;
+  now?: () => Date;
+  maxAttempts?: number;
 }): Promise<{ mode: "requeued" | "refused"; count: number; exitCode: number }> {
   const { store, args, env, print } = opts;
+  const now = opts.now ?? (() => new Date());
   if (!(isReachSyncFlagOn(env) && args.includes("--confirm"))) {
     print(
       "Refused: --requeue-failed needs REACH_SYNC_ENABLED=true and --confirm. Nothing was changed.",
     );
     return { mode: "refused", count: 0, exitCode: 2 };
   }
-  const count = await store.requeueFailed();
-  print(`Re-queued failed rows as pending: ${count}.`);
+  const count = await store.requeueFailed(
+    opts.maxAttempts ?? MAX_ATTEMPTS,
+    new Date(now().getTime() - REQUEUE_QUIET_MS),
+  );
+  print(`Re-queued rows that used every attempt as pending: ${count}.`);
   return { mode: "requeued", count, exitCode: 0 };
 }
 

@@ -8,13 +8,15 @@
  * limits (soleman23/golo#791). None of these is ever NEXT_PUBLIC_.
  *
  * Endpoints (developers.hostinger.com OpenAPI, read 2026-10-21):
- * - list:   GET  /api/reach/v1/profiles/{profileUuid}/contacts?search=&subscription_status=&per_page=
- *   Paginated (per_page default 25, max 100; `meta.total` counts all
- *   matches), and `search` is a search term, not an exact filter. We ask for
- *   100 and match the address exactly ourselves. If Reach reports more
- *   matches than it returned, or the pagination info is missing, the lookup
- *   counts as a failure, never as "not in Reach": an address on page two
- *   could be the unsubscribed one.
+ * - list:   GET  /api/reach/v1/profiles/{profileUuid}/contacts?search=&per_page=&page=
+ *   Paginated (per_page default 25, max 100; `meta` carries current_page and
+ *   total), and `search` is a search term, not an exact filter. We search
+ *   without a status filter, walk every page up to MAX_PAGES and match the
+ *   address exactly ourselves, then read each match's subscription_status.
+ *   Anything we can't read completely (a failed page, missing pagination
+ *   info, a page that isn't the one asked for, more pages than MAX_PAGES, or
+ *   a match whose status isn't one we know) is a failure, never "not in
+ *   Reach": the unreadable part could hold the unsubscribed contact.
  * - create: POST /api/reach/v1/profiles/{profileUuid}/contacts {email}
  *   "If double opt-in is enabled, the contact will be created with a pending
  *   status and a confirmation email will be sent." Double opt-in is a profile
@@ -37,15 +39,19 @@ import type {
 export const REACH_BASE_URL = "https://developers.hostinger.com";
 const TIMEOUT_MS = 8000;
 
-/** Suppression first: an unsubscribed match wins over any other. */
-const STATUS_ORDER: ReachContactStatus[] = [
+const KNOWN_STATUSES: readonly ReachContactStatus[] = [
   "unsubscribed",
   "pending",
   "subscribed",
   "confirmed",
 ];
 
-export type ReachConfig = { token: string; profileUuid: string };
+export type ReachConfig = {
+  token: string;
+  profileUuid: string;
+  /** Page size for lookups; 100 (Reach's maximum) unless a test sets it. */
+  perPage?: number;
+};
 
 type Env = Record<string, string | undefined>;
 
@@ -76,38 +82,69 @@ export function getReachClient(env: Env = process.env): ReachClient | null {
 }
 
 const PER_PAGE = 100;
+/** At 100 a page, 1,000 matches. A search term matching more is a failure. */
+export const MAX_PAGES = 10;
 
-/** `total` from a `meta` object, if it's a whole number. */
-function totalOf(meta: unknown): number | null {
-  const total = (meta as { total?: unknown } | null | undefined)?.total;
-  return typeof total === "number" && Number.isInteger(total) && total >= 0 ? total : null;
+/** A whole number >= min from a `meta` field, or null. */
+function wholeOf(meta: unknown, key: string, min: number): number | null {
+  const value = (meta as Record<string, unknown> | null | undefined)?.[key];
+  return typeof value === "number" && Number.isInteger(value) && value >= min ? value : null;
 }
 
 /**
- * The contacts from a list response and its `meta.total` (at the top level
- * or beside a nested `data`). Null if either is missing: without the total
- * we can't know the page holds every match.
+ * The contacts on one list page, with its `meta` (at the top level or beside
+ * a nested `data`). Null without a readable total and current page: without
+ * them we can't know we've seen every match.
  */
-function pageOf(body: unknown): { contacts: unknown[]; total: number } | null {
+function pageOf(
+  body: unknown,
+): { contacts: unknown[]; total: number; currentPage: number; perPage: number | null } | null {
   if (!body || typeof body !== "object" || Array.isArray(body)) return null;
   const outer = body as { data?: unknown; meta?: unknown };
+  let contacts: unknown;
+  let meta: unknown = outer.meta;
   if (Array.isArray(outer.data)) {
-    const total = totalOf(outer.meta);
-    return total === null ? null : { contacts: outer.data, total };
-  }
-  if (outer.data && typeof outer.data === "object") {
+    contacts = outer.data;
+  } else if (outer.data && typeof outer.data === "object") {
     const inner = outer.data as { data?: unknown; meta?: unknown };
-    const total = totalOf(inner.meta) ?? totalOf(outer.meta);
-    if (Array.isArray(inner.data) && total !== null) return { contacts: inner.data, total };
+    contacts = inner.data;
+    meta = inner.meta ?? outer.meta;
   }
-  return null;
+  const total = wholeOf(meta, "total", 0);
+  const currentPage = wholeOf(meta, "current_page", 1);
+  if (!Array.isArray(contacts) || total === null || currentPage === null) return null;
+  return { contacts, total, currentPage, perPage: wholeOf(meta, "per_page", 1) };
 }
 
-function hasEmail(contacts: unknown[], email: string): boolean {
-  return contacts.some((contact) => {
-    const value = (contact as { email?: unknown } | null)?.email;
-    return typeof value === "string" && value.trim().toLowerCase() === email;
-  });
+type Match = { status: unknown };
+
+/** The rows whose email is exactly this address (trimmed, case-insensitive). */
+function matchesOf(contacts: unknown[], email: string): Match[] {
+  const matches: Match[] = [];
+  for (const contact of contacts) {
+    const row = contact as { email?: unknown; subscription_status?: unknown } | null;
+    if (typeof row?.email === "string" && row.email.trim().toLowerCase() === email) {
+      matches.push({ status: row.subscription_status });
+    }
+  }
+  return matches;
+}
+
+/**
+ * What the matches say. Unsubscribed wins over anything else; a match whose
+ * status isn't one we know makes the lookup ambiguous, which is a failure.
+ */
+function statusOf(matches: Match[]): FindContactResult {
+  if (matches.length === 0) return { ok: true, status: null };
+  const statuses = matches.map((m) =>
+    typeof m.status === "string" ? m.status.trim().toLowerCase() : "",
+  );
+  if (statuses.includes("unsubscribed")) return { ok: true, status: "unsubscribed" };
+  const known = statuses.filter((s): s is ReachContactStatus =>
+    (KNOWN_STATUSES as readonly string[]).includes(s),
+  );
+  if (known.length !== statuses.length) return { ok: false, error: "ambiguous_status" };
+  return { ok: true, status: known[0] };
 }
 
 export function createHttpReachClient(
@@ -139,33 +176,43 @@ export function createHttpReachClient(
     }
   }
 
-  /** Whether Reach lists this exact address under one status. */
-  async function listedAs(
-    email: string,
-    status: ReachContactStatus,
-  ): Promise<boolean | string> {
-    const params = new URLSearchParams({
-      search: email,
-      subscription_status: status,
-      per_page: String(PER_PAGE),
-    });
-    const res = await call(`${contactsUrl}?${params}`, { method: "GET" });
-    if (typeof res === "string") return res;
-    if (!res.ok) return `http_${res.status}`;
-    const page = pageOf(await res.json().catch(() => undefined));
-    if (!page) return "bad_response";
-    if (page.total > page.contacts.length) return "incomplete_page";
-    return hasEmail(page.contacts, email);
-  }
-
   return {
     async findContact(rawEmail): Promise<FindContactResult> {
       const email = rawEmail.trim().toLowerCase();
-      const results = await Promise.all(STATUS_ORDER.map((s) => listedAs(email, s)));
-      const error = results.find((r): r is string => typeof r === "string");
-      if (error) return { ok: false, error };
-      const index = results.findIndex((r) => r === true);
-      return { ok: true, status: index === -1 ? null : STATUS_ORDER[index] };
+      const asked = config.perPage ?? PER_PAGE;
+      const matches: Match[] = [];
+      let pages = 1;
+      let perPage = asked;
+      let total = 0;
+      for (let page = 1; page <= pages; page += 1) {
+        const params = new URLSearchParams({
+          search: email,
+          per_page: String(asked),
+          page: String(page),
+        });
+        const res = await call(`${contactsUrl}?${params}`, { method: "GET" });
+        if (typeof res === "string") return { ok: false, error: res };
+        if (!res.ok) return { ok: false, error: `http_${res.status}` };
+        const body = pageOf(await res.json().catch(() => undefined));
+        if (!body) return { ok: false, error: "bad_response" };
+        if (body.currentPage !== page) return { ok: false, error: "wrong_page" };
+        if (page === 1) {
+          // Reach may serve fewer per page than asked; page by what it says.
+          perPage = body.perPage ?? asked;
+          total = body.total;
+          pages = Math.max(1, Math.ceil(total / perPage));
+          if (pages > MAX_PAGES) return { ok: false, error: "too_many_matches" };
+        } else if (body.total !== total || (body.perPage ?? perPage) !== perPage) {
+          // The list changed under us; a match could have moved across pages.
+          return { ok: false, error: "list_changed" };
+        }
+        // Every page but the last must be full, and the last must bring the
+        // count to the total. A short read means we didn't see every match.
+        const expected = page < pages ? perPage : total - perPage * (pages - 1);
+        if (body.contacts.length < expected) return { ok: false, error: "incomplete_page" };
+        matches.push(...matchesOf(body.contacts, email));
+      }
+      return statusOf(matches);
     },
 
     async createContact(rawEmail): Promise<CreateContactResult> {

@@ -71,7 +71,10 @@ export async function handleSubscribe(
     };
   }
 
-  const { email, source = "blog", ...landing } = parsed.data;
+  // A request without a source didn't come from the newsletter band, which
+  // always sends one. Stored as "unspecified", which is never eligible for
+  // Reach (lib/reachSync.ts NEWSLETTER_SOURCES).
+  const { email, source = "unspecified", ...landing } = parsed.data;
 
   let saved: Awaited<ReturnType<SubscribeStore["save"]>>;
   try {
@@ -88,7 +91,8 @@ export async function handleSubscribe(
         : undefined,
     });
   } catch (err) {
-    console.error("[subscribe] failed to save lead:", err);
+    // The error code only: a Prisma error can echo the query, address included.
+    console.error("[subscribe] failed to save lead:", (err as { code?: string })?.code ?? "unknown");
     return {
       status: 500,
       body: { error: "We couldn't sign you up right now. Please try again." },

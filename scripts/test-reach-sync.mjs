@@ -22,7 +22,9 @@ const { handleSubscribe } = await import("../lib/subscribe.ts");
 const { syncLead, retryReachSync, runBackfill, requeueFailed, backoffMs, MAX_ATTEMPTS, NEWSLETTER_CONSENT_SINCE } =
   await import("../lib/reachSync.ts");
 const { createStubReachClient } = await import("../lib/reachStub.ts");
-const { getReachClient, createHttpReachClient, REACH_BASE_URL } = await import("../lib/reach.ts");
+const { getReachClient, createHttpReachClient, REACH_BASE_URL, MAX_PAGES } = await import("../lib/reach.ts");
+const { prismaSubscribeStore } = await import("../lib/reachStore.ts");
+const { readFileSync } = await import("node:fs");
 
 const T0 = new Date("2026-11-02T12:00:00Z");
 const HOUR = 60 * 60 * 1000;
@@ -81,16 +83,20 @@ function memoryDb() {
           .map((r) => ({ ...r }));
       },
       async countExhausted(max) {
-        return [...rows.values()].filter((r) => r.reachSyncStatus === "failed" && r.reachSyncAttempts >= max).length;
+        return [...rows.values()].filter((r) => ["pending", "failed"].includes(r.reachSyncStatus) && r.reachSyncAttempts >= max).length;
       },
-      async requeueFailed() {
+      async requeueFailed(max, quietBefore) {
         let n = 0;
         for (const row of rows.values()) {
-          if (row.reachSyncStatus !== "failed") continue;
+          if (!["pending", "failed"].includes(row.reachSyncStatus) || row.reachSyncAttempts < max) continue;
+          if (!row.reachLastAttemptAt || row.reachLastAttemptAt >= quietBefore) continue;
           Object.assign(row, { reachSyncStatus: "pending", reachSyncAttempts: 0, reachLastAttemptAt: null });
           n += 1;
         }
         return n;
+      },
+      async countSyncedSince(since) {
+        return [...rows.values()].filter((r) => r.reachSyncStatus === "synced" && r.reachLastAttemptAt >= since).length;
       },
     },
     backfillStore: {
@@ -377,27 +383,30 @@ await test("backfill --apply refuses without REACH_SYNC_ENABLED=true and --confi
   expect(db.backfillStore.writes === 0, "a refused run wrote to the table");
 });
 
-await test("HTTP client (fake fetch): endpoints, bearer token, suppression parsing", async () => {
+/** A Reach list body: one page of rows, with Reach's pagination meta. */
+const listPage = (rows, total = rows.length, page = 1, perPage = 100) => ({
+  data: rows,
+  meta: { current_page: page, per_page: perPage, total },
+});
+const row = (email, subscription_status = "subscribed") => ({ email, subscription_status });
+
+await test("HTTP client (fake fetch): endpoints, bearer token, one unfiltered search", async () => {
   const requests = [];
   const fakeFetch = async (url, init) => {
     requests.push({ url: String(url), init });
-    const u = new URL(String(url));
     if (init.method === "POST") return new Response("{}", { status: 200 });
-    const status = u.searchParams.get("subscription_status");
-    const body = status === "unsubscribed"
-      ? { data: [{ email: "Gone@Example.test" }], meta: { total: 1 } }
-      : { data: [], meta: { total: 0 } };
-    return new Response(JSON.stringify(body), { status: 200 });
+    return new Response(JSON.stringify(listPage([row("Gone@Example.test", "unsubscribed")])), { status: 200 });
   };
   const client = createHttpReachClient({ token: "tok-123", profileUuid: "prof-1" }, fakeFetch);
   const found = await client.findContact("gone@example.test");
   expect(found.ok && found.status === "unsubscribed", `find ${JSON.stringify(found)}`);
-  expect(requests.length === 4, `${requests.length} list calls`);
-  for (const r of requests) {
-    expect(r.url.startsWith(`${REACH_BASE_URL}/api/reach/v1/profiles/prof-1/contacts?`), `url ${r.url}`);
-    expect(new URL(r.url).searchParams.get("per_page") === "100", `per_page in ${r.url}`);
-    expect(r.init.headers.Authorization === "Bearer tok-123", "no bearer token");
-  }
+  expect(requests.length === 1, `${requests.length} list calls`);
+  const params = new URL(requests[0].url).searchParams;
+  expect(requests[0].url.startsWith(`${REACH_BASE_URL}/api/reach/v1/profiles/prof-1/contacts?`), `url ${requests[0].url}`);
+  expect(params.get("per_page") === "100" && params.get("page") === "1", `paging in ${requests[0].url}`);
+  expect(params.get("search") === "gone@example.test", "search term");
+  expect(!params.has("subscription_status"), "a status filter would hide other statuses");
+  expect(requests[0].init.headers.Authorization === "Bearer tok-123", "no bearer token");
   const created = await client.createContact("new@example.test");
   const post = requests.at(-1);
   expect(created.ok && post.init.method === "POST", "create not a POST");
@@ -414,56 +423,101 @@ await test("HTTP client (fake fetch): endpoints, bearer token, suppression parsi
   expect(!unknown.ok && unknown.error === "bad_response", "unparseable list treated as absent");
 });
 
-/** A fake Reach list endpoint: `pages[status]` is the response body, or a number for an HTTP error. */
-function fakeList(pages) {
-  return createHttpReachClient({ token: "t", profileUuid: "p" }, async (url) => {
-    const status = new URL(String(url)).searchParams.get("subscription_status");
-    const page = pages[status] ?? { data: [], meta: { total: 0 } };
-    return typeof page === "number"
-      ? new Response("{}", { status: page })
-      : new Response(JSON.stringify(page), { status: 200 });
+/**
+ * A fake Reach list endpoint over `rows`, paged as Reach pages them. `serve`
+ * can override one page: a number is an HTTP error, an object the body.
+ */
+function fakeReach(rows, { perPage, serve = {}, cap } = {}) {
+  const calls = [];
+  const client = createHttpReachClient({ token: "t", profileUuid: "p", perPage }, async (url) => {
+    const params = new URL(String(url)).searchParams;
+    const page = Number(params.get("page"));
+    const size = cap ?? Number(params.get("per_page"));
+    calls.push(page);
+    const override = serve[page];
+    if (typeof override === "number") return new Response("{}", { status: override });
+    const body = override ?? listPage(rows.slice((page - 1) * size, page * size), rows.length, page, size);
+    return new Response(JSON.stringify(body), { status: 200 });
   });
+  return { client, calls };
 }
+const fillers = (n, prefix = "gone") => Array.from({ length: n }, (_, i) => row(`${prefix}${i}@example.test`));
 
-await test("HTTP lookup: one status lookup failing is a failure, not absent", async () => {
-  for (const broken of [500, { data: [] }, { nope: true }, "garbage"]) {
-    const page = broken === "garbage" ? { data: "x", meta: { total: 0 } } : broken;
-    for (const status of ["unsubscribed", "pending", "subscribed", "confirmed"]) {
-      const result = await fakeList({ [status]: page }).findContact("gone@example.test");
-      expect(!result.ok, `${status} → ${JSON.stringify(broken)} read as ${JSON.stringify(result)}`);
-    }
-  }
+await test("HTTP lookup: an exact match past the first page is found", async () => {
+  const rows = [...fillers(150), row("gone@example.test", "unsubscribed")];
+  const { client, calls } = fakeReach(rows);
+  const result = await client.findContact("gone@example.test");
+  expect(result.ok && result.status === "unsubscribed", `page-2 match read as ${JSON.stringify(result)}`);
+  expect(calls.join() === "1,2", `pages fetched ${calls}`);
+  // Reach serving fewer per page than asked (15 of 100): page by its meta.
+  const capped = fakeReach([...fillers(18), row("gone@example.test", "pending")], { cap: 15 });
+  const r2 = await capped.client.findContact("gone@example.test");
+  expect(r2.ok && r2.status === "pending", `capped page size read as ${JSON.stringify(r2)}`);
+  expect(capped.calls.join() === "1,2", `capped pages fetched ${capped.calls}`);
 });
 
-await test("HTTP lookup: a near-miss address doesn't match", async () => {
-  const result = await fakeList({
-    unsubscribed: {
-      data: [{ email: "xgone@example.test" }, { email: "gone@example.testx" }, { email: "gone+1@example.test" }],
-      meta: { total: 3 },
-    },
-  }).findContact("gone@example.test");
+await test("HTTP lookup: a failed or incomplete page is a failure, not absent", async () => {
+  const rows = [...fillers(120), row("gone@example.test", "unsubscribed")];
+  for (const [page, broken] of [[1, 500], [2, 500], [2, { data: [] }], [2, { nope: true }], [2, { data: "x", meta: { total: 121, current_page: 2 } }]]) {
+    const result = await fakeReach(rows, { serve: { [page]: broken } }).client.findContact("gone@example.test");
+    expect(!result.ok, `page ${page} → ${JSON.stringify(broken)} read as ${JSON.stringify(result)}`);
+  }
+  const short = await fakeReach(rows, { serve: { 2: listPage([], 121, 2) } }).client.findContact("gone@example.test");
+  expect(!short.ok && short.error === "incomplete_page", `short last page read as ${JSON.stringify(short)}`);
+  const shortFirst = await fakeReach(rows, { serve: { 1: listPage(fillers(15), 121, 1, 100) } }).client.findContact("gone@example.test");
+  expect(!shortFirst.ok && shortFirst.error === "incomplete_page", `15 rows of a 100-row page read as ${JSON.stringify(shortFirst)}`);
+  const wrong = await fakeReach(rows, { serve: { 2: listPage(rows.slice(0, 21), 121, 1) } }).client.findContact("gone@example.test");
+  expect(!wrong.ok && wrong.error === "wrong_page", `page 1 served as page 2 read as ${JSON.stringify(wrong)}`);
+  const moved = await fakeReach(rows, { serve: { 2: listPage(rows.slice(100), 122, 2) } }).client.findContact("gone@example.test");
+  expect(!moved.ok && moved.error === "list_changed", `total changed mid-walk read as ${JSON.stringify(moved)}`);
+  const noTotal = await fakeReach(rows, { serve: { 1: { data: [], meta: { current_page: 1 } } } }).client.findContact("gone@example.test");
+  expect(!noTotal.ok, `missing meta.total read as ${JSON.stringify(noTotal)}`);
+  const huge = fakeReach(fillers(100 * MAX_PAGES + 1));
+  const tooMany = await huge.client.findContact("gone@example.test");
+  expect(!tooMany.ok && tooMany.error === "too_many_matches" && huge.calls.length === 1, `>${MAX_PAGES} pages read as ${JSON.stringify(tooMany)}`);
+});
+
+await test("HTTP lookup: a near-miss address doesn't match; exact is trimmed and case-insensitive", async () => {
+  const near = [row("xgone@example.test", "unsubscribed"), row("gone@example.testx", "unsubscribed"), row("gone+1@example.test", "unsubscribed")];
+  const result = await fakeReach(near).client.findContact("gone@example.test");
   expect(result.ok && result.status === null, `near-miss read as ${JSON.stringify(result)}`);
-  const exact = await fakeList({
-    unsubscribed: { data: [{ email: "xgone@example.test" }, { email: " GONE@example.test " }], meta: { total: 2 } },
-  }).findContact("gone@example.test");
+  const exact = await fakeReach([...near, row(" GONE@example.test ", "unsubscribed")]).client.findContact("gone@example.test");
   expect(exact.ok && exact.status === "unsubscribed", `trimmed, case-insensitive match missed: ${JSON.stringify(exact)}`);
 });
 
-await test("HTTP lookup: more matches than returned (or no total) is a failure", async () => {
-  const hundred = Array.from({ length: 100 }, (_, i) => ({ email: `gone${i}@example.test` }));
-  const more = await fakeList({ unsubscribed: { data: hundred, meta: { total: 101 } } }).findContact("gone@example.test");
-  expect(!more.ok && more.error === "incomplete_page", `total > rows read as ${JSON.stringify(more)}`);
-  const noTotal = await fakeList({ pending: { data: [] } }).findContact("gone@example.test");
-  expect(!noTotal.ok, `missing meta.total read as ${JSON.stringify(noTotal)}`);
-  const nested = await fakeList({ confirmed: { data: { data: [{ email: "gone@example.test" }], meta: { total: 1 } } } }).findContact("gone@example.test");
-  expect(nested.ok && nested.status === "confirmed", `nested envelope: ${JSON.stringify(nested)}`);
+await test("HTTP lookup: unsubscribed wins; an unknown or missing status is ambiguous", async () => {
+  for (const order of [["pending", "unsubscribed"], ["unsubscribed", "confirmed"]]) {
+    const r = await fakeReach(order.map((st) => row("gone@example.test", st))).client.findContact("gone@example.test");
+    expect(r.ok && r.status === "unsubscribed", `${order} read as ${JSON.stringify(r)}`);
+  }
+  for (const odd of ["bounced", "", undefined, 3]) {
+    const r = await fakeReach([{ email: "gone@example.test", subscription_status: odd }]).client.findContact("gone@example.test");
+    expect(!r.ok && r.error === "ambiguous_status", `status ${JSON.stringify(odd)} read as ${JSON.stringify(r)}`);
+  }
+  const nested = createHttpReachClient({ token: "t", profileUuid: "p" }, async () =>
+    new Response(JSON.stringify({ data: { data: [row("gone@example.test", "confirmed")], meta: { total: 1, current_page: 1 } } }), { status: 200 }),
+  );
+  const n = await nested.findContact("gone@example.test");
+  expect(n.ok && n.status === "confirmed", `nested envelope: ${JSON.stringify(n)}`);
+});
+
+await test("a failed lookup blocks the add (sync level)", async () => {
+  const db = memoryDb();
+  const lead = db.insert({ email: "blocked@example.test", reachSyncStatus: "pending" });
+  let creates = 0;
+  const client = {
+    async findContact() { return { ok: false, error: "ambiguous_status" }; },
+    async createContact() { creates += 1; return { ok: true }; },
+  };
+  const outcome = await syncLead(lead.id, { store: db.syncStore, client, log });
+  expect(outcome === "failed" && creates === 0, `${outcome}, ${creates} creates`);
 });
 
 await test("retry window covers at least 24 hours", async () => {
   let total = 0;
   for (let n = 1; n < MAX_ATTEMPTS; n += 1) total += backoffMs(n);
   expect(total >= 24 * HOUR, `${(total / HOUR).toFixed(1)} h from first to last attempt`);
-  expect(backoffMs(MAX_ATTEMPTS - 1) === 6 * HOUR, "the 6 h cap is never reached");
+  expect(backoffMs(MAX_ATTEMPTS - 1) === 6 * HOUR, "the last wait isn't the 6 h cap");
 });
 
 await test("--requeue-failed: refused without the switch and --confirm, then re-sends after an outage", async () => {
@@ -489,6 +543,7 @@ await test("--requeue-failed: refused without the switch and --confirm, then re-
     args: ["--requeue-failed", "--confirm"],
     env: { REACH_SYNC_ENABLED: "true" },
     print: () => {},
+    now: () => at(39 * 24 * HOUR),
   });
   expect(ok.mode === "requeued" && ok.count === 1, `requeue ${JSON.stringify(ok)}`);
   const s = await h.retry(at(40 * 24 * HOUR));
@@ -498,11 +553,103 @@ await test("--requeue-failed: refused without the switch and --confirm, then re-
   h2.stub.failCreate("http_503", 999);
   await h2.signUp("requeue-gone@example.test");
   await h2.flush();
+  for (let i = 1; i <= MAX_ATTEMPTS + 2; i += 1) await h2.retry(at(i * 24 * HOUR));
   h2.stub.contacts.set("requeue-gone@example.test", "unsubscribed");
-  await requeueFailed({ store: h2.db.syncStore, args: ["--confirm"], env: { REACH_SYNC_ENABLED: "true" }, print: () => {} });
+  const r2 = await requeueFailed({ store: h2.db.syncStore, args: ["--confirm"], env: { REACH_SYNC_ENABLED: "true" }, print: () => {}, now: () => at(40 * 24 * HOUR) });
+  expect(r2.count === 1, `requeue count ${r2.count}`);
   const creates = h2.stub.creates();
-  await h2.retry(at(HOUR));
+  await h2.retry(at(41 * 24 * HOUR));
   expect(h2.stub.creates() === creates, "requeue re-added an unsubscribed address");
+});
+
+await test("--requeue-failed leaves rows still being retried, or attempted in the last 30 minutes", async () => {
+  const db = memoryDb();
+  const env = { REACH_SYNC_ENABLED: "true" };
+  const now = at(10 * 24 * HOUR);
+  db.insert({ email: "a@example.test", reachSyncStatus: "failed", reachSyncAttempts: 3, reachLastAttemptAt: at(0) });
+  db.insert({ email: "b@example.test", reachSyncStatus: "failed", reachSyncAttempts: MAX_ATTEMPTS, reachLastAttemptAt: new Date(now.getTime() - 5 * 60 * 1000) });
+  const stuck = db.insert({ email: "c@example.test", reachSyncStatus: "pending", reachSyncAttempts: MAX_ATTEMPTS, reachLastAttemptAt: at(0) });
+  expect((await db.syncStore.countExhausted(MAX_ATTEMPTS)) === 2, "a pending row with every attempt used isn't counted");
+  const r = await requeueFailed({ store: db.syncStore, args: ["--confirm"], env, print: () => {}, now: () => now });
+  expect(r.count === 1 && db.rows.get(stuck.id).reachSyncAttempts === 0, `requeued ${r.count}`);
+  expect(db.byEmail("a@example.test").reachSyncAttempts === 3, "a row still in its retries was reset");
+  expect(db.byEmail("b@example.test").reachSyncAttempts === MAX_ATTEMPTS, "a row attempted 5 minutes ago was reset");
+});
+
+await test("requeue during an in-flight last attempt: one create", async () => {
+  const db = memoryDb();
+  const lead = db.insert({ email: "flight@example.test", reachSyncStatus: "failed", reachSyncAttempts: MAX_ATTEMPTS - 1, reachLastAttemptAt: at(0) });
+  let release;
+  const gate = new Promise((r) => { release = r; });
+  let creates = 0;
+  const client = {
+    async findContact() { await gate; return { ok: true, status: null }; },
+    async createContact() { creates += 1; return { ok: true }; },
+  };
+  const now = () => at(7 * HOUR);
+  const first = syncLead(lead.id, { store: db.syncStore, client, now });
+  await new Promise((r) => setTimeout(r, 0));
+  await requeueFailed({ store: db.syncStore, args: ["--confirm"], env: { REACH_SYNC_ENABLED: "true" }, print: () => {}, now });
+  const second = retryReachSync({ store: db.syncStore, client, now });
+  release();
+  await Promise.all([first, second]);
+  expect(creates === 1, `${creates} creates`);
+});
+
+await test(`daily limit: no more than the limit added in 24 h; the rest wait with their attempts intact`, async () => {
+  const h = harness();
+  for (const n of [1, 2, 3]) h.db.insert({ email: `day${n}@example.test`, reachSyncStatus: "pending" });
+  const s = await retryReachSync({ store: h.db.syncStore, client: h.stub, now: () => at(0), dailyLimit: 2, log });
+  expect(s.created === 2 && s.deferred === 1 && s.stoppedEarly, `summary ${JSON.stringify(s)}`);
+  const waiting = h.db.byEmail("day3@example.test");
+  expect(waiting.reachSyncStatus === "pending" && waiting.reachSyncAttempts === 0, "a deferred row lost an attempt");
+  const later = await retryReachSync({ store: h.db.syncStore, client: h.stub, now: () => at(25 * HOUR), dailyLimit: 2, log });
+  expect(later.created === 1, `next day ${JSON.stringify(later)}`);
+});
+
+await test("a retry run stops after its per-run limit and time budget", async () => {
+  const h = harness();
+  for (let n = 0; n < 5; n += 1) h.db.insert({ email: `run${n}@example.test`, reachSyncStatus: "pending" });
+  const s = await retryReachSync({ store: h.db.syncStore, client: h.stub, now: () => at(0), limit: 2, log });
+  expect(s.created === 2 && s.stoppedEarly, `limit ${JSON.stringify(s)}`);
+  let t = 0;
+  const s2 = await retryReachSync({ store: h.db.syncStore, client: h.stub, now: () => at((t += 3) * 60 * 1000), budgetMs: 5 * 60 * 1000, log });
+  expect(s2.created === 1 && s2.stoppedEarly, `budget ${JSON.stringify(s2)}`);
+});
+
+await test("a sign-up without a source is stored as \"unspecified\" and never queued", async () => {
+  const h = harness();
+  const res = await handleSubscribe({ email: "nosource@example.test" }, {
+    store: h.db.subscribeStore, notify: async () => {}, schedule: (task) => h.tasks.push(task), log,
+    reach: { client: h.stub, syncStore: h.db.syncStore },
+  });
+  await h.flush();
+  const saved = h.db.byEmail("nosource@example.test");
+  expect(res.status === 200 && saved.source === "unspecified", `source ${saved.source}`);
+  expect(saved.reachSyncStatus === "skipped_ineligible" && h.stub.calls.length === 0, `status ${saved.reachSyncStatus}`);
+});
+
+await test("switch off: the Prisma store writes and selects no Reach column", async () => {
+  const calls = [];
+  const fakePrisma = {
+    newsletterLead: {
+      async findUnique(args) { calls.push(["findUnique", args]); return null; },
+      async upsert(args) { calls.push(["upsert", args]); return { id: "lead_x", reachSyncStatus: "pending" }; },
+    },
+  };
+  const lead = { email: "off@example.test", source: "blog", landingPath: "/blog", reachSyncStatus: undefined };
+  const off = await prismaSubscribeStore(fakePrisma, () => {}, { syncEnabled: false }).save(lead);
+  const touched = JSON.stringify(calls);
+  expect(!/reach/i.test(touched), `switch-off query mentions a Reach column: ${touched}`);
+  expect(off.reachSyncStatus === null, "switch-off result carried a Reach status");
+  calls.length = 0;
+  await prismaSubscribeStore(fakePrisma, () => {}, { syncEnabled: true }).save({ ...lead, reachSyncStatus: "pending" });
+  const upsert = calls.find(([k]) => k === "upsert")[1];
+  expect(upsert.create.reachSyncStatus === "pending" && upsert.select.reachSyncStatus, "switch-on doesn't queue the row");
+  // With a plain @default(0) Prisma writes reachSyncAttempts into every
+  // INSERT, which breaks sign-ups on a database without the column.
+  const schema = readFileSync(new URL("../prisma/schema.prisma", import.meta.url), "utf8");
+  expect(/reachSyncAttempts\s+Int\s+@default\(dbgenerated\("0"\)\)/.test(schema), "reachSyncAttempts must default in the database");
 });
 
 await test("no log line carries an address or the token", async () => {

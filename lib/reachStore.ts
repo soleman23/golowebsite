@@ -29,7 +29,10 @@ const RETRYABLE: ReachSyncStatus[] = ["pending", "failed"];
  * `syncEnabled` false (REACH_SYNC_ENABLED off) keeps every Reach column out
  * of the query: nothing is written to or read from them, so a deploy that
  * reaches a database without the #121 columns still saves sign-ups while the
- * switch is off. (Add the columns first anyway; docs/seo-progress.md.)
+ * switch is off. That relies on `reachSyncAttempts` having a database-side
+ * default (`dbgenerated("0")` in schema.prisma): with a plain `@default(0)`
+ * Prisma writes the column into every INSERT. (Add the columns first anyway;
+ * docs/seo-progress.md.)
  */
 export function prismaSubscribeStore(
   prisma: PrismaClient,
@@ -107,15 +110,24 @@ export function prismaLeadSyncStore(prisma: PrismaClient): LeadSyncStore {
     },
     async countExhausted(maxAttempts) {
       return prisma.newsletterLead.count({
-        where: { reachSyncStatus: "failed", reachSyncAttempts: { gte: maxAttempts } },
+        where: { reachSyncStatus: { in: RETRYABLE }, reachSyncAttempts: { gte: maxAttempts } },
       });
     },
-    async requeueFailed() {
+    async requeueFailed(maxAttempts, quietBefore) {
       const { count } = await prisma.newsletterLead.updateMany({
-        where: { reachSyncStatus: "failed" },
+        where: {
+          reachSyncStatus: { in: RETRYABLE },
+          reachSyncAttempts: { gte: maxAttempts },
+          reachLastAttemptAt: { lt: quietBefore },
+        },
         data: { reachSyncStatus: "pending", reachSyncAttempts: 0, reachLastAttemptAt: null },
       });
       return count;
+    },
+    async countSyncedSince(since) {
+      return prisma.newsletterLead.count({
+        where: { reachSyncStatus: "synced", reachLastAttemptAt: { gte: since } },
+      });
     },
   };
 }

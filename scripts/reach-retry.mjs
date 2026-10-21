@@ -8,34 +8,44 @@
  *   npm run reach:retry
  *   npm run reach:retry -- --requeue-failed --confirm
  *
- * --requeue-failed puts every "failed" row (including ones that used all
- * MAX_ATTEMPTS, about 28.6 hours of retries) back to pending with no
- * attempts, then runs the retry. For after an outage longer than that. It
- * refuses unless REACH_SYNC_ENABLED=true and --confirm is given; each row is
- * still looked up in Reach first, so an unsubscribed address stays out.
+ * On Hostinger it runs from the hPanel Node.js cron, which executes
+ *   node --env-file=<site>/hbuilds/config/.env <site>/hbuilds/current/nodejs/scripts/reach-retry.mjs
+ * so it reads the same server environment as the site (DATABASE_URL and the
+ * REACH_* variables) and nothing else. next.config.mjs copies this file,
+ * register-ts.mjs and the Reach lib files into the standalone build for that
+ * (scripts/check-standalone-cron.mjs checks they are enough).
  *
- * Does nothing unless REACH_SYNC_ENABLED=true, REACH_API_TOKEN and
- * REACH_PROFILE_UUID are set (lib/reach.ts). Meant for a cron on the server
- * once the owner has turned sync on (docs/seo-progress.md, #121). Prints
- * counts and lead ids only, never an address.
+ * The switch is checked before anything else is loaded: unless
+ * REACH_SYNC_ENABLED is exactly "true" it prints "Nothing done" and exits 0
+ * without importing the Reach client, Prisma or the database. With the
+ * switch on it also needs REACH_API_TOKEN and REACH_PROFILE_UUID
+ * (lib/reach.ts), and exits 1 without them. Prints counts and lead ids only,
+ * never an address; an error prints its code and first line, not a stack.
  */
-
-import "./register-ts.mjs";
-
-const { getReachClient } = await import("../lib/reach.ts");
-const { retryReachSync, requeueFailed } = await import("../lib/reachSync.ts");
 
 const args = process.argv.slice(2);
 const requeue = args.includes("--requeue-failed");
-if (requeue && !(process.env.REACH_SYNC_ENABLED === "true" && args.includes("--confirm"))) {
+const switchOn = process.env.REACH_SYNC_ENABLED === "true";
+
+if (requeue && !(switchOn && args.includes("--confirm"))) {
   console.log("Refused: --requeue-failed needs REACH_SYNC_ENABLED=true and --confirm. Nothing was changed.");
   process.exit(2);
 }
 
+if (!switchOn) {
+  console.log(`${new Date().toISOString()} Reach sync is off (REACH_SYNC_ENABLED is not "true"). Nothing done.`);
+  process.exit(0);
+}
+
+await import("./register-ts.mjs");
+const { getReachClient } = await import("../lib/reach.ts");
+const { retryReachSync, requeueFailed } = await import("../lib/reachSync.ts");
+
 const client = getReachClient(process.env);
 if (!client) {
-  console.log("Reach sync is off (REACH_SYNC_ENABLED is not \"true\", or its token or profile is missing). Nothing done.");
-  process.exit(0);
+  // On but half-configured: fail the cron so it shows.
+  console.log("Reach sync is on but its token or profile is missing. Nothing done.");
+  process.exit(1);
 }
 
 const { PrismaClient } = await import("@prisma/client");
@@ -46,15 +56,23 @@ try {
   const store = prismaLeadSyncStore(prisma);
   if (requeue) {
     const result = await requeueFailed({ store, args, env: process.env, print: (line) => console.log(line) });
-    if (result.exitCode !== 0) process.exit(result.exitCode);
+    if (result.exitCode !== 0) process.exitCode = result.exitCode;
   }
-  const summary = await retryReachSync({
-    store,
-    client,
-    log: (message, fields) => console.error(message, JSON.stringify(fields ?? {})),
-  });
-  console.log("Reach retry:", JSON.stringify(summary));
-  process.exitCode = summary.failed > 0 || summary.exhausted > 0 ? 1 : 0;
+  if (!process.exitCode) {
+    const summary = await retryReachSync({
+      store,
+      client,
+      log: (message, fields) => console.error(message, JSON.stringify(fields ?? {})),
+    });
+    console.log(`${new Date().toISOString()} Reach retry:`, JSON.stringify(summary));
+    // Only this run's failures fail the cron. Exhausted rows are reported in
+    // the summary and the log, not on every run until someone requeues.
+    process.exitCode = summary.failed > 0 ? 1 : 0;
+  }
+} catch (err) {
+  // The code and the first line only: a Prisma error can echo the query.
+  console.error("Reach retry failed:", err?.code ?? err?.errorCode ?? err?.name ?? "error", String(err?.message ?? "").split("\n")[0].slice(0, 200));
+  process.exitCode = 1;
 } finally {
   await prisma.$disconnect();
 }
