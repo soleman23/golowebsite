@@ -284,7 +284,7 @@ const privacySections: LegalSection[] = [
       ] },
       { kind: "p", html: "Your choice itself is saved in your browser’s local storage under the name <strong>golo.analytics.consent.v2</strong>, as “granted” or “denied,” whichever way you choose, so the website can respect it on your next visit. The same value is also saved under the older name <strong>golo.analytics.preference</strong>, so pages still open from an earlier version of the website respect a decline too. Both stay until you change your choice or clear your browser’s site data." },
       { kind: "h3", text: "What Google receives and how it may use it" },
-      { kind: "p", html: "When Google Analytics is on, your browser sends the information above, with your IP address, directly to Google. Google processes it to provide the service to GoLo. On October 20, 2026, GoLo turned off all of the Google Analytics data-sharing settings, so Google does not use data collected since then to improve its own products and services, include it in benchmarking or modeling, give its technical support staff access to it, or make recommendations to GoLo. Before that date, those settings were on. GoLo has also turned off Google signals and ad-personalization signals in its tag. Learn more in <a href=\"https://policies.google.com/technologies/partner-sites\" rel=\"noopener noreferrer\">How Google uses information from sites or apps that use our services</a>." },
+      { kind: "p", html: "When Google Analytics is on, your browser sends the information above, with your IP address, directly to Google. The Google Analytics tag sends this measurement data to more than one Google web address (for example, google-analytics.com and google.com); your analytics choice controls all of them, and none are sent until you allow analytics. Google processes this data to provide the service to GoLo. On October 20, 2026, GoLo turned off all of the Google Analytics data-sharing settings, so Google does not use data collected since then to improve its own products and services, include it in benchmarking or modeling, give its technical support staff access to it, or make recommendations to GoLo. Before that date, those settings were on. GoLo has also turned off Google signals and ad-personalization signals in its tag, has turned off Google signals data collection in its Google Analytics property, and does not allow ads personalization for its Google Analytics data. Learn more in <a href=\"https://policies.google.com/technologies/partner-sites\" rel=\"noopener noreferrer\">How Google uses information from sites or apps that use our services</a>." },
       { kind: "h3", text: "Your choices" },
       {
         kind: "ul",
@@ -473,9 +473,9 @@ export const privacyDoc: LegalDoc = {
   lead: "What GoLo collects, how it gets used, and exactly what happens when you delete your account. Every section has a plain-English note beside the legal language.",
   dateLabel: "Last updated",
   // Set to the day this version deploys (#120: sign-up attribution and
-  // newsletter retention). Placeholder until then.
-  effective: "October 22, 2026",
-  effectiveISO: "2026-10-22",
+  // newsletter retention, on top of #122).
+  effective: "October 21, 2026",
+  effectiveISO: "2026-10-21",
   entity: siteConfig.addressShort,
   intro: privacyIntro,
   short: {

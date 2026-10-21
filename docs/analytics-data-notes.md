@@ -22,7 +22,11 @@ inside the window as collected without consent, and report it separately.
 
 ## Test traffic
 
-Created while building and verifying #114 and #115. None of it is a real visitor.
+Created while building and verifying #114 and #115 (October 19–20), and by later
+verification runs for the marketing work in soleman23/golo#789 and #790
+(October 21). None of it is a real visitor. Where an entry says requests were
+*sent*, that was observed in the browser; whether GA4 processed them into
+reports is stated separately.
 
 **GA4**
 - Hostname `localhost`: local production builds that used the real
@@ -31,6 +35,47 @@ Created while building and verifying #114 and #115. None of it is a real visitor
   starts "Uncaught Error: test error from verification" or is a run of "x".
 - Production (`www.golo.golf`) test visits from the owner's Mac (city Bend):
   around 02:05, 04:15 and 15:00 UTC on October 20.
+- **October 21, 18:11, 18:15 and 18:19 UTC (11:11–11:20 AM PDT): three
+  consent-check runs.** These were automated runs of the consent check for
+  soleman23/golo#789, in headless Chromium on the owner's Mac, each landing
+  on `/` with no campaign tags and choosing "Allow analytics".
+  - **What leaked:** the check blocked the copy of each hit sent to
+    `www.google-analytics.com/g/collect`. It didn't watch the second copy
+    gtag.js sends to `www.google.com/g/collect`, so that copy went out. Each
+    run may have sent a `page_view` and possibly a `web_vitals` hit that way.
+  - **Unverified:** whether GA4 counts hits arriving through that endpoint
+    in the property's reports.
+  - **Worst case in reports:** up to 3 extra desktop users and sessions on
+    October 21, landing page `/`, source `(direct)`.
+  - **Not filtered or deleted.**
+  - **The fix:** the check now blocks every off-site request except gtag.js
+    itself (soleman23/golo#868, `marketing/social/scripts/ga4-consent-check.mjs`).
+    Its later runs sent no hits; an independent check behind a logging proxy
+    confirmed it.
+- **October 21, 18:57:28–18:57:47 UTC (11:57 AM PDT): one approved
+  attribution diagnostic.** This is soleman23/golo#790's diagnostic, approved
+  by the owner. It was one headless Chromium visit through the planned
+  Instagram-bio link:
+  - It landed on `/` with `utm_source=instagram`, `utm_medium=organic_social`,
+    `utm_campaign=golo_prelaunch_2026q4` and `utm_content=bio`, chose "Allow
+    analytics", went to `/blog` through the nav, and submitted the newsletter
+    form once with a designated `qa+` test address on golo.golf.
+  - **Requests the browser sent (observed):** `page_view` for `/` and
+    `/blog`, `form_start` and `web_vitals`, plus batched requests whose event
+    names travel in the request body and weren't recorded. `newsletter_signup`
+    is expected among them but wasn't observed. A few requests also went to
+    `www.google.com/g/collect`. Processed events in GA4 reports haven't been
+    checked yet; they take 24 to 48 hours.
+  - **Expected effect on reports (unverified):** 1 user and session
+    attributed to `instagram / organic_social`, campaign
+    `golo_prelaunch_2026q4`, on October 21, and possibly one
+    `newsletter_signup` event if GA4 received and processed it (`seo-progress.md`
+    still records that event as not yet seen). Nothing else used that campaign
+    yet, so any count for it on that day is this test.
+  - **Not filtered.**
+  - **Elsewhere:** one internal sign-up notification email was sent, and one
+    test `NewsletterLead` row was created at 18:57:40 UTC. The owner deletes
+    the row; this note doesn't claim it's gone.
 
 **Clarity**
 - Sessions whose entry URL is on `localhost`, about 02:20–05:30 UTC on

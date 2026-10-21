@@ -245,8 +245,11 @@ event-scoped; display names can't contain hyphens).
 GA4 settings checked October 19–20, 2026: event and user data retention 14
 months (Explorations only; standard reports are aggregated and unaffected);
 Google signals off; user-provided data collection off; no Google Ads links;
-granular location and device data on; property-level ads personalization
-allowed (the tag sends `npa=1` regardless); email redaction on. Account
+granular location and device data on; email redaction on. Property-level ads
+personalization: allowed in all regions until October 21, 2026, when it was
+set to 0 of 307 regions (Admin → Data collection → Advanced settings to allow
+for ads personalization; verified after a reload; #119). The tag sends
+`npa=1` either way. Account
 data-sharing: all four settings turned off on October 20 ("Google products &
 services", "Modeling contributions & business insights", "Technical support"
 and "Recommendations for your business"). The Privacy Policy describes exactly
