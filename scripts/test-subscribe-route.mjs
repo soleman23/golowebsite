@@ -37,19 +37,20 @@ const STUBS = {
     const world = globalThis.__subscribeRouteTest;
     export const prisma = {
       newsletterLead: {
-        async findUnique({ where }) {
+        async create({ data }) {
           if (world.failSaves > 0) {
             world.failSaves -= 1;
-            throw Object.assign(new Error("Invalid invocation: where email = " + where.email), { code: "P1001" });
+            throw Object.assign(new Error("Invalid invocation: email = " + data.email), { code: "P1001" });
           }
-          return world.leads.has(where.email) ? { id: world.leads.get(where.email) } : null;
-        },
-        async upsert({ where, create }) {
-          if (!world.leads.has(where.email)) {
-            world.leads.set(where.email, "lead_" + world.leads.size);
-            world.creates.push(create);
+          // Yield first, so overlapping requests interleave as they would
+          // against a real database; the unique index still decides.
+          await new Promise((resolve) => setTimeout(resolve, 0));
+          if (world.leads.has(data.email)) {
+            throw Object.assign(new Error("Unique constraint failed on email = " + data.email), { code: "P2002" });
           }
-          return { id: world.leads.get(where.email) };
+          world.leads.set(data.email, "lead_" + world.leads.size);
+          world.creates.push(data);
+          return { id: world.leads.get(data.email) };
         },
       },
     };
@@ -308,6 +309,17 @@ const cases = [
         assert.equal((await post({ json: { email: "nope" } })).status, 400);
       }
       assert.equal((await post()).status, 200);
+    },
+  ],
+  [
+    "overlapping sign-ups for one new address: one lead, one notification",
+    async () => {
+      const email = nextEmail();
+      const notifiedBefore = world.notifications.length;
+      const results = await Promise.all([1, 2, 3].map(() => post({ json: { email, source: "blog", hp_note: "" } })));
+      assert.deepEqual(results.map((r) => r.status), [200, 200, 200]);
+      assert.equal(world.creates.filter((c) => c.email === email).length, 1);
+      assert.equal(world.notifications.length - notifiedBefore, 1);
     },
   ],
   [

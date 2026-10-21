@@ -3,7 +3,8 @@
  * Adds an email to the newsletter list. Mirrors /api/contact: zod-validated,
  * field-level errors on 400, notification failures logged rather than surfaced.
  *
- * A repeat signup is an upsert that returns the same success as a new one.
+ * A repeat signup returns the same success as a new one (the unique index
+ * turns its create into a no-op).
  * Answering "you're already on the list" would turn this endpoint into a
  * membership oracle for any address someone cares to type in.
  *
@@ -138,28 +139,28 @@ export async function POST(request: Request) {
 
   try {
     assertDatabaseConfigured();
-    // Upsert rather than create: the unique index makes a second signup a
-    // no-op instead of a 500, and `update: {}` leaves the original createdAt,
-    // source and landing alone.
-    const existing = await prisma.newsletterLead.findUnique({
-      where: { email },
-      select: { id: true },
-    });
-    alreadyOnList = Boolean(existing);
-    await prisma.newsletterLead.upsert({
-      where: { email },
-      update: {},
-      create: {
-        email,
-        source,
-        landingPath,
-        referrerHost,
-        landingSource,
-        landingMedium,
-        landingCampaign,
-        landingContent,
-      },
-    });
+    // A plain create, with the unique index deciding: whether this request
+    // added the address is then atomic, so two overlapping sign-ups for one
+    // address can't both count as new (one notification, one global slot).
+    // A repeat leaves the original createdAt, source and landing alone.
+    try {
+      await prisma.newsletterLead.create({
+        data: {
+          email,
+          source,
+          landingPath,
+          referrerHost,
+          landingSource,
+          landingMedium,
+          landingCampaign,
+          landingContent,
+        },
+        select: { id: true },
+      });
+    } catch (err) {
+      if ((err as { code?: string })?.code !== "P2002") throw err;
+      alreadyOnList = true;
+    }
   } catch (err) {
     // Nothing was saved, so it doesn't count against the global ceiling.
     charged.release();
