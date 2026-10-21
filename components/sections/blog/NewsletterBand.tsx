@@ -7,6 +7,10 @@
  * An address already on the list comes back as a plain success, because the
  * route deliberately won't say otherwise. Nothing here should ever tell a
  * visitor whether some address is a member.
+ *
+ * The hidden "hp_note" input is a honeypot (lib/subscribeGuard.ts): kept out
+ * of sight, the tab order and the accessibility tree, so only a bot fills it,
+ * and the route quietly drops any submission that does.
  */
 
 import { useId, useRef, useState } from "react";
@@ -24,6 +28,7 @@ export function NewsletterBand({ page = "blog" }: { page?: string }) {
 
   const uid = useId();
   const inputRef = useRef<HTMLInputElement>(null);
+  const honeypotRef = useRef<HTMLInputElement>(null);
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -32,6 +37,7 @@ export function NewsletterBand({ page = "blog" }: { page?: string }) {
     const parsed = subscribeSchema.safeParse({
       email,
       source: page,
+      hp_note: honeypotRef.current?.value ?? "",
       ...landingAttribution(),
     });
     if (!parsed.success) {
@@ -140,6 +146,23 @@ export function NewsletterBand({ page = "blog" }: { page?: string }) {
                 >
                   {status === "submitting" ? "Joining…" : "Join the list"}
                 </button>
+              </div>
+
+              <div className={styles.honeypot} aria-hidden="true">
+                <label htmlFor={`${uid}-hp`}>Leave this field empty</label>
+                {/* A meaningless name plus the 1Password and LastPass opt-outs,
+                    so no autofill puts a real visitor's details in here. */}
+                <input
+                  id={`${uid}-hp`}
+                  ref={honeypotRef}
+                  type="text"
+                  name="hp_note"
+                  tabIndex={-1}
+                  autoComplete="off"
+                  data-1p-ignore
+                  data-lpignore="true"
+                  defaultValue=""
+                />
               </div>
 
               {/* Always in the flow, so an error doesn't shove the fine print. */}

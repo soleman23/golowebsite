@@ -42,35 +42,29 @@ export function prismaSubscribeStore(
   return {
     async save(lead: NewLead) {
       beforeSave();
-      if (!syncEnabled) {
-        const { reachSyncStatus: _unused, ...withoutReach } = lead;
-        void _unused;
-        const existing = await prisma.newsletterLead.findUnique({
-          where: { email: lead.email },
-          select: { id: true },
+      const { reachSyncStatus, ...withoutReach } = lead;
+      // A plain create, with the unique index deciding: whether this request
+      // added the address is atomic, so two overlapping sign-ups for one
+      // address can't both count as new. A repeat (P2002) leaves the original
+      // createdAt, source, landing fields and Reach status alone, and makes
+      // no Reach call, so it needs nothing back.
+      try {
+        if (!syncEnabled) {
+          const row = await prisma.newsletterLead.create({
+            data: withoutReach,
+            select: { id: true },
+          });
+          return { id: row.id, created: true, reachSyncStatus: null };
+        }
+        const row = await prisma.newsletterLead.create({
+          data: { ...withoutReach, reachSyncStatus },
+          select: { id: true, reachSyncStatus: true },
         });
-        const row = await prisma.newsletterLead.upsert({
-          where: { email: lead.email },
-          update: {},
-          create: withoutReach,
-          select: { id: true },
-        });
-        return { id: row.id, created: !existing, reachSyncStatus: null };
+        return { id: row.id, created: true, reachSyncStatus: row.reachSyncStatus };
+      } catch (err) {
+        if ((err as { code?: string })?.code !== "P2002") throw err;
+        return { id: "", created: false, reachSyncStatus: null };
       }
-      const existing = await prisma.newsletterLead.findUnique({
-        where: { email: lead.email },
-        select: { id: true },
-      });
-      // Upsert rather than create: the unique index makes a racing second
-      // sign-up a no-op instead of a 500, and `update: {}` leaves the original
-      // createdAt, source, landing fields and Reach status alone.
-      const row = await prisma.newsletterLead.upsert({
-        where: { email: lead.email },
-        update: {},
-        create: lead,
-        select: { id: true, reachSyncStatus: true },
-      });
-      return { id: row.id, created: !existing, reachSyncStatus: row.reachSyncStatus };
     },
   };
 }

@@ -631,21 +631,28 @@ await test("a sign-up without a source is stored as \"unspecified\" and never qu
 
 await test("switch off: the Prisma store writes and selects no Reach column", async () => {
   const calls = [];
+  const existing = new Set();
   const fakePrisma = {
     newsletterLead: {
-      async findUnique(args) { calls.push(["findUnique", args]); return null; },
-      async upsert(args) { calls.push(["upsert", args]); return { id: "lead_x", reachSyncStatus: "pending" }; },
+      async create(args) {
+        calls.push(["create", args]);
+        if (existing.has(args.data.email)) throw Object.assign(new Error("unique"), { code: "P2002" });
+        existing.add(args.data.email);
+        return { id: "lead_x", reachSyncStatus: args.data.reachSyncStatus ?? null };
+      },
     },
   };
   const lead = { email: "off@example.test", source: "blog", landingPath: "/blog", reachSyncStatus: undefined };
   const off = await prismaSubscribeStore(fakePrisma, () => {}, { syncEnabled: false }).save(lead);
   const touched = JSON.stringify(calls);
   expect(!/reach/i.test(touched), `switch-off query mentions a Reach column: ${touched}`);
-  expect(off.reachSyncStatus === null, "switch-off result carried a Reach status");
+  expect(off.created && off.reachSyncStatus === null, "switch-off result carried a Reach status");
+  const repeat = await prismaSubscribeStore(fakePrisma, () => {}, { syncEnabled: false }).save(lead);
+  expect(!repeat.created, "a unique violation (P2002) wasn't read as a repeat");
   calls.length = 0;
-  await prismaSubscribeStore(fakePrisma, () => {}, { syncEnabled: true }).save({ ...lead, reachSyncStatus: "pending" });
-  const upsert = calls.find(([k]) => k === "upsert")[1];
-  expect(upsert.create.reachSyncStatus === "pending" && upsert.select.reachSyncStatus, "switch-on doesn't queue the row");
+  await prismaSubscribeStore(fakePrisma, () => {}, { syncEnabled: true }).save({ ...lead, email: "on@example.test", reachSyncStatus: "pending" });
+  const create = calls.find(([k]) => k === "create")[1];
+  expect(create.data.reachSyncStatus === "pending" && create.select.reachSyncStatus, "switch-on doesn't queue the row");
   // With a plain @default(0) Prisma writes reachSyncAttempts into every
   // INSERT, which breaks sign-ups on a database without the column.
   const schema = readFileSync(new URL("../prisma/schema.prisma", import.meta.url), "utf8");

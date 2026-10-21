@@ -33,7 +33,8 @@ export type NewLead = {
 export interface SubscribeStore {
   /**
    * Saves a new sign-up, or leaves an existing row exactly as it was (source,
-   * landing fields and Reach status included). Says which happened.
+   * landing fields and Reach status included). Says which happened, decided
+   * atomically: of two overlapping saves for one address, one is `created`.
    */
   save(lead: NewLead): Promise<{ id: string; created: boolean; reachSyncStatus: string | null }>;
 }
@@ -45,10 +46,22 @@ export type SubscribeDeps = {
   reach: { client: ReachClient; syncStore: LeadSyncStore } | null;
   /** Runs work after the response is sent (next/server `after` in the route). */
   schedule: (task: () => Promise<void>) => void;
+  /**
+   * The global ceiling (lib/subscribeGuard.ts `charge`), asked once the
+   * sign-up is valid. Its slot is given back if the save fails or the address
+   * was already on the list. Absent in tests that don't exercise it.
+   */
+  admit?: () =>
+    | { ok: true; release: () => void }
+    | { ok: false; retryAfterSeconds: number };
   log?: SyncLog;
 };
 
-export type SubscribeResult = { status: number; body: Record<string, unknown> };
+export type SubscribeResult = {
+  status: number;
+  body: Record<string, unknown>;
+  headers?: Record<string, string>;
+};
 
 export async function handleSubscribe(
   payload: unknown,
@@ -74,7 +87,19 @@ export async function handleSubscribe(
   // A request without a source didn't come from the newsletter band, which
   // always sends one. Stored as "unspecified", which is never eligible for
   // Reach (lib/reachSync.ts NEWSLETTER_SOURCES).
-  const { email, source = "unspecified", ...landing } = parsed.data;
+  // `hp_note` is the honeypot (the route drops filled ones first); it's never
+  // stored, so it stays out of the spread into the insert.
+  const { email, source = "unspecified", hp_note: _honeypot, ...landing } = parsed.data;
+  void _honeypot;
+
+  const admitted = deps.admit ? deps.admit() : { ok: true as const, release: () => {} };
+  if (!admitted.ok) {
+    return {
+      status: 429,
+      body: { error: "Too many sign-up attempts. Please try again in a few minutes." },
+      headers: { "Retry-After": String(admitted.retryAfterSeconds) },
+    };
+  }
 
   let saved: Awaited<ReturnType<SubscribeStore["save"]>>;
   try {
@@ -91,6 +116,8 @@ export async function handleSubscribe(
         : undefined,
     });
   } catch (err) {
+    // Nothing was saved, so it doesn't count against the global ceiling.
+    admitted.release();
     // The error code only: a Prisma error can echo the query, address included.
     console.error("[subscribe] failed to save lead:", (err as { code?: string })?.code ?? "unknown");
     return {
@@ -98,6 +125,9 @@ export async function handleSubscribe(
       body: { error: "We couldn't sign you up right now. Please try again." },
     };
   }
+
+  // A repeat saved nothing new: give its global slot back.
+  if (!saved.created) admitted.release();
 
   // Only announce genuinely new sign-ups; a repeat shouldn't page anybody.
   if (saved.created) {
