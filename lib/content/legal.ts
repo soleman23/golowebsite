@@ -473,10 +473,10 @@ export const privacyDoc: LegalDoc = {
   kicker: "LEGAL",
   lead: "What GoLo collects, how it gets used, and exactly what happens when you delete your account. Every section has a plain-English note beside the legal language.",
   dateLabel: "Last updated",
-  // Set to the day this version deploys (#120: sign-up attribution and
-  // newsletter retention, on top of #122).
-  effective: "October 21, 2026",
-  effectiveISO: "2026-10-21",
+  // Set to the day this version deploys (golo#803: the aggregate-use
+  // purpose, released with the app policy; before it, #120 and #122).
+  effective: "October 22, 2026",
+  effectiveISO: "2026-10-22",
   entity: siteConfig.addressShort,
   intro: privacyIntro,
   short: {
