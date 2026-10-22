@@ -69,7 +69,7 @@ export function HeroPhone() {
       <div className={styles.segmented}>
         <span className={`${styles.seg} ${styles.segActive}`}>Net</span>
         <span className={styles.seg}>Gross</span>
-        <span className={styles.seg}>Money</span>
+        <span className={styles.seg}>Results</span>
       </div>
 
       {/* spotlight */}
@@ -127,14 +127,14 @@ export function HeroPhone() {
         ))}
       </div>
 
-      {/* money chip */}
+      {/* skins chip */}
       <div className={styles.moneyChip}>
         <span className={styles.moneyChipLeft}>
           <span className={styles.moneyChipIcon}>
             <Icon name="target" size={20} color="var(--accent)" />
           </span>
           <span>
-            <span className={styles.moneyChipTitle}>Skins pot</span>
+            <span className={styles.moneyChipTitle}>Skins</span>
             <span className={styles.moneyChipSub}>2-hole carry live</span>
           </span>
         </span>

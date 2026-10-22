@@ -32,7 +32,7 @@ const blogPageMetadata = pageMetadata({
   path: "/blog",
   title: "Golf Side-Game Rules, Handicaps & Etiquette",
   description:
-    "Golf side-game rules, skins carryovers, pressing, strategy and settling-up etiquette for friendly wagers, from GoLo.",
+    "Golf side-game rules, skins carryovers, pressing, strategy and settling-up etiquette for your group's side games, from GoLo.",
   image: heroOgImage("blog"),
 });
 
@@ -108,7 +108,7 @@ export default function BlogPage() {
       <FinalCTA
         layout="split"
         page="blog"
-        kicker="TRACK IT. BET IT. SETTLE IT."
+        kicker="SCORE IT. TRACK IT. SETTLE IT."
         title="Enough reading. Go settle something."
         buttons={[
           {

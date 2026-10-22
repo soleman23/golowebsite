@@ -1,6 +1,6 @@
 /**
  * #math — the foursome's round settled: Nassau, skins and closest-to-pin per
- * player, netted, then boiled down to two payments. Every number comes from
+ * player, netted, then boiled down to two settle-ups. Every number comes from
  * betExample and nets to zero.
  */
 
@@ -56,7 +56,7 @@ export function BetMath() {
 
             <table className={styles.table}>
               <caption className="sr-only">
-                Winnings by player, before settling up
+                Results by player, before settling up
               </caption>
               <thead>
                 <tr>
@@ -111,7 +111,7 @@ export function BetMath() {
                   <span className={styles.arrow} aria-hidden="true">
                     →
                   </span>
-                  <span className="sr-only">pays</span>
+                  <span className="sr-only">owes</span>
                   <Avatar name={p.to} size="md" />
                   <span className={`${styles.payName} ${styles.payTo}`}>
                     {p.to}

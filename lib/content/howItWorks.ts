@@ -21,7 +21,7 @@ import type { GameSlug } from "./games";
 export const hiwHero = {
   kicker: "HOW IT WORKS",
   title: "One round, from the parking lot to settled up.",
-  lead: "Follow a Saturday foursome through eighteen holes. You'll see exactly where GoLo does the work — setup, strokes, scores, the side bets, and the one number everyone wants at the end.",
+  lead: "Follow a Saturday foursome through eighteen holes. You'll see exactly where GoLo does the work — setup, strokes, scores, the side games, and the one number everyone wants at the end.",
   walkLabel: "Walk the round",
   watchLabel: "Watch it in 90 seconds",
 } as const;
@@ -55,7 +55,7 @@ export const roundSteps: RoundStep[] = [
     place: "THE PARKING LOT",
     time: "7:48 AM",
     title: "Set the round before anyone's done stretching.",
-    body: "Course, tees, players, teams, games, stakes. A couple of minutes on one phone, and it's the last time anyone thinks about setup. Save your regulars as a group and next week they're in, teams and all, with one tap.",
+    body: "Course, tees, players, teams, games, amounts. A couple of minutes on one phone, and it's the last time anyone thinks about setup. Save your regulars as a group and next week they're in, teams and all, with one tap.",
     bullets: [
       "Guests go in with a name and a handicap, no account",
       "Fixed partners for the team games: Mike & Tom against Jess & Sarah",
@@ -101,9 +101,9 @@ export const roundSteps: RoundStep[] = [
     place: "THE TURN",
     time: "10:21 AM",
     title: "Front nine's in the books. Two down with nine to play.",
-    body: "Jess & Sarah closed out the front 3&2, and that bet settled itself at $5 a man. The back nine and the 18 keep running on their own, so Mike & Tom tee off on 10 knowing exactly what they need.",
+    body: "Jess & Sarah closed out the front 3&2, and that match closed at $5 a player. The back nine and the 18 keep running on their own, so Mike & Tom tee off on 10 knowing exactly what they need.",
     bullets: [
-      "Front, back and the 18 tracked as three bets",
+      "Front, back and the 18 tracked as three matches",
       "Live standings for every game on the card",
       "Presses run on the Overall Match game, not the Nassau — yet",
     ],
@@ -116,9 +116,9 @@ export const roundSteps: RoundStep[] = [
     place: "THE 18TH GREEN",
     time: "12:36 PM",
     title: "Last putt drops. The math is already done.",
-    body: "Mike & Tom won five holes on the back to take it 4&2 and the 18 3&1. Every bet closed the second the final score went in. No calculator, no recount, no “wait, who had the seventh?”",
+    body: "Mike & Tom won five holes on the back to take it 4&2 and the 18 3&1. Every match closed the second the final score went in. No calculator, no recount, no “wait, who had the seventh?”",
     bullets: [
-      "Every bet closed out hole by hole",
+      "Every match closed out hole by hole",
       "Full hole-by-hole history if anyone asks",
       "Round saved to your history",
     ],
@@ -130,11 +130,11 @@ export const roundSteps: RoundStep[] = [
     short: "Settle up",
     place: "BACK AT THE CARS",
     time: "12:41 PM",
-    title: "One number per player. Then who pays who.",
-    body: "GoLo nets every bet against every other and boils it down to a short list of payments — two, this time. Then you settle the way your group already does. The money never touches GoLo.",
+    title: "One number per player. Then who owes whom.",
+    body: "GoLo nets every game against every other and boils it down to a short settle-up list — two, this time. Then you settle the way your group already does. The money never touches GoLo.",
     bullets: [
       "Netted across every game on the card",
-      "A couple of payments, not a pile of IOUs",
+      "A couple of settle-ups, not a pile of IOUs",
       "Cash, Venmo, Zelle — outside the app",
     ],
     link: { label: "See the math on this round ↓", href: "#math" },
@@ -206,7 +206,7 @@ export type BetRow = {
  */
 export const betExample = {
   kicker: "HOW THE MATH LANDS",
-  title: "Three games, four players, two payments.",
+  title: "Three games, four players, two settle-ups.",
   lead: "Same foursome, same round. Team Nassau — Mike & Tom against Jess & Sarah — at $5 a man, $2 team skins with carryovers, and $2 closest to the pin on Tetherow's four par 3s. Here's what GoLo shows at the end.",
   results: [
     { label: "Front · Jess & Sarah 3&2" },
@@ -226,23 +226,23 @@ export const betExample = {
   noteSkins:
     "team skins, best ball net. Four tied holes rode into a 5-skin 6th for Jess & Sarah; Mike & Tom took the 9th and five holes on the back. Ten skins to seven at $2 is $6 a man.",
   noteCtp:
-    "the winner of each par 3 collects $2 from each of the other three. Tom won two, Mike and Jess one each.",
+    "the winner of each par 3 is owed $2 by each of the other three. Tom won two, Mike and Jess one each.",
   settleKicker: "SETTLE UP",
   settleCount: 2,
-  settleCaption: "payments, before anyone leaves the lot.",
+  settleCaption: "settle-ups, before anyone leaves the lot.",
   payments: [
     { from: "Sarah", to: "Tom", amount: "$19" },
     { from: "Jess", to: "Mike", amount: "$11" },
   ] as { from: HiwPlayerName; to: HiwPlayerName; amount: string }[],
   settleBody:
-    "Every bet netted against every other. Tom, the guest without the app, goes home $19 up, and Sarah pays him once instead of settling three games one by one.",
+    "Every game netted against every other. Tom, the guest without the app, goes home $19 up, and Sarah settles with him once instead of game by game.",
   settleFooter: "Cash, Venmo, Zelle — your call. Nothing runs through GoLo.",
 } as const;
 
 export const guestsSection = {
   kicker: "GUESTS WELCOME",
   title: "Tom doesn't have the app. Tom doesn't need it.",
-  lead: "Add a guest with a name and a handicap. That's it — no download, no sign-up, no email. They get the same strokes, the same bets and the same line on the settle-up screen as everyone else.",
+  lead: "Add a guest with a name and a handicap. That's it — no download, no sign-up, no email. They get the same strokes, the same side games and the same line on the settle-up screen as everyone else.",
   points: [
     {
       lead: "One phone scores the group",
@@ -278,11 +278,11 @@ export const doesntDo = {
   items: [
     {
       title: "Hold or move money",
-      body: "GoLo tracks who owes who. You pay each other however your group already does. We never see a payment.",
+      body: "GoLo tracks who owes whom. You settle up however your group already does, outside the app. We never see the money.",
     },
     {
       title: "Play the house",
-      body: "No odds, no lines, no rake. Just friendly wagers between the people in your group, at stakes you agreed on.",
+      body: "No house, no cut, no middleman. Just side games between the people in your group, at amounts you agreed on.",
     },
     {
       title: "Make everyone download it",
@@ -331,6 +331,6 @@ export const gameGuideOrder: GameSlug[] = [
 ];
 
 export const hiwFinalCta = {
-  kicker: "TRACK IT. BET IT. SETTLE IT.",
+  kicker: "SCORE IT. TRACK IT. SETTLE IT.",
   title: "Bring it Saturday. Let the phone keep the tally.",
 } as const;

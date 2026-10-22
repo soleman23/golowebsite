@@ -66,7 +66,7 @@ export const faqCategories: FaqCategory[] = [
       {
         id: "q-everyone",
         q: "Do all four of us need the app?",
-        a: "No. One person keeps the card and the rest just play. Anyone signed in can join the round and follow it live on their own phone, and the share card sends the final scores and the money to the group chat.",
+        a: "No. One person keeps the card and the rest just play. Anyone signed in can join the round and follow it live on their own phone, and the share card sends the final scores and the results to the group chat.",
       },
       {
         id: "q-start-round",
@@ -101,7 +101,7 @@ export const faqCategories: FaqCategory[] = [
       {
         id: "q-fix-score",
         q: "Can I fix a score after the hole?",
-        a: "Yes. Tap any hole, change the number, and every total, press and payout recalculates. Everyone in the round sees the correction, so nobody is arguing from an old screen.",
+        a: "Yes. Tap any hole, change the number, and every total, press and result recalculates. Everyone in the round sees the correction, so nobody is arguing from an old screen.",
       },
       {
         id: "q-pickup",
@@ -115,7 +115,7 @@ export const faqCategories: FaqCategory[] = [
     short: "Handicaps",
     label: "Handicaps & fairness",
     blurb:
-      "How strokes get allocated so a 20 and a 5 can play the same bet.",
+      "How strokes get allocated so a 20 and a 5 can play the same side games.",
     items: [
       {
         id: "q-handicaps",
@@ -136,20 +136,20 @@ export const faqCategories: FaqCategory[] = [
   },
   {
     id: "bets",
-    short: "Bets & settling",
-    label: "Bets, settling up & the gambling question",
+    short: "Side games & settling up",
+    label: "Side games and settling up",
     blurb:
       "What GoLo does with the money question: the math, and nothing else.",
     items: [
       {
         id: "q-settle",
         q: "How does the settle-up work?",
-        a: "When the last putt drops, GoLo totals every game, figures out who’s up and who’s down, and reduces it to a short list of payments that square the group. Nobody sends a payment per bet — each player gets a short list of who to pay, or who pays them.",
+        a: "When the last putt drops, GoLo totals every game, figures out who’s up and who’s down, and reduces it to a short who-owes-whom list for the group. Nobody settles game by game — each player sees who they owe, or who owes them.",
       },
       {
         id: "q-gambling",
-        q: "Is this real-money gambling?",
-        a: "GoLo is a scorekeeper for friendly wagers between playing partners — the kind you’ve always settled by hand on the 18th green. It doesn’t process payments or hold money; it just does the math and tells you who owes who. Keep it friendly and play your local rules.",
+        q: "Does GoLo handle money?",
+        a: "No. GoLo is a scorekeeper for your group's side games. It never holds or moves money; it does the math and shows who owes whom. Your group settles up outside the app. Keep it friendly and play your local rules.",
         // /terms stays unlinked until it clears legal review, same rule the
         // footer follows. The answer reads fine without the link.
         ...(siteConfig.termsPublished
@@ -168,8 +168,8 @@ export const faqCategories: FaqCategory[] = [
       },
       {
         id: "q-stakes",
-        q: "Can we set different stakes per game?",
-        a: "Yes — each game carries its own stake, so a $5 Nassau and $2 skins live in the same round. Change them any time before the first tee shot.",
+        q: "Can we set a different amount per game?",
+        a: "Yes — each game has its own amount, so a $5 Nassau and $2 skins live in the same round. Change them any time before the first tee shot.",
       },
     ],
   },
@@ -199,7 +199,7 @@ export const faqCategories: FaqCategory[] = [
       {
         id: "q-games-per-day",
         q: "Can we run different games each day?",
-        a: "Yes. Every round is set up on its own, so Tuesday can be a Nassau and Wednesday can be skins and a Best Score purse. Each round nets its own games; adding the days together is the trip tally that isn’t built yet.",
+        a: "Yes. Every round is set up on its own, so Tuesday can be a Nassau and Wednesday can be Skins and Best Score. Each round nets its own games; adding the days together is the trip tally that isn’t built yet.",
       },
     ],
   },
@@ -224,7 +224,7 @@ export const faqCategories: FaqCategory[] = [
       {
         id: "q-card",
         q: "Do I have to enter a card?",
-        a: "No. GoLo doesn’t collect or store payment card information at all — not for the app, and not for the bets your group settles between themselves.",
+        a: "No. GoLo doesn’t collect or store payment card information at all — not for the app, and not for anything your group settles between themselves.",
       },
     ],
   },

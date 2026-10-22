@@ -1,5 +1,5 @@
 /**
- * "Presses & variations" — four cards covering the ways the bet escalates.
+ * "Presses & variations" — four cards covering the ways the game escalates.
  */
 
 import type { GameDetail } from "@/lib/content";
