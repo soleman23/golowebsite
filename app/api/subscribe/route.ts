@@ -30,6 +30,7 @@ import { getReachClient } from "@/lib/reach";
 import { prismaSubscribeStore } from "@/lib/reachStore";
 import { siteConfig } from "@/lib/siteConfig";
 import { handleSubscribe } from "@/lib/subscribe";
+import { reachOnlyFromEnv } from "@/lib/reachSync";
 import {
   MAX_BODY_BYTES,
   clientKey,
@@ -118,6 +119,7 @@ export async function POST(request: Request) {
     notify: sendNewsletterNotification,
     // Sign-ups only queue; the scheduled retry job is the one sender.
     reach: client,
+    reachOnly: reachOnlyFromEnv(process.env),
     // Only a sign-up that saves a new address counts against the global
     // ceiling (handleSubscribe gives a repeat's or a failed save's slot
     // back), so junk can't close it for everybody.

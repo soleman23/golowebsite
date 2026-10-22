@@ -43,6 +43,11 @@ export type SubscribeDeps = {
    */
   reach: unknown | null;
   /**
+   * REACH_SYNC_ONLY (lib/reachSync.ts reachOnlyFromEnv): while set, only
+   * these addresses are queued; any other sign-up is saved as with sync off.
+   */
+  reachOnly?: ReadonlySet<string> | null;
+  /**
    * The global ceiling (lib/subscribeGuard.ts `charge`), asked once the
    * sign-up is valid. Its slot is given back if the save fails or the address
    * was already on the list. Absent in tests that don't exercise it.
@@ -104,6 +109,10 @@ export async function handleSubscribe(
     };
   }
 
+  // Sync applies to this sign-up only if it's on and, during a controlled
+  // test, the address is on the test list.
+  const syncThis = Boolean(deps.reach) && (!deps.reachOnly || deps.reachOnly.has(email));
+
   let saved: Awaited<ReturnType<SubscribeStore["save"]>>;
   try {
     saved = await deps.store.save({
@@ -117,7 +126,7 @@ export async function handleSubscribe(
       landingContent,
       // Queued for Reach only while sync is on, and only from the newsletter
       // band. Anything else is recorded as never to be sent.
-      reachSyncStatus: deps.reach
+      reachSyncStatus: syncThis
         ? isEligibleSource(source)
           ? "pending"
           : "skipped_ineligible"
@@ -153,10 +162,11 @@ export async function handleSubscribe(
   // burst Reach's API, and a repeat sign-up can't trigger a second
   // confirmation email.
   // Whether this sign-up waits on a Reach confirmation email, so the page can
-  // say so. It depends only on the switch and the source, never on whether
-  // the address was already on the list (no membership oracle).
+  // say so. It depends only on the switch (and the controlled-test list) and
+  // the source, never on whether the address was already on the list (no
+  // membership oracle).
   return {
     status: 200,
-    body: { ok: true, confirmByEmail: Boolean(deps.reach) && isEligibleSource(source) },
+    body: { ok: true, confirmByEmail: syncThis && isEligibleSource(source) },
   };
 }

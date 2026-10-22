@@ -173,6 +173,39 @@ CREATE INDEX "NewsletterLead_reachSyncStatus_idx" ON "NewsletterLead"("reachSync
 
 (From `prisma migrate diff` against the schema before #121; no database used. The `dbgenerated("0")` default produces the same `DEFAULT 0`.) Then confirm the three columns and the index exist and record it in the PR. Not yet applied.
 
+**Go-live in three stages, each behind the owner's explicit approval** (so the PR never waits on a production test that needs the PR):
+
+*Stage 1: code and schema with sync OFF.*
+1. Apply the SQL above to the golowebsite production database, then confirm the three columns and the index in `information_schema`.
+2. Merge #124. Hostinger builds `main`; the environment is unchanged (`REACH_SYNC_ENABLED` unset).
+3. Verify:
+   - the deployed `scripts/reach-retry.mjs` matches `main`;
+   - the next cron run prints "Nothing done";
+   - /blog loads and its band shows the old success message;
+   - /privacy is unchanged.
+4. Rollback: revert the PR (Hostinger rebuilds). The new columns are nullable or defaulted, so they can stay.
+
+*Stage 2: controlled production test with one owner-designated address.*
+- **Preconditions:**
+  - the Reach token is installed and its scope verified (golo#791);
+  - `REACH_PROFILE_UUID` is set and `DIRECT_URL` is already set;
+  - `REACH_SYNC_ONLY=<designated address>` is set first, then `REACH_SYNC_ENABLED=true`, and the site is redeployed so the server reads them.
+  - While `REACH_SYNC_ONLY` is set, every other sign-up is saved exactly as with sync off (never queued), and backfill `--apply` refuses.
+- **Steps and expected results:**
+  1. **Sign up** with the designated address on www.golo.golf/blog. Expect `200` and "Almost there…". The row is `pending`, and one internal notification arrives.
+  2. **Next cron run** (≤ 15 min). Output: `Reach retry: {… "created":1, "failed":0 …}`. Reach shows the contact `pending`, and one confirmation email arrives.
+  3. **Click the link.** Reach shows `confirmed`; the row is `synced`.
+  4. **Sign up again.** Expect `200`, no new email, Reach unchanged, and the next run lists nothing new.
+  5. **Unsubscribe** (Reach → Actions → Unsubscribe). Reach shows `unsubscribed`. A requeue or retry run doesn't re-add it, and no email is sent.
+  6. **Delete:** `printf '%s\n' "<address>" | npm run newsletter:delete -- --confirm`, with the production `DIRECT_URL` and the token. Expect `Website sign-up rows deleted: 1`, `Reach contacts deleted: 1`, and Reach shows 0. Then delete the team's notification email.
+- **Rollback and cleanup** at any failure: unset `REACH_SYNC_ENABLED` (and `REACH_SYNC_ONLY`) and redeploy, then delete the test row and contact. If the token may have leaked, revoke it.
+
+*Stage 3: public activation (separate approval).*
+- Ship the approved privacy wording and the band's fine print, in their own PR, with the date set to that day.
+- Remove `REACH_SYNC_ONLY`.
+- The owner reviews the backfill dry-run counts before any `--apply`.
+- The welcome automation (golo#874) stays inactive; enabling it is its own decision.
+
 **Before enabling** (each verified, then the owner's approval):
 
 1. ~~Reach account~~: confirmed October 21 (golo#791).

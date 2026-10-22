@@ -19,7 +19,7 @@ globalThis.fetch = async () => {
 };
 
 const { handleSubscribe } = await import("../lib/subscribe.ts");
-const { syncLead, retryReachSync, runBackfill, requeueFailed, backoffMs, MAX_ATTEMPTS, NEWSLETTER_CONSENT_SINCE, DAILY_ADD_LIMIT, MONTHLY_ADD_LIMIT, deleteSubscriber } =
+const { syncLead, retryReachSync, runBackfill, requeueFailed, backoffMs, MAX_ATTEMPTS, NEWSLETTER_CONSENT_SINCE, DAILY_ADD_LIMIT, MONTHLY_ADD_LIMIT, deleteSubscriber, reachOnlyFromEnv } =
   await import("../lib/reachSync.ts");
 const { createStubReachClient } = await import("../lib/reachStub.ts");
 const { getReachClient, createHttpReachClient, REACH_BASE_URL, MAX_PAGES } = await import("../lib/reach.ts");
@@ -207,6 +207,25 @@ await test("the response says a confirmation email is coming the same way for ne
   expect(other.body.confirmByEmail === false, "an ineligible source was told to expect a confirmation");
   const off = harness({ enabled: false });
   expect((await off.signUp("off@example.test")).body.confirmByEmail === false, "sync off still promised an email");
+});
+
+await test("REACH_SYNC_ONLY: only listed addresses are queued; others are saved as with sync off", async () => {
+  const only = reachOnlyFromEnv({ REACH_SYNC_ONLY: " Tester@Example.test , " });
+  expect(only.size === 1 && only.has("tester@example.test"), JSON.stringify([...only]));
+  expect(reachOnlyFromEnv({}) === null && reachOnlyFromEnv({ REACH_SYNC_ONLY: " , " }) === null, "empty list should be null");
+  const h = harness();
+  const deps = { store: h.db.subscribeStore, notify: async () => {}, reach: { client: h.stub }, reachOnly: only, log };
+  const visitor = await handleSubscribe({ email: "visitor@example.test", source: "blog" }, deps);
+  const tester = await handleSubscribe({ email: "tester@example.test", source: "blog" }, deps);
+  expect(visitor.body.confirmByEmail === false && tester.body.confirmByEmail === true, "answers");
+  expect(h.db.byEmail("visitor@example.test").reachSyncStatus === null, "a visitor was queued during the controlled test");
+  expect(h.db.byEmail("tester@example.test").reachSyncStatus === "pending", "the test address wasn't queued");
+  await h.flush();
+  expect(h.stub.creates() === 1 && h.stub.calls.every((c) => c.email === "tester@example.test"), "Reach saw a visitor");
+  // Backfill can't be applied while a controlled test runs.
+  const out = [];
+  const refused = await runBackfill({ store: h.db.backfillStore, args: ["--apply", "--confirm"], env: { REACH_SYNC_ENABLED: "true", REACH_SYNC_ONLY: "tester@example.test" }, print: (l) => out.push(l) });
+  expect(refused.mode === "refused" && /REACH_SYNC_ONLY/.test(out.join()), out.join());
 });
 
 await test("repeat sign-up of a pending address: no second create call", async () => {

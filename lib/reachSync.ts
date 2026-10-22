@@ -133,6 +133,24 @@ export function isReachSyncFlagOn(
   return env.REACH_SYNC_ENABLED === "true";
 }
 
+/**
+ * REACH_SYNC_ONLY: a comma-separated list of addresses. When set (with the
+ * switch on), only those addresses are queued for Reach; every other sign-up
+ * is saved exactly as with the switch off (never queued). For the controlled
+ * production test (docs/seo-progress.md), so turning sync on for one
+ * designated address doesn't sync real visitors before the privacy wording
+ * is live. Null when unset or empty.
+ */
+export function reachOnlyFromEnv(
+  env: Record<string, string | undefined>,
+): ReadonlySet<string> | null {
+  const list = (env.REACH_SYNC_ONLY ?? "")
+    .split(",")
+    .map((address) => address.trim().toLowerCase())
+    .filter((address) => address !== "");
+  return list.length > 0 ? new Set(list) : null;
+}
+
 /** The fields the sync reads. */
 export type SyncLead = {
   id: string;
@@ -484,6 +502,10 @@ export async function runBackfill(opts: {
     print(
       "Refused: --apply needs REACH_SYNC_ENABLED=true and --confirm. Nothing was changed.",
     );
+    return { mode: "refused", exitCode: 2 };
+  }
+  if (apply && reachOnlyFromEnv(env)) {
+    print("Refused: REACH_SYNC_ONLY is set (a controlled test is running). Nothing was changed.");
     return { mode: "refused", exitCode: 2 };
   }
 
