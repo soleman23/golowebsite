@@ -186,7 +186,7 @@ CREATE INDEX "NewsletterLead_reachSyncStatus_idx" ON "NewsletterLead"("reachSync
 4. Rollback: revert the PR (Hostinger rebuilds). The new columns are nullable or defaulted, so they can stay.
 
 *Stage 2: controlled production test with one owner-designated address.*
-- **The address:** no `+` (no confirmation reached any `+` test address), and **no existing `NewsletterLead` row** (check with a read-only `SELECT`). If a row exists, delete it first through `newsletter:delete`.
+- **The address:** an owner-controlled address with **no existing `NewsletterLead` row**. A `+` alias of a real mailbox is fine: on 2026-10-22 `devin+reach124@golo.golf` got its confirmation email within seconds and its own link confirmed exactly that address (golo#791). The earlier `qa+…` contacts got nothing, and it's not known whether `qa@` is a mailbox, so don't use it (check with a read-only `SELECT`). If a row exists, delete it first through `newsletter:delete`.
 - **Preconditions:**
   - the Reach token is installed and its scope verified (golo#791);
   - `REACH_PROFILE_UUID` is set and `DIRECT_URL` is already set;
@@ -229,7 +229,10 @@ CREATE INDEX "NewsletterLead_reachSyncStatus_idx" ON "NewsletterLead"("reachSync
 5. **Token:** a Reach API token with the narrowest scope offered, in the server environment only (`REACH_API_TOKEN`, `REACH_PROFILE_UUID`; never `NEXT_PUBLIC_`, the repo or chat). `REACH_SYNC_ENABLED` stays unset in production until the approval.
 6. **Live check** with designated test addresses (golowebsite#121, parts 1–2, October 21). It ran through the owner's Hostinger Connector, with no token; Reach's real responses were replayed through this code.
    - Verified: the contact is pending; no welcome email and no automations; search is a substring match; pagination and the 422 limit; unsubscribed contacts stay out (Reach itself and this code); deletion leaves no trace.
-   - **Still open:** no confirmation email arrived for any API-created contact in about 1 h 40 min, and Reach showed 0 emails used. The golo.golf sender domain had just been connected ("wait a couple of hours"), so retest with one fresh designated contact once a Reach test send is shown to arrive (a positive control). If API contacts get no confirmation email, they stay pending forever and sync is pointless as built.
+   - **Resolved 2026-10-22 (golo#791):**
+     - API-created contacts do get the confirmation email: `devin@golo.golf` within 3 s, and a `+` alias within seconds.
+     - A one-recipient QA campaign's unsubscribe link worked. A later API create for that address left it `unsubscribed` and sent nothing. This code's suppression path was replayed against Reach's live response: `suppressed`, 0 creates.
+   - **Found:** Reach still honours a confirmation link sent *before* an unsubscribe. Clicking it re-subscribes the contact (23:23:35, golo#791). That's the person's own click, not this code, and Hostinger has been asked whether it's intended. This code never re-adds an unsubscribed address.
 7. **Privacy wording:** the final words, from verified behaviour only, approved and shipped together with the change that turns sync on, with "Last updated" revised.
 8. **Backfill:** only after the owner reviews the dry-run counts.
 

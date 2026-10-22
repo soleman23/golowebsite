@@ -13,12 +13,12 @@ import { games, rosterGame, type GameSlug } from "@/lib/content/games";
 
 /**
  * The hero H1. It names what a searcher types — "golf scorecard app", "side
- * games" — and the accent carries the payoff. The brand line ("Bet it. Track
+ * games" — and the accent carries the payoff. The brand line ("Score it. Track
  * it. Settle it.", siteConfig.tagline) sits in the pill above it.
  */
 export const heroHeading = {
-  text: "The golf scorecard app that tracks side games and",
-  accent: "settles the bet.",
+  text: "The golf scorecard app that tracks your side games and",
+  accent: "shows who owes whom.",
 };
 
 export type Stat = {
@@ -80,7 +80,7 @@ export const features: Feature[] = [
         lead: "Handicap strokes, auto-applied",
         rest: "pop, push or carry, sorted per hole.",
       },
-      { lead: "Net & gross at once", rest: "flip the view, the bets follow." },
+      { lead: "Net & gross at once", rest: "flip the view, the games follow." },
       {
         lead: "Built for a foursome",
         rest: "everyone's scores in one tap-friendly card.",
@@ -95,12 +95,12 @@ export const features: Feature[] = [
     kicker: "LIVE LEADERBOARD",
     title: "Talk your trash — with receipts.",
     bodyHtml:
-      "Everyone sees where they stand while the round's still alive. Flip between net, gross and the money on the line. Movement arrows show who's charging and who just dumped one in the water.",
+      "Everyone sees where they stand while the round's still alive. Flip between Net, Gross and Results. Movement arrows show who's charging and who just dumped one in the water.",
     checklist: [
-      { lead: "Net · Gross · Money", rest: "one tap to see every angle." },
+      { lead: "Net · Gross · Results", rest: "one tap to see every angle." },
       {
         lead: "Live skins & carries",
-        rest: "watch the pot build hole to hole.",
+        rest: "watch each carried skin build hole to hole.",
       },
       { lead: "Movement arrows", rest: "proof you made the turn in first." },
     ],
@@ -113,13 +113,13 @@ export const features: Feature[] = [
     kicker: "AUTO SETTLE-UP",
     title: "The math is done before the handshake.",
     bodyHtml:
-      "Skins, Nassau, Best Score, closest-to-pin and long drive — all netted into <strong>one short list of payments</strong>. No daisy-chain of Venmos. Just “you pay him, he pays her,” done.",
+      "Skins, Nassau, Best Score, closest-to-pin and long drive — all netted into <strong>one short settle-up list</strong>. No daisy-chain of IOUs. Just “you owe him, he owes her,” done.",
     checklist: [
       {
         lead: "One net number per person",
         rest: "every game rolled together.",
       },
-      { lead: "Mark paid", rest: "check it off as the cash lands." },
+      { lead: "Mark settled", rest: "tick it off once your group has settled up outside the app." },
       {
         lead: "Drop it in the group chat",
         rest: "receipts for the whole crew.",
@@ -154,15 +154,15 @@ export type HomeGame = {
 const homeGameDescs: { slug: GameSlug; desc: string }[] = [
   {
     slug: "skins",
-    desc: "Low score wins the hole. Ties carry the pot to the next — and the next.",
+    desc: "Low score wins the hole. Ties carry the skin to the next — and the next.",
   },
   {
     slug: "nassau",
-    desc: "Three bets in one: front nine, back nine and the overall match.",
+    desc: "Three matches in one: front nine, back nine and the overall match.",
   },
   {
     slug: "best-score",
-    desc: "Everyone buys in; lowest net total over 18 takes the whole pot.",
+    desc: "Same amount for everyone; the best score takes it, or the top two or three split it.",
   },
   {
     slug: "wolf",
@@ -174,11 +174,11 @@ const homeGameDescs: { slug: GameSlug; desc: string }[] = [
   },
   {
     slug: "closest-to-pin",
-    desc: "Stick it tight on the par 3s and take the side pot.",
+    desc: "Stick it tight on the par 3s and take the greenie.",
   },
   {
     slug: "longest-drive",
-    desc: "Bomb it down the fairway on the marked hole to collect.",
+    desc: "Bomb it down the fairway on the marked hole to take it.",
   },
   {
     slug: "birdies",
@@ -211,7 +211,7 @@ export const steps: Step[] = [
     n: "3",
     icon: "swap",
     title: "Settle up",
-    body: "GoLo nets every game into a short list of payments. Everyone pays the right person before you leave the green.",
+    body: "GoLo nets every game into one short settle-up list. Everyone knows who to settle with before you leave the green.",
   },
 ];
 

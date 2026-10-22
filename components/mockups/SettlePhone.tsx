@@ -1,6 +1,6 @@
 /**
- * Feature 3 mockup: the settle-up screen (final result, "who pays whom"
- * transfers with a paid state, share + mark-all-paid footer). Decorative.
+ * Feature 3 mockup: the settle-up screen (final result, "who owes whom"
+ * rows with a settled state, share + mark-all-settled footer). Decorative.
  */
 
 import { settleBreakdown, transferRows } from "@/lib/mockData";
@@ -9,7 +9,7 @@ import styles from "./mockups.module.css";
 
 /**
  * "features" itemizes the win per game and closes on a single share button;
- * "home" keeps the shorter header and the share / mark-all-paid pair.
+ * "home" keeps the shorter header and the share / mark-all-settled pair.
  */
 type SettlePhoneProps = { variant?: "home" | "features" };
 
@@ -23,8 +23,8 @@ export function SettlePhone({ variant = "home" }: SettlePhoneProps) {
       scrim="linear-gradient(180deg, rgba(6,14,9,.78) 0%, rgba(6,14,9,.6) 26%, rgba(4,12,8,.92) 100%)"
       label={
         isFeatures
-          ? "GoLo settle-up screen — Mike collected $85 across the Nassau, skins and junk, reduced to three transfers with one already marked paid."
-          : "GoLo settle-up screen — Mike collected $85, with the who-pays-whom transfers netted out."
+          ? "GoLo settle-up screen — Mike is owed $85 across the Nassau, skins and junk, netted to three settle-ups with one already marked settled."
+          : "GoLo settle-up screen — Mike is owed $85, with who owes whom netted out."
       }
     >
       {/* header */}
@@ -42,7 +42,7 @@ export function SettlePhone({ variant = "home" }: SettlePhoneProps) {
       {/* hero result */}
       <div className={styles.settleResult}>
         <span className={styles.settleResultGlow} />
-        <div className={styles.settleResultKicker}>MIKE · 1ST OF 4 · YOU COLLECTED</div>
+        <div className={styles.settleResultKicker}>MIKE · 1ST OF 4 · YOU’RE OWED</div>
         <div className={styles.settleResultRow}>
           <span className={styles.settleResultBig}>+$85</span>
           <span className={styles.settleResultSub}>76 gross · 68 net</span>
@@ -58,9 +58,9 @@ export function SettlePhone({ variant = "home" }: SettlePhoneProps) {
         ) : null}
       </div>
 
-      {/* who pays whom */}
+      {/* who owes whom */}
       <div className={styles.settleSectionLabel}>
-        {isFeatures ? "WHO PAYS WHOM · 3 TRANSFERS" : "WHO PAYS WHOM"}
+        {isFeatures ? "WHO OWES WHOM · 1/3 SETTLED" : "WHO OWES WHOM"}
       </div>
       <div className={styles.transferRows}>
         {transferRows.map((t, i) => (
@@ -96,7 +96,7 @@ export function SettlePhone({ variant = "home" }: SettlePhoneProps) {
                   : undefined
               }
             >
-              {t.paid ? (isFeatures ? "Paid ✓" : "✓ Paid") : "Mark paid"}
+              {t.paid ? "✓ Settled" : "Mark settled"}
             </span>
           </div>
         ))}
@@ -110,7 +110,7 @@ export function SettlePhone({ variant = "home" }: SettlePhoneProps) {
       ) : (
         <div className={styles.settleFooter}>
           <span className={styles.settleShare}>↗ Share</span>
-          <span className={styles.settleMarkAll}>Mark all paid</span>
+          <span className={styles.settleMarkAll}>Mark all settled</span>
         </div>
       )}
     </PhoneShell>

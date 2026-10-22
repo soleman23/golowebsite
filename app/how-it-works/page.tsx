@@ -26,7 +26,7 @@ export const metadata: Metadata = pageMetadata({
   path: "/how-it-works",
   title: "How GoLo Works: Golf Side-Game Scoring, Handicaps and Settling Up",
   description:
-    "Follow one foursome through 18 holes: round setup, handicap strokes, live side-game scoring, presses, and settling up in two payments.",
+    "Follow one foursome through 18 holes: round setup, handicap strokes, live side-game scoring, presses, and a two-line settle-up.",
   image: heroOgImage("how-it-works"),
 });
 

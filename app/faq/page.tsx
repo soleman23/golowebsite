@@ -61,7 +61,7 @@ export default function FaqPage() {
         photo="faq"
         kicker="QUESTIONS FROM THE 19TH HOLE"
         title="Good question."
-        lead="Everything we get asked about scoring a round, running the games, and settling the bet — plus the honest answers about where GoLo is today."
+        lead="Everything we get asked about scoring a round, running the games, and settling up — plus the honest answers about where GoLo is today."
         breadcrumbs={[{ label: "Home", href: "/" }, { label: "FAQ" }]}
         meta={
           <>
@@ -91,7 +91,7 @@ export default function FaqPage() {
       <FinalCTA
         layout="split"
         page="faq"
-        kicker="TRACK IT. BET IT. SETTLE IT."
+        kicker="SCORE IT. TRACK IT. SETTLE IT."
         title="That's every question. Now go win the back nine."
         buttons={[
           {

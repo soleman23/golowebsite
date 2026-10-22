@@ -56,7 +56,7 @@ export const featureBlocks: FeatureBlock[] = [
     kicker: "ROUND SETUP",
     status: TODAY,
     title: "Ninety seconds on the first tee, then nobody touches it again.",
-    lead: "Course, tees, players, games, stakes. Set it once while the group is still stretching and the rest of the round is just tapping numbers. Save your Saturday crew as a group and next week they're in with one tap, teams and all.",
+    lead: "Course, tees, players, games, amounts. Set it once while the group is still stretching and the rest of the round is just tapping numbers. Save your Saturday crew as a group and next week they're in with one tap, teams and all.",
     checklist: [
       {
         lead: "One set of tees for the group",
@@ -67,7 +67,7 @@ export const featureBlocks: FeatureBlock[] = [
         rest: "add a name and an index, no account required.",
       },
       {
-        lead: "Stakes written down",
+        lead: "Amounts written down",
         rest: "the number is on the screen, not in three memories.",
       },
     ],
@@ -83,7 +83,7 @@ export const featureBlocks: FeatureBlock[] = [
     checklist: [
       {
         lead: "Your house rules, per game",
-        rest: "skins carryover, which skins count, how the purse splits.",
+        rest: "skins carryover, which skins count, how Best Score splits.",
       },
       {
         lead: "Teams or individual",
@@ -109,7 +109,7 @@ export const featureBlocks: FeatureBlock[] = [
         lead: "Whole foursome on one screen",
         rest: "no passing the phone around the green.",
       },
-      { lead: "Net and gross together", rest: "see both, bet on either." },
+      { lead: "Net and gross together", rest: "see both, play either." },
       {
         lead: "Junk logged on the hole",
         rest: "tap the greenie before you forget it.",
@@ -123,15 +123,15 @@ export const featureBlocks: FeatureBlock[] = [
     kicker: "LIVE LEADERBOARD",
     status: TODAY,
     title: "Trash talk, with a source.",
-    lead: "Everyone can see exactly where they stand while there's still golf left to fix it. Flip between net, gross and the money — the third one being the view that actually changes how people putt on 15.",
+    lead: "Everyone can see exactly where they stand while there's still golf left to fix it. Flip between Net, Gross and Results — the third one being the view that actually changes how people putt on 15.",
     checklist: [
       {
-        lead: "Money view",
+        lead: "Results view",
         rest: "every game's standing rolled into one running figure.",
       },
       {
-        lead: "Live pot and carries",
-        rest: "watch the skins money pile up hole by hole.",
+        lead: "Live skins and carries",
+        rest: "watch each carried skin build hole by hole.",
       },
       {
         lead: "Movement",
@@ -146,7 +146,7 @@ export const featureBlocks: FeatureBlock[] = [
     kicker: "PRESS TRACKING",
     status: TODAY,
     title: "Every press logged the second it's called.",
-    lead: "Presses are where friendly bets go to die — three of them deep and nobody agrees what's live. In GoLo they're on the Overall Match game: the side that's 2 or more down taps it on the tee and the ladder stays legible — which holes, at what stake, and who's up in it right now.",
+    lead: "Presses are where friendly side games get messy — three of them deep and nobody agrees what's live. In GoLo they're on the Overall Match game: the side that's 2 or more down taps it on the tee and the ladder stays legible — which holes, at what amount, and who's up in it right now.",
     checklist: [
       {
         lead: "Called, not automatic",
@@ -154,7 +154,7 @@ export const featureBlocks: FeatureBlock[] = [
       },
       {
         lead: "Up to two live at once",
-        rest: "at two, three or four times the stake, and still readable at the end.",
+        rest: "at two, three or four times the amount, and still readable at the end.",
       },
       {
         lead: "Timestamped",
@@ -169,8 +169,8 @@ export const featureBlocks: FeatureBlock[] = [
     id: "handicaps-strokes",
     kicker: "HANDICAPS & STROKES",
     status: TODAY,
-    title: "The 6 and the 22 can play for real money.",
-    lead: "Index in, course handicap out, strokes allocated by the card's stroke index — including the second stroke on the hardest holes when somebody needs 24 of them. Everyone gets their full course handicap, or play the round gross and nobody gets any; the bets follow whatever you chose.",
+    title: "The 6 and the 22 can play the same side game.",
+    lead: "Index in, course handicap out, strokes allocated by the card's stroke index — including the second stroke on the hardest holes when somebody needs 24 of them. Everyone gets their full course handicap, or play the round gross and nobody gets any; the side games follow whatever you chose.",
     checklist: [
       {
         lead: "No GHIN required",
@@ -192,17 +192,17 @@ export const featureBlocks: FeatureBlock[] = [
     id: "auto-settle-up",
     kicker: "AUTO SETTLE-UP",
     status: TODAY,
-    title: "Four players, six debts, three payments.",
-    lead: "Nassau, presses, skins, the purse and every greenie get netted into one number per player, then reduced to a short list of payments that make everyone whole. You read the list out loud in the parking lot and it's over — no daisy chain, no arithmetic with a beer in your hand.",
+    title: "Four players, six debts, three settle-ups.",
+    lead: "Nassau, presses, Skins, Best Score and every greenie get netted into one number per player, then reduced to a short who-owes-whom list that squares the group. You read the list out loud in the parking lot and it's over — no daisy chain, no arithmetic with a beer in your hand.",
     checklist: [
-      { lead: "Who pays whom", rest: "names and amounts, in plain order." },
+      { lead: "Who owes whom", rest: "names and amounts, in plain order." },
       {
-        lead: "Mark paid",
-        rest: "tick it off as the cash or the transfer lands.",
+        lead: "Mark settled",
+        rest: "tick it off once your group has settled up outside the app.",
       },
       {
         lead: "Itemized",
-        rest: "tap any number to see which bet produced it.",
+        rest: "tap any number to see which game produced it.",
       },
     ],
     visualSide: "right",
@@ -217,7 +217,7 @@ export const featureBlocks: FeatureBlock[] = [
     kicker: "HISTORY, STATS & YOUR LOCKER",
     status: TODAY,
     title: "A season-long record of who actually wins.",
-    lead: 'Every round is saved with its scores, its games and its money, so the guy who claims he "always" takes the back nine can be checked. Your Locker keeps your season and all-time net, your record in each format, and your record against each regular.',
+    lead: 'Every round is saved with its scores, its games and its results, so the guy who claims he "always" takes the back nine can be checked. Your Locker keeps your season and all-time net, your record in each format, and your record against each regular.',
     checklist: [
       {
         lead: "Season and all-time net",
@@ -225,7 +225,7 @@ export const featureBlocks: FeatureBlock[] = [
       },
       {
         lead: "Round archive",
-        rest: "reopen any card, see every hole and every bet.",
+        rest: "reopen any card, see every hole and every side game.",
       },
       {
         lead: "Head-to-head",
@@ -254,7 +254,7 @@ export const alsoInThere: AlsoCard[] = [
   {
     title: "Receipts for the group chat",
     status: TODAY,
-    body: "One card with the final scores, the money and who pays whom — dropped straight into the text thread where the trash talk already lives. Ends the Tuesday re-litigation.",
+    body: "One card with the final scores, the results and who owes whom — dropped straight into the text thread where the trash talk already lives. Ends the Tuesday re-litigation.",
   },
 ];
 
@@ -338,7 +338,7 @@ export const quickAnswers: QuickAnswer[] = [
     id: "move-the-money",
     question: "Does GoLo move the money?",
     answer:
-      "No. GoLo tracks who owes what and reduces it to a short list of payments — then you settle in cash, Venmo, Zelle or however your group already does it. Nothing runs through us, and we never see a payment.",
+      "No. GoLo tracks who owes what and reduces it to a short settle-up list — then you settle up outside the app, in cash, Venmo, Zelle or however your group already does it. Nothing runs through us, and we never see the money.",
   },
   {
     id: "everyone-need-the-app",
@@ -357,7 +357,7 @@ export const quickAnswers: QuickAnswer[] = [
     question: "Can we play our own house rules?",
     answer:
       // claim-ok: the list after "doesn't do today:" is what GoLo doesn't do
-      "Most of them. Skins carryover on or off, which skins count, how the purse splits, net or gross — you set it at the first tee and the app scores it your way. What it doesn’t do today: automatic presses, presses on a Nassau (they’re on the Overall Match game), 90% allowances, or playing off the low man. Everyone gets their full course handicap.",
+      "Most of them. Skins carryover on or off, which skins count, how Best Score splits, net or gross — you set it at the first tee and the app scores it your way. What it doesn’t do today: automatic presses, presses on a Nassau (they’re on the Overall Match game), 90% allowances, or playing off the low man. Everyone gets their full course handicap.",
   },
   // Answers a pre-launch question, so it goes when the app does.
   ...(launched

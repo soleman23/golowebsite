@@ -78,7 +78,7 @@ export default function FeaturesPage() {
       <PageHero
         photo="features"
         kicker="EVERYTHING GOLO DOES"
-        title="A scorecard that can do arithmetic, keep a bet straight, and remember who owes who."
+        title="A scorecard that does the arithmetic, keeps every side game straight, and remembers who owes whom."
         lead="Set the round, stack the games, tap in scores. GoLo handles the strokes, the presses, the junk and the math — and hands you one number per player before anyone leaves the lot."
         breadcrumbs={[{ label: "Home", href: "/" }, { label: "Features" }]}
         page="features"
@@ -143,7 +143,7 @@ export default function FeaturesPage() {
       <FinalCTA
         layout="split"
         page="features"
-        kicker="TRACK IT. BET IT. SETTLE IT."
+        kicker="SCORE IT. TRACK IT. SETTLE IT."
         title="Bring it Saturday. Let the phone keep the tally."
         buttons={[
           {

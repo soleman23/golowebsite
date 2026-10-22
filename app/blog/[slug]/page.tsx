@@ -142,7 +142,7 @@ export default async function BlogPostPage({ params }: Params) {
       <FinalCTA
         layout="split"
         page="post"
-        kicker="TRACK IT. BET IT. SETTLE IT."
+        kicker="SCORE IT. TRACK IT. SETTLE IT."
         title="Stop doing this math in the parking lot."
         buttons={[
           {

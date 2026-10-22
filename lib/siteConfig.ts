@@ -24,11 +24,11 @@ export const siteConfig = {
   name: "GoLo",
   /** The full brand, for structured data and anywhere "GoLo" alone is ambiguous. */
   brandName: "GoLo Golf",
-  tagline: "Bet it. Track it. Settle it.",
+  tagline: "Score it. Track it. Settle it.",
   description:
-    // "Friendly wagers", not "betting": the Terms say GoLo is not a betting app,
-    // and search titles and descriptions hold that line until counsel signs off.
-    "GoLo is the golf scorekeeper for friendly wagers: it runs every side game, does the handicap math, and settles the group with a short list of payments.",
+    // The app's own side-game vocabulary (golowebsite#117): GoLo shows who
+    // owes whom; the group settles up outside the app.
+    "GoLo is the golf scorekeeper for your group's side games: it runs every game, does the handicap math, and shows who owes whom in one short settle-up list.",
   url: process.env.NEXT_PUBLIC_SITE_URL || "https://www.golo.golf",
   gaMeasurementId: process.env.NEXT_PUBLIC_GA_ID || "G-36182P0H4D",
   /**
@@ -152,7 +152,7 @@ export const defaultOgImage = {
   url: "/images/brand/og-card.png",
   width: 1200,
   height: 630,
-  alt: "GoLo — Bet it. Track it. Settle it.",
+  alt: "GoLo — Score it. Track it. Settle it.",
 } as const;
 
 /** Maps a hero backdrop key to its original PNG path in /public/images. */

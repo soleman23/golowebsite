@@ -50,7 +50,7 @@ export default function ContactPage() {
       <FinalCTA
         layout="split"
         page="contact"
-        kicker="TRACK IT. BET IT. SETTLE IT."
+        kicker="SCORE IT. TRACK IT. SETTLE IT."
         title="Message sent. Now go take their money."
         buttons={[
           {

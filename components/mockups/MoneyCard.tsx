@@ -1,5 +1,5 @@
 /**
- * The "money on the line" standings card — a flexible-width glass card over a
+ * The "side games" standings card — a flexible-width glass card over a
  * course photo. Decorative marketing content.
  *
  * Two moments of the same screen: "games" (home) lists what each side game is
@@ -27,7 +27,7 @@ export function MoneyCard({ variant = "games" }: MoneyCardProps) {
       <div className={styles.moneyCardScrim} aria-hidden="true" />
       <div className={styles.moneyCardInner} aria-hidden="true">
         <div className={styles.moneyCardHead}>
-          <span className={styles.moneyCardKicker}>MONEY ON THE LINE</span>
+          <span className={styles.moneyCardKicker}>SIDE GAMES</span>
           <span className={styles.moneyCardThrough}>through 12</span>
         </div>
 
@@ -58,11 +58,11 @@ export function MoneyCard({ variant = "games" }: MoneyCardProps) {
         ) : (
           <>
             <div className={styles.viewToggle}>
-              <span className={`${styles.viewChip} ${styles.viewChipActive}`}>
-                MONEY
-              </span>
               <span className={styles.viewChip}>NET</span>
               <span className={styles.viewChip}>GROSS</span>
+              <span className={`${styles.viewChip} ${styles.viewChipActive}`}>
+                RESULTS
+              </span>
             </div>
 
             <div className={styles.standings}>
@@ -95,7 +95,7 @@ export function MoneyCard({ variant = "games" }: MoneyCardProps) {
 
             <div className={styles.potFooter}>
               <span className={styles.potLabel}>
-                {`SKINS POT · ${skinsPot.carried} CARRIED`}
+                {`SKINS · ${skinsPot.carried} CARRIED`}
               </span>
               <span className={styles.potValue}>{skinsPot.value}</span>
             </div>

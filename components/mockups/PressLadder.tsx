@@ -19,7 +19,7 @@ export function PressLadder() {
     <div
       className={styles.glassCard}
       role="img"
-      aria-label="A $5 Overall Match press ladder between Tom and Mike: the base match closed on 6 with Mike 2 up when Tom pressed at double the stake; that press and a second one at triple, from the 14th, are both live, with $30 of total exposure."
+      aria-label="A $5 Overall Match press ladder between Tom and Mike: the base match closed on 6 with Mike 2 up when Tom pressed at double the amount; that press and a second one at triple, from the 14th, are both live, with $30 of total exposure."
     >
       <div className={styles.glassCardInner} aria-hidden="true">
         <div className={styles.rowBetween}>

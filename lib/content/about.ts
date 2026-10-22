@@ -28,7 +28,7 @@ export const aboutContent = {
     title: "Two problems any group playing for a few dollars knows.",
     paragraphs: [
       "During the round, the games get hard to keep straight. A Nassau, skins with carryovers and closest to the pin on the par 3s are separate tallies, and nobody can hold all of them in their head by the 14th tee.",
-      "After the round, settling up turns into an argument about who owes whom and how much. GoLo handles both: it keeps every game’s score as you play, then nets everything into a short list of payments.",
+      "After the round, settling up turns into an argument about who owes whom and how much. GoLo handles both: it keeps every game’s score as you play, then nets everything into one short settle-up list.",
     ],
   },
 
@@ -53,7 +53,7 @@ export const aboutContent = {
 
   money: {
     kicker: "WHAT IT DOESN’T DO",
-    body: `${moneyLimit} It doesn’t take a cut or run a payment. Your group settles in cash, Venmo or whatever it already uses.`,
+    body: `${moneyLimit} It doesn’t take a cut. Your group settles up outside the app, in cash, Venmo or whatever it already uses.`,
   },
 
   honesty: {
@@ -62,7 +62,7 @@ export const aboutContent = {
     paragraphs: [
       "What the app does is kept in one list, with each feature marked live, in testing or not built. The site’s automated checks fail when a page calls an unfinished feature working, overstates a live one or names an unfinished one in a search title. Where something isn’t finished, the page says so.",
       "The worked example on How it works is a real round played through the app, on its own screens.",
-      "When the app gets something wrong, we write it up. The build notes go through the worst fixes in the commit log: payouts computed in floating point, presses lost when Setup was saved again, a skins carry paid out before it was won, and an overstated claim about settle-up on this site.",
+      "When the app gets something wrong, we write it up. The build notes go through the worst fixes in the commit log: settle-up amounts computed in floating point, presses lost when Setup was saved again, a skins carry counted before it was won, and an overstated claim about settle-up on this site.",
     ],
     links: [
       { label: "See the round →", href: "/how-it-works" },

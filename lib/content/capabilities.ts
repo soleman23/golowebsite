@@ -108,7 +108,7 @@ export const capabilities = [
     label: "Nassau, skins, Best Score, Wolf, Bingo Bango Bongo, junk board",
     status: "live",
     summary:
-      "Run several games in one round, each with its own stake, netted into one number per player.",
+      "Run several games in one round, each with its own amount, netted into one number per player.",
     limits: [
       "Birdie and eagle bounties are a Skins setting (Birdie Skin, Eagle Skin), gross birdies only, no cap.",
       "Closest to Pin and Longest Drive don't record a measured distance.",
@@ -121,7 +121,7 @@ export const capabilities = [
     label: "Presses on the Overall Match game",
     status: "live",
     summary:
-      "The side 2 or more down calls a press at two, three or four times the stake; up to two live at once.",
+      "The side 2 or more down calls a press at two, three or four times the amount; up to two live at once.",
     limits: ["Called, never automatic.", "Nassau doesn't take presses."],
     verified: APP_CHECK_062,
     roadmap: true,
@@ -150,16 +150,18 @@ export const capabilities = [
     // minimum: nets of +4, +3, −2, −2, −3 come out as 4 payments where 3
     // would do (the +3 and −3 can settle on their own).
     summary:
-      "Every game netted into one number per player, then a short list of payments that squares the group; each round is saved.",
+      "Every game netted into one number per player, then a short who-owes-whom list for the group; each round is saved.",
     limits: [
       "Each round settles on its own.",
-      "For n players, never more than n − 1 payments, but not always the fewest possible.",
+      "For n players, never more than n − 1 settle-ups, but not always the fewest possible.",
       "GoLo never holds, moves or processes money.",
     ],
     verified: APP_CHECK_100,
     roadmap: true,
     overclaims: [
       "fewest payments",
+      "fewest settle-ups",
+      "fewest possible settle-ups",
       "fewest transfers",
       "fewest possible payments",
       "fewest possible transfers",
@@ -195,7 +197,7 @@ export const capabilities = [
     label: "Share card for the group chat",
     status: "live",
     summary:
-      "One card with the final scores, the money and who pays whom, sent to the group's text thread.",
+      "One card with the final scores, the results and who owes whom, sent to the group's text thread.",
     verified: OWNER_1015,
     roadmap: true,
   },
@@ -245,7 +247,7 @@ export const capabilities = [
     status: "live",
     summary:
       "A player can save a Venmo handle, shown to the group at settle-up so they know where to send it.",
-    limits: ["GoLo doesn't send or receive the payment."],
+    limits: ["GoLo never sends or receives money."],
     verified: OWNER_1015,
   },
   {
