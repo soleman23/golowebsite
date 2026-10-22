@@ -238,7 +238,7 @@ export function LegalPage({
       <FinalCTA
         layout="split"
         page={doc.slug}
-        kicker="TRACK IT. BET IT. SETTLE IT."
+        kicker="SCORE IT. TRACK IT. SETTLE IT."
         title={doc.cta.title}
         buttons={[
           {
