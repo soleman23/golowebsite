@@ -101,10 +101,10 @@ const moneyRowSpecs: MoneyRowSpec[] = [
     iconColor: "var(--accent)",
     iconBg: "rgba(212,242,58,.14)",
     iconBorder: "rgba(212,242,58,.35)",
-    who: "2-hole carry on the pot",
+    who: "carried over two holes",
     val: "$120",
     valAccent: true,
-    tag: "in the pot",
+    tag: "carried",
   },
   {
     game: "nassau",
@@ -135,7 +135,7 @@ const moneyRowSpecs: MoneyRowSpec[] = [
     who: "Sarah · hole 7",
     val: "$20",
     valAccent: true,
-    tag: "live pot",
+    tag: "live hole",
   },
 ];
 
@@ -146,7 +146,7 @@ export const moneyRows: MoneyRow[] = moneyRowSpecs.map(
   },
 );
 
-/** The skins pot in the MoneyCard's players view footer. */
+/** The carried skins in the MoneyCard's players view footer. */
 export const skinsPot = { carried: 4, value: "$32" };
 
 export type TransferRow = {
@@ -228,7 +228,7 @@ const rosterTiles: GameTile[] = [
 
 export const gameTiles: GameTile[] = [
   ...rosterTiles,
-  // Not a roster game: the junk side bets, grouped.
+  // Not a roster game: the junk side games, grouped.
   {
     name: "Junk board",
     rule: "Greenies, sandies, closest-to-pin, long drive.",
@@ -406,10 +406,10 @@ export const transferRows: TransferRow[] = [
 
 /** The MoneyCard's accessible names, one per variant, from the rows it shows. */
 export const moneyCardLabels = {
-  games: `GoLo money-on-the-line card showing ${andList([
+  games: `GoLo side games card showing ${andList([
     ...new Set(moneyRowSpecs.map((row) => rosterGame(row.game).name)),
   ])} standings.`,
   players: `GoLo live leaderboard through 12 holes: ${standingRows
     .map((row) => `${row.name} ${row.up ? "up" : "down"} ${row.value.replace(/^[+−]/, "")}`)
-    .join(", ")}, with ${skinsPot.value} carried in the skins pot.`,
+    .join(", ")}, with ${skinsPot.value} in carried skins.`,
 };

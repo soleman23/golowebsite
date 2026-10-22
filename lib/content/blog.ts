@@ -126,7 +126,7 @@ export type BlogCategory = { id: BlogCategoryId; label: string };
 
 export const blogCategories: BlogCategory[] = [
   { id: "rules", label: "Game rules & how-to" },
-  { id: "etiquette", label: "Betting etiquette" },
+  { id: "etiquette", label: "Side-game etiquette" },
   { id: "handicaps", label: "Handicaps explained" },
   { id: "trips", label: "Trip guides" },
   { id: "building", label: "Build in public" },
@@ -861,7 +861,7 @@ export type BlogFilter = { id: string; label: string; count: number };
 /**
  * Chip data for the topic rail. Counts have to be of the cards the grid will
  * actually render, which means excluding whichever post is featured above it —
- * otherwise "Betting etiquette 2" sits over a grid holding one card.
+ * otherwise "Side-game etiquette 2" sits over a grid holding one card.
  */
 export function blogFilters(excludeSlug?: string): BlogFilter[] {
   const inGrid = publishedPosts.filter((p) => p.slug !== excludeSlug);

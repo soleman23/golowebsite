@@ -8,9 +8,9 @@ import { FinalCTA } from "@/components/sections/FinalCTA";
 
 export const metadata: Metadata = pageMetadata({
   path: "/games",
-  title: "Golf Side Games: Rules, Scoring & Payouts",
+  title: "Golf Side Games: Rules, Scoring & Settling Up",
   description:
-    "Learn the rules, scoring and payouts for Skins, Nassau, Wolf, Bingo Bango Bongo and more golf side games.",
+    "Learn the rules, scoring and settle-up for Skins, Nassau, Wolf, Bingo Bango Bongo and more golf side games.",
   image: heroOgImage("games"),
 });
 

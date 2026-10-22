@@ -1,6 +1,6 @@
 /**
  * Site footer: logo lockup + tagline, four link columns (Product / Games /
- * Legal / Company), and a bottom bar with copyright and a friendly-wager
+ * Legal / Company), and a bottom bar with copyright and a side-games
  * disclaimer. Edit footerLinks in lib/content/nav.ts, not this file.
  */
 
@@ -23,8 +23,8 @@ export function Footer() {
         <div className={styles.brand}>
           <Logo tileSize={36} markSize={26} wordSize={20} glow={false} />
           <p className={styles.tagline}>
-            Track it. Bet it. Settle it. The scorekeeper that finally settles the
-            bet.
+            Score it. Track it. Settle it. The scorekeeper that finally settles the
+            side games.
           </p>
         </div>
 
@@ -62,8 +62,8 @@ export function Footer() {
           © 2026 GoLo Golf. All rights reserved.
         </span>
         <span className={styles.disclaimer}>
-          GoLo helps you track friendly wagers between playing partners. Keep it
-          friendly, settle up, and play your local rules.
+          GoLo keeps score and the tally for your group’s side games. Keep it
+          friendly, settle up outside the app, and play your local rules.
         </span>
       </div>
     </footer>

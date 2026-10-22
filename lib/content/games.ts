@@ -55,7 +55,7 @@ const roster = {
     icon: "target",
     name: "Skins",
     rule: "Win the hole outright, win the skin. Ties carry.",
-    desc: 'Low score wins the hole and the "skin." Tie it and the pot carries to the next — pressure builds fast.',
+    desc: 'Low score wins the hole and the "skin." Tie it and the skin carries to the next — pressure builds fast.',
     how: "Each hole is worth a skin. Outright low score takes it; ties carry the value forward until someone wins clean.",
     players: "2–6 players",
     format: "Hole-by-hole",
@@ -65,22 +65,22 @@ const roster = {
   nassau: {
     icon: "trophy",
     name: "Nassau",
-    rule: "Front, back, total — three bets in one.",
-    desc: "The classic. Three separate bets in one round — front nine, back nine, and the overall 18.",
-    how: "Win the most holes on the front, back, and total. Three match-play bets, settled as one number.",
+    rule: "Front, back, total — three matches in one.",
+    desc: "The classic. Three separate matches in one round — front nine, back nine, and the overall 18.",
+    how: "Win the most holes on the front, back, and total. Three matches, settled as one number.",
     players: "2–4 players",
-    format: "3 bets in 1",
+    format: "3 matches in 1",
     tags: ["match"],
     popular: true,
   },
   "best-score": {
     icon: "cash",
     name: "Best Score",
-    rule: "Net or gross, winner takes the pot.",
-    desc: "Everyone buys into one pot. Lowest net total over 18 walks away with the whole thing.",
-    how: "Set the buy-in, play your round, and the lowest net score after handicaps takes the purse — or the top two or three split it evenly.",
+    rule: "Net, gross or Stableford: the best score takes it.",
+    desc: "Everyone puts in the same amount. The best score for the round's format (net, gross or Stableford) takes it, or the top two or three split it, as set at the first tee.",
+    how: "Set the amount, play your round, and the best score takes it, or the top two or three split it evenly.",
     players: "2+ players",
-    format: "One pot",
+    format: "One total",
     tags: ["pots"],
   },
   wolf: {
@@ -106,9 +106,9 @@ const roster = {
   "closest-to-pin": {
     icon: "pin",
     name: "Closest to Pin",
-    rule: "The par-3 side bet, settled on the green.",
-    desc: "Stick your tee shot tightest on the par 3s and collect the side pot.",
-    how: "On each designated par 3, whoever lands closest to the flag and makes par or better takes that hole’s pot.",
+    rule: "The par-3 side game, settled on the green.",
+    desc: "Stick your tee shot tightest on the par 3s and take the hole.",
+    how: "On each designated par 3, whoever lands closest to the flag and makes par or better takes that hole.",
     players: "Any group",
     format: "Par 3s only",
     tags: ["side"],
@@ -117,7 +117,7 @@ const roster = {
     icon: "drive",
     name: "Longest Drive",
     rule: "One fairway, one bomb, one winner.",
-    desc: "Rip it down the fairway on the marked hole. Longest ball in play collects.",
+    desc: "Rip it down the fairway on the marked hole. Longest ball in play takes it.",
     how: "Pick a hole up front. Longest drive that finishes in the short grass wins — miss the fairway and you’re out.",
     players: "Any group",
     format: "One marked hole",
@@ -142,18 +142,18 @@ export type GameFilter = { id: "all" | GameTag; label: string };
 
 export const gameFilters: GameFilter[] = [
   { id: "all", label: "All games" },
-  { id: "pots", label: "Skins & pots" },
+  { id: "pots", label: "Skins & Best Score" },
   { id: "match", label: "Match play" },
   { id: "points", label: "Points" },
-  { id: "side", label: "Side bets" },
+  { id: "side", label: "Side games" },
 ];
 
 /** The /games hero. The H1 names the topic; the lead keeps the voice. */
 export const gamesHero = {
   kicker: "EVERY GAME, SCORED AUTOMATICALLY",
   title: "Golf side games:",
-  titleAccentLine: "Rules, scoring, and payouts.",
-  lead: "Skins, Nassau, Wolf, the side pots your buddy always forgets to pay — GoLo runs every one, stacks them in a single round, and nets it all into one number per player. Browse the whole roster below.",
+  titleAccentLine: "Rules, scoring, and settling up.",
+  lead: "Skins, Nassau, Wolf, the junk your buddy always forgets to settle — GoLo runs every one, stacks them in a single round, and nets it all into one number per player. Browse the whole roster below.",
 };
 
 /**
