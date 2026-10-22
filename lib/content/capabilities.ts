@@ -160,6 +160,8 @@ export const capabilities = [
     roadmap: true,
     overclaims: [
       "fewest payments",
+      "fewest settle-ups",
+      "fewest possible settle-ups",
       "fewest transfers",
       "fewest possible payments",
       "fewest possible transfers",

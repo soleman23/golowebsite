@@ -67,9 +67,9 @@ export function Hero() {
           </h1>
 
           <p className={styles.lead}>
-            Skins, Nassau, the press on the back nine — GoLo runs every side-game,
-            does the math you hate, and tells everyone{" "}
-            <strong>exactly who owes who</strong> before you hit the parking lot.
+            Skins, Nassau, the press on the back nine — GoLo runs every side game,
+            does the math you hate, and has the{" "}
+            <strong>settle-up ready</strong> before you hit the parking lot.
           </p>
 
           {siteConfig.appLive ? <StoreButtons size="md" /> : null}

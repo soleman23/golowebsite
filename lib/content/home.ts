@@ -162,7 +162,7 @@ const homeGameDescs: { slug: GameSlug; desc: string }[] = [
   },
   {
     slug: "best-score",
-    desc: "Same amount for everyone; the best score takes it, or the top few split it.",
+    desc: "Same amount for everyone; the best score takes it, or the top two or three split it.",
   },
   {
     slug: "wolf",
@@ -174,7 +174,7 @@ const homeGameDescs: { slug: GameSlug; desc: string }[] = [
   },
   {
     slug: "closest-to-pin",
-    desc: "Stick it tight on the par 3s and take the hole.",
+    desc: "Stick it tight on the par 3s and take the greenie.",
   },
   {
     slug: "longest-drive",
