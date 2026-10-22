@@ -180,7 +180,7 @@ export function NewsletterBand({ page = "blog" }: { page?: string }) {
           )}
 
           <p className={styles.fine}>
-            No spam, no selling your address. Unsubscribe from any email.
+            No spam, no selling your address. Every newsletter email has an unsubscribe link.
           </p>
         </div>
       </div>

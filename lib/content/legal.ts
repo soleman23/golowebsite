@@ -147,6 +147,7 @@ const privacySections: LegalSection[] = [
           "<strong>Participant information entered by another user:</strong> a round organizer may enter another participant’s name, email address, phone number, handicap, or payment handle to organize a round and match that participant to an account. Users should provide another person’s information only when they have permission to do so.",
           "<strong>Communications:</strong> information included in support requests, emails, feedback, or other messages sent to us.",
           "<strong>Website download-link requests:</strong> the phone number you enter when you ask us to text you an app download link, together with delivery status and related technical records.",
+          "<strong>Newsletter sign-ups:</strong> the email address you enter to join the GoLo newsletter on our website, with when and where you signed up. We pass the address to Hostinger Reach and ask it to email the address a link to confirm. That confirmation email isn’t a newsletter. Reach records the address as waiting for confirmation until the link is clicked, and signing up again doesn’t send another one.",
           "<strong>Where a website sign-up came from:</strong> when you join the newsletter or ask for a download link on the website, we also keep where that visit started: the path of the first page you landed on (not the rest of its web address), the domain of the website that referred you, and up to four names from the link you followed, if it carried them: its source, medium, campaign, and placement. We store the source only if, once converted to lower case, it is at most 64 characters of letters, digits, dots, hyphens, and underscores, with no @ sign, no run of seven or more digits (even if separated by spaces, dots, hyphens, or underscores), no UUID, and no run of 16 or more characters made only of the letters a–f and digits. We store the medium, campaign, and placement only when, together with the source, they exactly match a combination from GoLo’s own list of tagged-link names; otherwise we store none of the three. Apart from the page path and these names, we keep nothing from the link. We use these details only to count, in aggregate, which pages, websites, and links bring sign-ups.",
         ],
       },
@@ -247,6 +248,7 @@ const privacySections: LegalSection[] = [
           "<strong>Hostinger, Netlify, or other hosting providers</strong>, for website or web-app hosting and delivery;",
           "<strong>OpenStreetMap’s Nominatim service or another geocoding provider</strong>, for converting a location or search term into a city, region, or coordinates;",
           "<strong>golf-course and golf-association data providers</strong>, including authorized USGA/GHIN services when enabled, for course, tee, rating, handicap, and score-posting functions;",
+          "<strong>Hostinger (Hostinger Reach)</strong>, which sends the newsletter’s confirmation email and holds the newsletter list, including who has unsubscribed;",
           "<strong>email, text-message, and push-delivery providers</strong>, for messages requested by you or needed to operate the Service; and",
           `<strong>analytics, logging, and crash-reporting providers</strong>, for performance measurement, diagnostics, security, and troubleshooting, including <strong>Google (Google Analytics)</strong> on the website if you allow it, as described in <a href="#website-analytics">Website Analytics</a>, which also covers the <strong>Microsoft (Clarity)</strong> session recordings the website used until ${CLARITY_ENDED}.`,
         ],
@@ -329,6 +331,7 @@ const privacySections: LegalSection[] = [
           "<strong>Push tokens:</strong> while notifications are enabled or until the token is revoked, expires, or the account is deleted.",
           "<strong>Support, download-link, email, and text-message records:</strong> <!-- -->generally up to 24 months after the communication, unless a longer period is needed to resolve an issue or comply with law.",
           "<strong>Newsletter sign-up records:</strong> the email address you signed up with, when and where on the website you signed up, and where that visit came from: kept until you ask us to delete them, as described in <a href=\"#section-7\">Your Choices and Privacy Rights</a>, unless a longer period is needed to resolve an issue or comply with law. Unsubscribing from newsletter emails stops the emails; to have the sign-up record itself deleted, ask us. Details of where a website sign-up came from are kept with the newsletter or download-link record they belong to, and deleted with it.",
+          "<strong>Newsletter list (Hostinger Reach):</strong> your address stays in Hostinger Reach (waiting for confirmation, subscribed or unsubscribed) until it is deleted. If you unsubscribe, Hostinger Reach keeps your address marked as unsubscribed, and our website does not add it again. Clicking a confirmation link from an email sent before you unsubscribed counts, in Hostinger Reach, as subscribing again. If you ask us to delete your newsletter information, we delete your sign-up record on our website, the copy of its sign-up notification in our team’s mailbox, and your contact in Hostinger Reach. Deleting the Reach contact also deletes Reach’s record that you unsubscribed. Nothing queued on our side can add it back. If you later sign up again yourself, that is a new sign-up, and Reach again records it as waiting for your confirmation.",
           "<strong>Website analytics:</strong> as described in <a href=\"#website-analytics\">Website Analytics</a>: up to 14 months for analysis in Google Analytics (Google’s aggregated reports aren’t limited by that setting). Earlier Clarity recordings: 30 days for most, up to 9 months for heatmaps and a sample Microsoft keeps.",
           "<strong>Other analytics, logs, and crash diagnostics:</strong> generally up to 24 months, unless a shorter provider setting is available and appropriate.",
           "<strong>Backups:</strong> deleted information may remain in encrypted or access-restricted backups for up to 90 days before it is overwritten.",
@@ -510,53 +513,6 @@ export const privacyDoc: LegalDoc = {
   cta: { title: "That's the whole policy. Now go win the back nine." },
 };
 
-/**
- * DRAFT, NOT PUBLISHED, NOT RENDERED. Final proposed Privacy Policy wording
- * for the newsletter's Hostinger Reach sync (soleman23/golowebsite#121, owner
- * decisions on soleman23/golo#791; deletion handled as owner option A).
- * Nothing imports this: privacyDoc above is the published policy and is
- * unchanged by #121.
- *
- * Every sentence states what the live checks showed (golowebsite#121,
- * 2026-10-21/22): Reach emailed a contact added through its API a
- * confirmation email (not a newsletter, and with no unsubscribe link) and
- * held it as pending until the link was clicked (for an address without a
- * "+"; whether "+" addresses get the email is with Hostinger support); a repeat sign-up sends
- * nothing more; an unsubscribed contact stays marked unsubscribed and the
- * website's sync never adds it back; deleting a contact in Reach removes it
- * and its unsubscribed mark. Not claimed, because not verified: that every
- * newsletter email carries an unsubscribe link (no newsletter has been sent;
- * the proposed band line below depends on it), that a campaign skips pending
- * contacts,
- * and anything about how long the email provider (Resend) keeps its own logs
- * of the team's sign-up notification.
- *
- * It moves into privacyDoc only with the owner's approval of these words,
- * together with the change that turns sync on, with "Last updated" revised.
- */
-export const reachPrivacyDraft = {
-  status: "FINAL DRAFT: not rendered, awaiting the owner's approval (#121)",
-  /** "Information you provide" list: after "Website download-link requests". */
-  informationYouProvide:
-    "<strong>Newsletter sign-ups:</strong> the email address you enter to join the GoLo newsletter on our website, with when and where you signed up. We pass the address to Hostinger Reach and ask it to email the address a link to confirm. That confirmation email isn’t a newsletter. Reach records the address as waiting for confirmation until the link is clicked, and signing up again doesn’t send another one.",
-  /** "Service providers" list: before the "email, text-message, and push-delivery providers" item. */
-  serviceProvider:
-    "<strong>Hostinger (Hostinger Reach)</strong>, which sends the newsletter’s confirmation email and holds the newsletter list, including who has unsubscribed;",
-  /** "Data Retention" list: after the "Newsletter sign-up records" item. */
-  retention:
-    "<strong>Newsletter list (Hostinger Reach):</strong> your address stays in Hostinger Reach (waiting for confirmation, subscribed or unsubscribed) until it is deleted. If you unsubscribe, Hostinger Reach keeps your address marked as unsubscribed, and our website does not add it again. If you ask us to delete your newsletter information, we delete your sign-up record on our website, the copy of its sign-up notification in our team’s mailbox, and your contact in Hostinger Reach. Deleting the Reach contact also deletes Reach’s record that you unsubscribed. Nothing queued on our side can add it back. If you later sign up again yourself, that is a new sign-up, and Reach again records it as waiting for your confirmation.",
-  /**
-   * The newsletter band (components/sections/blog/NewsletterBand.tsx). The
-   * success message is in the code, shown only while sync is on. The fine
-   * print is a proposal, applied with the change that turns sync on: the live
-   * "Unsubscribe from any email." isn't true of the confirmation email, which
-   * has no unsubscribe link.
-   */
-  newsletterBand: {
-    success: "Almost there. If this address is new to us, we’ll ask our email service to send it a link to confirm.",
-    proposedFine: "No spam, no selling your address. Every newsletter email has an unsubscribe link.",
-  },
-} as const;
 
 /* ─────────────────────────── /terms ─────────────────────────── */
 
