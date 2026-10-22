@@ -76,8 +76,8 @@ const roster = {
   "best-score": {
     icon: "cash",
     name: "Best Score",
-    rule: "Net, gross or Stableford: the best score takes it.",
-    desc: "Everyone puts in the same amount. The best score for the round's format (net, gross or Stableford) takes it, or the top two or three split it, as set at the first tee.",
+    rule: "Net or gross: the best score takes it.",
+    desc: "Everyone puts in the same amount. The best net or gross score takes it, or the top two or three split it, as set at the first tee.",
     how: "Set the amount, play your round, and the best score takes it, or the top two or three split it evenly.",
     players: "2+ players",
     format: "One total",
