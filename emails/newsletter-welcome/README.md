@@ -6,8 +6,9 @@ from `public/email/` at `https://www.golo.golf/email/<filename>`.
 
 | File | What it is |
 |---|---|
-| `golo-newsletter-welcome.html` | The production HTML to import into Reach. Byte-identical to the owner-supplied design handoff (2026-10-21). |
-| `golo-newsletter-welcome.txt` | The plain-text alternative. Its first two lines (Subject, Preheader) are notes for the person setting up Reach, not body text. |
+| `golo-newsletter-welcome.html` | The supplied design, byte-identical to the owner's handoff (2026-10-21). The reference; Reach can't send it as is (below). |
+| `golo-newsletter-welcome.reach.html` | The **Reach edition**: same copy and links, rebuilt to survive Reach's HTML "fixing". The file to import into Reach. |
+| `golo-newsletter-welcome.txt` | The plain-text version. Reach sends HTML only, so this is a reference. Its first two lines (Subject, Preheader) are setup notes, not body text. |
 
 **Subject:** Welcome to the GoLo newsletter
 
@@ -22,7 +23,30 @@ from `public/email/` at `https://www.golo.golf/email/<filename>`.
 - `{{REACH_UNSUBSCRIBE_URL}}` (once in the HTML footer, once in the TXT) is a
   placeholder. Reach's own unsubscribe merge tag replaces it in the copy that
   lives in Reach; the repository keeps the placeholder.
-- Keep the HTML and TXT saying the same thing.
+- Keep both HTML files and the TXT saying the same thing.
+
+## Why there's a Reach edition
+
+Reach rewrites custom HTML on every import and save. It strips `<style>` (and
+so the media queries), every `class`, background images, `<!--[if mso]>`/VML,
+`height` attributes and the hidden preheader. Inline styles, tables, `display`,
+`max-width` and `border-radius` survive. So the Reach edition:
+
+- shows the hero photo as an `<img>` (`golo-nl-hero-banner-1200x560.jpg`: the
+  top of the hero, its bottom edge faded into `#0f2016`) above the text;
+- lays side-by-side blocks out as `display:inline-block` divs with a
+  `max-width` inside a `font-size:0` cell: side by side at 600px, one column
+  on a phone, no media query;
+- leaves the preheader to Reach's pre-header field and uses Reach's native
+  `{{unsubscribe-link}}` merge tag.
+
+Outlook for Windows loses its VML hero and button either way; the Reach
+edition hasn't been checked there.
+
+`public/email/golo-nl-logo-lockup-440.png` is the approved lockup ("Track it.
+Score it. Settle it.") at the supplied logo's size, ready to replace
+`golo-logo-440.png`, whose tagline still says "Bet it". Nothing references it
+until the owner chooses it.
 
 ## Status
 
