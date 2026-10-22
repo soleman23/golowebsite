@@ -75,6 +75,14 @@ jobs:
         if: '!cancelled()'
         run: npm run test:attribution
 
+      # Newsletter abuse guard: rate limits, client keys, Origin check,
+      # honeypot, body cap (scripts/test-subscribe-guard.mjs), then the real
+      # /api/subscribe handler with a fake database and mailer
+      # (scripts/test-subscribe-route.mjs). Hermetic, no server.
+      - name: Subscribe guard tests
+        if: '!cancelled()'
+        run: npm run test:guard
+
       # Runs even if lint failed, so one push surfaces every problem at once
       # instead of trickling them out over three round-trips.
       - name: Typecheck
@@ -90,3 +98,10 @@ jobs:
           NEXT_PUBLIC_ACCEPTABLE_USE_PUBLISHED: "false"
           NEXT_PUBLIC_ANALYTICS_ENABLED: "false"
         run: npm run build
+
+      # The hPanel cron runs scripts/reach-retry.mjs from the standalone
+      # output with plain node. Proves it gets there and that its imports
+      # resolve in the trimmed node_modules (scripts/check-standalone-cron.mjs).
+      - name: Standalone cron script
+        if: '!cancelled()'
+        run: npm run check:cron

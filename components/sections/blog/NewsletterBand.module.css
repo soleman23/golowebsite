@@ -117,6 +117,18 @@
   cursor: default;
 }
 
+/* The honeypot. Clipped like .sr-only, not display: none, which some bots
+   skip; aria-hidden on the element keeps it from screen readers. */
+.honeypot {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+}
+
 .error {
   margin: 8px 0 0;
   min-height: 18px;
