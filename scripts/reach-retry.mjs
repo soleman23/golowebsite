@@ -49,9 +49,16 @@ if (!client) {
   process.exit(1);
 }
 
+// The lock below is a session lock, so it needs a session of its own: the
+// direct connection, not DATABASE_URL's transaction pooler, which can hand
+// the same backend (and its lock) to another client between queries.
+if (!process.env.DIRECT_URL) {
+  console.log("Reach sync is on but DIRECT_URL (the direct database connection the run's lock needs) is missing. Nothing done.");
+  process.exit(1);
+}
 const { PrismaClient } = await import("@prisma/client");
 const { prismaLeadSyncStore } = await import("../lib/reachStore.ts");
-const prisma = new PrismaClient();
+const prisma = new PrismaClient({ datasources: { db: { url: process.env.DIRECT_URL } } });
 
 try {
   // One sender at a time: the daily and 30-day limits are counted, then
