@@ -200,6 +200,7 @@ const privacySections: LegalSection[] = [
           "send a download link or respond to a support request you initiated;",
           "provide optional golf-association connections and submit an eligible score only when you direct us to do so;",
           "personalize settings and restore unfinished activity;",
+          "understand, in aggregate, how the Service is used (for example, how many organizers complete a second round), using counts rather than individual profiles;",
           "analyze performance, troubleshoot problems, prevent fraud or misuse, and improve the Service;",
           "enforce our agreements and protect GoLo, our users, and others; and",
           "comply with legal obligations and respond to lawful requests.",
@@ -472,10 +473,10 @@ export const privacyDoc: LegalDoc = {
   kicker: "LEGAL",
   lead: "What GoLo collects, how it gets used, and exactly what happens when you delete your account. Every section has a plain-English note beside the legal language.",
   dateLabel: "Last updated",
-  // Set to the day this version deploys (#120: sign-up attribution and
-  // newsletter retention, on top of #122).
-  effective: "October 21, 2026",
-  effectiveISO: "2026-10-21",
+  // Set to the day this version deploys (golo#803: the aggregate-use
+  // purpose, released with the app policy; before it, #120 and #122).
+  effective: "October 22, 2026",
+  effectiveISO: "2026-10-22",
   entity: siteConfig.addressShort,
   intro: privacyIntro,
   short: {
