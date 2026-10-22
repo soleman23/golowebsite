@@ -54,7 +54,11 @@ function memoryDb() {
     subscribeStore: {
       async save(lead) {
         const existing = byEmail(lead.email);
-        if (existing) return { id: existing.id, created: false, reachSyncStatus: existing.reachSyncStatus };
+        if (existing) {
+          // As the Prisma store: a fresh eligible sign-up queues a never-queued row.
+          if (lead.reachSyncStatus === "pending" && existing.reachSyncStatus === null) existing.reachSyncStatus = "pending";
+          return { id: "", created: false, reachSyncStatus: null };
+        }
         const row = db.insert({ ...lead, reachSyncStatus: lead.reachSyncStatus ?? null });
         return { id: row.id, created: true, reachSyncStatus: row.reachSyncStatus };
       },
@@ -75,9 +79,10 @@ function memoryDb() {
       async setStatus(id, status) {
         rows.get(id).reachSyncStatus = status;
       },
-      async listRetryable(max, limit) {
+      async listRetryable(max, limit, now) {
         return [...rows.values()]
           .filter((r) => ["pending", "failed"].includes(r.reachSyncStatus) && r.reachSyncAttempts < max)
+          .filter((r) => !r.reachLastAttemptAt || now - r.reachLastAttemptAt >= backoffMs(r.reachSyncAttempts))
           .sort((a, b) => a.createdAt - b.createdAt)
           .slice(0, limit)
           .map((r) => ({ ...r }));
@@ -242,9 +247,9 @@ await test("Reach 5xx: visitor gets 200, row saved as failed, retry later succee
   await h.signUp("flaky@example.test");
   await h.flush();
   expect(h.stub.creates() === creates, "repeat sign-up of a failed row called create");
-  // Too soon: backoff holds the retry.
+  // Too soon: backoff holds the retry (the row isn't even listed yet).
   const early = await h.retry(new Date(row.reachLastAttemptAt.getTime() + 60 * 1000));
-  expect(early.backoff === 1 && h.stub.creates() === creates, "retry ignored backoff");
+  expect(early.checked === 0 && h.stub.creates() === creates, "retry ignored backoff");
   const later = await h.retry(new Date(row.reachLastAttemptAt.getTime() + HOUR));
   expect(later.created === 1, `retry summary ${JSON.stringify(later)}`);
   expect(h.db.byEmail("flaky@example.test").reachSyncStatus === "synced", "not synced after retry");
@@ -660,13 +665,36 @@ await test("30-day limit: deferred once the month's adds are used, even under th
   expect(DAILY_ADD_LIMIT * 30 <= 1000 && MONTHLY_ADD_LIMIT <= 1000, "the caps allow more than the plan's 1,000 a month");
 });
 
+await test("rows still in their backoff don't fill the scan and hide due rows", async () => {
+  const h = harness();
+  for (let n = 0; n < 5; n += 1) h.db.insert({ email: `waiting${n}@example.test`, createdAt: at(-HOUR), reachSyncStatus: "failed", reachSyncAttempts: 3, reachLastAttemptAt: at(0) });
+  h.db.insert({ email: "fresh@example.test", reachSyncStatus: "pending" });
+  const s = await retryReachSync({ store: h.db.syncStore, client: h.stub, now: () => at(60 * 1000), scan: 3, log });
+  expect(s.created === 1 && s.backoff === 0, `summary ${JSON.stringify(s)}`);
+});
+
+await test("an address saved while sync was off is queued by a fresh sign-up after it's on", async () => {
+  const off = harness({ enabled: false });
+  await off.signUp("early@example.test");
+  const on = harness();
+  on.db.rows = off.db.rows;
+  const row = [...off.db.rows.values()][0];
+  on.db.insert(row);
+  const res = await on.signUp("early@example.test");
+  expect(res.status === 200 && res.body.confirmByEmail === true, "answer differs");
+  expect(on.db.byEmail("early@example.test").reachSyncStatus === "pending", `status ${on.db.byEmail("early@example.test").reachSyncStatus}`);
+  await on.flush();
+  expect(on.stub.creates() === 1, `${on.stub.creates()} creates`);
+});
+
 await test("a retry run paces Reach calls, not skipped rows", async () => {
   const h = harness();
   for (let n = 0; n < 3; n += 1) h.db.insert({ email: `pace${n}@example.test`, reachSyncStatus: "pending" });
   h.db.insert({ email: "waiting@example.test", reachSyncStatus: "failed", reachSyncAttempts: 1, reachLastAttemptAt: at(0) });
   const pauses = [];
   const s = await retryReachSync({ store: h.db.syncStore, client: h.stub, now: () => at(60 * 1000), paceMs: 2000, sleep: async (ms) => { pauses.push(ms); }, log });
-  expect(s.created === 3 && s.backoff === 1, `summary ${JSON.stringify(s)}`);
+  // The row still in its backoff isn't listed, so it costs nothing at all.
+  expect(s.created === 3 && s.checked === 3, `summary ${JSON.stringify(s)}`);
   expect(pauses.join() === "2000,2000,2000", `pauses ${pauses}`);
 });
 
@@ -676,7 +704,7 @@ await test("a retry run stops after its per-run limit and time budget", async ()
   const s = await retryReachSync({ store: h.db.syncStore, client: h.stub, now: () => at(0), limit: 2, log });
   expect(s.created === 2 && s.stoppedEarly, `limit ${JSON.stringify(s)}`);
   let t = 0;
-  const s2 = await retryReachSync({ store: h.db.syncStore, client: h.stub, now: () => at((t += 3) * 60 * 1000), budgetMs: 5 * 60 * 1000, log });
+  const s2 = await retryReachSync({ store: h.db.syncStore, client: h.stub, now: () => at((t += 2) * 60 * 1000), budgetMs: 5 * 60 * 1000, log });
   expect(s2.created === 1 && s2.stoppedEarly, `budget ${JSON.stringify(s2)}`);
 });
 
@@ -703,6 +731,17 @@ await test("switch off: the Prisma store writes and selects no Reach column", as
         existing.add(args.data.email);
         return { id: "lead_x", reachSyncStatus: args.data.reachSyncStatus ?? null };
       },
+      async updateMany(args) {
+        calls.push(["updateMany", args]);
+        return { count: 1 };
+      },
+    },
+    async $executeRaw(strings, ...values) {
+      calls.push(["lock", strings.join("?"), values]);
+      return 1;
+    },
+    async $transaction(fn) {
+      return fn(fakePrisma);
     },
   };
   const lead = { email: "off@example.test", source: "blog", landingPath: "/blog", reachSyncStatus: undefined };
@@ -716,6 +755,14 @@ await test("switch off: the Prisma store writes and selects no Reach column", as
   await prismaSubscribeStore(fakePrisma, () => {}, { syncEnabled: true }).save({ ...lead, email: "on@example.test", reachSyncStatus: "pending" });
   const create = calls.find(([k]) => k === "create")[1];
   expect(create.data.reachSyncStatus === "pending" && create.select.reachSyncStatus, "switch-on doesn't queue the row");
+  const lock = calls.find(([k]) => k === "lock");
+  expect(lock && /pg_advisory_xact_lock_shared/.test(lock[1]) && lock[2][0] === 121122, `insert lock ${JSON.stringify(lock)}`);
+  // A fresh eligible sign-up of an address saved while sync was off queues it, and only if never queued.
+  calls.length = 0;
+  existing.add("old@example.test");
+  await prismaSubscribeStore(fakePrisma, () => {}, { syncEnabled: true }).save({ ...lead, email: "old@example.test", reachSyncStatus: "pending" });
+  const queue = calls.find(([k]) => k === "updateMany");
+  expect(queue && queue[1].where.reachSyncStatus === null && queue[1].data.reachSyncStatus === "pending", `requeue of never-queued ${JSON.stringify(queue)}`);
   // With a plain @default(0) Prisma writes reachSyncAttempts into every
   // INSERT, which breaks sign-ups on a database without the column.
   const schema = readFileSync(new URL("../prisma/schema.prisma", import.meta.url), "utf8");
@@ -741,8 +788,11 @@ await test("Prisma sync store: claim, requeue, exhausted and synced-since querie
   expect(last().where.reachSyncStatus.in.join() === "pending,failed" && last().where.reachSyncAttempts.gte === MAX_ATTEMPTS, "exhausted where");
   await store.countSyncedSince(when);
   expect(last().where.reachSyncStatus === "synced" && last().where.reachLastAttemptAt.gte === when, "synced-since where");
-  await store.listRetryable(MAX_ATTEMPTS, 7);
+  await store.listRetryable(MAX_ATTEMPTS, 7, at(10 * HOUR));
   expect(last().where.reachSyncAttempts.lt === MAX_ATTEMPTS && last().take === 7, "retryable where/take");
+  const due = last().where.OR;
+  expect(due[0].reachLastAttemptAt === null && due.length === MAX_ATTEMPTS + 1, `due filter ${JSON.stringify(due).slice(0, 120)}`);
+  expect(due[2].reachSyncAttempts === 1 && due[2].reachLastAttemptAt.lte.getTime() === at(10 * HOUR).getTime() - backoffMs(1), "due cut-off for 1 attempt");
   // Oldest first, not fewest attempts first: a backlog of fresh rows must not
   // starve rows in their retries.
   expect(JSON.stringify(last().orderBy[0]) === '{"createdAt":"asc"}', `retryable order ${JSON.stringify(last().orderBy)}`);

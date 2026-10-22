@@ -11,6 +11,9 @@
  * it stays out of shell history and process lists. Output is counts only.
  *
  * Order and safety:
+ * - It holds the sign-up lock exclusively (lib/reachStore.ts DELETION_LOCK;
+ *   each sign-up insert holds it shared), so a sign-up in flight can't land
+ *   between the steps below.
  * - It takes the same database lock as the Reach retry job
  *   (scripts/reach-retry.mjs) on the direct connection (DIRECT_URL), waiting
  *   up to five minutes for a running job to finish, so a retry can't be
@@ -25,6 +28,10 @@
  * Deleting the Reach contact also deletes Reach's record that the address
  * unsubscribed (verified 2026-10-21). If the person later signs up again on
  * purpose, they're a new sign-up and have to confirm through double opt-in.
+ *
+ * Not covered here, and a step of the same request (docs/seo-progress.md):
+ * the team's sign-up notification email for the address, in the mailbox that
+ * receives "[GoLo] Newsletter signup" messages.
  */
 
 import "./register-ts.mjs";
@@ -57,7 +64,7 @@ if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
 
 const { createHttpReachClient } = await import("../lib/reach.ts");
 const { deleteSubscriber } = await import("../lib/reachSync.ts");
-const { prismaDeletionStore } = await import("../lib/reachStore.ts");
+const { prismaDeletionStore, DELETION_LOCK } = await import("../lib/reachStore.ts");
 const { PrismaClient } = await import("@prisma/client");
 const prisma = new PrismaClient({ datasources: { db: { url: process.env.DIRECT_URL } } });
 
@@ -72,6 +79,10 @@ try {
     console.log("The Reach retry job held its lock for five minutes. Nothing was changed; try again.");
     process.exitCode = 1;
   } else {
+    // Exclusive against sign-up inserts (they hold it shared): one already in
+    // flight finishes first and is deleted with the rest; a later one waits
+    // and is a new sign-up.
+    await prisma.$queryRaw`SELECT pg_advisory_lock(${DELETION_LOCK})`;
     const token = process.env.REACH_API_TOKEN?.trim();
     const profileUuid = process.env.REACH_PROFILE_UUID?.trim();
     const client = token && profileUuid ? createHttpReachClient({ token, profileUuid }) : null;

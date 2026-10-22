@@ -154,8 +154,11 @@ export interface LeadSyncStore {
    */
   claimAttempt(id: string, expectedAttempts: number, at: Date): Promise<boolean>;
   setStatus(id: string, status: ReachSyncStatus): Promise<void>;
-  /** Pending or failed rows with fewer than maxAttempts attempts, oldest sign-up first. */
-  listRetryable(maxAttempts: number, limit: number): Promise<SyncLead[]>;
+  /**
+   * Pending or failed rows with fewer than maxAttempts attempts that are due
+   * at `now` (never attempted, or past their backoff), oldest sign-up first.
+   */
+  listRetryable(maxAttempts: number, limit: number, now: Date): Promise<SyncLead[]>;
   /**
    * Pending or failed rows that have used every attempt. Pending counts too:
    * a run that died after claiming the last attempt leaves the row pending.
@@ -349,7 +352,7 @@ export async function retryReachSync(
     failed: 0,
   };
 
-  const leads = await deps.store.listRetryable(maxAttempts, deps.scan ?? 500);
+  const leads = await deps.store.listRetryable(maxAttempts, deps.scan ?? 500, now());
   let worked = 0;
   for (const lead of leads) {
     if (worked >= limit || now().getTime() - startedAt >= budgetMs) {

@@ -523,7 +523,9 @@ export const privacyDoc: LegalDoc = {
  * nothing more; an unsubscribed contact stays marked unsubscribed and the
  * website's sync never adds it back; deleting a contact in Reach removes it
  * and its unsubscribed mark. Not claimed, because not verified: that every
- * newsletter email carries an unsubscribe link (no newsletter has been sent).
+ * newsletter email carries an unsubscribe link (no newsletter has been sent),
+ * and anything about how long the email provider (Resend) keeps its own logs
+ * of the team's sign-up notification.
  *
  * It moves into privacyDoc only with the owner's approval of these words,
  * together with the change that turns sync on, with "Last updated" revised.
@@ -538,7 +540,7 @@ export const reachPrivacyDraft = {
     "<strong>Hostinger (Hostinger Reach)</strong>, which sends the newsletter’s confirmation email and holds the newsletter list, including who has unsubscribed;",
   /** "Data Retention" list: after the "Newsletter sign-up records" item. */
   retention:
-    "<strong>Newsletter list (Hostinger Reach):</strong> your address stays on the list until it is deleted. If you unsubscribe, Hostinger Reach keeps your address marked as unsubscribed, and our website does not add it again. If you ask us to delete your newsletter information, we delete both your sign-up record on our website and your contact in Hostinger Reach. That also deletes Reach’s record that you unsubscribed, so nothing about the address is kept. Nothing queued on our side can add it back. If you later sign up again yourself, that is a new sign-up: you’ll get a new confirmation email and are subscribed only if you confirm.",
+    "<strong>Newsletter list (Hostinger Reach):</strong> your address stays on the list until it is deleted. If you unsubscribe, Hostinger Reach keeps your address marked as unsubscribed, and our website does not add it again. If you ask us to delete your newsletter information, we delete your sign-up record on our website, the sign-up notification email our team received about it, and your contact in Hostinger Reach. Deleting the Reach contact also deletes Reach’s record that you unsubscribed. Nothing queued on our side can add it back. If you later sign up again yourself, that is a new sign-up: you’ll get a new confirmation email and are subscribed only if you confirm.",
   /**
    * The newsletter band (components/sections/blog/NewsletterBand.tsx), with
    * the sync on: the success message points to the confirmation email, and

@@ -36,7 +36,10 @@ const STUBS = {
   "@/lib/db": stub(`
     const world = globalThis.__subscribeRouteTest;
     export const prisma = {
+      async $executeRaw() { return 1; },
+      async $transaction(fn) { return fn(prisma); },
       newsletterLead: {
+        async updateMany() { return { count: 0 }; },
         async create({ data }) {
           if (world.failSaves > 0) {
             world.failSaves -= 1;
