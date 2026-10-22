@@ -178,7 +178,8 @@ const cases = [
     async () => {
       const { res, text, saved, notified } = await effects(() => post());
       assert.equal(res.status, 200);
-      assert.equal(text, '{"ok":true}');
+      // Sync is off in this run, so no confirmation email is pending.
+      assert.equal(text, '{"ok":true,"confirmByEmail":false}');
       assert.equal(saved, 1);
       assert.equal(notified, 1);
       const create = world.creates.at(-1);

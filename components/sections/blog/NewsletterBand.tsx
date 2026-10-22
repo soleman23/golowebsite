@@ -24,6 +24,9 @@ type Status = "idle" | "submitting" | "success" | "error";
 export function NewsletterBand({ page = "blog" }: { page?: string }) {
   const [email, setEmail] = useState("");
   const [error, setError] = useState("");
+  // Set from the response: true while the Reach sync is on, when a sign-up
+  // only counts once its confirmation email is clicked.
+  const [confirmByEmail, setConfirmByEmail] = useState(false);
   const [status, setStatus] = useState<Status>("idle");
 
   const uid = useId();
@@ -62,6 +65,7 @@ export function NewsletterBand({ page = "blog" }: { page?: string }) {
       const data = (await res.json().catch(() => ({}))) as {
         error?: string;
         fieldErrors?: { email?: string };
+        confirmByEmail?: boolean;
       };
 
       if (!res.ok) {
@@ -76,6 +80,7 @@ export function NewsletterBand({ page = "blog" }: { page?: string }) {
         return;
       }
 
+      setConfirmByEmail(data.confirmByEmail === true);
       setStatus("success");
       track("newsletter_signup", { page });
     } catch {
@@ -107,7 +112,9 @@ export function NewsletterBand({ page = "blog" }: { page?: string }) {
               <span className={styles.doneMark} aria-hidden="true">
                 ✓
               </span>
-              You&rsquo;re on the list. We&rsquo;ll email when the next one&rsquo;s up.
+              {confirmByEmail
+                ? "Almost there. Check your inbox: we\u2019ll send you a link to confirm, and you\u2019re on the list once you click it."
+                : "You\u2019re on the list. We\u2019ll email when the next one\u2019s up."}
             </p>
           ) : (
             <form className={styles.form} onSubmit={handleSubmit} noValidate>
@@ -173,7 +180,7 @@ export function NewsletterBand({ page = "blog" }: { page?: string }) {
           )}
 
           <p className={styles.fine}>
-            No spam, no selling your address. Unsubscribe from any email.
+            No spam, no selling your address. Unsubscribe any time.
           </p>
         </div>
       </div>

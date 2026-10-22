@@ -152,5 +152,11 @@ export async function handleSubscribe(
   // sender: concurrent sign-ups can't race the daily and monthly limits or
   // burst Reach's API, and a repeat sign-up can't trigger a second
   // confirmation email.
-  return { status: 200, body: { ok: true } };
+  // Whether this sign-up waits on a Reach confirmation email, so the page can
+  // say so. It depends only on the switch and the source, never on whether
+  // the address was already on the list (no membership oracle).
+  return {
+    status: 200,
+    body: { ok: true, confirmByEmail: Boolean(deps.reach) && isEligibleSource(source) },
+  };
 }

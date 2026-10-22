@@ -34,6 +34,7 @@ import type {
   ReachContactStatus,
   FindContactResult,
   CreateContactResult,
+  DeleteContactResult,
 } from "./reachSync";
 
 export const REACH_BASE_URL = "https://developers.hostinger.com";
@@ -116,15 +117,15 @@ function pageOf(
   return { contacts, total, currentPage, perPage: wholeOf(meta, "per_page", 1) };
 }
 
-type Match = { status: unknown };
+type Match = { status: unknown; uuid: unknown };
 
 /** The rows whose email is exactly this address (trimmed, case-insensitive). */
 function matchesOf(contacts: unknown[], email: string): Match[] {
   const matches: Match[] = [];
   for (const contact of contacts) {
-    const row = contact as { email?: unknown; subscription_status?: unknown } | null;
+    const row = contact as { email?: unknown; subscription_status?: unknown; uuid?: unknown } | null;
     if (typeof row?.email === "string" && row.email.trim().toLowerCase() === email) {
-      matches.push({ status: row.subscription_status });
+      matches.push({ status: row.subscription_status, uuid: row.uuid });
     }
   }
   return matches;
@@ -155,11 +156,20 @@ export function createHttpReachClient(
     config.profileUuid,
   )}/contacts`;
 
-  async function call(url: string, init: RequestInit): Promise<Response | string> {
+  /**
+   * One request, with the timeout covering the whole exchange: the body is
+   * read before the timer is cleared, so a response whose body stalls can't
+   * hold up the retry job (and its lock). The body is parsed JSON, or
+   * undefined when it isn't JSON.
+   */
+  async function call(
+    url: string,
+    init: RequestInit,
+  ): Promise<{ ok: boolean; status: number; body: unknown } | string> {
     const controller = new AbortController();
     const timer = setTimeout(() => controller.abort(), TIMEOUT_MS);
     try {
-      return await fetchImpl(url, {
+      const res = await fetchImpl(url, {
         ...init,
         headers: {
           Authorization: `Bearer ${config.token}`,
@@ -169,6 +179,14 @@ export function createHttpReachClient(
         signal: controller.signal,
         cache: "no-store",
       });
+      const text = await res.text();
+      let body: unknown;
+      try {
+        body = JSON.parse(text);
+      } catch {
+        body = undefined;
+      }
+      return { ok: res.ok, status: res.status, body };
     } catch (err) {
       return (err as { name?: string })?.name === "AbortError" ? "timeout" : "network";
     } finally {
@@ -176,43 +194,68 @@ export function createHttpReachClient(
     }
   }
 
+  /** Every contact whose email is exactly this address, or why the walk failed. */
+  async function lookup(email: string): Promise<{ ok: true; matches: Match[] } | { ok: false; error: string }> {
+    const asked = config.perPage ?? PER_PAGE;
+    const matches: Match[] = [];
+    let pages = 1;
+    let perPage = asked;
+    let total = 0;
+    for (let page = 1; page <= pages; page += 1) {
+      const params = new URLSearchParams({
+        search: email,
+        per_page: String(asked),
+        page: String(page),
+      });
+      const res = await call(`${contactsUrl}?${params}`, { method: "GET" });
+      if (typeof res === "string") return { ok: false, error: res };
+      if (!res.ok) return { ok: false, error: `http_${res.status}` };
+      const body = pageOf(res.body);
+      if (!body) return { ok: false, error: "bad_response" };
+      if (body.currentPage !== page) return { ok: false, error: "wrong_page" };
+      if (page === 1) {
+        // Reach may serve fewer per page than asked; page by what it says.
+        perPage = body.perPage ?? asked;
+        total = body.total;
+        pages = Math.max(1, Math.ceil(total / perPage));
+        if (pages > MAX_PAGES) return { ok: false, error: "too_many_matches" };
+      } else if (body.total !== total || (body.perPage ?? perPage) !== perPage) {
+        // The list changed under us; a match could have moved across pages.
+        return { ok: false, error: "list_changed" };
+      }
+      // Every page but the last must be full, and the last must bring the
+      // count to the total. A short read means we didn't see every match.
+      const expected = page < pages ? perPage : total - perPage * (pages - 1);
+      if (body.contacts.length < expected) return { ok: false, error: "incomplete_page" };
+      matches.push(...matchesOf(body.contacts, email));
+    }
+    return { ok: true, matches };
+  }
+
   return {
     async findContact(rawEmail): Promise<FindContactResult> {
-      const email = rawEmail.trim().toLowerCase();
-      const asked = config.perPage ?? PER_PAGE;
-      const matches: Match[] = [];
-      let pages = 1;
-      let perPage = asked;
-      let total = 0;
-      for (let page = 1; page <= pages; page += 1) {
-        const params = new URLSearchParams({
-          search: email,
-          per_page: String(asked),
-          page: String(page),
-        });
-        const res = await call(`${contactsUrl}?${params}`, { method: "GET" });
+      const found = await lookup(rawEmail.trim().toLowerCase());
+      return found.ok ? statusOf(found.matches) : found;
+    },
+
+    /**
+     * Deletes every contact with exactly this address (a deletion request,
+     * docs/seo-progress.md). The lookup must be complete first: a failed walk
+     * deletes nothing and is reported. Deleting also removes Reach's
+     * unsubscribed mark for the address.
+     */
+    async deleteContact(rawEmail): Promise<DeleteContactResult> {
+      const found = await lookup(rawEmail.trim().toLowerCase());
+      if (!found.ok) return found;
+      let deleted = 0;
+      for (const match of found.matches) {
+        if (typeof match.uuid !== "string" || match.uuid === "") return { ok: false, error: "missing_uuid" };
+        const res = await call(`${contactsUrl}/${encodeURIComponent(match.uuid)}`, { method: "DELETE" });
         if (typeof res === "string") return { ok: false, error: res };
         if (!res.ok) return { ok: false, error: `http_${res.status}` };
-        const body = pageOf(await res.json().catch(() => undefined));
-        if (!body) return { ok: false, error: "bad_response" };
-        if (body.currentPage !== page) return { ok: false, error: "wrong_page" };
-        if (page === 1) {
-          // Reach may serve fewer per page than asked; page by what it says.
-          perPage = body.perPage ?? asked;
-          total = body.total;
-          pages = Math.max(1, Math.ceil(total / perPage));
-          if (pages > MAX_PAGES) return { ok: false, error: "too_many_matches" };
-        } else if (body.total !== total || (body.perPage ?? perPage) !== perPage) {
-          // The list changed under us; a match could have moved across pages.
-          return { ok: false, error: "list_changed" };
-        }
-        // Every page but the last must be full, and the last must bring the
-        // count to the total. A short read means we didn't see every match.
-        const expected = page < pages ? perPage : total - perPage * (pages - 1);
-        if (body.contacts.length < expected) return { ok: false, error: "incomplete_page" };
-        matches.push(...matchesOf(body.contacts, email));
+        deleted += 1;
       }
-      return statusOf(matches);
+      return { ok: true, deleted };
     },
 
     async createContact(rawEmail): Promise<CreateContactResult> {

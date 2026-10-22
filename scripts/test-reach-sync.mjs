@@ -19,7 +19,7 @@ globalThis.fetch = async () => {
 };
 
 const { handleSubscribe } = await import("../lib/subscribe.ts");
-const { syncLead, retryReachSync, runBackfill, requeueFailed, backoffMs, MAX_ATTEMPTS, NEWSLETTER_CONSENT_SINCE, DAILY_ADD_LIMIT, MONTHLY_ADD_LIMIT } =
+const { syncLead, retryReachSync, runBackfill, requeueFailed, backoffMs, MAX_ATTEMPTS, NEWSLETTER_CONSENT_SINCE, DAILY_ADD_LIMIT, MONTHLY_ADD_LIMIT, deleteSubscriber } =
   await import("../lib/reachSync.ts");
 const { createStubReachClient } = await import("../lib/reachStub.ts");
 const { getReachClient, createHttpReachClient, REACH_BASE_URL, MAX_PAGES } = await import("../lib/reach.ts");
@@ -78,7 +78,7 @@ function memoryDb() {
       async listRetryable(max, limit) {
         return [...rows.values()]
           .filter((r) => ["pending", "failed"].includes(r.reachSyncStatus) && r.reachSyncAttempts < max)
-          .sort((a, b) => a.reachSyncAttempts - b.reachSyncAttempts)
+          .sort((a, b) => a.createdAt - b.createdAt)
           .slice(0, limit)
           .map((r) => ({ ...r }));
       },
@@ -97,6 +97,18 @@ function memoryDb() {
       },
       async countSyncedSince(since) {
         return [...rows.values()].filter((r) => r.reachSyncStatus === "synced" && r.reachLastAttemptAt >= since).length;
+      },
+    },
+    deletionStore: {
+      async deleteByEmail(email) {
+        let n = 0;
+        for (const [id, row] of rows) {
+          if (row.email.toLowerCase() === email.toLowerCase()) {
+            rows.delete(id);
+            n += 1;
+          }
+        }
+        return n;
       },
     },
     backfillStore: {
@@ -179,6 +191,17 @@ await test("new sign-up: 200 before Reach is called, then one create call", asyn
   const row = h.db.byEmail("new@example.test");
   expect(row.reachSyncStatus === "synced" && row.reachSyncAttempts === 1, `row ${row.reachSyncStatus}/${row.reachSyncAttempts}`);
   expect(h.notified.length === 1, "team not notified once");
+});
+
+await test("the response says a confirmation email is coming the same way for new and repeat sign-ups", async () => {
+  const h = harness();
+  const first = await h.signUp("same@example.test");
+  const again = await h.signUp("same@example.test");
+  expect(first.body.confirmByEmail === true && again.body.confirmByEmail === true, "new and repeat answered differently");
+  const other = await h.signUp("contact@example.test", "contact");
+  expect(other.body.confirmByEmail === false, "an ineligible source was told to expect a confirmation");
+  const off = harness({ enabled: false });
+  expect((await off.signUp("off@example.test")).body.confirmByEmail === false, "sync off still promised an email");
 });
 
 await test("repeat sign-up of a pending address: no second create call", async () => {
@@ -445,6 +468,22 @@ function fakeReach(rows, { perPage, serve = {}, cap } = {}) {
 }
 const fillers = (n, prefix = "gone") => Array.from({ length: n }, (_, i) => row(`${prefix}${i}@example.test`));
 
+await test("HTTP client: a response whose body stalls times out instead of hanging", async () => {
+  const stalled = createHttpReachClient({ token: "t", profileUuid: "p" }, async (url, init) => {
+    // Headers arrive at once; the body never finishes unless aborted.
+    const body = new ReadableStream({
+      start(controller) {
+        init.signal.addEventListener("abort", () => controller.error(Object.assign(new Error("aborted"), { name: "AbortError" })));
+      },
+    });
+    return new Response(body, { status: 200 });
+  });
+  const started = Date.now();
+  const result = await stalled.findContact("gone@example.test");
+  expect(!result.ok && result.error === "timeout", `stalled body read as ${JSON.stringify(result)}`);
+  expect(Date.now() - started < 9000, "took longer than the timeout");
+});
+
 await test("HTTP lookup: an exact match past the first page is found", async () => {
   const rows = [...fillers(150), row("gone@example.test", "unsubscribed")];
   const { client, calls } = fakeReach(rows);
@@ -704,6 +743,67 @@ await test("Prisma sync store: claim, requeue, exhausted and synced-since querie
   expect(last().where.reachSyncStatus === "synced" && last().where.reachLastAttemptAt.gte === when, "synced-since where");
   await store.listRetryable(MAX_ATTEMPTS, 7);
   expect(last().where.reachSyncAttempts.lt === MAX_ATTEMPTS && last().take === 7, "retryable where/take");
+  // Oldest first, not fewest attempts first: a backlog of fresh rows must not
+  // starve rows in their retries.
+  expect(JSON.stringify(last().orderBy[0]) === '{"createdAt":"asc"}', `retryable order ${JSON.stringify(last().orderBy)}`);
+});
+
+await test("deletion request: website row and Reach contact go, unsubscribed mark included", async () => {
+  const h = harness();
+  await h.signUp("leaving@example.test");
+  await h.flush();
+  h.stub.contacts.set("leaving@example.test", "unsubscribed");
+  const result = await deleteSubscriber({ email: " Leaving@Example.test ", store: h.db.deletionStore, client: h.stub });
+  expect(result.websiteRowsDeleted === 1, `rows ${result.websiteRowsDeleted}`);
+  expect(result.reach.ok && result.reach.deleted === 1, `reach ${JSON.stringify(result.reach)}`);
+  expect(!h.db.byEmail("leaving@example.test") && !h.stub.contacts.has("leaving@example.test"), "something was left behind");
+  // Without a configured client the row still goes and the caller is told.
+  const h2 = harness();
+  await h2.signUp("manual@example.test");
+  const manual = await deleteSubscriber({ email: "manual@example.test", store: h2.db.deletionStore, client: null });
+  expect(manual.websiteRowsDeleted === 1 && manual.reach === "not_configured", JSON.stringify(manual));
+});
+
+await test("stale queued work can't recreate a deleted contact", async () => {
+  const h = harness();
+  h.stub.failCreate("http_503", 3);
+  await h.signUp("stale@example.test");
+  await h.flush();
+  const row = h.db.byEmail("stale@example.test");
+  expect(row.reachSyncStatus === "failed", `row ${row.reachSyncStatus}`);
+  await deleteSubscriber({ email: "stale@example.test", store: h.db.deletionStore, client: h.stub });
+  const creates = h.stub.creates();
+  const s = await h.retry(at(30 * 24 * HOUR));
+  const back = await runBackfill({ store: h.db.backfillStore, args: [], env: {}, print: () => {} });
+  expect(h.stub.creates() === creates && s.checked === 0, `retry after deletion ${JSON.stringify(s)}`);
+  expect(back.plan.total === 0, "backfill still sees the deleted row");
+  // A row deleted between listing and creating (no lock) is caught too.
+  const h2 = harness();
+  const lead = h2.db.insert({ email: "race-delete@example.test", reachSyncStatus: "pending" });
+  const client = {
+    async findContact() { h2.db.rows.delete(lead.id); return { ok: true, status: null }; },
+    async createContact() { throw new Error("must not create"); },
+    async deleteContact() { return { ok: true, deleted: 0 }; },
+  };
+  const outcome = await syncLead(lead.id, { store: h2.db.syncStore, client, log });
+  expect(outcome === "not_found", `outcome ${outcome}`);
+});
+
+await test("HTTP deleteContact: finds the uuid on any page, DELETEs it; an incomplete lookup deletes nothing", async () => {
+  const deletes = [];
+  const rows = [...fillers(150), { uuid: "u-gone", email: "Gone@example.test", subscription_status: "unsubscribed" }];
+  const client = createHttpReachClient({ token: "t", profileUuid: "prof-1" }, async (url, init) => {
+    const u = new URL(String(url));
+    if (init.method === "DELETE") { deletes.push(u.pathname); return new Response(JSON.stringify({ message: "Request accepted" }), { status: 200 }); }
+    const page = Number(u.searchParams.get("page"));
+    return new Response(JSON.stringify(listPage(rows.slice((page - 1) * 100, page * 100), rows.length, page)), { status: 200 });
+  });
+  const r = await client.deleteContact("gone@example.test");
+  expect(r.ok && r.deleted === 1, JSON.stringify(r));
+  expect(deletes.join() === "/api/reach/v1/profiles/prof-1/contacts/u-gone", `deleted ${deletes}`);
+  const broken = fakeReach(rows, { serve: { 2: 500 } });
+  const r2 = await broken.client.deleteContact("gone@example.test");
+  expect(!r2.ok, `incomplete lookup read as ${JSON.stringify(r2)}`);
 });
 
 await test("no log line carries an address or the token", async () => {

@@ -42,6 +42,8 @@ export type FindContactResult =
 
 export type CreateContactResult = { ok: true } | { ok: false; error: string };
 
+export type DeleteContactResult = { ok: true; deleted: number } | { ok: false; error: string };
+
 /**
  * What the sync needs from Reach. `error` is a short code ("http_500",
  * "timeout", "bad_response"), never a response body, which could echo the
@@ -50,6 +52,8 @@ export type CreateContactResult = { ok: true } | { ok: false; error: string };
 export interface ReachClient {
   findContact(email: string): Promise<FindContactResult>;
   createContact(email: string): Promise<CreateContactResult>;
+  /** Every contact with exactly this address; nothing if the lookup is incomplete. */
+  deleteContact(email: string): Promise<DeleteContactResult>;
 }
 
 export const REACH_SYNC_STATUSES = [
@@ -150,7 +154,7 @@ export interface LeadSyncStore {
    */
   claimAttempt(id: string, expectedAttempts: number, at: Date): Promise<boolean>;
   setStatus(id: string, status: ReachSyncStatus): Promise<void>;
-  /** Pending or failed rows with fewer than maxAttempts attempts, fewest first. */
+  /** Pending or failed rows with fewer than maxAttempts attempts, oldest sign-up first. */
   listRetryable(maxAttempts: number, limit: number): Promise<SyncLead[]>;
   /**
    * Pending or failed rows that have used every attempt. Pending counts too:
@@ -276,6 +280,12 @@ export async function syncLead(id: string, deps: SyncDeps): Promise<SyncOutcome>
     return "already_present";
   }
 
+  // A deletion request may have removed the row since it was listed. The
+  // retry job and the deletion procedure share a lock, so this can't happen
+  // mid-run; checked anyway, because stale queued work must never recreate a
+  // deleted contact.
+  if (!(await store.get(id))) return "not_found";
+
   let created: CreateContactResult;
   try {
     created = await client.createContact(lead.email);
@@ -299,7 +309,7 @@ export type RetrySummary = Record<SyncOutcome, number> & {
 const NO_CALL: SyncOutcome[] = ["backoff", "claimed_elsewhere", "not_queued", "ineligible", "not_found", "exhausted"];
 
 /**
- * The retry job: pending and failed leads, fewest attempts first. Rows still
+ * The retry job: pending and failed leads, oldest sign-up first. Rows still
  * in their backoff cost nothing and are skipped; at most `limit` leads (25)
  * reach Reach per run, and no new one starts after `budgetMs` (4 minutes),
  * so a run stays well inside a 15-minute cron. A "deferred" (daily limit
@@ -494,4 +504,41 @@ export async function runBackfill(opts: {
   print(`Queued as pending: ${queued}. Marked skipped_ineligible: ${skipped}.`);
   print("The retry job (scripts/reach-retry.mjs) sends the pending rows.");
   return { mode: "applied", plan, exitCode: 0 };
+}
+
+/** What deleting a newsletter subscriber needs from the website's database. */
+export interface DeletionStore {
+  /** Deletes every NewsletterLead row with this address (case-insensitive). */
+  deleteByEmail(email: string): Promise<number>;
+}
+
+export type DeletionResult = {
+  websiteRowsDeleted: number;
+  reach: { ok: true; deleted: number } | { ok: false; error: string } | "not_configured";
+};
+
+/**
+ * A deletion request (Privacy Policy, owner decision A on #121): delete the
+ * website's sign-up record, then the contact in Reach. The row goes first, so
+ * no queued retry or backfill can recreate the contact afterwards: there is
+ * nothing left to send. Deleting the Reach contact also deletes Reach's
+ * record that the address unsubscribed, so a later sign-up is a new one and
+ * has to confirm again (double opt-in). The caller holds the retry job's
+ * lock (scripts/newsletter-delete.mjs). Never logs the address.
+ */
+export async function deleteSubscriber(opts: {
+  email: string;
+  store: DeletionStore;
+  client: ReachClient | null;
+}): Promise<DeletionResult> {
+  const email = opts.email.trim().toLowerCase();
+  const websiteRowsDeleted = await opts.store.deleteByEmail(email);
+  if (!opts.client) return { websiteRowsDeleted, reach: "not_configured" };
+  let reach: DeletionResult["reach"];
+  try {
+    reach = await opts.client.deleteContact(email);
+  } catch {
+    reach = { ok: false, error: "delete_threw" };
+  }
+  return { websiteRowsDeleted, reach };
 }

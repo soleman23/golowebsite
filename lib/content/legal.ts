@@ -512,17 +512,18 @@ export const privacyDoc: LegalDoc = {
 /**
  * DRAFT, NOT PUBLISHED, NOT RENDERED. Final proposed Privacy Policy wording
  * for the newsletter's Hostinger Reach sync (soleman23/golowebsite#121, owner
- * decisions on soleman23/golo#791). Nothing imports this: privacyDoc above is
- * the published policy and is unchanged by #121.
+ * decisions on soleman23/golo#791; deletion handled as owner option A).
+ * Nothing imports this: privacyDoc above is the published policy and is
+ * unchanged by #121.
  *
- * Every sentence states only what the October 21, 2026 live check showed
- * (golowebsite#121, parts 1 and 2): a contact the website adds through
- * Reach's API is held as waiting for confirmation; an unsubscribed contact
- * stays marked unsubscribed, a repeat add leaves it so, and the website's
- * sync never adds it back; deleting a contact in Reach leaves no trace of it,
- * the unsubscribed mark included. Not claimed, because not verified: that
- * Reach sends the confirmation email to a contact added through its API, and
- * that every newsletter email carries an unsubscribe link.
+ * Every sentence states what the live checks showed (golowebsite#121,
+ * 2026-10-21/22): Reach emails a contact added through its API a
+ * confirmation email (not a newsletter, and with no unsubscribe link) and
+ * holds it as pending until the link is clicked; a repeat sign-up sends
+ * nothing more; an unsubscribed contact stays marked unsubscribed and the
+ * website's sync never adds it back; deleting a contact in Reach removes it
+ * and its unsubscribed mark. Not claimed, because not verified: that every
+ * newsletter email carries an unsubscribe link (no newsletter has been sent).
  *
  * It moves into privacyDoc only with the owner's approval of these words,
  * together with the change that turns sync on, with "Last updated" revised.
@@ -531,19 +532,24 @@ export const reachPrivacyDraft = {
   status: "FINAL DRAFT: not rendered, awaiting the owner's approval (#121)",
   /** "Information you provide" list: after "Website download-link requests". */
   informationYouProvide:
-    "<strong>Newsletter sign-ups:</strong> the email address you enter to join the GoLo newsletter on our website, with when and where you signed up. We pass the address to Hostinger Reach, which records it as waiting for your confirmation.",
+    "<strong>Newsletter sign-ups:</strong> the email address you enter to join the GoLo newsletter on our website, with when and where you signed up. We pass the address to Hostinger Reach, which sends you one confirmation email. That email isn’t a newsletter: it only asks you to confirm, and you’re subscribed only once you click its link. If you don’t, you aren’t subscribed, and signing up again doesn’t send another one.",
   /** "Service providers" list: before the "email, text-message, and push-delivery providers" item. */
   serviceProvider:
-    "<strong>Hostinger (Hostinger Reach)</strong>, which holds the GoLo newsletter list, including who has unsubscribed;",
+    "<strong>Hostinger (Hostinger Reach)</strong>, which sends the newsletter’s confirmation email and holds the newsletter list, including who has unsubscribed;",
   /** "Data Retention" list: after the "Newsletter sign-up records" item. */
   retention:
-    "<strong>Newsletter list (Hostinger Reach):</strong> your address stays on the list until it is deleted. If you unsubscribe, Hostinger Reach keeps your address marked as unsubscribed, and our website does not add it again. If you ask us to delete your newsletter information, we delete your sign-up record and your contact in Hostinger Reach. Reach then keeps nothing about the address, including that you unsubscribed, so if you sign up again later you are treated as a new sign-up, waiting for your confirmation again.",
+    "<strong>Newsletter list (Hostinger Reach):</strong> your address stays on the list until it is deleted. If you unsubscribe, Hostinger Reach keeps your address marked as unsubscribed, and our website does not add it again. If you ask us to delete your newsletter information, we delete both your sign-up record on our website and your contact in Hostinger Reach. That also deletes Reach’s record that you unsubscribed, so nothing about the address is kept. Nothing queued on our side can add it back. If you later sign up again yourself, that is a new sign-up: you’ll get a new confirmation email and are subscribed only if you confirm.",
   /**
-   * The newsletter band's copy ("Unsubscribe from any email.") is unchanged;
-   * that every newsletter email carries an unsubscribe link isn't verified
-   * yet (no campaign has been sent), which is an open owner decision on #121.
+   * The newsletter band (components/sections/blog/NewsletterBand.tsx), with
+   * the sync on: the success message points to the confirmation email, and
+   * the fine print no longer says "Unsubscribe from any email" (the
+   * confirmation email has no unsubscribe link).
    */
-  newsletterBand: null,
+  newsletterBand: {
+    success:
+      "Almost there. Check your inbox: we’ll send you a link to confirm, and you’re on the list once you click it.",
+    fine: "No spam, no selling your address. Unsubscribe any time.",
+  },
 } as const;
 
 /* ─────────────────────────── /terms ─────────────────────────── */

@@ -7,6 +7,7 @@
 import type { PrismaClient } from "@prisma/client";
 import type {
   BackfillStore,
+  DeletionStore,
   LeadSyncStore,
   ReachSyncStatus,
   SyncLead,
@@ -97,7 +98,10 @@ export function prismaLeadSyncStore(prisma: PrismaClient): LeadSyncStore {
           reachSyncStatus: { in: RETRYABLE },
           reachSyncAttempts: { lt: maxAttempts },
         },
-        orderBy: [{ reachSyncAttempts: "asc" }, { createdAt: "asc" }],
+        // Oldest sign-up first, whatever its attempts: a backlog of fresh rows
+        // can't push a row in its retries out of the scanned window forever.
+        // Rows still in their backoff cost the job nothing.
+        orderBy: [{ createdAt: "asc" }, { id: "asc" }],
         take: limit,
         select: syncFields,
       });
@@ -141,6 +145,17 @@ export function prismaBackfillStore(prisma: PrismaClient): BackfillStore {
       const { count } = await prisma.newsletterLead.updateMany({
         where: { id: { in: ids }, reachSyncStatus: null },
         data: { reachSyncStatus: status },
+      });
+      return count;
+    },
+  };
+}
+
+export function prismaDeletionStore(prisma: PrismaClient): DeletionStore {
+  return {
+    async deleteByEmail(email) {
+      const { count } = await prisma.newsletterLead.deleteMany({
+        where: { email: { equals: email, mode: "insensitive" } },
       });
       return count;
     },

@@ -9,10 +9,11 @@ import type {
   ReachContactStatus,
   FindContactResult,
   CreateContactResult,
+  DeleteContactResult,
 } from "./reachSync";
 
 export type StubReachClient = ReachClient & {
-  calls: { op: "find" | "create"; email: string }[];
+  calls: { op: "find" | "create" | "delete"; email: string }[];
   contacts: Map<string, ReachContactStatus>;
   /** Next N find calls fail with this code. */
   failFind: (code: string, times?: number) => void;
@@ -60,6 +61,13 @@ export function createStubReachClient(
       // Double opt-in on: Reach holds the new contact as pending.
       contacts.set(email, "pending");
       return { ok: true };
+    },
+
+    async deleteContact(email): Promise<DeleteContactResult> {
+      calls.push({ op: "delete", email });
+      // As Reach does: the contact and its unsubscribed mark both go.
+      const deleted = contacts.delete(email) ? 1 : 0;
+      return { ok: true, deleted };
     },
   };
 }
