@@ -1,21 +1,15 @@
 /**
  * The newsletter sign-up, behind /api/subscribe. Kept apart from the route,
- * with its storage, notification, Reach sync and scheduling passed in, so
- * scripts/test-reach-sync.mjs runs the same code against an in-memory store
- * and a stub Reach client.
+ * with its storage, notification and the Reach switch passed in, so
+ * scripts/test-reach-sync.mjs runs the same code against an in-memory store.
  *
  * A repeat sign-up returns the same success as a new one. Answering "you're
  * already on the list" would turn the endpoint into a membership oracle.
  */
 
 import { subscribeSchema } from "@/lib/validation";
-import { isEligibleSource, syncLead } from "@/lib/reachSync";
-import type {
-  LeadSyncStore,
-  ReachClient,
-  ReachSyncStatus,
-  SyncLog,
-} from "@/lib/reachSync";
+import { isEligibleSource } from "@/lib/reachSync";
+import type { ReachSyncStatus, SyncLog } from "@/lib/reachSync";
 
 export type NewLead = {
   email: string;
@@ -42,10 +36,12 @@ export interface SubscribeStore {
 export type SubscribeDeps = {
   store: SubscribeStore;
   notify: (email: string, source: string) => Promise<unknown>;
-  /** Null while REACH_SYNC_ENABLED is off: no row is queued and nothing calls Reach. */
-  reach: { client: ReachClient; syncStore: LeadSyncStore } | null;
-  /** Runs work after the response is sent (next/server `after` in the route). */
-  schedule: (task: () => Promise<void>) => void;
+  /**
+   * Truthy while REACH_SYNC_ENABLED is on: new sign-ups from the newsletter
+   * band are then queued ("pending") for the retry job. Null while off: no
+   * row is queued.
+   */
+  reach: unknown | null;
   /**
    * The global ceiling (lib/subscribeGuard.ts `charge`), asked once the
    * sign-up is valid. Its slot is given back if the save fails or the address
@@ -67,7 +63,6 @@ export async function handleSubscribe(
   payload: unknown,
   deps: SubscribeDeps,
 ): Promise<SubscribeResult> {
-  const log: SyncLog = deps.log ?? ((message, fields) => console.error(message, fields ?? ""));
 
   const parsed = subscribeSchema.safeParse(payload);
   if (!parsed.success) {
@@ -87,10 +82,18 @@ export async function handleSubscribe(
   // A request without a source didn't come from the newsletter band, which
   // always sends one. Stored as "unspecified", which is never eligible for
   // Reach (lib/reachSync.ts NEWSLETTER_SOURCES).
-  // `hp_note` is the honeypot (the route drops filled ones first); it's never
-  // stored, so it stays out of the spread into the insert.
-  const { email, source = "unspecified", hp_note: _honeypot, ...landing } = parsed.data;
-  void _honeypot;
+  // The columns by name, never a spread: `hp_note` (the honeypot) and any
+  // future form field stay out of the insert.
+  const {
+    email,
+    source = "unspecified",
+    landingPath,
+    referrerHost,
+    landingSource,
+    landingMedium,
+    landingCampaign,
+    landingContent,
+  } = parsed.data;
 
   const admitted = deps.admit ? deps.admit() : { ok: true as const, release: () => {} };
   if (!admitted.ok) {
@@ -106,7 +109,12 @@ export async function handleSubscribe(
     saved = await deps.store.save({
       email,
       source,
-      ...landing,
+      landingPath,
+      referrerHost,
+      landingSource,
+      landingMedium,
+      landingCampaign,
+      landingContent,
       // Queued for Reach only while sync is on, and only from the newsletter
       // band. Anything else is recorded as never to be sent.
       reachSyncStatus: deps.reach
@@ -134,26 +142,15 @@ export async function handleSubscribe(
     try {
       await deps.notify(email, source);
     } catch (err) {
-      console.error("[subscribe] saved, but notification email failed:", err);
+      // The error's name only: a mail error can echo the address.
+      console.error("[subscribe] saved, but notification email failed:", (err as { name?: string })?.name ?? "error");
     }
   }
 
-  // Reach after the response, never in its way. Only a row this request
-  // created and queued: a repeat sign-up of a pending, synced or failed
-  // address makes no Reach call (the retry job owns failed rows), so it can't
-  // trigger a second confirmation email.
-  const reach = deps.reach;
-  if (reach && saved.created && saved.reachSyncStatus === "pending") {
-    const leadId = saved.id;
-    deps.schedule(async () => {
-      try {
-        await syncLead(leadId, { store: reach.syncStore, client: reach.client, log });
-      } catch {
-        // A store error mid-sync: the row stays pending or failed for the retry job.
-        log("[reach] sync after sign-up hit a storage error; left for retry", { leadId });
-      }
-    });
-  }
-
+  // Nothing calls Reach here. A queued row ("pending") is sent by the
+  // scheduled retry job (scripts/reach-retry.mjs, every 15 minutes), the one
+  // sender: concurrent sign-ups can't race the daily and monthly limits or
+  // burst Reach's API, and a repeat sign-up can't trigger a second
+  // confirmation email.
   return { status: 200, body: { ok: true } };
 }

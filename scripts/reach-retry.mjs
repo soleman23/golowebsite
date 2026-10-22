@@ -19,7 +19,8 @@
  * REACH_SYNC_ENABLED is exactly "true" it prints "Nothing done" and exits 0
  * without importing the Reach client, Prisma or the database. With the
  * switch on it also needs REACH_API_TOKEN and REACH_PROFILE_UUID
- * (lib/reach.ts), and exits 1 without them. Prints counts and lead ids only,
+ * (lib/reach.ts), and exits 1 without them. It is the only code that sends
+ * to Reach (sign-ups only queue), and holds a database lock while it runs. Prints counts and lead ids only,
  * never an address; an error prints its code and first line, not a stack.
  */
 
@@ -53,6 +54,14 @@ const { prismaLeadSyncStore } = await import("../lib/reachStore.ts");
 const prisma = new PrismaClient();
 
 try {
+  // One sender at a time: the daily and 30-day limits are counted, then
+  // claimed, so two overlapping runs could both pass the count. A session
+  // lock (released when the connection closes) makes a second run a no-op.
+  const [lock] = await prisma.$queryRaw`SELECT pg_try_advisory_lock(121121) AS locked`;
+  if (!lock?.locked) {
+    console.log(`${new Date().toISOString()} Another Reach run holds the lock. Nothing done.`);
+    process.exit(0);
+  }
   const store = prismaLeadSyncStore(prisma);
   if (requeue) {
     const result = await requeueFailed({ store, args, env: process.env, print: (line) => console.log(line) });
@@ -62,6 +71,8 @@ try {
     const summary = await retryReachSync({
       store,
       client,
+      // Spaces Reach's API out: at most one lead (a lookup and a create, usually) every 2 s.
+      paceMs: 2000,
       log: (message, fields) => console.error(message, JSON.stringify(fields ?? {})),
     });
     console.log(`${new Date().toISOString()} Reach retry:`, JSON.stringify(summary));

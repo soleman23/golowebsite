@@ -86,13 +86,19 @@ const BACKOFF_BASE_MS = 5 * 60 * 1000;
 const BACKOFF_CAP_MS = 6 * 60 * 60 * 1000;
 
 /**
- * Rows the sync may hand to Reach in any rolling 24 hours (counted as rows
- * it marked synced, which over-counts: an address Reach already had counts
- * too). The plan allows 1,000 unique recipients a month (golo#791), so 50 a
- * day keeps a flood of sign-ups, real or scripted, well inside it.
+ * Rows the sync may hand to Reach in any rolling 24 hours, and in any rolling
+ * 30 days (counted as rows it marked synced, which over-counts: an address
+ * Reach already had counts too). The plan allows 1,000 unique recipients a
+ * calendar month (golo#791), which campaigns share, so the 30-day cap keeps
+ * sign-ups to half of it and the daily cap spreads a flood over weeks. Over
+ * either, a row waits, unclaimed, for a later run. Only the retry job sends,
+ * one run at a time (scripts/reach-retry.mjs holds a database lock), so the
+ * count can't be raced.
  */
-export const DAILY_ADD_LIMIT = 50;
+export const DAILY_ADD_LIMIT = 25;
+export const MONTHLY_ADD_LIMIT = 500;
 const DAY_MS = 24 * 60 * 60 * 1000;
+const MONTH_MS = 30 * DAY_MS;
 
 /**
  * --requeue-failed leaves a row alone if its last attempt was this recent:
@@ -185,6 +191,8 @@ export type SyncDeps = {
   maxAttempts?: number;
   /** Adds allowed per rolling 24 hours; DAILY_ADD_LIMIT unless a test sets it. */
   dailyLimit?: number;
+  /** Adds allowed per rolling 30 days; MONTHLY_ADD_LIMIT unless a test sets it. */
+  monthlyLimit?: number;
 };
 
 const silent: SyncLog = () => {};
@@ -224,7 +232,11 @@ export async function syncLead(id: string, deps: SyncDeps): Promise<SyncOutcome>
 
   // Before claiming, so a row held back by the limit keeps its attempts.
   const dailyLimit = deps.dailyLimit ?? DAILY_ADD_LIMIT;
-  if ((await store.countSyncedSince(new Date(at.getTime() - DAY_MS))) >= dailyLimit) {
+  const monthlyLimit = deps.monthlyLimit ?? MONTHLY_ADD_LIMIT;
+  if (
+    (await store.countSyncedSince(new Date(at.getTime() - DAY_MS))) >= dailyLimit ||
+    (await store.countSyncedSince(new Date(at.getTime() - MONTH_MS))) >= monthlyLimit
+  ) {
     return "deferred";
   }
 
@@ -296,7 +308,14 @@ const NO_CALL: SyncOutcome[] = ["backoff", "claimed_elsewhere", "not_queued", "i
  * without addresses.
  */
 export async function retryReachSync(
-  deps: SyncDeps & { limit?: number; budgetMs?: number; scan?: number },
+  deps: SyncDeps & {
+    limit?: number;
+    budgetMs?: number;
+    scan?: number;
+    /** Pause after each lead that called Reach (the script uses 2 s), to pace its API. */
+    paceMs?: number;
+    sleep?: (ms: number) => Promise<void>;
+  },
 ): Promise<RetrySummary> {
   const maxAttempts = deps.maxAttempts ?? MAX_ATTEMPTS;
   const log = deps.log ?? silent;
@@ -334,7 +353,10 @@ export async function retryReachSync(
       summary.stoppedEarly = true;
       break;
     }
-    if (!NO_CALL.includes(outcome)) worked += 1;
+    if (!NO_CALL.includes(outcome)) {
+      worked += 1;
+      if (deps.paceMs) await (deps.sleep ?? ((ms) => new Promise((r) => setTimeout(r, ms))))(deps.paceMs);
+    }
   }
 
   summary.exhausted = await deps.store.countExhausted(maxAttempts);
@@ -344,8 +366,9 @@ export async function retryReachSync(
     });
   }
   if (summary.deferred > 0) {
-    log("[reach] daily add limit reached; the rest wait for a later run", {
-      limit: deps.dailyLimit ?? DAILY_ADD_LIMIT,
+    log("[reach] daily or 30-day add limit reached; the rest wait for a later run", {
+      daily: deps.dailyLimit ?? DAILY_ADD_LIMIT,
+      monthly: deps.monthlyLimit ?? MONTHLY_ADD_LIMIT,
     });
   }
   return summary;

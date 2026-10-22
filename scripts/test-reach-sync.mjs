@@ -19,11 +19,11 @@ globalThis.fetch = async () => {
 };
 
 const { handleSubscribe } = await import("../lib/subscribe.ts");
-const { syncLead, retryReachSync, runBackfill, requeueFailed, backoffMs, MAX_ATTEMPTS, NEWSLETTER_CONSENT_SINCE } =
+const { syncLead, retryReachSync, runBackfill, requeueFailed, backoffMs, MAX_ATTEMPTS, NEWSLETTER_CONSENT_SINCE, DAILY_ADD_LIMIT, MONTHLY_ADD_LIMIT } =
   await import("../lib/reachSync.ts");
 const { createStubReachClient } = await import("../lib/reachStub.ts");
 const { getReachClient, createHttpReachClient, REACH_BASE_URL, MAX_PAGES } = await import("../lib/reach.ts");
-const { prismaSubscribeStore } = await import("../lib/reachStore.ts");
+const { prismaSubscribeStore, prismaLeadSyncStore } = await import("../lib/reachStore.ts");
 const { readFileSync } = await import("node:fs");
 
 const T0 = new Date("2026-11-02T12:00:00Z");
@@ -127,26 +127,26 @@ function memoryDb() {
 const logLines = [];
 const log = (message, fields) => logLines.push(`${message} ${JSON.stringify(fields ?? {})}`);
 
-/** A sign-up harness: scheduled tasks are held until flush(), like `after`. */
+/**
+ * A sign-up harness. Sign-ups only queue; flush() is the scheduled retry job
+ * running once (the only sender), at T0.
+ */
 function harness({ enabled = true, stub = createStubReachClient() } = {}) {
   const db = memoryDb();
-  const tasks = [];
   const notified = [];
   const deps = {
     store: db.subscribeStore,
     notify: async (email, source) => notified.push(source),
-    reach: enabled ? { client: stub, syncStore: db.syncStore } : null,
-    schedule: (task) => tasks.push(task),
+    reach: enabled ? { client: stub } : null,
     log,
   };
   return {
     db,
     stub,
-    tasks,
     notified,
     signUp: (email, source = "blog") => handleSubscribe({ email, source, landingPath: "/blog" }, deps),
     flush: async () => {
-      while (tasks.length) await tasks.shift()();
+      if (enabled) await retryReachSync({ store: db.syncStore, client: stub, log, now: () => T0 });
     },
     retry: (now) => retryReachSync({ store: db.syncStore, client: stub, log, now: () => now }),
   };
@@ -171,7 +171,6 @@ await test("new sign-up: 200 before Reach is called, then one create call", asyn
   const res = await h.signUp("new@example.test");
   expect(res.status === 200 && res.body.ok === true, `status ${res.status}`);
   expect(h.stub.calls.length === 0, "Reach was called before the response");
-  expect(h.tasks.length === 1, `${h.tasks.length} tasks scheduled`);
   expect(h.db.byEmail("new@example.test").reachSyncStatus === "pending", "row not pending");
   await h.flush();
   expect(h.stub.creates() === 1, `${h.stub.creates()} create calls`);
@@ -187,7 +186,8 @@ await test("repeat sign-up of a pending address: no second create call", async (
   await h.signUp("again@example.test");
   const res = await h.signUp("again@example.test");
   expect(res.status === 200, `repeat status ${res.status}`);
-  expect(h.tasks.length === 1, `${h.tasks.length} tasks scheduled for two sign-ups`);
+  const queued = [...h.db.rows.values()].filter((r) => r.reachSyncStatus === "pending").length;
+  expect(queued === 1, `${queued} rows queued for two sign-ups`);
   await h.flush();
   expect(h.stub.creates() === 1, `${h.stub.creates()} create calls`);
   expect(h.notified.length === 1, "repeat notified the team");
@@ -282,7 +282,8 @@ await test("ineligible source never reaches the client", async () => {
     expect(res.status === 200, `${source}: status ${res.status}`);
     expect(h.db.byEmail(`${source}@example.test`).reachSyncStatus === "skipped_ineligible", `${source}: not skipped`);
   }
-  expect(h.tasks.length === 0, "an ineligible sign-up was scheduled");
+  await h.flush();
+  expect(h.stub.calls.length === 0, "an ineligible sign-up reached the client");
   // Even a row forced into the queue is refused before any Reach call.
   const forced = h.db.insert({ email: "forced@example.test", source: "contact", reachSyncStatus: "pending" });
   const outcome = await syncLead(forced.id, { store: h.db.syncStore, client: h.stub, log });
@@ -296,7 +297,8 @@ await test("sync disabled: rows not queued, no Reach calls at all", async () => 
   const h = harness({ enabled: false });
   const res = await h.signUp("off@example.test");
   expect(res.status === 200, `status ${res.status}`);
-  expect(h.tasks.length === 0, "work scheduled while off");
+  await h.flush();
+  expect(h.stub.calls.length === 0, "Reach called while off");
   expect(h.db.byEmail("off@example.test").reachSyncStatus === null, "row queued while off");
   // Retry has nothing to pick up: the row was never queued.
   await h.retry(at(HOUR));
@@ -607,6 +609,28 @@ await test(`daily limit: no more than the limit added in 24 h; the rest wait wit
   expect(later.created === 1, `next day ${JSON.stringify(later)}`);
 });
 
+await test("30-day limit: deferred once the month's adds are used, even under the daily limit", async () => {
+  const h = harness();
+  for (const n of [1, 2, 3]) h.db.insert({ email: `month${n}@example.test`, reachSyncStatus: "pending" });
+  const s1 = await retryReachSync({ store: h.db.syncStore, client: h.stub, now: () => at(0), dailyLimit: 10, monthlyLimit: 2, log });
+  expect(s1.created === 2 && s1.deferred === 1, `month ${JSON.stringify(s1)}`);
+  const s2 = await retryReachSync({ store: h.db.syncStore, client: h.stub, now: () => at(10 * 24 * HOUR), dailyLimit: 10, monthlyLimit: 2, log });
+  expect(s2.created === 0 && s2.deferred === 1, `still within 30 days ${JSON.stringify(s2)}`);
+  const s3 = await retryReachSync({ store: h.db.syncStore, client: h.stub, now: () => at(31 * 24 * HOUR), dailyLimit: 10, monthlyLimit: 2, log });
+  expect(s3.created === 1, `after 30 days ${JSON.stringify(s3)}`);
+  expect(DAILY_ADD_LIMIT * 30 <= 1000 && MONTHLY_ADD_LIMIT <= 1000, "the caps allow more than the plan's 1,000 a month");
+});
+
+await test("a retry run paces Reach calls, not skipped rows", async () => {
+  const h = harness();
+  for (let n = 0; n < 3; n += 1) h.db.insert({ email: `pace${n}@example.test`, reachSyncStatus: "pending" });
+  h.db.insert({ email: "waiting@example.test", reachSyncStatus: "failed", reachSyncAttempts: 1, reachLastAttemptAt: at(0) });
+  const pauses = [];
+  const s = await retryReachSync({ store: h.db.syncStore, client: h.stub, now: () => at(60 * 1000), paceMs: 2000, sleep: async (ms) => { pauses.push(ms); }, log });
+  expect(s.created === 3 && s.backoff === 1, `summary ${JSON.stringify(s)}`);
+  expect(pauses.join() === "2000,2000,2000", `pauses ${pauses}`);
+});
+
 await test("a retry run stops after its per-run limit and time budget", async () => {
   const h = harness();
   for (let n = 0; n < 5; n += 1) h.db.insert({ email: `run${n}@example.test`, reachSyncStatus: "pending" });
@@ -620,8 +644,8 @@ await test("a retry run stops after its per-run limit and time budget", async ()
 await test("a sign-up without a source is stored as \"unspecified\" and never queued", async () => {
   const h = harness();
   const res = await handleSubscribe({ email: "nosource@example.test" }, {
-    store: h.db.subscribeStore, notify: async () => {}, schedule: (task) => h.tasks.push(task), log,
-    reach: { client: h.stub, syncStore: h.db.syncStore },
+    store: h.db.subscribeStore, notify: async () => {}, log,
+    reach: { client: h.stub },
   });
   await h.flush();
   const saved = h.db.byEmail("nosource@example.test");
@@ -657,6 +681,29 @@ await test("switch off: the Prisma store writes and selects no Reach column", as
   // INSERT, which breaks sign-ups on a database without the column.
   const schema = readFileSync(new URL("../prisma/schema.prisma", import.meta.url), "utf8");
   expect(/reachSyncAttempts\s+Int\s+@default\(dbgenerated\("0"\)\)/.test(schema), "reachSyncAttempts must default in the database");
+});
+
+await test("Prisma sync store: claim, requeue, exhausted and synced-since queries", async () => {
+  const calls = [];
+  const record = (op) => async (args) => { calls.push([op, args]); return op === "updateMany" ? { count: 1 } : op === "count" ? 0 : []; };
+  const fakePrisma = { newsletterLead: { updateMany: record("updateMany"), count: record("count"), findMany: record("findMany"), findUnique: record("findUnique"), update: record("update") } };
+  const store = prismaLeadSyncStore(fakePrisma);
+  const when = at(0);
+  const last = () => calls.at(-1)[1];
+  await store.claimAttempt("lead_1", 3, when);
+  expect(last().where.reachSyncAttempts === 3 && last().where.reachSyncStatus.in.join() === "pending,failed", `claim where ${JSON.stringify(last().where)}`);
+  expect(last().data.reachSyncAttempts === 4 && last().data.reachLastAttemptAt === when, "claim data");
+  const quiet = at(-HOUR);
+  await store.requeueFailed(MAX_ATTEMPTS, quiet);
+  const rq = last();
+  expect(rq.where.reachSyncAttempts.gte === MAX_ATTEMPTS && rq.where.reachLastAttemptAt.lt === quiet, `requeue where ${JSON.stringify(rq.where)}`);
+  expect(rq.where.reachSyncStatus.in.join() === "pending,failed", "requeue must cover pending and failed");
+  await store.countExhausted(MAX_ATTEMPTS);
+  expect(last().where.reachSyncStatus.in.join() === "pending,failed" && last().where.reachSyncAttempts.gte === MAX_ATTEMPTS, "exhausted where");
+  await store.countSyncedSince(when);
+  expect(last().where.reachSyncStatus === "synced" && last().where.reachLastAttemptAt.gte === when, "synced-since where");
+  await store.listRetryable(MAX_ATTEMPTS, 7);
+  expect(last().where.reachSyncAttempts.lt === MAX_ATTEMPTS && last().take === 7, "retryable where/take");
 });
 
 await test("no log line carries an address or the token", async () => {

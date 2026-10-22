@@ -17,16 +17,17 @@
  * Blocks are logged as a reason code only, never the address, IP or key.
  *
  * Hostinger Reach (#121): off unless REACH_SYNC_ENABLED=true (lib/reach.ts).
- * When on, a new sign-up from the newsletter band is queued and sent to Reach
- * after the response, so the visitor never waits on Reach or sees it fail.
+ * When on, a new sign-up from the newsletter band is queued, and the
+ * scheduled retry job (every 15 minutes) sends it to Reach, so the visitor
+ * never waits on Reach or sees it fail.
  */
 
-import { NextResponse, after } from "next/server";
+import { NextResponse } from "next/server";
 import { prisma } from "@/lib/db";
 import { assertDatabaseConfigured } from "@/lib/env";
 import { sendNewsletterNotification } from "@/lib/email";
 import { getReachClient } from "@/lib/reach";
-import { prismaLeadSyncStore, prismaSubscribeStore } from "@/lib/reachStore";
+import { prismaSubscribeStore } from "@/lib/reachStore";
 import { siteConfig } from "@/lib/siteConfig";
 import { handleSubscribe } from "@/lib/subscribe";
 import {
@@ -115,8 +116,8 @@ export async function POST(request: Request) {
       syncEnabled: client !== null,
     }),
     notify: sendNewsletterNotification,
-    reach: client ? { client, syncStore: prismaLeadSyncStore(prisma) } : null,
-    schedule: (task) => after(task),
+    // Sign-ups only queue; the scheduled retry job is the one sender.
+    reach: client,
     // Only a sign-up that saves a new address counts against the global
     // ceiling (handleSubscribe gives a repeat's or a failed save's slot
     // back), so junk can't close it for everybody.
