@@ -12,9 +12,9 @@
   and the hidden preheader, and rewrites <div>s into table cells. So this
   edition is plain tables with inline styles and percentage widths only:
   - the hero photo is an <img> (golo-nl-hero-banner-1200x560.jpg) above the text;
-  - every image-and-text row is a two-cell table: a fixed-width photo
-    column (92-104px) beside the text, each photo a tall crop sized to match
-    its text's height in Gmail on an iPhone (about 342px wide);
+  - every image-and-text row is a two-cell table in percentages, the photo
+    a tall crop capped with max-width (the form Reach's fixer keeps), sized
+    so its height matches the copy in Gmail on an iPhone (about 342px wide);
   - Track / Bet / Settle is a stacked list, the games grid stays 3 across;
   - the preheader goes in Reach's pre-header field;
   - unsubscribe is Reach's native {{unsubscribe-link}} merge tag.
@@ -74,8 +74,8 @@
         <tr><td style="padding:0 0 12px;">
           <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" bgcolor="#1a2e22" style="width:100%;background-color:#1a2e22;border:2px solid #d4f23a;border-radius:16px;">
             <tr>
-              <td width="100" valign="top" style="width:100px;padding:12px 0 12px 12px;"><a href="https://www.golo.golf/blog/who-pays-first"><img src="https://www.golo.golf/email/golo-nl-card-who-pays-tall-100x250.jpg" width="100" alt="Two golfers handing over cash on the green" style="display:block;width:100px;height:250px;border:0;border-radius:10px;background-color:#14532d;"></a></td>
-              <td valign="middle" style="padding:12px 14px 14px;">
+              <td width="42%" valign="top" style="width:42%;padding:12px 0 12px 12px;"><a href="https://www.golo.golf/blog/who-pays-first"><img src="https://www.golo.golf/email/golo-nl-card-who-pays-tall-100x250.jpg" width="100" alt="Two golfers handing over cash on the green" style="display:block;width:100%;max-width:100px;height:auto;margin:0 0 0 auto;border:0;border-radius:10px;background-color:#14532d;"></a></td>
+              <td width="58%" valign="middle" style="width:58%;padding:12px 14px 14px;">
                 <table role="presentation" cellpadding="0" cellspacing="0" border="0"><tr><td bgcolor="#d4f23a" style="background-color:#d4f23a;border-radius:6px;padding:4px 8px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif;font-size:10px;line-height:12px;font-weight:800;letter-spacing:1.4px;color:#13250a;text-transform:uppercase;">From the blog</td></tr></table>
                 <p style="margin:10px 0 0;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif;font-size:16px;line-height:21px;font-weight:800;color:#f4f7f2;">Who pays first? The unwritten rules of settling up</p>
                 <p style="margin:6px 0 0;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif;font-size:14px;line-height:20px;color:#b4c0b8;">On the green, in the parking lot, or by dinner. A field guide to settling a golf bet.</p>
@@ -88,8 +88,8 @@
         <tr><td style="padding:0 0 12px;">
           <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" bgcolor="#1a2e22" style="width:100%;background-color:#1a2e22;border:2px solid #2a3d31;border-radius:16px;">
             <tr>
-              <td width="100" valign="top" style="width:100px;padding:12px 0 12px 12px;"><a href="https://www.golo.golf/games/nassau"><img src="https://www.golo.golf/email/golo-nl-card-scorecard-tall-100x228.jpg" width="100" alt="A golf scorecard and pencil on a cart seat at sunset" style="display:block;width:100px;height:228px;border:0;border-radius:10px;background-color:#14532d;"></a></td>
-              <td valign="middle" style="padding:12px 14px 14px;">
+              <td width="42%" valign="top" style="width:42%;padding:12px 0 12px 12px;"><a href="https://www.golo.golf/games/nassau"><img src="https://www.golo.golf/email/golo-nl-card-scorecard-tall-100x228.jpg" width="100" alt="A golf scorecard and pencil on a cart seat at sunset" style="display:block;width:100%;max-width:100px;height:auto;margin:0 0 0 auto;border:0;border-radius:10px;background-color:#14532d;"></a></td>
+              <td width="58%" valign="middle" style="width:58%;padding:12px 14px 14px;">
                 <table role="presentation" cellpadding="0" cellspacing="0" border="0"><tr><td bgcolor="#2a4a33" style="background-color:#2a4a33;border-radius:6px;padding:4px 8px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif;font-size:10px;line-height:12px;font-weight:800;letter-spacing:1.4px;color:#d4f23a;text-transform:uppercase;">Game guide</td></tr></table>
                 <p style="margin:10px 0 0;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif;font-size:16px;line-height:21px;font-weight:800;color:#f4f7f2;">Nassau, explained</p>
                 <p style="margin:6px 0 0;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif;font-size:14px;line-height:20px;color:#b4c0b8;">Front, back and total, plus the press. How a Nassau works and what a press really costs.</p>
@@ -102,8 +102,8 @@
         <tr><td style="padding:0 0 12px;">
           <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" bgcolor="#1a2e22" style="width:100%;background-color:#1a2e22;border:2px solid #2a3d31;border-radius:16px;">
             <tr>
-              <td width="100" valign="top" style="width:100px;padding:12px 0 12px 12px;"><a href="https://www.golo.golf/games"><img src="https://www.golo.golf/email/golo-nl-card-group-tall-100x206.jpg" width="100" alt="Four golfers walking down the fairway at golden hour" style="display:block;width:100px;height:206px;border:0;border-radius:10px;background-color:#14532d;"></a></td>
-              <td valign="middle" style="padding:12px 14px 14px;">
+              <td width="42%" valign="top" style="width:42%;padding:12px 0 12px 12px;"><a href="https://www.golo.golf/games"><img src="https://www.golo.golf/email/golo-nl-card-group-tall-100x206.jpg" width="100" alt="Four golfers walking down the fairway at golden hour" style="display:block;width:100%;max-width:100px;height:auto;margin:0 0 0 auto;border:0;border-radius:10px;background-color:#14532d;"></a></td>
+              <td width="58%" valign="middle" style="width:58%;padding:12px 14px 14px;">
                 <table role="presentation" cellpadding="0" cellspacing="0" border="0"><tr><td bgcolor="#2a4a33" style="background-color:#2a4a33;border-radius:6px;padding:4px 8px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif;font-size:10px;line-height:12px;font-weight:800;letter-spacing:1.4px;color:#d4f23a;text-transform:uppercase;">The games</td></tr></table>
                 <p style="margin:10px 0 0;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif;font-size:16px;line-height:21px;font-weight:800;color:#f4f7f2;">Every game GoLo scores</p>
                 <p style="margin:6px 0 0;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif;font-size:14px;line-height:20px;color:#b4c0b8;">The rules for each format and the settings that matter.</p>
@@ -116,8 +116,8 @@
         <tr><td style="padding:0 0 12px;">
           <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" bgcolor="#1a2e22" style="width:100%;background-color:#1a2e22;border:2px solid #2a3d31;border-radius:16px;">
             <tr>
-              <td width="100" valign="top" style="width:100px;padding:12px 0 12px 12px;"><a href="https://www.golo.golf/faq"><img src="https://www.golo.golf/email/golo-nl-card-phone-tall-100x208.jpg" width="100" alt="A golfer holding a phone beside a golf bag" style="display:block;width:100px;height:208px;border:0;border-radius:10px;background-color:#14532d;"></a></td>
-              <td valign="middle" style="padding:12px 14px 14px;">
+              <td width="42%" valign="top" style="width:42%;padding:12px 0 12px 12px;"><a href="https://www.golo.golf/faq"><img src="https://www.golo.golf/email/golo-nl-card-phone-tall-100x229.jpg" width="100" alt="A golfer holding a phone beside a golf bag" style="display:block;width:100%;max-width:100px;height:auto;margin:0 0 0 auto;border:0;border-radius:10px;background-color:#14532d;"></a></td>
+              <td width="58%" valign="middle" style="width:58%;padding:12px 14px 14px;">
                 <table role="presentation" cellpadding="0" cellspacing="0" border="0"><tr><td bgcolor="#2a4a33" style="background-color:#2a4a33;border-radius:6px;padding:4px 8px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif;font-size:10px;line-height:12px;font-weight:800;letter-spacing:1.4px;color:#d4f23a;text-transform:uppercase;">FAQ</td></tr></table>
                 <p style="margin:10px 0 0;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif;font-size:16px;line-height:21px;font-weight:800;color:#f4f7f2;">Good questions, answered</p>
                 <p style="margin:6px 0 0;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif;font-size:14px;line-height:20px;color:#b4c0b8;">Handicaps, stacking games, settling up, and where GoLo is today.</p>
@@ -135,8 +135,8 @@
     <td bgcolor="#13241a" style="padding:0 24px 40px;background-color:#13241a;">
       <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="width:100%;border-top:1px solid #2a3d31;">
         <tr>
-          <td width="108" valign="top" style="width:108px;padding:32px 16px 0 0;"><img src="https://www.golo.golf/email/golo-nl-tip-tall-92x228.jpg" width="92" alt="A golf green at sunset" style="display:block;width:92px;height:228px;border:0;border-radius:16px;background-color:#24382c;"></td>
-          <td valign="middle" style="padding:32px 0 0;">
+          <td width="40%" valign="top" style="width:40%;padding:32px 16px 0 0;"><img src="https://www.golo.golf/email/golo-nl-tip-tall-92x228.jpg" width="92" alt="A golf green at sunset" style="display:block;width:100%;max-width:92px;height:auto;margin:0 0 0 auto;border:0;border-radius:16px;background-color:#24382c;"></td>
+          <td width="60%" valign="middle" style="width:60%;padding:32px 0 0;">
             <table role="presentation" cellpadding="0" cellspacing="0" border="0">
               <tr>
                 <td valign="middle" style="padding:0 10px 0 0;"><img src="https://www.golo.golf/email/golo-nl-why-swap.png" width="32" alt="" style="display:block;width:32px;height:32px;border:0;"></td>
@@ -178,12 +178,12 @@
     <td bgcolor="#13241a" style="padding:40px 24px;background-color:#13241a;">
       <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="width:100%;">
         <tr>
-          <td valign="middle" style="padding:0 16px 0 0;">
+          <td width="62%" valign="middle" style="width:62%;padding:0 16px 0 0;">
             <p style="margin:0 0 10px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif;font-size:11px;line-height:14px;font-weight:800;letter-spacing:2px;color:#d4f23a;text-transform:uppercase;">What to expect</p>
             <p style="margin:0 0 10px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif;font-size:20px;line-height:25px;font-weight:800;letter-spacing:-0.3px;color:#f4f7f2;">Feature updates, how-tos and news.</p>
             <p style="margin:0;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif;font-size:15px;line-height:23px;color:#c3cdc6;">New features as they ship, quick how-tos for getting more out of the app, game rules and bet math, and news from the GoLo team.</p>
           </td>
-          <td width="104" valign="top" style="width:104px;"><img src="https://www.golo.golf/email/golo-nl-note-tall-104x270.jpg" width="104" alt="Close-up of fairway turf" style="display:block;width:104px;height:270px;border:0;border-radius:16px;background-color:#24382c;"></td>
+          <td width="38%" valign="top" style="width:38%;"><img src="https://www.golo.golf/email/golo-nl-note-tall-104x270.jpg" width="104" alt="Close-up of fairway turf" style="display:block;width:100%;max-width:104px;height:auto;margin:0 auto 0 0;border:0;border-radius:16px;background-color:#24382c;"></td>
         </tr>
       </table>
     </td>
@@ -219,8 +219,8 @@
     <td bgcolor="#13241a" style="padding:40px 24px;background-color:#13241a;">
       <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="width:100%;">
         <tr>
-          <td width="114" valign="top" style="width:114px;padding:0 18px 0 0;"><img src="https://www.golo.golf/email/golo-nl-cta-app-tall-96x331.jpg" width="96" alt="The GoLo live scoring screen" style="display:block;width:96px;height:331px;border:0;border-radius:16px;background-color:#24382c;"></td>
-          <td valign="middle">
+          <td width="42%" valign="top" style="width:42%;padding:0 18px 0 0;"><img src="https://www.golo.golf/email/golo-nl-cta-app-tall-96x290.jpg" width="96" alt="The GoLo live scoring screen" style="display:block;width:100%;max-width:96px;height:auto;margin:0 0 0 auto;border:0;border-radius:16px;background-color:#24382c;"></td>
+          <td width="58%" valign="middle" style="width:58%;">
             <p style="margin:0 0 10px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif;font-size:20px;line-height:25px;font-weight:800;letter-spacing:-0.3px;color:#f4f7f2;">First tee to settle-up.</p>
             <p style="margin:0 0 16px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif;font-size:15px;line-height:23px;color:#c3cdc6;">Walk through a full round: setting up the group, scoring hole by hole, and the payout at the end.</p>
             <a href="https://www.golo.golf/how-it-works" style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif;font-size:12px;line-height:16px;font-weight:800;letter-spacing:1.2px;color:#d4f23a;text-decoration:underline;text-transform:uppercase;">See How It Works &rarr;</a>
