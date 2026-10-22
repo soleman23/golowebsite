@@ -29,16 +29,18 @@ from `public/email/` at `https://www.golo.golf/email/<filename>`.
 
 Reach rewrites custom HTML on every import and save. It strips `<style>` (and
 so the media queries), every `class`, background images, `<!--[if mso]>`/VML,
-`height` attributes and the hidden preheader. Inline styles, tables, `display`,
-`max-width` and `border-radius` survive. So the Reach edition:
+`height` attributes and the hidden preheader, and it **rewrites `<div>`s into
+table cells** (inline-block "hybrid" columns end up side by side at any width).
+Tables, inline styles and percentage widths survive. So the Reach edition is
+tables only:
 
-- shows the hero photo as an `<img>` (`golo-nl-hero-banner-1200x560.jpg`: the
-  top of the hero, its bottom edge faded into `#0f2016`) above the text;
-- lays side-by-side blocks out as `display:inline-block` divs with a
-  `max-width` inside a `font-size:0` cell: side by side at 600px, one column
-  on a phone, no media query;
-- leaves the preheader to Reach's pre-header field and uses Reach's native
-  `{{unsubscribe-link}}` merge tag.
+- the hero photo is an `<img>` (`golo-nl-hero-banner-1200x560.jpg`: the top of
+  the hero, its bottom edge faded into `#0f2016`) above the text;
+- each card and photo row is a two-cell table, image 34–38% and text the rest,
+  which stays readable at 320px without a media query;
+- Track / Bet / Settle is a stacked list; the games grid stays 3 across;
+- the preheader is set in Reach's pre-header field, and unsubscribe is Reach's
+  native `{{unsubscribe-link}}` merge tag.
 
 Outlook for Windows loses its VML hero and button either way; the Reach
 edition hasn't been checked there.
