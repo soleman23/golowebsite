@@ -36,8 +36,12 @@ tables only:
 
 - the hero photo is an `<img>` (`golo-nl-hero-banner-1200x560.jpg`: the top of
   the hero, its bottom edge faded into `#0f2016`) above the text;
-- each card and photo row is a two-cell table, image 34–38% and text the rest,
-  which stays readable at 320px without a media query;
+- each card and photo row is a two-cell table: a fixed-width photo column
+  (92–104px) beside the text. Each photo is a tall crop
+  (`golo-nl-*-tall-<w>x<h>.jpg`) whose height matches its copy in Gmail on an
+  iPhone, where the email is about 342px wide. Wider screens give the copy
+  more room, so there the photo is taller than the copy and the copy is
+  centred beside it. If the copy changes, re-measure and re-crop.
 - Track / Bet / Settle is a stacked list; the games grid stays 3 across;
 - the preheader is set in Reach's pre-header field, and unsubscribe is Reach's
   native `{{unsubscribe-link}}` merge tag.
