@@ -27,7 +27,7 @@ from `public/email/` at `https://www.golo.golf/email/<filename>`.
 
 ## Why there's a Reach edition
 
-Reach rewrites custom HTML on every import and save. It strips `<style>` (and
+Reach rewrites custom HTML on every import and save, and not always the same way. It strips `<style>` (and
 so the media queries), every `class`, background images, `<!--[if mso]>`/VML,
 `height` attributes and the hidden preheader, and it **rewrites `<div>`s into
 table cells** (inline-block "hybrid" columns end up side by side at any width).
@@ -36,12 +36,14 @@ tables only:
 
 - the hero photo is an `<img>` (`golo-nl-hero-banner-1200x560.jpg`: the top of
   the hero, its bottom edge faded into `#0f2016`) above the text;
-- each card and photo row is a two-cell table: a fixed-width photo column
-  (92–104px) beside the text. Each photo is a tall crop
-  (`golo-nl-*-tall-<w>x<h>.jpg`) whose height matches its copy in Gmail on an
-  iPhone, where the email is about 342px wide. Wider screens give the copy
-  more room, so there the photo is taller than the copy and the copy is
-  centred beside it. If the copy changes, re-measure and re-crop.
+- each card and photo row is a two-cell table in **percentages**, the photo a
+  tall crop (`golo-nl-*-tall-<w>x<h>.jpg`) written as
+  `width:100%;max-width:<w>px;height:auto`. That's the form Reach's fixer turns
+  images into anyway; pixel cell widths are not safe, because on some saves
+  the fixer converts them to percentages and the photos shrink on a phone.
+  Each crop's height matches its copy in Gmail on an iPhone, where the email
+  is about 342px wide. Wider screens give the copy more room, so the photo is
+  taller there. If the copy changes, re-measure and re-crop.
 - Track / Bet / Settle is a stacked list; the games grid stays 3 across;
 - the preheader is set in Reach's pre-header field, and unsubscribe is Reach's
   native `{{unsubscribe-link}}` merge tag.
