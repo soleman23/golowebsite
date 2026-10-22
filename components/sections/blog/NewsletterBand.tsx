@@ -113,7 +113,7 @@ export function NewsletterBand({ page = "blog" }: { page?: string }) {
                 ✓
               </span>
               {confirmByEmail
-                ? "Almost there. Check your inbox: we\u2019ll send you a link to confirm, and you\u2019re on the list once you click it."
+                ? "Almost there. If this address isn\u2019t on the list yet, we\u2019ll email it a link to confirm."
                 : "You\u2019re on the list. We\u2019ll email when the next one\u2019s up."}
             </p>
           ) : (
@@ -180,7 +180,7 @@ export function NewsletterBand({ page = "blog" }: { page?: string }) {
           )}
 
           <p className={styles.fine}>
-            No spam, no selling your address. Unsubscribe any time.
+            No spam, no selling your address. Unsubscribe from any email.
           </p>
         </div>
       </div>

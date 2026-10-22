@@ -12,12 +12,13 @@
  *
  * Order and safety:
  * - It holds the sign-up lock exclusively (lib/reachStore.ts DELETION_LOCK;
- *   each sign-up insert holds it shared), so a sign-up in flight can't land
- *   between the steps below.
+ *   each sign-up insert holds it shared) while the website rows are deleted,
+ *   so a sign-up in flight can't land between the read and the delete.
  * - It takes the same database lock as the Reach retry job
- *   (scripts/reach-retry.mjs) on the direct connection (DIRECT_URL), waiting
- *   up to five minutes for a running job to finish, so a retry can't be
- *   halfway through adding the address while it's deleted.
+ *   (scripts/reach-retry.mjs) on the direct connection (DIRECT_URL, one
+ *   pinned connection), waiting up to five minutes for a running job to
+ *   finish, so a retry can't be halfway through adding the address while it's
+ *   deleted. Both locks are taken by polling, never a blocking wait.
  * - The website row goes first: with it gone, no queued retry and no
  *   backfill can ever send the address to Reach again.
  * - Then the Reach contact, if REACH_API_TOKEN and REACH_PROFILE_UUID are
@@ -66,27 +67,47 @@ const { createHttpReachClient } = await import("../lib/reach.ts");
 const { deleteSubscriber } = await import("../lib/reachSync.ts");
 const { prismaDeletionStore, DELETION_LOCK } = await import("../lib/reachStore.ts");
 const { PrismaClient } = await import("@prisma/client");
-const prisma = new PrismaClient({ datasources: { db: { url: process.env.DIRECT_URL } } });
+// One connection for the whole run: session locks belong to a connection, so
+// every lock and query has to share it.
+const directUrl = new URL(process.env.DIRECT_URL);
+directUrl.searchParams.set("connection_limit", "1");
+const prisma = new PrismaClient({ datasources: { db: { url: directUrl.toString() } } });
+
+/** Try-lock polling: true once held, false after `seconds`. Never blocks a waiting queue. */
+async function acquire(key, seconds) {
+  for (let waited = 0; ; waited += 1) {
+    const [row] = await prisma.$queryRaw`SELECT pg_try_advisory_lock(${key}) AS locked`;
+    if (row?.locked) return true;
+    if (waited >= seconds) return false;
+    await new Promise((resolve) => setTimeout(resolve, 1000));
+  }
+}
 
 try {
-  let locked = false;
-  for (let waited = 0; waited < 300 && !locked; waited += 5) {
-    const [lock] = await prisma.$queryRaw`SELECT pg_try_advisory_lock(121121) AS locked`;
-    locked = Boolean(lock?.locked);
-    if (!locked) await new Promise((resolve) => setTimeout(resolve, 5000));
-  }
-  if (!locked) {
+  if (!(await acquire(121121, 300))) {
     console.log("The Reach retry job held its lock for five minutes. Nothing was changed; try again.");
     process.exitCode = 1;
+  } else if (!(await acquire(DELETION_LOCK, 30))) {
+    // Sign-ups hold it only for their own short insert.
+    console.log("Sign-ups held the deletion lock for 30 seconds. Nothing was changed; try again.");
+    process.exitCode = 1;
   } else {
-    // Exclusive against sign-up inserts (they hold it shared): one already in
-    // flight finishes first and is deleted with the rest; a later one waits
-    // and is a new sign-up.
-    await prisma.$queryRaw`SELECT pg_advisory_lock(${DELETION_LOCK})`;
     const token = process.env.REACH_API_TOKEN?.trim();
     const profileUuid = process.env.REACH_PROFILE_UUID?.trim();
     const client = token && profileUuid ? createHttpReachClient({ token, profileUuid }) : null;
-    const result = await deleteSubscriber({ email, store: prismaDeletionStore(prisma), client });
+    // Exclusive against sign-up inserts (they hold it shared) only while the
+    // website rows are deleted: one in flight lands first and is deleted with
+    // them. Released before the slower Reach calls, so sign-ups never wait on
+    // Reach; one that lands after is a new, explicit sign-up, and the retry
+    // job can't send it before this run lets go of the retry lock.
+    const result = await deleteSubscriber({
+      email,
+      store: prismaDeletionStore(prisma),
+      client,
+      afterRowsDeleted: async () => {
+        await prisma.$queryRaw`SELECT pg_advisory_unlock(${DELETION_LOCK}) AS released`;
+      },
+    });
     console.log(`Website sign-up rows deleted: ${result.websiteRowsDeleted}.`);
     if (result.reach === "not_configured") {
       console.log("Reach: no token configured here, so the Reach contact was NOT deleted. Delete it in Reach (Audience → Contacts → the contact → Actions → Delete).");

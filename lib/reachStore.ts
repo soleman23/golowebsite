@@ -13,7 +13,7 @@ import type {
   SyncLead,
 } from "./reachSync";
 import type { NewLead, SubscribeStore } from "./subscribe";
-import { backoffMs } from "./reachSync";
+import { backoffMs, NEWSLETTER_SOURCES } from "./reachSync";
 
 /**
  * The advisory lock a deletion request holds exclusively and each sign-up
@@ -87,7 +87,7 @@ export function prismaSubscribeStore(
         // it is). The visitor's answer is the same either way.
         if (syncEnabled && reachSyncStatus === "pending") {
           await prisma.newsletterLead.updateMany({
-            where: { email: lead.email, reachSyncStatus: null },
+            where: { email: lead.email, reachSyncStatus: null, source: { in: [...NEWSLETTER_SOURCES] } },
             data: { reachSyncStatus: "pending" },
           });
         }

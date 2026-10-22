@@ -58,7 +58,11 @@ if (!process.env.DIRECT_URL) {
 }
 const { PrismaClient } = await import("@prisma/client");
 const { prismaLeadSyncStore } = await import("../lib/reachStore.ts");
-const prisma = new PrismaClient({ datasources: { db: { url: process.env.DIRECT_URL } } });
+// One connection for the whole run, so the session lock and every query
+// share it.
+const directUrl = new URL(process.env.DIRECT_URL);
+directUrl.searchParams.set("connection_limit", "1");
+const prisma = new PrismaClient({ datasources: { db: { url: directUrl.toString() } } });
 
 try {
   // One sender at a time: the daily and 30-day limits are counted, then

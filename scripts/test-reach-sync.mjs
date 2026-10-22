@@ -23,7 +23,7 @@ const { syncLead, retryReachSync, runBackfill, requeueFailed, backoffMs, MAX_ATT
   await import("../lib/reachSync.ts");
 const { createStubReachClient } = await import("../lib/reachStub.ts");
 const { getReachClient, createHttpReachClient, REACH_BASE_URL, MAX_PAGES } = await import("../lib/reach.ts");
-const { prismaSubscribeStore, prismaLeadSyncStore } = await import("../lib/reachStore.ts");
+const { prismaSubscribeStore, prismaLeadSyncStore, prismaDeletionStore } = await import("../lib/reachStore.ts");
 const { readFileSync } = await import("node:fs");
 
 const T0 = new Date("2026-11-02T12:00:00Z");
@@ -763,6 +763,11 @@ await test("switch off: the Prisma store writes and selects no Reach column", as
   await prismaSubscribeStore(fakePrisma, () => {}, { syncEnabled: true }).save({ ...lead, email: "old@example.test", reachSyncStatus: "pending" });
   const queue = calls.find(([k]) => k === "updateMany");
   expect(queue && queue[1].where.reachSyncStatus === null && queue[1].data.reachSyncStatus === "pending", `requeue of never-queued ${JSON.stringify(queue)}`);
+  expect(queue[1].where.source.in.join() === "blog,post", "a never-queued row from another source would be queued");
+  // An ineligible repeat never queues anything.
+  calls.length = 0;
+  await prismaSubscribeStore(fakePrisma, () => {}, { syncEnabled: true }).save({ ...lead, email: "old@example.test", source: "contact", reachSyncStatus: "skipped_ineligible" });
+  expect(!calls.some(([k]) => k === "updateMany"), "an ineligible repeat queued a row");
   // With a plain @default(0) Prisma writes reachSyncAttempts into every
   // INSERT, which breaks sign-ups on a database without the column.
   const schema = readFileSync(new URL("../prisma/schema.prisma", import.meta.url), "utf8");
@@ -837,6 +842,35 @@ await test("stale queued work can't recreate a deleted contact", async () => {
   };
   const outcome = await syncLead(lead.id, { store: h2.db.syncStore, client, log });
   expect(outcome === "not_found", `outcome ${outcome}`);
+});
+
+await test("deletion: website rows go first and case-insensitively; a match without a uuid deletes nothing", async () => {
+  const order = [];
+  const store = { async deleteByEmail(email) { order.push(`rows:${email}`); return 1; } };
+  const client = { async deleteContact() { order.push("reach"); return { ok: true, deleted: 1 }; } };
+  await deleteSubscriber({ email: " Mixed@Example.TEST ", store, client, afterRowsDeleted: async () => order.push("unlock") });
+  expect(order.join() === "rows:mixed@example.test,unlock,reach", `order ${order}`);
+  const calls = [];
+  const fakePrisma = { newsletterLead: { async deleteMany(args) { calls.push(args); return { count: 2 }; } } };
+  expect((await prismaDeletionStore(fakePrisma).deleteByEmail("mixed@example.test")) === 2, "count");
+  expect(calls[0].where.email.mode === "insensitive" && calls[0].where.email.equals === "mixed@example.test", `delete where ${JSON.stringify(calls[0])}`);
+  const noUuid = createHttpReachClient({ token: "t", profileUuid: "p" }, async (url, init) => {
+    if (init.method === "DELETE") throw new Error("must not delete");
+    return new Response(JSON.stringify(listPage([{ email: "gone@example.test", subscription_status: "unsubscribed" }])), { status: 200 });
+  });
+  const r = await noUuid.deleteContact("gone@example.test");
+  expect(!r.ok && r.error === "missing_uuid", JSON.stringify(r));
+});
+
+await test("scripts never read a void lock function through $queryRaw", async () => {
+  // pg_advisory_lock and the xact variants return void, which $queryRaw can't
+  // deserialize (P2010): use pg_try_advisory_lock / pg_advisory_unlock (boolean)
+  // or $executeRaw.
+  for (const file of ["reach-retry.mjs", "newsletter-delete.mjs"]) {
+    const text = readFileSync(new URL(`./${file}`, import.meta.url), "utf8");
+    const bad = text.match(/\$queryRaw`[^`]*pg_advisory_(xact_)?lock(_shared)?\(/);
+    expect(!bad, `${file}: ${bad?.[0]}`);
+  }
 });
 
 await test("HTTP deleteContact: finds the uuid on any page, DELETEs it; an incomplete lookup deletes nothing", async () => {

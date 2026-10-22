@@ -533,9 +533,12 @@ export async function deleteSubscriber(opts: {
   email: string;
   store: DeletionStore;
   client: ReachClient | null;
+  /** Runs once the website rows are gone, before Reach (the script releases the sign-up lock here). */
+  afterRowsDeleted?: () => Promise<void>;
 }): Promise<DeletionResult> {
   const email = opts.email.trim().toLowerCase();
   const websiteRowsDeleted = await opts.store.deleteByEmail(email);
+  await opts.afterRowsDeleted?.();
   if (!opts.client) return { websiteRowsDeleted, reach: "not_configured" };
   let reach: DeletionResult["reach"];
   try {

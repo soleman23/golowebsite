@@ -517,13 +517,16 @@ export const privacyDoc: LegalDoc = {
  * unchanged by #121.
  *
  * Every sentence states what the live checks showed (golowebsite#121,
- * 2026-10-21/22): Reach emails a contact added through its API a
+ * 2026-10-21/22): Reach emailed a contact added through its API a
  * confirmation email (not a newsletter, and with no unsubscribe link) and
- * holds it as pending until the link is clicked; a repeat sign-up sends
+ * held it as pending until the link was clicked (for an address without a
+ * "+"; whether "+" addresses get the email is with Hostinger support); a repeat sign-up sends
  * nothing more; an unsubscribed contact stays marked unsubscribed and the
  * website's sync never adds it back; deleting a contact in Reach removes it
  * and its unsubscribed mark. Not claimed, because not verified: that every
- * newsletter email carries an unsubscribe link (no newsletter has been sent),
+ * newsletter email carries an unsubscribe link (no newsletter has been sent;
+ * the proposed band line above depends on it), that a campaign skips pending
+ * contacts,
  * and anything about how long the email provider (Resend) keeps its own logs
  * of the team's sign-up notification.
  *
@@ -534,23 +537,23 @@ export const reachPrivacyDraft = {
   status: "FINAL DRAFT: not rendered, awaiting the owner's approval (#121)",
   /** "Information you provide" list: after "Website download-link requests". */
   informationYouProvide:
-    "<strong>Newsletter sign-ups:</strong> the email address you enter to join the GoLo newsletter on our website, with when and where you signed up. We pass the address to Hostinger Reach, which sends you one confirmation email. That email isn’t a newsletter: it only asks you to confirm, and you’re subscribed only once you click its link. If you don’t, you aren’t subscribed, and signing up again doesn’t send another one.",
+    "<strong>Newsletter sign-ups:</strong> the email address you enter to join the GoLo newsletter on our website, with when and where you signed up. We pass the address to Hostinger Reach, which emails it a link to confirm. That confirmation email isn’t a newsletter. Reach records the address as waiting for confirmation until the link is clicked, and signing up again doesn’t send another one.",
   /** "Service providers" list: before the "email, text-message, and push-delivery providers" item. */
   serviceProvider:
     "<strong>Hostinger (Hostinger Reach)</strong>, which sends the newsletter’s confirmation email and holds the newsletter list, including who has unsubscribed;",
   /** "Data Retention" list: after the "Newsletter sign-up records" item. */
   retention:
-    "<strong>Newsletter list (Hostinger Reach):</strong> your address stays on the list until it is deleted. If you unsubscribe, Hostinger Reach keeps your address marked as unsubscribed, and our website does not add it again. If you ask us to delete your newsletter information, we delete your sign-up record on our website, the sign-up notification email our team received about it, and your contact in Hostinger Reach. Deleting the Reach contact also deletes Reach’s record that you unsubscribed. Nothing queued on our side can add it back. If you later sign up again yourself, that is a new sign-up: you’ll get a new confirmation email and are subscribed only if you confirm.",
+    "<strong>Newsletter list (Hostinger Reach):</strong> your address stays on the list until it is deleted. If you unsubscribe, Hostinger Reach keeps your address marked as unsubscribed, and our website does not add it again. If you ask us to delete your newsletter information, we delete your sign-up record on our website, the copy of its sign-up notification in our team’s mailbox, and your contact in Hostinger Reach. Deleting the Reach contact also deletes Reach’s record that you unsubscribed. Nothing queued on our side can add it back. If you later sign up again yourself, that is a new sign-up: you’ll get a new confirmation email and are subscribed only if you confirm.",
   /**
-   * The newsletter band (components/sections/blog/NewsletterBand.tsx), with
-   * the sync on: the success message points to the confirmation email, and
-   * the fine print no longer says "Unsubscribe from any email" (the
-   * confirmation email has no unsubscribe link).
+   * The newsletter band (components/sections/blog/NewsletterBand.tsx). The
+   * success message is in the code, shown only while sync is on. The fine
+   * print is a proposal, applied with the change that turns sync on: the live
+   * "Unsubscribe from any email." isn't true of the confirmation email, which
+   * has no unsubscribe link.
    */
   newsletterBand: {
-    success:
-      "Almost there. Check your inbox: we’ll send you a link to confirm, and you’re on the list once you click it.",
-    fine: "No spam, no selling your address. Unsubscribe any time.",
+    success: "Almost there. If this address isn’t on the list yet, we’ll email it a link to confirm.",
+    proposedFine: "No spam, no selling your address. Every newsletter email has an unsubscribe link.",
   },
 } as const;
 
