@@ -40,7 +40,7 @@ if (!switchOn) {
 
 await import("./register-ts.mjs");
 const { getReachClient } = await import("../lib/reach.ts");
-const { retryReachSync, requeueFailed } = await import("../lib/reachSync.ts");
+const { retryReachSync, requeueFailed, reachOnlyFromEnv } = await import("../lib/reachSync.ts");
 
 const client = getReachClient(process.env);
 if (!client) {
@@ -79,7 +79,10 @@ try {
     if (result.exitCode !== 0) process.exitCode = result.exitCode;
   }
   if (!process.exitCode) {
+    const only = reachOnlyFromEnv(process.env);
+    if (only) console.log(`Controlled test (REACH_SYNC_ONLY): only ${only.size} listed address(es) can be sent.`);
     const summary = await retryReachSync({
+      only,
       store,
       client,
       // Spaces Reach's API out: at most one lead (a lookup and a create, usually) every 2 s.

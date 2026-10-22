@@ -113,7 +113,7 @@ export function NewsletterBand({ page = "blog" }: { page?: string }) {
                 ✓
               </span>
               {confirmByEmail
-                ? "Almost there. If this address isn\u2019t on the list yet, we\u2019ll email it a link to confirm."
+                ? "Almost there. If this address is new to us, we\u2019ll ask our email service to send it a link to confirm."
                 : "You\u2019re on the list. We\u2019ll email when the next one\u2019s up."}
             </p>
           ) : (

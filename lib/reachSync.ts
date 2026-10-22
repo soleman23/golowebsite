@@ -139,16 +139,19 @@ export function isReachSyncFlagOn(
  * is saved exactly as with the switch off (never queued). For the controlled
  * production test (docs/seo-progress.md), so turning sync on for one
  * designated address doesn't sync real visitors before the privacy wording
- * is live. Null when unset or empty.
+ * is live. Null only when the variable isn't set at all. Set but empty or
+ * unparseable (a bad paste) fails closed: an empty list, which matches no
+ * one.
  */
 export function reachOnlyFromEnv(
   env: Record<string, string | undefined>,
 ): ReadonlySet<string> | null {
-  const list = (env.REACH_SYNC_ONLY ?? "")
-    .split(",")
-    .map((address) => address.trim().toLowerCase())
-    .filter((address) => address !== "");
-  return list.length > 0 ? new Set(list) : null;
+  if (env.REACH_SYNC_ONLY === undefined) return null;
+  return new Set(
+    env.REACH_SYNC_ONLY.split(",")
+      .map((address) => address.trim().toLowerCase())
+      .filter((address) => address !== ""),
+  );
 }
 
 /** The fields the sync reads. */
@@ -346,6 +349,13 @@ export async function retryReachSync(
     /** Pause after each lead that called Reach (the script uses 2 s), to pace its API. */
     paceMs?: number;
     sleep?: (ms: number) => Promise<void>;
+    /**
+     * REACH_SYNC_ONLY (reachOnlyFromEnv): while set, rows for any other
+     * address are left untouched, whoever queued them (a backfill run from
+     * another machine, a row queued before the test), so a controlled test
+     * can't send a real visitor.
+     */
+    only?: ReadonlySet<string> | null;
   },
 ): Promise<RetrySummary> {
   const maxAttempts = deps.maxAttempts ?? MAX_ATTEMPTS;
@@ -373,6 +383,10 @@ export async function retryReachSync(
   const leads = await deps.store.listRetryable(maxAttempts, deps.scan ?? 500, now());
   let worked = 0;
   for (const lead of leads) {
+    if (deps.only && !deps.only.has(lead.email.trim().toLowerCase())) {
+      summary.not_queued += 1;
+      continue;
+    }
     if (worked >= limit || now().getTime() - startedAt >= budgetMs) {
       summary.stoppedEarly = true;
       break;

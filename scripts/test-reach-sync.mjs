@@ -212,7 +212,9 @@ await test("the response says a confirmation email is coming the same way for ne
 await test("REACH_SYNC_ONLY: only listed addresses are queued; others are saved as with sync off", async () => {
   const only = reachOnlyFromEnv({ REACH_SYNC_ONLY: " Tester@Example.test , " });
   expect(only.size === 1 && only.has("tester@example.test"), JSON.stringify([...only]));
-  expect(reachOnlyFromEnv({}) === null && reachOnlyFromEnv({ REACH_SYNC_ONLY: " , " }) === null, "empty list should be null");
+  expect(reachOnlyFromEnv({}) === null, "unset should mean no list");
+  // Set but empty or garbled fails closed: matches no one.
+  expect(reachOnlyFromEnv({ REACH_SYNC_ONLY: " , " }).size === 0 && reachOnlyFromEnv({ REACH_SYNC_ONLY: "" }).size === 0, "an empty list must match no one");
   const h = harness();
   const deps = { store: h.db.subscribeStore, notify: async () => {}, reach: { client: h.stub }, reachOnly: only, log };
   const visitor = await handleSubscribe({ email: "visitor@example.test", source: "blog" }, deps);
@@ -222,6 +224,12 @@ await test("REACH_SYNC_ONLY: only listed addresses are queued; others are saved 
   expect(h.db.byEmail("tester@example.test").reachSyncStatus === "pending", "the test address wasn't queued");
   await h.flush();
   expect(h.stub.creates() === 1 && h.stub.calls.every((c) => c.email === "tester@example.test"), "Reach saw a visitor");
+  // A visitor row queued some other way (a backfill run elsewhere) is never sent while the list is set.
+  h.db.insert({ email: "queued-elsewhere@example.test", reachSyncStatus: "pending" });
+  const run = await retryReachSync({ store: h.db.syncStore, client: h.stub, now: () => at(HOUR), only, log });
+  expect(run.not_queued === 1 && h.stub.calls.every((c) => c.email === "tester@example.test"), `retry with list ${JSON.stringify(run)}`);
+  const none = await retryReachSync({ store: h.db.syncStore, client: h.stub, now: () => at(2 * HOUR), only: new Set(), log });
+  expect(none.created === 0 && h.stub.calls.every((c) => c.email === "tester@example.test"), "an empty list sent someone");
   // Backfill can't be applied while a controlled test runs.
   const out = [];
   const refused = await runBackfill({ store: h.db.backfillStore, args: ["--apply", "--confirm"], env: { REACH_SYNC_ENABLED: "true", REACH_SYNC_ONLY: "tester@example.test" }, print: (l) => out.push(l) });

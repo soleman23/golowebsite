@@ -525,7 +525,7 @@ export const privacyDoc: LegalDoc = {
  * website's sync never adds it back; deleting a contact in Reach removes it
  * and its unsubscribed mark. Not claimed, because not verified: that every
  * newsletter email carries an unsubscribe link (no newsletter has been sent;
- * the proposed band line above depends on it), that a campaign skips pending
+ * the proposed band line below depends on it), that a campaign skips pending
  * contacts,
  * and anything about how long the email provider (Resend) keeps its own logs
  * of the team's sign-up notification.
@@ -537,13 +537,13 @@ export const reachPrivacyDraft = {
   status: "FINAL DRAFT: not rendered, awaiting the owner's approval (#121)",
   /** "Information you provide" list: after "Website download-link requests". */
   informationYouProvide:
-    "<strong>Newsletter sign-ups:</strong> the email address you enter to join the GoLo newsletter on our website, with when and where you signed up. We pass the address to Hostinger Reach, which emails it a link to confirm. That confirmation email isn’t a newsletter. Reach records the address as waiting for confirmation until the link is clicked, and signing up again doesn’t send another one.",
+    "<strong>Newsletter sign-ups:</strong> the email address you enter to join the GoLo newsletter on our website, with when and where you signed up. We pass the address to Hostinger Reach and ask it to email the address a link to confirm. That confirmation email isn’t a newsletter. Reach records the address as waiting for confirmation until the link is clicked, and signing up again doesn’t send another one.",
   /** "Service providers" list: before the "email, text-message, and push-delivery providers" item. */
   serviceProvider:
     "<strong>Hostinger (Hostinger Reach)</strong>, which sends the newsletter’s confirmation email and holds the newsletter list, including who has unsubscribed;",
   /** "Data Retention" list: after the "Newsletter sign-up records" item. */
   retention:
-    "<strong>Newsletter list (Hostinger Reach):</strong> your address stays on the list until it is deleted. If you unsubscribe, Hostinger Reach keeps your address marked as unsubscribed, and our website does not add it again. If you ask us to delete your newsletter information, we delete your sign-up record on our website, the copy of its sign-up notification in our team’s mailbox, and your contact in Hostinger Reach. Deleting the Reach contact also deletes Reach’s record that you unsubscribed. Nothing queued on our side can add it back. If you later sign up again yourself, that is a new sign-up, and Reach again records it as waiting for your confirmation.",
+    "<strong>Newsletter list (Hostinger Reach):</strong> your address stays in Hostinger Reach (waiting for confirmation, subscribed or unsubscribed) until it is deleted. If you unsubscribe, Hostinger Reach keeps your address marked as unsubscribed, and our website does not add it again. If you ask us to delete your newsletter information, we delete your sign-up record on our website, the copy of its sign-up notification in our team’s mailbox, and your contact in Hostinger Reach. Deleting the Reach contact also deletes Reach’s record that you unsubscribed. Nothing queued on our side can add it back. If you later sign up again yourself, that is a new sign-up, and Reach again records it as waiting for your confirmation.",
   /**
    * The newsletter band (components/sections/blog/NewsletterBand.tsx). The
    * success message is in the code, shown only while sync is on. The fine
@@ -552,7 +552,7 @@ export const reachPrivacyDraft = {
    * has no unsubscribe link.
    */
   newsletterBand: {
-    success: "Almost there. If this address isn’t on the list yet, we’ll email it a link to confirm.",
+    success: "Almost there. If this address is new to us, we’ll ask our email service to send it a link to confirm.",
     proposedFine: "No spam, no selling your address. Every newsletter email has an unsubscribe link.",
   },
 } as const;

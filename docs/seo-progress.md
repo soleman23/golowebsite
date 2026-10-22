@@ -151,7 +151,7 @@ Owner decisions on soleman23/golo#791: double opt-in, no welcome automation, Rea
 - **Backfill.** `npm run reach:backfill` is a dry run: it counts never-queued rows that meet the consent rule and prints counts only (it doesn't read addresses). Consent rule: source `blog`/`post`, created on or after **2026-08-15 22:17:54 UTC**, the committer date of 3004c51, which added the band, `/api/subscribe` and `NewsletterLead` together. The band's consent copy is unchanged in every later revision (703a236, d036669). `--apply` refuses unless `REACH_SYNC_ENABLED=true` and `--confirm` are both given, and only queues rows for the retry job. On a database without the columns it says so and changes nothing. Not run under #121: only after the owner reviews the dry-run counts.
 - **No welcome automation** anywhere in the code. Reach's own confirmation email is the only automatic message, provided double opt-in is on in the Reach profile.
 - **Deletion requests (owner decision A).** `npm run newsletter:delete -- --confirm` (`scripts/newsletter-delete.mjs`) reads the address from standard input (never the command line) and takes the retry job's lock on `DIRECT_URL`, waiting up to five minutes. It deletes the website's `NewsletterLead` row(s) for the address first (case-insensitive), so no queued retry or backfill can ever send it again, and `syncLead` re-checks the row exists right before any create. Then it deletes the Reach contact if `REACH_API_TOKEN` and `REACH_PROFILE_UUID` are set; if not, it says to delete the contact in Reach by hand (Audience → Contacts → the contact → Actions → Delete). Deleting the Reach contact also deletes Reach's record that the address unsubscribed (verified October 21), so a later sign-up is a new one and has to confirm through double opt-in again. It also holds the sign-up lock (`DELETION_LOCK`) exclusively, and every sign-up insert holds it shared for its own transaction, so a sign-up in flight either lands first and is deleted, or waits and is then a new, explicit sign-up. Output is counts only. **The same request also covers the team's sign-up notification email:** after the script, delete the "[GoLo] Newsletter signup" message for that address from the team mailbox (info@golo.golf). The email provider's (Resend's) own log retention isn't promised in the wording. Both locks are taken by polling on one pinned connection (`connection_limit=1`), and the sign-up lock is released as soon as the website rows are deleted, before the Reach calls. Checked on PostgreSQL 16 at this head: refused without `--confirm`; deleted both case variants of the address and nothing else; waited for a held retry lock (about 5 s); gave up after 30 s, changing nothing, while a stuck sign-up held its lock; a sign-up started during a deletion succeeded (about 2 s); an overlapping retry run was refused.
-- **Privacy wording and band copy:** final drafts in `reachPrivacyDraft` (`lib/content/legal.ts`), not rendered, with no markers. The band (`NewsletterBand.tsx`) now shows "Almost there. Check your inbox…" when the server answers `confirmByEmail: true`. That depends only on the switch and the source, never on whether the address was already on the list. Its fine print ("Unsubscribe from any email.") is unchanged here. The confirmation email has no unsubscribe link, so a corrected line is proposed in `reachPrivacyDraft.newsletterBand.proposedFine`, to be applied with the change that turns sync on.
+- **Privacy wording and band copy:** final drafts in `reachPrivacyDraft` (`lib/content/legal.ts`), not rendered, with no markers. The band (`NewsletterBand.tsx`) now shows "Almost there. If this address is new to us…" when the server answers `confirmByEmail: true`. That depends only on the switch and the source, never on whether the address was already on the list. Its fine print ("Unsubscribe from any email.") is unchanged here. The confirmation email has no unsubscribe link, so a corrected line is proposed in `reachPrivacyDraft.newsletterBand.proposedFine`, to be applied with the change that turns sync on.
 - **Verified with Reach (golowebsite#121, October 21–22):**
   - An API-created contact gets the double-opt-in confirmation email within seconds ("Confirm you want to hear from us", from noreply@golo.golf; its only link is the confirm button, and it has no unsubscribe link).
   - The contact is `pending` until the link is clicked, then `confirmed`.
@@ -178,33 +178,47 @@ CREATE INDEX "NewsletterLead_reachSyncStatus_idx" ON "NewsletterLead"("reachSync
 *Stage 1: code and schema with sync OFF.*
 1. Apply the SQL above to the golowebsite production database, then confirm the three columns and the index in `information_schema`.
 2. Merge #124. Hostinger builds `main`; the environment is unchanged (`REACH_SYNC_ENABLED` unset).
-3. Verify:
+3. Verify without a sign-up:
    - the deployed `scripts/reach-retry.mjs` matches `main`;
    - the next cron run prints "Nothing done";
-   - /blog loads and its band shows the old success message;
-   - /privacy is unchanged.
+   - /blog and /privacy render unchanged.
+   A sign-up check needs its own approval, using a throwaway address that isn't the stage 2 address. Its row and team email are deleted afterwards.
 4. Rollback: revert the PR (Hostinger rebuilds). The new columns are nullable or defaulted, so they can stay.
 
 *Stage 2: controlled production test with one owner-designated address.*
+- **The address:** no `+` (no confirmation reached any `+` test address), and **no existing `NewsletterLead` row** (check with a read-only `SELECT`). If a row exists, delete it first through `newsletter:delete`.
 - **Preconditions:**
   - the Reach token is installed and its scope verified (golo#791);
   - `REACH_PROFILE_UUID` is set and `DIRECT_URL` is already set;
-  - `REACH_SYNC_ONLY=<designated address>` is set first, then `REACH_SYNC_ENABLED=true`, and the site is redeployed so the server reads them.
-  - While `REACH_SYNC_ONLY` is set, every other sign-up is saved exactly as with sync off (never queued), and backfill `--apply` refuses.
+  - set `REACH_SYNC_ONLY=<address>` first, then `REACH_SYNC_ENABLED=true`, then redeploy so the server reads them.
+  - The cron reads `hbuilds/config/.env` directly, so it may see each change as soon as it's saved.
+- **While `REACH_SYNC_ONLY` is set** (an empty value matches no one):
+  - every other sign-up is saved exactly as with sync off;
+  - the retry job sends no row for any other address, whoever queued it;
+  - backfill `--apply` refuses when run with the site environment.
 - **Steps and expected results:**
   1. **Sign up** with the designated address on www.golo.golf/blog. Expect `200` and "Almost there…". The row is `pending`, and one internal notification arrives.
-  2. **Next cron run** (≤ 15 min). Output: `Reach retry: {… "created":1, "failed":0 …}`. Reach shows the contact `pending`, and one confirmation email arrives.
+  2. **Next cron run** (≤ 15 min). It prints the controlled-test line and `Reach retry: {… "created":1, "failed":0 …}`. Reach shows the contact `pending`, and one confirmation email arrives.
   3. **Click the link.** Reach shows `confirmed`; the row is `synced`.
   4. **Sign up again.** Expect `200`, no new email, Reach unchanged, and the next run lists nothing new.
-  5. **Unsubscribe** (Reach → Actions → Unsubscribe). Reach shows `unsubscribed`. A requeue or retry run doesn't re-add it, and no email is sent.
-  6. **Delete:** `printf '%s\n' "<address>" | npm run newsletter:delete -- --confirm`, with the production `DIRECT_URL` and the token. Expect `Website sign-up rows deleted: 1`, `Reach contacts deleted: 1`, and Reach shows 0. Then delete the team's notification email.
-- **Rollback and cleanup** at any failure: unset `REACH_SYNC_ENABLED` (and `REACH_SYNC_ONLY`) and redeploy, then delete the test row and contact. If the token may have leaked, revoke it.
+  5. **Suppression.**
+     - Unsubscribe (Reach → Actions → Unsubscribe). Reach shows `unsubscribed`.
+     - Then delete only the website row (read-only check first, then a scoped `DELETE` by id, with approval), and sign up again.
+     - The next run must report `suppressed: 1`, `created: 0`, and no email arrives.
+  6. **Delete:** `printf '%s\n' "<address>" | npm run newsletter:delete -- --confirm`, with the production `DIRECT_URL` and the token. Expect `Website sign-up rows deleted: 1` (a 0 means the wrong database: stop), then `Reach contacts deleted: 1`, and Reach shows 0. Then delete the team's notification email.
+- **Rollback and cleanup** at any failure:
+  1. Unset `REACH_SYNC_ENABLED` and redeploy.
+  2. Only then remove `REACH_SYNC_ONLY`.
+  3. Delete the test row and contact.
+  4. If the token may have leaked, revoke it.
 
-*Stage 3: public activation (separate approval).*
-- Ship the approved privacy wording and the band's fine print, in their own PR, with the date set to that day.
-- Remove `REACH_SYNC_ONLY`.
-- The owner reviews the backfill dry-run counts before any `--apply`.
-- The welcome automation (golo#874) stays inactive; enabling it is its own decision.
+*Stage 3: public activation (separate approval). In order:*
+1. Before the band's new fine print can ship, send one test campaign to the designated address (needs approval). Check its unsubscribe link and `List-Unsubscribe` header.
+2. Ship the approved privacy wording and the band's fine print in their own PR, with the date set to that day. Merge it and check /privacy and /blog live.
+3. Then remove `REACH_SYNC_ONLY` and redeploy. Sign-ups are now queued for everyone.
+4. The owner reviews the backfill dry-run counts before any `--apply`.
+5. Rollback: unset `REACH_SYNC_ENABLED` and redeploy (or restore `REACH_SYNC_ONLY`). The wording PR can stay or be reverted.
+6. The welcome automation (golo#874) stays inactive; enabling it is its own decision.
 
 **Before enabling** (each verified, then the owner's approval):
 
