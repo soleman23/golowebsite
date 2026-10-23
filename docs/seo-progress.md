@@ -227,7 +227,12 @@ CREATE INDEX "NewsletterLead_reachSyncStatus_idx" ON "NewsletterLead"("reachSync
 2. ~~**Scheduled retries**~~: done. The hPanel Node.js cron runs `scripts/reach-retry.mjs` every 15 minutes (#125); its first scheduled run, 2026-10-21 22:00:08 UTC, printed "Reach sync is off … Nothing done."
 3. ~~**Abuse guard on `/api/subscribe`**~~: done. #126 added the Origin check, per-client and global limits, honeypot and 4 KB cap; #128 made the key the proxy-appended `X-Forwarded-For` entry. Live-checked October 21: spoofed headers no longer dodge the client limit, and two networks get separate limits. With sync on, the global ceiling only charges sign-ups that save a new address, and the daily limit above caps what reaches Reach.
 4. ~~**Double opt-in**~~: done. It was off; turned on October 21 and verified after a reload (subject "Confirm you want to hear from us", sender noreply@golo.golf). The profile has no automations.
-5. **Token:** a Reach API token with the narrowest scope offered, in the server environment only (`REACH_API_TOKEN`, `REACH_PROFILE_UUID`; never `NEXT_PUBLIC_`, the repo or chat). `REACH_SYNC_ENABLED` stays unset in production until the approval.
+5. **Token:** in the server environment only (`REACH_API_TOKEN`, `REACH_PROFILE_UUID`; never `NEXT_PUBLIC_`, the repo or chat). `REACH_SYNC_ENABLED` stays unset in production until the approval.
+   - **Decided 2026-10-23 (owner, golo#791 brief 6368681393):** the token comes from a **dedicated Hostinger account that holds only Reach**, never from the owner account.
+     - Hostinger tokens have no scopes ("same permissions as the owning user"), and a Collaborator token was refused for the shared profile.
+     - The dedicated account keeps no saved payment method.
+     - The token expires in 3 months, never "Never expires", with a rotation reminder.
+   - Before rollout, `scripts/ops/reach-credential-check.mjs` must show that token reading the new golo.golf profile and refused for the owner account's services.
 6. **Live check** with designated test addresses (golowebsite#121, parts 1–2, October 21). It ran through the owner's Hostinger Connector, with no token; Reach's real responses were replayed through this code.
    - Verified: the contact is pending; no welcome email and no automations; search is a substring match; pagination and the 422 limit; unsubscribed contacts stay out (Reach itself and this code); deletion leaves no trace.
    - **Resolved 2026-10-22 (golo#791):**
