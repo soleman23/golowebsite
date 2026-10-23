@@ -76,6 +76,30 @@ reports is stated separately.
   - **Elsewhere:** one internal sign-up notification email was sent, and one
     test `NewsletterLead` row was created at 18:57:40 UTC. The owner deletes
     the row; this note doesn't claim it's gone.
+- **October 22, 21:26–21:28 UTC (2:26–2:28 PM PDT): the golowebsite#119
+  fallback test, owner-approved.** These were controlled visits tagged
+  `utm_medium=qa`, `utm_campaign=golowebsite-119`, each choosing "Allow
+  analytics":
+  - **21:26 UTC (Playwright's headless user agent):** `qa119-ga-only`
+    (/about), `qa119-google-only` (/contact) and `qa119-both` (/faq). GA4
+    Realtime showed none of them, most likely because of known-bot filtering.
+  - **21:27:57–21:28:27 UTC (normal Chrome user agent):** `qa119-ga-only-2`
+    (/about), `qa119-google-only-2` (/contact) and `qa119-both-2` (/faq). GA4
+    Realtime showed 3 users, one view each of About, Contact and FAQ, and
+    `web_vitals` ×12.
+  - **Reporting rule (raw data kept, no GA4 filter or deletion):** leave out
+    sessions whose session source starts with `qa119`, or whose session
+    medium is `qa`.
+  - **Observed so far:**
+    - At 2026-10-23 01:0x UTC, Traffic acquisition for Oct 22 ("mostly
+      complete data") listed `qa119-google-only-2` with 1 session and 8 events.
+    - The other two hadn't appeared yet.
+    - GA4 showed an Oct 22 total of 3 sessions, with rows `(direct)` 2,
+      `(not set)` 1 and `qa119-google-only-2` 1. The rows overlap, as GA4's own
+      percentages show, so they don't add up to the total.
+  - **Not yet reconciled:** final totals with and without the rule, once all
+    three are processed. The scheduled task `golo-ga4-qa119-verify` (2026-10-24
+    09:00 PDT) checks that and updates this entry.
 
 **Clarity**
 - Sessions whose entry URL is on `localhost`, about 02:20–05:30 UTC on
