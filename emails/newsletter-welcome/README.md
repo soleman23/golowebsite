@@ -6,7 +6,7 @@ from `public/email/` at `https://www.golo.golf/email/<filename>`.
 
 | File | What it is |
 |---|---|
-| `golo-newsletter-welcome.html` | The supplied design, byte-identical to the owner's handoff (2026-10-21). The reference; Reach can't send it as is (below). |
+| `golo-newsletter-welcome.html` | The reference design (with Outlook VML/MSO blocks), updated with the approved side-game vocabulary, logo lockup and postal address (soleman23/golo#874). Reach can't send it as is (below). |
 | `golo-newsletter-welcome.reach.html` | The **Reach edition**: same copy and links, rebuilt to survive Reach's HTML "fixing". The file to import into Reach. |
 | `golo-newsletter-welcome.txt` | The plain-text version. Reach sends HTML only, so this is a reference. Its first two lines (Subject, Preheader) are setup notes, not body text. |
 
@@ -44,7 +44,7 @@ tables only:
   Each crop's height matches its copy in Gmail on an iPhone, where the email
   is about 342px wide. Wider screens give the copy more room, so the photo is
   taller there. If the copy changes, re-measure and re-crop.
-- Track / Bet / Settle is a stacked list; the games grid stays 3 across;
+- Track / Score / Settle is a stacked list; the games grid stays 3 across;
 - the preheader is set in Reach's pre-header field, and unsubscribe is Reach's
   native `{{unsubscribe-link}}` merge tag.
 
@@ -52,13 +52,12 @@ Outlook for Windows loses its VML hero and button either way; the Reach
 edition hasn't been checked there.
 
 `public/email/golo-nl-logo-lockup-440.png` is the approved lockup ("Track it.
-Score it. Settle it.") at the supplied logo's size, ready to replace
-`golo-logo-440.png`, whose tagline still says "Bet it". Nothing references it
-until the owner chooses it.
+Score it. Settle it.") used in the header (`golo-logo-440.png` is kept in
+`public/email/` so earlier test emails still load it).
 
 ## Status
 
-Not live. The welcome email is a proposal: the active production behaviour is
-still "no welcome automation" (soleman23/golo#791) until the owner approves
-and enables it. Copy flagged for review before enabling is tracked on the
-linked golo issue.
+Not live. Prepared and left disabled in Reach (`soleman23/golo#874`): the active
+production behaviour is still "no welcome automation" (`soleman23/golo#791`)
+until the Reach sync (`golowebsite#124`) is live and the owner enables the
+automation.
