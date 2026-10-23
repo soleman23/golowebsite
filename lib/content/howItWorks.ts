@@ -297,7 +297,11 @@ export const doesntDo = {
 
 /**
  * Shown only while siteConfig.showHowItWorksVideo is on. The files live in
- * public/videos/; the recording is the same round as the timeline.
+ * public/videos/; the recording is the same round as the timeline, re-shot
+ * from the current app (89.5 s, silent). Its source is in the golo repo at
+ * marketing/how-to-videos/episodes/hiw-walkthrough/: capture.mjs plays this
+ * round through the real UI, episode.json is the edit, and web.mjs writes the
+ * mp4, the VTT (one cue per chapter, the on-screen text) and the poster.
  */
 export const hiwVideo = {
   kicker: "WATCH IT",
