@@ -36,7 +36,10 @@ const STUBS = {
   "@/lib/db": stub(`
     const world = globalThis.__subscribeRouteTest;
     export const prisma = {
+      async $executeRaw() { return 1; },
+      async $transaction(fn) { return fn(prisma); },
       newsletterLead: {
+        async updateMany() { return { count: 0 }; },
         async create({ data }) {
           if (world.failSaves > 0) {
             world.failSaves -= 1;
@@ -62,6 +65,8 @@ const STUBS = {
     }
   `),
   "@/lib/env": stub(`export function assertDatabaseConfigured() {}`),
+  // A Next.js build-time guard, not an installed package (lib/reach.ts).
+  "server-only": stub(`export {};`),
 };
 
 /**
@@ -176,7 +181,8 @@ const cases = [
     async () => {
       const { res, text, saved, notified } = await effects(() => post());
       assert.equal(res.status, 200);
-      assert.equal(text, '{"ok":true}');
+      // Sync is off in this run, so no confirmation email is pending.
+      assert.equal(text, '{"ok":true,"confirmByEmail":false}');
       assert.equal(saved, 1);
       assert.equal(notified, 1);
       const create = world.creates.at(-1);
