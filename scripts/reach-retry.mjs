@@ -4,6 +4,9 @@
  * (soleman23/golowebsite#121): pending and failed NewsletterLead rows, with
  * backoff, up to lib/reachSync.ts MAX_ATTEMPTS each. Suppression first: an
  * address Reach already has, unsubscribed included, is never added again.
+ * Every run starts with the reactivation guard: a contact an old double
+ * opt-in link re-subscribed after it unsubscribed is set back to
+ * unsubscribed (lib/reachSync.ts revertReactivated, golo#791).
  *
  *   npm run reach:retry
  *   npm run reach:retry -- --requeue-failed --confirm
@@ -40,7 +43,7 @@ if (!switchOn) {
 
 await import("./register-ts.mjs");
 const { getReachClient } = await import("../lib/reach.ts");
-const { retryReachSync, requeueFailed, reachOnlyFromEnv } = await import("../lib/reachSync.ts");
+const { retryReachSync, retryRunFailed, requeueFailed, reachOnlyFromEnv } = await import("../lib/reachSync.ts");
 
 const client = getReachClient(process.env);
 if (!client) {
@@ -90,9 +93,8 @@ try {
       log: (message, fields) => console.error(message, JSON.stringify(fields ?? {})),
     });
     console.log(`${new Date().toISOString()} Reach retry:`, JSON.stringify(summary));
-    // Only this run's failures fail the cron. Exhausted rows are reported in
-    // the summary and the log, not on every run until someone requeues.
-    process.exitCode = summary.failed > 0 ? 1 : 0;
+    // Only this run's failures fail the cron (lib/reachSync.ts retryRunFailed).
+    process.exitCode = retryRunFailed(summary) ? 1 : 0;
   }
 } catch (err) {
   // The code and the first line only: a Prisma error can echo the query.

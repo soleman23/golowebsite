@@ -203,6 +203,7 @@ CREATE INDEX "NewsletterLead_reachSyncStatus_idx" ON "NewsletterLead"("reachSync
   4. **Sign up again.** Expect `200`, no new email, Reach unchanged, and the next run lists nothing new.
   5. **Suppression.**
      - Unsubscribe (Reach → Actions → Unsubscribe). Reach shows `unsubscribed`.
+     - **Reactivation guard:** follow step 2's confirmation link again. Reach shows `confirmed` again, with `unsubscribed_at` still set. The next run must report `"reactivated":1, "reverted":1`, Reach shows `unsubscribed`, and no email arrives. The run after that reports `"reactivated":0`.
      - Then delete only the website row (read-only check first, then a scoped `DELETE` by id, with approval), and sign up again.
      - The next run must report `suppressed: 1`, `created: 0`, and no email arrives.
   6. **Delete:** `printf '%s\n' "<address>" | npm run newsletter:delete -- --confirm`, with the production `DIRECT_URL` and the token. Expect `Website sign-up rows deleted: 1` (a 0 means the wrong database: stop), then `Reach contacts deleted: 1`, and Reach shows 0. Then delete the team's notification email.
@@ -215,7 +216,7 @@ CREATE INDEX "NewsletterLead_reachSyncStatus_idx" ON "NewsletterLead"("reachSync
 *Stage 3: public activation (separate approval). In order:*
 1. Before the band's new fine print can ship, send one test campaign to the designated address (needs approval). Check its unsubscribe link and `List-Unsubscribe` header.
 2. Ship the approved privacy wording and the band's fine print in their own PR, with the date set to that day. Merge it and check /privacy and /blog live.
-3. Then remove `REACH_SYNC_ONLY` and redeploy. Sign-ups are now queued for everyone.
+3. Then remove `REACH_SYNC_ONLY` and redeploy. Sign-ups are now queued for everyone, and the reactivation guard now covers every contact in the golo.golf profile. Its first run reverts any contact already re-subscribed by an old link, including the owner's QA contacts (e.g. `devin@golo.golf`, left `confirmed` with `unsubscribed_at` set on 2026-10-23).
 4. The owner reviews the backfill dry-run counts before any `--apply`.
 5. Rollback: unset `REACH_SYNC_ENABLED` and redeploy (or restore `REACH_SYNC_ONLY`). The wording PR can stay or be reverted.
 6. The welcome automation (golo#874) stays inactive; enabling it is its own decision.
@@ -232,7 +233,16 @@ CREATE INDEX "NewsletterLead_reachSyncStatus_idx" ON "NewsletterLead"("reachSync
    - **Resolved 2026-10-22 (golo#791):**
      - API-created contacts do get the confirmation email: `devin@golo.golf` within 3 s, and a `+` alias within seconds.
      - A one-recipient QA campaign's unsubscribe link worked. A later API create for that address left it `unsubscribed` and sent nothing. This code's suppression path was replayed against Reach's live response: `suppressed`, 0 creates.
-   - **Found:** Reach still honours a confirmation link sent *before* an unsubscribe. Clicking it re-subscribes the contact (23:23:35, golo#791). That's the person's own click, not this code, and Hostinger has been asked whether it's intended. This code never re-adds an unsubscribed address.
+   - **Found:** Reach still honours a confirmation link sent *before* an unsubscribe. Clicking it re-subscribes the contact (23:23:35, golo#791). Hostinger has no expiry, invalidation or "final unsubscribe" setting (chat, 2026-10-23).
+   - **Reactivation guard (owner-approved Option 1, live-tested 2026-10-23, golo#791):** every retry run sets back to `unsubscribed` any contact Reach shows `confirmed` or `subscribed` with an `unsubscribed_at` (`revertReactivated`, lib/reachSync.ts).
+     - Live: the PATCH sent no email in 5 minutes, and Reach refused to send a campaign to that contact's segment (0 recipients).
+     - An old link still re-subscribes the contact after a PATCH, and a 16-hour-old link worked. So the guard runs every time, not once.
+     - Tradeoffs:
+       - The exposure window is one cron interval (15 min).
+       - A deliberate re-subscribe through an old link is reverted too. So is a contact restored any other way in Reach (a manual edit, a Reach form, an import) if it keeps its `unsubscribed_at`. To restore someone, delete the contact with `newsletter:delete`, which clears the mark, and have them sign up again (fresh double opt-in). There is no exemption list; adding one is the owner's call.
+       - Hostinger would not confirm that a PATCH equals a contact's own unsubscribe. The live results are our observation.
+       - Automations weren't tested (there are none).
+     - It respects `REACH_SYNC_ONLY`. A list failure or a failed revert fails the cron, and the next run retries.
 7. **Privacy wording:** the final words, from verified behaviour only, approved and shipped together with the change that turns sync on, with "Last updated" revised.
 8. **Backfill:** only after the owner reviews the dry-run counts.
 

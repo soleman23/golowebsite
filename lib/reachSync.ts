@@ -23,6 +23,16 @@
  * - We never copy Reach's subscriber state. reachSyncStatus says only what
  *   this site has done: pending | synced | failed | skipped_ineligible, or
  *   null for a row that was never queued.
+ * - Reactivation guard (owner-approved 2026-10-23, golo#791 Option 1): Reach
+ *   honours an old double opt-in link after an unsubscribe, and the links
+ *   never expire. So every retry run first sets back to unsubscribed any
+ *   contact Reach shows as confirmed or subscribed that has an
+ *   unsubscribed_at. An API create can't re-subscribe an unsubscribed
+ *   address, so through this site such a contact can only have come back
+ *   through an old link. The guard covers the whole profile, so a contact
+ *   restored by any other Reach path while keeping its unsubscribed_at is
+ *   reverted too. To restore someone, delete the contact (that clears
+ *   unsubscribed_at) and have them sign up again.
  *
  * Plain TypeScript with erasable types only, so Node runs it as-is in the
  * scripts. Logs never carry an email address or the token: lead ids and short
@@ -44,6 +54,19 @@ export type CreateContactResult = { ok: true } | { ok: false; error: string };
 
 export type DeleteContactResult = { ok: true; deleted: number } | { ok: false; error: string };
 
+/** A contact as the reactivation guard reads it. The email is for REACH_SYNC_ONLY only, never logged. */
+export type ActiveContact = {
+  uuid: string;
+  email: string;
+  status: string;
+  /** Reach's unsubscribed_at as it came back: null when the contact never unsubscribed. */
+  unsubscribedAt: unknown;
+};
+
+export type ListActiveResult = { ok: true; contacts: ActiveContact[] } | { ok: false; error: string };
+
+export type UnsubscribeResult = { ok: true } | { ok: false; error: string };
+
 /**
  * What the sync needs from Reach. `error` is a short code ("http_500",
  * "timeout", "bad_response"), never a response body, which could echo the
@@ -54,6 +77,10 @@ export interface ReachClient {
   createContact(email: string): Promise<CreateContactResult>;
   /** Every contact with exactly this address; nothing if the lookup is incomplete. */
   deleteContact(email: string): Promise<DeleteContactResult>;
+  /** Every contact Reach shows as confirmed or subscribed, for the reactivation guard. */
+  listActiveContacts(): Promise<ListActiveResult>;
+  /** Sets one contact's status to unsubscribed. */
+  unsubscribeContact(uuid: string): Promise<UnsubscribeResult>;
 }
 
 export const REACH_SYNC_STATUSES = [
@@ -115,6 +142,98 @@ export const REQUEUE_QUIET_MS = 30 * 60 * 1000;
 export function backoffMs(attempts: number): number {
   if (attempts <= 0) return 0;
   return Math.min(BACKOFF_BASE_MS * 2 ** (attempts - 1), BACKOFF_CAP_MS);
+}
+
+/**
+ * The reactivation rule: Reach shows the contact confirmed or subscribed, yet
+ * it has an unsubscribed_at. Any non-empty value counts as set.
+ */
+export function isReactivated(contact: Pick<ActiveContact, "status" | "unsubscribedAt">): boolean {
+  const status = contact.status.trim().toLowerCase();
+  const at = contact.unsubscribedAt;
+  return (
+    (status === "confirmed" || status === "subscribed") &&
+    at !== null &&
+    at !== undefined &&
+    !(typeof at === "string" && at.trim() === "")
+  );
+}
+
+/** Reactivated contacts set back to unsubscribed per run; the rest wait for the next run. */
+export const MAX_REVERTS_PER_RUN = 50;
+
+export type GuardSummary = {
+  /** Reactivated contacts found (after REACH_SYNC_ONLY). */
+  reactivated: number;
+  reverted: number;
+  revertFailed: number;
+  /** The list failed, so nothing was reverted this run; null when it was read. */
+  guardError: string | null;
+};
+
+/**
+ * The reactivation guard: lists every confirmed or subscribed contact, then
+ * sets each reactivated one back to unsubscribed, at most `maxReverts` a run.
+ * It reverts only after the whole list is read, so a status change can't
+ * shift a later contact past the walk. With `only` (REACH_SYNC_ONLY) set it
+ * touches listed addresses alone, like the rest of a controlled test. Never
+ * throws for a Reach failure. Logs contact uuids and error codes, never an
+ * address.
+ */
+export async function revertReactivated(deps: {
+  client: ReachClient;
+  log?: SyncLog;
+  only?: ReadonlySet<string> | null;
+  maxReverts?: number;
+  paceMs?: number;
+  sleep?: (ms: number) => Promise<void>;
+}): Promise<GuardSummary> {
+  const log = deps.log ?? silent;
+  const summary: GuardSummary = { reactivated: 0, reverted: 0, revertFailed: 0, guardError: null };
+  let listed: ListActiveResult;
+  try {
+    listed = await deps.client.listActiveContacts();
+  } catch {
+    listed = { ok: false, error: "list_threw" };
+  }
+  if (!listed.ok) {
+    summary.guardError = listed.error;
+    log("[reach] reactivation guard couldn't read the contact list; nothing reverted this run", { error: listed.error });
+    return summary;
+  }
+  const seen = new Set<string>();
+  const targets = listed.contacts.filter((contact) => {
+    if (!isReactivated(contact) || seen.has(contact.uuid)) return false;
+    seen.add(contact.uuid);
+    return !deps.only || deps.only.has(contact.email.trim().toLowerCase());
+  });
+  summary.reactivated = targets.length;
+  const maxReverts = deps.maxReverts ?? MAX_REVERTS_PER_RUN;
+  for (const contact of targets.slice(0, maxReverts)) {
+    let result: UnsubscribeResult;
+    try {
+      result = await deps.client.unsubscribeContact(contact.uuid);
+    } catch {
+      result = { ok: false, error: "unsubscribe_threw" };
+    }
+    if (result.ok) {
+      summary.reverted += 1;
+      log("[reach] reactivated contact set back to unsubscribed", { contactUuid: contact.uuid });
+    } else {
+      summary.revertFailed += 1;
+      log("[reach] couldn't set a reactivated contact back to unsubscribed; next run retries", {
+        contactUuid: contact.uuid,
+        error: result.error,
+      });
+    }
+    if (deps.paceMs) await (deps.sleep ?? ((ms) => new Promise((r) => setTimeout(r, ms))))(deps.paceMs);
+  }
+  if (targets.length > maxReverts) {
+    log("[reach] more reactivated contacts than one run reverts; the rest wait for the next run", {
+      waiting: targets.length - maxReverts,
+    });
+  }
+  return summary;
 }
 
 /** True only for the newsletter band's placements. */
@@ -322,18 +441,31 @@ export async function syncLead(id: string, deps: SyncDeps): Promise<SyncOutcome>
   return "created";
 }
 
-export type RetrySummary = Record<SyncOutcome, number> & {
-  checked: number;
-  exhausted: number;
-  /** True if the run stopped early (per-run cap, time budget or daily limit). */
-  stoppedEarly: boolean;
-};
+export type RetrySummary = Record<SyncOutcome, number> &
+  GuardSummary & {
+    checked: number;
+    exhausted: number;
+    /** True if the run stopped early (per-run cap, time budget or daily limit). */
+    stoppedEarly: boolean;
+  };
+
+/**
+ * Whether a retry run should fail the cron: a lead attempt failed, or the
+ * reactivation guard couldn't read the list or revert a contact. Exhausted
+ * rows don't: they're in the summary and the log, not on every run until
+ * someone requeues.
+ */
+export function retryRunFailed(summary: RetrySummary): boolean {
+  return summary.failed > 0 || summary.guardError !== null || summary.revertFailed > 0;
+}
 
 /** Outcomes that cost no Reach call. */
 const NO_CALL: SyncOutcome[] = ["backoff", "claimed_elsewhere", "not_queued", "ineligible", "not_found", "exhausted"];
 
 /**
- * The retry job: pending and failed leads, oldest sign-up first. Rows still
+ * The retry job. First the reactivation guard (revertReactivated), on every
+ * run, whether or not any lead is due. Then pending and failed leads, oldest
+ * sign-up first. Rows still
  * in their backoff cost nothing and are skipped; at most `limit` leads (25)
  * reach Reach per run, and no new one starts after `budgetMs` (4 minutes),
  * so a run stays well inside a 15-minute cron. A "deferred" (daily limit
@@ -356,6 +488,8 @@ export async function retryReachSync(
      * can't send a real visitor.
      */
     only?: ReadonlySet<string> | null;
+    /** Reverts per run for the guard; MAX_REVERTS_PER_RUN unless a test sets it. */
+    maxReverts?: number;
   },
 ): Promise<RetrySummary> {
   const maxAttempts = deps.maxAttempts ?? MAX_ATTEMPTS;
@@ -364,7 +498,9 @@ export async function retryReachSync(
   const limit = deps.limit ?? 25;
   const startedAt = now().getTime();
   const budgetMs = deps.budgetMs ?? 4 * 60 * 1000;
+  const guard = await revertReactivated(deps);
   const summary: RetrySummary = {
+    ...guard,
     checked: 0,
     exhausted: 0,
     stoppedEarly: false,

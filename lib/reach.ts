@@ -21,6 +21,11 @@
  *   "If double opt-in is enabled, the contact will be created with a pending
  *   status and a confirmation email will be sent." Double opt-in is a profile
  *   setting the owner turns on in Reach; the staging check confirms it.
+ * - reactivation guard (golo#791): the same list filtered by
+ *   subscription_status (confirmed, then subscribed), every page, and
+ *   PATCH /api/reach/v1/profiles/{profileUuid}/contacts/{contactUuid}
+ *   {subscription_status: "unsubscribed"}. Live 2026-10-23: the PATCH sends
+ *   no email, and the contact drops out of campaign audiences.
  *
  * Errors come back as short codes. Neither the token, the address, the URL
  * (which carries the address as `search`) nor a response body is logged or
@@ -28,13 +33,16 @@
  */
 
 import "server-only";
-import { isReachSyncFlagOn } from "./reachSync";
+import { isReachSyncFlagOn, isReactivated } from "./reachSync";
 import type {
   ReachClient,
   ReachContactStatus,
   FindContactResult,
   CreateContactResult,
   DeleteContactResult,
+  ActiveContact,
+  ListActiveResult,
+  UnsubscribeResult,
 } from "./reachSync";
 
 export const REACH_BASE_URL = "https://developers.hostinger.com";
@@ -85,6 +93,9 @@ export function getReachClient(env: Env = process.env): ReachClient | null {
 const PER_PAGE = 100;
 /** At 100 a page, 1,000 matches. A search term matching more is a failure. */
 export const MAX_PAGES = 10;
+/** The guard's walk, per status: 5,000 contacts at 100 a page. More is a failure, so it shows. */
+export const ACTIVE_MAX_PAGES = 50;
+const ACTIVE_STATUSES = ["confirmed", "subscribed"] as const;
 
 /** A whole number >= min from a `meta` field, or null. */
 function wholeOf(meta: unknown, key: string, min: number): number | null {
@@ -256,6 +267,73 @@ export function createHttpReachClient(
         deleted += 1;
       }
       return { ok: true, deleted };
+    },
+
+    /**
+     * Every confirmed or subscribed contact, for the reactivation guard. Each
+     * status is walked to the last page the latest meta reports, paged by the
+     * size Reach states on page 1 (as lookup does). A failed page, a page
+     * before the last that is short (we'd miss contacts on every run), a
+     * reactivated row without a uuid, or more than ACTIVE_MAX_PAGES pages is a
+     * failure. Any other row without a uuid or email is skipped: the guard
+     * would never act on it.
+     */
+    async listActiveContacts(): Promise<ListActiveResult> {
+      const asked = config.perPage ?? PER_PAGE;
+      const contacts: ActiveContact[] = [];
+      for (const status of ACTIVE_STATUSES) {
+        let pages = 1;
+        let perPage = asked;
+        for (let page = 1; page <= pages; page += 1) {
+          const params = new URLSearchParams({
+            subscription_status: status,
+            per_page: String(asked),
+            page: String(page),
+          });
+          const res = await call(`${contactsUrl}?${params}`, { method: "GET" });
+          if (typeof res === "string") return { ok: false, error: res };
+          if (!res.ok) return { ok: false, error: `http_${res.status}` };
+          const body = pageOf(res.body);
+          if (!body) return { ok: false, error: "bad_response" };
+          if (body.currentPage !== page) return { ok: false, error: "wrong_page" };
+          if (page === 1) perPage = body.perPage ?? asked;
+          pages = Math.max(1, Math.ceil(body.total / perPage));
+          if (pages > ACTIVE_MAX_PAGES) return { ok: false, error: "too_many_contacts" };
+          if (page < pages && body.contacts.length < perPage) return { ok: false, error: "incomplete_page" };
+          for (const contact of body.contacts) {
+            const row = contact as { uuid?: unknown; email?: unknown; subscription_status?: unknown; unsubscribed_at?: unknown } | null;
+            const parsed = {
+              uuid: typeof row?.uuid === "string" ? row.uuid : "",
+              email: typeof row?.email === "string" ? row.email : "",
+              status: typeof row?.subscription_status === "string" ? row.subscription_status : "",
+              unsubscribedAt: row?.unsubscribed_at ?? null,
+            };
+            if (parsed.uuid === "" || parsed.email === "") {
+              if (parsed.uuid === "" && isReactivated(parsed)) return { ok: false, error: "bad_row" };
+              continue;
+            }
+            contacts.push(parsed);
+          }
+        }
+      }
+      return { ok: true, contacts };
+    },
+
+    /**
+     * PATCHes one contact to unsubscribed. A 2xx whose body names another
+     * status is a failure.
+     */
+    async unsubscribeContact(uuid): Promise<UnsubscribeResult> {
+      const res = await call(`${contactsUrl}/${encodeURIComponent(uuid)}`, {
+        method: "PATCH",
+        body: JSON.stringify({ subscription_status: "unsubscribed" }),
+      });
+      if (typeof res === "string") return { ok: false, error: res };
+      if (!res.ok) return { ok: false, error: `http_${res.status}` };
+      const outer = res.body as { subscription_status?: unknown; data?: { subscription_status?: unknown } } | undefined;
+      const status = outer?.subscription_status ?? outer?.data?.subscription_status;
+      if (status !== undefined && status !== "unsubscribed") return { ok: false, error: "not_unsubscribed" };
+      return { ok: true };
     },
 
     async createContact(rawEmail): Promise<CreateContactResult> {

@@ -19,10 +19,10 @@ globalThis.fetch = async () => {
 };
 
 const { handleSubscribe } = await import("../lib/subscribe.ts");
-const { syncLead, retryReachSync, runBackfill, requeueFailed, backoffMs, MAX_ATTEMPTS, NEWSLETTER_CONSENT_SINCE, DAILY_ADD_LIMIT, MONTHLY_ADD_LIMIT, deleteSubscriber, reachOnlyFromEnv } =
+const { syncLead, retryReachSync, runBackfill, requeueFailed, backoffMs, MAX_ATTEMPTS, NEWSLETTER_CONSENT_SINCE, DAILY_ADD_LIMIT, MONTHLY_ADD_LIMIT, deleteSubscriber, reachOnlyFromEnv, isReactivated, revertReactivated, MAX_REVERTS_PER_RUN, retryRunFailed } =
   await import("../lib/reachSync.ts");
 const { createStubReachClient } = await import("../lib/reachStub.ts");
-const { getReachClient, createHttpReachClient, REACH_BASE_URL, MAX_PAGES } = await import("../lib/reach.ts");
+const { getReachClient, createHttpReachClient, REACH_BASE_URL, MAX_PAGES, ACTIVE_MAX_PAGES } = await import("../lib/reach.ts");
 const { prismaSubscribeStore, prismaLeadSyncStore, prismaDeletionStore } = await import("../lib/reachStore.ts");
 const { readFileSync } = await import("node:fs");
 
@@ -915,6 +915,220 @@ await test("HTTP deleteContact: finds the uuid on any page, DELETEs it; an incom
   const broken = fakeReach(rows, { serve: { 2: 500 } });
   const r2 = await broken.client.deleteContact("gone@example.test");
   expect(!r2.ok, `incomplete lookup read as ${JSON.stringify(r2)}`);
+});
+
+// Reactivation guard (golo#791 Option 1, owner-approved 2026-10-23): Reach lets
+// an old double opt-in link re-subscribe a contact after it unsubscribed, and
+// the links never expire. Every retry run sets such contacts back.
+
+await test("reactivation rule: confirmed or subscribed with an unsubscribed_at, nothing else", async () => {
+  const at = "2026-10-23T15:12:54Z";
+  const cases = [
+    [{ status: "confirmed", unsubscribedAt: at }, true],
+    [{ status: "subscribed", unsubscribedAt: at }, true],
+    [{ status: " Confirmed ", unsubscribedAt: at }, true],
+    [{ status: "confirmed", unsubscribedAt: null }, false],
+    [{ status: "confirmed", unsubscribedAt: undefined }, false],
+    [{ status: "confirmed", unsubscribedAt: "  " }, false],
+    [{ status: "pending", unsubscribedAt: at }, false],
+    [{ status: "unsubscribed", unsubscribedAt: at }, false],
+    [{ status: "", unsubscribedAt: at }, false],
+  ];
+  for (const [contact, expected] of cases) {
+    expect(isReactivated(contact) === expected, `${JSON.stringify(contact)} → ${!expected}`);
+  }
+});
+
+await test("guard: every run sets an old-link reactivation back to unsubscribed, and only that", async () => {
+  const h = harness();
+  h.stub.contacts.set("never-left@example.test", "confirmed");
+  h.stub.contacts.set("waiting@example.test", "pending");
+  h.stub.contacts.set("back@example.test", "confirmed");
+  h.stub.unsubscribe("back@example.test");
+  h.stub.replayConfirmation("back@example.test");
+  // No lead is due: the guard still runs.
+  const s = await h.retry(T0);
+  expect(s.reactivated === 1 && s.reverted === 1 && s.revertFailed === 0 && s.guardError === null, `summary ${JSON.stringify(s)}`);
+  expect(h.stub.contacts.get("back@example.test") === "unsubscribed", "reactivated contact not reverted");
+  expect(h.stub.contacts.get("never-left@example.test") === "confirmed", "a contact that never unsubscribed was touched");
+  expect(h.stub.contacts.get("waiting@example.test") === "pending", "a pending contact was touched");
+  expect(h.stub.calls.length === 0, `the guard made lead-path calls: ${JSON.stringify(h.stub.calls)}`);
+  const quiet = await h.retry(T0);
+  expect(quiet.reactivated === 0 && h.stub.reverts().length === 1, `second run ${JSON.stringify(quiet)}`);
+  // The old link still works after a revert (live 15:19:10): the next run reverts again.
+  h.stub.replayConfirmation("back@example.test");
+  const again = await h.retry(T0);
+  expect(again.reverted === 1 && h.stub.contacts.get("back@example.test") === "unsubscribed", `after a second replay ${JSON.stringify(again)}`);
+});
+
+await test("guard: a reverted address stays suppressed for a repeat sign-up (no create, no email)", async () => {
+  const h = harness();
+  await h.signUp("came-back@example.test");
+  await h.flush();
+  h.stub.contacts.set("came-back@example.test", "confirmed");
+  h.stub.unsubscribe("came-back@example.test");
+  h.stub.replayConfirmation("came-back@example.test");
+  await h.retry(T0);
+  // The website row is gone (as after a scoped delete) and the person signs up again.
+  h.db.rows.delete(h.db.byEmail("came-back@example.test").id);
+  await h.signUp("came-back@example.test");
+  const s = await h.retry(T0);
+  expect(s.suppressed === 1 && s.created === 0 && h.stub.creates() === 1, `summary ${JSON.stringify(s)}, ${h.stub.creates()} creates`);
+  expect(h.stub.contacts.get("came-back@example.test") === "unsubscribed", "the repeat sign-up revived the contact");
+});
+
+await test("guard: REACH_SYNC_ONLY limits it to the listed addresses", async () => {
+  const h = harness();
+  for (const email of ["test@example.test", "visitor@example.test"]) {
+    h.stub.contacts.set(email, "confirmed");
+    h.stub.unsubscribe(email);
+    h.stub.replayConfirmation(email);
+  }
+  const s = await retryReachSync({ store: h.db.syncStore, client: h.stub, log, now: () => T0, only: reachOnlyFromEnv({ REACH_SYNC_ONLY: " Test@Example.test " }) });
+  expect(s.reactivated === 1 && s.reverted === 1, `summary ${JSON.stringify(s)}`);
+  expect(h.stub.contacts.get("test@example.test") === "unsubscribed", "the listed address wasn't reverted");
+  expect(h.stub.contacts.get("visitor@example.test") === "confirmed", "an unlisted address was touched during a controlled test");
+  const none = await retryReachSync({ store: h.db.syncStore, client: h.stub, log, now: () => T0, only: reachOnlyFromEnv({ REACH_SYNC_ONLY: "" }) });
+  expect(none.reverted === 0, "an empty REACH_SYNC_ONLY matched someone");
+});
+
+await test("guard: a failed list reverts nothing and leads still sync; a failed revert retries next run", async () => {
+  const h = harness();
+  h.stub.contacts.set("back@example.test", "confirmed");
+  h.stub.unsubscribe("back@example.test");
+  h.stub.replayConfirmation("back@example.test");
+  await h.signUp("new@example.test");
+  h.stub.failList("http_503");
+  const s = await h.retry(T0);
+  expect(s.guardError === "http_503" && s.reverted === 0 && h.stub.reverts().length === 0, `list failure ${JSON.stringify(s)}`);
+  expect(s.created === 1, "a guard failure blocked the lead sync");
+  h.stub.failList("throw");
+  const thrown = await h.retry(T0);
+  expect(thrown.guardError === "list_threw", `list throw ${JSON.stringify(thrown)}`);
+  h.stub.failUnsubscribe("http_500");
+  const failed = await h.retry(T0);
+  expect(failed.reactivated === 1 && failed.revertFailed === 1 && failed.reverted === 0, `revert failure ${JSON.stringify(failed)}`);
+  expect(h.stub.contacts.get("back@example.test") === "confirmed", "a failed revert changed the contact");
+  const next = await h.retry(T0);
+  expect(next.reverted === 1 && h.stub.contacts.get("back@example.test") === "unsubscribed", `next run ${JSON.stringify(next)}`);
+});
+
+await test(`guard: at most ${MAX_REVERTS_PER_RUN} reverts a run (the rest wait), paced like lead calls`, async () => {
+  const h = harness();
+  for (let n = 0; n < 3; n += 1) {
+    const email = `back${n}@example.test`;
+    h.stub.contacts.set(email, "subscribed");
+    h.stub.unsubscribe(email);
+    h.stub.replayConfirmation(email);
+  }
+  const pauses = [];
+  const s = await revertReactivated({ client: h.stub, log, maxReverts: 2, paceMs: 2000, sleep: async (ms) => { pauses.push(ms); } });
+  expect(s.reactivated === 3 && s.reverted === 2, `capped ${JSON.stringify(s)}`);
+  expect(pauses.join() === "2000,2000", `pauses ${pauses}`);
+  const rest = await revertReactivated({ client: h.stub, log, maxReverts: 2 });
+  expect(rest.reactivated === 1 && rest.reverted === 1, `rest ${JSON.stringify(rest)}`);
+  expect(MAX_REVERTS_PER_RUN >= 25, "the default cap is lower than a run's lead limit");
+});
+
+/**
+ * A fake Reach list for the guard: rows per status, paged as Reach pages them.
+ * `cap` serves fewer per page than asked (and says so in meta, unless
+ * `hideCap`, which leaves per_page out).
+ */
+function fakeActiveReach(byStatus, { serve = {}, patch, cap, hideCap } = {}) {
+  const requests = [];
+  const client = createHttpReachClient({ token: "tok-123", profileUuid: "prof-1", perPage: 2 }, async (url, init) => {
+    const u = new URL(String(url));
+    requests.push({ method: init.method, path: u.pathname, params: u.searchParams, init });
+    if (init.method === "PATCH") return patch ? patch(u, init) : new Response(JSON.stringify({ uuid: "x", subscription_status: "unsubscribed" }), { status: 200 });
+    const status = u.searchParams.get("subscription_status");
+    const page = Number(u.searchParams.get("page"));
+    const override = serve[`${status}:${page}`];
+    if (typeof override === "number") return new Response("{}", { status: override });
+    const rows = byStatus[status] ?? [];
+    const size = cap ?? 2;
+    const body = override ?? listPage(rows.slice((page - 1) * size, page * size), rows.length, page, size);
+    if (hideCap && !override) delete body.meta.per_page;
+    return new Response(JSON.stringify(body), { status: 200 });
+  });
+  return { client, requests };
+}
+const active = (uuid, subscription_status, unsubscribed_at = null) => ({ uuid, email: `${uuid}@example.test`, subscription_status, unsubscribed_at });
+
+await test("HTTP listActiveContacts: confirmed then subscribed, every page, status-filtered, bearer token", async () => {
+  const { client, requests } = fakeActiveReach({
+    confirmed: [active("c1", "confirmed"), active("c2", "confirmed", "2026-10-23T15:12:54Z"), active("c3", "confirmed")],
+    subscribed: [active("s1", "subscribed", "2026-10-22T23:02:01Z")],
+  });
+  const r = await client.listActiveContacts();
+  expect(r.ok && r.contacts.map((c) => c.uuid).join() === "c1,c2,c3,s1", `contacts ${JSON.stringify(r)}`);
+  expect(r.contacts[1].unsubscribedAt === "2026-10-23T15:12:54Z" && r.contacts[0].unsubscribedAt === null, "unsubscribed_at not carried");
+  expect(r.contacts.filter(isReactivated).map((c) => c.uuid).join() === "c2,s1", "rule over the parsed rows");
+  const walked = requests.map((q) => `${q.params.get("subscription_status")}:${q.params.get("page")}`).join();
+  expect(walked === "confirmed:1,confirmed:2,subscribed:1", `walk ${walked}`);
+  expect(requests.every((q) => q.path === "/api/reach/v1/profiles/prof-1/contacts" && q.init.headers.Authorization === "Bearer tok-123" && !q.params.has("search")), "list request shape");
+});
+
+await test("HTTP listActiveContacts: a failed, short, odd or oversized list is a failure", async () => {
+  const rows = { confirmed: [active("c1", "confirmed"), active("c2", "confirmed"), active("c3", "confirmed")] };
+  const reactivatedNoUuid = { email: "x@example.test", subscription_status: "confirmed", unsubscribed_at: "2026-10-23T15:12:54Z" };
+  for (const [serve, error] of [
+    [{ "confirmed:2": 500 }, "http_500"],
+    [{ "subscribed:1": 503 }, "http_503"],
+    [{ "confirmed:1": { nope: true } }, "bad_response"],
+    [{ "confirmed:2": listPage([active("c3", "confirmed")], 3, 1, 2) }, "wrong_page"],
+    [{ "confirmed:1": listPage([active("c1", "confirmed")], 3, 1, 2) }, "incomplete_page"],
+    [{ "confirmed:1": listPage([], 3, 1, 2) }, "incomplete_page"],
+    [{ "confirmed:1": listPage([reactivatedNoUuid], 1, 1, 2) }, "bad_row"],
+    [{ "confirmed:1": listPage([active("c1", "confirmed")], 2 * ACTIVE_MAX_PAGES + 1, 1, 2) }, "too_many_contacts"],
+  ]) {
+    const r = await fakeActiveReach(rows, { serve }).client.listActiveContacts();
+    expect(!r.ok && r.error === error, `${JSON.stringify(serve)} read as ${JSON.stringify(r)}`);
+  }
+  // A row the guard would never act on doesn't stop it: skipped, the rest read.
+  const odd = [{ email: "x@example.test", subscription_status: "confirmed", unsubscribed_at: null }, { uuid: "u-noemail", subscription_status: "confirmed", unsubscribed_at: "2026-10-23T15:12:54Z" }];
+  const skipped = await fakeActiveReach({}, { serve: { "confirmed:1": listPage(odd, 2, 1, 2) } }).client.listActiveContacts();
+  expect(skipped.ok && skipped.contacts.length === 0, `unusable rows read as ${JSON.stringify(skipped)}`);
+});
+
+await test("HTTP listActiveContacts: Reach serving fewer per page than asked is paged by its meta, or fails", async () => {
+  const rows = { confirmed: Array.from({ length: 5 }, (_, i) => active(`c${i}`, "confirmed")) };
+  // Asked 2 a page; Reach serves 1 and says so: five pages, every contact.
+  const capped = fakeActiveReach(rows, { cap: 1 });
+  const r = await capped.client.listActiveContacts();
+  expect(r.ok && r.contacts.length === 5, `capped walk ${JSON.stringify(r)}`);
+  // Serves 1 without saying so: the short page is a failure, not a silent half list.
+  const hidden = await fakeActiveReach(rows, { cap: 1, hideCap: true }).client.listActiveContacts();
+  expect(!hidden.ok && hidden.error === "incomplete_page", `unstated cap read as ${JSON.stringify(hidden)}`);
+});
+
+await test("HTTP unsubscribeContact: PATCHes one contact; an error or another status is a failure", async () => {
+  const { client, requests } = fakeActiveReach({});
+  const r = await client.unsubscribeContact("u-back");
+  const patch = requests.at(-1);
+  expect(r.ok && patch.method === "PATCH" && patch.path === "/api/reach/v1/profiles/prof-1/contacts/u-back", `patch ${JSON.stringify(r)} ${patch.path}`);
+  expect(patch.init.body === JSON.stringify({ subscription_status: "unsubscribed" }), `body ${patch.init.body}`);
+  const bare = await fakeActiveReach({}, { patch: () => new Response(null, { status: 204 }) }).client.unsubscribeContact("u");
+  expect(bare.ok, `204 read as ${JSON.stringify(bare)}`);
+  const wrong = await fakeActiveReach({}, { patch: () => new Response(JSON.stringify({ data: { subscription_status: "confirmed" } }), { status: 200 }) }).client.unsubscribeContact("u");
+  expect(!wrong.ok && wrong.error === "not_unsubscribed", `other status read as ${JSON.stringify(wrong)}`);
+  const err = await fakeActiveReach({}, { patch: () => new Response("{}", { status: 422 }) }).client.unsubscribeContact("u");
+  expect(!err.ok && err.error === "http_422", `422 read as ${JSON.stringify(err)}`);
+});
+
+await test("a guard failure fails the cron; exhausted rows don't; the script checks the switch first", async () => {
+  const h = harness();
+  const clean = await h.retry(T0);
+  expect(!retryRunFailed(clean), `clean run failed: ${JSON.stringify(clean)}`);
+  for (const [change, label] of [[{ failed: 1 }, "lead failure"], [{ guardError: "http_503" }, "list failure"], [{ revertFailed: 1 }, "revert failure"]]) {
+    expect(retryRunFailed({ ...clean, ...change }), `${label} didn't fail the cron`);
+  }
+  expect(!retryRunFailed({ ...clean, exhausted: 4 }), "exhausted rows failed the cron");
+  h.stub.failList("http_503");
+  expect(retryRunFailed(await h.retry(T0)), "a real list failure didn't fail the cron");
+  const text = readFileSync(new URL("./reach-retry.mjs", import.meta.url), "utf8");
+  expect(/process\.exitCode = retryRunFailed\(summary\) \? 1 : 0;/.test(text), "the script doesn't take its exit code from retryRunFailed");
+  expect(text.indexOf("Nothing done") < text.indexOf("../lib/reach.ts"), "the Reach client is imported before the switch is checked");
 });
 
 await test("no log line carries an address or the token", async () => {
