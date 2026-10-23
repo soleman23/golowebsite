@@ -24,7 +24,7 @@ inside the window as collected without consent, and report it separately.
 
 Created while building and verifying #114 and #115 (October 19–20), and by later
 verification runs for the marketing work in soleman23/golo#789 and #790
-(October 21). None of it is a real visitor. Where an entry says requests were
+(October 21–23). None of it is a real visitor. Where an entry says requests were
 *sent*, that was observed in the browser; whether GA4 processed them into
 reports is stated separately.
 
@@ -74,8 +74,12 @@ reports is stated separately.
     yet, so any count for it on that day is this test.
   - **Not filtered.**
   - **Elsewhere:** one internal sign-up notification email was sent, and one
-    test `NewsletterLead` row was created at 18:57:40 UTC. The owner deletes
-    the row; this note doesn't claim it's gone.
+    test `NewsletterLead` row was created at 18:57:40 UTC (`cmvih5f580000863usxb5rsfl`,
+    deleted 2026-10-22 00:21 UTC along with the post-deploy diagnostic row
+    `cmvikw6v60000b4xl2qb7y4q6`, which declined analytics and sent no GA4 hits).
+    Because this run used Playwright's default headless user agent, GA4's
+    known-bot filter most likely dropped the session (see the October 22 entry
+    below).
 - **October 22, 21:26–21:28 UTC (2:26–2:28 PM PDT): the golowebsite#119
   fallback test, owner-approved.** These were controlled visits tagged
   `utm_medium=qa`, `utm_campaign=golowebsite-119`, each choosing "Allow
@@ -100,6 +104,29 @@ reports is stated separately.
   - **Not yet reconciled:** final totals with and without the rule, once all
     three are processed. The scheduled task `golo-ga4-qa119-verify` (2026-10-24
     09:00 PDT) checks that and updates this entry.
+- **October 23, 02:33:00–02:33:22 UTC (October 22, 7:33 PM PDT): one approved
+  live-profile Instagram acceptance run (soleman23/golo#790).** Started on the
+  signed-out public profile `https://www.instagram.com/gologolfapp/` in a clean
+  browser context with a normal Chrome user agent and GPC off:
+  - It clicked the live bio link (`l.instagram.com` → `https://www.golo.golf/?utm_source=instagram&utm_medium=organic_social&utm_campaign=golo_prelaunch_2026q4&utm_content=bio`),
+    chose "Allow analytics" on `/`, navigated to `/blog` through the top nav,
+    and submitted the newsletter form once with the designated test address
+    `qa+utm-ig-web-20261022@golo.golf`.
+  - **Requests the browser sent (observed):** `page_view` on `/` (02:33:08 UTC,
+    `dl` carrying all four `utm_*` parameters and `dr=https://l.instagram.com/`),
+    `link_click` (`/blog`, nav), `page_view` on `/blog` (02:33:13 UTC),
+    `scroll_depth`, `form_start` (02:33:15 UTC), `newsletter_signup`
+    (02:33:20 UTC), `user_engagement` and `web_vitals`.
+  - **Expected effect on reports:** 1 desktop user and session on October 22
+    (Pacific) attributed to `instagram / organic_social`, campaign
+    `golo_prelaunch_2026q4`, and 1 `newsletter_signup` event.
+  - **Not filtered.**
+  - **Elsewhere:** one internal sign-up notification email was sent. The
+    `NewsletterLead` row (`cmvkcv5kj0000k10h1xu3iu0m`, created 02:33:14.996 UTC)
+    was verified with `source=blog`, `landingPath=/`,
+    `referrerHost=l.instagram.com`, `landingSource=instagram`,
+    `landingMedium=organic_social`, `landingCampaign=golo_prelaunch_2026q4` and
+    `landingContent=bio`, then deleted at 02:34 UTC (`0` `qa+` rows remain).
 
 **Clarity**
 - Sessions whose entry URL is on `localhost`, about 02:20–05:30 UTC on
