@@ -1,12 +1,19 @@
 /**
- * Site footer: logo lockup + tagline, four link columns (Product / Games /
- * Legal / Company), and a bottom bar with copyright and a side-games
- * disclaimer. Edit footerLinks in lib/content/nav.ts, not this file.
+ * Site footer: logo lockup + tagline + social icons, four link columns
+ * (Product / Games / Legal / Company), and a bottom bar with copyright and a
+ * side-games disclaimer. Edit footerLinks and socialLinks in
+ * lib/content/nav.ts, not this file.
  */
 
 import Link from "next/link";
 import { Logo } from "@/components/ui/Logo";
-import { footerLinks } from "@/lib/content";
+import { SocialIcon } from "@/components/ui/SocialIcon";
+import {
+  footerLinks,
+  socialLinkName,
+  socialLinks,
+  socialLinksLabel,
+} from "@/lib/content";
 import styles from "./Footer.module.css";
 
 const columns = [
@@ -26,6 +33,21 @@ export function Footer() {
             Score it. Track it. Settle it. The scorekeeper that finally settles the
             side games.
           </p>
+          <ul className={styles.social} aria-label={socialLinksLabel}>
+            {socialLinks.map((link) => (
+              <li key={link.platform}>
+                <a
+                  href={link.href}
+                  className={styles.socialLink}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label={socialLinkName(link)}
+                >
+                  <SocialIcon platform={link.platform} />
+                </a>
+              </li>
+            ))}
+          </ul>
         </div>
 
         <div className={styles.columns}>

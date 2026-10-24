@@ -89,3 +89,27 @@ export const footerLinks: Record<FooterColumn, NavLink[]> = {
     { label: "Support", href: `mailto:${siteConfig.supportEmail}` },
   ],
 };
+
+export type SocialPlatform = "instagram" | "facebook" | "youtube" | "tiktok";
+
+export type SocialLink = {
+  platform: SocialPlatform;
+  label: string;
+  href: string;
+};
+
+/**
+ * The footer's social row, in display order. It shows icons only, so a link's
+ * accessible name comes from socialLinkName rather than visible text.
+ */
+export const socialLinks: SocialLink[] = [
+  { platform: "instagram", label: "Instagram", href: siteConfig.instagramUrl },
+  { platform: "facebook", label: "Facebook", href: siteConfig.facebookUrl },
+  { platform: "youtube", label: "YouTube", href: siteConfig.youtubeUrl },
+  { platform: "tiktok", label: "TikTok", href: siteConfig.tiktokUrl },
+];
+
+export const socialLinksLabel = `${siteConfig.brandName} on social media`;
+
+export const socialLinkName = (link: SocialLink) =>
+  `${siteConfig.brandName} on ${link.label} (opens in a new tab)`;
