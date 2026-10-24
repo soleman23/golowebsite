@@ -26,6 +26,34 @@
   margin: 16px 0 0;
 }
 
+/* Icons only, each in a 44px target. The -12px start margin lines the first
+   glyph up with the tagline instead of its hit area; the focus ring's reach
+   still fits inside the narrowest gutter (18px). */
+.social {
+  list-style: none;
+  margin: 8px 0 0 -12px;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+
+.socialLink {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  color: var(--text-secondary);
+  transition: color 0.14s ease;
+}
+
+.socialLink:hover,
+.socialLink:focus-visible {
+  color: var(--accent);
+}
+
 /* Four columns at wide, 2x2 at mid, stacked at narrow. */
 .columns {
   display: grid;
