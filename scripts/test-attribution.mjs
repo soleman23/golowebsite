@@ -41,7 +41,7 @@ registerHooks({
 const { subscribeSchema, textLinkSchema } = await import(
   new URL("../lib/validation.ts", import.meta.url).href
 );
-const { campaignTags, sourceName } = await import(
+const { campaignTags, playStoreUrl, sourceName } = await import(
   new URL("../lib/campaigns.ts", import.meta.url).href
 );
 
@@ -358,9 +358,51 @@ for (const [form, schema, base] of forms) {
   }
 }
 
+// Play's install referrer: the dictionary campaign rides on the listing URL
+// as one URL-encoded `referrer` value; anything else leaves the plain listing.
+let playCases = 0;
+{
+  const PLAY = "https://play.google.com/store/apps/details?id=golf.golo.app";
+  const check = (name, got, want) => {
+    playCases += 1;
+    if (got === want) passed += 1;
+    else failures.push(`playStoreUrl: ${name}: got ${got}, expected ${want}`);
+  };
+  check(
+    "the tent's campaign becomes the referrer",
+    playStoreUrl(PLAY, TABLE_TENT),
+    `${PLAY}&referrer=utm_source%3Dtable_tent%26utm_medium%3Dprint%26utm_campaign%3Dgolo_launch_2026q4_sim_bay`,
+  );
+  check(
+    "a profile link's campaign becomes the referrer",
+    playStoreUrl(PLAY, INSTAGRAM_BIO),
+    `${PLAY}&referrer=utm_source%3Dinstagram%26utm_medium%3Dorganic_social%26utm_campaign%3Dgolo_prelaunch_2026q4`,
+  );
+  const decoded = new URL(playStoreUrl(PLAY, TABLE_TENT)).searchParams;
+  check("the listing id survives", decoded.get("id"), "golf.golo.app");
+  check(
+    "the referrer decodes to the three tags",
+    decoded.get("referrer"),
+    "utm_source=table_tent&utm_medium=print&utm_campaign=golo_launch_2026q4_sim_bay",
+  );
+  check("no landing leaves the listing", playStoreUrl(PLAY, undefined), PLAY);
+  check("a direct visit leaves the listing", playStoreUrl(PLAY, { landingPath: "/" }), PLAY);
+  check(
+    "a source with no dictionary campaign leaves the listing",
+    playStoreUrl(PLAY, { landingSource: "chatgpt.com", landingMedium: null, landingCampaign: null, landingContent: null }),
+    PLAY,
+  );
+  check("a placeholder href is left alone", playStoreUrl("#get", TABLE_TENT), "#get");
+  check(
+    "a non-Play URL is left alone",
+    playStoreUrl("https://apps.apple.com/app/id1", TABLE_TENT),
+    "https://apps.apple.com/app/id1",
+  );
+}
+
 if (failures.length) {
   for (const line of failures) console.error(line);
   console.error(`\n${failures.length} failed, ${passed} passed.`);
   process.exit(1);
 }
-console.log(`Attribution: ${passed} cases passed (${cases.length} attribution + 2 page-path cases per form × ${forms.length} forms, + the table tent URL).`);
+console.log(`Attribution: ${passed} cases passed (${cases.length} attribution + 2 page-path cases per form × ${forms.length} forms, + the table tent URL, + ${playCases} Play referrer cases).`);

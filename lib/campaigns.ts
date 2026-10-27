@@ -127,3 +127,37 @@ export function campaignTags(
   if (!rule.content(p)) return NO_TAGS;
   return { landingMedium: m, landingCampaign: c, landingContent: p };
 }
+
+/**
+ * The Google Play listing URL carrying the landing's campaign as Play's
+ * install referrer, so Play Console credits installs to the tent, a profile
+ * link or an email (`&referrer=utm_source%3D…%26utm_medium%3D…%26utm_campaign%3D…`).
+ *
+ * Only a combination the dictionary already accepted is passed on (the same
+ * values a lead row may keep): a direct visit, an unknown source or a stray
+ * query string leaves the plain listing URL, so a click never breaks and
+ * nothing outside the dictionary reaches Play.
+ */
+export function playStoreUrl(
+  listingUrl: string,
+  landing?: { landingSource?: string } & Partial<CampaignTags>,
+): string {
+  const source = landing?.landingSource;
+  const medium = landing?.landingMedium;
+  const campaign = landing?.landingCampaign;
+  if (!source || !medium || !campaign) return listingUrl;
+  let url: URL;
+  try {
+    url = new URL(listingUrl);
+  } catch {
+    return listingUrl;
+  }
+  if (url.hostname !== "play.google.com") return listingUrl;
+  const referrer = new URLSearchParams({
+    utm_source: source,
+    utm_medium: medium,
+    utm_campaign: campaign,
+  }).toString();
+  url.searchParams.set("referrer", referrer);
+  return url.toString();
+}

@@ -6,7 +6,8 @@
  * variant controls height (hero = 58, final CTA = 60).
  *
  * Google Play is live, so it always links to the listing (in code, in
- * lib/siteConfig.ts). The App Store app isn't out: until siteConfig.iosLive
+ * lib/siteConfig.ts), with the landing's dictionary campaign added as Play's
+ * install referrer when there is one. The App Store app isn't out: until siteConfig.iosLive
  * is true its slot is a plain "Coming soon to the App Store" tile — not a
  * link, not a badge — and the web-app line is the iPhone path that works
  * today. When iosLive flips, the tile becomes the App Store link and the
@@ -20,7 +21,10 @@
  * tile and the web-app line instead of a pill that links back to "#get".
  */
 
+import { useEffect, useState } from "react";
 import { siteConfig } from "@/lib/siteConfig";
+import { landingAttribution } from "@/lib/attribution";
+import { playStoreUrl } from "@/lib/campaigns";
 import { track } from "@/lib/analytics";
 import { storeButtonsCopy as copy } from "@/lib/content/nav";
 import styles from "./StoreButtons.module.css";
@@ -78,6 +82,13 @@ export function StoreButtons({
 }: StoreButtonsProps) {
   const placement = size === "lg" ? "final_cta" : "hero";
   const iosReady = siteConfig.iosLive && siteConfig.appStoreUrl.startsWith("https://");
+  // The server renders the plain listing; after hydration a landing that
+  // came with a dictionary campaign (the table tent's QR, a profile link)
+  // adds it as Play's install referrer (lib/campaigns.ts playStoreUrl).
+  const [playHref, setPlayHref] = useState<string>(siteConfig.googlePlayUrl);
+  useEffect(() => {
+    setPlayHref(playStoreUrl(siteConfig.googlePlayUrl, landingAttribution()));
+  }, []);
   const external = (href: string) => href.startsWith("http");
   const onStoreClick = (store: "app_store" | "google_play", href: string) => {
     track("store_button_click", {
@@ -112,11 +123,11 @@ export function StoreButtons({
             two stack, the button that works is the one on top. */}
         {iosReady ? appStoreLink : null}
         <a
-          href={siteConfig.googlePlayUrl}
+          href={playHref}
           className={buttonClass}
           aria-label={copy.googlePlay.label}
-          onClick={() => onStoreClick("google_play", siteConfig.googlePlayUrl)}
-          {...(external(siteConfig.googlePlayUrl)
+          onClick={() => onStoreClick("google_play", playHref)}
+          {...(external(playHref)
             ? { target: "_blank", rel: "noopener noreferrer" }
             : {})}
         >
