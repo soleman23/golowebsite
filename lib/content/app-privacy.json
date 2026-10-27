@@ -1,0 +1,221 @@
+{
+  "sourceRepository": "soleman23/golo",
+  "sourceIssue": 956,
+  "release": "1.2.0 (27)",
+  "markdown": "# Privacy Policy\n\n**Effective date:** September 18, 2026 · **Last updated:** October 27, 2026\n\nGoLo Golf LLC (\"GoLo,\" \"we,\" \"us,\" or \"our\") operates the GoLo golf app and authenticated web application (together, the \"Service\"). This Privacy Policy explains what information we collect, how we use it, and the choices you have. By using GoLo, you agree to the practices described here.\n\nGoLo is currently offered only to users located in the United States, and you must be 18 or older (or the age of majority in your state) to create an account. GoLo does not ask for or verify your age. See our Terms of Service for full eligibility requirements.\n\nThis is the app scope of the governing policy at https://www.golo.golf/privacy. The public website’s newsletter, download-link attribution, optional website analytics and Google Play campaign links are described separately there; they do not describe data collection by the Android app.\n\n## 1. Information We Collect\n\n**Account information.** When you create a GoLo account, we collect your name and your email address and/or phone number, which identify you across rounds. Your password is handled and stored in hashed form by our authentication provider. You may optionally add a handle/nickname, a handicap index, a home club, a Venmo username, and a profile photo.\n\n**Golf activity data.** We collect the round scores, game formats, handicap inputs, course selections, and settlement tallies you enter or generate while using the app.\n\n**Location data.** Android 1.2.0 (27) requests approximate location only (ACCESS_COARSE_LOCATION), never precise location (ACCESS_FINE_LOCATION). On iOS and the web, the system may supply precise or approximate location. With your permission, we use your device's location to find and rank nearby golf courses when you search for one, so you can pick the course you're playing. Your location goes only to our own backend (Supabase, see Section 3), which uses it to find courses and sort them by distance; we do not send it to any other service. We do not attach your location to the round — the round records the course you selected. Your most recent coordinates are cached on your own device for 24 hours so repeat searches don't ask again. Opening round setup reuses the reading within that window and restarts its 24-hour lifetime; a typed course search can also send the cached reading as a distance tie-break. Course and player search text goes to our own read-only search functions. We conservatively declare location and in-app search history as not ephemeral while backend request-log retention remains unconfirmed. You can deny or revoke location permission at any time in your device or browser settings; core scoring features still work without it.\n\n**Profile photo.** If you choose to upload a profile photo, we store it to display you to other players. We do not collect round or course photos.\n\n**Crew.** If you add other players to your Crew, we store that connection, and each of you can see the other's name, handle, profile photo and handicap. We also store the Crew invitations you send and receive. We never show a Crew member your email address or phone number.\n\n**Push notification data.** The native Android and iOS apps use an in-app inbox only: no native push token is collected and no native push is sent. Browser push is optional. If you enable notifications in your browser, we store a push subscription for your device so we can send you the alerts described in Section 2.\n\n**Communications.** If you contact support@golo.golf, we retain that correspondence to respond to you.\n\n**Support reports.** If you send a report from Contact support inside the app, we store what you wrote along with details about the app itself — the version and build you are running, which screen you were on, your platform and screen size. We show you those details before you send, and we remove sign-in tokens, email addresses, phone numbers and money amounts from the text of your report. You may attach a screenshot; that is always your choice, and never automatic. These reports are included when you download a copy of your data. We delete your reports and any screenshots when you delete your account.\n\nWe do not knowingly collect information from children under 13, and GoLo is not directed to children.\n\n## 2. How We Use Information\n\nWe use the information above to: operate and maintain your account; calculate scores and game formats; help you find and tag the course you're playing; show other players in your group who you are; share your Venmo username, if you save one, only with a player who owes you in an open settle-up (see Section 4); respond to support requests; and understand, in aggregate, how the Service is used (for example, how many organizers complete a second round), using counts rather than individual profiles.\n\nGoLo notifies you in the app's inbox and, if you allow notifications for GoLo in your browser, with push alerts. We use notifications only for these six categories, each of which you can switch off individually in the app:\n\n- **Live scoring** — scores as other players in your round enter them\n- **Round activity** — players joining, side games flagged, and rounds ended without settling up\n- **Round finished** — when it's time to settle up\n- **Side-game terms** — side-game terms to review, and replies to terms you set\n- **Settle-up requests** — settle-up requests, and when one is marked sent or confirmed\n- **Crew** — Crew invites, and when someone joins your Crew\n\nEvery category appears in your in-app inbox unless you switch it off. The one exception is an invitation to a round, and a reply to one you sent, which always reaches your inbox. Push alerts are sent only after you allow them, and only for Round finished, Side-game terms and Settle-up requests.\n\nWe do not send promotional or marketing push notifications. We do not use your data to sell targeted advertising, and we do not sell your personal information to third parties.\n\n## 3. Service Providers\n\nWe share information with the service providers who help us run GoLo, under confidentiality and data-processing obligations:\n\n- **Netlify** — hosts and delivers the app\n- **Supabase** — provides our backend database, authentication, and file storage\n- **Push-notification infrastructure** — the browser and operating-system push services that deliver optional alerts to your device\n\nThese providers do not have independent rights to use your data beyond providing services to GoLo.\n\n**Services we no longer use.** Before October 10, 2026, two independent services were also involved. When you searched for courses near you, our server sent an approximate location (rounded to roughly one kilometer), or a place name you typed, to OpenStreetMap's Nominatim service to find your city. For some courses, your device loaded a course photo directly from Unsplash, which received your device's IP address and basic browser information, as any website does when it serves an image. Neither service received your name, email address, or account information. GoLo no longer uses either one.\n\n**We do not name an analytics or crash-reporting provider because we do not use one.** GoLo does not collect product-analytics or crash telemetry from your device today. If that changes, we will update this Policy before any such collection begins.\n\n## 4. Settlement Tracking — No Money Involved\n\nGoLo lets players keep a running scoreboard of who owes whom for their side games, in the amounts the players agreed among themselves (usually dollar amounts, such as so much per skin). This is strictly a scorekeeping ledger. **GoLo never processes, transmits, holds, or facilitates any transfer of money, and never charges or stores payment card information.** Marking a tally \"settled\" is a manual, informational action taken by the user; any actual exchange of money between players happens entirely outside the app, at the users' own discretion, and GoLo has no visibility into or responsibility for it. If you save a Venmo username, we share it only with a player who owes you in an open settle-up, as a link to your public Venmo profile. When that player taps **Open Venmo**, GoLo first tries to copy a note with the amount to their device's clipboard so they can paste it in Venmo. A **Copy amount and note** button copies the amount and a note on request. No amount is placed in the link, GoLo sends nothing to Venmo and receives nothing back, and GoLo is not connected to Venmo or any payment service. GoLo is not a payment, wagering, or money-services product.\n\n## 5. Your Choices and Rights\n\n- **Access and correction:** Edit your profile in the app, or email support@golo.golf.\n- **Export your data:** Use **You → Download my data** in the app, or the export option on **`/delete-account`**, to download a copy of the records we hold about your account.\n- **Delete your account:** Use **You → Delete account** in the app, or go to **`/delete-account`** on the web — that page works whether or not you are signed in. If you cannot access your account, email support@golo.golf from the address on the account with \"Delete My Account\" in the subject line, and we will verify and act on your request.\n- **Location and notifications:** Turn individual notification categories off in the app, and manage or revoke location and notification permissions anytime in your device or browser settings.\n- **Marketing communications:** You may opt out of non-essential emails via the unsubscribe link or by contacting support.\n\n## 6. Data Retention\n\nWe retain your account and activity data while your account is active.\n\nWhen you delete your account, we delete your profile — name, handle, email, phone, handicap, home club, Venmo username — along with your profile photo, in-app support reports and any screenshots attached to them, notifications, push devices, invitations, Crew connections and Crew invitations, and any rounds nobody else played in. We process verified deletion requests within 30 days; deletions you run yourself in the app or on the web take effect immediately.\n\n**Rounds you played with other people are shared records and are not deleted.** Those rounds, the participant rows that carry the scoring and settlement math, and any settlement records between you and another player are retained for the other players, in anonymized form: your name is replaced with \"Former player\" and your email, phone, and profile photo are removed. This keeps their leaderboard and history intact. Text other players already received, such as notifications or round summaries, may still show your name.\n\n## 7. Data Security\n\nWe use industry-standard technical and organizational measures (encryption in transit, access controls, row-level authorization, hosted infrastructure with reputable providers) to protect your information. No system is perfectly secure, and we cannot guarantee absolute security.\n\n## 8. U.S.-Only Scope\n\nGoLo is currently offered only within the United States. If you access the Service from outside the U.S., you do so on your own initiative and are responsible for compliance with local laws; we do not currently design GoLo to meet the requirements of non-U.S. privacy regimes (e.g., GDPR).\n\n## 9. Changes to This Policy\n\nWe may update this Privacy Policy from time to time. We will post the revised version at /privacy with an updated effective date, and material changes will be communicated via the app or email.\n\n## 10. Contact Us\n\nGoLo Golf LLC — Bend, Oregon, United States\nEmail: support@golo.golf\n",
+  "intro": [
+    {
+      "kind": "p",
+      "html": "GoLo Golf LLC (\"GoLo,\" \"we,\" \"us,\" or \"our\") operates the GoLo golf app and authenticated web application (together, the \"Service\"). This Privacy Policy explains what information we collect, how we use it, and the choices you have. By using GoLo, you agree to the practices described here."
+    },
+    {
+      "kind": "p",
+      "html": "GoLo is currently offered only to users located in the United States, and you must be 18 or older (or the age of majority in your state) to create an account. GoLo does not ask for or verify your age. See our Terms of Service for full eligibility requirements."
+    },
+    {
+      "kind": "p",
+      "html": "This is the app scope of the governing policy at https://www.golo.golf/privacy. The public website’s newsletter, download-link attribution, optional website analytics and Google Play campaign links are described separately there; they do not describe data collection by the Android app."
+    }
+  ],
+  "sections": [
+    {
+      "num": "01",
+      "id": "app-section-1",
+      "title": "Information We Collect",
+      "blocks": [
+        {
+          "kind": "p",
+          "html": "<strong>Account information.</strong> When you create a GoLo account, we collect your name and your email address and/or phone number, which identify you across rounds. Your password is handled and stored in hashed form by our authentication provider. You may optionally add a handle/nickname, a handicap index, a home club, a Venmo username, and a profile photo."
+        },
+        {
+          "kind": "p",
+          "html": "<strong>Golf activity data.</strong> We collect the round scores, game formats, handicap inputs, course selections, and settlement tallies you enter or generate while using the app."
+        },
+        {
+          "kind": "p",
+          "html": "<strong>Location data.</strong> Android 1.2.0 (27) requests approximate location only (ACCESS_COARSE_LOCATION), never precise location (ACCESS_FINE_LOCATION). On iOS and the web, the system may supply precise or approximate location. With your permission, we use your device's location to find and rank nearby golf courses when you search for one, so you can pick the course you're playing. Your location goes only to our own backend (Supabase, see Section 3), which uses it to find courses and sort them by distance; we do not send it to any other service. We do not attach your location to the round — the round records the course you selected. Your most recent coordinates are cached on your own device for 24 hours so repeat searches don't ask again. Opening round setup reuses the reading within that window and restarts its 24-hour lifetime; a typed course search can also send the cached reading as a distance tie-break. Course and player search text goes to our own read-only search functions. We conservatively declare location and in-app search history as not ephemeral while backend request-log retention remains unconfirmed. You can deny or revoke location permission at any time in your device or browser settings; core scoring features still work without it."
+        },
+        {
+          "kind": "p",
+          "html": "<strong>Profile photo.</strong> If you choose to upload a profile photo, we store it to display you to other players. We do not collect round or course photos."
+        },
+        {
+          "kind": "p",
+          "html": "<strong>Crew.</strong> If you add other players to your Crew, we store that connection, and each of you can see the other's name, handle, profile photo and handicap. We also store the Crew invitations you send and receive. We never show a Crew member your email address or phone number."
+        },
+        {
+          "kind": "p",
+          "html": "<strong>Push notification data.</strong> The native Android and iOS apps use an in-app inbox only: no native push token is collected and no native push is sent. Browser push is optional. If you enable notifications in your browser, we store a push subscription for your device so we can send you the alerts described in Section 2."
+        },
+        {
+          "kind": "p",
+          "html": "<strong>Communications.</strong> If you contact support@golo.golf, we retain that correspondence to respond to you."
+        },
+        {
+          "kind": "p",
+          "html": "<strong>Support reports.</strong> If you send a report from Contact support inside the app, we store what you wrote along with details about the app itself — the version and build you are running, which screen you were on, your platform and screen size. We show you those details before you send, and we remove sign-in tokens, email addresses, phone numbers and money amounts from the text of your report. You may attach a screenshot; that is always your choice, and never automatic. These reports are included when you download a copy of your data. We delete your reports and any screenshots when you delete your account."
+        },
+        {
+          "kind": "p",
+          "html": "We do not knowingly collect information from children under 13, and GoLo is not directed to children."
+        }
+      ]
+    },
+    {
+      "num": "02",
+      "id": "app-section-2",
+      "title": "How We Use Information",
+      "blocks": [
+        {
+          "kind": "p",
+          "html": "We use the information above to: operate and maintain your account; calculate scores and game formats; help you find and tag the course you're playing; show other players in your group who you are; share your Venmo username, if you save one, only with a player who owes you in an open settle-up (see Section 4); respond to support requests; and understand, in aggregate, how the Service is used (for example, how many organizers complete a second round), using counts rather than individual profiles."
+        },
+        {
+          "kind": "p",
+          "html": "GoLo notifies you in the app's inbox and, if you allow notifications for GoLo in your browser, with push alerts. We use notifications only for these six categories, each of which you can switch off individually in the app:"
+        },
+        {
+          "kind": "ul",
+          "items": [
+            "<strong>Live scoring</strong> — scores as other players in your round enter them",
+            "<strong>Round activity</strong> — players joining, side games flagged, and rounds ended without settling up",
+            "<strong>Round finished</strong> — when it's time to settle up",
+            "<strong>Side-game terms</strong> — side-game terms to review, and replies to terms you set",
+            "<strong>Settle-up requests</strong> — settle-up requests, and when one is marked sent or confirmed",
+            "<strong>Crew</strong> — Crew invites, and when someone joins your Crew"
+          ]
+        },
+        {
+          "kind": "p",
+          "html": "Every category appears in your in-app inbox unless you switch it off. The one exception is an invitation to a round, and a reply to one you sent, which always reaches your inbox. Push alerts are sent only after you allow them, and only for Round finished, Side-game terms and Settle-up requests."
+        },
+        {
+          "kind": "p",
+          "html": "We do not send promotional or marketing push notifications. We do not use your data to sell targeted advertising, and we do not sell your personal information to third parties."
+        }
+      ]
+    },
+    {
+      "num": "03",
+      "id": "app-section-3",
+      "title": "Service Providers",
+      "blocks": [
+        {
+          "kind": "p",
+          "html": "We share information with the service providers who help us run GoLo, under confidentiality and data-processing obligations:"
+        },
+        {
+          "kind": "ul",
+          "items": [
+            "<strong>Netlify</strong> — hosts and delivers the app",
+            "<strong>Supabase</strong> — provides our backend database, authentication, and file storage",
+            "<strong>Push-notification infrastructure</strong> — the browser and operating-system push services that deliver optional alerts to your device"
+          ]
+        },
+        {
+          "kind": "p",
+          "html": "These providers do not have independent rights to use your data beyond providing services to GoLo."
+        },
+        {
+          "kind": "p",
+          "html": "<strong>Services we no longer use.</strong> Before October 10, 2026, two independent services were also involved. When you searched for courses near you, our server sent an approximate location (rounded to roughly one kilometer), or a place name you typed, to OpenStreetMap's Nominatim service to find your city. For some courses, your device loaded a course photo directly from Unsplash, which received your device's IP address and basic browser information, as any website does when it serves an image. Neither service received your name, email address, or account information. GoLo no longer uses either one."
+        },
+        {
+          "kind": "p",
+          "html": "<strong>We do not name an analytics or crash-reporting provider because we do not use one.</strong> GoLo does not collect product-analytics or crash telemetry from your device today. If that changes, we will update this Policy before any such collection begins."
+        }
+      ]
+    },
+    {
+      "num": "04",
+      "id": "app-section-4",
+      "title": "Settlement Tracking — No Money Involved",
+      "blocks": [
+        {
+          "kind": "p",
+          "html": "GoLo lets players keep a running scoreboard of who owes whom for their side games, in the amounts the players agreed among themselves (usually dollar amounts, such as so much per skin). This is strictly a scorekeeping ledger. <strong>GoLo never processes, transmits, holds, or facilitates any transfer of money, and never charges or stores payment card information.</strong> Marking a tally \"settled\" is a manual, informational action taken by the user; any actual exchange of money between players happens entirely outside the app, at the users' own discretion, and GoLo has no visibility into or responsibility for it. If you save a Venmo username, we share it only with a player who owes you in an open settle-up, as a link to your public Venmo profile. When that player taps <strong>Open Venmo</strong>, GoLo first tries to copy a note with the amount to their device's clipboard so they can paste it in Venmo. A <strong>Copy amount and note</strong> button copies the amount and a note on request. No amount is placed in the link, GoLo sends nothing to Venmo and receives nothing back, and GoLo is not connected to Venmo or any payment service. GoLo is not a payment, wagering, or money-services product."
+        }
+      ]
+    },
+    {
+      "num": "05",
+      "id": "app-section-5",
+      "title": "Your Choices and Rights",
+      "blocks": [
+        {
+          "kind": "ul",
+          "items": [
+            "<strong>Access and correction:</strong> Edit your profile in the app, or email support@golo.golf.",
+            "<strong>Export your data:</strong> Use <strong>You → Download my data</strong> in the app, or the export option on <strong><code>/delete-account</code></strong>, to download a copy of the records we hold about your account.",
+            "<strong>Delete your account:</strong> Use <strong>You → Delete account</strong> in the app, or go to <strong><code>/delete-account</code></strong> on the web — that page works whether or not you are signed in. If you cannot access your account, email support@golo.golf from the address on the account with \"Delete My Account\" in the subject line, and we will verify and act on your request.",
+            "<strong>Location and notifications:</strong> Turn individual notification categories off in the app, and manage or revoke location and notification permissions anytime in your device or browser settings.",
+            "<strong>Marketing communications:</strong> You may opt out of non-essential emails via the unsubscribe link or by contacting support."
+          ]
+        }
+      ]
+    },
+    {
+      "num": "06",
+      "id": "app-section-6",
+      "title": "Data Retention",
+      "blocks": [
+        {
+          "kind": "p",
+          "html": "We retain your account and activity data while your account is active."
+        },
+        {
+          "kind": "p",
+          "html": "When you delete your account, we delete your profile — name, handle, email, phone, handicap, home club, Venmo username — along with your profile photo, in-app support reports and any screenshots attached to them, notifications, push devices, invitations, Crew connections and Crew invitations, and any rounds nobody else played in. We process verified deletion requests within 30 days; deletions you run yourself in the app or on the web take effect immediately."
+        },
+        {
+          "kind": "p",
+          "html": "<strong>Rounds you played with other people are shared records and are not deleted.</strong> Those rounds, the participant rows that carry the scoring and settlement math, and any settlement records between you and another player are retained for the other players, in anonymized form: your name is replaced with \"Former player\" and your email, phone, and profile photo are removed. This keeps their leaderboard and history intact. Text other players already received, such as notifications or round summaries, may still show your name."
+        }
+      ]
+    },
+    {
+      "num": "07",
+      "id": "app-section-7",
+      "title": "Data Security",
+      "blocks": [
+        {
+          "kind": "p",
+          "html": "We use industry-standard technical and organizational measures (encryption in transit, access controls, row-level authorization, hosted infrastructure with reputable providers) to protect your information. No system is perfectly secure, and we cannot guarantee absolute security."
+        }
+      ]
+    },
+    {
+      "num": "08",
+      "id": "app-section-8",
+      "title": "U.S.-Only Scope",
+      "blocks": [
+        {
+          "kind": "p",
+          "html": "GoLo is currently offered only within the United States. If you access the Service from outside the U.S., you do so on your own initiative and are responsible for compliance with local laws; we do not currently design GoLo to meet the requirements of non-U.S. privacy regimes (e.g., GDPR)."
+        }
+      ]
+    },
+    {
+      "num": "09",
+      "id": "app-section-9",
+      "title": "Changes to This Policy",
+      "blocks": [
+        {
+          "kind": "p",
+          "html": "We may update this Privacy Policy from time to time. We will post the revised version at /privacy with an updated effective date, and material changes will be communicated via the app or email."
+        }
+      ]
+    },
+    {
+      "num": "10",
+      "id": "app-section-10",
+      "title": "Contact Us",
+      "blocks": [
+        {
+          "kind": "p",
+          "html": "GoLo Golf LLC — Bend, Oregon, United States\nEmail: support@golo.golf"
+        }
+      ]
+    }
+  ]
+}
