@@ -95,7 +95,7 @@ export function FinalCTA({
               ))}
             </div>
           ) : (
-            <StoreButtons size="lg" align="center" />
+            <StoreButtons size="lg" page={page} align="center" />
           )}
           {fine && !split ? <p className={styles.fine}>{fine}</p> : null}
         </div>

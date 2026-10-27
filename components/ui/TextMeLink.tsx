@@ -5,10 +5,10 @@
  * Handles idle / submitting / success / error states. On success it shows the
  * lime confirmation for ~3.2s (per the design), then resets to idle.
  *
- * `id` exists because this renders twice on the home page while the app is
- * pre-launch — once in the hero, once in the closing band. Two copies sharing
- * one element id would break both the label association and aria-describedby,
- * so each instance names itself.
+ * `id` lets each instance name itself. The home page renders it once now
+ * (the hero; the closing band shows the store buttons), but two copies
+ * sharing one element id would break both the label association and
+ * aria-describedby, so any second placement must pass its own.
  */
 
 import { useEffect, useRef, useState } from "react";

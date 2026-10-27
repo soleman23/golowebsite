@@ -59,6 +59,12 @@ export type Capability = {
    */
   claimPhrases?: readonly string[];
   /**
+   * Extra words that, in the same clause, mark this capability as not out yet
+   * ("coming soon"). Only for a built capability waiting on a store; the
+   * checker's shared status words stay strict for everything else.
+   */
+  statusPhrases?: readonly string[];
+  /**
    * Phrases that overstate a capability even while it's live: it does
    * something, just not this. `npm run lint` fails on any of them in site
    * copy and metadata, whatever the status, unless the sentence denies it or
@@ -288,14 +294,19 @@ export const capabilities = [
   /* ---------------------------------------------------------- testing */
   {
     id: "ios-app",
-    label: "iPhone app in the App Store",
-    // Built and in TestFlight; the listing waits on Apple. Follows
-    // siteConfig.iosLive; see the note at the top of the file.
+    label: "iPhone app",
+    // Built, not yet in the App Store: Apple's review hasn't started. Follows
+    // siteConfig.iosLive; see the note at the top of the file. It stays off
+    // the /features columns until it's live: neither "in testing with real
+    // groups" nor "on the list, not built" is true of it today.
     status: siteConfig.iosLive ? "live" : "testing",
     summary:
       "The iPhone app, coming to the App Store. Until then, GoLo runs in Safari on iPhone.",
     verified: OWNER_1026,
-    roadmap: true,
+    roadmap: siteConfig.iosLive,
+    // Only this capability may be excused by "coming soon" / "coming to"
+    // (scripts/check-content.mjs): it is built and waiting on the store.
+    statusPhrases: ["coming soon", "coming to"],
     claimPhrases: [
       "iphone app",
       "ios app",

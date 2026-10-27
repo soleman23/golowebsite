@@ -208,12 +208,22 @@ function sentenceAt(text, index, length) {
 const ABOUT_GOLO = /\bGoLo\b|\bthe app\b/i;
 
 /**
- * A status anywhere in the phrase's clause says it isn't working. "Coming
- * soon" and "coming to" cover a built thing that isn't out yet: "the iPhone
- * app is coming to the App Store".
+ * A status anywhere in the phrase's clause says it isn't working. A
+ * capability's own `statusPhrases` add to it for that capability only:
+ * "coming soon" excuses the iPhone app, which is built and waiting on the
+ * store, but never a planned or cut feature ("auto-presses coming soon").
  */
 const STATUS =
-  /\b(not built|isn['’]t built|aren['’]t built|on the list|not in the app|isn['’]t in the app|aren['’]t in the app|in testing|not yet|coming soon|coming to|we cut|was cut|were cut|been cut|cut from|(does not|doesn['’]t) track)\b/i;
+  /\b(not built|isn['’]t built|aren['’]t built|on the list|not in the app|isn['’]t in the app|aren['’]t in the app|in testing|not yet|we cut|was cut|were cut|been cut|cut from|(does not|doesn['’]t) track)\b/i;
+
+const escapeRegex = (text) => text.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+const statusFor = (cap) =>
+  cap.statusPhrases?.length
+    ? new RegExp(
+        STATUS.source.replace(/\)\\b$/, `|${cap.statusPhrases.map(escapeRegex).join("|")})\\b`),
+        "i",
+      )
+    : STATUS;
 
 /** A negation counts only before the phrase, in the same clause. */
 const NEGATION =
@@ -241,10 +251,10 @@ function clauseAt(sentence, offset, length, breaks) {
   return { text: sentence.slice(start, end), offset: offset - start };
 }
 
-function denied(sentence, offset, length) {
+function denied(sentence, offset, length, status = STATUS) {
   // "GoLo works offline; trip mode is not built" denies only trip mode, and
   // "no setup required and GPS yardages" doesn't deny the yardages.
-  if (STATUS.test(clauseAt(sentence, offset, length, STATUS_BREAK).text)) {
+  if (status.test(clauseAt(sentence, offset, length, STATUS_BREAK).text)) {
     return true;
   }
   const clause = clauseAt(sentence, offset, length, NEGATION_BREAK);
@@ -312,7 +322,7 @@ for (const file of files) {
           m.index,
           m[0].length,
         );
-        if (denied(sentence, offset, m[0].length)) continue;
+        if (denied(sentence, offset, m[0].length, statusFor(cap))) continue;
         report(
           file,
           line,

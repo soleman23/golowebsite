@@ -31,7 +31,7 @@ export const finalCtaLead =
 export const finalCtaFine = siteConfig.iosLive
   ? // claim-ok: only once siteConfig.iosLive is set, with the App Store listing public
     "On iPhone & Android"
-  : "Android on Google Play · On iPhone, use the web app for now";
+  : "Android on Google Play today";
 
 /**
  * The words in the download row (components/ui/StoreButtons.tsx). Until

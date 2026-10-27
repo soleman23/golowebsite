@@ -7,7 +7,7 @@
 - /games and /blog are static, so their title, description, canonical and Open Graph tags are in the initial <head> rather than streamed into the body.
 - Every route sets its own canonical, og:url, og:title and og:description — through lib/pageMetadata.ts for the static pages, generateMetadata for game guides and articles. The root layout carries only site-wide defaults (site name, share card, card type), so nothing page-specific leaks to routes that don't override it.
 - X / Twitter cards come from each page's Open Graph tags: the layout sets only the card type, and Next fills title, description and image from openGraph.
-- Every "get the app" button — nav pill, page CTAs, closing bands — reads appCtaLabel (lib/content/nav.ts): "Get the launch link" while appLive is false, "Get the app" after. The /games closing-band lead follows appLive too.
+- Every "get the app" button — nav pill, page CTAs, closing bands — reads appCtaLabel (lib/content/nav.ts): "Get the app" since Google Play went live on 2026-10-26 (it was "Get the launch link" while appLive gated it). The /games closing-band lead says to download the app.
 - Sitemap omits lastModified on undated static pages and game guides. The blog index uses its newest post's date; article publication dates and legal effective dates remain.
 - Lint, typecheck and production build verified. No deployment performed.
 
@@ -22,7 +22,7 @@ Owner decisions this round: the web app is not public yet; Instagram is @gologol
 - Game guides have keyword titles (GameDetail.seoTitle); the H1 stays the game's name. Closest to Pin and Birdies descriptions expanded.
 - Guide/article overlap: /blog/nassau and /blog/skins-carryover retitled to their own angle, with short meta descriptions (Post.metaDescription). All four paired posts link their guide in the intro; the four guides link back ("Deeper reading", under the tips).
 - Home game cards link to all eight guides.
-- Prelaunch wording: the default closing-band lead and the footer "Download" link follow appLive.
+- Launch wording: since 2026-10-26 the default closing-band lead and the footer "Download" link no longer follow appLive; the store row shows with Google Play live.
 - Footer column labels are no longer h2s.
 - Baseline security headers (HSTS without includeSubDomains, nosniff, Referrer-Policy, X-Frame-Options, Permissions-Policy) in next.config.mjs.
 - Lint, typecheck and production build verified; pages checked in the dev server at 320 px and desktop.
@@ -42,7 +42,7 @@ Domain property `sc-domain:golo.golf`, already verified. Taken while production 
 
 ## Implemented October 10, 2026 (branch seo/phase-2)
 
-- The /blog and /faq hero status pills ("isn't live yet", "Not live yet") render only while appLive is false; their labels moved to lib/content.
+- The /blog hero status pill renders only while appLive is false; the /faq pill follows the ios-app capability ("On Google Play · iPhone app coming soon"). Their labels live in lib/content.
 - Leads record where the visit started. PhoneLead and NewsletterLead gain nullable `landingPath` (first path of the visit, no query string) and `referrerHost` (outside referrer's host only; empty for direct visits and in-site reloads). Captured once per page load by LandingCapture in the root layout and held in memory only, so the cookie policy's storage inventory is unchanged. The API drops a malformed value instead of rejecting the lead.
 - PhoneLead `source` is now the form's placement (`hero`, `final_cta_<page>`). Before this, every phone lead was saved as `hero`, closing-band ones included.
 - Web app noindex confirmed live: soleman23/golo PR #499 merged October 8 and gologolf.netlify.app serves `<meta name="robots" content="noindex">`.

@@ -15,8 +15,9 @@
  * `destination_configured: false` on store_button_click means a store link
  * fell back to "#get": a misconfiguration worth alerting on.
  *
- * claim-ok-file: the App Store link and its "Download on the" label render
- * only once siteConfig.iosLive is set.
+ * The App Store link needs both iosLive and a real https URL: flipping
+ * iosLive before NEXT_PUBLIC_APP_STORE_URL is set keeps the "coming soon"
+ * tile and the web-app line instead of a pill that links back to "#get".
  */
 
 import { siteConfig } from "@/lib/siteConfig";
@@ -63,16 +64,20 @@ function GooglePlayGlyph({ size = 22 }: { size?: number }) {
 
 type StoreButtonsProps = {
   size?: "md" | "lg";
+  /** Names the page in the cta_click param, as the other CTAs do. */
+  page?: string;
   align?: "start" | "center";
   className?: string;
 };
 
 export function StoreButtons({
   size = "md",
+  page = "home",
   align = "start",
   className,
 }: StoreButtonsProps) {
   const placement = size === "lg" ? "final_cta" : "hero";
+  const iosReady = siteConfig.iosLive && siteConfig.appStoreUrl.startsWith("https://");
   const external = (href: string) => href.startsWith("http");
   const onStoreClick = (store: "app_store" | "google_play", href: string) => {
     track("store_button_click", {
@@ -105,7 +110,7 @@ export function StoreButtons({
         {/* The live store first: until the App Store app is out, its
             "coming soon" tile follows Google Play, so on a phone, where the
             two stack, the button that works is the one on top. */}
-        {siteConfig.iosLive ? appStoreLink : null}
+        {iosReady ? appStoreLink : null}
         <a
           href={siteConfig.googlePlayUrl}
           className={buttonClass}
@@ -121,7 +126,7 @@ export function StoreButtons({
             <span className={styles.labelMain}>{copy.googlePlay.main}</span>
           </span>
         </a>
-        {siteConfig.iosLive ? null : (
+        {iosReady ? null : (
           <div className={`${buttonClass} ${styles.soon}`}>
             <AppleGlyph size={size === "lg" ? 25 : 24} />
             <span className={styles.label}>
@@ -132,7 +137,7 @@ export function StoreButtons({
         )}
       </div>
 
-      {siteConfig.iosLive ? null : (
+      {iosReady ? null : (
         <p className={styles.webApp}>
           {copy.webApp.lead}{" "}
           <a
@@ -141,7 +146,7 @@ export function StoreButtons({
             aria-label={copy.webApp.label}
             target="_blank"
             rel="noopener noreferrer"
-            onClick={() => track("cta_click", { page: placement, cta: "web_app" })}
+            onClick={() => track("cta_click", { page, cta: "web_app", placement })}
           >
             {copy.webApp.link} →
           </a>

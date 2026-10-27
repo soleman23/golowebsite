@@ -233,6 +233,26 @@ const cases = [
     { landingSource: "table_tent", ...NONE },
   ],
   [
+    "table tent with another placement gives null",
+    { ...TABLE_TENT, landingContent: "bio" },
+    { landingSource: "table_tent", ...NONE },
+  ],
+  [
+    "table tent with a near-miss placement gives null",
+    { ...TABLE_TENT, landingContent: "qr_code" },
+    { landingSource: "table_tent", ...NONE },
+  ],
+  [
+    "table tent with an unlisted print campaign gives null",
+    { ...TABLE_TENT, landingCampaign: "golo_launch_2026q4_other" },
+    { landingSource: "table_tent", ...NONE },
+  ],
+  [
+    "table tent values are trimmed and lower-cased",
+    { landingSource: "TABLE_TENT", landingMedium: " Print ", landingCampaign: "GOLO_LAUNCH_2026Q4_SIM_BAY", landingContent: "QR" },
+    { ...TABLE_TENT },
+  ],
+  [
     "print campaign on a social source gives null",
     { ...INSTAGRAM_BIO, landingCampaign: "golo_launch_2026q4_sim_bay" },
     { landingSource: "instagram", ...NONE },

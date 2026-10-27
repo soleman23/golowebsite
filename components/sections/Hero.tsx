@@ -66,7 +66,7 @@ export function Hero() {
           </h1>
 
           <p className={styles.lead}>
-            Skins, Nassau, the press when you’re two down — GoLo runs every side game,
+            Skins, Nassau, wolf — GoLo runs every side game,
             does the math you hate, and has the{" "}
             <strong>settle-up ready</strong> before you hit the parking lot.
           </p>
