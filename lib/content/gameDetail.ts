@@ -243,7 +243,7 @@ const nassau: GameDetailCopy = {
     tips: {
       kicker: "PLAY SMART",
       title: "When to press — and when to shut up.",
-      lead: "A Nassau rewards momentum. Read your own game before you throw more money at a nine you're spraying all over the lot.",
+      lead: "A Nassau rewards momentum. Read your own game before you throw another match at a nine you're spraying all over the lot.",
     },
     glossary: { kicker: "TALK THE TALK", title: "The terms you'll hear on the tee." },
     faq: { kicker: "NASSAU, ANSWERED", title: "Before you tee it up." },
@@ -331,7 +331,7 @@ const nassau: GameDetailCopy = {
     {
       id: "what-is-a-press",
       q: "What exactly is a press?",
-      a: "When you fall two holes down, you can start a new match — same amount — that only covers the holes still to play on that nine. It’s a fresh chance to win money back on a nine you’ve already lost. GoLo doesn’t take presses on a Nassau; in the app they’re on the Overall Match game.",
+      a: "When you fall two holes down, you can start a new match — same amount — that only covers the holes still to play on that nine. It’s a fresh chance to get even on a nine you’ve already lost. GoLo doesn’t take presses on a Nassau; in the app they’re on the Overall Match game.",
     },
     {
       id: "auto-press",
@@ -575,7 +575,7 @@ const wolf: GameDetailCopy = {
     kicker: "WATCH IT PLAY OUT", title: "Three trips alone, one of them blind.", lead: "Four players, $1 a point. You were Wolf five times and went it alone on three of them — including the 18th, before anyone had hit a shot.",
     bets: [
       { tag: "H2", title: "Took Dave off the tee", detail: "His birdie held up — two points each", value: "+2", tone: "good" },
-      { tag: "H7", title: "Lone Wolf, cashed", detail: "Passed on all three, stuffed it to four feet", value: "+4", tone: "good" },
+      { tag: "H7", title: "Lone Wolf, won", detail: "Passed on all three, stuffed it to four feet", value: "+4", tone: "good" },
       { tag: "H11", title: "Lone Wolf, buried", detail: "Alone into the wind, made bogey", value: "0", tone: "bad" },
       { tag: "H18", title: "Blind Wolf", detail: "Declared before anyone hit — double or nothing", value: "+8", tone: "good" },
       { tag: "REST", title: "The other fourteen holes", detail: "Partner wins and two holes beating the other team", value: "+12", tone: "neutral" },
@@ -612,7 +612,7 @@ const wolf: GameDetailCopy = {
     { icon: "wolf", title: "Lone Wolf", body: "Turn down all three drives and play against the best ball of the group for four points." },
     { icon: "shield", title: "Blind Wolf", body: "Call it before a ball is struck. Most groups pay eight points if you pull it off." },
     { icon: "auto", title: "Rotation and the last two", body: "GoLo handles holes 17 and 18 using the trailing players or a restarted order." },
-    { icon: "cash", title: "Points to cash", body: "Settle the spread between every pair, then collapse the grid into one number per player." },
+    { icon: "cash", title: "Points to the settle-up", body: "Settle the spread between every pair, then collapse the grid into one number per player." },
   ],
   tips: [
     { tone: "good", title: "Judge the drive, not the driver", body: "Take the ball that is playable, even if it belongs to the higher handicap." },
@@ -792,7 +792,7 @@ const closestToPin: GameDetailCopy = {
     { icon: "pin", title: "Greenies on every par 3", body: "Four separate greenies over 18 holes, one on each par 3." },
     { icon: "target", title: "Closest in two", body: "Run it on a par 5 and measure after everyone’s second shot." },
     { icon: "drive", title: "Approach on a marked par 4", body: "Settle on approach shots instead of tee shots." },
-    { icon: "cash", title: "One for the whole round", body: "Everybody puts in once and the tightest single shot takes it." },
+    { icon: "cash", title: "One for the whole round", body: "One amount for the round, and the tightest single shot wins it." },
   ],
   tips: [
     { tone: "good", title: "Play to the middle when the pin is tucked", body: "Thirty feet on the green beats hole-high in the sand every time." },

@@ -159,6 +159,12 @@ removed on October 20, 2026 (see "Microsoft Clarity (off)" below).
   opt-out build read only that key and treat a missing value as allowed.
 - "Privacy choices" in the footer links to `/privacy#analytics-choices`, the
   persistent control. The same control is on `/cookies`.
+- Not governed by the choice: the Google Play button's install referrer.
+  When the landing carried a campaign from the link dictionary
+  (`lib/campaigns.ts`), the Play link adds its source, medium and campaign as
+  `&referrer=` (`playStoreUrl`), whatever the analytics choice, because it's
+  part of the link the visitor follows. No cookie and nothing personal. The
+  privacy policy says so under Website Analytics → "Links to Google Play".
 - Withdrawal reloads the page because Google documents `ga-disable-<ID>` only
   when it's set before gtag runs; a fresh page without the script is what
   guarantees collection has ended.

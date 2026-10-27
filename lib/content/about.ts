@@ -53,7 +53,7 @@ export const aboutContent = {
 
   money: {
     kicker: "WHAT IT DOESN’T DO",
-    body: `${moneyLimit} It doesn’t take a cut. Your group settles up outside the app, in cash, Venmo or whatever it already uses.`,
+    body: `${moneyLimit} It doesn’t take a cut. Your group settles up outside the app, in person, on Venmo or however it already does.`,
   },
 
   honesty: {

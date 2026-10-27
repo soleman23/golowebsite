@@ -122,8 +122,8 @@ export const siteConfig = {
   showTestimonials: boolFlag(process.env.NEXT_PUBLIC_SHOW_TESTIMONIALS, false),
 
   /**
-   * The full-launch switch: pricing, the Terms and the "in beta" lines. While
-   * false, /features keeps "free while we're in beta" and its pricing note,
+   * The full-launch switch: pricing and the Terms. While
+   * false, /features keeps its "free, no ads" pill and pricing note,
    * and /blog keeps its build-notes pill. It no longer gates the store
    * buttons: the Android app is live on Google Play, so the download row
    * shows everywhere (StoreButtons; the App Store follows `iosLive`).

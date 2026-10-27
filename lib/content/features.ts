@@ -19,8 +19,9 @@ import { siteConfig } from "@/lib/siteConfig";
 import { capabilitiesWithStatus, type CapabilityStatus } from "./capabilities";
 
 /**
- * The full launch (pricing and the "in beta" lines), not the Android one: it
- * follows siteConfig.appLive, as these lines did before the store apps split.
+ * The full launch (pricing set, the Terms approved), not the Android one: it
+ * follows siteConfig.appLive. Nothing it gates says "beta": GoLo has been
+ * live on Google Play and the web since 2026-10-26.
  */
 const launched = siteConfig.appLive;
 
@@ -276,12 +277,10 @@ const roadmapLines = (status: CapabilityStatus): string[] =>
     .filter((c) => c.roadmap)
     .map((c) => c.label);
 
-/** The roadmap section's heading copy. "In beta" stops being true at launch. */
+/** The roadmap section's heading copy. */
 export const roadmapIntro = {
   kicker: "WHERE THE APP ACTUALLY IS",
-  title: launched
-    ? "Here’s the honest list."
-    : "We’re in beta, so here’s the honest list.",
+  title: "Here’s the honest list.",
   lead: "Nothing on this page is a mockup of something we hope to build someday, but not everything is finished either. Three columns, no marketing.",
 };
 
@@ -320,7 +319,7 @@ export const betaQuotes: BetaQuote[] = [];
 export const pricing = {
   kicker: "WHAT IT COSTS",
   value: "Free",
-  qualifier: "while we're in beta",
+  qualifier: "no ads, no in-app purchases",
   body: "No card, no ads, no trial clock. If we ever charge for something, it'll be small, it'll be obvious, and you'll hear it from us before it happens — not from a paywall on the 14th tee.",
   items: [
     "Every game and every feature on this page",
@@ -338,7 +337,7 @@ export const quickAnswers: QuickAnswer[] = [
     id: "move-the-money",
     question: "Does GoLo move the money?",
     answer:
-      "No. GoLo tracks who owes what and reduces it to a short settle-up list — then you settle up outside the app, in cash, Venmo, Zelle or however your group already does it. Nothing runs through us, and we never see the money.",
+      "No. GoLo tracks who owes what and reduces it to a short settle-up list — then you settle up outside the app, in person, by Venmo, Zelle or however your group already does it. Nothing runs through us, and we never see the money.",
   },
   {
     id: "everyone-need-the-app",
@@ -359,15 +358,19 @@ export const quickAnswers: QuickAnswer[] = [
       // claim-ok: the list after "doesn't do today:" is what GoLo doesn't do
       "Most of them. Skins carryover on or off, which skins count, how Best Score splits, net or gross — you set it at the first tee and the app scores it your way. What it doesn’t do today: automatic presses, presses on a Nassau (they’re on the Overall Match game), 90% allowances, or playing off the low man. Everyone gets their full course handicap.",
   },
-  // Answers a pre-launch question, so it goes when the app does.
+  // Where to get it and what it costs; goes once pricing is set (appLive).
   ...(launched
     ? []
     : [
         {
           id: "launch-and-cost",
-          question: "When does it launch, and what will it cost?",
+          question: "Where do I get it, and what does it cost?",
           answer:
-            "We’re in beta with real groups and we don’t have a public date yet — when we do, it’ll be on the blog and in the newsletter before it’s anywhere else. It’s free while we’re in beta.",
+            siteConfig.iosLive
+              ? // claim-ok: only once siteConfig.iosLive is set, with the App Store listing public
+                "GoLo is live on the web, on Google Play and in the App Store. It’s free: no ads and no in-app purchases."
+              : // claim-ok: the iPhone app is named as coming, not available
+                "GoLo is live on Google Play and on the web. The iPhone app is coming to the App Store; until then, iPhone golfers use the web app in Safari. It’s free: no ads and no in-app purchases.",
         },
       ]),
 ];

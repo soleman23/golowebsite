@@ -125,9 +125,9 @@ const roster = {
   birdies: {
     icon: "bird",
     name: "Birdies",
-    rule: "Every birdie on the card gets paid.",
-    desc: "A standing bounty on every birdie — paid out by everyone who didn’t make one.",
-    how: "Set a per-birdie amount. Card a birdie and every other player pays you. Eagles usually count double.",
+    rule: "Every birdie on the card counts.",
+    desc: "A standing bounty on every birdie — owed by everyone who didn’t make one.",
+    how: "Set a per-birdie amount. Card a birdie and every other player owes you. Eagles usually count double.",
     players: "Any group",
     format: "Per-birdie bounty",
     tags: ["side"],

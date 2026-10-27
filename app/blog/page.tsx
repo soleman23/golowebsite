@@ -91,7 +91,7 @@ export default function BlogPage() {
         meta={
           <>
             {siteConfig.appLive ? null : (
-              <StatusPill variant="testing" label={blogPrelaunchStatus} />
+              <StatusPill variant="today" label={blogPrelaunchStatus} />
             )}
             <span className={styles.metaChip}>{blogCountLine}</span>
           </>

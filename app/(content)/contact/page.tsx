@@ -51,7 +51,7 @@ export default function ContactPage() {
         layout="split"
         page="contact"
         kicker="SCORE IT. TRACK IT. SETTLE IT."
-        title="Message sent. Now go take their money."
+        title="Message sent. Now go settle the back nine."
         buttons={[
           {
             label: appCtaLabel,

@@ -135,7 +135,7 @@ export const roundSteps: RoundStep[] = [
     bullets: [
       "Netted across every game on the card",
       "A couple of settle-ups, not a pile of IOUs",
-      "Cash, Venmo, Zelle — outside the app",
+      "In person, Venmo, Zelle — outside the app",
     ],
     link: { label: "See the math on this round ↓", href: "#math" },
     screen: "/images/how-it-works/step-06.webp",
@@ -236,7 +236,7 @@ export const betExample = {
   ] as { from: HiwPlayerName; to: HiwPlayerName; amount: string }[],
   settleBody:
     "Every game netted against every other. Tom, the guest without the app, goes home $19 up, and Sarah settles with him once instead of game by game.",
-  settleFooter: "Cash, Venmo, Zelle — your call. Nothing runs through GoLo.",
+  settleFooter: "In person, Venmo, Zelle — your call. Nothing runs through GoLo.",
 } as const;
 
 export const guestsSection = {
