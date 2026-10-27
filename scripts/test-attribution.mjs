@@ -41,6 +41,9 @@ registerHooks({
 const { subscribeSchema, textLinkSchema } = await import(
   new URL("../lib/validation.ts", import.meta.url).href
 );
+const { campaignTags, playStoreUrl, sourceName } = await import(
+  new URL("../lib/campaigns.ts", import.meta.url).href
+);
 
 const NONE = { landingMedium: null, landingCampaign: null, landingContent: null };
 const INSTAGRAM_BIO = {
@@ -48,6 +51,17 @@ const INSTAGRAM_BIO = {
   landingMedium: "organic_social",
   landingCampaign: "golo_prelaunch_2026q4",
   landingContent: "bio",
+};
+
+/**
+ * The printed sim-bay table tent's QR link (soleman23/golo
+ * tools/store-assets/simulator-table-tent.html), as its query string says it.
+ */
+const TABLE_TENT = {
+  landingSource: "table_tent",
+  landingMedium: "print",
+  landingCampaign: "golo_launch_2026q4_sim_bay",
+  landingContent: "qr",
 };
 
 /** [name, attribution payload, expected stored values] */
@@ -204,6 +218,61 @@ const cases = [
     { landingSource: "instagram", ...NONE },
   ],
   [
+    "table tent QR set is kept",
+    TABLE_TENT,
+    { ...TABLE_TENT },
+  ],
+  [
+    "table tent without a placement gives null",
+    { ...TABLE_TENT, landingContent: undefined },
+    { landingSource: "table_tent", ...NONE },
+  ],
+  [
+    "table tent with the old short campaign sim_bay gives null",
+    { ...TABLE_TENT, landingCampaign: "sim_bay" },
+    { landingSource: "table_tent", ...NONE },
+  ],
+  [
+    "table tent with another placement gives null",
+    { ...TABLE_TENT, landingContent: "bio" },
+    { landingSource: "table_tent", ...NONE },
+  ],
+  [
+    "table tent with a near-miss placement gives null",
+    { ...TABLE_TENT, landingContent: "qr_code" },
+    { landingSource: "table_tent", ...NONE },
+  ],
+  [
+    "table tent with an unlisted print campaign gives null",
+    { ...TABLE_TENT, landingCampaign: "golo_launch_2026q4_other" },
+    { landingSource: "table_tent", ...NONE },
+  ],
+  [
+    "table tent values are trimmed and lower-cased",
+    { landingSource: "TABLE_TENT", landingMedium: " Print ", landingCampaign: "GOLO_LAUNCH_2026Q4_SIM_BAY", landingContent: "QR" },
+    { ...TABLE_TENT },
+  ],
+  [
+    "print campaign on a social source gives null",
+    { ...INSTAGRAM_BIO, landingCampaign: "golo_launch_2026q4_sim_bay" },
+    { landingSource: "instagram", ...NONE },
+  ],
+  [
+    "social campaign on the table tent gives null",
+    { ...TABLE_TENT, landingCampaign: "golo_prelaunch_2026q4" },
+    { landingSource: "table_tent", ...NONE },
+  ],
+  [
+    "table tent with a social medium gives null",
+    { ...TABLE_TENT, landingMedium: "organic_social" },
+    { landingSource: "table_tent", ...NONE },
+  ],
+  [
+    "print medium on a social source gives null",
+    { ...INSTAGRAM_BIO, landingMedium: "print", landingCampaign: "golo_launch_2026q4_sim_bay", landingContent: "qr" },
+    { landingSource: "instagram", ...NONE },
+  ],
+  [
     "utm_source=5415551234 gives null source",
     { landingSource: "5415551234" },
     { landingSource: undefined, ...NONE },
@@ -266,9 +335,74 @@ for (const [form, schema, base] of forms) {
   }
 }
 
+// The tent's printed link, read the way lib/attribution.ts reads a landing
+// URL: the source through sourceName(), the other three through campaignTags().
+// If this fails, a change here broke a QR code that's already on paper.
+{
+  const query = new URLSearchParams(
+    "utm_source=table_tent&utm_medium=print&utm_campaign=golo_launch_2026q4_sim_bay&utm_content=qr",
+  );
+  const source = sourceName(query.get("utm_source"));
+  const tags = campaignTags(
+    source,
+    query.get("utm_medium"),
+    query.get("utm_campaign"),
+    query.get("utm_content"),
+  );
+  const got = { landingSource: source, ...tags };
+  const wrong = Object.entries(TABLE_TENT).filter(([key, value]) => got[key] !== value);
+  if (wrong.length) {
+    failures.push(`table tent URL: ${wrong.map(([key, value]) => `${key} = ${JSON.stringify(got[key])}, expected ${JSON.stringify(value)}`).join("; ")}`);
+  } else {
+    passed += 1;
+  }
+}
+
+// Play's install referrer: the dictionary campaign rides on the listing URL
+// as one URL-encoded `referrer` value; anything else leaves the plain listing.
+let playCases = 0;
+{
+  const PLAY = "https://play.google.com/store/apps/details?id=golf.golo.app";
+  const check = (name, got, want) => {
+    playCases += 1;
+    if (got === want) passed += 1;
+    else failures.push(`playStoreUrl: ${name}: got ${got}, expected ${want}`);
+  };
+  check(
+    "the tent's campaign becomes the referrer",
+    playStoreUrl(PLAY, TABLE_TENT),
+    `${PLAY}&referrer=utm_source%3Dtable_tent%26utm_medium%3Dprint%26utm_campaign%3Dgolo_launch_2026q4_sim_bay`,
+  );
+  check(
+    "a profile link's campaign becomes the referrer",
+    playStoreUrl(PLAY, INSTAGRAM_BIO),
+    `${PLAY}&referrer=utm_source%3Dinstagram%26utm_medium%3Dorganic_social%26utm_campaign%3Dgolo_prelaunch_2026q4`,
+  );
+  const decoded = new URL(playStoreUrl(PLAY, TABLE_TENT)).searchParams;
+  check("the listing id survives", decoded.get("id"), "golf.golo.app");
+  check(
+    "the referrer decodes to the three tags",
+    decoded.get("referrer"),
+    "utm_source=table_tent&utm_medium=print&utm_campaign=golo_launch_2026q4_sim_bay",
+  );
+  check("no landing leaves the listing", playStoreUrl(PLAY, undefined), PLAY);
+  check("a direct visit leaves the listing", playStoreUrl(PLAY, { landingPath: "/" }), PLAY);
+  check(
+    "a source with no dictionary campaign leaves the listing",
+    playStoreUrl(PLAY, { landingSource: "chatgpt.com", landingMedium: null, landingCampaign: null, landingContent: null }),
+    PLAY,
+  );
+  check("a placeholder href is left alone", playStoreUrl("#get", TABLE_TENT), "#get");
+  check(
+    "a non-Play URL is left alone",
+    playStoreUrl("https://apps.apple.com/app/id1", TABLE_TENT),
+    "https://apps.apple.com/app/id1",
+  );
+}
+
 if (failures.length) {
   for (const line of failures) console.error(line);
   console.error(`\n${failures.length} failed, ${passed} passed.`);
   process.exit(1);
 }
-console.log(`Attribution: ${passed} cases passed (${cases.length} attribution + 2 page-path cases per form × ${forms.length} forms).`);
+console.log(`Attribution: ${passed} cases passed (${cases.length} attribution + 2 page-path cases per form × ${forms.length} forms, + the table tent URL, + ${playCases} Play referrer cases).`);

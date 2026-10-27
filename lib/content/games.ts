@@ -15,7 +15,6 @@
  */
 
 import type { IconName } from "@/components/ui/Icon";
-import { siteConfig } from "@/lib/siteConfig";
 
 export type GameTag = "pots" | "match" | "points" | "side";
 
@@ -126,9 +125,9 @@ const roster = {
   birdies: {
     icon: "bird",
     name: "Birdies",
-    rule: "Every birdie on the card gets paid.",
-    desc: "A standing bounty on every birdie — paid out by everyone who didn’t make one.",
-    how: "Set a per-birdie amount. Card a birdie and every other player pays you. Eagles usually count double.",
+    rule: "Every birdie on the card counts.",
+    desc: "A standing bounty on every birdie — owed by everyone who didn’t make one.",
+    how: "Set a per-birdie amount. Card a birdie and every other player owes you. Eagles usually count double.",
     players: "Any group",
     format: "Per-birdie bounty",
     tags: ["side"],
@@ -157,14 +156,12 @@ export const gamesHero = {
 };
 
 /**
- * The /games closing band. The lead follows siteConfig.appLive the way the
- * band's own buttons do: no "download it" before there's anything to download.
+ * The /games closing band. The band's own download row sits under it: Google
+ * Play, and the web app for iPhone until the App Store app is out.
  */
 export const gamesFinalCta = {
   title: "Stack 'em all. Settle in seconds.",
-  lead: siteConfig.appLive
-    ? "Set up every game before the first tee and let GoLo keep score. Download it, and never do parking-lot math again."
-    : "Set up every game before the first tee and let GoLo keep score. Get the launch link and let GoLo handle the parking-lot math.",
+  lead: "Set up every game before the first tee and let GoLo keep score. Download it, and never do parking-lot math again.",
 };
 
 export function isGameSlug(slug: string): slug is GameSlug {

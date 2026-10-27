@@ -8,8 +8,8 @@
  *    copy as something GoLo does. A phrase passes only when its own clause
  *    denies it: a negation in front of it ("no GPS yardages", "doesn't do
  *    today: automatic presses, …"; "and", "but", "so" and ";" end its reach)
- *    or a status in the same clause ("iPhone and Android apps are on the list,
- *    not built"; only ";", dashes and "but" end that clause, since "and" so
+ *    or a status in the same clause ("the iPhone app is coming to the App
+ *    Store"; only ";", dashes and "but" end that clause, since "and" so
  *    often joins the very things being denied). In blog posts and game
  *    guides only copy about GoLo counts — a string that mentions GoLo or "the
  *    app" — so explaining an auto-press as golf is fine and saying GoLo does
@@ -207,9 +207,23 @@ function sentenceAt(text, index, length) {
 
 const ABOUT_GOLO = /\bGoLo\b|\bthe app\b/i;
 
-/** A status anywhere in the phrase's clause says it isn't working. */
+/**
+ * A status anywhere in the phrase's clause says it isn't working. A
+ * capability's own `statusPhrases` add to it for that capability only:
+ * "coming soon" excuses the iPhone app, which is built and waiting on the
+ * store, but never a planned or cut feature ("auto-presses coming soon").
+ */
 const STATUS =
   /\b(not built|isn['’]t built|aren['’]t built|on the list|not in the app|isn['’]t in the app|aren['’]t in the app|in testing|not yet|we cut|was cut|were cut|been cut|cut from|(does not|doesn['’]t) track)\b/i;
+
+const escapeRegex = (text) => text.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+const statusFor = (cap) =>
+  cap.statusPhrases?.length
+    ? new RegExp(
+        STATUS.source.replace(/\)\\b$/, `|${cap.statusPhrases.map(escapeRegex).join("|")})\\b`),
+        "i",
+      )
+    : STATUS;
 
 /** A negation counts only before the phrase, in the same clause. */
 const NEGATION =
@@ -237,10 +251,10 @@ function clauseAt(sentence, offset, length, breaks) {
   return { text: sentence.slice(start, end), offset: offset - start };
 }
 
-function denied(sentence, offset, length) {
+function denied(sentence, offset, length, status = STATUS) {
   // "GoLo works offline; trip mode is not built" denies only trip mode, and
   // "no setup required and GPS yardages" doesn't deny the yardages.
-  if (STATUS.test(clauseAt(sentence, offset, length, STATUS_BREAK).text)) {
+  if (status.test(clauseAt(sentence, offset, length, STATUS_BREAK).text)) {
     return true;
   }
   const clause = clauseAt(sentence, offset, length, NEGATION_BREAK);
@@ -308,7 +322,7 @@ for (const file of files) {
           m.index,
           m[0].length,
         );
-        if (denied(sentence, offset, m[0].length)) continue;
+        if (denied(sentence, offset, m[0].length, statusFor(cap))) continue;
         report(
           file,
           line,
@@ -555,6 +569,65 @@ for (const [section, served] of [
   }
   for (const slug of listed.filter((s) => !served.includes(s))) {
     report(RUN_SHEET, runSheetLine, `/${section}/${slug} is in the URL Inspection lists but isn't a page`);
+  }
+}
+
+/* ------------------------------------------------------------- vocabulary */
+
+/**
+ * Words that never appear in the site's copy (SIDE-GAME-POSITION §3 in
+ * soleman23/golo: GoLo is a scoreboard, not a betting app), and launch-state
+ * phrases that stopped being true when Android went live on 2026-10-26.
+ * Every file is checked, legal text included: a disclaimer that has to name
+ * what GoLo is not ("not a betting app", the Terms' "wager-style formats")
+ * carries `vocab-ok: <reason>` on its line, as any reviewed exception does.
+ * Golf's own terms are allowed: a pot bunker, white or red stakes, "at odds
+ * with".
+ */
+const NEVER_WORDS =
+  /\b(gambl[a-z]*|wager[a-z]*|stakes?|staked|staking|odds|betting|bets?|bettors?|pots?|pools?|purses?|winnings|payouts?|pay(s|ing)? out|paid out|payment processing|cash|cashed|cash out|anted|money on the line|who pays whom|pay through golo|tracks every dollar|beta|in beta|not live yet|isn['’]t live yet)\b/gi;
+const VOCAB_EXEMPT = new Set([]);
+/** Golf, not money: a pot bunker, white/red/yellow stakes, "at odds with". */
+const GOLF_TERMS =
+  /\bpot bunkers?\b|\b(white|red|yellow|blue|ob|out-of-bounds|hazard|penalty)\s+stakes?\b|\bat odds with\b/i;
+
+for (const file of files) {
+  if (VOCAB_EXEMPT.has(file)) continue;
+  const raw = read(file);
+  const { text, literals } = scan(raw, file);
+  const rawLines = raw.split("\n");
+  for (const m of text.matchAll(NEVER_WORDS)) {
+    const line = lineAt(text, m.index);
+    if (rawLines[line - 1]?.includes("vocab-ok:") || rawLines[line - 2]?.includes("vocab-ok:")) {
+      continue;
+    }
+    const literal = literalAt(literals, m.index);
+    // A .ts file's copy lives in string literals; the rest is code.
+    if (file.endsWith(".ts") && !literal) continue;
+    // A one-token literal is an id, slug or key ("q-gambling", "bets"), not copy.
+    if (literal && /^[a-z0-9_-]+$/.test(text.slice(literal[0], literal[1]))) continue;
+    // Inside a template literal's ${…} is code (`${styles.bet} …`), not copy.
+    if (literal) {
+      const before = text.slice(literal[0], m.index);
+      if (before.lastIndexOf("${") > before.lastIndexOf("}")) continue;
+    }
+    if (file.endsWith(".tsx") && !literal) {
+      // JSX text is copy; code around it is not: a member (styles.bet,
+      // example.bets.map, bet.tag, bet?.tag) or an arrow parameter ((bet) =>).
+      const before = text[m.index - 1] ?? "";
+      const after = text.slice(m.index + m[0].length);
+      if (before === "." || /^(\??\.\w|\)?\s*=>)/.test(after)) continue;
+      // An object key on its own line (an icon map's `cash: "M3…"`) is code.
+      const lineStart = text.lastIndexOf("\n", m.index - 1) + 1;
+      if (/^\s*:/.test(after) && /^\s*$/.test(text.slice(lineStart, m.index))) continue;
+    }
+    const context = text.slice(Math.max(0, m.index - 24), m.index + m[0].length + 16);
+    if (GOLF_TERMS.test(context)) continue;
+    report(
+      file,
+      line,
+      `"${m[0]}" is never in site copy (SIDE-GAME-POSITION §3, launch state); reword, or mark a reviewed exception with vocab-ok:`,
+    );
   }
 }
 

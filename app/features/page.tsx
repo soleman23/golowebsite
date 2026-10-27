@@ -99,7 +99,7 @@ export default function FeaturesPage() {
         meta={
           <>
             {siteConfig.appLive ? null : (
-              <StatusPill variant="today" label="FREE WHILE WE'RE IN BETA" />
+              <StatusPill variant="today" label="FREE · NO ADS" />
             )}
             <StatusPill
               variant="planned"
