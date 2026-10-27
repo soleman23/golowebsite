@@ -64,6 +64,10 @@ export const siteConfig = {
 
   instagramHandle: "@gologolfapp",
   instagramUrl: INSTAGRAM_URL,
+  /** The footer's social row (socialLinks in lib/content/nav.ts) lists these. */
+  facebookUrl: "https://www.facebook.com/gologolfapp",
+  youtubeUrl: "https://www.youtube.com/@gologolfapp",
+  tiktokUrl: "https://www.tiktok.com/@gologolfapp",
 
   /**
    * The company's own profiles, for the Organization's `sameAs`. Only live,
