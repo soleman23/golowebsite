@@ -154,7 +154,7 @@ export const contactFaqs: ContactFaqItem[] = [
   {
     id: "touch-money",
     q: "Does GoLo touch the money?",
-    a: "Never. The ledger is a scoreboard. Cash moves between you and your buddy in the parking lot, not through us.",
+    a: "Never. The ledger is a scoreboard. Settling up happens between you and your buddy in the parking lot, not through us.",
   },
   {
     id: "outside-us",

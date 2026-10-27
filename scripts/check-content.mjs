@@ -572,6 +572,58 @@ for (const [section, served] of [
   }
 }
 
+/* ------------------------------------------------------------- vocabulary */
+
+/**
+ * Words that never appear in the site's copy (SIDE-GAME-POSITION §3 in
+ * soleman23/golo: GoLo is a scoreboard, not a betting app), and launch-state
+ * phrases that stopped being true when Android went live on 2026-10-26.
+ * Legal text is exempt: its disclaimers name what GoLo is not, and the Terms
+ * may say "wager-style formats". The capability registry is internal. A line
+ * can carry `vocab-ok: <reason>` for a reviewed exception.
+ */
+const NEVER_WORDS =
+  /\b(gambl[a-z]*|wager[a-z]*|stakes?|odds|betting|bets?|bettors?|pots?|purses?|winnings|payouts?|cash|cash out|money on the line|who pays whom|pay through golo|tracks every dollar|in beta|not live yet|isn['’]t live yet)\b/gi;
+const VOCAB_EXEMPT = new Set([
+  "lib/content/legal.ts",
+  "lib/content/capabilities.ts",
+]);
+
+for (const file of files) {
+  if (VOCAB_EXEMPT.has(file)) continue;
+  const raw = read(file);
+  const { text, literals } = scan(raw, file);
+  const rawLines = raw.split("\n");
+  for (const m of text.matchAll(NEVER_WORDS)) {
+    const line = lineAt(text, m.index);
+    if (rawLines[line - 1]?.includes("vocab-ok:") || rawLines[line - 2]?.includes("vocab-ok:")) {
+      continue;
+    }
+    const literal = literalAt(literals, m.index);
+    // A .ts file's copy lives in string literals; the rest is code.
+    if (file.endsWith(".ts") && !literal) continue;
+    // A one-token literal is an id, slug or key ("q-gambling", "bets"), not copy.
+    if (literal && /^[a-z0-9_-]+$/.test(text.slice(literal[0], literal[1]))) continue;
+    // Inside a template literal's ${…} is code (`${styles.bet} …`), not copy.
+    if (literal) {
+      const before = text.slice(literal[0], m.index);
+      if (before.lastIndexOf("${") > before.lastIndexOf("}")) continue;
+    }
+    if (file.endsWith(".tsx") && !literal) {
+      // JSX text is copy; identifiers around it are code: bet.tag, (bet) =>,
+      // {styles.bet}, example.bets.map.
+      const before = text[m.index - 1] ?? "";
+      const after = text.slice(m.index + m[0].length);
+      if (/[.({[]/.test(before) || /^(\.\w|[)}\]:=,(])/.test(after)) continue;
+    }
+    report(
+      file,
+      line,
+      `"${m[0]}" is never in site copy (SIDE-GAME-POSITION §3, launch state); reword, or mark a reviewed exception with vocab-ok:`,
+    );
+  }
+}
+
 /* ----------------------------------------------------------------- result */
 
 if (problems.length) {

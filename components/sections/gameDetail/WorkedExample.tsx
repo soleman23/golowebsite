@@ -1,5 +1,5 @@
 /**
- * The page's centrepiece: a bet-by-bet ledger beside the finished match on a
+ * The page's centrepiece: a game-by-game ledger beside the finished match on a
  * phone. The ledger lines and the net total come from the same data, so the
  * numbers can't drift out of agreement.
  */

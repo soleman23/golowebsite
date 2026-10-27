@@ -297,6 +297,8 @@ const privacySections: LegalSection[] = [
           "Google offers a browser add-on that blocks Google Analytics on all websites: <a href=\"https://tools.google.com/dlpage/gaoptout\" rel=\"noopener noreferrer\">Google Analytics opt-out add-on</a>.",
         ],
       },
+      { kind: "h3", text: "Links to Google Play" },
+      { kind: "p", html: "If you reach the website through one of GoLo’s own campaign links, such as the QR code on a printed table tent or the link in one of our social profiles, and then tap the Google Play button, that button’s link carries the campaign link’s names: its source, medium, and campaign (for example, <strong>table_tent</strong>, <strong>print</strong>, and <strong>golo_launch_2026q4_sim_bay</strong>). They are fixed labels GoLo chose for its own links, not information about you. Google Play uses them as an install referrer, so GoLo can see which campaigns lead to installs of the app. Because they are part of the link you choose to follow, they are passed to Google Play whether or not you allowed Google Analytics. Google receives them when you open Google Play, under Google’s own privacy policy. If you reach the website any other way, the Google Play link carries no campaign names." },
       { kind: "h3", text: "How long the data is kept" },
       { kind: "p", html: "GoLo keeps Google Analytics event- and user-level data available for analysis for 14 months. Google’s aggregated standard reports are not limited by that setting. To ask about or request deletion of website analytics data, email <strong><a href=\"mailto:info@golo.golf\">info@golo.golf</a></strong>. Google Analytics doesn’t identify visitors to GoLo by name, so we may need the identifier from your browser’s _ga cookie to find data about you." },
       { kind: "h3", text: "Before opt-in (October 19, 2026)" },
@@ -473,10 +475,10 @@ export const privacyDoc: LegalDoc = {
   kicker: "LEGAL",
   lead: "What GoLo collects, how it gets used, and exactly what happens when you delete your account. Every section has a plain-English note beside the legal language.",
   dateLabel: "Last updated",
-  // Set to the day this version deploys (golo#803: the aggregate-use
-  // purpose, released with the app policy; before it, #120 and #122).
-  effective: "October 22, 2026",
-  effectiveISO: "2026-10-22",
+  // Set to the day this version deploys (the Google Play install-referrer
+  // disclosure, after golowebsite#143; before it, golo#803, #120 and #122).
+  effective: "October 26, 2026",
+  effectiveISO: "2026-10-26",
   entity: siteConfig.addressShort,
   intro: privacyIntro,
   short: {
