@@ -41,6 +41,9 @@ registerHooks({
 const { subscribeSchema, textLinkSchema } = await import(
   new URL("../lib/validation.ts", import.meta.url).href
 );
+const { campaignTags, sourceName } = await import(
+  new URL("../lib/campaigns.ts", import.meta.url).href
+);
 
 const NONE = { landingMedium: null, landingCampaign: null, landingContent: null };
 const INSTAGRAM_BIO = {
@@ -48,6 +51,17 @@ const INSTAGRAM_BIO = {
   landingMedium: "organic_social",
   landingCampaign: "golo_prelaunch_2026q4",
   landingContent: "bio",
+};
+
+/**
+ * The printed sim-bay table tent's QR link (soleman23/golo
+ * tools/store-assets/simulator-table-tent.html), as its query string says it.
+ */
+const TABLE_TENT = {
+  landingSource: "table_tent",
+  landingMedium: "print",
+  landingCampaign: "golo_launch_2026q4_sim_bay",
+  landingContent: "qr",
 };
 
 /** [name, attribution payload, expected stored values] */
@@ -204,6 +218,41 @@ const cases = [
     { landingSource: "instagram", ...NONE },
   ],
   [
+    "table tent QR set is kept",
+    TABLE_TENT,
+    { ...TABLE_TENT },
+  ],
+  [
+    "table tent without a placement gives null",
+    { ...TABLE_TENT, landingContent: undefined },
+    { landingSource: "table_tent", ...NONE },
+  ],
+  [
+    "table tent with the old short campaign sim_bay gives null",
+    { ...TABLE_TENT, landingCampaign: "sim_bay" },
+    { landingSource: "table_tent", ...NONE },
+  ],
+  [
+    "print campaign on a social source gives null",
+    { ...INSTAGRAM_BIO, landingCampaign: "golo_launch_2026q4_sim_bay" },
+    { landingSource: "instagram", ...NONE },
+  ],
+  [
+    "social campaign on the table tent gives null",
+    { ...TABLE_TENT, landingCampaign: "golo_prelaunch_2026q4" },
+    { landingSource: "table_tent", ...NONE },
+  ],
+  [
+    "table tent with a social medium gives null",
+    { ...TABLE_TENT, landingMedium: "organic_social" },
+    { landingSource: "table_tent", ...NONE },
+  ],
+  [
+    "print medium on a social source gives null",
+    { ...INSTAGRAM_BIO, landingMedium: "print", landingCampaign: "golo_launch_2026q4_sim_bay", landingContent: "qr" },
+    { landingSource: "instagram", ...NONE },
+  ],
+  [
     "utm_source=5415551234 gives null source",
     { landingSource: "5415551234" },
     { landingSource: undefined, ...NONE },
@@ -266,9 +315,32 @@ for (const [form, schema, base] of forms) {
   }
 }
 
+// The tent's printed link, read the way lib/attribution.ts reads a landing
+// URL: the source through sourceName(), the other three through campaignTags().
+// If this fails, a change here broke a QR code that's already on paper.
+{
+  const query = new URLSearchParams(
+    "utm_source=table_tent&utm_medium=print&utm_campaign=golo_launch_2026q4_sim_bay&utm_content=qr",
+  );
+  const source = sourceName(query.get("utm_source"));
+  const tags = campaignTags(
+    source,
+    query.get("utm_medium"),
+    query.get("utm_campaign"),
+    query.get("utm_content"),
+  );
+  const got = { landingSource: source, ...tags };
+  const wrong = Object.entries(TABLE_TENT).filter(([key, value]) => got[key] !== value);
+  if (wrong.length) {
+    failures.push(`table tent URL: ${wrong.map(([key, value]) => `${key} = ${JSON.stringify(got[key])}, expected ${JSON.stringify(value)}`).join("; ")}`);
+  } else {
+    passed += 1;
+  }
+}
+
 if (failures.length) {
   for (const line of failures) console.error(line);
   console.error(`\n${failures.length} failed, ${passed} passed.`);
   process.exit(1);
 }
-console.log(`Attribution: ${passed} cases passed (${cases.length} attribution + 2 page-path cases per form × ${forms.length} forms).`);
+console.log(`Attribution: ${passed} cases passed (${cases.length} attribution + 2 page-path cases per form × ${forms.length} forms, + the table tent URL).`);

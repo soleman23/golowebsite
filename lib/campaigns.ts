@@ -22,9 +22,14 @@ import { looksPersonal } from "@/lib/analytics";
  */
 export const campaigns = [
   { id: "golo_prelaunch_2026q4", kind: "social" },
-] as const satisfies readonly { id: string; kind: "social" | "email" }[];
+  // The printed QR table tent for simulator bays (soleman23/golo
+  // tools/store-assets/simulator-table-tent.html). golo_<stage>_<slug>, as
+  // MEASUREMENT.md §2 names one-off campaigns; the stage is launch, since
+  // the Android app went live on Google Play on 2026-10-26.
+  { id: "golo_launch_2026q4_sim_bay", kind: "print" },
+] as const satisfies readonly { id: string; kind: CampaignKind }[];
 
-type CampaignKind = "social" | "email";
+type CampaignKind = "social" | "email" | "print";
 
 /** An Instagram story placement: story_ + two letters, two digits, _ + a letter. */
 const STORY_CONTENT = /^story_[a-z]{2}[0-9]{2}_[a-z]$/;
@@ -56,6 +61,9 @@ const sourceRules = new Map<string, SourceRule>([
     "hostinger_reach",
     { medium: "email", campaignKind: "email", content: oneOf("header", "cta_button") },
   ],
+  // Printed material. The placement is how the link is opened: the QR code.
+  // A typed URL carries no tags, so there's no other placement to name.
+  ["table_tent", { medium: "print", campaignKind: "print", content: oneOf("qr") }],
 ]);
 
 /** Lower-case letters, digits, dots, hyphens and underscores; up to 64. */
