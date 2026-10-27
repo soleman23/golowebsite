@@ -366,8 +366,11 @@ export const quickAnswers: QuickAnswer[] = [
           id: "launch-and-cost",
           question: "Where do I get it, and what does it cost?",
           answer:
-            // claim-ok: the iPhone app is named as coming, not available
-            "GoLo is live on Google Play and on the web. The iPhone app is coming to the App Store; until then, iPhone golfers use the web app in Safari. It’s free: no ads and no in-app purchases.",
+            siteConfig.iosLive
+              ? // claim-ok: only once siteConfig.iosLive is set, with the App Store listing public
+                "GoLo is live on the web, on Google Play and in the App Store. It’s free: no ads and no in-app purchases."
+              : // claim-ok: the iPhone app is named as coming, not available
+                "GoLo is live on Google Play and on the web. The iPhone app is coming to the App Store; until then, iPhone golfers use the web app in Safari. It’s free: no ads and no in-app purchases.",
         },
       ]),
 ];

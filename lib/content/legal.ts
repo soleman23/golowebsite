@@ -123,8 +123,8 @@ export function legalReadMinutes(doc: LegalDoc): number {
 }
 
 const privacyIntro: LegalBlock[] = [
-  { kind: "p", html: "GoLo Golf LLC (“GoLo,” “we,” “us,” or “our”) provides the GoLo Golf mobile application, web application, website, and related services (collectively, the “Service”). GoLo helps golfers organize rounds, enter and share scores, track side games and agreed dollar stakes, calculate who owes whom, and record whether participants mark a settlement as sent or received." },
-  { kind: "p", html: "GoLo does <strong>not</strong> accept deposits, hold funds, transfer money, charge payment cards, provide a wallet, set betting odds, take a percentage of a wager, or verify that an off-platform payment occurred. Any settlement takes place directly between the participants outside GoLo." },
+  { kind: "p", html: "GoLo Golf LLC (“GoLo,” “we,” “us,” or “our”) provides the GoLo Golf mobile application, web application, website, and related services (collectively, the “Service”). GoLo helps golfers organize rounds, enter and share scores, track side games and agreed dollar amounts, calculate who owes whom, and record whether participants mark a settlement as sent or received." },
+  { kind: "p", html: "GoLo does <strong>not</strong> accept deposits, hold funds, transfer money, charge payment cards, provide a wallet, set betting odds, take a percentage of a wager, or verify that an off-platform payment occurred. Any settlement takes place directly between the participants outside GoLo." },  // vocab-ok: disclaimer, says what GoLo is not
   { kind: "p", html: "This Privacy Policy explains what information we collect, how we use and disclose it, how long we retain it, and the choices available to you." },
 ];
 
@@ -143,7 +143,7 @@ const privacySections: LegalSection[] = [
           "<strong>Profile information:</strong> name, nickname or handle, profile photo, home golf club, handicap index, notification preferences, and saved game preferences.",
           "<strong>Golf association information:</strong> if you choose to connect an authorized golf-association service, information such as your GHIN number, handicap index, connection status, authorization tokens, synchronization dates, and eligible scores submitted at your direction.",
           "<strong>Round and scoring information:</strong> courses, tees, dates, formats, players, teams, handicaps, hole-by-hole scores, pars, stroke indexes, side-game selections, game events, invitations, leaderboards, round history, and shared round summaries.",
-          "<strong>Side-game and settlement information:</strong> game rules, agreed dollar stakes, participant acceptance or rejection of game terms, calculated winnings and losses, who owes whom, settlement amounts, payment handles such as a Venmo username, payment-request status, and participant-entered sent or received confirmations and timestamps.",
+          "<strong>Side-game and settlement information:</strong> game rules, agreed dollar amounts, participant acceptance or rejection of game terms, calculated results, who owes whom, settlement amounts, payment handles such as a Venmo username, payment-request status, and participant-entered sent or received confirmations and timestamps.",
           "<strong>Participant information entered by another user:</strong> a round organizer may enter another participant’s name, email address, phone number, handicap, or payment handle to organize a round and match that participant to an account. Users should provide another person’s information only when they have permission to do so.",
           "<strong>Communications:</strong> information included in support requests, emails, feedback, or other messages sent to us.",
           "<strong>Website download-link requests:</strong> the phone number you enter when you ask us to text you an app download link, together with delivery status and related technical records.",
@@ -211,18 +211,18 @@ const privacySections: LegalSection[] = [
   {
     num: "03",
     id: "section-3",
-    title: "Side Games, Dollar Stakes, and Payments",
+    title: "Side Games, Dollar Amounts, and Settling Up",
     tocLabel: "Side Games",
     blocks: [
-      { kind: "p", html: "GoLo is a scorekeeping and recordkeeping tool. Users may enter private side-game terms and dollar stakes, and GoLo may calculate a suggested settlement and record participant-entered sent or received statuses." },
+      { kind: "p", html: "GoLo is a scorekeeping and recordkeeping tool. Users may enter private side-game terms and dollar amounts, and GoLo may calculate a suggested settlement and record participant-entered sent or received statuses." },
       { kind: "p", html: "GoLo does not:" },
       {
         kind: "ul",
         items: [
           "accept, store, custody, or transfer money;",
           "process debit cards, credit cards, bank accounts, or payment credentials;",
-          "sell wagering credits or virtual currency;",
-          "set odds, match bettors, take a rake, or award prizes; or",
+          "sell wagering credits or virtual currency;",  // vocab-ok: disclaimer, says what GoLo is not
+          "set odds, match bettors, take a rake, or award prizes; or",  // vocab-ok: disclaimer, says what GoLo is not
           "guarantee, verify, collect, or enforce any payment.",
         ],
       },
@@ -235,7 +235,7 @@ const privacySections: LegalSection[] = [
     title: "When We Disclose Information",
     blocks: [
       { kind: "h3", text: "Other round participants" },
-      { kind: "p", html: "People participating in or invited to a round may see information needed for the shared experience, including your display name, profile photo, handicap, team, scores, game selections, agreed stakes, acceptance status, calculated results, settlement amount, and participant-entered sent or received status." },
+      { kind: "p", html: "People participating in or invited to a round may see information needed for the shared experience, including your display name, profile photo, handicap, team, scores, game selections, agreed amounts, acceptance status, calculated results, settlement amount, and participant-entered sent or received status." },
       { kind: "p", html: "GoLo is not intended to expose your account email address, phone number, authentication credentials, or private golf-association tokens to other players. A payment handle may be displayed to relevant settlement participants when you choose to add one." },
       { kind: "h3", text: "Service providers" },
       { kind: "p", html: "We disclose information to vendors that perform services for us, such as:" },
@@ -395,7 +395,7 @@ const privacySections: LegalSection[] = [
     id: "section-10",
     title: "Children’s Privacy",
     blocks: [
-      { kind: "p", html: "The Service is not directed to children under 13, and GoLo does not knowingly collect personal information from a child under 13. Dollar-stakes and settlement features may be used only by people legally permitted to participate in that activity in their location." },
+      { kind: "p", html: "The Service is not directed to children under 13, and GoLo does not knowingly collect personal information from a child under 13. Dollar-amount and settlement features may be used only by people legally permitted to participate in that activity in their location." },
       { kind: "p", html: "If you believe a child provided personal information to GoLo, contact<!-- --> <strong><a href=\"mailto:info@golo.golf\">info@golo.golf</a></strong> <!-- -->so we can investigate and delete it as required." },
     ],
   },
@@ -439,7 +439,7 @@ const privacySections: LegalSection[] = [
  */
 const privacyPlain: Record<string, string> = {
   "section-1":
-    "Your account basics, your profile, the rounds and scores you enter, the stakes your group agreed, and location only while you search for a course.",
+    "Your account basics, your profile, the rounds and scores you enter, the amounts your group agreed, and location only while you search for a course.",
   "section-2":
     "To run your account, score your rounds, keep the app working and answer you when you write in.",
   "section-3":
@@ -447,7 +447,7 @@ const privacyPlain: Record<string, string> = {
   "section-4":
     "Your group sees what you share with them. Beyond that it's the providers who run the app, plus the legal cases nobody gets a choice about.",
   "website-analytics":
-    "Off unless you allow it. If you do, Google Analytics counts visits and clicks, never what you type. Decline any time under Privacy choices.",
+    "Off unless you allow it. If you do, Google Analytics counts visits and clicks, never what you type. Decline any time under Privacy choices. One thing isn't analytics and isn't covered by the choice: a campaign link's labels ride along when you tap Google Play.",
   "section-5":
     "We don't sell your information for money or use it to target ads. Google's own terms let it use some analytics data, which is why it's opt-in and GPC turns it off. We dropped Clarity because Microsoft's terms go further.",
   "section-6":
@@ -532,7 +532,7 @@ export const termsDoc: LegalDoc = {
   ],
   short: {
     tag: "READ THIS FIRST",
-    title: "GoLo is a scoreboard. It is not a betting app.",
+    title: "GoLo is a scoreboard. It is not a betting app.",  // vocab-ok: disclaimer, says what GoLo is not
     sub: "A summary, not a substitute — the full terms below are what govern.",
     lines: [
       {
@@ -545,7 +545,7 @@ export const termsDoc: LegalDoc = {
       },
       {
         tag: "§",
-        text: "Wager-style formats are your call — you are responsible for knowing what is lawful where you play.",
+        text: "Wager-style formats are your call — you are responsible for knowing what is lawful where you play.",  // vocab-ok: the Terms exception in SIDE-GAME-POSITION §3
       },
     ],
   },
@@ -571,15 +571,15 @@ export const termsDoc: LegalDoc = {
       blocks: [
         {
           kind: "p",
-          html: 'GoLo is a golf scoring and game-format tracking app. It allows users to record round scores, apply game formats (e.g., points, skins, or wager-style formats), and track a running "settlement status" ledger of who owes whom within a group — as a scoreboard feature only.',
+          html: 'GoLo is a golf scoring and game-format tracking app. It allows users to record round scores, apply game formats (e.g., points, skins, or wager-style formats), and track a running "settlement status" ledger of who owes whom within a group — as a scoreboard feature only.',  // vocab-ok: disclaimer, says what GoLo is not
         },
       ],
     },
     {
       num: "03",
       id: "not-betting",
-      title: "GoLo Is Not a Betting or Payments App",
-      tocLabel: "Not a Betting or Payments App",
+      title: "GoLo Is Not a Betting or Payments App",  // vocab-ok: disclaimer, says what GoLo is not
+      tocLabel: "Not a Betting or Payments App",  // vocab-ok: disclaimer, says what GoLo is not
       plain:
         "GoLo never touches a dollar. If money changes hands, you handle it yourselves — and it is on you to know your local laws.",
       blocks: [
@@ -589,20 +589,20 @@ export const termsDoc: LegalDoc = {
         },
         {
           kind: "p",
-          html: "If you save a Venmo or other payout handle to your profile, GoLo simply displays it to the other players in your group; GoLo is not connected to Venmo or any payment service. If players choose to exchange money based on a game's outcome, that exchange happens entirely outside the app, directly between the players, at their own discretion and risk. GoLo:",
+          html: "If you save a Venmo username or similar handle to your profile, GoLo simply displays it to the other players in your group; GoLo is not connected to Venmo or any payment service. If players choose to exchange money based on a game's outcome, that exchange happens entirely outside the app, directly between the players, at their own discretion and risk. GoLo:",
         },
         {
           kind: "ul",
           items: [
             "Does not verify, guarantee, collect, or distribute any money owed between users",
             "Does not take a fee, rake, or commission on any settlement",
-            "Is not a licensed money transmitter, payment processor, or gambling operator",
+            "Is not a licensed money transmitter, payment processor, or gambling operator",  // vocab-ok: disclaimer, says what GoLo is not
             "Disclaims all responsibility for any money-related dispute or exchange between users",
           ],
         },
         {
           kind: "p",
-          html: "You are solely responsible for determining whether any wager-style game format you use with GoLo is lawful in your jurisdiction. GoLo does not endorse, encourage, or facilitate real-money wagering.",
+          html: "You are solely responsible for determining whether any wager-style game format you use with GoLo is lawful in your jurisdiction. GoLo does not endorse, encourage, or facilitate real-money wagering.",  // vocab-ok: disclaimer, says what GoLo is not
         },
       ],
     },
@@ -630,7 +630,7 @@ export const termsDoc: LegalDoc = {
         {
           kind: "ul",
           items: [
-            "Use GoLo for any unlawful purpose, including operating illegal gambling",
+            "Use GoLo for any unlawful purpose, including operating illegal gambling",  // vocab-ok: disclaimer, says what GoLo is not
             "Attempt to reverse-engineer, disrupt, or gain unauthorized access to the Service",
             "Upload content that is infringing, abusive, or unlawful",
             "Misrepresent scores or data in a way intended to defraud another user",
@@ -916,7 +916,7 @@ export const acceptableUseDoc: LegalDoc = {
   short: {
     tag: "THE SHORT VERSION",
     title: "Keep it friendly, honest, and legal.",
-    sub: "Do not use GoLo to harm people, attack systems, manipulate records, or run unlawful wagering activity.",
+    sub: "Do not use GoLo to harm people, attack systems, manipulate records, or run unlawful wagering activity.",  // vocab-ok: disclaimer, says what GoLo is not
     lines: [
       { tag: "PLAY FAIR", text: "Enter honest scores and do not alter another player’s results without authorization." },
       { tag: "KEEP IT LEGAL", text: "You are responsible for local law and course or competition rules." },
@@ -943,7 +943,7 @@ export const acceptableUseDoc: LegalDoc = {
         { kind: "p", html: "You may not use the Service to:" },
         { kind: "ul", items: [
           "violate applicable law, regulation, court order, course rule, or competition rule;",
-          "organize, promote, or facilitate unlawful gambling or payment activity;",
+          "organize, promote, or facilitate unlawful gambling or payment activity;",  // vocab-ok: disclaimer, says what GoLo is not
           "submit scores, identities, account details, settlement status, or other records you know are false or misleading;",
           "harass, threaten, stalk, shame, discriminate against, or expose private information about another person;",
           "impersonate another person or misrepresent your authority to act for a player, club, course, or organization;",

@@ -578,16 +578,18 @@ for (const [section, served] of [
  * Words that never appear in the site's copy (SIDE-GAME-POSITION §3 in
  * soleman23/golo: GoLo is a scoreboard, not a betting app), and launch-state
  * phrases that stopped being true when Android went live on 2026-10-26.
- * Legal text is exempt: its disclaimers name what GoLo is not, and the Terms
- * may say "wager-style formats". The capability registry is internal. A line
- * can carry `vocab-ok: <reason>` for a reviewed exception.
+ * Every file is checked, legal text included: a disclaimer that has to name
+ * what GoLo is not ("not a betting app", the Terms' "wager-style formats")
+ * carries `vocab-ok: <reason>` on its line, as any reviewed exception does.
+ * Golf's own terms are allowed: a pot bunker, white or red stakes, "at odds
+ * with".
  */
 const NEVER_WORDS =
-  /\b(gambl[a-z]*|wager[a-z]*|stakes?|odds|betting|bets?|bettors?|pots?|purses?|winnings|payouts?|cash|cash out|money on the line|who pays whom|pay through golo|tracks every dollar|in beta|not live yet|isn['’]t live yet)\b/gi;
-const VOCAB_EXEMPT = new Set([
-  "lib/content/legal.ts",
-  "lib/content/capabilities.ts",
-]);
+  /\b(gambl[a-z]*|wager[a-z]*|stakes?|staked|staking|odds|betting|bets?|bettors?|pots?|pools?|purses?|winnings|payouts?|pay(s|ing)? out|paid out|payment processing|cash|cashed|cash out|anted|money on the line|who pays whom|pay through golo|tracks every dollar|beta|in beta|not live yet|isn['’]t live yet)\b/gi;
+const VOCAB_EXEMPT = new Set([]);
+/** Golf, not money: a pot bunker, white/red/yellow stakes, "at odds with". */
+const GOLF_TERMS =
+  /\bpot bunkers?\b|\b(white|red|yellow|blue|ob|out-of-bounds|hazard|penalty)\s+stakes?\b|\bat odds with\b/i;
 
 for (const file of files) {
   if (VOCAB_EXEMPT.has(file)) continue;
@@ -610,12 +612,17 @@ for (const file of files) {
       if (before.lastIndexOf("${") > before.lastIndexOf("}")) continue;
     }
     if (file.endsWith(".tsx") && !literal) {
-      // JSX text is copy; identifiers around it are code: bet.tag, (bet) =>,
-      // {styles.bet}, example.bets.map.
+      // JSX text is copy; code around it is not: a member (styles.bet,
+      // example.bets.map, bet.tag, bet?.tag) or an arrow parameter ((bet) =>).
       const before = text[m.index - 1] ?? "";
       const after = text.slice(m.index + m[0].length);
-      if (/[.({[]/.test(before) || /^(\.\w|[)}\]:=,(])/.test(after)) continue;
+      if (before === "." || /^(\??\.\w|\)?\s*=>)/.test(after)) continue;
+      // An object key on its own line (an icon map's `cash: "M3…"`) is code.
+      const lineStart = text.lastIndexOf("\n", m.index - 1) + 1;
+      if (/^\s*:/.test(after) && /^\s*$/.test(text.slice(lineStart, m.index))) continue;
     }
+    const context = text.slice(Math.max(0, m.index - 24), m.index + m[0].length + 16);
+    if (GOLF_TERMS.test(context)) continue;
     report(
       file,
       line,
