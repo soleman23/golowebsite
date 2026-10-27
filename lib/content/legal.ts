@@ -2,24 +2,12 @@
  * Section trees for the public and review-gated legal documents.
  *
  * ── /privacy ─────────────────────────────────────────────────────────────
- * The policy text below is the published policy. Provenance, as far as the
- * repo records it: sections 1–14 were added verbatim from owner-supplied text
- * on July 16, 2026 (ff5c2c4, 5bec235), later moved here from the old JSX page
- * mechanically and diffed so not a word changed. Nothing in the repo shows a
- * lawyer reviewed it, and GoLo has no legal counsel, so never describe it as
- * lawyer-reviewed. On October 19, 2026 the website-analytics disclosures
- * (the "website-analytics" section and the related lines in sections 4, 5, 6
- * and 7) were written by the owner's instruction from Google's and Microsoft's
- * own documentation and the site's verified behavior; see README "Analytics".
- * Edit deliberately and keep the README, cookie policy and consent copy in
- * lockstep.
- *
- * The `plain` notes and the `short` panel are NOT policy. They're presentation:
- * a gloss beside the legal text, never instead of it. They are written against
- * the sections below, not against the design prototype — the prototype's notes
- * describe a shorter, different policy and get several facts wrong for this one
- * (it claims no analytics provider and immediate deletion; §1, §4 and §8 say
- * otherwise).
+ * GOLO-379 (soleman23/golo#956): the app sections come from app-privacy.json,
+ * mirrored byte-for-byte from the app repo's governing-app-privacy.md.
+ * Android 1.2.0 (27) stays immutable; these words describe its actual flows.
+ * Website analytics, Play campaign links, sign-up attribution and their
+ * retention/choice disclosures remain separate below. No legal counsel
+ * review is claimed. Update both source copies deliberately.
  *
  * ── /terms ───────────────────────────────────────────────────────────────
  * DESIGN COPY, NOT LEGAL COPY. Straight from the prototype and never reviewed
@@ -29,6 +17,7 @@
  * flagged inline so whoever reviews this can see what moved.
  */
 
+import appPrivacy from "@/lib/content/app-privacy.json";
 import type { TableData } from "@/components/ui/DataTable";
 import { siteConfig } from "@/lib/siteConfig";
 
@@ -122,142 +111,13 @@ export function legalReadMinutes(doc: LegalDoc): number {
   return Math.max(1, Math.round(text.split(/\s+/).filter(Boolean).length / 200));
 }
 
-const privacyIntro: LegalBlock[] = [
-  { kind: "p", html: "GoLo Golf LLC (“GoLo,” “we,” “us,” or “our”) provides the GoLo Golf mobile application, web application, website, and related services (collectively, the “Service”). GoLo helps golfers organize rounds, enter and share scores, track side games and agreed dollar amounts, calculate who owes whom, and record whether participants mark a settlement as sent or received." },
-  { kind: "p", html: "GoLo does <strong>not</strong> accept deposits, hold funds, transfer money, charge payment cards, provide a wallet, set betting odds, take a percentage of a wager, or verify that an off-platform payment occurred. Any settlement takes place directly between the participants outside GoLo." },  // vocab-ok: disclaimer, says what GoLo is not
-  { kind: "p", html: "This Privacy Policy explains what information we collect, how we use and disclose it, how long we retain it, and the choices available to you." },
-];
+const privacyIntro: LegalBlock[] = appPrivacy.intro as LegalBlock[];
 
 const privacySections: LegalSection[] = [
+  ...appPrivacy.sections as LegalSection[],
+
   {
-    num: "01",
-    id: "section-1",
-    title: "Information We Collect",
-    blocks: [
-      { kind: "h3", text: "Information you provide" },
-      { kind: "p", html: "We may collect the following information when you create an account, set up your profile, use the Service, or contact us:" },
-      {
-        kind: "ul",
-        items: [
-          "<strong>Account and contact information:</strong> email address, password or authentication credentials, phone number, account identifier, and authentication status. Passwords are processed through our authentication provider and are not visible to GoLo in readable form.",
-          "<strong>Profile information:</strong> name, nickname or handle, profile photo, home golf club, handicap index, notification preferences, and saved game preferences.",
-          "<strong>Golf association information:</strong> if you choose to connect an authorized golf-association service, information such as your GHIN number, handicap index, connection status, authorization tokens, synchronization dates, and eligible scores submitted at your direction.",
-          "<strong>Round and scoring information:</strong> courses, tees, dates, formats, players, teams, handicaps, hole-by-hole scores, pars, stroke indexes, side-game selections, game events, invitations, leaderboards, round history, and shared round summaries.",
-          "<strong>Side-game and settlement information:</strong> game rules, agreed dollar amounts, participant acceptance or rejection of game terms, calculated results, who owes whom, settlement amounts, payment handles such as a Venmo username, payment-request status, and participant-entered sent or received confirmations and timestamps.",
-          "<strong>Participant information entered by another user:</strong> a round organizer may enter another participant’s name, email address, phone number, handicap, or payment handle to organize a round and match that participant to an account. Users should provide another person’s information only when they have permission to do so.",
-          "<strong>Communications:</strong> information included in support requests, emails, feedback, or other messages sent to us.",
-          "<strong>Website download-link requests:</strong> the phone number you enter when you ask us to text you an app download link, together with delivery status and related technical records.",
-          "<strong>Where a website sign-up came from:</strong> when you join the newsletter or ask for a download link on the website, we also keep where that visit started: the path of the first page you landed on (not the rest of its web address), the domain of the website that referred you, and up to four names from the link you followed, if it carried them: its source, medium, campaign, and placement. We store the source only if, once converted to lower case, it is at most 64 characters of letters, digits, dots, hyphens, and underscores, with no @ sign, no run of seven or more digits (even if separated by spaces, dots, hyphens, or underscores), no UUID, and no run of 16 or more characters made only of the letters a–f and digits. We store the medium, campaign, and placement only when, together with the source, they exactly match a combination from GoLo’s own list of tagged-link names; otherwise we store none of the three. Apart from the page path and these names, we keep nothing from the link. We use these details only to count, in aggregate, which pages, websites, and links bring sign-ups.",
-        ],
-      },
-      { kind: "h3", text: "Location and course-search information" },
-      { kind: "p", html: "If you choose <strong>Nearby Courses</strong>, GoLo may request access to your device location and collect precise or approximate latitude and longitude to identify your city or region and find nearby golf courses. GoLo does not need location access for manual course search, and we do not use location for background tracking." },
-      { kind: "p", html: "The current app may cache location coordinates and the resulting city or state on your device for up to 24 hours. Coordinates or location search terms may be sent through GoLo’s server provider to a geocoding service and course-data provider to return nearby results. Those providers may receive the coordinates, city or state, search query, IP address, and routine request metadata under their own privacy terms." },
-      { kind: "h3", text: "Device, usage, and diagnostic information" },
-      { kind: "p", html: "We and our service providers may automatically collect:" },
-      {
-        kind: "ul",
-        items: [
-          "IP address, device type, operating system, browser type, app version, language, and time zone;",
-          "session, account, installation, and push-notification tokens or identifiers;",
-          "app interactions, feature usage, notification delivery and interaction information, referring pages, and approximate timestamps;",
-          "crash reports, error messages, performance information, server logs, and other diagnostic data; and",
-          "information stored through cookies, browser storage, app storage, or similar technologies needed to keep you signed in, restore an active round, remember settings, cache course or location results, and prevent duplicate notifications.",
-        ],
-      },
-      { kind: "p", html: "We do not use this information to track you across unaffiliated companies’ apps or websites for targeted advertising." },
-      { kind: "p", html: "On the golo.golf website, usage information is collected through Google Analytics only if you allow it. See <a href=\"#website-analytics\">Website Analytics</a>." },
-      { kind: "h3", text: "Information from third parties" },
-      { kind: "p", html: "We may receive information from:" },
-      {
-        kind: "ul",
-        items: [
-          "other players who add you to a round or submit information about the round;",
-          "authentication, hosting, storage, notification, analytics, crash-reporting, email, and text-message providers;",
-          "golf-course databases, geocoding services, and authorized golf-association services; and",
-          "app stores and operating-system providers, such as Apple, when they provide installation, subscription, crash, or notification information.",
-        ],
-      },
-    ],
-  },
-  {
-    num: "02",
-    id: "section-2",
-    title: "How We Use Information",
-    blocks: [
-      { kind: "p", html: "We use information to:" },
-      {
-        kind: "ul",
-        items: [
-          "create, secure, and manage accounts;",
-          "identify players across rounds and devices;",
-          "organize rounds and match players to invitations;",
-          "calculate scores, handicaps, leaderboards, side-game results, and settlements;",
-          "record participant acceptance of side-game terms and participant-entered payment statuses;",
-          "synchronize live rounds, scores, events, and history across authorized devices;",
-          "provide nearby-course search, course details, tees, ratings, slopes, pars, and stroke indexes;",
-          "send account, live-scoring, agreement, settlement, support, and other requested notifications;",
-          "send a download link or respond to a support request you initiated;",
-          "provide optional golf-association connections and submit an eligible score only when you direct us to do so;",
-          "personalize settings and restore unfinished activity;",
-          "understand, in aggregate, how the Service is used (for example, how many organizers complete a second round), using counts rather than individual profiles;",
-          "analyze performance, troubleshoot problems, prevent fraud or misuse, and improve the Service;",
-          "enforce our agreements and protect GoLo, our users, and others; and",
-          "comply with legal obligations and respond to lawful requests.",
-        ],
-      },
-    ],
-  },
-  {
-    num: "03",
-    id: "section-3",
-    title: "Side Games, Dollar Amounts, and Settling Up",
-    tocLabel: "Side Games",
-    blocks: [
-      { kind: "p", html: "GoLo is a scorekeeping and recordkeeping tool. Users may enter private side-game terms and dollar amounts, and GoLo may calculate a suggested settlement and record participant-entered sent or received statuses." },
-      { kind: "p", html: "GoLo does not:" },
-      {
-        kind: "ul",
-        items: [
-          "accept, store, custody, or transfer money;",
-          "process debit cards, credit cards, bank accounts, or payment credentials;",
-          "sell wagering credits or virtual currency;",  // vocab-ok: disclaimer, says what GoLo is not
-          "set odds, match bettors, take a rake, or award prizes; or",  // vocab-ok: disclaimer, says what GoLo is not
-          "guarantee, verify, collect, or enforce any payment.",
-        ],
-      },
-      { kind: "p", html: "Payment handles are displayed or copied only to help participants settle directly using a service they choose. A “sent,” “received,” or “settled” status reflects information entered by users and is not independent confirmation from a bank or payment service." },
-    ],
-  },
-  {
-    num: "04",
-    id: "section-4",
-    title: "When We Disclose Information",
-    blocks: [
-      { kind: "h3", text: "Other round participants" },
-      { kind: "p", html: "People participating in or invited to a round may see information needed for the shared experience, including your display name, profile photo, handicap, team, scores, game selections, agreed amounts, acceptance status, calculated results, settlement amount, and participant-entered sent or received status." },
-      { kind: "p", html: "GoLo is not intended to expose your account email address, phone number, authentication credentials, or private golf-association tokens to other players. A payment handle may be displayed to relevant settlement participants when you choose to add one." },
-      { kind: "h3", text: "Service providers" },
-      { kind: "p", html: "We disclose information to vendors that perform services for us, such as:" },
-      {
-        kind: "ul",
-        items: [
-          "<strong>Supabase</strong>, for authentication, database hosting, file storage, real-time synchronization, and server functions;",
-          "<strong>Apple and operating-system providers</strong>, for app distribution, device permissions, and native push notifications;",
-          "<strong>Hostinger, Netlify, or other hosting providers</strong>, for website or web-app hosting and delivery;",
-          "<strong>OpenStreetMap’s Nominatim service or another geocoding provider</strong>, for converting a location or search term into a city, region, or coordinates;",
-          "<strong>golf-course and golf-association data providers</strong>, including authorized USGA/GHIN services when enabled, for course, tee, rating, handicap, and score-posting functions;",
-          "<strong>email, text-message, and push-delivery providers</strong>, for messages requested by you or needed to operate the Service; and",
-          `<strong>analytics, logging, and crash-reporting providers</strong>, for performance measurement, diagnostics, security, and troubleshooting, including <strong>Google (Google Analytics)</strong> on the website if you allow it, as described in <a href="#website-analytics">Website Analytics</a>, which also covers the <strong>Microsoft (Clarity)</strong> session recordings the website used until ${CLARITY_ENDED}.`,
-        ],
-      },
-      { kind: "p", html: "These providers may process information only for the services they provide to GoLo or as otherwise permitted by their own terms and applicable law." },
-      { kind: "h3", text: "Legal, safety, and business disclosures" },
-      { kind: "p", html: "We may disclose information when reasonably necessary to comply with law, legal process, or government requests; investigate fraud, security issues, or violations; protect rights, safety, or property; or complete a merger, financing, acquisition, reorganization, or sale of assets. If ownership changes, the recipient may continue to use information as described in this policy unless you are notified otherwise." },
-    ],
-  },
-  {
-    num: "05",
+    num: "11",
     id: "website-analytics",
     title: "Website Analytics",
     tocLabel: "Website Analytics",
@@ -308,7 +168,7 @@ const privacySections: LegalSection[] = [
     ],
   },
   {
-    num: "06",
+    num: "12",
     id: "section-5",
     title: "Selling, Sharing, and Advertising",
     blocks: [
@@ -318,167 +178,40 @@ const privacySections: LegalSection[] = [
     ],
   },
   {
-    num: "07",
-    id: "section-6",
-    title: "Data Retention",
-    blocks: [
-      { kind: "p", html: "We retain information only for as long as reasonably necessary for the purposes described in this policy:" },
-      {
-        kind: "ul",
-        items: [
-          "<strong>Account, profile, round, scoring, side-game, agreement, settlement, and notification records:</strong> <!-- -->generally until you delete the information or your account, subject to shared-round records and legal obligations described below.",
-          "<strong>Precise device location:</strong> cached by the current app on the device for up to 24 hours. GoLo does not intentionally build a long-term precise-location history. Routine server or provider logs may retain request data for a limited period.",
-          "<strong>Push tokens:</strong> while notifications are enabled or until the token is revoked, expires, or the account is deleted.",
-          "<strong>Support, download-link, email, and text-message records:</strong> <!-- -->generally up to 24 months after the communication, unless a longer period is needed to resolve an issue or comply with law.",
-          "<strong>Newsletter sign-up records:</strong> the email address you signed up with, when and where on the website you signed up, and where that visit came from: kept until you ask us to delete them, as described in <a href=\"#section-7\">Your Choices and Privacy Rights</a>, unless a longer period is needed to resolve an issue or comply with law. Unsubscribing from newsletter emails stops the emails; to have the sign-up record itself deleted, ask us. Details of where a website sign-up came from are kept with the newsletter or download-link record they belong to, and deleted with it.",
-          "<strong>Website analytics:</strong> as described in <a href=\"#website-analytics\">Website Analytics</a>: up to 14 months for analysis in Google Analytics (Google’s aggregated reports aren’t limited by that setting). Earlier Clarity recordings: 30 days for most, up to 9 months for heatmaps and a sample Microsoft keeps.",
-          "<strong>Other analytics, logs, and crash diagnostics:</strong> generally up to 24 months, unless a shorter provider setting is available and appropriate.",
-          "<strong>Backups:</strong> deleted information may remain in encrypted or access-restricted backups for up to 90 days before it is overwritten.",
-        ],
-      },
-      { kind: "p", html: "We may retain information longer when reasonably necessary for security, fraud prevention, dispute resolution, enforcing agreements, or legal compliance. When full deletion would affect another user’s legitimate round history, GoLo may retain a de-identified version of shared scoring or settlement records after removing your account identifiers, contact details, profile photo, payment handle, and golf-association information." },
-    ],
-  },
-  {
-    num: "08",
-    id: "section-7",
-    title: "Your Choices and Privacy Rights",
-    blocks: [
-      { kind: "p", html: "Depending on where you live and subject to applicable law, you may have the right to request access to, correction of, deletion of, or a portable copy of personal information, and to appeal a denied privacy request. You may also have the right to obtain information about the categories of personal information we collect and disclose." },
-      { kind: "p", html: "You can exercise many choices directly in the Service:" },
-      {
-        kind: "ul",
-        items: [
-          "update profile and payment-handle information;",
-          "disable location access in device settings and use manual course search;",
-          "change notification preferences or disable notifications in device settings;",
-          "disconnect an optional golf-association connection;",
-          "delete individual round-history items where available;",
-          "initiate account deletion under<!-- --> <strong>You → Account → Delete Account</strong>; and",
-          "allow, decline, or withdraw website analytics under <a href=\"#analytics-choices\">Privacy choices</a>, linked from the footer of every page.",
-        ],
-      },
-      { kind: "p", html: "If you cannot access your account, or to make another privacy request, email<!-- --> <strong><a href=\"mailto:info@golo.golf\">info@golo.golf</a></strong>. We may need to verify your identity before completing a request. We will not discriminate against you for exercising a privacy right." },
-    ],
-  },
-  {
-    num: "09",
-    id: "section-8",
-    title: "Account Deletion",
-    blocks: [
-      { kind: "p", html: "You may initiate deletion in the app under<!-- --> <strong>You → Account → Delete Account</strong>. You may also request deletion by emailing<!-- --> <strong><a href=\"mailto:info@golo.golf\">info@golo.golf</a></strong> <!-- -->if you cannot access the app." },
-      { kind: "p", html: "Unless a longer period is required by law or needed to prevent fraud or resolve a dispute, GoLo will complete deletion from active systems within 30 days. Account deletion is intended to remove or de-identify:" },
-      {
-        kind: "ul",
-        items: [
-          "your authentication account and profile;",
-          "contact information, profile photo, payment handle, and notification devices;",
-          "private notification and agreement records associated only with your account;",
-          "rounds you own, where deletion does not unlawfully impair another person’s rights; and",
-          "your personal identifiers contained in rounds created by other users.",
-        ],
-      },
-      { kind: "p", html: "Shared scores, game results, or settlement totals may remain in de-identified form so other participants can retain an accurate round history. Residual copies may remain in backups for up to 90 days and will not be restored to active use except for disaster recovery, security, or legal purposes." },
-    ],
-  },
-  {
-    num: "10",
-    id: "section-9",
-    title: "Security",
-    blocks: [
-      { kind: "p", html: "We use administrative, technical, and organizational safeguards designed to protect information, including authenticated access, encrypted network connections, database access controls, and restricted server credentials. No system is completely secure, and we cannot guarantee that unauthorized access, loss, or misuse will never occur." },
-      { kind: "p", html: "You are responsible for protecting your password, device, invitation codes, and account access. Contact us promptly if you believe your account has been compromised." },
-    ],
-  },
-  {
-    num: "11",
-    id: "section-10",
-    title: "Children’s Privacy",
-    blocks: [
-      { kind: "p", html: "The Service is not directed to children under 13, and GoLo does not knowingly collect personal information from a child under 13. Dollar-amount and settlement features may be used only by people legally permitted to participate in that activity in their location." },
-      { kind: "p", html: "If you believe a child provided personal information to GoLo, contact<!-- --> <strong><a href=\"mailto:info@golo.golf\">info@golo.golf</a></strong> <!-- -->so we can investigate and delete it as required." },
-    ],
-  },
-  {
-    num: "12",
-    id: "section-11",
-    title: "United States Service",
-    blocks: [
-      { kind: "p", html: "GoLo is currently offered in the United States. Information may be stored and processed in the United States and in other locations where our service providers operate, subject to appropriate protections and applicable law." },
-    ],
-  },
-  {
-    num: "13",
-    id: "section-12",
-    title: "Third-Party Services and Links",
-    blocks: [
-      { kind: "p", html: "The Service may link to or interoperate with services not controlled by GoLo, such as a payment app, golf association, app store, or course-data provider. Your use of those services is governed by their own terms and privacy policies. GoLo is not responsible for the independent privacy practices of third parties." },
-    ],
-  },
-  {
-    num: "14",
-    id: "section-13",
-    title: "Changes to This Policy",
-    blocks: [
-      { kind: "p", html: "We may update this policy as the Service, providers, or legal requirements change. We will post the updated policy at this page and revise the “Last updated” date. If a change materially affects your privacy, we will provide additional notice when required." },
-    ],
-  },
-  {
-    num: "15",
-    id: "section-14",
-    title: "Contact Us",
-    blocks: [
-      { kind: "address", lines: ["<strong>GoLo Golf LLC</strong>", "21196 Anne Lane", "Bend, Oregon 97702", "United States", "Email:<!-- --> <strong><a href=\"mailto:info@golo.golf\">info@golo.golf</a></strong>"] },
-    ],
-  },
+  "num": "13",
+  "id": "website-data",
+  "title": "Website Sign-ups and Retention",
+  "blocks": [
+    {
+      "kind": "p",
+      "html": "This section applies only to the public golo.golf website, not to the Android app. Website account-free forms and analytics do not add an SDK or data flow to Android 1.2.0 (27)."
+    },
+    {
+      "kind": "ul",
+      "items": [
+        "<strong>Website download-link requests:</strong> the phone number you enter when you ask us to text you an app download link, together with delivery status and related technical records.",
+        "<strong>Where a website sign-up came from:</strong> when you join the newsletter or ask for a download link on the website, we also keep where that visit started: the path of the first page you landed on (not the rest of its web address), the domain of the website that referred you, and up to four names from the link you followed, if it carried them: its source, medium, campaign, and placement. We store the source only if, once converted to lower case, it is at most 64 characters of letters, digits, dots, hyphens, and underscores, with no @ sign, no run of seven or more digits (even if separated by spaces, dots, hyphens, or underscores), no UUID, and no run of 16 or more characters made only of the letters a–f and digits. We store the medium, campaign, and placement only when, together with the source, they exactly match a combination from GoLo’s own list of tagged-link names; otherwise we store none of the three. Apart from the page path and these names, we keep nothing from the link. We use these details only to count, in aggregate, which pages, websites, and links bring sign-ups."
+      ]
+    },
+    {
+      "kind": "p",
+      "html": "Website support, download-link, email and text-message records are generally retained for up to 24 months unless a longer period is needed to resolve the request or comply with law. Website analytics retention and controls are described above. For website privacy requests, email info@golo.golf. The app account deletion and retention rules are in the app sections above."
+    }
+  ]
+},
 ];
-/**
- * Plain-English glosses, keyed by section id. Kept apart from the policy text
- * so it's obvious which words are policy and which are the gloss — and so
- * nobody edits a note and a clause in the same breath.
- */
-const privacyPlain: Record<string, string> = {
-  "section-1":
-    "Your account basics, your profile, the rounds and scores you enter, the amounts your group agreed, and location only while you search for a course.",
-  "section-2":
-    "To run your account, score your rounds, keep the app working and answer you when you write in.",
-  "section-3":
-    "The settlement ledger is a scoreboard. Money never moves through GoLo, and we never verify that anyone actually paid.",
-  "section-4":
-    "Your group sees what you share with them. Beyond that it's the providers who run the app, plus the legal cases nobody gets a choice about.",
-  "website-analytics":
-    "Off unless you allow it. If you do, Google Analytics counts visits and clicks, never what you type. Decline any time under Privacy choices. One thing isn't analytics and isn't covered by the choice: a campaign link's labels ride along when you tap Google Play.",
-  "section-5":
-    "We don't sell your information for money or use it to target ads. Google's own terms let it use some analytics data, which is why it's opt-in and GPC turns it off. We dropped Clarity because Microsoft's terms go further.",
-  "section-6":
-    "We keep things while your account is live, then delete them — with the specific windows spelled out below, website analytics included.",
-  "section-7":
-    "Edit your profile, turn location and notifications off, delete rounds, or delete the account outright. Website analytics has its own switch. Email us if you can't get in.",
-  "section-8":
-    "You → Account → Delete Account. Shared rounds stay for the other players in de-identified form, and backups age out within 90 days.",
-  "section-9":
-    "Encrypted in transit and access-controlled — but no system is perfectly secure.",
-  "section-10": "GoLo isn't for under-13s, and we don't knowingly collect from them.",
-  "section-11":
-    "A U.S. product, run on U.S. infrastructure, not built for non-U.S. privacy regimes.",
-  "section-12":
-    "Links and services we don't run come with their own privacy terms.",
-  "section-13":
-    "Changes get posted here with a new date, and material ones get real notice.",
-  "section-14": `Everything privacy goes to ${siteConfig.supportEmail}.`,
-};
 
 export const privacyDoc: LegalDoc = {
   slug: "privacy",
   published: true,
   title: "Privacy Policy",
   kicker: "LEGAL",
-  lead: "What GoLo collects, how it gets used, and exactly what happens when you delete your account. Every section has a plain-English note beside the legal language.",
+  lead: "What the app collects, what happens when you delete your account, and the separate choices for website analytics.",
   dateLabel: "Last updated",
   // Set to the day this version deploys (the Google Play install-referrer
   // disclosure, after golowebsite#143; before it, golo#803, #120 and #122).
-  effective: "October 26, 2026",
-  effectiveISO: "2026-10-26",
+  effective: "October 27, 2026",
+  effectiveISO: "2026-10-27",
   entity: siteConfig.addressShort,
   intro: privacyIntro,
   short: {
@@ -500,10 +233,7 @@ export const privacyDoc: LegalDoc = {
       },
     ],
   },
-  sections: privacySections.map((section) => ({
-    ...section,
-    plain: privacyPlain[section.id],
-  })),
+  sections: privacySections,
   contact: {
     kicker: "PRIVACY QUESTIONS",
     blurb:
