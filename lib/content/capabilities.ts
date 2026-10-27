@@ -18,9 +18,9 @@
  * - planned      on the list, not built
  * - not-offered  not in the app and not on the list (including things cut)
  *
- * One entry follows siteConfig.appLive instead of a fixed status: the store
- * apps are live exactly when the launch flag says the app is downloadable, so
- * flipping that flag moves them on the roadmap, in the FAQ and in the
+ * One entry follows siteConfig instead of a fixed status: the iPhone app is
+ * live exactly when siteConfig.iosLive says its App Store listing is public,
+ * so flipping that moves it on the roadmap, in the FAQ, on /about and in the
  * SoftwareApplication schema together.
  */
 
@@ -88,6 +88,14 @@ const APP_CHECK_100 = {
 
 /** Owner's answers on 2026-10-15 (soleman23/golowebsite#61). */
 const OWNER_1015 = { by: "owner", date: "2026-10-15" } as const;
+
+/**
+ * The Android launch, 2026-10-26: GoLo on Google Play
+ * (play.google.com/store/apps/details?id=golf.golo.app); the iPhone app waits
+ * on Apple, with no date; the web app at gologolf.netlify.app is open to
+ * anyone. Relayed from soleman23/golo, where it was checked.
+ */
+const OWNER_1026 = { by: "owner", date: "2026-10-26" } as const;
 
 /** The site's own wording before the registry existed, unchecked. */
 const SITE_COPY_1015 = { by: "site-copy", date: "2026-10-15" } as const;
@@ -265,11 +273,41 @@ export const capabilities = [
     label: "Runs in a browser",
     status: "live",
     summary:
-      "GoLo runs in a phone browser today, in private testing; there's no public sign-up yet.",
-    verified: OWNER_1015,
+      "GoLo runs in a phone browser, iPhone included, with the same account as the Android app.",
+    verified: OWNER_1026,
+  },
+  {
+    id: "android-app",
+    label: "Android app on Google Play",
+    status: "live",
+    summary: "The Android app, on Google Play.",
+    verified: OWNER_1026,
+    roadmap: true,
   },
 
   /* ---------------------------------------------------------- testing */
+  {
+    id: "ios-app",
+    label: "iPhone app in the App Store",
+    // Built and in TestFlight; the listing waits on Apple. Follows
+    // siteConfig.iosLive; see the note at the top of the file.
+    status: siteConfig.iosLive ? "live" : "testing",
+    summary:
+      "The iPhone app, coming to the App Store. Until then, GoLo runs in Safari on iPhone.",
+    verified: OWNER_1026,
+    roadmap: true,
+    claimPhrases: [
+      "iphone app",
+      "ios app",
+      "app for iphone",
+      "on the app store",
+      "in the app store",
+      "from the app store",
+      "download on the app store",
+      "on iphone and android",
+      "on iphone & android",
+    ],
+  },
   {
     id: "dead-spot-sync",
     label: "Scoring through dead spots",
@@ -317,16 +355,6 @@ export const capabilities = [
       "across every round",
       "across rounds",
     ],
-  },
-  {
-    id: "store-apps",
-    label: "iPhone and Android apps",
-    // Follows the launch flag; see the note at the top of the file.
-    status: siteConfig.appLive ? "live" : "planned",
-    summary: "Native apps in the App Store and Google Play.",
-    verified: OWNER_1015,
-    roadmap: true,
-    claimPhrases: ["app store", "google play", "iphone", "android", "ios"],
   },
   {
     id: "watch-app",

@@ -411,7 +411,7 @@ const skins: GameDetailCopy = {
     },
   },
   headings: {
-    variations: { kicker: "CARRYOVERS & VARIATIONS", title: "The carryover is what makes skins mean.", lead: "Tie a hole and nobody wins it — the skin carries forward. GoLo tracks every carried skin so you always know what’s on the line." },
+    variations: { kicker: "CARRYOVERS & VARIATIONS", title: "The carryover is what makes skins mean.", lead: "Tie a hole and nobody wins it — the skin carries forward. GoLo tracks every carried skin so you always know what the next hole is worth." },
     tips: { kicker: "PLAY SMART", title: "Skins pays birdies, not steady golf.", lead: "Every hole resets, so the money goes to whoever is willing to make one great swing at the right moment." },
     glossary: { kicker: "TALK THE TALK", title: "The terms you'll hear on the tee." },
     faq: { kicker: "SKINS, ANSWERED", title: "Before you tee it up." },

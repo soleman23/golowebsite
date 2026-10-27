@@ -25,13 +25,13 @@ Before launch, add "In private testing" wherever a status field exists. Don't de
 
 ## Profiles
 
-`sameAs` in `lib/siteConfig.ts` feeds the Organization's structured data: the company's own profiles, live and official, nothing else. The App Store and Google Play listings describe the app, not the company, so they belong to the home page's `SoftwareApplication` node instead. That node picks them up on its own from `NEXT_PUBLIC_APP_STORE_URL` and `NEXT_PUBLIC_GOOGLE_PLAY_URL` once the store apps are live.
+`sameAs` in `lib/siteConfig.ts` feeds the Organization's structured data: the company's own profiles, live and official, nothing else. The App Store and Google Play listings describe the app, not the company, so they belong to the home page's `SoftwareApplication` node instead. That node picks them up on its own: Google Play from `siteConfig.googlePlayUrl` (live), the App Store from `NEXT_PUBLIC_APP_STORE_URL` once `siteConfig.iosLive` is true.
 
 | Profile | URL | Status | In `sameAs` |
 |---|---|---|---|
 | Instagram | https://www.instagram.com/gologolfapp/ | Live | Yes |
-| Apple App Store | — | At launch | No: on the SoftwareApplication, from the env var |
-| Google Play | — | At launch | No: on the SoftwareApplication, from the env var |
+| Apple App Store | — | Coming soon (waits on Apple) | No: on the SoftwareApplication, from the env var, once `siteConfig.iosLive` is true |
+| Google Play | https://play.google.com/store/apps/details?id=golf.golo.app | Live since 2026-10-26 | No: on the SoftwareApplication (`siteConfig.googlePlayUrl`) |
 | Product Hunt | — | Optional, at launch | Only if a listing is made |
 | Other social accounts | — | Only if someone will actually post there | Only when live |
 
@@ -40,6 +40,14 @@ Use this file's description for every profile, link back to https://www.golo.gol
 **Not wanted:** paid directory listings, link exchanges, review swaps, posts under personas, and accounts nobody maintains. An empty profile is a weaker signal than none.
 
 ## Launch-day checklist
+
+**Split launch (2026-10-26):** Android went live on Google Play before iOS. The
+download row, CTA labels, closing-band copy, FAQ availability answers, `/about`
+status and the home `SoftwareApplication` were moved off `appLive` and onto the
+`android-app` / `ios-app` capabilities, so steps 4 and 5 below now describe
+only what `appLive` still controls (/features pricing and beta lines, the /blog
+pill). For the App Store day: set `iosLive: true` in `lib/siteConfig.ts` and
+`NEXT_PUBLIC_APP_STORE_URL` in hPanel in the same release. (`NEXT_PUBLIC_GOOGLE_PLAY_URL` is no longer read; the listing is in code.)
 
 `NEXT_PUBLIC_*` values are inlined at build time. In hPanel, **Apply changes** immediately redeploys whatever `main` is at that moment. A merge to `main` also deploys on its own, a few minutes later, with the flags as they were.
 

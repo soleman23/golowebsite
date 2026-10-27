@@ -3,10 +3,9 @@
  * the category for search, lead, the download row, and the "text me the link"
  * control, beside the live-leaderboard phone mockup.
  *
- * The download row follows siteConfig.appLive. While it's false there is no
- * app to download, so the store buttons stay off and the phone capture carries
- * the CTA alone — /faq, /blog and /features all say "not live yet" in copy,
- * and two dead store buttons on the home page contradicted every one of them.
+ * The download row is always on: the Android app is on Google Play. The
+ * App Store slot says "coming soon" until siteConfig.iosLive, with the web
+ * app as the iPhone path (StoreButtons). The phone capture stays under it.
  */
 
 import { heroHeading } from "@/lib/content";
@@ -67,20 +66,16 @@ export function Hero() {
           </h1>
 
           <p className={styles.lead}>
-            Skins, Nassau, the press on the back nine — GoLo runs every side game,
+            Skins, Nassau, the press when you’re two down — GoLo runs every side game,
             does the math you hate, and has the{" "}
             <strong>settle-up ready</strong> before you hit the parking lot.
           </p>
 
-          {siteConfig.appLive ? <StoreButtons size="md" /> : null}
+          <StoreButtons size="md" />
           <TextMeLink
             id="hero-phone"
             placement="hero"
-            prompt={
-              siteConfig.appLive
-                ? "or text me the link:"
-                : "Text me the link when it's live:"
-            }
+            prompt="or text me the link:"
           />
         </div>
 

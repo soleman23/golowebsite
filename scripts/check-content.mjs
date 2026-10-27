@@ -8,8 +8,8 @@
  *    copy as something GoLo does. A phrase passes only when its own clause
  *    denies it: a negation in front of it ("no GPS yardages", "doesn't do
  *    today: automatic presses, …"; "and", "but", "so" and ";" end its reach)
- *    or a status in the same clause ("iPhone and Android apps are on the list,
- *    not built"; only ";", dashes and "but" end that clause, since "and" so
+ *    or a status in the same clause ("the iPhone app is coming to the App
+ *    Store"; only ";", dashes and "but" end that clause, since "and" so
  *    often joins the very things being denied). In blog posts and game
  *    guides only copy about GoLo counts — a string that mentions GoLo or "the
  *    app" — so explaining an auto-press as golf is fine and saying GoLo does
@@ -207,9 +207,13 @@ function sentenceAt(text, index, length) {
 
 const ABOUT_GOLO = /\bGoLo\b|\bthe app\b/i;
 
-/** A status anywhere in the phrase's clause says it isn't working. */
+/**
+ * A status anywhere in the phrase's clause says it isn't working. "Coming
+ * soon" and "coming to" cover a built thing that isn't out yet: "the iPhone
+ * app is coming to the App Store".
+ */
 const STATUS =
-  /\b(not built|isn['’]t built|aren['’]t built|on the list|not in the app|isn['’]t in the app|aren['’]t in the app|in testing|not yet|we cut|was cut|were cut|been cut|cut from|(does not|doesn['’]t) track)\b/i;
+  /\b(not built|isn['’]t built|aren['’]t built|on the list|not in the app|isn['’]t in the app|aren['’]t in the app|in testing|not yet|coming soon|coming to|we cut|was cut|were cut|been cut|cut from|(does not|doesn['’]t) track)\b/i;
 
 /** A negation counts only before the phrase, in the same clause. */
 const NEGATION =

@@ -9,37 +9,50 @@ export type NavLink = { label: string; href: string };
 
 /**
  * The label on every button that sends you to /#get — the nav pill and each
- * page's CTAs. Until siteConfig.appLive there's nothing to download there,
- * only the phone capture, so the button names what you'll actually get.
+ * page's CTAs. The download row is there: Google Play, the App Store's
+ * "coming soon" and the web app.
  */
-export const appCtaLabel = siteConfig.appLive
-  ? "Get the app"
-  : "Get the launch link";
+export const appCtaLabel = "Get the app";
 
 /**
  * The same thing, short enough for the mobile nav row, where the logo, this
- * pill and the menu button share a 320px screen. The full prelaunch label
- * pushed the menu button off the edge and widened the page.
+ * pill and the menu button share a 320px screen.
  */
-export const appCtaShortLabel = siteConfig.appLive
-  ? "Get the app"
-  : "Get the link";
+export const appCtaShortLabel = "Get the app";
 
 /**
- * The closing band's default lead and fine print (FinalCTA). Both follow
- * appLive: before launch there's nothing to download, and the app runs in a
- * browser in private testing, so neither names a store, a platform or a price.
- * At launch, check the fine print against the pricing decision and the
- * "store-apps" entry in capabilities.ts before it says anything more.
+ * The closing band's default lead and fine print (FinalCTA). The Android app
+ * is on Google Play; the iPhone app follows siteConfig.iosLive. Neither names
+ * a price: pricing isn't set (see the FAQ).
  */
-export const finalCtaLead = siteConfig.appLive
-  ? "Download GoLo, set up your games before the first tee, and let the app keep the books. Your buddies’ excuses end here."
-  : "Get the launch link, set up your games before the first tee, and let GoLo keep the books. Your buddies’ excuses end here.";
+export const finalCtaLead =
+  "Download GoLo, set up your games before the first tee, and let the app keep the books. Your buddies’ excuses end here.";
 
-export const finalCtaFine = siteConfig.appLive
-  ? // claim-ok: only rendered once appLive is set, at launch
+export const finalCtaFine = siteConfig.iosLive
+  ? // claim-ok: only once siteConfig.iosLive is set, with the App Store listing public
     "On iPhone & Android"
-  : "In testing with real groups · Free while we’re in beta";
+  : "Android on Google Play · On iPhone, use the web app for now";
+
+/**
+ * The words in the download row (components/ui/StoreButtons.tsx). Until
+ * siteConfig.iosLive, the App Store slot says "coming soon" and isn't a link,
+ * and the web-app line gives iPhone owners the path that works today.
+ */
+export const storeButtonsCopy = {
+  appStore: {
+    top: "Download on the",
+    main: "App Store",
+    // claim-ok: rendered only once siteConfig.iosLive is set
+    label: "Download GoLo on the App Store",
+  },
+  appStoreSoon: { top: "Coming soon to the", main: "App Store" },
+  googlePlay: { top: "Get it on", main: "Google Play", label: "Get GoLo on Google Play" },
+  webApp: {
+    lead: "On iPhone?",
+    link: "Use GoLo in your browser",
+    label: "Use GoLo in your browser (opens the web app)",
+  },
+};
 
 /**
  * Every top-level entry is a real route. "How it works" goes to the full
@@ -60,7 +73,7 @@ export const footerLinks: Record<FooterColumn, NavLink[]> = {
   product: [
     { label: "Features", href: "/features" },
     { label: "How it works", href: "/how-it-works" },
-    { label: siteConfig.appLive ? "Download" : "Launch link", href: "/#get" },
+    { label: "Download", href: "/#get" },
   ],
   games: [
     { label: "All games", href: "/games" },

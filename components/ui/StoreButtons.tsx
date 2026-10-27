@@ -1,21 +1,27 @@
 "use client";
 
 /**
- * App Store + Google Play download buttons. White pills with brand glyphs and
- * a two-line label. Size variant controls height (hero = 58, final CTA = 60).
- * Links come from siteConfig (env-driven), falling back to #get.
+ * The download row: Google Play and App Store pills with brand glyphs and a
+ * two-line label, then a line pointing iPhone owners at the web app. Size
+ * variant controls height (hero = 58, final CTA = 60).
  *
- * Callers gate this on siteConfig.appLive — pre-launch the phone capture
- * stands in its place, so these buttons only render when there's something to
- * install. `destination_configured: false` therefore means a real
- * misconfiguration (appLive flipped, store URLs never set) rather than the
- * expected pre-launch state, and is worth alerting on.
+ * Google Play is live, so it always links to the listing (in code, in
+ * lib/siteConfig.ts). The App Store app isn't out: until siteConfig.iosLive
+ * is true its slot is a plain "Coming soon to the App Store" tile — not a
+ * link, not a badge — and the web-app line is the iPhone path that works
+ * today. When iosLive flips, the tile becomes the App Store link and the
+ * web-app line goes.
  *
- * claim-ok-file: rendered only once siteConfig.appLive is set, at launch.
+ * `destination_configured: false` on store_button_click means a store link
+ * fell back to "#get": a misconfiguration worth alerting on.
+ *
+ * claim-ok-file: the App Store link and its "Download on the" label render
+ * only once siteConfig.iosLive is set.
  */
 
 import { siteConfig } from "@/lib/siteConfig";
 import { track } from "@/lib/analytics";
+import { storeButtonsCopy as copy } from "@/lib/content/nav";
 import styles from "./StoreButtons.module.css";
 
 function AppleGlyph({ size = 24 }: { size?: number }) {
@@ -24,7 +30,7 @@ function AppleGlyph({ size = 24 }: { size?: number }) {
       width={size}
       height={size}
       viewBox="0 0 24 24"
-      fill="#0a0d10"
+      fill="currentColor"
       aria-hidden="true"
       focusable="false"
       style={{ display: "block", flex: "0 0 auto" }}
@@ -66,49 +72,81 @@ export function StoreButtons({
   align = "start",
   className,
 }: StoreButtonsProps) {
+  const placement = size === "lg" ? "final_cta" : "hero";
   const external = (href: string) => href.startsWith("http");
   const onStoreClick = (store: "app_store" | "google_play", href: string) => {
     track("store_button_click", {
       store,
-      placement: size === "lg" ? "final_cta" : "hero",
+      placement,
       destination_configured: external(href),
     });
   };
-  return (
-    <div
-      className={`${styles.group} ${align === "center" ? styles.center : ""} ${className ?? ""}`}
+  const buttonClass = `${styles.button} ${size === "lg" ? styles.lg : ""}`;
+  const appStoreLink = (
+    <a
+      href={siteConfig.appStoreUrl}
+      className={buttonClass}
+      aria-label={copy.appStore.label}
+      onClick={() => onStoreClick("app_store", siteConfig.appStoreUrl)}
+      {...(external(siteConfig.appStoreUrl)
+        ? { target: "_blank", rel: "noopener noreferrer" }
+        : {})}
     >
-      <a
-        href={siteConfig.appStoreUrl}
-        className={`${styles.button} ${size === "lg" ? styles.lg : ""}`}
-        aria-label="Download GoLo on the App Store"
-        onClick={() => onStoreClick("app_store", siteConfig.appStoreUrl)}
-        {...(external(siteConfig.appStoreUrl)
-          ? { target: "_blank", rel: "noopener noreferrer" }
-          : {})}
-      >
-        <AppleGlyph size={size === "lg" ? 25 : 24} />
-        <span className={styles.label}>
-          <span className={styles.labelTop}>Download on the</span>
-          <span className={styles.labelMain}>App Store</span>
-        </span>
-      </a>
+      <AppleGlyph size={size === "lg" ? 25 : 24} />
+      <span className={styles.label}>
+        <span className={styles.labelTop}>{copy.appStore.top}</span>
+        <span className={styles.labelMain}>{copy.appStore.main}</span>
+      </span>
+    </a>
+  );
+  return (
+    <div className={`${styles.row} ${align === "center" ? styles.rowCenter : ""} ${className ?? ""}`}>
+      <div className={`${styles.group} ${align === "center" ? styles.center : ""}`}>
+        {/* The live store first: until the App Store app is out, its
+            "coming soon" tile follows Google Play, so on a phone, where the
+            two stack, the button that works is the one on top. */}
+        {siteConfig.iosLive ? appStoreLink : null}
+        <a
+          href={siteConfig.googlePlayUrl}
+          className={buttonClass}
+          aria-label={copy.googlePlay.label}
+          onClick={() => onStoreClick("google_play", siteConfig.googlePlayUrl)}
+          {...(external(siteConfig.googlePlayUrl)
+            ? { target: "_blank", rel: "noopener noreferrer" }
+            : {})}
+        >
+          <GooglePlayGlyph size={size === "lg" ? 23 : 22} />
+          <span className={styles.label}>
+            <span className={styles.labelTop}>{copy.googlePlay.top}</span>
+            <span className={styles.labelMain}>{copy.googlePlay.main}</span>
+          </span>
+        </a>
+        {siteConfig.iosLive ? null : (
+          <div className={`${buttonClass} ${styles.soon}`}>
+            <AppleGlyph size={size === "lg" ? 25 : 24} />
+            <span className={styles.label}>
+              <span className={styles.labelTop}>{copy.appStoreSoon.top}</span>
+              <span className={styles.labelMain}>{copy.appStoreSoon.main}</span>
+            </span>
+          </div>
+        )}
+      </div>
 
-      <a
-        href={siteConfig.googlePlayUrl}
-        className={`${styles.button} ${size === "lg" ? styles.lg : ""}`}
-        aria-label="Get GoLo on Google Play"
-        onClick={() => onStoreClick("google_play", siteConfig.googlePlayUrl)}
-        {...(external(siteConfig.googlePlayUrl)
-          ? { target: "_blank", rel: "noopener noreferrer" }
-          : {})}
-      >
-        <GooglePlayGlyph size={size === "lg" ? 23 : 22} />
-        <span className={styles.label}>
-          <span className={styles.labelTop}>Get it on</span>
-          <span className={styles.labelMain}>Google Play</span>
-        </span>
-      </a>
+      {siteConfig.iosLive ? null : (
+        <p className={styles.webApp}>
+          {copy.webApp.lead}{" "}
+          <a
+            href={siteConfig.webAppUrl}
+            className={styles.webAppLink}
+            aria-label={copy.webApp.label}
+            target="_blank"
+            rel="noopener noreferrer"
+            onClick={() => track("cta_click", { page: placement, cta: "web_app" })}
+          >
+            {copy.webApp.link} →
+          </a>
+        </p>
+      )}
     </div>
   );
 }

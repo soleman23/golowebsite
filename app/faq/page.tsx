@@ -65,7 +65,7 @@ export default function FaqPage() {
         breadcrumbs={[{ label: "Home", href: "/" }, { label: "FAQ" }]}
         meta={
           <>
-            {siteConfig.appLive ? null : (
+            {siteConfig.iosLive ? null : (
               <StatusPill variant="testing" label={faqPrelaunchStatus} />
             )}
             <span className={styles.metaChip}>{faqCountLine}</span>
