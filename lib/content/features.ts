@@ -15,14 +15,14 @@
 
 import type { StatusVariant } from "@/components/ui/StatusPill";
 import type { CheckListItem } from "@/components/ui/CheckList";
-import {
-  capabilitiesWithStatus,
-  capability,
-  type CapabilityStatus,
-} from "./capabilities";
+import { siteConfig } from "@/lib/siteConfig";
+import { capabilitiesWithStatus, type CapabilityStatus } from "./capabilities";
 
-/** True from launch day: follows siteConfig.appLive through the registry. */
-const launched = capability("store-apps").status === "live";
+/**
+ * The full launch (pricing and the "in beta" lines), not the Android one: it
+ * follows siteConfig.appLive, as these lines did before the store apps split.
+ */
+const launched = siteConfig.appLive;
 
 /** Keys into the visual map in app/features/page.tsx. */
 export type FeatureVisual =

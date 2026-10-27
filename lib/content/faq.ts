@@ -46,22 +46,23 @@ export const faqCategories: FaqCategory[] = [
     label: "Getting started",
     blurb: "Where GoLo is today, and what the first round looks like.",
     items: [
-      // Follows the store-apps entry in capabilities.ts (and so
-      // siteConfig.appLive), like q-devices below.
-      capability("store-apps").status === "live"
+      // Follows the ios-app entry in capabilities.ts (and so
+      // siteConfig.iosLive), like q-devices below.
+      capability("ios-app").status === "live"
         ? {
             id: "q-available",
             q: "Is GoLo available yet?",
-            // claim-ok: only once the store-apps entry is live
+            // claim-ok: only once the ios-app entry is live
             a: "Yes. GoLo is on iPhone and Android, and the store links are on the home page.",
             link: { label: "GET THE APP →", href: "/#get" },
           }
         : {
             id: "q-available",
             q: "Is GoLo available yet?",
-            a: "Not yet. We’re building it and testing with real groups on real courses before we put it in anybody’s hands. There’s no App Store link today — when there is, it goes on the home page first.",
+            a: "Yes, on Android: GoLo is on Google Play. The iPhone app is coming to the App Store. Until it’s out, iPhone owners can use GoLo in Safari, with the same account. Both links are on the home page.",
+            link: { label: "GET THE APP →", href: "/#get" },
             noteTag: "STATUS",
-            note: "In private testing. No public launch date announced.",
+            note: "Android: on Google Play. iPhone: coming soon to the App Store; the web app works today.",
           },
       {
         id: "q-everyone",
@@ -285,13 +286,13 @@ export const faqCategories: FaqCategory[] = [
       {
         id: "q-devices",
         q: "Can I use it on a tablet or a cart screen?",
-        // Follows the store-apps entry in capabilities.ts, which follows
-        // siteConfig.appLive.
+        // Follows the ios-app entry in capabilities.ts, which follows
+        // siteConfig.iosLive.
         a:
-          capability("store-apps").status === "live"
-            ? // claim-ok: only once the store-apps entry is live
+          capability("ios-app").status === "live"
+            ? // claim-ok: only once the ios-app entry is live
               "GoLo is built for iPhone and Android phones, thumb-first. Tablets and cart screens aren’t what we design against, so we don’t promise how it looks on one."
-            : "Today GoLo runs in a browser, so any decent screen works; iPhone and Android apps are on the list, not built. The scoring layout is built phone-first, thumb-first — that’s the one we design against.",
+            : "GoLo is built for phones, thumb-first: the Android app, or the web app in any phone browser while the iPhone app is coming to the App Store. The web app opens on a tablet too, but tablets and cart screens aren’t what we design against, so we don’t promise how it looks on one.",
       },
     ],
   },
@@ -352,8 +353,11 @@ export const mostAskedFaqs: FaqItem[] = mostAskedFaqIds
 /** Hero meta line: "33 questions · 9 categories". Never hand-typed. */
 export const faqCountLine = `${faqItems.length} questions · ${faqCategories.length} categories`;
 
-/** Hero status pill. The page renders it only while siteConfig.appLive is false. */
-export const faqPrelaunchStatus = "Not live yet — in testing with real groups";
+/**
+ * Hero status pill. The page renders it only while the iPhone app isn't out
+ * (siteConfig.iosLive is false).
+ */
+export const faqPrelaunchStatus = "On Google Play · iPhone app coming soon";
 
 export type FaqReadNext = {
   label: string;

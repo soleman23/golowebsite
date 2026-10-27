@@ -6,17 +6,13 @@
  * - "split" (the text pages): turf backdrop, kicker + heading left, link
  *   buttons right, each firing cta_click.
  *
- * The download row follows siteConfig.appLive the same way the hero's does:
- * store buttons once there's an app to install, the phone capture until then.
- * The fine print moves with it — "free to download" is not something to print
- * under a button that can't download anything. Both strings live in
- * lib/content/nav.ts.
+ * The download row is the hero's: Google Play, the App Store's "coming
+ * soon" until siteConfig.iosLive, and the web-app line (StoreButtons). The
+ * lead and fine print live in lib/content/nav.ts.
  */
 
-import { siteConfig } from "@/lib/siteConfig";
 import { finalCtaFine, finalCtaLead } from "@/lib/content";
 import { StoreButtons } from "@/components/ui/StoreButtons";
-import { TextMeLink } from "@/components/ui/TextMeLink";
 import { TrackedCta } from "@/components/ui/TrackedCta";
 import styles from "./FinalCTA.module.css";
 
@@ -98,18 +94,8 @@ export function FinalCTA({
                 </TrackedCta>
               ))}
             </div>
-          ) : siteConfig.appLive ? (
-            <StoreButtons size="lg" align="center" />
           ) : (
-            <TextMeLink
-              id={`cta-phone-${page}`}
-              // Carries the page, so generate_lead can tell a signup from the
-              // home page apart from one off /games or a game detail — all
-              // three render this same closing band.
-              placement={`final_cta_${page}`}
-              prompt="Text me the link when it's live:"
-              align="center"
-            />
+            <StoreButtons size="lg" page={page} align="center" />
           )}
           {fine && !split ? <p className={styles.fine}>{fine}</p> : null}
         </div>

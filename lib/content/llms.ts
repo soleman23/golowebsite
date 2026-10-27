@@ -7,12 +7,12 @@ import { siteConfig } from "@/lib/siteConfig";
 import { capability } from "./capabilities";
 
 export const llmsCopy = {
-  /** Follows the store-apps entry, which follows siteConfig.appLive. */
+  /** Follows the ios-app entry, which follows siteConfig.iosLive. */
   status:
-    capability("store-apps").status === "live"
-      ? // claim-ok: only once the store-apps entry is live
+    capability("ios-app").status === "live"
+      ? // claim-ok: only once the ios-app entry is live
         "GoLo is available on iPhone and Android."
-      : "GoLo is in private testing; it runs in a phone browser and isn’t publicly available yet.",
+      : `GoLo is on Google Play for Android and runs in a phone browser (${siteConfig.webAppUrl}). The iPhone app is coming to the App Store.`,
   /** The settle-up entry's money limit, word for word. */
   money: capability("settle-up").limits?.find((l) => /money/i.test(l)) ?? "",
   contact: `${siteConfig.legalName} · ${siteConfig.address.city}, ${siteConfig.address.region} · ${siteConfig.supportEmail}`,

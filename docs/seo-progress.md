@@ -7,7 +7,7 @@
 - /games and /blog are static, so their title, description, canonical and Open Graph tags are in the initial <head> rather than streamed into the body.
 - Every route sets its own canonical, og:url, og:title and og:description — through lib/pageMetadata.ts for the static pages, generateMetadata for game guides and articles. The root layout carries only site-wide defaults (site name, share card, card type), so nothing page-specific leaks to routes that don't override it.
 - X / Twitter cards come from each page's Open Graph tags: the layout sets only the card type, and Next fills title, description and image from openGraph.
-- Every "get the app" button — nav pill, page CTAs, closing bands — reads appCtaLabel (lib/content/nav.ts): "Get the launch link" while appLive is false, "Get the app" after. The /games closing-band lead follows appLive too.
+- Every "get the app" button — nav pill, page CTAs, closing bands — reads appCtaLabel (lib/content/nav.ts): "Get the app" since Google Play went live on 2026-10-26 (it was "Get the launch link" while appLive gated it). The /games closing-band lead says to download the app.
 - Sitemap omits lastModified on undated static pages and game guides. The blog index uses its newest post's date; article publication dates and legal effective dates remain.
 - Lint, typecheck and production build verified. No deployment performed.
 
@@ -22,7 +22,7 @@ Owner decisions this round: the web app is not public yet; Instagram is @gologol
 - Game guides have keyword titles (GameDetail.seoTitle); the H1 stays the game's name. Closest to Pin and Birdies descriptions expanded.
 - Guide/article overlap: /blog/nassau and /blog/skins-carryover retitled to their own angle, with short meta descriptions (Post.metaDescription). All four paired posts link their guide in the intro; the four guides link back ("Deeper reading", under the tips).
 - Home game cards link to all eight guides.
-- Prelaunch wording: the default closing-band lead and the footer "Download" link follow appLive.
+- Launch wording: since 2026-10-26 the default closing-band lead and the footer "Download" link no longer follow appLive; the store row shows with Google Play live.
 - Footer column labels are no longer h2s.
 - Baseline security headers (HSTS without includeSubDomains, nosniff, Referrer-Policy, X-Frame-Options, Permissions-Policy) in next.config.mjs.
 - Lint, typecheck and production build verified; pages checked in the dev server at 320 px and desktop.
@@ -42,7 +42,7 @@ Domain property `sc-domain:golo.golf`, already verified. Taken while production 
 
 ## Implemented October 10, 2026 (branch seo/phase-2)
 
-- The /blog and /faq hero status pills ("isn't live yet", "Not live yet") render only while appLive is false; their labels moved to lib/content.
+- The /blog hero status pill renders only while appLive is false; the /faq pill follows the ios-app capability ("On Google Play · iPhone app coming soon"). Their labels live in lib/content.
 - Leads record where the visit started. PhoneLead and NewsletterLead gain nullable `landingPath` (first path of the visit, no query string) and `referrerHost` (outside referrer's host only; empty for direct visits and in-site reloads). Captured once per page load by LandingCapture in the root layout and held in memory only, so the cookie policy's storage inventory is unchanged. The API drops a malformed value instead of rejecting the lead.
 - PhoneLead `source` is now the form's placement (`hero`, `final_cta_<page>`). Before this, every phone lead was saved as `hero`, closing-band ones included.
 - Web app noindex confirmed live: soleman23/golo PR #499 merged October 8 and gologolf.netlify.app serves `<meta name="robots" content="noindex">`.
@@ -98,8 +98,8 @@ GA4 is the "GoLo Golf" property, G-36182P0H4D. It received nothing before Octobe
 Approved by the owner on October 21 under soleman23/golo#790; the link design is soleman23/golo `marketing/social/MEASUREMENT.md` §2.
 
 - Leads also record `landingMedium`, `landingCampaign` and `landingContent`: the landing URL's `utm_medium`, `utm_campaign` and `utm_content`, read from the same first landing as `landingSource`. Same rules as the other attribution fields: memory only on the client, no cookie or storage, so the cookie policy is unchanged.
-- The three are kept only as a complete combination from the link dictionary (`lib/campaigns.ts`) for the landing's source: `instagram` / `organic_social` / a social campaign / `bio` or `story_` + `^[a-z]{2}[0-9]{2}_[a-z]$`; `tiktok` / `organic_social` / a social campaign / `bio`; `youtube` / `organic_social` / a social campaign / `channel`; `hostinger_reach` / `email` / an email campaign / `header` or `cta_button`. Anything else stores all three as null; a failed check never rejects the lead. Values are trimmed and lower-cased first.
-- Campaign IDs are a list in `lib/campaigns.ts`, each marked social or email. Today the only one is `golo_prelaunch_2026q4` (social). Add a new ID in the same change that first uses it in a link; until then it's stored as null.
+- The three are kept only as a complete combination from the link dictionary (`lib/campaigns.ts`) for the landing's source: `instagram` / `organic_social` / a social campaign / `bio` or `story_` + `^[a-z]{2}[0-9]{2}_[a-z]$`; `tiktok` / `organic_social` / a social campaign / `bio`; `youtube` / `organic_social` / a social campaign / `channel`; `hostinger_reach` / `email` / an email campaign / `header` or `cta_button`; `table_tent` / `print` / a print campaign / `qr` (added October 26, 2026 for the sim-bay table tent). Anything else stores all three as null; a failed check never rejects the lead. Values are trimmed and lower-cased first.
+- Campaign IDs are a list in `lib/campaigns.ts`, each marked social, email or print. Today they are `golo_prelaunch_2026q4` (social) and `golo_launch_2026q4_sim_bay` (print: the QR on the printed sim-bay table tent, whose full query string is `utm_source=table_tent&utm_medium=print&utm_campaign=golo_launch_2026q4_sim_bay&utm_content=qr`). Add a new ID in the same change that first uses it in a link; until then it's stored as null.
 - `landingSource` keeps its pattern and is also dropped when it looks personal (an `@` or a run of seven or more digits, `looksPersonal` in `lib/analytics.ts`) or like an identifier (a UUID or a run of 16+ hex characters), so a phone-shaped or ID-shaped `utm_source` is no longer stored. `landingPath` is kept only as a path: the server drops a value containing `?` or `#`. The browser applies the same checks before sending (`lib/attribution.ts`); the server's (`lib/validation.ts`) are the ones that count.
 - A repeat newsletter sign-up still leaves the row alone (`update: {}`), new fields included.
 - Privacy Policy, "Information you provide": new item "Where a website sign-up came from", which names landing page, referrer domain and the four link names explicitly (this also settles the "related technical records" question below for those fields). "Data Retention": new item "Newsletter sign-up records": kept until the subscriber asks for deletion (via Your Choices and Privacy Rights); unsubscribing stops emails but doesn't delete the record; attribution details are kept and deleted with the sign-up or download-link record. "Last updated" is October 21, 2026, the deploy date (the same day as #122).

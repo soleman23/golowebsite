@@ -20,6 +20,16 @@ function heroBackdrop(value: string | undefined): HeroBackdrop {
 
 const INSTAGRAM_URL = "https://www.instagram.com/gologolfapp/";
 
+/** The Android app's listing. Public since 2026-10-26. */
+const GOOGLE_PLAY_URL =
+  "https://play.google.com/store/apps/details?id=golf.golo.app";
+
+/**
+ * The web app: the same GoLo, in a browser. The iPhone path until the App
+ * Store app is out. It serves noindex, so linking it doesn't put it in search.
+ */
+const WEB_APP_URL = "https://gologolf.netlify.app";
+
 export const siteConfig = {
   name: "GoLo",
   /** The full brand, for structured data and anywhere "GoLo" alone is ambiguous. */
@@ -83,8 +93,26 @@ export const siteConfig = {
   /** One-line form for chips and cards: "GoLo Golf LLC · Bend, Oregon". */
   addressShort: "GoLo Golf LLC · Bend, Oregon",
 
+  /**
+   * Store links. The App Store app isn't out (it waits on Apple), so
+   * StoreButtons shows "coming soon" in its place, never a link, until
+   * `iosLive` is true; this URL is read only then.
+   */
   appStoreUrl: process.env.NEXT_PUBLIC_APP_STORE_URL || "#get",
-  googlePlayUrl: process.env.NEXT_PUBLIC_GOOGLE_PLAY_URL || "#get",
+  /**
+   * The live listing, in code. Deliberately not read from
+   * NEXT_PUBLIC_GOOGLE_PLAY_URL: .env.example carried a placeholder
+   * (id=com.golo.app, not the app's id), and an env file made from it would
+   * point the button at a listing that doesn't exist.
+   */
+  googlePlayUrl: GOOGLE_PLAY_URL,
+  /**
+   * Is the iPhone app in the App Store? A fact about the store, so it's code,
+   * not an env var: set it true, with NEXT_PUBLIC_APP_STORE_URL, the day the
+   * listing is public. The "ios-app" capability follows it.
+   */
+  iosLive: false,
+  webAppUrl: WEB_APP_URL,
 
   showStats: boolFlag(process.env.NEXT_PUBLIC_SHOW_STATS, true),
   /**
@@ -94,10 +122,11 @@ export const siteConfig = {
   showTestimonials: boolFlag(process.env.NEXT_PUBLIC_SHOW_TESTIMONIALS, false),
 
   /**
-   * Is the app actually downloadable? While false the site holds the honest
-   * beta line: store buttons give way to the phone capture, the "in beta"
-   * status shows, and "free while we're in beta" is true. Flip this (and set
-   * the store URLs) on launch day and every page changes together.
+   * The full-launch switch: pricing, the Terms and the "in beta" lines. While
+   * false, /features keeps "free while we're in beta" and its pricing note,
+   * and /blog keeps its build-notes pill. It no longer gates the store
+   * buttons: the Android app is live on Google Play, so the download row
+   * shows everywhere (StoreButtons; the App Store follows `iosLive`).
    */
   appLive: boolFlag(process.env.NEXT_PUBLIC_APP_LIVE, false),
 
