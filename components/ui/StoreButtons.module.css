@@ -83,23 +83,3 @@
   transform: none;
   box-shadow: none;
 }
-
-.webApp {
-  margin: 0;
-  font-size: 13px;
-  font-weight: 700;
-  color: var(--text-secondary);
-}
-
-.webAppLink {
-  display: inline-block;
-  /* A text link sits in the 44px tap-target rule too (BUILD-SPEC §1). */
-  padding: 12px 0;
-  margin: -12px 0;
-  color: var(--accent);
-  font-weight: 800;
-}
-
-.webAppLink:hover {
-  text-decoration: underline;
-}
