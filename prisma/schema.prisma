@@ -56,8 +56,20 @@ model NewsletterLead {
   landingCampaign String?
   landingContent  String?
   createdAt       DateTime @default(now())
+  /// Hostinger Reach sync (#121, lib/reachSync.ts): what this site has done,
+  /// never a copy of Reach's subscriber state. "pending" | "synced" |
+  /// "failed" | "skipped_ineligible". Null = never queued: rows from before
+  /// the sync, or saved while REACH_SYNC_ENABLED was off. Only the backfill
+  /// (dry run by default) can queue those.
+  /// The default is the database's (dbgenerated), so Prisma leaves the column
+  /// out of an INSERT that doesn't set it: with the switch off, sign-ups work
+  /// on a database that doesn't have these columns yet.
+  reachSyncStatus    String?
+  reachSyncAttempts  Int       @default(dbgenerated("0"))
+  reachLastAttemptAt DateTime?
 
   @@index([createdAt])
+  @@index([reachSyncStatus])
 }
 
 /// A message submitted via the /contact page form.
