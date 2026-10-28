@@ -723,7 +723,111 @@ const bingoBangoBongo: GameDetailCopy = {
     { q: "Does order of play really matter?", a: "It is the game. Playing out of turn can hand away bingo or bongo." },
     { q: "Can we play with three or five?", a: "Three works well. Five gets slow because every point waits for all five balls." },
   ]),
-  related: ["wolf", "skins", "closest-to-pin"], prev: "wolf", next: "closest-to-pin",
+  related: ["wolf", "skins", "closest-to-pin"], prev: "wolf", next: "scramble",
+};
+
+// Checked against golo `main` 2237c1d (GoLo 1.2.1): Scramble is a round
+// format, not a bet. 2 to 6 teams of 1 to 4, up to 12 players; team handicap
+// Net (default), Gross or Manual 0–99, from docs/GOLO-032-SCRAMBLE-HANDICAP.md;
+// Skins, Nassau, Best Score and Overall Match play between teams, each team's
+// result split evenly; Wolf and Bingo Bango Bongo are off. The example's team
+// handicaps: 0.35 × 8 + 0.15 × 14 = 4.9 → 5, and 0.35 × 2 + 0.15 × 18 = 3.4 → 3.
+// Keep the ledger, standings and phone reconciled: front 4–2 (2 up), back 2–3
+// (1 down), total 6–5 (1 up), no match decided before its last hole.
+const scramble: GameDetailCopy = {
+  slug: "scramble",
+  updated: "2026-10-28",
+  seoTitle: "Golf Scramble Rules: Team Handicaps & Side Games",
+  kicker: "TEAMS · ONE BALL",
+  tagline: "Teams play one ball: everyone hits, the best shot gets played, and one score a hole goes on the card. GoLo works out each team’s handicap and settles your games team against team.",
+  metaDescription: "How a golf scramble works, the WHS team handicap percentages for two, three and four players, and how GoLo runs Skins, Nassau and Best Score between teams.",
+  traits: ["2–12 players", "2–6 teams", "Team handicap", "One ball a team"],
+  howTitle: "Everyone hits. One ball goes on.",
+  intro: "A scramble turns a group into teams that play one ball. Everyone hits, the team picks the best shot, and everyone plays the next one from there until it’s holed. One score per team goes on the card, so a 25-handicap and a 5 can play together and both count. The part groups argue about is the team handicap, so GoLo works it out the same way every time.",
+  steps: [
+    { n: "1", title: "Split into teams", body: "Two to six teams of one to four players, up to twelve in all. GoLo deals the group out evenly and you move players around before the first tee. In GoLo, any group of more than four plays as a scramble." },
+    { n: "2", title: "Everyone hits, the best ball plays", body: "All of you tee off, the team picks the best drive, and everyone plays their next shot from that spot. Repeat until the ball is in the hole." },
+    { n: "3", title: "Set the team handicaps", body: "Net is the default: GoLo works out a handicap for each team from its players’ Course Handicaps, using the percentages below. Gross plays it scratch. Manual lets the organizer set each team’s number." },
+    { n: "4", title: "Put games on it", body: "Skins, Nassau, Best Score and the Overall Match play team against team. Wolf and Bingo Bango Bongo aren’t played in a scramble." },
+    { n: "5", title: "One scorer per team", body: "Each team’s scorer enters one score a hole. GoLo nets it by the team’s strokes, settles every game, and splits each team’s result evenly between its players." },
+  ],
+  scoring: {
+    kicker: "TEAM HANDICAPS",
+    title: "Four team sizes, four sets of percentages.",
+    lead: "GoLo takes each player’s Course Handicap before rounding, lowest first, multiplies it by the percentage for its place, adds them up and rounds once, half up. A team never goes below 0, so it never gives strokes back.",
+    rows: [
+      { tag: "1", title: "One-player team", detail: "No scramble advantage, so the full Course Handicap", value: "100%" },
+      { tag: "2", title: "Two players", detail: "The WHS recommendation, lower handicap first", value: "35 / 15%" },
+      { tag: "3", title: "Three players", detail: "WHS has no three-player figure; this is the usual club split", value: "30 / 20 / 10%" },
+      { tag: "4", title: "Four players", detail: "The WHS recommendation, lowest handicap first", value: "25 / 20 / 15 / 10%" },
+    ],
+  },
+  example: {
+    kicker: "WATCH IT PLAY OUT",
+    title: "A $20 Nassau between two scramble teams.",
+    lead: "You and Mike, Course Handicaps 8 and 14, against Tom and Dave, 2 and 18, playing Net. Your team handicap is 35% of 8 plus 15% of 14: 4.9, which plays as 5. Theirs is 0.7 plus 2.7: 3.4, which plays as 3. Each team’s result is split between its two players.",
+    bets: [
+      { tag: "F9", title: "Front nine", detail: "2 up through 9; the team’s $20, split two ways", value: "+$10", tone: "good" },
+      { tag: "B9", title: "Back nine", detail: "Tom and Dave took it 1 up", value: "−$10", tone: "bad" },
+      { tag: "18", title: "Overall match", detail: "1 up, held with a half on 18", value: "+$10", tone: "good" },
+    ],
+    standings: [
+      { name: "You", note: "half of the team’s +$20", value: "+$10", tone: "good" },
+      { name: "Mike", note: "half of the team’s +$20", value: "+$10", tone: "good" },
+      { name: "Tom", note: "half of the team’s −$20", value: "−$10", tone: "bad" },
+      { name: "Dave", note: "half of the team’s −$20", value: "−$10", tone: "bad" },
+    ],
+    net: { label: "NET · YOU’RE OWED", sub: "Your half of the team’s +$20", value: "+$10" },
+    phone: {
+      opponent: "vs Tom & Dave", through: "18", of: "/ 18", state: "FINAL", stateSub: "two-player teams",
+      sequence: ["h", "w", "l", "w", "h", "w", "h", "l", "w", "l", "w", "h", "l", "w", "l", "h", "h", "h"],
+      stats: [
+        { label: "FRONT", status: "2↑", value: "+$10", tone: "good" },
+        { label: "BACK", status: "1↓", value: "−$10", tone: "bad" },
+        { label: "TOTAL", status: "1↑", value: "+$10", tone: "good" },
+      ],
+      callout: { label: "TEAM HCP", note: "Yours 5, theirs 3: two extra strokes on the hardest holes" },
+      settleTitle: "You’re owed", settleSub: "your half, netted", settleValue: "$10",
+      label: "The finished scramble Nassau against Tom and Dave: front nine won, back nine lost, overall match won 1 up. Your team is up 20 dollars and your half is 10.",
+    },
+  },
+  headings: {
+    variations: { kicker: "HOUSE FORMATS", title: "Same idea, different rules about whose ball you play.", lead: "GoLo runs the plain scramble. These are the versions groups and events add on top, and what GoLo does with each." },
+    tips: { kicker: "PLAY SMART", title: "A scramble is won on the order you hit in.", lead: "Four players and one ball only help if the first shot makes the next three easier." },
+    glossary: { kicker: "TALK THE TALK", title: "The terms on a scramble card." },
+    faq: { kicker: "SCRAMBLE, ANSWERED", title: "Before you split the teams." },
+    related: { kicker: "PUT IT ON THE TEAMS", title: "The games GoLo runs between scramble teams.", lead: "Skins, Nassau and Best Score all play team against team, and each team’s result is split between its players." },
+    cta: { title: "Twelve players, one score a team.", lead: "Deal the teams, let GoLo work out the team handicaps, and settle every game when the last putt drops." },
+  },
+  variations: [
+    { icon: "drive", title: "Texas scramble", body: "Each player’s drive has to be used a set number of times, often four each over 18. GoLo doesn’t track whose drive was used, so keep that count on paper." },
+    { icon: "swap", title: "Shamble", body: "Everyone plays from the best drive, then plays their own ball into the hole. GoLo has no shamble setting." },
+    { icon: "shield", title: "Uneven teams", body: "A 1+3 or 2+3 split plays, but each team uses the percentages for its own size, so it isn’t fully evened out. GoLo says so on the setup screen." },
+    { icon: "grid", title: "Your own team numbers", body: "Events often use their own formula, such as a share of the team’s combined handicaps. Pick Manual and set each team’s handicap yourself, 0 to 99." },
+  ],
+  tips: [
+    { tone: "good", title: "Safe ball first", body: "Get one ball in the fairway or on the green before anyone gets clever. Everyone after can swing at the flag." },
+    { tone: "bad", title: "Don’t take the long drive by reflex", body: "Ten yards closer from the rough is worse than the fairway. Pick the ball with the easiest next shot." },
+    { tone: "good", title: "Lag first, charge after", body: "The first putt should reach the hole. Once the team has the read and a tap-in to fall back on, the rest can go at it." },
+  ],
+  glossary: [
+    { term: "Scramble", def: "A team format: everyone hits, the team picks the best shot, and all play the next one from there." },
+    { term: "Team handicap", def: "The strokes a scramble team gets, worked out from its players’ Course Handicaps at a set percentage each." },
+    { term: "Course handicap", def: "Your index adjusted for the tees you played." },
+    { term: "Stroke index", def: "The card’s ranking of holes from hardest (1) to easiest. Strokes go on the hardest first." },
+    { term: "Texas scramble", def: "A scramble that requires each player’s drive to be used a minimum number of times." },
+    { term: "Shamble", def: "Best drive, then everyone plays their own ball into the hole." },
+  ],
+  faqs: gameFaqs("scramble", [
+    { q: "How is a scramble team handicap worked out?", a: "Each player’s Course Handicap, lowest first, times a percentage: 35% and 15% for two players, 30, 20 and 10% for three, 25, 20, 15 and 10% for four. Add the shares and round once, half up. A team of 5, 10, 15 and 20 comes to 7.5, which plays as 8." },
+    { q: "How many players can play a scramble in GoLo?", a: "Up to twelve, in two to six teams of one to four. A group of more than four plays as a scramble; the other formats hold four." },
+    { q: "Can teams of different sizes play each other?", a: "Yes. Each team uses the percentages for its own size, so a 1+3 split plays but isn’t fully evened out, and GoLo says so when you set it up." },
+    { q: "Which games can we put on a scramble?", a: "Skins, Nassau, Best Score and the Overall Match, all team against team. With three or more teams, every pair of teams plays its own Nassau. Wolf and Bingo Bango Bongo aren’t played in a scramble." },
+    { q: "Who pays what when a team wins?", a: "A team’s result is split evenly between its players. Win a $20 Nassau match as a two-player team and you each take $10. In Best Score everyone puts in the same amount and the winning team splits the total." },
+    { q: "Can we play it without handicaps?", a: "Yes. Pick Gross and every team plays scratch, or pick Manual and set each team’s number yourself, 0 to 99." },
+    { q: "Who keeps score?", a: "One scorer per team. Anyone else in the round who is signed in can follow it live on their own phone." },
+  ]),
+  related: ["skins", "nassau", "best-score"], prev: "bingo-bango-bongo", next: "closest-to-pin",
 };
 
 const closestToPin: GameDetailCopy = {
@@ -815,7 +919,7 @@ const closestToPin: GameDetailCopy = {
     { q: "Can we play it on par 4s and 5s?", a: "Yes. Closest in two and marked approaches use the same rules." },
     { q: "Can it be one greenie for the whole round?", a: "Yes. The tightest tee shot across all par 3s takes it." },
   ]),
-  related: ["longest-drive", "birdies", "bingo-bango-bongo"], prev: "bingo-bango-bongo", next: "longest-drive",
+  related: ["longest-drive", "birdies", "bingo-bango-bongo"], prev: "scramble", next: "longest-drive",
 };
 
 const longestDrive: GameDetailCopy = {
@@ -1008,6 +1112,7 @@ export const gameDetails = {
   "best-score": withRoster(bestScore),
   wolf: withRoster(wolf),
   "bingo-bango-bongo": withRoster(bingoBangoBongo),
+  scramble: withRoster(scramble),
   "closest-to-pin": withRoster(closestToPin),
   "longest-drive": withRoster(longestDrive),
   birdies: withRoster(birdies),

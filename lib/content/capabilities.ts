@@ -92,6 +92,17 @@ const APP_CHECK_100 = {
   appVersion: "1.0.0",
 } as const;
 
+/**
+ * golo `main` 2237c1d (GoLo 1.2.1): the Scramble format in
+ * src/pages/SetupWizard.jsx and src/lib/scrambleTeams.js, team handicaps per
+ * docs/GOLO-032-SCRAMBLE-HANDICAP.md, team games in src/engines/betResults.js.
+ */
+const APP_CHECK_121 = {
+  by: "app-check",
+  date: "2026-10-28",
+  appVersion: "1.2.1",
+} as const;
+
 /** Owner's answers on 2026-10-15 (soleman23/golowebsite#61). */
 const OWNER_1015 = { by: "owner", date: "2026-10-15" } as const;
 
@@ -128,6 +139,21 @@ export const capabilities = [
       "Closest to Pin and Longest Drive don't record a measured distance.",
     ],
     verified: OWNER_1015,
+    roadmap: true,
+  },
+  {
+    id: "scramble",
+    label: "Scramble with team handicaps",
+    status: "live",
+    summary:
+      "Up to 12 players in 2 to 6 teams of up to four, one ball a team; Skins, Nassau, Best Score and Overall Match play team against team.",
+    limits: [
+      "Team handicaps follow the WHS percentages (30/20/10% for three players), or play Gross, or the organizer sets them.",
+      "Teams of different sizes each use their own percentages, so an uneven split isn't fully evened out.",
+      "Wolf and Bingo Bango Bongo aren't played in a scramble.",
+      "No Texas scramble drive count and no shamble.",
+    ],
+    verified: APP_CHECK_121,
     roadmap: true,
   },
   {

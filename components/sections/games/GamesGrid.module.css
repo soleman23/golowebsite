@@ -48,10 +48,12 @@
 html[data-filter="pots"] .grid > :not([data-tags~="pots"]),
 html[data-filter="match"] .grid > :not([data-tags~="match"]),
 html[data-filter="points"] .grid > :not([data-tags~="points"]),
+html[data-filter="teams"] .grid > :not([data-tags~="teams"]),
 html[data-filter="side"] .grid > :not([data-tags~="side"]),
 html[data-filter="pots"] .result > [data-for="all"],
 html[data-filter="match"] .result > [data-for="all"],
 html[data-filter="points"] .result > [data-for="all"],
+html[data-filter="teams"] .result > [data-for="all"],
 html[data-filter="side"] .result > [data-for="all"] {
   display: none;
 }
@@ -61,6 +63,7 @@ html[data-filter="side"] .result > [data-for="all"] {
 html[data-filter="pots"] .result > [data-for="pots"],
 html[data-filter="match"] .result > [data-for="match"],
 html[data-filter="points"] .result > [data-for="points"],
+html[data-filter="teams"] .result > [data-for="teams"],
 html[data-filter="side"] .result > [data-for="side"] {
   display: inline;
 }
@@ -72,6 +75,7 @@ html[data-filter="all"] .chips [data-chip="all"],
 html[data-filter="pots"] .chips [data-chip="pots"],
 html[data-filter="match"] .chips [data-chip="match"],
 html[data-filter="points"] .chips [data-chip="points"],
+html[data-filter="teams"] .chips [data-chip="teams"],
 html[data-filter="side"] .chips [data-chip="side"] {
   background: var(--accent);
   border-color: var(--accent);

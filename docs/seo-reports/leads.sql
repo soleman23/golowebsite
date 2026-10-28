@@ -94,7 +94,7 @@ labelled AS (
       WHEN "landingPath" IS NULL THEN '(not recorded)'
       WHEN "landingPath" ~ '^/(features|how-it-works|games|blog|faq|about|contact|privacy|terms|cookies|acceptable-use|delete-account)?$'
         THEN "landingPath"
-      WHEN "landingPath" ~ '^/games/(skins|nassau|best-score|wolf|bingo-bango-bongo|closest-to-pin|longest-drive|birdies)$'
+      WHEN "landingPath" ~ '^/games/(skins|nassau|best-score|wolf|bingo-bango-bongo|scramble|closest-to-pin|longest-drive|birdies)$'
         THEN "landingPath"
       WHEN "landingPath" ~ '^/blog/(what-we-got-wrong|settle-up-screen|pressing|index-vs-course-handicap|sandbagging|bandon|scottsdale-trip-structure|rangefinder|who-pays-first|nassau|skins-carryover|wolf|bingo-bango-bongo)$'
         THEN "landingPath"

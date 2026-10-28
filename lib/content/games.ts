@@ -16,7 +16,7 @@
 
 import type { IconName } from "@/components/ui/Icon";
 
-export type GameTag = "pots" | "match" | "points" | "side";
+export type GameTag = "pots" | "match" | "points" | "teams" | "side";
 
 export const GAME_SLUGS = [
   "skins",
@@ -24,6 +24,7 @@ export const GAME_SLUGS = [
   "best-score",
   "wolf",
   "bingo-bango-bongo",
+  "scramble",
   "closest-to-pin",
   "longest-drive",
   "birdies",
@@ -102,6 +103,16 @@ const roster = {
     format: "3 points / hole",
     tags: ["points"],
   },
+  scramble: {
+    icon: "team",
+    name: "Scramble",
+    rule: "Teams of up to four, one ball, one team handicap.",
+    desc: "Everyone hits and the team plays its best shot. GoLo works out each team’s handicap and runs Skins, Nassau and Best Score team against team.",
+    how: "Split up to 12 players into 2 to 6 teams. Everyone hits, the team picks the best ball, and all play the next shot from there.",
+    players: "2–12 players",
+    format: "Teams of 1–4",
+    tags: ["teams"],
+  },
   "closest-to-pin": {
     icon: "pin",
     name: "Closest to Pin",
@@ -144,6 +155,7 @@ export const gameFilters: GameFilter[] = [
   { id: "pots", label: "Skins & Best Score" },
   { id: "match", label: "Match play" },
   { id: "points", label: "Points" },
+  { id: "teams", label: "Team formats" },
   { id: "side", label: "Side games" },
 ];
 
