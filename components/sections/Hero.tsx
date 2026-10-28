@@ -1,11 +1,10 @@
 /**
  * Hero: full-bleed backdrop photo + scrim, the tagline pill, an H1 that names
- * the category for search, lead, the download row, and the "text me the link"
- * control, beside the live-leaderboard phone mockup.
+ * the category for search, lead and the download row, beside the
+ * live-leaderboard phone mockup.
  *
  * The download row is always on: the Android app is on Google Play. The
- * App Store slot says "coming soon" until siteConfig.iosLive, with the web
- * app as the iPhone path (StoreButtons). The phone capture stays under it.
+ * App Store slot says "coming soon" until siteConfig.iosLive (StoreButtons).
  */
 
 import { heroHeading } from "@/lib/content";
@@ -15,7 +14,6 @@ import {
   heroBackdropPreload,
 } from "@/lib/siteConfig";
 import { StoreButtons } from "@/components/ui/StoreButtons";
-import { TextMeLink } from "@/components/ui/TextMeLink";
 import { HeroPhone } from "@/components/mockups/HeroPhone";
 import styles from "./Hero.module.css";
 
@@ -72,11 +70,6 @@ export function Hero() {
           </p>
 
           <StoreButtons size="md" />
-          <TextMeLink
-            id="hero-phone"
-            placement="hero"
-            prompt="or text me the link:"
-          />
         </div>
 
         <div className={styles.phone}>

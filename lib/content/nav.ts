@@ -35,8 +35,7 @@ export const finalCtaFine = siteConfig.iosLive
 
 /**
  * The words in the download row (components/ui/StoreButtons.tsx). Until
- * siteConfig.iosLive, the App Store slot says "coming soon" and isn't a link,
- * and the web-app line gives iPhone owners the path that works today.
+ * siteConfig.iosLive, the App Store slot says "coming soon" and isn't a link.
  */
 export const storeButtonsCopy = {
   appStore: {
@@ -47,11 +46,6 @@ export const storeButtonsCopy = {
   },
   appStoreSoon: { top: "Coming soon to the", main: "App Store" },
   googlePlay: { top: "Get it on", main: "Google Play", label: "Get GoLo on Google Play" },
-  webApp: {
-    lead: "On iPhone?",
-    link: "Use GoLo in your browser",
-    label: "Use GoLo in your browser (opens the web app)",
-  },
 };
 
 /**

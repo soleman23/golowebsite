@@ -2,23 +2,20 @@
 
 /**
  * The download row: Google Play and App Store pills with brand glyphs and a
- * two-line label, then a line pointing iPhone owners at the web app. Size
- * variant controls height (hero = 58, final CTA = 60).
+ * two-line label. Size variant controls height (hero = 58, final CTA = 60).
  *
  * Google Play is live, so it always links to the listing (in code, in
  * lib/siteConfig.ts), with the landing's dictionary campaign added as Play's
  * install referrer when there is one. The App Store app isn't out: until siteConfig.iosLive
  * is true its slot is a plain "Coming soon to the App Store" tile — not a
- * link, not a badge — and the web-app line is the iPhone path that works
- * today. When iosLive flips, the tile becomes the App Store link and the
- * web-app line goes.
+ * link, not a badge. When iosLive flips, the tile becomes the App Store link.
  *
  * `destination_configured: false` on store_button_click means a store link
  * fell back to "#get": a misconfiguration worth alerting on.
  *
  * The App Store link needs both iosLive and a real https URL: flipping
  * iosLive before NEXT_PUBLIC_APP_STORE_URL is set keeps the "coming soon"
- * tile and the web-app line instead of a pill that links back to "#get".
+ * tile instead of a pill that links back to "#get".
  */
 
 import { useEffect, useState } from "react";
@@ -68,15 +65,12 @@ function GooglePlayGlyph({ size = 22 }: { size?: number }) {
 
 type StoreButtonsProps = {
   size?: "md" | "lg";
-  /** Names the page in the cta_click param, as the other CTAs do. */
-  page?: string;
   align?: "start" | "center";
   className?: string;
 };
 
 export function StoreButtons({
   size = "md",
-  page = "home",
   align = "start",
   className,
 }: StoreButtonsProps) {
@@ -147,22 +141,6 @@ export function StoreButtons({
           </div>
         )}
       </div>
-
-      {iosReady ? null : (
-        <p className={styles.webApp}>
-          {copy.webApp.lead}{" "}
-          <a
-            href={siteConfig.webAppUrl}
-            className={styles.webAppLink}
-            aria-label={copy.webApp.label}
-            target="_blank"
-            rel="noopener noreferrer"
-            onClick={() => track("cta_click", { page, cta: "web_app", placement })}
-          >
-            {copy.webApp.link} →
-          </a>
-        </p>
-      )}
     </div>
   );
 }

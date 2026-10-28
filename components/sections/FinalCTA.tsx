@@ -6,9 +6,9 @@
  * - "split" (the text pages): turf backdrop, kicker + heading left, link
  *   buttons right, each firing cta_click.
  *
- * The download row is the hero's: Google Play, the App Store's "coming
- * soon" until siteConfig.iosLive, and the web-app line (StoreButtons). The
- * lead and fine print live in lib/content/nav.ts.
+ * The download row is the hero's: Google Play and the App Store's "coming
+ * soon" until siteConfig.iosLive (StoreButtons). The lead and fine print
+ * live in lib/content/nav.ts.
  */
 
 import { finalCtaFine, finalCtaLead } from "@/lib/content";
@@ -95,7 +95,7 @@ export function FinalCTA({
               ))}
             </div>
           ) : (
-            <StoreButtons size="lg" page={page} align="center" />
+            <StoreButtons size="lg" align="center" />
           )}
           {fine && !split ? <p className={styles.fine}>{fine}</p> : null}
         </div>
