@@ -64,13 +64,14 @@ Inspect each URL below. For each one, record whether it's indexed, whether Googl
 <!-- url-list-checked-until: 2026-11-05 -->
 Until November 5, 2026, `npm run lint:content` fails while a published post or guide is missing from the two lists below, or while they list a page the site doesn't serve. After that date, the lists are the record of this run and the check stops. If the run happens earlier, change the date in the comment above to the run date.
 
-**Guides (8):**
+**Guides (9):**
 
 - `https://www.golo.golf/games/skins`
 - `https://www.golo.golf/games/nassau`
 - `https://www.golo.golf/games/best-score`
 - `https://www.golo.golf/games/wolf`
 - `https://www.golo.golf/games/bingo-bango-bongo`
+- `https://www.golo.golf/games/scramble`
 - `https://www.golo.golf/games/closest-to-pin`
 - `https://www.golo.golf/games/longest-drive`
 - `https://www.golo.golf/games/birdies`
