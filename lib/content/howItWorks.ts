@@ -331,7 +331,7 @@ export const gameGuideOrder: GameSlug[] = [
   "bingo-bango-bongo",
   "closest-to-pin",
   "longest-drive",
-  "birdies",
+  "scramble",
 ];
 
 export const hiwFinalCta = {
