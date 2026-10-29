@@ -48,3 +48,26 @@
   font-weight: 600;
   color: var(--text-secondary);
 }
+
+/* ---- Filtering ----------------------------------------------------------
+   Entries outside the chosen category, and letter groups with none in it,
+   from <html data-filter> (see GlossaryControls.module.css). One line per
+   category; scripts/check-filter-css.mjs keeps them in step. */
+html[data-filter="scoring"] .directory [data-category]:not([data-category="scoring"]),
+html[data-filter="formats"] .directory [data-category]:not([data-category="formats"]),
+html[data-filter="side-games"] .directory [data-category]:not([data-category="side-games"]),
+html[data-filter="handicaps"] .directory [data-category]:not([data-category="handicaps"]),
+html[data-filter="shots"] .directory [data-category]:not([data-category="shots"]),
+html[data-filter="course-rules"] .directory [data-category]:not([data-category="course-rules"]),
+html[data-filter="equipment"] .directory [data-category]:not([data-category="equipment"]),
+html[data-filter="slang"] .directory [data-category]:not([data-category="slang"]),
+html[data-filter="scoring"] .group:not([data-cats~="scoring"]),
+html[data-filter="formats"] .group:not([data-cats~="formats"]),
+html[data-filter="side-games"] .group:not([data-cats~="side-games"]),
+html[data-filter="handicaps"] .group:not([data-cats~="handicaps"]),
+html[data-filter="shots"] .group:not([data-cats~="shots"]),
+html[data-filter="course-rules"] .group:not([data-cats~="course-rules"]),
+html[data-filter="equipment"] .group:not([data-cats~="equipment"]),
+html[data-filter="slang"] .group:not([data-cats~="slang"]) {
+  display: none;
+}

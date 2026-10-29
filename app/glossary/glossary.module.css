@@ -77,3 +77,10 @@
   letter-spacing: -0.02em;
   color: var(--text-primary);
 }
+
+/* While searching, the ranked results under the hero replace Start here and
+   the directory (docs/glossary/ux.md D4); clearing the search brings them
+   back. Set by GlossaryProvider; never present without JavaScript. */
+html[data-glossary-search] .layout {
+  display: none;
+}

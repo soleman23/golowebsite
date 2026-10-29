@@ -47,3 +47,20 @@ a.letter:hover {
   background: transparent;
   border-color: var(--hairline);
 }
+
+/* Letters with nothing in the chosen category: greyed from first paint;
+   GlossaryControls also takes them out of the tab order. One line per
+   category; scripts/check-filter-css.mjs keeps them in step. */
+html[data-filter="scoring"] .list a:not([data-cats~="scoring"]),
+html[data-filter="formats"] .list a:not([data-cats~="formats"]),
+html[data-filter="side-games"] .list a:not([data-cats~="side-games"]),
+html[data-filter="handicaps"] .list a:not([data-cats~="handicaps"]),
+html[data-filter="shots"] .list a:not([data-cats~="shots"]),
+html[data-filter="course-rules"] .list a:not([data-cats~="course-rules"]),
+html[data-filter="equipment"] .list a:not([data-cats~="equipment"]),
+html[data-filter="slang"] .list a:not([data-cats~="slang"]) {
+  color: var(--text-muted);
+  background: transparent;
+  border-color: var(--hairline);
+  pointer-events: none;
+}

@@ -1,0 +1,42 @@
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.label {
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 1.2px;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+}
+
+/* Near-opaque surface rather than glass: it sits on the hero photo, and the
+   text has to clear AA over whatever is under it (#171 measures per pixel). */
+.input {
+  width: 100%;
+  min-height: 52px;
+  padding: 0 18px;
+  border-radius: var(--radius-tile);
+  border: 1px solid var(--glass-chrome);
+  background: var(--glass-sheet);
+  color: var(--text-primary);
+  font: inherit;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.input::placeholder {
+  color: var(--text-muted);
+}
+
+.input:hover {
+  border-color: var(--accent-border);
+}
+
+/* The page has its own Clear button (and Escape); WebKit's blue cancel cross
+   doesn't match the palette and does half of it. */
+.input::-webkit-search-cancel-button {
+  appearance: none;
+}

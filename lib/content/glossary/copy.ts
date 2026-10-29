@@ -95,3 +95,27 @@ const PAGE_LINKS: Record<string, string> = {
   "/how-it-works": "See how a round works",
   "/features": "See what GoLo does today",
 };
+
+/** Search, filter and copy-link wording (docs/glossary/ux.md § Flows). */
+export const glossaryControlsCopy = {
+  searchLabel: "Search the glossary",
+  /** {n} is the number of terms shown. */
+  searchPlaceholder: "Search {n} terms",
+  chipsLabel: "Filter terms by category",
+  allChip: "All terms",
+  clear: "Clear",
+  resultsLabel: "Search results",
+  also: "also",
+  noMatch: "No terms match",
+  otherCategories: "in other categories",
+  searchAll: "Search all terms",
+  missing: { label: "Tell us what's missing", href: "/contact?topic=idea" },
+  copy: "Copy link",
+  copied: "Copied",
+  copyFailed: "Copy failed",
+};
+
+/** "1 term", "4 terms". */
+export function glossaryTermCount(n: number): string {
+  return `${n} ${n === 1 ? "term" : "terms"}`;
+}

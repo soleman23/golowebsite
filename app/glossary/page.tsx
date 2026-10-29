@@ -1,24 +1,37 @@
 import { notFound } from "next/navigation";
 import {
+  glossaryCategories,
+  glossaryCategoryIds,
+  glossaryControlsCopy,
   glossaryDirectoryCopy,
   glossaryHero,
+  glossarySearchEntries,
+  glossaryTermCount,
   glossaryLetterGroups,
   glossaryRelatedGuides,
   glossaryRouteVisible,
   glossaryStartHere,
   hubGlossaryTerms,
 } from "@/lib/content";
+import { siteConfig } from "@/lib/siteConfig";
+import { FilterBoot } from "@/components/ui/FilterBoot";
 import { PageHero } from "@/components/ui/PageHero";
 import { KeepReading } from "@/components/sections/faq/KeepReading";
 import { FinalCTA } from "@/components/sections/FinalCTA";
 import { GlossaryAlphabet } from "@/components/sections/glossary/GlossaryAlphabet";
 import { GlossaryDirectory } from "@/components/sections/glossary/GlossaryDirectory";
+import { GlossaryProvider } from "@/components/sections/glossary/GlossaryProvider";
+import { GlossarySearchField } from "@/components/sections/glossary/GlossarySearchField";
+import { GlossaryControls } from "@/components/sections/glossary/GlossaryControls";
+import { CopyLinkButton } from "@/components/sections/glossary/CopyLinkButton";
 import styles from "./glossary.module.css";
 
 /**
  * The glossary hub (#156; docs/glossary/ux.md). Server-rendered: every shown
  * term, its definition and its links are in the HTML, and JavaScript only
- * adds search and filtering (#157).
+ * adds search and filtering (#157): a client provider holds the category
+ * (?category=, through FilterBoot/FilterUrlSync like /blog) and the search
+ * text (never in the URL), and handles #slug deep links.
  *
  * While lib/content/glossary/launch.ts says the glossary isn't live, a
  * production build (Hostinger, including PR previews) serves a 404 here. Only
@@ -37,11 +50,59 @@ export default function GlossaryPage() {
     .filter((t) => t !== undefined);
   const review = terms.some((t) => t.unpublished);
 
+  const filterIds = ["all", ...glossaryCategoryIds];
+  const chips = [
+    { id: "all", label: glossaryControlsCopy.allChip, count: terms.length },
+    ...glossaryCategories.map((c) => ({
+      id: c.id,
+      label: c.chip,
+      count: terms.filter((t) => t.primaryCategory === c.id).length,
+    })),
+  ];
+  const counts = Object.fromEntries(
+    chips.map((c) => [
+      c.id,
+      c.id === "all"
+        ? glossaryTermCount(c.count)
+        : `${glossaryTermCount(c.count)} in ${glossaryCategories.find((g) => g.id === c.id)?.label}`,
+    ]),
+  );
+  const categoryLabels = Object.fromEntries(glossaryCategories.map((c) => [c.id, c.label]));
+  const copyLabels = {
+    copy: glossaryControlsCopy.copy,
+    copied: glossaryControlsCopy.copied,
+    failed: glossaryControlsCopy.copyFailed,
+  };
+
   return (
-    <>
+    <GlossaryProvider ids={filterIds}>
+      <FilterBoot param="category" ids={filterIds} />
+      {/* Search and copy buttons can't work without JavaScript; hide them
+          rather than ship dead controls (docs/glossary/ux.md D8). */}
+      <noscript
+        dangerouslySetInnerHTML={{ __html: "<style>[data-requires-js]{display:none}</style>" }}
+      />
+
       <PageHero
         {...glossaryHero}
         breadcrumbs={[{ label: "Home", href: "/" }, { label: "Glossary" }]}
+        search={
+          <GlossarySearchField
+            label={glossaryControlsCopy.searchLabel}
+            placeholder={glossaryControlsCopy.searchPlaceholder.replace(
+              "{n}",
+              String(terms.length),
+            )}
+          />
+        }
+      />
+
+      <GlossaryControls
+        chips={chips}
+        counts={counts}
+        categoryLabels={categoryLabels}
+        entries={glossarySearchEntries(terms)}
+        copy={glossaryControlsCopy}
       />
 
       <div className={styles.page}>
@@ -72,7 +133,17 @@ export default function GlossaryPage() {
               {glossaryDirectoryCopy.title}
             </h2>
             <GlossaryAlphabet groups={groups} />
-            <GlossaryDirectory groups={groups} byId={byId} />
+            <GlossaryDirectory
+              groups={groups}
+              byId={byId}
+              actions={(t) => (
+                <CopyLinkButton
+                  url={`${siteConfig.url}/glossary#${t.slug}`}
+                  term={t.term}
+                  labels={copyLabels}
+                />
+              )}
+            />
           </section>
         </div>
       </div>
@@ -84,6 +155,6 @@ export default function GlossaryPage() {
       />
 
       <FinalCTA page="glossary" />
-    </>
+    </GlossaryProvider>
   );
 }
