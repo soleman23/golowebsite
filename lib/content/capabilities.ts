@@ -114,6 +114,14 @@ const OWNER_1015 = { by: "owner", date: "2026-10-15" } as const;
  */
 const OWNER_1026 = { by: "owner", date: "2026-10-26" } as const;
 
+/**
+ * Owner, 2026-10-29: the app has no junk board; bounties exist only as the
+ * Skins game's birdie and eagle skin settings (soleman23/golowebsite#172,
+ * answering #154 Q-a). It applies no skins validation rules
+ * (soleman23/golowebsite#176, answering #154 Q-d).
+ */
+const OWNER_1029 = { by: "owner", date: "2026-10-29" } as const;
+
 /** The site's own wording before the registry existed, unchecked. */
 const SITE_COPY_1015 = { by: "site-copy", date: "2026-10-15" } as const;
 
@@ -130,12 +138,16 @@ export const capabilities = [
   },
   {
     id: "game-library",
-    label: "Nassau, skins, Best Score, Wolf, Bingo Bango Bongo, junk board",
+    // "junk board" was in this label until 2026-10-29; there isn't one
+    // (see the junk-board entry below). verified is unchanged: the rest of
+    // the entry hasn't been rechecked.
+    label: "Nassau, skins, Best Score, Wolf, Bingo Bango Bongo",
     status: "live",
     summary:
       "Run several games in one round, each with its own amount, netted into one number per player.",
     limits: [
-      "Birdie and eagle bounties are a Skins setting (Birdie Skin, Eagle Skin), gross birdies only, no cap.",
+      "Birdie and eagle bounties exist only as a Skins setting (Birdie Skin, Eagle Skin), gross birdies only, no cap.",
+      "No junk board: greenies, sandies, barkies, poleys, snakes and arnies aren't scored.",
       "Closest to Pin and Longest Drive don't record a measured distance.",
     ],
     verified: OWNER_1015,
@@ -480,6 +492,36 @@ export const capabilities = [
     summary: "A link anyone outside the round can open to follow it.",
     verified: OWNER_1015,
     claimPhrases: ["live link", "public link", "share the link"],
+  },
+  {
+    id: "junk-board",
+    label: "Junk board",
+    status: "not-offered",
+    summary:
+      "Scoring junk side points (greenies, sandies, barkies, poleys, snakes, arnies). Bounties exist only as the Skins game's birdie and eagle skins.",
+    verified: OWNER_1029,
+    // Golf copy may still explain junk; these catch it presented as
+    // something GoLo does (soleman23/golowebsite#172).
+    claimPhrases: [
+      // Any "junk" in product copy (education files only count strings that
+      // name GoLo or the app); the rest catch the items by name.
+      "junk",
+      "log a greenie",
+      "log a sandie",
+      "tap the greenie",
+      "every greenie",
+    ],
+  },
+  {
+    id: "skins-validation",
+    label: "Skins validation rules",
+    status: "not-offered",
+    summary:
+      "House rules that carried skins only count on a birdie, a par minimum or a two-putt.",
+    verified: OWNER_1029,
+    // The guide can explain validation as golf; these catch it presented as
+    // something GoLo applies (soleman23/golowebsite#176).
+    claimPhrases: ["every validation", "validation rule", "tracks validation", "applies validation"],
   },
   {
     id: "distance-logging",
