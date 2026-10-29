@@ -321,6 +321,14 @@ const boundary = statuses.map((status) =>
   ];
   const clean = validateGlossary(base, CTX);
   check("valid fixtures pass", clean.length === 0, clean.join(" | "));
+  const reReviewed = validateGlossary(
+    [term("skins", {
+      reviewLog: [...REVIEW_LOG, { stage: "rules", by: "owner", on: "2026-10-25" }, { stage: "approval", by: "owner", on: "2026-10-25" }],
+      reviewedOn: "2026-10-25",
+    })],
+    CTX,
+  );
+  check("a term re-approved after publication passes", reReviewed.length === 0, reReviewed.join(" | "));
 
   /** Each mutation must produce a problem that names the record and the issue. */
   const broken = [
@@ -335,7 +343,8 @@ const boundary = statuses.map((status) =>
     ["impossible date", [term("skins", { reviewedOn: "2026-02-30" })], "skins", "reviewedOn \"2026-02-30\" isn't a YYYY-MM-DD date"],
     ["badly formatted date", [term("skins", { publishedOn: "10/22/2026" })], "skins", "publishedOn \"10/22/2026\""],
     ["future date", [term("skins", { updatedOn: "2027-01-01" })], "skins", "updatedOn 2027-01-01 is in the future"],
-    ["published before reviewed", [term("skins", { reviewedOn: "2026-10-21", publishedOn: "2026-10-20" })], "skins", "publishedOn is before reviewedOn"],
+    ["published before the first approval", [term("skins", { reviewedOn: "2026-10-21", publishedOn: "2026-10-20" })], "skins", "publishedOn is before the first approval"],
+    ["reviewedOn behind the review log", [term("skins", { reviewLog: [...REVIEW_LOG, { stage: "approval", by: "owner", on: "2026-10-25" }] })], "skins", "reviewedOn isn't the latest approval"],
     ["updated before published", [term("skins", { updatedOn: "2026-10-21" })], "skins", "updatedOn is before publishedOn"],
     ["published without publishedOn", [term("skins", { publishedOn: undefined })], "skins", "published without publishedOn"],
     ["publishedOn on a draft", [term("skins", { status: "draft" })], "skins", "publishedOn set on a draft record"],

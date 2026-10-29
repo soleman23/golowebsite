@@ -162,8 +162,19 @@ export function validateGlossary(
       if (!realDate(value)) say(t, `${field} "${value}" isn't a YYYY-MM-DD date`);
       else if (value > ctx.today) say(t, `${field} ${value} is in the future`);
     }
-    if (t.reviewedOn && t.publishedOn && t.publishedOn < t.reviewedOn) {
-      say(t, "publishedOn is before reviewedOn");
+    // reviewedOn is the latest approval, so a published term re-approved
+    // after a review trigger has a reviewedOn later than its publishedOn.
+    // What publication follows is the first approval.
+    const approvals = (t.reviewLog ?? [])
+      .filter((e) => e.stage === "approval")
+      .map((e) => e.on)
+      .sort();
+    const firstApproval = approvals[0] ?? t.reviewedOn;
+    if (firstApproval && t.publishedOn && t.publishedOn < firstApproval) {
+      say(t, "publishedOn is before the first approval");
+    }
+    if (t.reviewedOn && approvals.length && t.reviewedOn !== approvals[approvals.length - 1]) {
+      say(t, "reviewedOn isn't the latest approval in the review log");
     }
     if (t.updatedOn && t.publishedOn && t.updatedOn < t.publishedOn) {
       say(t, "updatedOn is before publishedOn");
