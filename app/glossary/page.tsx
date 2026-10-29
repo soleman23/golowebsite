@@ -5,6 +5,7 @@ import {
   glossaryCategoryIds,
   glossaryControlsCopy,
   glossaryDirectoryCopy,
+  glossaryFinalCta,
   glossaryHero,
   glossarySearchEntries,
   glossaryTermCount,
@@ -194,7 +195,7 @@ export default function GlossaryPage() {
         headingId="glossary-keep-reading-heading"
       />
 
-      <FinalCTA page="glossary" />
+      <FinalCTA page="glossary" {...glossaryFinalCta} />
 
       {jsonLd ? <JsonLd data={jsonLd} /> : null}
     </GlossaryProvider>
