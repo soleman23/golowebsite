@@ -831,14 +831,15 @@
   color: var(--text-secondary);
 }
 
-/* ScoringPhone, features variant: junk buttons in place of the progress bar. */
-.junkRow {
+/* ScoringPhone, features variant: the games' standing for the hole in place of
+   the progress bar. */
+.gameRow {
   margin-top: 12px;
   display: flex;
   gap: 7px;
 }
 
-.junkBtn {
+.gameChip {
   flex: 1;
   display: flex;
   align-items: center;
@@ -852,7 +853,7 @@
   color: #fff;
 }
 
-.junkBtnAccent {
+.gameChipAccent {
   background: var(--accent-16);
   border-color: var(--accent-border);
   color: var(--accent);

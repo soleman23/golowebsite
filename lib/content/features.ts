@@ -80,7 +80,7 @@ export const featureBlocks: FeatureBlock[] = [
     kicker: "GAME LIBRARY",
     status: TODAY,
     title: "Run four games at once. Nobody has to keep track but the phone.",
-    lead: "A Nassau over the top of skins over the top of a junk board is a normal Saturday, and it's also four separate tallies nobody can hold in their head. Stack them, set each one's house rules, and let the app do the bookkeeping.",
+    lead: "A Nassau, skins, Best Score and Wolf in the same round is a normal Saturday, and it's also four separate tallies nobody can hold in their head. Stack them, set each one's house rules, and let the app do the bookkeeping.",
     checklist: [
       {
         lead: "Your house rules, per game",
@@ -91,8 +91,8 @@ export const featureBlocks: FeatureBlock[] = [
         rest: "two-on-two, best ball, or every man for himself.",
       },
       {
-        lead: "Junk priced separately",
-        rest: "a greenie is a dollar, not a debate.",
+        lead: "Birdie and eagle skins",
+        rest: "a Skins setting: gross birdies, no cap.",
       },
     ],
     visualSide: "left",
@@ -112,8 +112,8 @@ export const featureBlocks: FeatureBlock[] = [
       },
       { lead: "Net and gross together", rest: "see both, play either." },
       {
-        lead: "Junk logged on the hole",
-        rest: "tap the greenie before you forget it.",
+        lead: "Carries on the screen",
+        rest: "the skins count is there before anyone asks.",
       },
     ],
     visualSide: "right",
@@ -194,7 +194,7 @@ export const featureBlocks: FeatureBlock[] = [
     kicker: "AUTO SETTLE-UP",
     status: TODAY,
     title: "Four players, six debts, three settle-ups.",
-    lead: "Nassau, presses, Skins, Best Score and every greenie get netted into one number per player, then reduced to a short who-owes-whom list that squares the group. You read the list out loud in the parking lot and it's over — no daisy chain, no arithmetic with a beer in your hand.",
+    lead: "Nassau, presses, Skins, Best Score and closest to the pin get netted into one number per player, then reduced to a short who-owes-whom list that squares the group. You read the list out loud in the parking lot and it's over — no daisy chain, no arithmetic with a beer in your hand.",
     checklist: [
       { lead: "Who owes whom", rest: "names and amounts, in plain order." },
       {

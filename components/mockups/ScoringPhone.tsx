@@ -14,8 +14,10 @@ const dotColor: Record<string, string> = {
 };
 
 /**
- * "home" closes on the hole-progress bar; "features" closes on the junk
- * buttons instead, which is the moment /features is describing.
+ * "home" closes on the hole-progress bar; "features" closes on the games'
+ * standing for the hole instead (the skins carry and the front-nine match),
+ * which is the moment /features is describing. It used to show greenie and
+ * sandie buttons; the app has no junk board (soleman23/golowebsite#172).
  */
 type ScoringPhoneProps = { variant?: "home" | "features" };
 
@@ -29,7 +31,7 @@ export function ScoringPhone({ variant = "home" }: ScoringPhoneProps) {
       bgPosition="50% 60%"
       label={
         isFeatures
-          ? "GoLo scoring screen for hole 7 — Mike's score being tapped in, the rest of the foursome's net and gross below, and buttons to log a greenie or a sandie."
+          ? "GoLo scoring screen for hole 7 — Mike's score being tapped in, the rest of the foursome's net and gross below, and the skins carry and front-nine match standing for the hole."
           : "GoLo scoring screen for hole 7 — tapping in Mike's score with net and gross for the group."
       }
     >
@@ -83,12 +85,12 @@ export function ScoringPhone({ variant = "home" }: ScoringPhoneProps) {
       </div>
 
       {isFeatures ? (
-        /* junk logged on the hole */
-        <div className={styles.junkRow}>
-          <span className={`${styles.junkBtn} ${styles.junkBtnAccent}`}>
-            + Greenie
+        /* where the games stand on this hole */
+        <div className={styles.gameRow}>
+          <span className={`${styles.gameChip} ${styles.gameChipAccent}`}>
+            Skins · 3 carried
           </span>
-          <span className={styles.junkBtn}>+ Sandie</span>
+          <span className={styles.gameChip}>Front 9 · Mike 1 up</span>
         </div>
       ) : (
         /* progress bar */
