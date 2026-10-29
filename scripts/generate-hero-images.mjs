@@ -31,7 +31,7 @@ const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const SRC = join(ROOT, "tmp/hero-src");
 const OUT = join(ROOT, "public/images/heroes");
 
-const ALL_PAGES = ["faq", "blog", "games", "features", "how-it-works", "contact"];
+const ALL_PAGES = ["faq", "blog", "games", "features", "how-it-works", "contact", "glossary"];
 const requested = process.argv.slice(2);
 const unknown = requested.filter((p) => !ALL_PAGES.includes(p));
 if (unknown.length) throw new Error(`unknown page: ${unknown.join(", ")} (pages: ${ALL_PAGES.join(", ")})`);
