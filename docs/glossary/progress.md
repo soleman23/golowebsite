@@ -25,6 +25,7 @@ No glossary PR is open. CI runs only on PRs and `main`, so **no glossary branch 
 | #157 | `glossary/157-search` | #156 | Code: search, category chips (`?category=`), A–Z, deep links, copy link; plus the URL-sanitizer fix for `?category=` |
 | #163 | `glossary/163-seo` | #157 (merged in) | Code: metadata, canonical, `DefinedTermSet`, sitemap and `llms.txt`, all gated; run sheet note; GSC groups |
 | #165 | `glossary/165-analytics` | #163 (merged in) | Code: four events + `share_click` reuse; data notes; `leads.sql` |
+| #158 | `glossary/158-formats` | #155 | Content: ten games-and-formats records at `draft`. No review stage done, no source opened, no GoLo notes |
 
 Merge order: #152 → #153 (docs, any time) · #155 → #156 → #157 → #163 → #165 · #154 (docs, any time). Each code branch contains the ones before it, so a PR for #156 opened against `main` before #155 merges would show both. Open them in order, or retarget each PR as the previous one merges.
 
@@ -72,7 +73,7 @@ Merge order: #152 → #153 (docs, any time) · #155 → #156 → #157 → #163 �
 
 ## Next ready
 
-- **#158–#162 drafts:** draft records (`status: "draft"`, no sources claimed) can be written now against the #155 contract. Rules and WHS text stays unverified until the sources are reachable. GoLo notes for #159 and #160 wait on #154.
+- **#159–#162 drafts** (#158's are done): draft records (`status: "draft"`, no sources claimed) can be written now against the #155 contract. Rules and WHS text stays unverified until the sources are reachable. GoLo notes for #159 and #160 wait on #154.
 - **#164:** footer entry, inbound links and per-intent CTA copy can be prepared behind the flag, but must merge with or as part of the launch (#166).
 - **#171:** blocked on photography.
 - **#166:** blocked on everything above plus the owner's go.
