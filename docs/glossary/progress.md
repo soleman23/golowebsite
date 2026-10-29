@@ -11,7 +11,7 @@ Gates are separate, and none implies another:
 5. editorially approved
 6. released
 
-No glossary PR is open. CI runs only on PRs and `main`, so **no glossary branch has been through CI**.
+CI runs only on PRs to `main` and pushes to `main`, so a stacked PR gets CI once it's retargeted to `main`. The session 2 table below is current; the session 1 sections after it are kept for the record.
 
 ## Session 2, October 29, 2026: owner answers, PRs open
 
@@ -37,7 +37,7 @@ Other issues filed: #178 (push/halve in the skins guide). #173 and #177 both add
 
 All 56 MVP records exist as drafts (#188–#192). None is reviewed. No rules or WHS source has been opened. Handicap GoLo notes wait on row 2.
 
-## Branches (all pushed to origin, no PRs)
+## Branches (session 1; PRs now open, see the table above)
 
 | Issue | Branch | Base | State |
 |---|---|---|---|
@@ -80,24 +80,24 @@ Merge order: #152 → #153 (docs, any time) · #155 → #156 → #157 → #163 �
 ## Findings and decisions to know
 
 - **Vocabulary rule.** `NEVER_WORDS` in `scripts/check-content.mjs` bans "wager", "stakes", "bet(s)", "pot(s)", "payout(s)" and more site-wide. That affects the spec's category name, its Press draft and aliases, and three M8 term names. MVP names unaffected. `inventory.md` Q1, Q2.
-- **Existing-site conflicts:** Wolf tee order; skins validation wording; a possible "every validation" overclaim. `inventory.md` § Existing site definitions; also in `capability-check.md`. No issues filed.
+- **Existing-site conflicts:** Wolf tee order (#174, PR #175); skins validation wording (#176, PR #177); push/halve split (#178); junk board (#172, PR #173). `inventory.md` § Existing site definitions; also in `capability-check.md`.
 - **#165 vs #164 sequencing.** #165 lists #164 as a dependency, and #164 ships with the launch. Resolution: the events, docs and gated discovery work are built now behind `glossaryLive`; public exposure (footer link, inbound links, flag flip) is the combined #164 + #166 launch change. #165's acceptance criteria are unchanged; its consent checks ran in the local launch simulation and run again on the live site after launch.
 - **Title format:** the site template gives "… · GoLo", not the spec's "| GoLo Golf". The repo convention was kept.
 - **`?category=` and the URL sanitizer:** `lib/analyticsPreference.ts` drops unlisted query params on every page load in production. `category` on `/glossary` was added to its allow-list (#157). Without that, the category would vanish from the address in production.
 
-## Owner actions, precisely
+## Owner actions (after session 2)
 
-1. **#152:** answer `inventory.md` Q1 (vocabulary vs betting terms, M8 only), Q2 ("press bet" alias), Q3 (Wolf tee order), Q4 (accept substitutions S1–S9, merges M1–M6).
-2. **#153:** accept or change `ux.md` D1–D8.
-3. **#154:** fill in `capability-check.md` rows 1–13 and Q-a to Q-e.
-4. **Network:** allow `www.usga.org` and `www.randa.org` for this environment (it didn't take effect in this session), or do the source checks in a local session. No rules or WHS record can reach `approved` without them.
-5. **#171:** supply course photography (original or licensed) as desktop 2688×1152 and mobile 1792×2240 masters, with the dark side for the H1 and search field. Nothing can be generated or licensed on your behalf.
-6. **Content approval (#158–#162):** the review stages in `editorial-review.md`, once drafts exist.
-7. **PRs:** say when to open them, and in which order (above).
+1. **Review and merge**, never by an agent:
+   - #173 first (junk board, your review); then #177, which needs a one-line `OWNER_1029` conflict fix;
+   - #175, #179, #180, #181 any time;
+   - then #182, and #183 → #184 → #185 → #186 → #187 in order, retargeting each to `main` as the one below merges.
+2. **#154 rows 1–13:** re-confirm against the app. Handicap GoLo notes (row 2) wait on this.
+3. **Source checks:** a session that can reach `www.usga.org` and `www.randa.org`. No rules or WHS record moves past `draft` until then.
+4. **#171:** course photography, desktop 2688×1152 and mobile 1792×2240 masters.
+5. **Content approval (#158–#162):** the stages in `editorial-review.md`, record by record.
 
 ## Next ready
 
-- **#159–#162 drafts** (#158's are done): draft records (`status: "draft"`, no sources claimed) can be written now against the #155 contract. Rules and WHS text stays unverified until the sources are reachable. GoLo notes for #159 and #160 wait on #154.
-- **#164:** footer entry, inbound links and per-intent CTA copy can be prepared behind the flag, but must merge with or as part of the launch (#166).
+- **#164:** footer entry, inbound links and per-intent CTA copy, prepared behind the flag, merged with the launch (#166).
 - **#171:** blocked on photography.
-- **#166:** blocked on everything above plus the owner's go.
+- **#166:** blocked on everything above plus the owner's go. Its recheck list is in `capability-check.md`.
