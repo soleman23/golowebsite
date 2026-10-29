@@ -83,6 +83,13 @@ jobs:
         if: '!cancelled()'
         run: npm run test:guard
 
+      # Glossary model: search ranking, the draft/published boundary, record
+      # integrity, the claim guard on glossary copy and the /glossary link
+      # rules (scripts/test-glossary.mjs). Hermetic, fixtures only.
+      - name: Glossary tests
+        if: '!cancelled()'
+        run: npm run test:glossary
+
       # Runs even if lint failed, so one push surfaces every problem at once
       # instead of trickling them out over three round-trips.
       - name: Typecheck
