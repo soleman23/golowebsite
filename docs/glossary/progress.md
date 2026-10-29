@@ -23,7 +23,7 @@ The owner answered #152 Q1–Q4, accepted #153 D1–D8, answered #154 Q-a to Q-e
 | #175 Wolf post tees off last | #174 | `main` | green |
 | #177 skins validation CTA | #176 | `main` | green |
 | #179 registry: a press on a press | part of #154 | `main` | green |
-| #180 inventory, canonical map, editorial review | #152 | `main` | green |
+| #180 inventory, canonical map, editorial review | #152 | `main` | green (date-rule finding fixed) |
 | #181 capability checklist and answers | part of #154 | `main` | green |
 | #182 UX doc + this file | #153 | #180's branch | runs after retarget |
 | #183 model, flag, search, validation | #155 | `main` | green (126 glossary tests on Node 24.22.1) |
@@ -33,9 +33,20 @@ The owner answered #152 Q1–Q4, accepted #153 D1–D8, answered #154 Q-a to Q-e
 | #187 analytics | #165 | #186's branch | runs after retarget |
 | #188 → #189 → #190 → #191 → #192 drafts | part of #158–#162 | stacked on #183 | runs after retarget |
 
-Other issues filed: #178 (push/halve in the skins guide). #173 and #177 both add `OWNER_1029` to `capabilities.ts`; the second to merge needs a one-line conflict fix.
+Other issues filed: #178 (push/halve in the skins guide; PR #193). #173 and #177 both add `OWNER_1029` to `capabilities.ts`; the second to merge needs a one-line conflict fix.
 
 All 56 MVP records exist as drafts (#188–#192). None is reviewed. No rules or WHS source has been opened. Handicap GoLo notes wait on row 2.
+
+### Round 2 (owner review, same day)
+
+- **#175, #177, #179** accepted by the owner. Merge order now: #175, #179, #181, then #180, then #182 and #183 → #187 in order, each retargeted to `main` as the one below merges.
+- **Codex findings, all verified, fixed, answered and resolved:**
+  - #180: `reviewedOn ≤ publishedOn` would reject a re-approved published term. The doc (#180) and the validator (#183, 98b9e44) now check publication against the first approval; `reviewedOn` is the latest approval. 2 new test cases.
+  - #187: a cold load of `/glossary#<slug>` lost `glossary_term_open`, because AnalyticsLoader applies the saved choice one task after the hub's mount effect. Reproduced in a production build (0 events). Fixed in `components/sections/glossary/openReport.ts` (84cbd69); after the fix, 1 event with a saved grant and none with no choice then Allow. 4 test cases cover D5. A single-task wait fails them.
+  - #187: the search success rate now uses the same searches on both sides, bounded by the next search, from params already sent.
+- **#173 changes for the owner:** replacements trace to live registry entries; the Closest to Pin and live-standings replacements are gone; one more junk line (skins guide "Stack the side games"); screenshots refreshed on `pr-assets/junk-board`. `lint:content` passes on every glossary content branch with #173 merged in locally (not pushed).
+- **#193** opened for #178 (push/halve), against `main`.
+- **Unregistered claims already on main, for the owner:** Live Leaderboard "Live skins and carries"; skins guide "GoLo shows the live skins on the scoring screen"; the Closest to Pin game row in `lib/mockData.ts` and the guide's "let GoLo net it into the settle-up". The guide also treats greenie and closest to the pin as the same thing, which conflicts with the `junk-board` entry.
 
 ## Branches (session 1; PRs now open, see the table above)
 
