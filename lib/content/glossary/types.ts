@@ -106,7 +106,10 @@ export type GlossaryTerm = {
   reviewedBy?: string;
   /** Internal, as reviewedBy. */
   reviewLog?: ReviewEntry[];
-  /** The approval date; shown as "Reviewed <date>" on a published term. */
+  /**
+   * The latest approval date; shown as "Reviewed <date>" on a published term.
+   * After a re-review it can be later than publishedOn.
+   */
   reviewedOn?: string;
   /** Set by the launch PR only. */
   publishedOn?: string;
