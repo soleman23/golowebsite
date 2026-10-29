@@ -1,6 +1,6 @@
 # Glossary MVP: review packet for the owner (#158–#162)
 
-Prepared October 29, 2026 for the owner's sign-off. **Nothing here is a review.** An agent opened the sources, recomputed the examples and checked GoLo claims against `lib/content/capabilities.ts`; the owner signs the rules fact-check, the product audit, the SEO/canonical confirmation and approval (`editorial-review.md` § Roles). All 56 records are at `in-review`, with no `reviewLog`, `reviewedBy` or `reviewedOn`.
+Prepared October 29, 2026 for the owner's sign-off, and **resolved the same day** (see [Resolution](#resolution-october-29-2026)): the owner delegated the rules, product and SEO stages to an agent and approved the content in writing, subject to those checks. The term entries below are the agent's evidence; the records' review log is in `lib/content/glossary/review.ts`. The owner didn't open the sources or test the app.
 
 ## What changed in this pass
 
@@ -21,16 +21,20 @@ Prepared October 29, 2026 for the owner's sign-off. **Nothing here is a review.*
 
 Spot-checked by hand from the primary pages, not just the agent's notes: RoH 6.2a and clarification 6.2a/1, RoH 3.3, RoH 2.1b, and the R&A's 2028 statement.
 
-## Decisions and confirmations the owner needs (content)
+## Resolution (October 29, 2026)
 
-1. **Sign the four stages per record**, or send corrections. To record approval, an agent adds a `reviewLog` with `rules`, `product`, `seo` and `approval` entries dated the day you actually did each (`by: "owner"`), `reviewedBy: "owner"`, `reviewedOn`, and `status: "approved"`. The validator refuses anything less.
-2. **`handicap-strokes` (capability-check row 2).** The Course Handicap, Handicap Stroke and Handicap Allowance GoLo notes rest on an app-check of 0.6.2 (2026-10-11). Confirm against the current build, or say to drop the notes. Rows 1–13 are still unconfirmed in general.
-3. **Closest to the Pin carry.** PR #195 (open, another session) records that an unwon Closest to Pin hole carries. The glossary note doesn't claim it. After #195 merges, say whether to add "A hole nobody wins carries to the next one."
-4. **Wolf tee order.** GoLo's Wolf tees off last (your answer, #154 Q-e), but no registry entry records it, so the Wolf record has no GoLo note. Add a `game-library` limit if you want the note.
-5. **Short definitions under 20 words**, kept short on purpose: Birdie, Eagle, Bogey, Double Bogey (9), 19th Hole (11), Snowman (14), Gross Score, Gimme (15), Net Score, Stroke Play (16), Closest to the Pin, Longest Drive (17), Putter (18), Playing Handicap, Teeing Area (19). Accept as exceptions to "normally 20–45 words", or name the ones to lengthen.
-6. **Thin corroboration** (source hierarchy level 5, community usage): Closest to the Pin and Longest Drive are corroborated by event rule sheets; Re-press only by Wikipedia and CaddieHQ. Accept, or drop the claim the source can't carry.
-7. **Not opened:** "teeing ground until 2019" and "water hazards before 2019" (the 2019 renaming), the 7-iron loft (now worded as "roughly three times" a driver's), and "topped" as the cause of a worm burner. Strike or confirm.
-8. **Fairway alias "short grass".** Kept (aliases are stable), but it isn't a strict synonym: the Rules' "closely mown area" also covers fringes and paths mown to fairway height. Keep or drop.
+The owner's instruction of October 29, 2026 answered the eight questions below; the agent then did the remaining checks. What happened to each:
+
+1. **Sign-off.** Done as delegated: rules, product and SEO by an agent, approval by the owner in writing, all October 29, 2026. Each record carries that log (`review.ts`), `reviewedBy: "owner"` and `reviewedOn: 2026-10-29`, and the launch PR publishes it.
+2. **`handicap-strokes`.** Rechecked against the app's code (golo `main` 2237c1d, GoLo 1.2.1): confirmed. The Course Handicap, Handicap Stroke and Handicap Allowance notes stand. Rows 1–13 rechecked the same way (`capability-check.md` § Release recheck results).
+3. **Closest to the Pin carry.** **Not added.** The code skips a hole nobody wins (`src/engines/ctp.js`); the carry belongs to the Skins game's Greenie option. #195's carry sentence is contradicted, so the launch PR doesn't depend on #195. The CTP note now says a hole nobody wins pays nothing.
+4. **Wolf tee order.** "Last" stays the guide's wording, but the app has no tee order (the wolf rotates by player order, `src/engines/wolf.js`), so no registry limit was added and Wolf has no GoLo note.
+5. **Short definitions.** Accepted as written, none padded.
+6. **Community usage.** Accepted where qualified. Re-press: CaddieHQ's article body no longer loads, so it was replaced by Stymie ("Presses on presses…"), opened October 29, 2026. Longest Drive's "Most groups" narrowed to "Many groups".
+7. **Unopened details.** The 2019 renamings (teeing ground, water hazards) are confirmed by the USGA's "Golf's New Rules: Changing Terminology" (April 22, 2019), now a source on both records. The 7-iron loft is now sourced to Golf Monthly (drivers about 7–13°, a 7-iron around 34°), and the Driver example says that instead of "roughly three times". The worm burner's cause ("catching the top of the ball") was dropped: MyGolfSpy and CaddieHQ treat a worm burner and a topped shot as different mishits.
+8. **"short grass".** Dropped as a Fairway alias (record and `inventory.md`); no test referred to it.
+
+Also found and fixed in the final pass: two sources titled "Golf.com" pointed at practical-golf.com (now "Practical Golf"); the Press note no longer says a side "calls" a press (the scorer enters it); the Nassau note says nine holes play one match; the Closest to the Pin note names the holes the app offers (every par 3, or the back nine's); the Re-press note now says GoLo doesn't press a press.
 
 ## Reading the term entries
 

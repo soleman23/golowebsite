@@ -2,12 +2,11 @@
  * Games and formats (#158, GLS-006a). Ten MVP records from
  * docs/glossary/inventory.md § B.
  *
- * IN REVIEW. Drafted October 29, 2026 and revised the same day against the
- * primary sources: every source with `accessedOn` was opened that day by
- * the agent preparing the rules fact-check (docs/glossary/review-packet.md
- * records what each says and the recomputed examples). No review stage is
- * signed: the owner signs the rules fact-check, the product audit and
- * approval (editorial-review.md), so no record has a review log yet.
+ * PUBLISHED by the launch PR (#166). Drafted and source-checked October 29,
+ * 2026: every source with `accessedOn` was opened on that date
+ * (docs/glossary/review-packet.md records what each says and the recomputed
+ * examples). The review log is in ../review.ts: rules, product and SEO by an
+ * agent under the owner's delegation, approval by the owner in writing.
  *
  * GoLo notes come from live registry entries only (game-library,
  * live-skins, scramble, overall-match-presses); Four-Ball, Foursomes, Match
@@ -17,6 +16,7 @@
  * definition and the guide link, and doesn't restate the guide's rules.
  */
 
+import { MVP_REVIEWED_ON, mvpReviewLogApp, mvpReviewLogNone } from "../review";
 import type { GlossaryTerm } from "../types";
 
 export const formatsTerms: GlossaryTerm[] = [
@@ -57,7 +57,11 @@ export const formatsTerms: GlossaryTerm[] = [
         accessedOn: "2026-10-29",
       },
     ],
-    status: "in-review",
+    status: "published",
+    reviewedBy: "owner",
+    reviewLog: mvpReviewLogApp,
+    reviewedOn: MVP_REVIEWED_ON,
+    publishedOn: "2026-10-29",
   },
   {
     id: "nassau",
@@ -76,7 +80,7 @@ export const formatsTerms: GlossaryTerm[] = [
       text: "No governing body writes rules for the Nassau. Whether strokes count, whether presses are allowed and when the eighteen closes are up to the group.",
     },
     goloNote:
-      "GoLo plays the three matches and nets them into the settle-up. Its Nassau takes no presses; presses are on the Overall Match game.",
+      "Over 18 holes GoLo plays the three matches and nets them into the settle-up; over nine it plays one. Its Nassau takes no presses; presses are on the Overall Match game.",
     relatedTermIds: ["match-play", "press"],
     relatedContentPaths: ["/blog/nassau"],
     canonical: { kind: "existing", path: "/games/nassau" },
@@ -96,7 +100,11 @@ export const formatsTerms: GlossaryTerm[] = [
         accessedOn: "2026-10-29",
       },
     ],
-    status: "in-review",
+    status: "published",
+    reviewedBy: "owner",
+    reviewLog: mvpReviewLogApp,
+    reviewedOn: MVP_REVIEWED_ON,
+    publishedOn: "2026-10-29",
   },
   {
     id: "wolf",
@@ -133,7 +141,11 @@ export const formatsTerms: GlossaryTerm[] = [
         accessedOn: "2026-10-29",
       },
     ],
-    status: "in-review",
+    status: "published",
+    reviewedBy: "owner",
+    reviewLog: mvpReviewLogApp,
+    reviewedOn: MVP_REVIEWED_ON,
+    publishedOn: "2026-10-29",
   },
   {
     id: "bingo-bango-bongo",
@@ -170,7 +182,11 @@ export const formatsTerms: GlossaryTerm[] = [
         accessedOn: "2026-10-29",
       },
     ],
-    status: "in-review",
+    status: "published",
+    reviewedBy: "owner",
+    reviewLog: mvpReviewLogApp,
+    reviewedOn: MVP_REVIEWED_ON,
+    publishedOn: "2026-10-29",
   },
   {
     id: "best-score",
@@ -200,7 +216,11 @@ export const formatsTerms: GlossaryTerm[] = [
         accessedOn: "2026-10-29",
       },
     ],
-    status: "in-review",
+    status: "published",
+    reviewedBy: "owner",
+    reviewLog: mvpReviewLogApp,
+    reviewedOn: MVP_REVIEWED_ON,
+    publishedOn: "2026-10-29",
   },
   {
     id: "scramble",
@@ -246,7 +266,11 @@ export const formatsTerms: GlossaryTerm[] = [
         accessedOn: "2026-10-29",
       },
     ],
-    status: "in-review",
+    status: "published",
+    reviewedBy: "owner",
+    reviewLog: mvpReviewLogApp,
+    reviewedOn: MVP_REVIEWED_ON,
+    publishedOn: "2026-10-29",
   },
   {
     id: "four-ball",
@@ -306,7 +330,11 @@ export const formatsTerms: GlossaryTerm[] = [
         accessedOn: "2026-10-29",
       },
     ],
-    status: "in-review",
+    status: "published",
+    reviewedBy: "owner",
+    reviewLog: mvpReviewLogNone,
+    reviewedOn: MVP_REVIEWED_ON,
+    publishedOn: "2026-10-29",
   },
   {
     id: "foursomes",
@@ -353,7 +381,11 @@ export const formatsTerms: GlossaryTerm[] = [
         accessedOn: "2026-10-29",
       },
     ],
-    status: "in-review",
+    status: "published",
+    reviewedBy: "owner",
+    reviewLog: mvpReviewLogNone,
+    reviewedOn: MVP_REVIEWED_ON,
+    publishedOn: "2026-10-29",
   },
   {
     id: "match-play",
@@ -391,7 +423,11 @@ export const formatsTerms: GlossaryTerm[] = [
         accessedOn: "2026-10-29",
       },
     ],
-    status: "in-review",
+    status: "published",
+    reviewedBy: "owner",
+    reviewLog: mvpReviewLogNone,
+    reviewedOn: MVP_REVIEWED_ON,
+    publishedOn: "2026-10-29",
   },
   {
     id: "stableford",
@@ -429,6 +465,10 @@ export const formatsTerms: GlossaryTerm[] = [
         accessedOn: "2026-10-29",
       },
     ],
-    status: "in-review",
+    status: "published",
+    reviewedBy: "owner",
+    reviewLog: mvpReviewLogNone,
+    reviewedOn: MVP_REVIEWED_ON,
+    publishedOn: "2026-10-29",
   },
 ];
