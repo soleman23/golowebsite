@@ -13,6 +13,30 @@ Gates are separate, and none implies another:
 
 No glossary PR is open. CI runs only on PRs and `main`, so **no glossary branch has been through CI**.
 
+## Session 2, October 29, 2026: owner answers, PRs open
+
+The owner answered #152 Q1–Q4, accepted #153 D1–D8, answered #154 Q-a to Q-e, and found the junk board overclaim (#172), which took priority. Rows 1–13 of `capability-check.md` are not re-confirmed.
+
+| PR | Issue | Base | CI (Node 24) |
+|---|---|---|---|
+| #173 junk board fix (owner review before merge) | #172 | `main` | green |
+| #175 Wolf post tees off last | #174 | `main` | green |
+| #177 skins validation CTA | #176 | `main` | green |
+| #179 registry: a press on a press | part of #154 | `main` | green |
+| #180 inventory, canonical map, editorial review | #152 | `main` | green |
+| #181 capability checklist and answers | part of #154 | `main` | green |
+| #182 UX doc + this file | #153 | #180's branch | runs after retarget |
+| #183 model, flag, search, validation | #155 | `main` | green (126 glossary tests on Node 24.22.1) |
+| #184 hub | #156 | #183's branch | runs after retarget |
+| #185 search, filters, deep links | #157 | #184's branch | runs after retarget |
+| #186 SEO | #163 | #185's branch | runs after retarget |
+| #187 analytics | #165 | #186's branch | runs after retarget |
+| #188 → #189 → #190 → #191 → #192 drafts | part of #158–#162 | stacked on #183 | runs after retarget |
+
+Other issues filed: #178 (push/halve in the skins guide). #173 and #177 both add `OWNER_1029` to `capabilities.ts`; the second to merge needs a one-line conflict fix.
+
+All 56 MVP records exist as drafts (#188–#192). None is reviewed. No rules or WHS source has been opened. Handicap GoLo notes wait on row 2.
+
 ## Branches (all pushed to origin, no PRs)
 
 | Issue | Branch | Base | State |
