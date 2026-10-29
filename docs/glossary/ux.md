@@ -37,7 +37,7 @@ Spec §5.2, in order. One H1; H2s for the sections; H3 per letter.
 3. **Search results** (only while a query is active): count line and ranked list.
 4. **Start here** (H2): six curated terms as links. The proposal is Press, Skins, Net Score, Stroke Index, Handicap Index and Mulligan, one or two per intent tier. It's labelled as a starting point, never "most searched" or "popular".
 5. **Browse A–Z** (H2): the letter bar, then the directory.
-6. **Related guides** (H2): three cards (`CalloutCard`) to `/games`, `/blog`, `/how-it-works`.
+6. **Related guides** (H2): three cards to `/games`, `/blog`, `/how-it-works`, using the FAQ's `KeepReading` band (it now takes its cards as props).
 7. **CTA**: `FinalCTA` with the store buttons from `siteConfig` (#164 finalises the copy).
 
 No newsletter band (on hold).
@@ -189,7 +189,7 @@ Same as 1100, centred in `--max-width` 1200px. The extra width goes to the page 
 - In local review, an `approved` (not yet published) entry carries a visible "Not published" marker. It never appears in production, because only published records reach the production selector.
 - Guide link text names the guide ("Read the Nassau guide"), never "read more".
 - "Reviewed <date>" is the only review signal; `reviewedBy` never renders.
-- Rose (`--negative`) is not used for anything here. Lime is for focus and the active chip only.
+- Rose (`--negative`) is not used for anything here.
 
 ## Flows and states
 
@@ -198,7 +198,7 @@ Spec §5.3. "Announce" means the polite live region, debounced.
 | Flow | Trigger | Result | Focus | Announce | URL |
 |---|---|---|---|---|---|
 | Browse | Load `/glossary` | Hero, chips (All lit), Start here, A–Z, full directory | Normal page start | Nothing | `/glossary` |
-| Search | Type in the hero field | After 250ms idle: ranked results list replaces the directory; count line "4 terms match" | Stays in the field | After 600ms idle: "4 terms match" (never per keystroke) | Unchanged; query never written |
+| Search | Type in the hero field | Ranked results replace Start here and the directory as you type; count line "4 terms match" | Stays in the field | After 600ms idle: "4 terms match" (never per keystroke) | Unchanged; query never written |
 | Search, Enter | Press Enter in the field | Same as typing; nothing submits | Stays in field | — | Unchanged |
 | Filter | Choose a chip | Directory (or results) narrowed by CSS; letter groups with no match hidden; A–Z letters with no match greyed | Stays on the chip | "Side games: 10 terms" (`FilterStatus`) | `?category=side-games` pushed; All removes the param |
 | Combine | Query + category | Results = matches within the category | — | "2 side-game terms match" | `?category=` only |
@@ -290,7 +290,7 @@ Tab order, top to bottom:
 ## Visual language
 
 - Dark page (`--page-bg`) and frosted surfaces (`--glass-surface`) for the controls panel and result cards. Never on anything sticky (nothing is).
-- Lime accent only for the active chip, focus rings and the H1 accent line.
+- Lime accent for the active chip, focus rings, the H1 accent line, and in-text links (related terms, guide links), as the blog's prose links are.
 - 800 weight for the H1, section headings, letter headings and term names.
 - Muted text uses `--text-muted` (0.5 alpha) at the lowest, never below; category labels use `--text-secondary`.
 - The photo sits under the existing `PageHero` scrim. The search field sits on the scrim's guaranteed-dark band, inside `--copy-span`.
@@ -307,7 +307,7 @@ Reuse first. New components live under `components/sections/glossary/`, next to 
 | Category from URL, paint before hydration | `FilterBoot` (`param="category"`) | Reused |
 | URL ↔ state, back/forward | `FilterUrlSync`, `useInitialFilter` | Reused |
 | Category announcement | `FilterStatus` | Reused |
-| Related guides | `CalloutCard` | Reused |
+| Related guides | `KeepReading` (FAQ) | Reused; takes `items` and `heading` props now |
 | CTA band, store buttons | `FinalCTA`, `StoreButtons` | Reused; #164 sets the copy |
 | Newsletter | `NewsletterBand` | **Not used** (on hold) |
 | State shared by the hero field, chips and results | `GlossaryProvider` | New, `"use client"`; wraps the page body, children stay server-rendered |
@@ -345,6 +345,16 @@ The events land in #165; #157 only leaves the calls at these points:
 | GL-QA-12 | Keyboard and focus |
 | GL-QA-13 | Screen readers |
 | GL-QA-14 | Wireframes; overflow rules |
+
+## Changes made while building (#156, #157)
+
+Recorded here so the doc matches the code:
+
+- Search results update as the reader types rather than after a 250ms pause; only the announcement and the analytics event wait for typing to settle (600ms).
+- Related guides reuse `KeepReading`, not `CalloutCard`.
+- In-text links are lime and underlined, as in blog prose.
+- A cold deep link that conflicts with `?category=` waits until the term is laid out before scrolling and focusing, because the URL sync can re-apply the old category for a frame.
+- `?category=` is on the analytics URL sanitizer's allow-list for `/glossary` (`lib/analyticsPreference.ts`), or production would strip it on load.
 
 ## Pending
 
