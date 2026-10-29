@@ -330,7 +330,7 @@ As built in #165 (`docs/analytics-data-notes.md` has the params and the reportin
 - `glossary_filter`: on a chip change made by the reader (not the initial URL read, not a deep-link reset).
 - `glossary_term_open`: **redefined by D5.** Since nothing expands, it fires when a reader opens a term: activating a search result, a related-term link, or arriving on a `#slug` deep link (once per page load per term). An arrival is reported only after the saved analytics choice has been applied, and an open made before any choice isn't replayed after Allow (`components/sections/glossary/openReport.ts`).
 - Copy link: the existing `share_click`, with `channel: "copy"` and `term_id`, so every share sits in one report.
-- `glossary_cta_click`: a term's guide or post link, with `term_id` and `destination_type`. The CTA band keeps the site's `cta_click` and `store_button_click`.
+- `glossary_cta_click`: a term's guide, post or product link (#164's `ctaIntent` link reports `page`), with `term_id` and `destination_type`. The CTA band keeps the site's `cta_click` and `store_button_click`.
 
 ## QA mapping
 

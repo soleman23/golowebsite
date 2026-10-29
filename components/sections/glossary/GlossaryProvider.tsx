@@ -184,7 +184,7 @@ export function GlossaryProvider({ ids, children }: ProviderProps) {
     return () => window.removeEventListener("hashchange", onHashChange);
   }, [reveal]);
 
-  // A term's guide or post link. The entry is server-rendered, so its links
+  // A term's guide, post or product link. The entry is server-rendered, so its links
   // carry data attributes and one listener reports them.
   useEffect(() => {
     const onClick = (event: MouseEvent) => {
