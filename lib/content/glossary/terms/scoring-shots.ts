@@ -2,14 +2,18 @@
  * Scoring and shots (#161, GLS-006d). Thirteen MVP records from
  * docs/glossary/inventory.md § A and § E.
  *
- * DRAFTS. Written October 29, 2026; no review stage has happened, and no
- * source was opened. Scoring examples use one hole with par and strokes
+ * IN REVIEW. Drafted October 29, 2026 and revised the same day against the
+ * primary sources: every source with `accessedOn` was opened that day by
+ * the agent preparing the rules fact-check (docs/glossary/review-packet.md
+ * records what each says and the recomputed examples). No review stage is
+ * signed: the owner signs the rules fact-check, the product audit and
+ * approval (editorial-review.md), so no record has a review log yet.
+ *
+ * Scoring examples use one hole with par and strokes
  * shown; net examples match the handicaps batch (Course Handicap 14).
  */
 
 import type { GlossaryTerm } from "../types";
-
-const RULES_OF_GOLF = "https://www.randa.org/en/rog/the-rules-of-golf";
 
 export const scoringShotsTerms: GlossaryTerm[] = [
   /* ---------------------------------------------------------- scoring */
@@ -22,15 +26,42 @@ export const scoringShotsTerms: GlossaryTerm[] = [
     tags: ["scoring-basics"],
     priority: "mvp",
     shortDefinition:
-      "The number of strokes a skilled player is expected to need on a hole, usually 3, 4 or 5 and mostly set by its length. A course's par is the total of its holes, often 70 to 72.",
+      "The score a scratch golfer is expected to make on a hole, allowing two putts: usually 3, 4 or 5, and mostly set by the hole's length. A course's par is the total of its holes, often 70 to 72.",
     example:
       "On a 168-yard par 3, three strokes is par. Two is a birdie and four is a bogey.",
     relatedTermIds: ["birdie", "bogey", "stroke-play"],
     relatedContentPaths: [],
     canonical: { kind: "hub", anchor: "par" },
     capabilityIds: [],
-    sources: [],
-    status: "draft",
+    sources: [
+      {
+        title: "Rules of Handicapping, 2024 edition (USGA)",
+        url: "https://www.usga.org/handicapping/roh/Content/rules/Definitions.htm",
+        kind: "handicapping",
+        ref: "Definitions: Par; Appendix F",
+        accessedOn: "2026-10-29",
+      },
+      {
+        title: "Rules of Handicapping, 2024 edition (USGA)",
+        url: "https://www.usga.org/handicapping/roh/Content/rules/Appendix%20F%20Establishing%20Par.htm",
+        kind: "handicapping",
+        ref: "Appendix F",
+        accessedOn: "2026-10-29",
+      },
+      {
+        title: "Merriam-Webster",
+        url: "https://www.merriam-webster.com/dictionary/par",
+        kind: "editorial",
+        accessedOn: "2026-10-29",
+      },
+      {
+        title: "Golf.com",
+        url: "https://golf.com/instruction/golf-terms-guide-beginner-golfers/",
+        kind: "editorial",
+        accessedOn: "2026-10-29",
+      },
+    ],
+    status: "in-review",
   },
   {
     id: "birdie",
@@ -47,8 +78,21 @@ export const scoringShotsTerms: GlossaryTerm[] = [
     relatedContentPaths: ["/games/birdies"],
     canonical: { kind: "hub", anchor: "birdie" },
     capabilityIds: [],
-    sources: [],
-    status: "draft",
+    sources: [
+      {
+        title: "Merriam-Webster",
+        url: "https://www.merriam-webster.com/dictionary/birdie",
+        kind: "editorial",
+        accessedOn: "2026-10-29",
+      },
+      {
+        title: "Golf.com",
+        url: "https://golf.com/instruction/golf-terms-guide-beginner-golfers/",
+        kind: "editorial",
+        accessedOn: "2026-10-29",
+      },
+    ],
+    status: "in-review",
   },
   {
     id: "eagle",
@@ -65,8 +109,21 @@ export const scoringShotsTerms: GlossaryTerm[] = [
     relatedContentPaths: [],
     canonical: { kind: "hub", anchor: "eagle" },
     capabilityIds: [],
-    sources: [],
-    status: "draft",
+    sources: [
+      {
+        title: "Merriam-Webster",
+        url: "https://www.merriam-webster.com/dictionary/eagle",
+        kind: "editorial",
+        accessedOn: "2026-10-29",
+      },
+      {
+        title: "Golfshake",
+        url: "https://www.golfshake.com/news/view/1700/Golf_Terms_Explained_The_Complete_A_Z_Golf_Glossary_for_Every_Golfer.html",
+        kind: "editorial",
+        accessedOn: "2026-10-29",
+      },
+    ],
+    status: "in-review",
   },
   {
     id: "bogey",
@@ -84,8 +141,21 @@ export const scoringShotsTerms: GlossaryTerm[] = [
     relatedContentPaths: [],
     canonical: { kind: "hub", anchor: "bogey" },
     capabilityIds: [],
-    sources: [],
-    status: "draft",
+    sources: [
+      {
+        title: "Merriam-Webster",
+        url: "https://www.merriam-webster.com/dictionary/bogey",
+        kind: "editorial",
+        accessedOn: "2026-10-29",
+      },
+      {
+        title: "Golf.com",
+        url: "https://golf.com/instruction/golf-terms-guide-beginner-golfers/",
+        kind: "editorial",
+        accessedOn: "2026-10-29",
+      },
+    ],
+    status: "in-review",
   },
   {
     id: "double-bogey",
@@ -103,8 +173,28 @@ export const scoringShotsTerms: GlossaryTerm[] = [
     relatedContentPaths: [],
     canonical: { kind: "hub", anchor: "double-bogey" },
     capabilityIds: [],
-    sources: [],
-    status: "draft",
+    sources: [
+      {
+        title: "Rules of Handicapping, 2024 edition (USGA)",
+        url: "https://www.usga.org/handicapping/roh/Content/rules/3%201b%20After%20a%20Handicap%20Index%20Has%20Been%20Established.htm",
+        kind: "handicapping",
+        ref: "Rule 3.1b",
+        accessedOn: "2026-10-29",
+      },
+      {
+        title: "Merriam-Webster",
+        url: "https://www.merriam-webster.com/dictionary/double%20bogey",
+        kind: "editorial",
+        accessedOn: "2026-10-29",
+      },
+      {
+        title: "Golfshake",
+        url: "https://www.golfshake.com/news/view/1700/Golf_Terms_Explained_The_Complete_A_Z_Golf_Glossary_for_Every_Golfer.html",
+        kind: "editorial",
+        accessedOn: "2026-10-29",
+      },
+    ],
+    status: "in-review",
   },
   {
     id: "gross-score",
@@ -121,8 +211,21 @@ export const scoringShotsTerms: GlossaryTerm[] = [
     relatedContentPaths: ["/games/best-score"],
     canonical: { kind: "hub", anchor: "gross-score" },
     capabilityIds: [],
-    sources: [],
-    status: "draft",
+    sources: [
+      {
+        title: "Golfshake",
+        url: "https://www.golfshake.com/news/view/1700/Golf_Terms_Explained_The_Complete_A_Z_Golf_Glossary_for_Every_Golfer.html",
+        kind: "editorial",
+        accessedOn: "2026-10-29",
+      },
+      {
+        title: "Merriam-Webster",
+        url: "https://www.merriam-webster.com/dictionary/gross",
+        kind: "editorial",
+        accessedOn: "2026-10-29",
+      },
+    ],
+    status: "in-review",
   },
   {
     id: "net-score",
@@ -140,8 +243,15 @@ export const scoringShotsTerms: GlossaryTerm[] = [
     relatedContentPaths: ["/blog/index-vs-course-handicap"],
     canonical: { kind: "hub", anchor: "net-score" },
     capabilityIds: [],
-    sources: [],
-    status: "draft",
+    sources: [
+      {
+        title: "Golfshake",
+        url: "https://www.golfshake.com/news/view/1700/Golf_Terms_Explained_The_Complete_A_Z_Golf_Glossary_for_Every_Golfer.html",
+        kind: "editorial",
+        accessedOn: "2026-10-29",
+      },
+    ],
+    status: "in-review",
   },
   {
     id: "stroke-play",
@@ -165,13 +275,20 @@ export const scoringShotsTerms: GlossaryTerm[] = [
     capabilityIds: [],
     sources: [
       {
-        title: "Rules of Golf (R&A and USGA)",
-        url: RULES_OF_GOLF,
+        title: "Rules of Golf, 2023 edition (R&A)",
+        url: "https://www.randa.org/en/rog/definitions",
         kind: "official-rules",
         ref: "Definitions: Stroke Play; Rule 3.3",
+        accessedOn: "2026-10-29",
+      },
+      {
+        title: "Merriam-Webster",
+        url: "https://www.merriam-webster.com/dictionary/stroke%20play",
+        kind: "editorial",
+        accessedOn: "2026-10-29",
       },
     ],
-    status: "draft",
+    status: "in-review",
   },
 
   /* ------------------------------------------------------------ shots */
@@ -192,8 +309,21 @@ export const scoringShotsTerms: GlossaryTerm[] = [
     relatedContentPaths: ["/games/longest-drive"],
     canonical: { kind: "hub", anchor: "drive" },
     capabilityIds: [],
-    sources: [],
-    status: "draft",
+    sources: [
+      {
+        title: "Merriam-Webster",
+        url: "https://www.merriam-webster.com/dictionary/drive",
+        kind: "editorial",
+        accessedOn: "2026-10-29",
+      },
+      {
+        title: "Golfshake",
+        url: "https://www.golfshake.com/news/view/1700/Golf_Terms_Explained_The_Complete_A_Z_Golf_Glossary_for_Every_Golfer.html",
+        kind: "editorial",
+        accessedOn: "2026-10-29",
+      },
+    ],
+    status: "in-review",
   },
   {
     id: "chip",
@@ -213,8 +343,21 @@ export const scoringShotsTerms: GlossaryTerm[] = [
     relatedContentPaths: [],
     canonical: { kind: "hub", anchor: "chip" },
     capabilityIds: [],
-    sources: [],
-    status: "draft",
+    sources: [
+      {
+        title: "Merriam-Webster",
+        url: "https://www.merriam-webster.com/dictionary/chip%20shot",
+        kind: "editorial",
+        accessedOn: "2026-10-29",
+      },
+      {
+        title: "Golfshake",
+        url: "https://www.golfshake.com/news/view/1700/Golf_Terms_Explained_The_Complete_A_Z_Golf_Glossary_for_Every_Golfer.html",
+        kind: "editorial",
+        accessedOn: "2026-10-29",
+      },
+    ],
+    status: "in-review",
   },
   {
     id: "pitch",
@@ -225,15 +368,28 @@ export const scoringShotsTerms: GlossaryTerm[] = [
     tags: ["short-game"],
     priority: "mvp",
     shortDefinition:
-      "A short, high shot that carries most of the way to its target and stops quickly, used when rough, sand or water is between the ball and the hole.",
+      "A short, high shot that carries most of the way to its target and stops quickly, often used when rough, sand or water is between the ball and the hole.",
     example:
       "Forty yards out with a bunker in front of the flag, a pitch flies the sand and stops near the hole.",
     relatedTermIds: ["chip"],
     relatedContentPaths: [],
     canonical: { kind: "hub", anchor: "pitch" },
     capabilityIds: [],
-    sources: [],
-    status: "draft",
+    sources: [
+      {
+        title: "Merriam-Webster",
+        url: "https://www.merriam-webster.com/dictionary/pitch",
+        kind: "editorial",
+        accessedOn: "2026-10-29",
+      },
+      {
+        title: "Golfshake",
+        url: "https://www.golfshake.com/news/view/1700/Golf_Terms_Explained_The_Complete_A_Z_Golf_Glossary_for_Every_Golfer.html",
+        kind: "editorial",
+        accessedOn: "2026-10-29",
+      },
+    ],
+    status: "in-review",
   },
   {
     id: "putt",
@@ -244,15 +400,28 @@ export const scoringShotsTerms: GlossaryTerm[] = [
     tags: ["putting"],
     priority: "mvp",
     shortDefinition:
-      "A stroke on the putting green, usually with a putter, that rolls the ball along the ground toward the hole.",
+      "A stroke that rolls the ball along the ground toward the hole, usually on the putting green and usually with a putter.",
     example:
       "On in two on a par 4, two putts make par. Three putts make bogey.",
     relatedTermIds: ["chip"],
     relatedContentPaths: [],
     canonical: { kind: "hub", anchor: "putt" },
     capabilityIds: [],
-    sources: [],
-    status: "draft",
+    sources: [
+      {
+        title: "Merriam-Webster",
+        url: "https://www.merriam-webster.com/dictionary/putt",
+        kind: "editorial",
+        accessedOn: "2026-10-29",
+      },
+      {
+        title: "Golfshake",
+        url: "https://www.golfshake.com/news/view/1700/Golf_Terms_Explained_The_Complete_A_Z_Golf_Glossary_for_Every_Golfer.html",
+        kind: "editorial",
+        accessedOn: "2026-10-29",
+      },
+    ],
+    status: "in-review",
   },
   {
     id: "slice",
@@ -263,16 +432,29 @@ export const scoringShotsTerms: GlossaryTerm[] = [
     tags: ["ball-flight"],
     priority: "mvp",
     shortDefinition:
-      "A shot that curves sharply away from the player's dominant side: left to right for a right-handed golfer, right to left for a left-handed one.",
+      "A shot that curves sharply in the air, usually by accident: left to right for a right-handed golfer, right to left for a left-handed one.",
     explanation:
-      "A gentle, controlled curve the same way is a fade. A slice is the one that didn't mean to.",
+      "A gentle, controlled curve the same way is a fade. A slice is the same curve, bigger and unplanned.",
     example:
       "A right-hander aims down the middle and the ball finishes in the trees on the right.",
     relatedTermIds: ["drive"],
     relatedContentPaths: [],
     canonical: { kind: "hub", anchor: "slice" },
     capabilityIds: [],
-    sources: [],
-    status: "draft",
+    sources: [
+      {
+        title: "Merriam-Webster",
+        url: "https://www.merriam-webster.com/dictionary/slice",
+        kind: "editorial",
+        accessedOn: "2026-10-29",
+      },
+      {
+        title: "Golf.com",
+        url: "https://golf.com/instruction/golf-terms-guide-beginner-golfers/",
+        kind: "editorial",
+        accessedOn: "2026-10-29",
+      },
+    ],
+    status: "in-review",
   },
 ];

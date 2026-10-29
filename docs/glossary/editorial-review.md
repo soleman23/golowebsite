@@ -141,7 +141,7 @@ Spec §10.3, highest first. A lower source never overrides a higher one on the s
 4. Verified GoLo code and the capability registry for product behaviour.
 5. Golf community usage for slang and informal house rules, labelled as such.
 
-`inventory.md` § Source map names the source for each record, with the edition caveats. In particular, a Rules of Golf revision may take effect January 1, 2027, before or near launch.
+`inventory.md` § Source map names the source for each record, with the edition caveats. As checked October 29, 2026, the 2023 Rules of Golf and the 2024 Rules of Handicapping are current, and the next Rules of Golf edition is dated 1 January 2028.
 
 ## Review triggers
 
