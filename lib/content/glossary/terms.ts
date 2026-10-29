@@ -17,9 +17,11 @@ import type { GlossaryTerm } from "./types";
 import { formatsTerms } from "./terms/formats";
 import { sideGamesTerms } from "./terms/side-games";
 import { handicapsTerms } from "./terms/handicaps";
+import { scoringShotsTerms } from "./terms/scoring-shots";
 
 export const glossaryTerms: GlossaryTerm[] = [
   ...formatsTerms,
   ...sideGamesTerms,
   ...handicapsTerms,
+  ...scoringShotsTerms,
 ];
