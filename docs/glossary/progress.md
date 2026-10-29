@@ -56,7 +56,9 @@ Merged with merge commits, which keep stacked branches' ancestry: #173, then #17
 
 - **#194** (registry: `closest-to-pin` and `live-skins`, live; `junk-board` drops greenies; Closest to Pin copy says the group applies par-to-win) is open for the owner. Its CI is green.
 - **#182 held:** retargeted to main, its diff also reverted the owner's Q5 decision in `inventory.md` and `editorial-review.md`. Cause: 5490fdd was committed on stale copies of both files. Both now match main (fixed on the branch), so the diff is `ux.md` and `progress.md` only. It waits on the owner's OK, per the stop rule.
-- **Stacks:** #184 and #188 retargeted to main, with main merged in, so CI runs on main as the base. Retargeting alone doesn't start the workflow.
+- **Code chain:** #184, #185 and #186 merged in order. Before each merge, the PR was retargeted to main, main was merged into its branch and pushed (retargeting alone doesn't start the workflow), and CI on Node 24 went green. Each retargeted diff held only its own issue's files. #187 followed the same steps.
+- **Content stack:** #188 retargeted to main and green. #189–#192 are brought up to date but not merged: they aren't in the owner's list, and they stay "Part of" #158–#162 until the reviews and source checks are done.
+- **State A on main after #184 and #186** (production builds, flag false): `/glossary` and `/glossary?category=…` return 404; the sitemap, `llms.txt` and the home, `/games`, `/faq` and `/blog` pages have no glossary entries or links, and there is no `DefinedTerm`.
 
 ## Branches (session 1; PRs now open, see the table above)
 
