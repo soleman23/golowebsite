@@ -10,3 +10,4 @@ export * from "./terms";
 export * from "./search";
 export * from "./selectors";
 export * from "./validate";
+export * from "./copy";
