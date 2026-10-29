@@ -13,6 +13,7 @@
  */
 
 import type { GlossaryTerm } from "./types";
+import { formatsTerms } from "./terms/formats";
 
 export const glossaryTerms: GlossaryTerm[] = [
   {
@@ -44,4 +45,5 @@ export const glossaryTerms: GlossaryTerm[] = [
     sources: [],
     status: "draft",
   },
+  ...formatsTerms,
 ];
