@@ -162,7 +162,13 @@ export const capabilities = [
     status: "live",
     summary:
       "The side 2 or more down calls a press at two, three or four times the amount; up to two live at once.",
-    limits: ["Called, never automatic.", "Nassau doesn't take presses."],
+    // "A press on a press" from the owner, 2026-10-29 (#154 Q-b). verified
+    // is unchanged: the rest of the entry hasn't been rechecked.
+    limits: [
+      "Called, never automatic.",
+      "Nassau doesn't take presses.",
+      "A side can press a press; the two-live limit still applies.",
+    ],
     verified: APP_CHECK_062,
     roadmap: true,
   },
