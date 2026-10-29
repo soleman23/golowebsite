@@ -10,6 +10,7 @@ import Link from "next/link";
 import {
   glossaryCategory,
   glossaryDirectoryCopy as copy,
+  glossaryIntentLinks,
   glossaryNoteLabels,
   glossaryPathLink,
   type PublicGlossaryTerm,
@@ -38,6 +39,13 @@ export function GlossaryEntry({ term, byId, actions }: GlossaryEntryProps) {
     .filter((t): t is PublicGlossaryTerm => Boolean(t));
   const guide = term.canonical.kind === "existing" ? term.canonical.path : null;
   const reading = term.relatedContentPaths.filter((p) => p !== guide);
+  // One product link by reader intent (#164), unless a guide link above
+  // already goes there.
+  const intent =
+    term.ctaIntent && term.ctaIntent !== "none" && term.ctaIntent !== "download"
+      ? glossaryIntentLinks[term.ctaIntent]
+      : null;
+  const product = intent && intent.href !== guide && !reading.includes(intent.href) ? intent : null;
 
   return (
     <div className={styles.entry} data-category={term.primaryCategory}>
@@ -85,7 +93,7 @@ export function GlossaryEntry({ term, byId, actions }: GlossaryEntryProps) {
             ))}
           </p>
         ) : null}
-        {guide || reading.length ? (
+        {guide || reading.length || product ? (
           <ul className={styles.guides}>
             {[...(guide ? [guide] : []), ...reading].map((path) => (
               <li key={path}>
@@ -99,6 +107,18 @@ export function GlossaryEntry({ term, byId, actions }: GlossaryEntryProps) {
                 </Link>
               </li>
             ))}
+            {product ? (
+              <li>
+                <Link
+                  href={product.href}
+                  className={styles.link}
+                  data-glossary-cta="page"
+                  data-term-id={term.id}
+                >
+                  {product.label}
+                </Link>
+              </li>
+            ) : null}
           </ul>
         ) : null}
         {term.reviewedOn && !term.unpublished ? (
