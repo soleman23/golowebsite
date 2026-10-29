@@ -184,7 +184,7 @@ The standard gates (from CLAUDE.md) apply to every code issue and aren't repeate
 
     | Capability | Proposed status | Source |
     |---|---|---|
-    | Hole-by-hole net/gross scoring; Nassau, Skins, Best Score, Overall Match; junk board | live | `/features` "today", PR #27 |
+    | Hole-by-hole net/gross scoring; Nassau, Skins, Best Score, Overall Match; ~~junk board~~ | live | `/features` "today", PR #27. **Wrong: there is no junk board** (owner, 2026-10-29, soleman23/golowebsite#172). Bounties exist only as Skins settings. |
     | Called presses on Overall Match (≤2 live, 2–4×) | live | PR #27 |
     | Full course handicap by stroke index; one tee set per group | live | PR #27 |
     | Netted settle-up, mark paid, round history | live | `/features` |
