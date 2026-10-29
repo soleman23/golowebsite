@@ -439,6 +439,66 @@ const boundary = statuses.map((status) =>
   }
 }
 
+/* ------------------------------------------------- glossary_term_open (D5) */
+
+{
+  const { createOpenReporter } = await import(
+    new URL("../components/sections/glossary/openReport.ts", import.meta.url).href
+  );
+  /** A task queue standing in for setTimeout(…, 0); tasks run in order. */
+  function harness(allowedAtStart) {
+    const tasks = [];
+    const sent = [];
+    const state = { allowed: allowedAtStart };
+    const reporter = createOpenReporter(
+      (termId, category) => sent.push([termId, category]),
+      () => state.allowed,
+      (run) => tasks.push(run),
+    );
+    const drain = () => { while (tasks.length) tasks.shift()(); };
+    return { reporter, tasks, sent, state, drain };
+  }
+
+  // Arrival with a saved grant: the hub's effect runs first, then
+  // AnalyticsLoader's effect queues the task that applies the choice.
+  {
+    const h = harness(false);
+    h.reporter.arrive("press", "side-games");
+    h.tasks.push(() => { h.state.allowed = true; });
+    h.drain();
+    check("open: arrival is reported after the saved choice applies", same(h.sent, [["press", "side-games"]]), JSON.stringify(h.sent));
+  }
+  // Arrival with no choice, then Allow: not replayed; a later open is reported.
+  {
+    const h = harness(false);
+    h.reporter.arrive("press", "side-games");
+    h.tasks.push(() => {});
+    h.drain();
+    h.state.allowed = true;
+    check("open: an arrival before any choice isn't replayed", h.sent.length === 0, JSON.stringify(h.sent));
+    h.reporter.open("press", "side-games");
+    check("open: a later open under consent is reported", same(h.sent, [["press", "side-games"]]), JSON.stringify(h.sent));
+  }
+  // Once per term per page load; another term is its own event.
+  {
+    const h = harness(true);
+    h.reporter.open("press", "side-games");
+    h.reporter.open("press", "side-games");
+    h.reporter.arrive("press", "side-games");
+    h.drain();
+    h.reporter.open("skins", "side-games");
+    check("open: once per term per page load", same(h.sent.map((e) => e[0]), ["press", "skins"]), JSON.stringify(h.sent));
+  }
+  // Declined: nothing, whatever the route.
+  {
+    const h = harness(false);
+    h.reporter.open("press", "side-games");
+    h.reporter.arrive("skins", "side-games");
+    h.drain();
+    check("open: nothing without consent", h.sent.length === 0, JSON.stringify(h.sent));
+  }
+}
+
 /* ----------------------------------------------------------------- result */
 
 if (failures.length) {
@@ -447,4 +507,4 @@ if (failures.length) {
   console.error(`\n${failures.length} failed, ${passed} passed.`);
   process.exit(1);
 }
-console.log(`✔ Glossary: ${passed} cases passed (search, publication boundary, integrity, claim guard, links).`);
+console.log(`✔ Glossary: ${passed} cases passed (search, publication boundary, integrity, claim guard, links, term opens).`);

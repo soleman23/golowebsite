@@ -40,7 +40,7 @@ Metric definitions (spec §9.4). Report each with its date range and its source,
 - **Glossary landing visits**: GA4 sessions starting on `/glossary`. A consented sample, not all visitors.
 - **Glossary-to-product CTR**: consented sessions on `/glossary` with a `glossary_cta_click`, `cta_click` or `store_button_click`, divided by consented sessions on `/glossary`.
 - **Store-click rate**: consented sessions on `/glossary` with a `store_button_click`, divided by consented sessions on `/glossary`. A store click is not an install.
-- **Search success**: `glossary_search` events followed in the same session by a `glossary_term_open` or `glossary_cta_click`, divided by `glossary_search` events whose `result_bucket` isn't `0`.
+- **Search success**: of the `glossary_search` events whose `result_bucket` isn't `0`, the share followed by a `glossary_term_open` or `glossary_cta_click` before the next `glossary_search` in the same session. Computed from event order within a session (`ga_session_id`, then `event_timestamp` in the BigQuery export, or a path exploration in GA4) and the `result_bucket` param; no search text is sent or needed. Numerator and denominator are the same set of searches, so the rate can't pass 100%, and a zero-result search never counts as a success.
 - **Zero-result rate**: `glossary_search` with `result_bucket` `0`, divided by all `glossary_search`.
 - **Newsletter signup rate**: not measured on the hub while the band is on hold.
 - **Verified acquisition**: only from store or app attribution where it exists. Never inferred from clicks.
