@@ -416,7 +416,7 @@ const skins: GameDetailCopy = {
     glossary: { kicker: "TALK THE TALK", title: "The terms you'll hear on the tee." },
     faq: { kicker: "SKINS, ANSWERED", title: "Before you tee it up." },
     related: { kicker: "STACK IT WITH", title: "Crews that play skins also run…", lead: "Skins is the easiest game to stack — run any of these alongside it and GoLo nets the whole pile into one number." },
-    cta: { title: "Never argue about a carryover again.", lead: "Set your skin value, add the group, and GoLo tracks every carry, every validation, and who owes what at the 18th." },
+    cta: { title: "Never argue about a carryover again.", lead: "Set your skin value, add the group, and GoLo tracks every carry and who owes what at the 18th." },
   },
   variations: [
     { icon: "stack", title: "The carryover", body: "Every halved hole rolls forward. GoLo shows the live skins on the scoring screen before anyone stands over the next putt." },
