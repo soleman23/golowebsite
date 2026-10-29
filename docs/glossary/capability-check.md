@@ -4,7 +4,7 @@ What the owner confirms against the current GoLo release before any glossary GoL
 
 Fill in the last three columns, or reply on #154 with the row numbers. An agent then updates the registry in a small PR (`verified: { by: "owner", date, appVersion }`, plus `limits` where useful) and runs `npm run lint:content`.
 
-**Status:** prepared October 29, 2026. Nothing confirmed yet.
+**Status:** prepared October 29, 2026. Questions Q-a to Q-e answered by the owner on October 29, 2026 (below). Rows 1–13 are **not** re-confirmed yet: the owner will check them against the current build separately, and their `verified` entries stay as they are until then.
 
 ## Capabilities the glossary will cite
 
@@ -28,11 +28,31 @@ Fill in the last three columns, or reply on #154 with the row numbers. An agent 
 
 | # | Question | Why the glossary needs it | Answer |
 |---|---|---|---|
-| Q-a | **Junk board scope.** Which of these does the junk board score today: greenie, sandy, barkie, poley, snake, arnie, birdie bounty, eagle bounty? (`game-library` only records that birdie and eagle bounties are a Skins setting, gross birdies only.) | Junk, Greenie, Sandy notes (#159) and the M8 junk terms. Recommended: one `limits` line on `game-library`, not new capability entries | |
-| Q-b | **Re-press.** On Overall Match, can a side press a press, given "up to two live at once"? Or is a second press only a second press on the original match? | The Re-press GoLo note (#159). Without an answer, Re-press ships with no GoLo note | |
-| Q-c | **Changes due before launch.** Is any capability above expected to change before the glossary launches (for example automatic presses, allowances or mixed tees going live)? | #166 rechecks these at publication | |
-| Q-d | **Skins validation.** The skins guide CTA says GoLo "tracks every carry, every validation" (`lib/content/gameDetail.ts` line 419). Does the app support validation rules (birdie-to-win or par minimum on carried skins)? No capability records it. | Possible existing overclaim found in the #152 audit. Not glossary scope, but the Carryover entry links to that guide | |
-| Q-e | **Wolf tee order.** Does GoLo's Wolf have the wolf tee off first or last? The guide says last, the post says first (`docs/glossary/inventory.md` § Existing site definitions, conflict 1). | The Wolf entry says the order varies either way; the guide and post should agree | |
+| Q-a | **Junk board scope.** Which of these does the junk board score today: greenie, sandy, barkie, poley, snake, arnie, birdie bounty, eagle bounty? (`game-library` only records that birdie and eagle bounties are a Skins setting, gross birdies only.) | Junk, Greenie, Sandy notes (#159) and the M8 junk terms. Recommended: one `limits` line on `game-library`, not new capability entries || **No junk board in the app.** What exists lives inside Skins: birdie and eagle skins. Greenie, sandy, barkie, poley, snake and arnie are not offered. Junk, Greenie, Sandy and the M8 junk terms are education only, with no GoLo note. Registry and site copy fixed in #172 / PR #173. |
+| Q-b | **Re-press.** On Overall Match, can a side press a press, given "up to two live at once"? Or is a second press only a second press on the original match? | The Re-press GoLo note (#159). Without an answer, Re-press ships with no GoLo note || **Yes, a side can press a press**; the two-live limit still applies. Added to `overall-match-presses` limits in PR #179. Re-press gets a GoLo note written from the registry. |
+| Q-c | **Changes due before launch.** Is any capability above expected to change before the glossary launches (for example automatic presses, allowances or mixed tees going live)? | #166 rechecks these at publication || **Unknown.** All 13 rows go into #166's release recheck (below). |
+| Q-d | **Skins validation.** The skins guide CTA says GoLo "tracks every carry, every validation" (`lib/content/gameDetail.ts` line 419). Does the app support validation rules (birdie-to-win or par minimum on carried skins)? No capability records it. | Possible existing overclaim found in the #152 audit. Not glossary scope, but the Carryover entry links to that guide || **No skins validation rules in the app.** Filed as #176; the CTA fix and a not-offered `skins-validation` guard are in PR #177. Any glossary Validation record is education only. |
+| Q-e | **Wolf tee order.** Does GoLo's Wolf have the wolf tee off first or last? The guide says last, the post says first (`docs/glossary/inventory.md` § Existing site definitions, conflict 1). | The Wolf entry says the order varies either way; the guide and post should agree || **Last.** The guide is right; the post is fixed in #174 / PR #175. |
+
+## Release recheck for #166
+
+Owner, October 29, 2026 (Q-c): it's unknown whether any of these change before launch, so the launch PR rechecks every row against the release then current, and records the result in #166:
+
+1. `overall-match-presses`, including the press-on-press limit
+2. `handicap-strokes`
+3. `hole-scoring`
+4. `auto-press` (still planned?)
+5. `nassau-presses` (still planned?)
+6. `handicap-allowances` (still planned?)
+7. `mixed-tees` (still planned?)
+8. `quota` (still planned?)
+9. `saved-groups` (still `site-copy`?)
+10. `settle-up`
+11. `scramble`
+12. `distance-logging` (still not offered?)
+13. `ios-app` / `siteConfig.iosLive`
+
+Plus the two added on October 29: `junk-board` and `skins-validation`, both still not offered.
 
 ## What happens with the answers
 
