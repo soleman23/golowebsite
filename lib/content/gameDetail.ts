@@ -411,6 +411,7 @@ const skins: GameDetailCopy = {
     },
   },
   headings: {
+    // "GoLo tracks every carried skin": capabilities.ts live-skins.
     variations: { kicker: "CARRYOVERS & VARIATIONS", title: "The carryover is what makes skins mean.", lead: "Tie a hole and nobody wins it — the skin carries forward. GoLo tracks every carried skin so you always know what the next hole is worth." },
     tips: { kicker: "PLAY SMART", title: "Skins pays birdies, not steady golf.", lead: "Every hole resets, so the money goes to whoever is willing to make one great swing at the right moment." },
     glossary: { kicker: "TALK THE TALK", title: "The terms you'll hear on the tee." },
@@ -419,6 +420,7 @@ const skins: GameDetailCopy = {
     cta: { title: "Never argue about a carryover again.", lead: "Set your skin value, add the group, and GoLo tracks every carry and who owes what at the 18th." },
   },
   variations: [
+    // "live skins on the scoring screen": capabilities.ts live-skins.
     { icon: "stack", title: "The carryover", body: "Every halved hole rolls forward. GoLo shows the live skins on the scoring screen before anyone stands over the next putt." },
     { icon: "pin", title: "Validation rules", body: "Make players earn a big carry with birdie-to-win or a par minimum on carried skins." },
     { icon: "shield", title: "Net skins", body: "Play off handicaps and GoLo allocates strokes by stroke index, hole by hole." },
@@ -836,16 +838,16 @@ const closestToPin: GameDetailCopy = {
   deeperReading: { href: "/blog/rangefinder", label: "Deeper reading: rangefinder or GPS watch, for the $10 crowd →" },
   updated: "2026-10-15",
   seoTitle: "Closest to the Pin & Greenies: Golf Side Game Rules",
-  tagline: "One tee shot, one hole. Stick it tighter than everybody else on the par 3s and take the greenie — as long as you can still make par from there.",
+  tagline: "One tee shot, one hole. Stick it tighter than everybody else on the par 3s and win it. Play it as a greenie and you still have to make par from there.",
   metaDescription: "How closest to the pin and greenies work: who qualifies, par-to-win, measuring, carryovers, and how it settles up.",
   traits: ["Any group size", "Par 3s only", "Greenies", "Per-hole amount"],
   howTitle: "The oldest side game in golf, and the easiest to argue about.",
-  intro: "Also known as a greenie. On every par 3, whoever hits their tee shot closest to the flag takes that hole’s greenie. Two rules do all the work: the ball usually has to finish on the green, and most groups make you two-putt for par before the greenie is actually yours.",
+  intro: "On every marked par 3, whoever hits their tee shot closest to the flag wins the hole. Most groups play it as a greenie, which adds two conditions: the ball has to finish on the green, and you have to make par before it is actually yours. Those are the group’s rules to apply; GoLo nets whoever the scorer marks as the winner.",
   steps: [
     { n: "1", title: "Mark the holes and the amount", body: "Usually all four par 3s, at $5 a head. Some groups mark one signature hole." },
     { n: "2", title: "Tee shots only", body: "Only the ball you hit from the tee counts. Reload and you are out of the running." },
-    { n: "3", title: "Closest to the flag wins", body: "Nearest ball takes the greenie — on the green, in almost every house rule." },
-    { n: "4", title: "Then make your par", body: "Three-putt and the greenie goes to the next closest, or carries." },
+    { n: "3", title: "Closest to the flag wins", body: "Nearest ball takes the hole. Greenie rules add that it has to be on the green." },
+    { n: "4", title: "Then make your par", body: "Under greenie rules, a three-putt hands it to the next closest, or it carries. The group makes that call before the scorer marks a winner." },
     { n: "5", title: "GoLo settles the hole", body: "Record the winner on the hole and GoLo nets it into the settle-up with every other game. GoLo keeps the tally; it never holds money." },
   ],
   scoring: {
@@ -858,7 +860,7 @@ const closestToPin: GameDetailCopy = {
     ],
   },
   example: {
-    kicker: "WATCH IT PLAY OUT", title: "Four par 3s, $5 a greenie, one three-putt that handed over a $30 hole.", lead: "Four players, greenies on every par 3, par-to-win turned on. On the seventh Tom was inside everybody — and walked off with nothing.",
+    kicker: "WATCH IT PLAY OUT", title: "Four par 3s, $5 a greenie, one three-putt that handed over a $30 hole.", lead: "Four players, greenies on every par 3, par-to-win agreed on the first tee. On the seventh Tom was inside everybody — and walked off with nothing.",
     bets: [
       { tag: "H3", tagSub: "168 YDS", title: "You — 11 ft 4 in", detail: "Only ball on the green, two-putt par", value: "+$15", tone: "good" },
       { tag: "H7", tagSub: "205 YDS", title: "Nobody", detail: "Tom was inside everyone, then three-putted", value: "carry", tone: "neutral" },
@@ -877,10 +879,10 @@ const closestToPin: GameDetailCopy = {
       sequence: ["h", "h", "w", "h", "h", "h", "h", "h", "h", "h", "h", "w", "h", "h", "h", "l", "h", "h"],
       stats: [
         { label: "GREENIES", status: "3", value: "of 4", tone: "good" },
-        { label: "CLOSEST", status: "3′2″", value: "hole 12", tone: "good" },
+        { label: "BIGGEST", status: "$30", value: "hole 12", tone: "good" },
         { label: "CARRIED", status: "1", value: "hole 7", tone: "neutral" },
       ],
-      callout: { label: "PAR TO WIN", note: "Tom’s three-putt carried hole 7" },
+      callout: { label: "HOUSE RULE", note: "Tom’s three-putt carried hole 7" },
       settleTitle: "You’re owed", settleSub: "Greenies, netted", settleValue: "$40",
       label: "Final closest-to-pin results: you win three of four greenies and are owed forty dollars.",
     },
@@ -890,7 +892,7 @@ const closestToPin: GameDetailCopy = {
     tips: { kicker: "PLAY SMART", title: "The greenie isn't yours until the putt drops.", lead: "Par-to-win separates this from a target contest. Four feet means nothing if you three-putt." },
     glossary: { kicker: "TALK THE TALK", title: "The terms you'll hear on the tee." },
     faq: { kicker: "CLOSEST TO PIN, ANSWERED", title: "Before you tee it up." },
-    related: { kicker: "STACK IT WITH", title: "Nobody plays this one on its own.", lead: "Greenies are a garnish. Put a real game underneath them and let GoLo settle the whole plate." },
+    related: { kicker: "STACK IT WITH", title: "Nobody plays this one on its own.", lead: "Closest to the pin is a garnish. Put a real game underneath it and let GoLo settle the whole plate." },
     cta: { title: "Retire the pencil on the greenie stick.", lead: "Mark the par 3s, record each winner, and let GoLo net it into the settle-up." },
   },
   variations: [
@@ -913,9 +915,9 @@ const closestToPin: GameDetailCopy = {
     { term: "Inside the leather", def: "Old shorthand for a distance close enough to call even." },
   ],
   faqs: gameFaqs("closest-to-pin", [
-    { q: "Does the ball have to be on the green?", a: "In most groups, yes. Set it either way, but decide before the first par 3." },
-    { q: "Do you really have to make par?", a: "It is the standard validation rule and makes the whole hole count." },
-    { q: "How do we measure it?", a: "Eyeball obvious gaps, pace close ones, or use a rangefinder. Log it when you reach the green." },
+    { q: "Does the ball have to be on the green?", a: "In most groups, yes. Agree it either way, but decide before the first par 3." },
+    { q: "Do you really have to make par?", a: "Only if your group plays it as a greenie, where par-to-win is the standard rule. GoLo doesn’t check it: the group decides who won and the scorer marks that player." },
+    { q: "How do we measure it?", a: "Eyeball obvious gaps, pace close ones, or use a rangefinder. The scorer marks the winner once everyone is on the green." },
     { q: "What if two players are the same distance?", a: "Split it or carry it to the next par 3." },
     { q: "Can we play it on par 4s and 5s?", a: "Yes. Closest in two and marked approaches use the same rules." },
     { q: "Can it be one greenie for the whole round?", a: "Yes. The tightest tee shot across all par 3s takes it." },

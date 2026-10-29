@@ -118,7 +118,9 @@ const OWNER_1026 = { by: "owner", date: "2026-10-26" } as const;
  * Owner, 2026-10-29: the app has no junk board; bounties exist only as the
  * Skins game's birdie and eagle skin settings (soleman23/golowebsite#172,
  * answering #154 Q-a). It applies no skins validation rules
- * (soleman23/golowebsite#176, answering #154 Q-d).
+ * (soleman23/golowebsite#176, answering #154 Q-d). Closest to Pin is a live
+ * game that settles, with par-to-win left to the group, and skins and carries
+ * build hole by hole on the scoring screen and the live leaderboard.
  */
 const OWNER_1029 = { by: "owner", date: "2026-10-29" } as const;
 
@@ -139,16 +141,17 @@ export const capabilities = [
   {
     id: "game-library",
     // "junk board" was in this label until 2026-10-29; there isn't one
-    // (see the junk-board entry below). verified is unchanged: the rest of
-    // the entry hasn't been rechecked.
+    // (see the junk-board entry below). Closest to Pin's distance limit moved
+    // to its own entry the same day. verified is unchanged: the rest of the
+    // entry hasn't been rechecked.
     label: "Nassau, skins, Best Score, Wolf, Bingo Bango Bongo",
     status: "live",
     summary:
       "Run several games in one round, each with its own amount, netted into one number per player.",
     limits: [
       "Birdie and eagle bounties exist only as a Skins setting (Birdie Skin, Eagle Skin), gross birdies only, no cap.",
-      "No junk board: greenies, sandies, barkies, poleys, snakes and arnies aren't scored.",
-      "Closest to Pin and Longest Drive don't record a measured distance.",
+      "No junk board: sandies, barkies, poleys, snakes and arnies aren't scored. Closest to Pin is its own game.",
+      "Longest Drive doesn't record a measured distance.",
     ],
     verified: OWNER_1015,
     roadmap: true,
@@ -241,6 +244,36 @@ export const capabilities = [
       "smallest number of payments",
       "smallest number of transfers",
     ],
+  },
+  {
+    id: "closest-to-pin",
+    label: "Closest to Pin",
+    status: "live",
+    summary:
+      "The scorer marks the winner on the holes the group chose, and the amount is netted into the settle-up with every other game.",
+    limits: [
+      "No measured distance is recorded.",
+      "Par-to-win isn't enforced: a greenie's par condition is a house rule the group applies when it marks the winner.",
+    ],
+    verified: OWNER_1029,
+    // The junk-board greenie phrases came out on 2026-10-29 (marking a winner
+    // is live); these catch par-to-win presented as something GoLo checks.
+    overclaims: [
+      "enforces par",
+      "enforces par-to-win",
+      "checks par-to-win",
+      "checks for par",
+      "verifies par",
+      "par-to-win check",
+    ],
+  },
+  {
+    id: "live-skins",
+    label: "Live skins and carries",
+    status: "live",
+    summary:
+      "Skins and carries build hole by hole on the scoring screen and the live leaderboard.",
+    verified: OWNER_1029,
   },
   {
     id: "saved-groups",
@@ -498,18 +531,17 @@ export const capabilities = [
     label: "Junk board",
     status: "not-offered",
     summary:
-      "Scoring junk side points (greenies, sandies, barkies, poleys, snakes, arnies). Bounties exist only as the Skins game's birdie and eagle skins.",
+      "Scoring junk side points (sandies, barkies, poleys, snakes, arnies). Bounties exist only as the Skins game's birdie and eagle skins. Greenies aren't scored as junk: Closest to Pin is its own live game, and a greenie's par condition is the group's call.",
     verified: OWNER_1029,
     // Golf copy may still explain junk; these catch it presented as
-    // something GoLo does (soleman23/golowebsite#172).
+    // something GoLo does (soleman23/golowebsite#172). No greenie phrases:
+    // marking a Closest to Pin winner is live, so they'd catch true copy.
     claimPhrases: [
       // Any "junk" in product copy (education files only count strings that
       // name GoLo or the app); the rest catch the items by name.
       "junk",
-      "log a greenie",
       "log a sandie",
-      "tap the greenie",
-      "every greenie",
+      "log a barkie",
     ],
   },
   {

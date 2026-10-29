@@ -137,7 +137,7 @@ The app has no junk board (owner, 2026-10-29, #172). Junk, Greenie, Sandy and ev
 | 54 | `sandy` | Sandy | ✓ | junk | P3 | sandie | `up-and-down`, `junk`, `bunker` | education only; no GoLo note (the app has no junk board: owner, 2026-10-29, #172) | hub |
 | 55 | `junk` | Junk | ✓ | junk | P1 | trash, garbage, dots | `greenie`, `sandy`, `barkie`, `poley`, `arnie`, `snake` | education only; no GoLo note (the app has no junk board: owner, 2026-10-29, #172) | hub |
 | 56 | `settle-up` | Settle-up | ✓ | | P0 | settling up | `debt-netting`, `carryover` | GoLo `settle-up` (never holds, moves or processes money; each round settles on its own; not always the fewest payments), `payment-handle` | hub |
-| 57 | `closest-to-the-pin` | Closest to the Pin | ✓ | | P0 | closest to pin, ctp, kp | **Greenie** (`greenie`) | GoLo `game-library`, `distance-logging` (not offered: no measured distance) | → `/games/closest-to-pin` |
+| 57 | `closest-to-the-pin` | Closest to the Pin | ✓ | | P0 | closest to pin, ctp, kp | **Greenie** (`greenie`) | GoLo `closest-to-pin` (live: the scorer marks the winner; par-to-win isn't enforced), `distance-logging` (not offered: no measured distance) | → `/games/closest-to-pin` |
 | 58 | `longest-drive` | Longest Drive | ✓ | | P0 | long drive | `drive`, `driver`, `fairway` | GoLo `game-library`, `distance-logging` | → `/games/longest-drive` |
 | 59 | `automatic-press` | Automatic Press | | presses | P0 | auto press | `press`, `re-press` | GoLo `auto-press` (**planned**: education only, no GoLo note) | hub, links `/blog/pressing` |
 | 60 | `point-value` | Point Value | | | P2 | | `buy-in`, `wolf`, `bingo-bango-bongo` | — | hub — **substitution S10** |
