@@ -82,24 +82,23 @@ const APP_CHECK_062 = {
 } as const;
 
 /**
- * soleman23/golowebsite#103: golo `main` acd6eee (GoLo 1.0.0, the production
- * branch), src/engines/payouts.js calculateSettlementCents, called from
- * src/pages/PayoutsPage.jsx.
+ * The glossary launch recheck (soleman23/golowebsite#166, #154 rows 1-13):
+ * golo `main` 2237c1d (GoLo 1.2.1, build 28), read by an agent on 2026-10-29
+ * at the owner's request; the owner didn't test the app. Presses in
+ * src/engines/pressBets.js; Closest to Pin in src/engines/ctp.js and
+ * src/lib/roundBets.js ctpHolesOn; strokes in src/engines/handicap.js and the
+ * one round tee in src/pages/SetupWizard.jsx; scramble in
+ * src/lib/scrambleTeams.js; settle-up in src/engines/payouts.js and
+ * src/lib/venmo.js; skins and carries in src/engines/skins.js and
+ * src/engines/betStatus.js; saved groups in migrations/0060_crew_groups.sql and
+ * src/lib/db/crew.js. The planned and not-offered entries stamped with it were
+ * searched for and not found. It replaces the earlier stamps on those
+ * entries: settle-up's at 1.0.0 (acd6eee, soleman23/golowebsite#103) and
+ * scramble's at 1.2.1 (2026-10-28), whose findings it confirms.
  */
-const APP_CHECK_100 = {
+const APP_CHECK_1029 = {
   by: "app-check",
-  date: "2026-10-16",
-  appVersion: "1.0.0",
-} as const;
-
-/**
- * golo `main` 2237c1d (GoLo 1.2.1): the Scramble format in
- * src/pages/SetupWizard.jsx and src/lib/scrambleTeams.js, team handicaps per
- * docs/GOLO-032-SCRAMBLE-HANDICAP.md, team games in src/engines/betResults.js.
- */
-const APP_CHECK_121 = {
-  by: "app-check",
-  date: "2026-10-28",
+  date: "2026-10-29",
   appVersion: "1.2.1",
 } as const;
 
@@ -121,6 +120,12 @@ const OWNER_1026 = { by: "owner", date: "2026-10-26" } as const;
  * (soleman23/golowebsite#176, answering #154 Q-d). Closest to Pin is a live
  * game that settles, with par-to-win left to the group, and skins and carries
  * build hole by hole on the scoring screen and the live leaderboard.
+ *
+ * The app check of the same day (APP_CHECK_1029) contradicts the junk-board
+ * answer: the Skins game has Greenie and Sandie options, scored and settled.
+ * The entries still stamped OWNER_1029 (junk-board) await that correction
+ * (docs/glossary/capability-check.md § Release recheck results;
+ * soleman23/golowebsite#200).
  */
 const OWNER_1029 = { by: "owner", date: "2026-10-29" } as const;
 
@@ -168,7 +173,7 @@ export const capabilities = [
       "Wolf and Bingo Bango Bongo aren't played in a scramble.",
       "No Texas scramble drive count and no shamble.",
     ],
-    verified: APP_CHECK_121,
+    verified: APP_CHECK_1029,
     roadmap: true,
   },
   {
@@ -176,15 +181,16 @@ export const capabilities = [
     label: "Presses on the Overall Match game",
     status: "live",
     summary:
-      "The side 2 or more down calls a press at two, three or four times the amount; up to two live at once.",
-    // "A press on a press" from the owner, 2026-10-29 (#154 Q-b). verified
-    // is unchanged: the rest of the entry hasn't been rechecked.
+      "A press can start once a side is 2 or more down, at two, three or four times the amount; up to two live at once.",
+    // The owner's "a side can press a press" (2026-10-29, #154 Q-b) isn't in
+    // the code: every press hangs off the Overall Match, and a side qualifies
+    // on the main match's standing, never on a press's (APP_CHECK_1029).
     limits: [
-      "Called, never automatic.",
+      "Entered by the scorer, never automatic.",
       "Nassau doesn't take presses.",
-      "A side can press a press; the two-live limit still applies.",
+      "A press can't itself be pressed: a second press also needs a side 2 or more down in the main match.",
     ],
-    verified: APP_CHECK_062,
+    verified: APP_CHECK_1029,
     roadmap: true,
   },
   {
@@ -197,7 +203,7 @@ export const capabilities = [
       "Everyone gets their full course handicap; no 90% or other allowance except a scramble's team handicap, and nobody plays off the low man.",
       "One set of tees per group.",
     ],
-    verified: APP_CHECK_062,
+    verified: APP_CHECK_1029,
     roadmap: true,
   },
   {
@@ -217,7 +223,7 @@ export const capabilities = [
       "For n players, never more than n − 1 settle-ups, but not always the fewest possible.",
       "GoLo never holds, moves or processes money.",
     ],
-    verified: APP_CHECK_100,
+    verified: APP_CHECK_1029,
     roadmap: true,
     overclaims: [
       "fewest payments",
@@ -250,12 +256,16 @@ export const capabilities = [
     label: "Closest to Pin",
     status: "live",
     summary:
-      "The scorer marks the winner on the holes the group chose, and the amount is netted into the settle-up with every other game.",
+      "The scorer marks the winner on each par 3 in the game (all of them, or the back nine's), and the amount is netted into the settle-up with every other game.",
+    // A hole nobody wins is skipped (src/engines/ctp.js); the carry the owner
+    // described on 2026-10-29 (#195) belongs to the Skins game's Greenie
+    // option, not to this game (APP_CHECK_1029).
     limits: [
       "No measured distance is recorded.",
+      "A hole nobody wins pays nothing; it doesn't carry.",
       "Par-to-win isn't enforced: a greenie's par condition is a house rule the group applies when it marks the winner.",
     ],
-    verified: OWNER_1029,
+    verified: APP_CHECK_1029,
     // The junk-board greenie phrases came out on 2026-10-29 (marking a winner
     // is live); these catch par-to-win presented as something GoLo checks.
     overclaims: [
@@ -273,14 +283,14 @@ export const capabilities = [
     status: "live",
     summary:
       "Skins and carries build hole by hole on the scoring screen and the live leaderboard.",
-    verified: OWNER_1029,
+    verified: APP_CHECK_1029,
   },
   {
     id: "saved-groups",
     label: "Saved groups, teams included",
     status: "live",
     summary: "Save a regular group, teams and all, and load it next round.",
-    verified: OWNER_1015,
+    verified: APP_CHECK_1029,
     roadmap: true,
   },
   {
@@ -458,7 +468,7 @@ export const capabilities = [
     label: "Automatic presses",
     status: "planned",
     summary: "Presses that open on their own at 2 down.",
-    verified: APP_CHECK_062,
+    verified: APP_CHECK_1029,
     claimPhrases: [
       "auto-press",
       "auto press",
@@ -471,7 +481,7 @@ export const capabilities = [
     label: "Presses on a Nassau",
     status: "planned",
     summary: "Presses on the Nassau game itself.",
-    verified: APP_CHECK_062,
+    verified: APP_CHECK_1029,
     claimPhrases: [
       "press on a nassau",
       "presses on a nassau",
@@ -484,7 +494,7 @@ export const capabilities = [
     label: "Handicap allowances",
     status: "planned",
     summary: "Percentage allowances such as 90%, and playing off the low man.",
-    verified: APP_CHECK_062,
+    verified: APP_CHECK_1029,
     claimPhrases: ["90%", "95%", "low man", "allowance"],
   },
   {
@@ -492,7 +502,7 @@ export const capabilities = [
     label: "Different tees per player",
     status: "planned",
     summary: "Players in one group on different tees.",
-    verified: APP_CHECK_062,
+    verified: APP_CHECK_1029,
     claimPhrases: [
       "tees per player",
       "tee per player",
@@ -505,7 +515,7 @@ export const capabilities = [
     label: "Quota game",
     status: "planned",
     summary: "A points quota game.",
-    verified: APP_CHECK_062,
+    verified: APP_CHECK_1029,
     claimPhrases: ["quota"],
   },
 
@@ -550,7 +560,7 @@ export const capabilities = [
     status: "not-offered",
     summary:
       "House rules that carried skins only count on a birdie, a par minimum or a two-putt.",
-    verified: OWNER_1029,
+    verified: APP_CHECK_1029,
     // The guide can explain validation as golf; these catch it presented as
     // something GoLo applies (soleman23/golowebsite#176).
     claimPhrases: ["every validation", "validation rule", "tracks validation", "applies validation"],
@@ -561,7 +571,7 @@ export const capabilities = [
     status: "not-offered",
     summary:
       "Recording the measured distance for Closest to Pin or Longest Drive.",
-    verified: OWNER_1015,
+    verified: APP_CHECK_1029,
     claimPhrases: [
       "log the distance",
       "log the yardage",
