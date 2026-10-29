@@ -8,14 +8,14 @@ Prepared October 29, 2026. **No launch decision is made here.** The owner approv
 |---|---|---|
 | Content approved (#158–#162) | 56 records `in-review`, sources opened, examples recomputed (`review-packet.md`); **no owner sign-off** | owner signs rules, product, SEO and approval per record |
 | Capability recheck (`capability-check.md` § Release recheck) | rows 1–13 not re-confirmed; `junk-board`, `skins-validation` not offered | owner rechecks against the current release |
-| Photo hero (#171), a launch blocker | code wired on a local branch; **no masters exist** | masters + 13 files + evidence |
+| Photo hero (#171), a launch blocker | 13 files and evidence on local `m7/171-glossary-hero` (owner's photos, supplied 2026-10-29); **provenance and licence not recorded** | owner records provenance and approves the look |
 | Discovery and CTAs (#164) | intent links and closing-band copy on `m7/164-glossary-ctas`; footer and inbound links on the local launch branch | merge with the launch |
 | QA GL-QA-01–24 | run on a local launch simulation; results below | rerun on the launch commit, then live |
 | Newsletter band | on hold (#121) | owner records the exception in #166 |
 | CI | not run (nothing pushed) | green on the launch PR |
 | Owner go | — | written approval in #166 |
 
-**Today: no-go.** Content approval, the capability recheck and the photo hero are open, and only the owner can close them.
+**Today: no-go.** Content approval, the capability recheck and the photo's provenance are open, and only the owner can close them.
 
 ## QA results (local launch simulation, 2026-10-29)
 
@@ -50,7 +50,7 @@ Production build (`next build && next start`, Node 24.21.0, `NEXT_PUBLIC_ANALYTI
 
 Regression (same simulation, 320 and 1440 px): home, `/games`, `/games/nassau`, `/games/skins`, `/games/scramble`, `/blog`, `/blog/nassau`, `/blog/index-vs-course-handicap`, `/faq`, `/how-it-works`, `/features`: 200, no overflow, no console errors, footer present, every `/glossary#…` link resolves to an entry. The newsletter form renders on `/blog` and posts (not submitted: no database writes). State A (flag off, committed state): `/glossary`, `?category=` and `/glossary/press` 404; no glossary entry in the sitemap or `llms.txt`; no `/glossary` link or `DefinedTerm` on 12 pages; no draft definition in any browser bundle.
 
-**Lab performance** (Lighthouse 12.8.2, default mobile throttling, local `next start`, 5 runs, median): `/glossary` type-only hero, score 98, LCP 2,335 ms (LCP element: the H1), TBT 27 ms, CLS 0. For scale, `/faq` with its photo hero on the same build: LCP 2,419 ms. Lab numbers only; not field Core Web Vitals, and TBT isn't INP. The with-photo run waits for #171's masters.
+**Lab performance** (Lighthouse 12.8.2, default mobile throttling, local `next start`, 5 runs, median): `/glossary` type-only hero, score 98, LCP 2,335 ms (LCP element: the H1), TBT 27 ms, CLS 0. For scale, `/faq` with its photo hero on the same build: LCP 2,419 ms. Lab numbers only; not field Core Web Vitals, and TBT isn't INP. With #171's photo (same setup, 5 runs): score 97, LCP 2,634 ms (LCP element: the hero `<picture>`), TBT 28 ms, CLS 0; `/faq` on that build 2,411 ms. Over the 2.5 s line in the lab; most of the gap to `/faq` is the hub's HTML (55 KB compressed against 25 KB) and the rest a heavier phone frame (45.9 KB against 24.1 KB at 768w).
 
 ## Launch diff (local branch `m7/launch-164-166`, not pushed)
 
@@ -96,4 +96,4 @@ The glossary is one constant. To pull it: set `glossaryLive = false` in `lib/con
 
 ## Evidence files
 
-In the session scratchpad (not committed; screenshots for a PR go on a `pr-assets/glossary-launch` branch if the owner wants them): `evidence/qa-b.txt`, `consent.txt`, `regression.txt`, `tabwalk.txt`, `axe.txt`, `contrast-typeonly.txt`, `lighthouse-glossary-typeonly.txt`, `exclusion.txt`, `schema.md`, `gsc-baseline-2026-10-29.md`, `shots/`.
+In the session scratchpad (not committed; screenshots for a PR go on a `pr-assets/glossary-launch` branch if the owner wants them): `evidence/qa-b.txt`, `consent.txt`, `regression.txt`, `tabwalk.txt`, `axe.txt`, `contrast-typeonly.txt`, `lighthouse-glossary-typeonly.txt`, `exclusion.txt`, `schema.md`, `gsc-baseline-2026-10-29.md`, `shots/`; for #171: `contrast-glossary-photo.txt`, `span-glossary-photo.txt`, `herohash-glossary.txt`, `hero-files-sha256.txt`, `lighthouse-glossary-photo.txt`, `shots171/`.

@@ -28,7 +28,7 @@ Reconciled against GitHub and `origin/main` 488e5a8. Session 2's list below this
 | `m7/glossary-content-review` | `main` | #158–#162: all 56 records `in-review`, sources opened and dated, 18 corrections, examples recomputed, GoLo notes from live entries; `review-packet.md`, `launch-packet.md`, this file; Rules edition note fixed (next edition 2028) | lint, typecheck, test, build pass |
 | `m7/164-glossary-ctas` | `main` | #164 prelaunch half: one product link per term by `ctaIntent`, the hub's closing-band title, hero lead names only MVP terms | lint, typecheck, test, build pass; State A rechecked on its production build |
 | `fix/chip-count-contrast` | `main` | ChipFilter count opacity 0.6 → 0.75: 3.8–4.0:1 → 5.2–6.2:1 (axe, /blog live and the hub) | lint passes; axe clean on a build with it |
-| `m7/171-glossary-hero` | `main` | #171 code wired (generator page, `heroPhotos`, `photo`, `heroOgImage`, measured `--copy-span: 660px`); **no image files**; `mobileSubject`/`ogAlt` placeholders | WIP; not to push |
+| `m7/171-glossary-hero` | `main` | #171: the owner's photos (sunset drive, supplied 2026-10-29), all 13 files, `heroPhotos` entry, `photo`, `heroOgImage`, `--copy-span: 660px` and a 640px title cap | lint, typecheck, test, build pass; contrast, hash and Lighthouse runs below |
 | `m7/launch-164-166` | content + CTA commits | flag on, footer link, ten inbound links; fails `lint:content` by design until records are published | WIP; not to push |
 
 Gates for each: implemented locally, yes; pushed, no; PR, no; CI, no; owner-approved, no; released, no.
@@ -37,11 +37,12 @@ Gates for each: implemented locally, yes; pushed, no; PR, no; CI, no; owner-appr
 - State A on a production build (flag off): 404s, nothing in the sitemap, `llms.txt`, schema or other pages' links; no draft text in browser bundles.
 - State B, a local launch simulation (flag on, records temporarily published, reverted): GL-QA-01–03, 05–12 and 14–24 pass; GL-QA-04 is not applicable (M8 term); GL-QA-13 is blocked on a human screen-reader pass. Consent: undecided, declined, GPC, withdrawn, allowed, deep link with and without a saved choice. A term held at `in-review` leaks into nothing.
 - Schema.org validator 0/0; Rich Results Test: Breadcrumbs valid, DefinedTermSet not a rich-result type.
-- Lighthouse lab median for the type-only hub: score 98, LCP 2,335 ms, CLS 0.
+- Lighthouse lab median for the type-only hub: score 98, LCP 2,335 ms, CLS 0. With the photo (#171): score 97, LCP 2,634 ms, CLS 0; `/faq` with its photo, same build: 2,411 ms.
+- #171 photo: per-pixel contrast passes at 20 widths, 320–2560px (tightest 5.28:1, the search placeholder). Chrome fetches the committed bytes at every viewport and DPR checked (7 of 7 hash matches).
 - GSC prelaunch baseline taken (last 28 days to October 27): in the session evidence; to be retaken on launch day.
 
 **Not done, and why:**
-- **#171:** no glossary masters exist (`tmp/hero-src/glossary-{desktop,mobile}.png`). The old `tmp/hero-src` PNGs are the pre-#50 photos for other pages, with no recorded licence, so they weren't reused. Contrast, image-hash and with-photo Lighthouse evidence wait on the masters; the scripts are ready.
+- **#171:** the files are built from the owner's photos (1916×821 and 1122×1402, upscaled to master size, so the 1920w and 2560w desktop files carry no more detail than the source). Where they came from and under what licence isn't recorded yet. With the photo, lab LCP is 2,634 ms, over the 2.5 s line; the hub's HTML (55 KB compressed against `/faq`'s 25 KB) is most of the gap to `/faq`.
 - **Owner sign-off** on all 56 records, rows 1–13 of `capability-check.md`, and the release.
 - **Screen reader** (VoiceOver or NVDA): needs a person.
 
@@ -88,7 +89,7 @@ Gates for each: implemented locally, yes; pushed, no; PR, no; CI, no; owner-appr
 
 1. **Content (#158–#162):** sign the four stages per record from `review-packet.md`, and answer its eight questions.
 2. **#154 rows 1–13:** re-confirm against the current app; row 2 backs the handicap GoLo notes.
-3. **#171:** supply or approve course photography: a 2688×1152 desktop master (21:9, subject right, left half dark for the H1 and search field) and a 1792×2240 phone master (4:5, top dark, subject in the lower half), original or licensed, with its provenance.
+3. **#171:** record where the two photos came from and their licence (or supply higher-resolution originals), approve the look from the screenshots, and accept or reject the 2,634 ms lab LCP.
 4. **#195:** merge or close; then say whether the Closest to Pin entry should mention the carry.
 5. **Push and PRs:** say which local branches to push. Suggested order: `fix/chip-count-contrast`, `m7/164-glossary-ctas`, `m7/glossary-content-review` (one PR, "Part of #158–#162"; the records stay `in-review`).
 6. **Screen-reader pass** on the launch simulation (VoiceOver: rotor headings, the search results' live count, an entry's definition list).
@@ -97,5 +98,5 @@ Gates for each: implemented locally, yes; pushed, no; PR, no; CI, no; owner-appr
 ## Next ready
 
 - After owner approval of records: an agent adds the review logs (dated as signed), sets `approved`, and the launch branch moves them to `published`.
-- After the masters land: `node scripts/generate-hero-images.mjs glossary`, then the contrast, image-hash and Lighthouse runs on `m7/171-glossary-hero`.
+- If higher-resolution originals arrive: replace `tmp/hero-src/glossary-*.png`, rerun `node scripts/generate-hero-images.mjs glossary` and the contrast, image-hash and Lighthouse runs on `m7/171-glossary-hero`.
 - After both: the launch PR (#164 + #166), per `launch-packet.md`.
