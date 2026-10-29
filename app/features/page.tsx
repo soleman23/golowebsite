@@ -79,7 +79,7 @@ export default function FeaturesPage() {
         photo="features"
         kicker="EVERYTHING GOLO DOES"
         title="A scorecard that does the arithmetic, keeps every side game straight, and remembers who owes whom."
-        lead="Set the round, stack the games, tap in scores. GoLo handles the strokes, the presses, the junk and the math — and hands you one number per player before anyone leaves the lot."
+        lead="Set the round, stack the games, tap in scores. GoLo handles the strokes, the presses, the skins and the math — and hands you one number per player before anyone leaves the lot."
         breadcrumbs={[{ label: "Home", href: "/" }, { label: "Features" }]}
         page="features"
         ctas={[
