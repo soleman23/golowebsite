@@ -1,0 +1,79 @@
+.page {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: clamp(32px, 5vw, 56px) var(--gutter) var(--section-y);
+}
+
+.reviewBanner {
+  margin: 0 0 28px;
+  padding: 12px 16px;
+  border-radius: var(--radius-tile);
+  border: 1px dashed var(--text-muted);
+  font-size: 13.5px;
+  font-weight: 700;
+  color: var(--text-secondary);
+}
+
+/* One column; from 1100px, Start here becomes a left column. It comes first
+   in the DOM either way, so reading and tab order don't change. Not sticky
+   (ux.md D7). */
+.layout {
+  display: grid;
+  gap: clamp(32px, 5vw, 48px);
+}
+
+@media (min-width: 1100px) {
+  .layout {
+    grid-template-columns: 220px minmax(0, 1fr);
+    align-items: start;
+  }
+}
+
+.sectionLabel {
+  margin: 0 0 14px;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 1.6px;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+}
+
+.startList {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+  gap: 4px 16px;
+}
+
+@media (min-width: 1100px) {
+  .startList {
+    grid-template-columns: 1fr;
+  }
+}
+
+.startList a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  font-size: 15.5px;
+  font-weight: 800;
+  color: var(--text-primary);
+}
+
+.startList a:hover {
+  color: var(--accent);
+}
+
+.browse {
+  min-width: 0;
+}
+
+.sectionTitle {
+  margin: 0 0 18px;
+  font-size: clamp(24px, 3vw, 30px);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  color: var(--text-primary);
+}

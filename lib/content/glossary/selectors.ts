@@ -156,6 +156,11 @@ export function glossaryLastModified(
   return dates.length ? dates.sort().at(-1) : undefined;
 }
 
+/** The id of a letter's heading on the hub: "letter-a", or "letter-0-9" for "#". */
+export function glossaryLetterId(letter: string): string {
+  return letter === "#" ? "letter-0-9" : `letter-${letter.toLowerCase()}`;
+}
+
 /** The fragment id a term's anchor uses on the hub. */
 export function glossaryAnchorHref(slug: string): string {
   return `/glossary#${slug}`;
