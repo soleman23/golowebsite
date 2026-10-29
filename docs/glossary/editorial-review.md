@@ -55,7 +55,7 @@ Implemented in #155 as part of `GlossaryTerm`. Internal fields are stripped by e
 
 ```ts
 // public
-reviewedOn?: string;   // ISO date of approval; shown as "Reviewed <date>"
+reviewedOn?: string;   // ISO date of the latest approval; shown as "Reviewed <date>"
 publishedOn?: string;  // set by the launch PR only
 updatedOn?: string;    // only for a substantive editorial change
 
@@ -73,7 +73,9 @@ Each source in `sources` carries `accessedOn` only if someone actually opened it
 
 Validation (#155):
 
-- dates are ISO `YYYY-MM-DD`, and `reviewedOn ≤ publishedOn ≤ updatedOn`;
+- dates are ISO `YYYY-MM-DD`;
+- the first `approval` entry in the review log is on or before `publishedOn`, and `publishedOn ≤ updatedOn`;
+- `reviewedOn` is the latest `approval` entry. A published term re-approved after a [review trigger](#review-triggers) keeps its `publishedOn`, so its `reviewedOn` can be later;
 - an `approved` or `published` record has `reviewedOn`, `reviewedBy` and a log entry for each of `rules`, `product`, `seo`, `approval`;
 - a `published` record has `publishedOn`;
 - a record whose category is `handicaps`, or whose inventory row cites RoG or RoH, has at least one `official-rules` or `handicapping` source with `accessedOn` before it can be `approved`.
