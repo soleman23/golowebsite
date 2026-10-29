@@ -3,7 +3,10 @@ import { siteConfig } from "@/lib/siteConfig";
 import {
   findGameDetail,
   gameDetailSlugsWithContent,
+  glossaryLastModified,
+  glossaryLive,
   postLastModified,
+  publishedGlossaryTerms,
   legalDocs,
   publishedPosts,
 } from "@/lib/content";
@@ -69,6 +72,10 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: "weekly",
       priority: 0.8,
     },
+    // The glossary hub, once it's live and has published terms. Only the hub:
+    // term anchors and ?category= views aren't pages (spec §7.3). Its date is
+    // the latest real publishedOn/updatedOn, omitted if there isn't one.
+    ...glossarySitemapEntries(),
     // Driven off the data, so publishing a post is a one-line change in
     // lib/content/blog.ts and never an edit here.
     ...publishedPosts.map((post) => ({
@@ -108,5 +115,19 @@ export default function sitemap(): MetadataRoute.Sitemap {
         changeFrequency: "yearly" as const,
         priority: 0.3,
       })),
+  ];
+}
+
+function glossarySitemapEntries(): MetadataRoute.Sitemap {
+  const terms = glossaryLive ? publishedGlossaryTerms() : [];
+  if (!terms.length) return [];
+  const lastModified = glossaryLastModified(terms);
+  return [
+    {
+      url: `${siteConfig.url}/glossary`,
+      ...(lastModified ? { lastModified: new Date(lastModified) } : {}),
+      changeFrequency: "monthly",
+      priority: 0.8,
+    },
   ];
 }

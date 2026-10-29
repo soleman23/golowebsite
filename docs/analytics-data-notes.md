@@ -20,6 +20,31 @@ Before ~01:07 UTC the site was opt-in with no notice (effectively only the
 owner). From ~04:12 UTC it is explicit opt-in (#115). Treat GA and Clarity data
 inside the window as collected without consent, and report it separately.
 
+## Glossary events and reporting definitions (#165)
+
+Added with the glossary hub; nothing fires until the glossary is live (`lib/content/glossary/launch.ts`) and a visitor has opted in. Every call goes through `track()`, so the consent gate (`__goloAnalyticsAllowed`), GPC and redaction apply. Params are closed sets: a published term id, a category id, a bucket. **The search text is never sent**: not as a param, not in a URL (it never enters the URL), not in the console.
+
+| Event | Fires | Params |
+|---|---|---|
+| `glossary_search` | Once per settled search: 600 ms after typing stops, and only if the normalised query or category changed since the last one reported. A 10-character query typed straight through sends one event. | `category` (`all` or a category id), `result_bucket` (`0`, `1`, `2-5`, `6+`), `match_type` (`exact`, `alias`, `partial`, `none`) |
+| `glossary_filter` | The reader chose a category: a chip, Clear, or "Search all terms". Not the initial read of `?category=` and not a deep link resetting it. | `category` |
+| `glossary_term_open` | A term was opened: a search result, a related-term link, or arrival on `/glossary#<slug>`. Once per term per page load. Nothing expands on the hub (docs/glossary/ux.md D5), so this replaces the spec's "definition expanded". | `term_id`, `category` |
+| `glossary_cta_click` | A term's guide or post link was followed. | `term_id`, `destination_type` (`guide`, `post`, `page`) |
+| `share_click` | Reused for the copy-link button, so every share sits in one report. A blog share has `post`; a glossary share has `term_id`. | `channel` (`copy`), `term_id` |
+
+Unchanged and reused: `store_button_click` and `cta_click` (with `page: "glossary"`) for the CTA band, `link_click` for internal links (a term anchor reports as `/glossary#press`, the term name as its text), `newsletter_signup` (the hub has no newsletter band while #121 is on hold). `docs/seo-reports/leads.sql` counts `/glossary` as a landing path; a category view lands as `/glossary` because `landingPath` never keeps the query string.
+
+Metric definitions (spec §9.4). Report each with its date range and its source, and never combine the two sources into one funnel rate:
+
+- **Non-brand organic clicks**: Search Console clicks to `/glossary` from queries outside the Branded group (`scripts/gsc-groups.mjs`). Search Console totals, not a sample.
+- **Glossary landing visits**: GA4 sessions starting on `/glossary`. A consented sample, not all visitors.
+- **Glossary-to-product CTR**: consented sessions on `/glossary` with a `glossary_cta_click`, `cta_click` or `store_button_click`, divided by consented sessions on `/glossary`.
+- **Store-click rate**: consented sessions on `/glossary` with a `store_button_click`, divided by consented sessions on `/glossary`. A store click is not an install.
+- **Search success**: of the `glossary_search` events whose `result_bucket` isn't `0`, the share followed by a `glossary_term_open` or `glossary_cta_click` before the next `glossary_search` in the same session. Computed from event order within a session (`ga_session_id`, then `event_timestamp` in the BigQuery export, or a path exploration in GA4) and the `result_bucket` param; no search text is sent or needed. Numerator and denominator are the same set of searches, so the rate can't pass 100%, and a zero-result search never counts as a success.
+- **Zero-result rate**: `glossary_search` with `result_bucket` `0`, divided by all `glossary_search`.
+- **Newsletter signup rate**: not measured on the hub while the band is on hold.
+- **Verified acquisition**: only from store or app attribution where it exists. Never inferred from clicks.
+
 ## Test traffic
 
 Created while building and verifying #114 and #115 (October 19–20), and by later

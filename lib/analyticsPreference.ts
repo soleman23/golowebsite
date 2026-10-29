@@ -43,14 +43,17 @@ const CAMPAIGN_PARAMS = new Set([
 const ROUTE_PARAMS: Record<string, string[]> = {
   filter: ["/games"],
   topic: ["/blog", "/contact"],
+  // The glossary's category filter (owner decision on #153). The search text
+  // never goes in the URL, so there's nothing else to keep there.
+  category: ["/glossary"],
 };
-/** A filter or topic id: lower-case slug. */
+/** A filter, topic or category id: lower-case slug. */
 const SLUG = /^[a-z0-9-]{1,40}$/;
 
 /**
  * Whether a query parameter survives when analytics loads: GA4 campaign
  * fields whose value carries nothing personal (no @, no long digit run,
- * 100 characters at most), and filter/topic slugs on their own routes.
+ * 100 characters at most), and filter, topic and category slugs on their own routes.
  */
 function isKeptQueryParam(key: string, value: string, pathname: string): boolean {
   if (CAMPAIGN_PARAMS.has(key)) {

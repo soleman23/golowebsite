@@ -434,7 +434,8 @@ const skins: GameDetailCopy = {
   glossary: [
     { term: "Skin", def: "The prize for one hole. Won only by the player with the outright lowest score on that hole." },
     { term: "Carryover (carry)", def: "A skin nobody won. It rolls onto the next hole, stacking on top of that hole’s own skin." },
-    { term: "Push / halve", def: "A tied low score. Nobody wins and the skin carries." },
+    { term: "Push", def: "A tied low score. Nobody wins the hole and the skin carries." },
+    { term: "Halve", def: "The match-play word for a tied hole. In skins the same tie is a push, and the skin carries." },
     { term: "Validation", def: "A house rule that carried skins only count on a birdie or better." },
     { term: "Net skins", def: "Skins played off handicaps, with strokes allocated hole by hole." },
     { term: "Barkie / sandy", def: "Bonus mini-skins for making par after hitting a tree or getting up and down from a bunker." },

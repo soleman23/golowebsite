@@ -1,0 +1,66 @@
+.nav {
+  margin: 0 0 clamp(28px, 4vw, 40px);
+}
+
+/* 6 columns at 320px (48px cells less gaps), 14 at 760, one row from 1100. */
+.list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  gap: 6px;
+}
+
+@media (min-width: 600px) {
+  .list {
+    grid-template-columns: repeat(14, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 1100px) {
+  .list {
+    grid-template-columns: repeat(27, minmax(0, 1fr));
+    gap: 4px;
+  }
+}
+
+.letter {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 44px;
+  border-radius: 10px;
+  font-size: 15px;
+  font-weight: 800;
+  color: var(--text-primary);
+  background: var(--glass-surface);
+  border: 1px solid var(--card-border);
+}
+
+a.letter:hover {
+  border-color: var(--accent-border);
+}
+
+.empty {
+  color: var(--text-muted);
+  background: transparent;
+  border-color: var(--hairline);
+}
+
+/* Letters with nothing in the chosen category: greyed from first paint;
+   GlossaryControls also takes them out of the tab order. One line per
+   category; scripts/check-filter-css.mjs keeps them in step. */
+html[data-filter="scoring"] .list a:not([data-cats~="scoring"]),
+html[data-filter="formats"] .list a:not([data-cats~="formats"]),
+html[data-filter="side-games"] .list a:not([data-cats~="side-games"]),
+html[data-filter="handicaps"] .list a:not([data-cats~="handicaps"]),
+html[data-filter="shots"] .list a:not([data-cats~="shots"]),
+html[data-filter="course-rules"] .list a:not([data-cats~="course-rules"]),
+html[data-filter="equipment"] .list a:not([data-cats~="equipment"]),
+html[data-filter="slang"] .list a:not([data-cats~="slang"]) {
+  color: var(--text-muted);
+  background: transparent;
+  border-color: var(--hairline);
+  pointer-events: none;
+}

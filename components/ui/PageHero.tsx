@@ -36,6 +36,11 @@ type PageHeroBase = {
   status?: { variant: StatusVariant; label: string };
   /** Small text row under the CTAs — availability notes, read time, dates. */
   meta?: React.ReactNode;
+  /**
+   * A search field under the lead, on the photo's dark side (the /glossary
+   * hub). The page owns its behaviour; the hero only places it.
+   */
+  search?: React.ReactNode;
   visual?: React.ReactNode;
   /** Decorative photo behind the copy — see lib/content/heroPhotos. */
   photo?: HeroPhotoKey;
@@ -156,6 +161,7 @@ export function PageHero({
   ctas,
   page,
   meta,
+  search,
   visual,
   photo,
 }: PageHeroProps) {
@@ -204,6 +210,8 @@ export function PageHero({
           </h1>
 
           {lead ? <p className={styles.lead}>{lead}</p> : null}
+
+          {search ? <div className={styles.search}>{search}</div> : null}
 
           {ctas?.length && page ? (
             <div className={styles.ctaRow}>
