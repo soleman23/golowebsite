@@ -19,7 +19,7 @@ export const glossaryHero = {
   kicker: "KNOW THE GAME. TALK THE TALK.",
   title: "Golf Glossary:",
   titleAccentLine: "Terms, Slang & Games Explained",
-  lead: "From birdies and bogeys to skins, presses and sandbaggers. Golf's terminology explained without the clubhouse lecture.",
+  lead: "From birdies and bogeys to skins, presses and snowmen. Golf's terminology explained without the clubhouse lecture.",
 };
 
 /**
