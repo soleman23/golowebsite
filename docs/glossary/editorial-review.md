@@ -107,6 +107,8 @@ Spec §10.2, the house rules, and what the claim and vocabulary checks enforce. 
   - always the fewest payments;
   - a measured distance for Closest to the Pin or Longest Drive;
   - a trip tally;
+  - a junk board, or scoring greenies, sandies, barkies, poleys, snakes or arnies (bounties exist only as the Skins game's birdie and eagle skins; #172);
+  - skins validation rules (#176);
   - Wolf or Bingo Bango Bongo in a scramble;
   - a Texas scramble drive count, or a shamble.
 - [ ] Unsupported formats carry no GoLo badge or note. Stableford, Quota and Vegas are golf, full stop.

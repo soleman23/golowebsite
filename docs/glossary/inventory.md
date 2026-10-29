@@ -123,32 +123,34 @@ Subtotal: 10 MVP + 14 expansion = 24.
 
 ## C. Side games (26)
 
-The spec calls this category "Side games and friendly wagers". The public label is **Side games**: the site's vocabulary check fails "wager" anywhere in site copy (see [Open question 1](#open-questions-for-the-owner)). The category id is `side-games` either way.
+The spec calls this category "Side games and friendly wagers". The public label is **Side games** (owner, 2026-10-29: Q1), because the site's vocabulary check fails "wager" anywhere in site copy. The category id is `side-games`.
+
+The app has no junk board (owner, 2026-10-29, #172). Junk, Greenie, Sandy and every junk item are golf education with no GoLo note. Birdie and eagle bounties exist in GoLo only as the Skins game's birdie and eagle skin settings.
 
 | # | id = slug | Term | MVP | Tags | Tier | Aliases | Related, not the same | Sources | Destination |
 |---|---|---|---|---|---|---|---|---|---|
 | 49 | `press` | Press | ✓ | presses, match-play | P0 | | `re-press`, **`automatic-press`**, `nassau`, `match-play`, `double-or-nothing` | GoLo `overall-match-presses` (called, never automatic; Nassau takes none) | → `/blog/pressing` |
-| 50 | `re-press` | Re-press | ✓ | presses | P0 | repress, press the press | `press`, `automatic-press` | GoLo `overall-match-presses`; **#154** confirms how Overall Match handles a press on a press | hub |
+| 50 | `re-press` | Re-press | ✓ | presses | P0 | repress, press the press | `press`, `automatic-press` | GoLo `overall-match-presses`: a side can press a press, and the two-live limit still applies (owner, 2026-10-29, #154 Q-b; registry line in #179) | hub |
 | 51 | `carryover` | Carryover | ✓ | | P0 | carry, carry over | `push`, `skins`, `greenie` (greenies can carry too) | GoLo `game-library` | → `/blog/skins-carryover` |
 | 52 | `push` | Push | ✓ | | P1 | | **Halve** (`halve`, the Rules' match-play term); `carryover`, `all-square` | — | hub |
-| 53 | `greenie` | Greenie | ✓ | junk | P3 | | **Closest to the Pin** (`closest-to-the-pin`: closest wins; a greenie usually also needs on in one and par or better); `junk`, `sandy` | GoLo `game-library` (#154: is a greenie scored by the junk board?) | hub, links `/games/closest-to-pin` |
-| 54 | `sandy` | Sandy | ✓ | junk | P3 | sandie | `up-and-down`, `junk`, `bunker` | GoLo `game-library` (#154: junk board scope) | hub |
-| 55 | `junk` | Junk | ✓ | junk | P1 | trash, garbage, dots | `greenie`, `sandy`, `barkie`, `poley`, `arnie`, `snake` | GoLo `game-library` (#154: which items the junk board scores) | hub |
+| 53 | `greenie` | Greenie | ✓ | junk | P3 | | **Closest to the Pin** (`closest-to-the-pin`: closest wins; a greenie usually also needs on in one and par or better); `junk`, `sandy` | education only; no GoLo note (the app has no junk board: owner, 2026-10-29, #172) | hub, links `/games/closest-to-pin` |
+| 54 | `sandy` | Sandy | ✓ | junk | P3 | sandie | `up-and-down`, `junk`, `bunker` | education only; no GoLo note (the app has no junk board: owner, 2026-10-29, #172) | hub |
+| 55 | `junk` | Junk | ✓ | junk | P1 | trash, garbage, dots | `greenie`, `sandy`, `barkie`, `poley`, `arnie`, `snake` | education only; no GoLo note (the app has no junk board: owner, 2026-10-29, #172) | hub |
 | 56 | `settle-up` | Settle-up | ✓ | | P0 | settling up | `debt-netting`, `carryover` | GoLo `settle-up` (never holds, moves or processes money; each round settles on its own; not always the fewest payments), `payment-handle` | hub |
 | 57 | `closest-to-the-pin` | Closest to the Pin | ✓ | | P0 | closest to pin, ctp, kp | **Greenie** (`greenie`) | GoLo `game-library`, `distance-logging` (not offered: no measured distance) | → `/games/closest-to-pin` |
 | 58 | `longest-drive` | Longest Drive | ✓ | | P0 | long drive | `drive`, `driver`, `fairway` | GoLo `game-library`, `distance-logging` | → `/games/longest-drive` |
 | 59 | `automatic-press` | Automatic Press | | presses | P0 | auto press | `press`, `re-press` | GoLo `auto-press` (**planned**: education only, no GoLo note) | hub, links `/blog/pressing` |
-| 60 | `side-pot` | Side Pot | | | P2 | | `buy-in` | — | hub — **name blocked, Q1** |
-| 61 | `buy-in` | Buy-in | | | P2 | | `side-pot` | — | hub |
-| 62 | `stakes` | Stakes | | | P2 | | — | — | hub — **name blocked, Q1** |
-| 63 | `payout` | Payout | | | P2 | | `settle-up` | — | hub — **name blocked, Q1** |
+| 60 | `point-value` | Point Value | | | P2 | | `buy-in`, `wolf`, `bingo-bango-bongo` | — | hub — **substitution S10** |
+| 61 | `buy-in` | Buy-in | | | P2 | | `point-value` | — | hub |
+| 62 | `validation` | Validation | | | P2 | | `carryover`, `skins` | Education only; no GoLo note (the app has no validation rules: owner, 2026-10-29, #176) | hub, links `/games/skins` — **substitution S11** |
+| 63 | `net-skins` | Net Skins | | handicap | P1 | | `skins`, `net-score`, `handicap-stroke` | GoLo `game-library`, `handicap-strokes` (product audit decides any note) | hub, links `/games/skins` — **substitution S12** |
 | 64 | `debt-netting` | Debt Netting | | | P1 | netting | `settle-up` | GoLo `settle-up` (netted into one number per player) | hub |
 | 65 | `birdie-bounty` | Birdie Bounty | | junk | P0 | birdies game | `birdie`, `eagle-bounty`, `skins` | GoLo `game-library` limit: birdie and eagle bounties are a Skins setting, gross birdies only | → `/games/birdies` |
 | 66 | `eagle-bounty` | Eagle Bounty | | junk | P2 | | `birdie-bounty`, `eagle` | GoLo `game-library` (same limit) | hub, links `/games/birdies` |
-| 67 | `barkie` | Barkie | | junk | P3 | barky, woodie | `junk`, `sandy` | GoLo `game-library` (#154) | hub |
-| 68 | `poley` | Poley | | junk | P3 | polie | `junk` | GoLo `game-library` (#154) | hub |
-| 69 | `snake` | Snake | | junk, putting | P3 | | `three-putt`, `junk` | GoLo `game-library` (#154) | hub |
-| 70 | `arnie` | Arnie | | junk | P3 | arnold | `junk`, `fairway` | GoLo `game-library` (#154) | hub — **substitution S5** |
+| 67 | `barkie` | Barkie | | junk | P3 | barky, woodie | `junk`, `sandy` | education only; no GoLo note (the app has no junk board: owner, 2026-10-29, #172) | hub |
+| 68 | `poley` | Poley | | junk | P3 | polie | `junk` | education only; no GoLo note (the app has no junk board: owner, 2026-10-29, #172) | hub |
+| 69 | `snake` | Snake | | junk, putting | P3 | | `three-putt`, `junk` | education only; no GoLo note (the app has no junk board: owner, 2026-10-29, #172) | hub |
+| 70 | `arnie` | Arnie | | junk | P3 | arnold | `junk`, `fairway` | education only; no GoLo note (the app has no junk board: owner, 2026-10-29, #172) | hub — **substitution S5** |
 | 71 | `hammer` | Hammer | | | P2 | | `press`, `double-or-nothing` | — | hub |
 | 72 | `double-or-nothing` | Double or Nothing | | | P3 | | `press`, `hammer` | — | hub |
 | 73 | `lone-wolf` | Lone Wolf | | team | P2 | | `wolf` | GoLo `game-library` | hub, links `/games/wolf` |
@@ -335,7 +337,11 @@ Kept on purpose, with the reason recorded so it isn't re-litigated:
 - **Breakfast Ball / Mulligan**: the spec's MVP. A breakfast ball is the first-tee-only mulligan, and the entry says so.
 - **Greenie / Closest to the Pin**: closest wins CTP; a greenie usually also needs on in one and par or better. They share a guide (`/games/closest-to-pin`) but are different contests.
 
-**Name blocked, not yet revised:** Side Pot, Stakes and Payout stay in the count pending Q1. They're expansion records; nothing in M7 depends on them.
+| S10 | Side games | **Side Pot** → **Point Value** | Owner, 2026-10-29 (Q1): the name fails the vocabulary check, and no `vocab-ok` exceptions. Point Value is already the site's term (Wolf and Bingo Bango Bongo guides). |
+| S11 | Side games | **Stakes** → **Validation** | Owner, 2026-10-29 (Q1). The skins house rule the site already explains. Education only: GoLo has no validation rules (#176). |
+| S12 | Side games | **Payout** → **Net Skins** | Owner, 2026-10-29 (Q1). Skins played off handicap strokes, already in the skins guide's glossary. |
+
+The owner accepted S1–S9 and M1–M6 as the M8 backlog on 2026-10-29 (Q4), and added S10–S12 (Q1).
 
 ## Existing site definitions: audit
 
@@ -364,10 +370,10 @@ The glossary's wording has to agree with these. Where it can't, the conflict is 
 
 **Conflicts.** These are in existing pages, not in the glossary. They're recorded here, and an issue is needed for each, but this session wasn't authorised to file one:
 
-1. **Wolf tee order.** The guide says "The Wolf tees off last" (`lib/content/gameDetail.ts` lines 557, 560, 623). The post says "The wolf tees off first" (`lib/content/blog.ts` lines 373, 381, 387). Both are real house-rule variants, but the site states each as the rule. The glossary entry will say the order varies and link the guide. Fixing the guide/post pair needs an owner call on which one GoLo's Wolf follows.
-2. **Validation (skins).** The guide glossary says carried skins "only count on a birdie or better" (`gameDetail.ts` line 436). The guide's own step 4 and variations card (lines 379, 423) and the post (`blog.ts` line 350) say birdie-to-win **or** a par minimum, or a two-putt rule. The glossary has no MVP Validation record. If one is added (see Q1's recommended replacements), it uses the broader wording.
-3. **Push vs halve.** The skins guide glossary has one entry, "Push / halve". The glossary keeps them as two records: **Push** is the side-game outcome of a tie (nothing changes hands, or the skin carries), **Halve** is the Rules' match-play result. That's compatible, but the next edit to the skins guide could split its entry the same way.
-4. **Possible overclaim, outside the glossary.** The skins guide CTA says GoLo "tracks every carry, every validation" (`gameDetail.ts` line 419). No capability records validation rules. Added to the #154 checklist.
+1. **Wolf tee order.** *Resolved: GoLo's Wolf tees off last (owner, 2026-10-29); the post is fixed in #174 / PR #175.* The guide says "The Wolf tees off last" (`lib/content/gameDetail.ts` lines 557, 560, 623). The post says "The wolf tees off first" (`lib/content/blog.ts` lines 373, 381, 387). Both are real house-rule variants, but the site states each as the rule. The glossary entry will say the order varies and link the guide. Fixing the guide/post pair needs an owner call on which one GoLo's Wolf follows.
+2. **Validation (skins).** *Owner, 2026-10-29: the app has no validation rules, so any glossary Validation record (S11) is education only.* The guide glossary says carried skins "only count on a birdie or better" (`gameDetail.ts` line 436). The guide's own step 4 and variations card (lines 379, 423) and the post (`blog.ts` line 350) say birdie-to-win **or** a par minimum, or a two-putt rule. The glossary has no MVP Validation record. If one is added (see Q1's recommended replacements), it uses the broader wording.
+3. **Push vs halve.** *Filed as #178.* The skins guide glossary has one entry, "Push / halve". The glossary keeps them as two records: **Push** is the side-game outcome of a tie (nothing changes hands, or the skin carries), **Halve** is the Rules' match-play result. That's compatible, but the next edit to the skins guide could split its entry the same way.
+4. **Overclaim, outside the glossary.** *Confirmed by the owner; fixed in #176 / PR #177.* The skins guide CTA says GoLo "tracks every carry, every validation" (`gameDetail.ts` line 419). No capability records validation rules. Added to the #154 checklist.
 
 ## Search evidence
 
@@ -377,6 +383,17 @@ Spec §7.1 tiers are strategic fit, not volume. The only first-party query data 
 - **#65's revalidation run** is due between October 22 and November 5 and had not been recorded as of this file. When it lands, add its glossary-relevant queries here with their date range. Don't change any tier on them before #78 reads them.
 
 Nothing else was used to rank or select terms. No keyword-tool volumes.
+
+## Owner decisions (October 29, 2026)
+
+- **Q1.** Category label "Side games". For M8, Side Pot, Stakes and Payout are replaced by Point Value, Validation and Net Skins (S10–S12). No `vocab-ok` exceptions.
+- **Q2.** No "press bet" alias.
+- **Q3.** GoLo's Wolf tees off last; the guide is right and the post is fixed (#174). The glossary's Wolf entry still says the order varies between groups and links the guide.
+- **Q4.** S1–S9 and M1–M6 accepted as the M8 backlog.
+- **Q5.** Review roles as proposed (recorded October 29 in `editorial-review.md`).
+- **Junk (#154 Q-a, #172).** No junk board in the app. Junk, Greenie, Sandy and the M8 junk terms carry no GoLo note.
+
+The original questions follow, for the record.
 
 ## Open questions for the owner
 
