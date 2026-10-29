@@ -18,10 +18,12 @@ import { formatsTerms } from "./terms/formats";
 import { sideGamesTerms } from "./terms/side-games";
 import { handicapsTerms } from "./terms/handicaps";
 import { scoringShotsTerms } from "./terms/scoring-shots";
+import { courseEquipmentSlangTerms } from "./terms/course-equipment-slang";
 
 export const glossaryTerms: GlossaryTerm[] = [
   ...formatsTerms,
   ...sideGamesTerms,
   ...handicapsTerms,
   ...scoringShotsTerms,
+  ...courseEquipmentSlangTerms,
 ];
