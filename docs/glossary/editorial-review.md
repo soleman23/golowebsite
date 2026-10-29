@@ -2,7 +2,7 @@
 
 How a glossary term goes from draft to published, who checks what, and what counts as evidence. Issue #152 (GLS-001); spec §10.1–10.4. Every content batch (#158–#162) and every expansion batch (#168) follows this file.
 
-**Status:** prepared October 28, 2026. The two decisions recorded below are the owner's (#152, October 28, 2026). The role assignments under [Roles](#roles) were confirmed by the owner on October 29, 2026.
+**Status:** prepared October 28, 2026. The two decisions recorded below are the owner's (#152, October 28, 2026). The role assignments under [Roles](#roles) are a proposal (`inventory.md` Q5).
 
 ## Decisions already made
 
@@ -43,8 +43,8 @@ A record moves from `in-review` to `approved` only when stages 2–5 each have a
 |---|---|---|
 | Writer (stage 1) | An agent or the owner | — |
 | Rules fact-check (stage 2) | **The owner** | Owner decision, October 28, 2026. An agent may prepare the check (source links, rule numbers, recomputed examples), but the owner signs it |
-| GoLo product audit (stage 3) | **The owner** | `capabilities.ts` changes only on an app check or the owner's word; this repo doesn't read the app repo |
-| SEO/canonical review (stage 4) | An agent prepares it, **the owner confirms** | Mechanical checks are in `lint:content`; the judgement calls are in `canonical-map.md` |
+| GoLo product audit (stage 3) | The owner (proposed) | `capabilities.ts` changes only on an app check or the owner's word; this repo doesn't read the app repo |
+| SEO/canonical review (stage 4) | An agent prepares it, the owner confirms (proposed) | Mechanical checks are in `lint:content`; the judgement calls are in `canonical-map.md` |
 | Approval (stage 5) | **The owner** | Content owner |
 
 Never invent a reviewer, credential, review date or source check. If a stage hasn't happened, the record says so by not having that entry.

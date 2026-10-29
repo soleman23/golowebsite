@@ -26,8 +26,14 @@ Material findings not already in the epic's reconciliation list:
 
 | Issue | Branch | State |
 |---|---|---|
-| #152 | `glossary/152-inventory` | Implemented locally: `inventory.md`, `canonical-map.md`, `editorial-review.md`. Awaiting owner review (Q1–Q5 in `inventory.md`). |
+| #152 | `glossary/152-inventory` (pushed) | Implemented: `inventory.md`, `canonical-map.md`, `editorial-review.md`. Awaiting owner review (Q1–Q4 in `inventory.md`; Q5 roles decided). |
+| #153 | `glossary/153-ux` (pushed, stacked on 152) | Implemented: `ux.md`. Awaiting owner review of decisions D1–D8. |
+
+### Owner answers this session (October 29, 2026)
+
+- Push authorised for glossary task branches only: no PRs, nothing to `main`, no issue changes.
+- Review roles as proposed in `editorial-review.md`: the owner signs rules, product and approval; an agent prepares the SEO/canonical review for the owner to confirm.
 
 ### Next ready
 
-#153 (UX doc) and #155 (model and validation) both depend only on #152's ids and categories, which are fixed unless the owner changes Q4.
+#155 (model, launch flag, validation) depends only on #152's ids and categories, which are fixed unless the owner changes Q4.

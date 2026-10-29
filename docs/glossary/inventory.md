@@ -392,4 +392,4 @@ Ordered by what they block. Each has a recommendation.
 
 **Q4. Accept the revisions table** (S1–S9, M1–M6) as the M8 backlog, or name changes.
 
-**Q5. Reviewer roles.** **Decided October 29, 2026 (owner):** the owner signs the rules fact-check, the GoLo product audit and approval; an agent prepares the SEO/canonical review and the owner confirms it.
+**Q5. Reviewer roles.** Decided: the owner is reviewer of record for the rules and WHS fact-check. `editorial-review.md` proposes the owner also fills the GoLo product audit and approval, and that the SEO/canonical review may be done by an agent and confirmed by the owner. Confirm or name someone else.
