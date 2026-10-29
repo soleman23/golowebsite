@@ -416,13 +416,13 @@ const skins: GameDetailCopy = {
     glossary: { kicker: "TALK THE TALK", title: "The terms you'll hear on the tee." },
     faq: { kicker: "SKINS, ANSWERED", title: "Before you tee it up." },
     related: { kicker: "STACK IT WITH", title: "Crews that play skins also run…", lead: "Skins is the easiest game to stack — run any of these alongside it and GoLo nets the whole pile into one number." },
-    cta: { title: "Never argue about a carryover again.", lead: "Set your skin value, add the group, and GoLo tracks every carry, every validation, and who owes what at the 18th." },
+    cta: { title: "Never argue about a carryover again.", lead: "Set your skin value, add the group, and GoLo tracks every carry and who owes what at the 18th." },
   },
   variations: [
     { icon: "stack", title: "The carryover", body: "Every halved hole rolls forward. GoLo shows the live skins on the scoring screen before anyone stands over the next putt." },
     { icon: "pin", title: "Validation rules", body: "Make players earn a big carry with birdie-to-win or a par minimum on carried skins." },
     { icon: "shield", title: "Net skins", body: "Play off handicaps and GoLo allocates strokes by stroke index, hole by hole." },
-    { icon: "dice", title: "Stack the side games", body: "Run skins beside greenies, barkies, or a birdie bounty, then settle once." },
+    { icon: "dice", title: "Stack the side games", body: "Run skins beside a Nassau, Best Score or Wolf, then settle once." },
   ],
   tips: [
     { tone: "good", title: "Go at the pin when the carry is big", body: "A big carry rewards one aggressive swing. Safe golf wins nothing when two other players are also making par." },
@@ -432,7 +432,8 @@ const skins: GameDetailCopy = {
   glossary: [
     { term: "Skin", def: "The prize for one hole. Won only by the player with the outright lowest score on that hole." },
     { term: "Carryover (carry)", def: "A skin nobody won. It rolls onto the next hole, stacking on top of that hole’s own skin." },
-    { term: "Push / halve", def: "A tied low score. Nobody wins and the skin carries." },
+    { term: "Push", def: "A tied low score. Nobody wins the hole and the skin carries." },
+    { term: "Halve", def: "The match-play word for a tied hole. In skins the same tie is a push, and the skin carries." },
     { term: "Validation", def: "A house rule that carried skins only count on a birdie or better." },
     { term: "Net skins", def: "Skins played off handicaps, with strokes allocated hole by hole." },
     { term: "Barkie / sandy", def: "Bonus mini-skins for making par after hitting a tree or getting up and down from a bunker." },
