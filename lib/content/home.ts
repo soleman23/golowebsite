@@ -99,6 +99,7 @@ export const features: Feature[] = [
     checklist: [
       { lead: "Net · Gross · Results", rest: "one tap to see every angle." },
       {
+        // capabilities.ts live-skins
         lead: "Live skins & carries",
         rest: "watch each carried skin build hole to hole.",
       },
@@ -205,6 +206,7 @@ export const steps: Step[] = [
     icon: "flame",
     // Corrected from the prototype's stray HTML entity "Play &amp; track".
     title: "Play & track",
+    // capabilities.ts live-skins
     body: "Tap in scores hole by hole. The leaderboard updates live — strokes, skins, carries and all.",
   },
   {

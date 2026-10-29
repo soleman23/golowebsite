@@ -150,7 +150,7 @@ export const capabilities = [
       "Run several games in one round, each with its own amount, netted into one number per player.",
     limits: [
       "Birdie and eagle bounties exist only as a Skins setting (Birdie Skin, Eagle Skin), gross birdies only, no cap.",
-      "No junk board: sandies, barkies, poleys, snakes and arnies aren't scored. Closest to Pin is its own game (closest-to-pin).",
+      "No junk board: sandies, barkies, poleys, snakes and arnies aren't scored. Closest to Pin is its own game.",
       "Longest Drive doesn't record a measured distance.",
     ],
     verified: OWNER_1015,
@@ -256,6 +256,16 @@ export const capabilities = [
       "Par-to-win isn't enforced: a greenie's par condition is a house rule the group applies when it marks the winner.",
     ],
     verified: OWNER_1029,
+    // The junk-board greenie phrases came out on 2026-10-29 (marking a winner
+    // is live); these catch par-to-win presented as something GoLo checks.
+    overclaims: [
+      "enforces par",
+      "enforces par-to-win",
+      "checks par-to-win",
+      "checks for par",
+      "verifies par",
+      "par-to-win check",
+    ],
   },
   {
     id: "live-skins",
@@ -521,7 +531,7 @@ export const capabilities = [
     label: "Junk board",
     status: "not-offered",
     summary:
-      "Scoring junk side points (sandies, barkies, poleys, snakes, arnies). Bounties exist only as the Skins game's birdie and eagle skins. Greenies aren't scored as junk: Closest to Pin is its own live game (closest-to-pin), and a greenie's par condition is the group's call.",
+      "Scoring junk side points (sandies, barkies, poleys, snakes, arnies). Bounties exist only as the Skins game's birdie and eagle skins. Greenies aren't scored as junk: Closest to Pin is its own live game, and a greenie's par condition is the group's call.",
     verified: OWNER_1029,
     // Golf copy may still explain junk; these catch it presented as
     // something GoLo does (soleman23/golowebsite#172). No greenie phrases:
