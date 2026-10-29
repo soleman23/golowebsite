@@ -112,8 +112,8 @@ export const featureBlocks: FeatureBlock[] = [
       },
       { lead: "Net and gross together", rest: "see both, play either." },
       {
-        lead: "Carries on the screen",
-        rest: "the skins count is there before anyone asks.",
+        lead: "Strokes by stroke index",
+        rest: "the card decides who gets one, not the scorer.",
       },
     ],
     visualSide: "right",
@@ -194,7 +194,7 @@ export const featureBlocks: FeatureBlock[] = [
     kicker: "AUTO SETTLE-UP",
     status: TODAY,
     title: "Four players, six debts, three settle-ups.",
-    lead: "Nassau, presses, Skins, Best Score and closest to the pin get netted into one number per player, then reduced to a short who-owes-whom list that squares the group. You read the list out loud in the parking lot and it's over — no daisy chain, no arithmetic with a beer in your hand.",
+    lead: "Nassau, presses, Skins and Best Score get netted into one number per player, then reduced to a short who-owes-whom list that squares the group. You read the list out loud in the parking lot and it's over — no daisy chain, no arithmetic with a beer in your hand.",
     checklist: [
       { lead: "Who owes whom", rest: "names and amounts, in plain order." },
       {

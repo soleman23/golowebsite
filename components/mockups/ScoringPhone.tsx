@@ -14,10 +14,9 @@ const dotColor: Record<string, string> = {
 };
 
 /**
- * "home" closes on the hole-progress bar; "features" closes on the games'
- * standing for the hole instead (the skins carry and the front-nine match),
- * which is the moment /features is describing. It used to show greenie and
- * sandie buttons; the app has no junk board (soleman23/golowebsite#172).
+ * "features" shows a different foursome below Mike. Both close on the
+ * hole-progress bar. The features variant used to close on greenie and sandie
+ * buttons; the app has no junk board (soleman23/golowebsite#172).
  */
 type ScoringPhoneProps = { variant?: "home" | "features" };
 
@@ -31,7 +30,7 @@ export function ScoringPhone({ variant = "home" }: ScoringPhoneProps) {
       bgPosition="50% 60%"
       label={
         isFeatures
-          ? "GoLo scoring screen for hole 7 — Mike's score being tapped in, the rest of the foursome's net and gross below, and the skins carry and front-nine match standing for the hole."
+          ? "GoLo scoring screen for hole 7 — Mike's score being tapped in with his handicap stroke, and the rest of the foursome's net and gross below."
           : "GoLo scoring screen for hole 7 — tapping in Mike's score with net and gross for the group."
       }
     >
@@ -84,26 +83,16 @@ export function ScoringPhone({ variant = "home" }: ScoringPhoneProps) {
         ))}
       </div>
 
-      {isFeatures ? (
-        /* where the games stand on this hole */
-        <div className={styles.gameRow}>
-          <span className={`${styles.gameChip} ${styles.gameChipAccent}`}>
-            Skins · 3 carried
-          </span>
-          <span className={styles.gameChip}>Front 9 · Mike 1 up</span>
-        </div>
-      ) : (
-        /* progress bar */
-        <div className={`${styles.progress} ${styles.progressBottom}`}>
-          {heroDots.map((state, i) => (
-            <span
-              key={i}
-              className={styles.progressSeg}
-              style={{ background: dotColor[state] }}
-            />
-          ))}
-        </div>
-      )}
+      {/* progress bar */}
+      <div className={`${styles.progress} ${styles.progressBottom}`}>
+        {heroDots.map((state, i) => (
+          <span
+            key={i}
+            className={styles.progressSeg}
+            style={{ background: dotColor[state] }}
+          />
+        ))}
+      </div>
     </PhoneShell>
   );
 }
