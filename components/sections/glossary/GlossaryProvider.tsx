@@ -29,6 +29,8 @@ import {
 } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import { FilterUrlSync, useInitialFilter } from "@/components/ui/FilterUrlSync";
+import { track } from "@/lib/analytics";
+import { createOpenReporter } from "./openReport";
 
 type GlossaryState = {
   /** The active category id or "all"; null until the URL has been read. */
@@ -81,6 +83,12 @@ export function GlossaryProvider({ ids, children }: ProviderProps) {
   // Read by reveal(), which runs from listeners outside React's render.
   const activeRef = useRef<string | null>(null);
   const queryRef = useRef("");
+  const [opens] = useState(() =>
+    createOpenReporter(
+      (termId, category) => track("glossary_term_open", { term_id: termId, category }),
+      () => window.__goloAnalyticsAllowed === true,
+    ),
+  );
 
   const select = useCallback((id: string) => {
     activeRef.current = id;
@@ -96,6 +104,7 @@ export function GlossaryProvider({ ids, children }: ProviderProps) {
       const href = id === "all" ? pathname : `${pathname}?category=${id}`;
       // push, not replace: back walks through categories (GL-QA-11).
       router.push(href, { scroll: false });
+      track("glossary_filter", { category: id });
     },
     [pathname, router, select],
   );
@@ -119,7 +128,7 @@ export function GlossaryProvider({ ids, children }: ProviderProps) {
   }, [choose, setQuery]);
 
   const reveal = useCallback(
-    (id: string, announceOpen = false) => {
+    (id: string, announceOpen = false, arrival = false) => {
       const target = document.getElementById(id);
       if (!target) return;
       const smooth = !matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -139,6 +148,8 @@ export function GlossaryProvider({ ids, children }: ProviderProps) {
       }
       const name = target.querySelector("a")?.textContent ?? id;
       const category = (target.parentElement as HTMLElement | null)?.dataset.category;
+      const termId = target.dataset.termId;
+      if (termId) (arrival ? opens.arrive : opens.open)(termId, category ?? "");
       let note = "";
       if (queryRef.current) {
         setQuery("");
@@ -154,23 +165,39 @@ export function GlossaryProvider({ ids, children }: ProviderProps) {
       else if (announceOpen) announce(`Showing ${name}`);
       show();
     },
-    [announce, pathname, router, select, setQuery],
+    [announce, opens, pathname, router, select, setQuery],
   );
 
   // Deep links: the hash on arrival (once), then every hash change.
   const arrived = useRef(false);
   useEffect(() => {
-    const fromHash = () => {
+    const fromHash = (arrival = false) => {
       const id = decodeURIComponent(window.location.hash.slice(1));
-      if (id) reveal(id);
+      if (id) reveal(id, false, arrival);
     };
+    const onHashChange = () => fromHash();
     if (!arrived.current) {
       arrived.current = true;
-      fromHash();
+      fromHash(true);
     }
-    window.addEventListener("hashchange", fromHash);
-    return () => window.removeEventListener("hashchange", fromHash);
+    window.addEventListener("hashchange", onHashChange);
+    return () => window.removeEventListener("hashchange", onHashChange);
   }, [reveal]);
+
+  // A term's guide or post link. The entry is server-rendered, so its links
+  // carry data attributes and one listener reports them.
+  useEffect(() => {
+    const onClick = (event: MouseEvent) => {
+      const link = (event.target as Element | null)?.closest?.<HTMLElement>("a[data-glossary-cta]");
+      if (!link?.dataset.termId) return;
+      track("glossary_cta_click", {
+        term_id: link.dataset.termId,
+        destination_type: link.dataset.glossaryCta ?? "page",
+      });
+    };
+    document.addEventListener("click", onClick, { capture: true });
+    return () => document.removeEventListener("click", onClick, { capture: true });
+  }, []);
 
   // While searching, the ranked results replace the directory (ux.md D4).
   useEffect(() => {

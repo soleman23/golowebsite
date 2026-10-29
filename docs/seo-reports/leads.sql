@@ -92,7 +92,7 @@ labelled AS (
     kind,
     CASE
       WHEN "landingPath" IS NULL THEN '(not recorded)'
-      WHEN "landingPath" ~ '^/(features|how-it-works|games|blog|faq|about|contact|privacy|terms|cookies|acceptable-use|delete-account)?$'
+      WHEN "landingPath" ~ '^/(features|how-it-works|games|blog|faq|about|contact|privacy|terms|cookies|acceptable-use|delete-account|glossary)?$'
         THEN "landingPath"
       WHEN "landingPath" ~ '^/games/(skins|nassau|best-score|wolf|bingo-bango-bongo|scramble|closest-to-pin|longest-drive|birdies)$'
         THEN "landingPath"

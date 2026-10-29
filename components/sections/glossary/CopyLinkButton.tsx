@@ -8,16 +8,19 @@
  */
 
 import { useEffect, useState } from "react";
+import { track } from "@/lib/analytics";
 import { useGlossary } from "./GlossaryProvider";
 import styles from "./CopyLinkButton.module.css";
 
 type CopyLinkButtonProps = {
   url: string;
+  /** The term's stable id, for share_click. */
+  termId: string;
   term: string;
   labels: { copy: string; copied: string; failed: string };
 };
 
-export function CopyLinkButton({ url, term, labels }: CopyLinkButtonProps) {
+export function CopyLinkButton({ url, termId, term, labels }: CopyLinkButtonProps) {
   const { announce } = useGlossary();
   const [state, setState] = useState<"idle" | "copied" | "failed">("idle");
 
@@ -32,7 +35,8 @@ export function CopyLinkButton({ url, term, labels }: CopyLinkButtonProps) {
       await navigator.clipboard.writeText(url);
       setState("copied");
       announce(`Link to ${term} copied`);
-      // #165: the share event fires here.
+      // The blog's share event, so every share lands in one report (#165).
+      track("share_click", { channel: "copy", term_id: termId });
     } catch {
       setState("failed");
       announce(`Couldn't copy. The term name ${term} is a link you can copy instead.`);
