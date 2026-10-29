@@ -164,7 +164,7 @@ export const gamesHero = {
   kicker: "EVERY GAME, SCORED AUTOMATICALLY",
   title: "Golf side games:",
   titleAccentLine: "Rules, scoring, and settling up.",
-  lead: "Skins, Nassau, Wolf, the junk your buddy always forgets to settle — GoLo runs every one, stacks them in a single round, and nets it all into one number per player. Browse the whole roster below.",
+  lead: "Skins, Nassau, Wolf, Best Score, the birdie skin your buddy always forgets to settle — GoLo runs every one, stacks them in a single round, and nets it all into one number per player. Browse the whole roster below.",
 };
 
 /**
