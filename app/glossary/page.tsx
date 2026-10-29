@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import {
   glossaryCategories,
@@ -8,12 +9,18 @@ import {
   glossarySearchEntries,
   glossaryTermCount,
   glossaryLetterGroups,
+  glossaryLive,
   glossaryRelatedGuides,
+  glossarySchemaName,
+  publishedGlossaryTerms,
   glossaryRouteVisible,
   glossaryStartHere,
   hubGlossaryTerms,
 } from "@/lib/content";
+import { pageMetadata } from "@/lib/pageMetadata";
+import { glossaryTermSetNode, organizationSummary, websiteNode } from "@/lib/schema";
 import { siteConfig } from "@/lib/siteConfig";
+import { JsonLd } from "@/components/ui/JsonLd";
 import { FilterBoot } from "@/components/ui/FilterBoot";
 import { PageHero } from "@/components/ui/PageHero";
 import { KeepReading } from "@/components/sections/faq/KeepReading";
@@ -25,6 +32,19 @@ import { GlossarySearchField } from "@/components/sections/glossary/GlossarySear
 import { GlossaryControls } from "@/components/sections/glossary/GlossaryControls";
 import { CopyLinkButton } from "@/components/sections/glossary/CopyLinkButton";
 import styles from "./glossary.module.css";
+
+/**
+ * Self-canonical to /glossary, with or without ?category= (spec §7.3, #163).
+ * The title template adds " · GoLo", as on every page; no "150+" until that
+ * many terms are public. The share card is the site default until #171's
+ * photo gives it heroOgImage("glossary").
+ */
+export const metadata: Metadata = pageMetadata({
+  path: "/glossary",
+  title: "Golf Glossary: Terms, Slang & Games Explained",
+  description:
+    "Learn golf terms, scoring rules, handicaps, slang and side games with clear definitions and real examples from GoLo Golf.",
+});
 
 /**
  * The glossary hub (#156; docs/glossary/ux.md). Server-rendered: every shown
@@ -49,6 +69,23 @@ export default function GlossaryPage() {
     .map((id) => byId.get(id))
     .filter((t) => t !== undefined);
   const review = terms.some((t) => t.unpublished);
+
+  // Structured data describes published terms only, never the local-review
+  // selection, and only once the glossary is live.
+  const published = glossaryLive ? publishedGlossaryTerms() : [];
+  const jsonLd = published.length
+    ? {
+        "@context": "https://schema.org",
+        "@graph": [
+          glossaryTermSetNode(published, {
+            name: glossarySchemaName,
+            description: String(metadata.description),
+          }),
+          organizationSummary(),
+          websiteNode(),
+        ],
+      }
+    : null;
 
   const filterIds = ["all", ...glossaryCategoryIds];
   const chips = [
@@ -155,6 +192,8 @@ export default function GlossaryPage() {
       />
 
       <FinalCTA page="glossary" />
+
+      {jsonLd ? <JsonLd data={jsonLd} /> : null}
     </GlossaryProvider>
   );
 }

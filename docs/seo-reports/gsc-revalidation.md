@@ -100,6 +100,8 @@ curl -s https://www.golo.golf/sitemap.xml | grep -o '<loc>[^<]*' | sed 's/<loc>/
 
 On October 17 the sitemap listed 32 URLs.
 
+**Glossary (#163).** `https://www.golo.golf/glossary` isn't on this run: it 404s, and stays out of the sitemap, until the launch PR (#166) turns the glossary on. Add it to the first URL Inspection run after launch (the launch + 7 days checkpoint in #167), with its declared canonical `https://www.golo.golf/glossary`. A `?category=` view should report the same canonical, and term anchors (`#press`) aren't separate URLs.
+
 ### 4. Sitemap
 
 Indexing → Sitemaps → `https://www.golo.golf/sitemap.xml`. Record the last read date, its status and the number of discovered pages. Compare that number with the count of sitemap URLs that the Pages report shows as indexed. To get that count, open the Pages report and use the filter set to the submitted sitemap.

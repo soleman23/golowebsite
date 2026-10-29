@@ -17,5 +17,12 @@ export const llmsCopy = {
   money: capability("settle-up").limits?.find((l) => /money/i.test(l)) ?? "",
   contact: `${siteConfig.legalName} · ${siteConfig.address.city}, ${siteConfig.address.region} · ${siteConfig.supportEmail}`,
   capabilitiesIntro: "What the app does today:",
-  sections: { pages: "Pages", guides: "Game guides", articles: "Articles" },
+  sections: {
+    pages: "Pages",
+    guides: "Game guides",
+    articles: "Articles",
+    glossary: "Glossary",
+  },
+  glossary:
+    "Golf terms, scoring, handicaps, side games and slang, defined. Each term has an anchor on the hub page.",
 };
