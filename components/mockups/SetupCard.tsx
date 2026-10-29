@@ -20,7 +20,7 @@ export function SetupCard() {
     <div
       className={styles.photoCard}
       role="img"
-      aria-label="GoLo new-round setup card for Pinehurst No. 8 — three players off the Blue tees with their course handicaps, and Nassau, skins and junk added to the card."
+      aria-label="GoLo new-round setup card for Pinehurst No. 8 — three players off the Blue tees with their course handicaps, and Nassau and skins added to the card, with birdie skins on."
     >
       <div
         className={`${styles.photoCardBg} golo-bd-mock-turf`}
