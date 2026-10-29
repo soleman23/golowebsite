@@ -115,9 +115,10 @@ const OWNER_1015 = { by: "owner", date: "2026-10-15" } as const;
 const OWNER_1026 = { by: "owner", date: "2026-10-26" } as const;
 
 /**
- * Owner, 2026-10-29 (soleman23/golowebsite#172, answering #154 Q-a): the app
- * has no junk board. Bounties exist only as the Skins game's birdie and
- * eagle skin settings.
+ * Owner, 2026-10-29: the app has no junk board; bounties exist only as the
+ * Skins game's birdie and eagle skin settings (soleman23/golowebsite#172,
+ * answering #154 Q-a). It applies no skins validation rules
+ * (soleman23/golowebsite#176, answering #154 Q-d).
  */
 const OWNER_1029 = { by: "owner", date: "2026-10-29" } as const;
 
@@ -504,6 +505,17 @@ export const capabilities = [
       "tap the greenie",
       "every greenie",
     ],
+  },
+  {
+    id: "skins-validation",
+    label: "Skins validation rules",
+    status: "not-offered",
+    summary:
+      "House rules that carried skins only count on a birdie, a par minimum or a two-putt.",
+    verified: OWNER_1029,
+    // The guide can explain validation as golf; these catch it presented as
+    // something GoLo applies (soleman23/golowebsite#176).
+    claimPhrases: ["every validation", "validation rule", "tracks validation", "applies validation"],
   },
   {
     id: "distance-logging",
