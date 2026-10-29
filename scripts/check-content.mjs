@@ -132,6 +132,8 @@ function walk(dir, ext) {
 /** Every file with copy or links in it. */
 const files = [
   ...walk("lib/content", [".ts"]),
+  // The mockups' text and accessible names (soleman23/golowebsite#172).
+  "lib/mockData.ts",
   ...walk("components", [".tsx"]),
   ...walk("app", [".tsx", ".ts"]),
 ];
