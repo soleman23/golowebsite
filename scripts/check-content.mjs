@@ -13,7 +13,9 @@
  *    often joins the very things being denied). In blog posts and game
  *    guides only copy about GoLo counts — a string that mentions GoLo or "the
  *    app" — so explaining an auto-press as golf is fine and saying GoLo does
- *    one is not. `claim-ok: <reason>` on a line (or the line above) and
+ *    one is not. Glossary term records are education too, except their
+ *    `goloNote`, which is always checked in full (scripts/content-claims.mjs).
+ *    `claim-ok: <reason>` on a line (or the line above) and
  *    `claim-ok-file: <reason>` in a file's header exempt copy gated behind
  *    siteConfig.appLive and the like.
  * 2. Metadata. Search titles, meta descriptions and the site description —
@@ -31,7 +33,9 @@
  *    included, in any kind of string literal, must be a page or file the site
  *    serves: a static route, a route handler that answers GET (so not the
  *    POST-only form endpoints under /api), a published post, a game guide or
- *    a file in public/.
+ *    a file in public/. Until the glossary is live (lib/content/glossary/
+ *    launch.ts) nothing outside its own files may link to /glossary, and a
+ *    /glossary#fragment must name a published term (scripts/glossary-checks.mjs).
  * 4. Report lists. Every published post and game guide must be in the lead
  *    report's landing-path allow-list (docs/seo-reports/leads.sql). It may
  *    keep a retired slug, since leads from before the page went still carry
@@ -40,6 +44,10 @@
  *    (docs/seo-reports/gsc-revalidation.md), and they may list nothing else,
  *    but only until the date in its `url-list-checked-until` comment: after
  *    the run, those lists are a record of it.
+ * 5. Glossary records. Unique ids, slugs, names and aliases; related ids,
+ *    capability ids and paths that resolve; real dates in order; a review
+ *    record on every approved or published term (lib/content/glossary/
+ *    validate.ts, #155).
  *
  * Comments are ignored throughout. Exit 1 with one line per problem.
  */
@@ -48,6 +56,16 @@ import { readFileSync, readdirSync, statSync, existsSync } from "node:fs";
 import { registerHooks } from "node:module";
 import { join, relative } from "node:path";
 import { fileURLToPath } from "node:url";
+import {
+  ABOUT_GOLO,
+  claimProblems,
+  lineAt,
+  literalAt,
+  phraseRegex,
+  scan,
+  stripComments,
+} from "./content-claims.mjs";
+import { glossaryHrefProblem } from "./glossary-checks.mjs";
 
 const rootUrl = new URL("..", import.meta.url);
 const root = fileURLToPath(rootUrl);
@@ -82,6 +100,15 @@ const { capabilities } = await import(
 const { publishedPosts } = await import(
   new URL("../lib/content/blog.ts", import.meta.url).href
 );
+/** The glossary's records, its launch switch and its checks (#155). */
+const {
+  glossaryLive,
+  glossaryTerms,
+  publishedGlossaryTerms,
+  validateGlossary,
+} = await import(
+  new URL("../lib/content/glossary/index.ts", import.meta.url).href
+);
 /** The guides the route, the sitemap and llms.txt serve. */
 const { gameDetailSlugsWithContent: guideSlugs } = await import(
   new URL("../lib/content/gameDetail.ts", import.meta.url).href
@@ -105,6 +132,8 @@ function walk(dir, ext) {
 /** Every file with copy or links in it. */
 const files = [
   ...walk("lib/content", [".ts"]),
+  // The mockups' text and accessible names (soleman23/golowebsite#172).
+  "lib/mockData.ts",
   ...walk("components", [".tsx"]),
   ...walk("app", [".tsx", ".ts"]),
 ];
@@ -124,143 +153,17 @@ const EDUCATION = new Set([
 ]);
 
 /**
- * Comments blanked out, line numbers kept. A small scanner rather than a
- * regex, so a trailing `// note` goes but the "//" inside a URL string stays.
- * In .tsx files an apostrophe in JSX text ("don't") isn't a string quote, so
- * only " and ` open strings there; the project writes strings with "" anyway.
+ * Glossary term records are education too: defining an automatic press or a
+ * 90% allowance as golf is fine, saying GoLo does one is not. Their
+ * `goloNote` fields get the full check (content-claims.mjs PRODUCT_FIELDS).
+ * The hub's own copy (CTAs, labels) isn't under terms, so it's checked in
+ * full like any page.
  */
-function scan(source, file) {
-  const quotes = file.endsWith(".tsx") ? "\"`" : "\"'`";
-  let out = "";
-  let i = 0;
-  let quote = null;
-  let opened = 0;
-  /** [start, end) of each string literal's contents, quotes excluded. */
-  const literals = [];
-  while (i < source.length) {
-    const c = source[i];
-    const next = source[i + 1];
-    if (quote) {
-      out += c;
-      if (c === "\\") {
-        out += next ?? "";
-        i += 2;
-        continue;
-      }
-      if (c === quote || (c === "\n" && quote !== "`")) {
-        literals.push([opened, i]);
-        quote = null;
-      }
-      i += 1;
-    } else if (c === "/" && next === "/") {
-      while (i < source.length && source[i] !== "\n") {
-        out += " ";
-        i += 1;
-      }
-    } else if (c === "/" && next === "*") {
-      const end = source.indexOf("*/", i + 2);
-      const stop = end === -1 ? source.length : end + 2;
-      out += source.slice(i, stop).replace(/[^\n]/g, " ");
-      i = stop;
-    } else {
-      if (quotes.includes(c)) {
-        quote = c;
-        opened = i + 1;
-      }
-      out += c;
-      i += 1;
-    }
-  }
-  return { text: out, literals };
-}
+const isEducation = (file) =>
+  EDUCATION.has(file) ||
+  file === "lib/content/glossary/terms.ts" ||
+  file.startsWith("lib/content/glossary/terms/");
 
-const stripComments = (source, file) => scan(source, file).text;
-
-/** The literal span holding `index`, if any. */
-function literalAt(literals, index) {
-  let lo = 0;
-  let hi = literals.length - 1;
-  while (lo <= hi) {
-    const mid = (lo + hi) >> 1;
-    const [start, end] = literals[mid];
-    if (index < start) hi = mid - 1;
-    else if (index >= end) lo = mid + 1;
-    else return literals[mid];
-  }
-  return undefined;
-}
-
-const lineAt = (text, index) => text.slice(0, index).split("\n").length;
-
-/**
- * The sentence around a match: bounded by . ! ? quotes or newlines, and by a
- * colon or a comma only for negations (see denied()).
- */
-function sentenceAt(text, index, length) {
-  const stops = /[.!?"`\n]/;
-  let start = index;
-  while (start > 0 && !stops.test(text[start - 1])) start -= 1;
-  let end = index + length;
-  while (end < text.length && !stops.test(text[end])) end += 1;
-  return { text: text.slice(start, end), offset: index - start };
-}
-
-const ABOUT_GOLO = /\bGoLo\b|\bthe app\b/i;
-
-/**
- * A status anywhere in the phrase's clause says it isn't working. A
- * capability's own `statusPhrases` add to it for that capability only:
- * "coming soon" excuses the iPhone app, which is built and waiting on the
- * store, but never a planned or cut feature ("auto-presses coming soon").
- */
-const STATUS =
-  /\b(not built|isn['’]t built|aren['’]t built|on the list|not in the app|isn['’]t in the app|aren['’]t in the app|in testing|not yet|we cut|was cut|were cut|been cut|cut from|(does not|doesn['’]t) track)\b/i;
-
-const escapeRegex = (text) => text.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
-const statusFor = (cap) =>
-  cap.statusPhrases?.length
-    ? new RegExp(
-        STATUS.source.replace(/\)\\b$/, `|${cap.statusPhrases.map(escapeRegex).join("|")})\\b`),
-        "i",
-      )
-    : STATUS;
-
-/** A negation counts only before the phrase, in the same clause. */
-const NEGATION =
-  /\b(no|not|never|without|nor|doesn['’]t|does not|don['’]t|do not|isn['’]t|aren['’]t|won['’]t|can['’]t|cannot)\b/gi;
-/**
- * Where a negation's reach ends: any comma or colon too, so "no paper, no
- * pencil, GoLo works offline" isn't excused. A denied list after a colon
- * ("What it doesn't do today: a, b, c") carries a claim-ok marker instead.
- */
-const NEGATION_BREAK = /\b(?:and|but|so|while|though|although)\b|[;—–,:]/gi;
-/** Where a status's reach ends. */
-const STATUS_BREAK = /\bbut\b|[;—–]/gi;
-
-/** The stretch of `sentence` around [offset, offset + length) between breaks. */
-function clauseAt(sentence, offset, length, breaks) {
-  let start = 0;
-  let end = sentence.length;
-  for (const m of sentence.matchAll(breaks)) {
-    if (m.index + m[0].length <= offset) start = m.index + m[0].length;
-    else if (m.index >= offset + length) {
-      end = m.index;
-      break;
-    }
-  }
-  return { text: sentence.slice(start, end), offset: offset - start };
-}
-
-function denied(sentence, offset, length, status = STATUS) {
-  // "GoLo works offline; trip mode is not built" denies only trip mode, and
-  // "no setup required and GPS yardages" doesn't deny the yardages.
-  if (status.test(clauseAt(sentence, offset, length, STATUS_BREAK).text)) {
-    return true;
-  }
-  const clause = clauseAt(sentence, offset, length, NEGATION_BREAK);
-  NEGATION.lastIndex = 0;
-  return NEGATION.test(clause.text.slice(0, clause.offset));
-}
 
 const problems = [];
 const report = (file, line, message) =>
@@ -273,17 +176,6 @@ const notLive = capabilities.filter(
 /** Capabilities with phrases that overstate them, whatever their status. */
 const overclaimed = capabilities.filter((c) => c.overclaims?.length);
 
-function phraseRegex(phrase) {
-  const escaped = phrase
-    .replace(/[.*+?^${}()|[\]\\]/g, "\\$&")
-    // A phrase wrapped across lines (Prettier-wrapped JSX, a long template).
-    .replace(/ /g, "\\s+");
-  // Word edges only where the phrase starts or ends with a word character,
-  // and a plural counts: "auto-presses", "Nassau presses", "allowances".
-  const lead = /^\w/.test(phrase) ? "\\b" : "";
-  const tail = /\w$/.test(phrase) ? "(?:e?s)?\\b" : "";
-  return new RegExp(`${lead}${escaped}${tail}`, "gi");
-}
 
 /* ----------------------------------------------------------------- claims */
 
@@ -291,70 +183,12 @@ for (const file of files) {
   if (NOT_CLAIMS.has(file)) continue;
   const raw = read(file);
   if (raw.includes("claim-ok-file:")) continue;
-  const { text, literals } = scan(raw, file);
-  const rawLines = raw.split("\n");
-  const education = EDUCATION.has(file);
-  // Copy in a .ts file lives in string literals; anything else is code. A
-  // .tsx file also has JSX text, which isn't a literal, so there only the
-  // obvious code shapes are skipped: `styles.quota`, `quota: …`, `quota(…)`.
-  const isCode = (index, length) =>
-    file.endsWith(".tsx")
-      ? text[index - 1] === "." || /^\s*[:(=]/.test(text.slice(index + length))
-      : !literalAt(literals, index);
-
-  for (const cap of notLive) {
-    for (const phrase of cap.claimPhrases) {
-      for (const m of text.matchAll(phraseRegex(phrase))) {
-        const line = lineAt(text, m.index);
-        if (
-          rawLines[line - 1]?.includes("claim-ok:") ||
-          rawLines[line - 2]?.includes("claim-ok:")
-        ) {
-          continue;
-        }
-        if (isCode(m.index, m[0].length)) continue;
-        if (education) {
-          const [start, end] = literalAt(literals, m.index) ?? [0, 0];
-          if (!ABOUT_GOLO.test(text.slice(start, end))) continue;
-        }
-        const { text: sentence, offset } = sentenceAt(
-          text,
-          m.index,
-          m[0].length,
-        );
-        if (denied(sentence, offset, m[0].length, statusFor(cap))) continue;
-        report(
-          file,
-          line,
-          `"${m[0]}" presents ${cap.id} (${cap.status}) as working: "${sentence.trim().slice(0, 140)}"`,
-        );
-      }
-    }
-  }
-
-  // Overclaims count in blog posts and guides too: no golf advice says
-  // "fewest payments" without meaning the app. Only claim-ok excuses one:
-  // the clause-level denial logic is too loose for this ("don't send ten
-  // Venmos when GoLo finds the fewest payments" reads as a denial).
-  for (const cap of overclaimed) {
-    for (const phrase of cap.overclaims) {
-      for (const m of text.matchAll(phraseRegex(phrase))) {
-        const line = lineAt(text, m.index);
-        if (
-          rawLines[line - 1]?.includes("claim-ok:") ||
-          rawLines[line - 2]?.includes("claim-ok:")
-        ) {
-          continue;
-        }
-        if (isCode(m.index, m[0].length)) continue;
-        const { text: sentence } = sentenceAt(text, m.index, m[0].length);
-        report(
-          file,
-          line,
-          `"${m[0]}" overstates ${cap.id}: "${sentence.trim().slice(0, 140)}"`,
-        );
-      }
-    }
+  for (const { line, message } of claimProblems(file, raw, {
+    notLive,
+    overclaimed,
+    education: isEducation(file),
+  })) {
+    report(file, line, message);
   }
 }
 
@@ -450,7 +284,7 @@ for (const { file, line, field, value } of metadataStrings()) {
       }
     }
   }
-  if (EDUCATION.has(file) && !ABOUT_GOLO.test(value)) continue;
+  if (isEducation(file) && !ABOUT_GOLO.test(value)) continue;
   for (const cap of notLive) {
     for (const phrase of cap.claimPhrases) {
       if (phraseRegex(phrase).test(value)) {
@@ -502,15 +336,56 @@ const pages = new Set([
  */
 const HREF = /href\s*(?:=|:)\s*\{?\s*\\?(["'`])(\/[^"'`\\]*)/g;
 
+const glossaryLinks = {
+  live: glossaryLive,
+  publishedSlugs: new Set(publishedGlossaryTerms().map((t) => t.slug)),
+};
+
 for (const file of files) {
   const text = stripComments(read(file), file);
   for (const m of text.matchAll(HREF)) {
     const href = m[2];
     if (href.includes("${")) continue;
+    const glossaryProblem = glossaryHrefProblem(href, file, glossaryLinks);
+    if (glossaryProblem) {
+      report(file, lineAt(text, m.index), glossaryProblem);
+      continue;
+    }
     const target = href.split(/[?#]/)[0].replace(/\/$/, "") || "/";
     if (!pages.has(target)) {
       report(file, lineAt(text, m.index), `link to ${href}, which isn't a page`);
     }
+  }
+}
+
+/* --------------------------------------------------------------- glossary */
+
+/**
+ * Glossary records (spec §8.4, #155): ids, slugs, names and aliases unique;
+ * related ids, capability ids and paths resolve to records, the registry and
+ * served pages; dates real and in order; approved and published records carry
+ * their review record. Each problem names its record and points at its line.
+ */
+{
+  const termFiles = files.filter(
+    (f) => f === "lib/content/glossary/terms.ts" || f.startsWith("lib/content/glossary/terms/"),
+  );
+  const lineOf = (id) => {
+    for (const file of termFiles) {
+      const raw = read(file);
+      const at = Math.max(raw.indexOf(`id: "${id}"`), raw.indexOf(`id: '${id}'`));
+      if (at !== -1) return [file, lineAt(raw, at)];
+    }
+    return [termFiles[0] ?? "lib/content/glossary/terms.ts", 1];
+  };
+  const problemsFound = validateGlossary(glossaryTerms, {
+    capabilities,
+    servedPaths: pages,
+    today: new Date().toISOString().slice(0, 10),
+  });
+  for (const problem of problemsFound) {
+    const [file, line] = lineOf(problem.split(/[:,]/)[0]);
+    report(file, line, `glossary ${problem}`);
   }
 }
 
@@ -643,5 +518,5 @@ if (problems.length) {
 }
 
 console.log(
-  `✔ Content: no claims for ${notLive.length} non-live capabilities, no overclaims for ${overclaimed.length}, ${pages.size} link targets resolve, report lists match ${publishedPosts.length} posts and ${guideSlugs.length} guides${runSheet ? ` (run sheet until ${checkedUntil})` : ""}`,
+  `✔ Content: no claims for ${notLive.length} non-live capabilities, no overclaims for ${overclaimed.length}, ${pages.size} link targets resolve, ${glossaryTerms.length} glossary records valid (${glossaryLinks.publishedSlugs.size} published${glossaryLive ? "" : ", not live"}), report lists match ${publishedPosts.length} posts and ${guideSlugs.length} guides${runSheet ? ` (run sheet until ${checkedUntil})` : ""}`,
 );

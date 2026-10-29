@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * The /games and /blog filters are CSS keyed off <html data-filter>, and CSS
+ * The /games, /blog and /glossary filters are CSS keyed off <html data-filter>, and CSS
  * can't compare an ancestor's attribute with a descendant's — so each filter
  * id needs its own lines in the grid's stylesheet. That list is a manual copy
  * of ids that live in lib/content, and it has already drifted once (the "gear"
@@ -63,6 +63,14 @@ const blogIds = checked(
   blogBlock.split(",").filter((part) => part.trim()).length,
 );
 
+const glossaryPath = "lib/content/glossary/categories.ts";
+const glossaryBlock = arrayAfter(glossaryPath, "export const glossaryCategories");
+const glossaryIds = checked(
+  glossaryPath,
+  [...glossaryBlock.matchAll(/\bid:\s*["']([^"']+)["']/g)].map((m) => m[1]),
+  (glossaryBlock.match(/\{/g) ?? []).length,
+);
+
 const chip = (id) => `html[data-filter="${id}"] .chips [data-chip="${id}"]`;
 const shows = (part, id) => [
   `html[data-filter="${id}"] .${part} > [data-for="${id}"]`,
@@ -89,6 +97,28 @@ const pages = [
       chip(id),
     ],
   },
+  {
+    css: "components/sections/glossary/GlossaryControls.module.css",
+    ids: glossaryIds,
+    rules: (id) => [...shows("count", id), chip(id)],
+  },
+  // The glossary's entries and A–Z letters filter in their own stylesheets,
+  // which have no chips.
+  {
+    css: "components/sections/glossary/GlossaryDirectory.module.css",
+    ids: glossaryIds,
+    chips: false,
+    rules: (id) => [
+      `html[data-filter="${id}"] .directory [data-category]:not([data-category="${id}"])`,
+      `html[data-filter="${id}"] .group:not([data-cats~="${id}"])`,
+    ],
+  },
+  {
+    css: "components/sections/glossary/GlossaryAlphabet.module.css",
+    ids: glossaryIds,
+    chips: false,
+    rules: (id) => [`html[data-filter="${id}"] .list a:not([data-cats~="${id}"])`],
+  },
 ];
 
 const problems = [];
@@ -99,8 +129,9 @@ for (const page of pages) {
     .replace(/\s+/g, " ");
   const known = new Set(["all", ...page.ids]);
   const expected = [
-    chip("all"),
-    `html:not([data-filter]) .chips [data-chip="all"]`,
+    ...(page.chips === false
+      ? []
+      : [chip("all"), `html:not([data-filter]) .chips [data-chip="all"]`]),
     ...page.ids.flatMap(page.rules),
   ];
   for (const rule of expected) {
@@ -119,5 +150,5 @@ if (problems.length) {
   process.exit(1);
 }
 console.log(
-  `✔ Filter CSS covers ${gameIds.length} game filters and ${blogIds.length} blog topics`,
+  `✔ Filter CSS covers ${gameIds.length} game filters, ${blogIds.length} blog topics and ${glossaryIds.length} glossary categories`,
 );

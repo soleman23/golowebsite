@@ -86,3 +86,41 @@ export function websiteNode() {
     publisher: organizationRef,
   };
 }
+
+/** The glossary's DefinedTermSet (#163). */
+export const GLOSSARY_TERMSET_ID = `${siteConfig.url}/glossary#termset`;
+
+type GlossarySchemaTerm = { slug: string; term: string; shortDefinition: string };
+
+/**
+ * The glossary hub as a DefinedTermSet, one DefinedTerm per published term.
+ * Each term's name and description are the visible <dt> and short
+ * definition, and its URL is its anchor on the hub, since that's where they
+ * are visible (docs/glossary/canonical-map.md rule 4). No author, review or
+ * rating fields: reviewedBy is internal and nothing else here is real.
+ * Callers pass published terms only.
+ */
+export function glossaryTermSetNode(
+  terms: readonly GlossarySchemaTerm[],
+  copy: { name: string; description: string },
+) {
+  const hub = `${siteConfig.url}/glossary`;
+  return {
+    "@type": "DefinedTermSet",
+    "@id": GLOSSARY_TERMSET_ID,
+    name: copy.name,
+    description: copy.description,
+    url: hub,
+    inLanguage: "en",
+    publisher: organizationRef,
+    isPartOf: websiteRef,
+    hasDefinedTerm: terms.map((t) => ({
+      "@type": "DefinedTerm",
+      "@id": `${hub}#${t.slug}`,
+      name: t.term,
+      description: t.shortDefinition,
+      url: `${hub}#${t.slug}`,
+      inDefinedTermSet: { "@id": GLOSSARY_TERMSET_ID },
+    })),
+  };
+}

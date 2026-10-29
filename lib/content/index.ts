@@ -19,3 +19,4 @@ export * from "./utility";
 export * from "./heroPhotos";
 export * from "./about";
 export * from "./llms";
+export * from "./glossary";
