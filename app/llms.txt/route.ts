@@ -3,9 +3,11 @@ import {
   capabilitiesWithStatus,
   findGameDetail,
   gameDetailSlugsWithContent,
+  glossaryLive,
   llmsCopy,
   navLinks,
   postDescription,
+  publishedGlossaryTerms,
   publishedPosts,
 } from "@/lib/content";
 import { siteConfig } from "@/lib/siteConfig";
@@ -73,6 +75,15 @@ export function GET() {
         `- [${post.title}](${absolute(`/blog/${post.slug}`)}): ${postDescription(post)}`,
     ),
     "",
+    // Only once the glossary is live and has published terms (#163).
+    ...(glossaryLive && publishedGlossaryTerms().length
+      ? [
+          `## ${llmsCopy.sections.glossary}`,
+          "",
+          `- [Golf Glossary](${absolute("/glossary")}): ${llmsCopy.glossary}`,
+          "",
+        ]
+      : []),
   ];
 
   return new Response(lines.join("\n"), {

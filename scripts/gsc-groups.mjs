@@ -87,6 +87,17 @@ export const QUERY_GROUPS = [
     test: (q) =>
       /\b(skins?|wolf|bingo|bango|bongo|closest to (the )?pin|longest drive|best ball|best score|birdies?|junk|dots|greenies?|press|presses|pressing|side (games?|bets?)|golf (bets?|betting|games?|gambling|wagers?))\b/.test(q),
   },
+  {
+    // Definition and terminology searches the groups above don't claim: "what
+    // is a mulligan", "golf slang", "stroke index meaning". The glossary's
+    // checkpoints (#167) read this group. A definition query about a named
+    // game or a handicap term stays in that group, so earlier reports still
+    // compare.
+    name: "Glossary / definitions",
+    test: (q) =>
+      /\b(glossary|terms?|terminology|slang|lingo|jargon|meaning|means|mean|definitions?|defined?)\b/.test(q) ||
+      /^(what('?s| is| are| does)|define)\b/.test(q),
+  },
   { name: "Unassigned", test: () => true },
 ];
 
@@ -102,6 +113,7 @@ export function pageGroup(url) {
   const path = new URL(url).pathname.replace(/\/$/, "") || "/";
   if (path.startsWith("/games/")) return "Guides";
   if (path.startsWith("/blog/")) return "Posts";
+  if (path === "/glossary") return "Glossary";
   return "Core pages";
 }
 

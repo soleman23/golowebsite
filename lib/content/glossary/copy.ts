@@ -10,6 +10,10 @@ import { findPost } from "../blog";
 import { isGameSlug, rosterGame } from "../games";
 import type { NoteKind } from "./types";
 
+/** The DefinedTermSet's name (#163). Title and description are in the page's
+ * pageMetadata call, where the content check reads them. */
+export const glossarySchemaName = "GoLo Golf Glossary";
+
 /** The H1 is spec §5.2's: "Golf Glossary: Terms, Slang & Games Explained". */
 export const glossaryHero = {
   kicker: "KNOW THE GAME. TALK THE TALK.",
