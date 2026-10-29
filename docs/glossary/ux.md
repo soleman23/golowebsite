@@ -2,7 +2,7 @@
 
 How `/glossary` behaves at every breakpoint and in every flow in spec §5.3, precisely enough to build (#156, #157) and to test (QA GL-QA-01 to 14). Issue #153 (GLS-002). Categories and counts come from `inventory.md`; canonicals from `canonical-map.md`.
 
-**Status:** prepared October 29, 2026. The three owner decisions below are recorded; everything else is a design decision made here for review.
+**Status:** prepared October 29, 2026. The owner accepted D1–D8 and the "Changes made while building" list on October 29, 2026.
 
 ## Owner decisions (October 28, 2026)
 
