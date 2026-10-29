@@ -847,6 +847,7 @@ const closestToPin: GameDetailCopy = {
     { n: "1", title: "Mark the holes and the amount", body: "Usually all four par 3s, at $5 a head. Some groups mark one signature hole." },
     { n: "2", title: "Tee shots only", body: "Only the ball you hit from the tee counts. Reload and you are out of the running." },
     { n: "3", title: "Closest to the flag wins", body: "Nearest ball takes the hole. Greenie rules add that it has to be on the green." },
+    // capabilities.ts closest-to-pin: a hole nobody wins carries.
     { n: "4", title: "Then make your par", body: "Under greenie rules, a three-putt hands it to the next closest, or it carries. The group makes that call before the scorer marks a winner." },
     { n: "5", title: "GoLo settles the hole", body: "Record the winner on the hole and GoLo nets it into the settle-up with every other game. GoLo keeps the tally; it never holds money." },
   ],
@@ -880,6 +881,7 @@ const closestToPin: GameDetailCopy = {
       stats: [
         { label: "GREENIES", status: "3", value: "of 4", tone: "good" },
         { label: "BIGGEST", status: "$30", value: "hole 12", tone: "good" },
+        // capabilities.ts closest-to-pin: a hole nobody wins carries.
         { label: "CARRIED", status: "1", value: "hole 7", tone: "neutral" },
       ],
       callout: { label: "HOUSE RULE", note: "Tom’s three-putt carried hole 7" },
