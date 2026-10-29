@@ -422,7 +422,7 @@ const skins: GameDetailCopy = {
     { icon: "stack", title: "The carryover", body: "Every halved hole rolls forward. GoLo shows the live skins on the scoring screen before anyone stands over the next putt." },
     { icon: "pin", title: "Validation rules", body: "Make players earn a big carry with birdie-to-win or a par minimum on carried skins." },
     { icon: "shield", title: "Net skins", body: "Play off handicaps and GoLo allocates strokes by stroke index, hole by hole." },
-    { icon: "dice", title: "Stack the side games", body: "Run skins beside greenies, barkies, or a birdie bounty, then settle once." },
+    { icon: "dice", title: "Stack the side games", body: "Run skins beside a Nassau, Best Score or Wolf, then settle once." },
   ],
   tips: [
     { tone: "good", title: "Go at the pin when the carry is big", body: "A big carry rewards one aggressive swing. Safe golf wins nothing when two other players are also making par." },
