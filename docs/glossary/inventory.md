@@ -54,8 +54,8 @@ Rule numbers below were assigned from the structure of the current editions as t
 
 Two edition notes for whoever reviews:
 
-1. **Rules of Golf.** Revisions have taken effect on January 1 every four years (2019, 2023). If that cycle holds, a revised edition takes effect January 1, 2027, likely before or near this glossary's launch. The fact-check confirms which edition is current at the planned publication date and cites that one. GLS-010 (#166) rechecks at publication.
-2. **Rules of Handicapping.** The 2024 revision is the one the site's handicap post already cites. Confirm it's still current at publication.
+1. **Rules of Golf.** The 2023 edition is in force. *Checked October 29, 2026:* the R&A says the next edition will be published on 1 January 2028 ("New and Updated Model Local Rules for 2026", randa.org, 14 January 2026), so the four-year cycle doesn't put a new edition in 2027. The latest clarifications (R&A and USGA, 2 October 2026) are clarifications of the 2023 Rules and change no definition the MVP records use. GLS-010 (#166) still rechecks at publication.
+2. **Rules of Handicapping.** The 2024 edition is in force; no 2026 or 2027 revision is announced (USGA Handicapping home, checked October 29, 2026). The old `usga.org/handicapping/roh/` address returns a 404: cite the rule's own page under `usga.org/handicapping/roh/Content/rules/`. Confirm it's still current at publication.
 
 Existing site content already cites RoH Appendix C (allowances), Appendix G (Course and Slope Rating) and Rule 3.1b (net double bogey) in `/blog/index-vs-course-handicap`. Those links are on the site today; they haven't been re-opened for this inventory.
 

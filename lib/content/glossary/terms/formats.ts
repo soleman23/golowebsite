@@ -2,27 +2,22 @@
  * Games and formats (#158, GLS-006a). Ten MVP records from
  * docs/glossary/inventory.md § B.
  *
- * DRAFTS. Written October 29, 2026; no review stage has happened. The rules
- * sources below are references to check, not checks: none was opened (the
- * session couldn't reach usga.org or randa.org), so none has `accessedOn`.
- * GoLo notes are left out until the owner answers #154; the product audit
- * stage adds them from the registry.
+ * IN REVIEW. Drafted October 29, 2026 and revised the same day against the
+ * primary sources: every source with `accessedOn` was opened that day by
+ * the agent preparing the rules fact-check (docs/glossary/review-packet.md
+ * records what each says and the recomputed examples). No review stage is
+ * signed: the owner signs the rules fact-check, the product audit and
+ * approval (editorial-review.md), so no record has a review log yet.
+ *
+ * GoLo notes come from live registry entries only (game-library,
+ * live-skins, scramble, overall-match-presses); Four-Ball, Foursomes, Match
+ * Play and Stableford get none, only the "games GoLo scores" link.
  *
  * Where a guide owns the intent (canonical-map.md), the entry is a short
  * definition and the guide link, and doesn't restate the guide's rules.
  */
 
-import type { GlossarySource, GlossaryTerm } from "../types";
-
-const RULES_OF_GOLF = "https://www.randa.org/en/rog/the-rules-of-golf";
-const RULES_OF_HANDICAPPING = "https://www.usga.org/handicapping/roh/";
-
-const rog = (ref: string): GlossarySource => ({
-  title: "Rules of Golf (R&A and USGA)",
-  url: RULES_OF_GOLF,
-  kind: "official-rules",
-  ref,
-});
+import type { GlossaryTerm } from "../types";
 
 export const formatsTerms: GlossaryTerm[] = [
   {
@@ -36,18 +31,33 @@ export const formatsTerms: GlossaryTerm[] = [
     shortDefinition:
       "A game where every hole is worth a skin, won only by the player with the lowest score outright. If the low score is tied, nobody wins the hole, and in most groups the skin carries to the next one.",
     example:
-      "Four players at $5 a skin halve holes 1 to 3. Your birdie on the 4th takes four skins: $60, $20 from each of the other three.",
+      "Four players at $5 a skin tie holes 1 to 3. Your birdie on the 4th takes four skins: $60, $20 from each of the other three.",
     ruleNote: {
       kind: "house-rules",
       text: "Groups set whether ties carry, whether skins are gross or net, and what happens to skins still carried after the 18th.",
     },
-    relatedTermIds: ["nassau", "best-score"],
+    goloNote:
+      "GoLo builds skins and carries hole by hole on the scoring screen and the live leaderboard, and nets them into the settle-up with the round's other games.",
+    relatedTermIds: ["carryover", "push", "nassau", "best-score"],
     relatedContentPaths: ["/blog/skins-carryover"],
     canonical: { kind: "existing", path: "/games/skins" },
-    capabilityIds: ["game-library"],
+    capabilityIds: ["game-library", "live-skins"],
     ctaIntent: "games",
-    sources: [],
-    status: "draft",
+    sources: [
+      {
+        title: "Golf.com",
+        url: "https://golf.com/news/skins-game-2025-everything-to-know-format-money/",
+        kind: "editorial",
+        accessedOn: "2026-10-29",
+      },
+      {
+        title: "LINKS Magazine",
+        url: "https://linksmagazine.com/6-common-golf-games-explained/",
+        kind: "editorial",
+        accessedOn: "2026-10-29",
+      },
+    ],
+    status: "in-review",
   },
   {
     id: "nassau",
@@ -58,20 +68,35 @@ export const formatsTerms: GlossaryTerm[] = [
     tags: ["match-play"],
     priority: "mvp",
     shortDefinition:
-      "Three matches in one round, each for the same amount: the front nine, the back nine and the full eighteen. Each is match play, counted in holes won rather than strokes.",
+      "Three matches in one round, each for the same amount: the front nine, the back nine and the full eighteen. Most groups play each as match play, counted in holes won rather than strokes.",
     example:
       "In a $5 Nassau you win the front 2 up, halve the back and win the eighteen 2 up: $10 for the day. Lose all three and you're down $15, the most a straight Nassau can cost.",
     ruleNote: {
       kind: "house-rules",
-      text: "There is no governing body for the Nassau. Whether strokes count, whether presses are allowed and when the eighteen closes are up to the group.",
+      text: "No governing body writes rules for the Nassau. Whether strokes count, whether presses are allowed and when the eighteen closes are up to the group.",
     },
+    goloNote:
+      "GoLo plays the three matches and nets them into the settle-up. Its Nassau takes no presses; presses are on the Overall Match game.",
     relatedTermIds: ["match-play", "press"],
     relatedContentPaths: ["/blog/nassau"],
     canonical: { kind: "existing", path: "/games/nassau" },
-    capabilityIds: ["game-library", "nassau-presses"],
+    capabilityIds: ["game-library", "nassau-presses", "overall-match-presses"],
     ctaIntent: "games",
-    sources: [],
-    status: "draft",
+    sources: [
+      {
+        title: "Golf Monthly",
+        url: "https://www.golfmonthly.com/features/the-game/what-is-a-nassau-in-golf",
+        kind: "editorial",
+        accessedOn: "2026-10-29",
+      },
+      {
+        title: "National Club Golfer",
+        url: "https://www.nationalclubgolfer.com/club/glossary/nassau-golf-format-explained/",
+        kind: "editorial",
+        accessedOn: "2026-10-29",
+      },
+    ],
+    status: "in-review",
   },
   {
     id: "wolf",
@@ -94,8 +119,21 @@ export const formatsTerms: GlossaryTerm[] = [
     canonical: { kind: "existing", path: "/games/wolf" },
     capabilityIds: ["game-library"],
     ctaIntent: "games",
-    sources: [],
-    status: "draft",
+    sources: [
+      {
+        title: "Golf.com",
+        url: "https://golf.com/travel/are-you-the-leader-of-your-foursome-try-this-golf-game/",
+        kind: "editorial",
+        accessedOn: "2026-10-29",
+      },
+      {
+        title: "LINKS Magazine",
+        url: "https://linksmagazine.com/6-common-golf-games-explained/",
+        kind: "editorial",
+        accessedOn: "2026-10-29",
+      },
+    ],
+    status: "in-review",
   },
   {
     id: "bingo-bango-bongo",
@@ -108,7 +146,7 @@ export const formatsTerms: GlossaryTerm[] = [
     shortDefinition:
       "A points game with three points on every hole: one for the first ball on the green (bingo), one for the closest to the pin once every ball is on (bango), and one for the first ball in the hole (bongo).",
     example:
-      "Eighteen holes is 54 points. A four-point lead at the end is a normal result, which is why the game suits a group with a 6 and a 22 in it.",
+      "Eighteen holes hold 54 points. The 22-handicapper who lays up short of the green on the 7th still plays first from there, so bingo is theirs to lose, which is why the game suits a group with a 6 and a 22 in it.",
     ruleNote: {
       kind: "house-rules",
       text: "Groups decide whether the fringe counts as on the green. Most keep strict order of play, farthest from the hole first, so the points go to the right player.",
@@ -118,8 +156,21 @@ export const formatsTerms: GlossaryTerm[] = [
     canonical: { kind: "existing", path: "/games/bingo-bango-bongo" },
     capabilityIds: ["game-library"],
     ctaIntent: "games",
-    sources: [],
-    status: "draft",
+    sources: [
+      {
+        title: "Golf Digest",
+        url: "https://www.golfdigest.com/story/how-to-play-bingo-bango-bongo-golf-games-explained",
+        kind: "editorial",
+        accessedOn: "2026-10-29",
+      },
+      {
+        title: "LINKS Magazine",
+        url: "https://linksmagazine.com/6-common-golf-games-explained/",
+        kind: "editorial",
+        accessedOn: "2026-10-29",
+      },
+    ],
+    status: "in-review",
   },
   {
     id: "best-score",
@@ -134,14 +185,22 @@ export const formatsTerms: GlossaryTerm[] = [
     explanation:
       "It isn't best ball. Best ball, or Four-Ball, is a team format where a side counts its better score on each hole. Best Score compares each player's own total.",
     example:
-      "Four players put in $10 each and play net. A net 70 takes the $40. With two places, the top two take $20 each.",
+      "Four players at $10 each, played net. The low net score, a 70, takes $10 from each of the other three and finishes $30 up. Split two ways, the top two each finish $10 up and the other two $10 down.",
     relatedTermIds: ["four-ball", "skins"],
     relatedContentPaths: [],
     canonical: { kind: "existing", path: "/games/best-score" },
     capabilityIds: ["game-library"],
     ctaIntent: "games",
-    sources: [],
-    status: "draft",
+    sources: [
+      {
+        title: "Rules of Golf, 2023 edition (R&A)",
+        url: "https://www.randa.org/en/rog/definitions",
+        kind: "official-rules",
+        ref: "Definitions: Four-Ball",
+        accessedOn: "2026-10-29",
+      },
+    ],
+    status: "in-review",
   },
   {
     id: "scramble",
@@ -159,6 +218,8 @@ export const formatsTerms: GlossaryTerm[] = [
       kind: "handicapping",
       text: "A scramble team's handicap is usually a set percentage of each player's Course Handicap, and the percentages depend on the team's size.",
     },
+    goloNote:
+      "GoLo scores a scramble for up to 12 players in 2 to 6 teams, with team handicaps from the WHS percentages, played gross, or set by the organizer. It doesn't count Texas scramble drives and doesn't score a shamble.",
     relatedTermIds: ["four-ball", "foursomes"],
     relatedContentPaths: [],
     canonical: { kind: "existing", path: "/games/scramble" },
@@ -166,13 +227,26 @@ export const formatsTerms: GlossaryTerm[] = [
     ctaIntent: "games",
     sources: [
       {
-        title: "Rules of Handicapping (USGA)",
-        url: RULES_OF_HANDICAPPING,
+        title: "Rules of Handicapping, 2024 edition (USGA)",
+        url: "https://www.usga.org/handicapping/roh/Content/rules/Appendix%20C%20Handicap%20Allowances.htm",
         kind: "handicapping",
-        ref: "Appendix C, handicap allowances for scrambles",
+        ref: "Appendix C",
+        accessedOn: "2026-10-29",
+      },
+      {
+        title: "Merriam-Webster",
+        url: "https://www.merriam-webster.com/dictionary/scramble",
+        kind: "editorial",
+        accessedOn: "2026-10-29",
+      },
+      {
+        title: "Golf.com",
+        url: "https://golf.com/news/game-set-and-match-six-fun-game-formats-for-your-weekend-round/",
+        kind: "editorial",
+        accessedOn: "2026-10-29",
       },
     ],
-    status: "draft",
+    status: "in-review",
   },
   {
     id: "four-ball",
@@ -196,8 +270,43 @@ export const formatsTerms: GlossaryTerm[] = [
     relatedContentPaths: ["/games/wolf"],
     canonical: { kind: "hub", anchor: "four-ball" },
     capabilityIds: [],
-    sources: [rog("Definitions: Four-Ball; Rule 23")],
-    status: "draft",
+    ctaIntent: "games",
+    sources: [
+      {
+        title: "Rules of Golf, 2023 edition (R&A)",
+        url: "https://www.randa.org/en/rog/definitions",
+        kind: "official-rules",
+        ref: "Definitions: Four-Ball; Rule 23.2a",
+        accessedOn: "2026-10-29",
+      },
+      {
+        title: "Rules of Handicapping, 2024 edition (USGA)",
+        url: "https://www.usga.org/handicapping/roh/Content/rules/Appendix%20C%20Handicap%20Allowances.htm",
+        kind: "handicapping",
+        ref: "Appendix C",
+        accessedOn: "2026-10-29",
+      },
+      {
+        title: "Rules of Golf, 2023 edition (R&A)",
+        url: "https://www.randa.org/en/rog/the-rules-of-golf/rule-23",
+        kind: "official-rules",
+        ref: "Rule 23",
+        accessedOn: "2026-10-29",
+      },
+      {
+        title: "Merriam-Webster",
+        url: "https://www.merriam-webster.com/dictionary/best%20ball",
+        kind: "editorial",
+        accessedOn: "2026-10-29",
+      },
+      {
+        title: "Merriam-Webster",
+        url: "https://www.merriam-webster.com/dictionary/four-ball",
+        kind: "editorial",
+        accessedOn: "2026-10-29",
+      },
+    ],
+    status: "in-review",
   },
   {
     id: "foursomes",
@@ -221,8 +330,30 @@ export const formatsTerms: GlossaryTerm[] = [
     relatedContentPaths: [],
     canonical: { kind: "hub", anchor: "foursomes" },
     capabilityIds: [],
-    sources: [rog("Definitions: Foursomes; Rule 22")],
-    status: "draft",
+    ctaIntent: "games",
+    sources: [
+      {
+        title: "Rules of Golf, 2023 edition (R&A)",
+        url: "https://www.randa.org/en/rog/the-rules-of-golf/rule-22",
+        kind: "official-rules",
+        ref: "Definitions: Foursomes; Rule 22.3; Rule 22",
+        accessedOn: "2026-10-29",
+      },
+      {
+        title: "Rules of Handicapping, 2024 edition (USGA)",
+        url: "https://www.usga.org/handicapping/roh/Content/rules/Appendix%20C%20Handicap%20Allowances.htm",
+        kind: "handicapping",
+        ref: "Appendix C",
+        accessedOn: "2026-10-29",
+      },
+      {
+        title: "Merriam-Webster",
+        url: "https://www.merriam-webster.com/dictionary/foursome",
+        kind: "editorial",
+        accessedOn: "2026-10-29",
+      },
+    ],
+    status: "in-review",
   },
   {
     id: "match-play",
@@ -233,19 +364,34 @@ export const formatsTerms: GlossaryTerm[] = [
     tags: ["match-play"],
     priority: "mvp",
     shortDefinition:
-      "A form of play where a player or side plays against another hole by hole. The lower score wins the hole, and the match goes to whoever has won more holes.",
+      "A form of play where a player or side plays another hole by hole. The lower score wins the hole, and the match is won when one side is ahead by more holes than are left to play.",
     example:
       "A triple bogey loses you one hole, the same as losing it by one stroke. Three up with two to play, the match is over.",
     ruleNote: {
       kind: "rules",
-      text: "Rule 3.2 of the Rules of Golf covers match play, including conceding a stroke, a hole or the match.",
+      text: "Rule 3.2 of the Rules of Golf covers match play: how a hole and the match are won (3.2a) and conceding a stroke, a hole or the match (3.2b).",
     },
     relatedTermIds: ["nassau", "four-ball", "foursomes"],
     relatedContentPaths: ["/games/nassau"],
     canonical: { kind: "hub", anchor: "match-play" },
     capabilityIds: [],
-    sources: [rog("Definitions: Match Play; Rule 3.2")],
-    status: "draft",
+    ctaIntent: "games",
+    sources: [
+      {
+        title: "Rules of Golf, 2023 edition (R&A)",
+        url: "https://www.randa.org/en/rog/the-rules-of-golf/rule-3",
+        kind: "official-rules",
+        ref: "Definitions: Match Play; Rule 3.2a(1); Rule 3.2a(3); Rule 3.2b",
+        accessedOn: "2026-10-29",
+      },
+      {
+        title: "Merriam-Webster",
+        url: "https://www.merriam-webster.com/dictionary/match%20play",
+        kind: "editorial",
+        accessedOn: "2026-10-29",
+      },
+    ],
+    status: "in-review",
   },
   {
     id: "stableford",
@@ -267,7 +413,22 @@ export const formatsTerms: GlossaryTerm[] = [
     relatedContentPaths: [],
     canonical: { kind: "hub", anchor: "stableford" },
     capabilityIds: [],
-    sources: [rog("Definitions: Stableford; Rule 21.1")],
-    status: "draft",
+    ctaIntent: "games",
+    sources: [
+      {
+        title: "Rules of Golf, 2023 edition (R&A)",
+        url: "https://www.randa.org/en/rog/the-rules-of-golf/rule-21",
+        kind: "official-rules",
+        ref: "Definitions: Stableford; Rule 21.1b(1) table; Rule 21.1b, 21.1c",
+        accessedOn: "2026-10-29",
+      },
+      {
+        title: "Golf.com",
+        url: "https://golf.com/news/game-set-and-match-six-fun-game-formats-for-your-weekend-round/",
+        kind: "editorial",
+        accessedOn: "2026-10-29",
+      },
+    ],
+    status: "in-review",
   },
 ];

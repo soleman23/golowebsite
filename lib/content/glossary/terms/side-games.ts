@@ -2,13 +2,21 @@
  * Side games (#159, GLS-006b). Ten MVP records from
  * docs/glossary/inventory.md § C.
  *
- * DRAFTS. Written October 29, 2026; no review stage has happened.
+ * IN REVIEW. Drafted October 29, 2026 and revised the same day against the
+ * primary sources: every source with `accessedOn` was opened that day by
+ * the agent preparing the rules fact-check (docs/glossary/review-packet.md
+ * records what each says and the recomputed examples). No review stage is
+ * signed: the owner signs the rules fact-check, the product audit and
+ * approval (editorial-review.md), so no record has a review log yet.
  *
  * GoLo notes follow the registry as corrected by the owner on October 29,
  * 2026: presses on Overall Match only, called, never automatic, a press on
  * a press allowed with no more than two live (#179); settle-up never holds
- * or moves money; no measured distances. There is no junk board (#172), so
- * Junk, Greenie and Sandy are golf education with no GoLo note.
+ * or moves money; no measured distances. Closest to the Pin cites
+ * closest-to-pin (#194): the scorer marks the winner, par-to-win is the
+ * group's call. Whether an unwon hole carries is in open PR #195 and isn't
+ * claimed here. There is no junk board (#172), so Junk, Greenie and Sandy
+ * are golf education with no GoLo note.
  */
 
 import type { GlossaryTerm } from "../types";
@@ -25,7 +33,7 @@ export const sideGamesTerms: GlossaryTerm[] = [
     shortDefinition:
       "A new match started while an existing one is still running, usually called by the side that is behind. It covers only the holes left, and the original match carries on underneath it.",
     example:
-      "Two down after six holes of a $5 front nine, you press on the 7th tee. Holes 7 to 9 are now a second $5 match, and the front nine is still a match of its own.",
+      "In a $10 back nine you're two down with four to play. You press on the 15th tee: holes 15 to 18 are a second $10 match, and the back nine carries on as a match of its own.",
     ruleNote: {
       kind: "house-rules",
       text: "Groups decide whether presses are called or automatic, when they can be called, and whether a press can itself be pressed.",
@@ -36,9 +44,16 @@ export const sideGamesTerms: GlossaryTerm[] = [
     relatedContentPaths: ["/games/nassau"],
     canonical: { kind: "existing", path: "/blog/pressing" },
     capabilityIds: ["overall-match-presses", "auto-press", "nassau-presses"],
-    ctaIntent: "games",
-    sources: [],
-    status: "draft",
+    ctaIntent: "settle-up",
+    sources: [
+      {
+        title: "Golf Monthly",
+        url: "https://www.golfmonthly.com/features/the-game/what-is-a-nassau-in-golf",
+        kind: "editorial",
+        accessedOn: "2026-10-29",
+      },
+    ],
+    status: "in-review",
   },
   {
     id: "re-press",
@@ -51,7 +66,7 @@ export const sideGamesTerms: GlossaryTerm[] = [
     shortDefinition:
       "A press on a press: a new match started by the side that has fallen behind in a press that is already running.",
     example:
-      "You press at two down on the 14th, then go two down in that press by the 16th. Pressing again starts a third match for the 17th and 18th, on top of the other two.",
+      "You press on the 14th tee, then lose the 14th and 16th and halve the 15th. Two down in the press, you press it on the 17th tee: a third match for the 17th and 18th, on top of the other two.",
     ruleNote: {
       kind: "house-rules",
       text: "Some groups allow it, some cap the number of presses, and some never allow a press on a press. Agree before the first tee.",
@@ -62,9 +77,16 @@ export const sideGamesTerms: GlossaryTerm[] = [
     relatedContentPaths: ["/blog/pressing"],
     canonical: { kind: "hub", anchor: "re-press" },
     capabilityIds: ["overall-match-presses"],
-    ctaIntent: "games",
-    sources: [],
-    status: "draft",
+    ctaIntent: "settle-up",
+    sources: [
+      {
+        title: "CaddieHQ",
+        url: "https://www.caddiehq.com/resources/what-does-pressing-mean-in-golf",
+        kind: "editorial",
+        accessedOn: "2026-10-29",
+      },
+    ],
+    status: "in-review",
   },
   {
     id: "carryover",
@@ -82,13 +104,21 @@ export const sideGamesTerms: GlossaryTerm[] = [
       kind: "house-rules",
       text: "Groups decide whether ties carry at all and what happens to anything still carried after the 18th.",
     },
+    goloNote: "GoLo shows skins and carries building hole by hole on the scoring screen and the live leaderboard.",
     relatedTermIds: ["skins", "push"],
     relatedContentPaths: ["/games/skins"],
     canonical: { kind: "existing", path: "/blog/skins-carryover" },
-    capabilityIds: ["game-library"],
-    ctaIntent: "games",
-    sources: [],
-    status: "draft",
+    capabilityIds: ["game-library", "live-skins"],
+    ctaIntent: "settle-up",
+    sources: [
+      {
+        title: "Golf.com",
+        url: "https://golf.com/news/skins-game-2025-everything-to-know-format-money/",
+        kind: "editorial",
+        accessedOn: "2026-10-29",
+      },
+    ],
+    status: "in-review",
   },
   {
     id: "push",
@@ -101,15 +131,29 @@ export const sideGamesTerms: GlossaryTerm[] = [
     shortDefinition:
       "A tie that leaves things where they were: nobody wins and nobody owes. In a game that carries, the value rolls on to the next hole.",
     explanation:
-      "Push is the side-game word. In match play the Rules of Golf call a tied hole halved.",
+      "Push is the side-game word. In match play the Rules of Golf say a hole is tied, or halved.",
     example:
       "In a $5 Nassau the eighteen-hole match finishes all square. That match is a push, and nobody pays for it.",
     relatedTermIds: ["carryover", "skins", "match-play"],
     relatedContentPaths: ["/games/skins"],
     canonical: { kind: "hub", anchor: "push" },
     capabilityIds: [],
-    sources: [],
-    status: "draft",
+    sources: [
+      {
+        title: "Rules of Golf, 2023 edition (R&A)",
+        url: "https://www.randa.org/en/rog/the-rules-of-golf/rule-3",
+        kind: "official-rules",
+        ref: "Rule 3.2a(2)",
+        accessedOn: "2026-10-29",
+      },
+      {
+        title: "National Club Golfer",
+        url: "https://www.nationalclubgolfer.com/club/glossary/nassau-golf-format-explained/",
+        kind: "editorial",
+        accessedOn: "2026-10-29",
+      },
+    ],
+    status: "in-review",
   },
   {
     id: "greenie",
@@ -120,7 +164,7 @@ export const sideGamesTerms: GlossaryTerm[] = [
     tags: ["junk"],
     priority: "mvp",
     shortDefinition:
-      "A side point for the tee shot closest to the hole on a par 3, usually only if the ball finishes on the green and its player makes par or better.",
+      "A side point for the tee shot closest to the hole on a par 3. Most groups only pay it if the ball is on the green, and many also require a par or better.",
     example:
       "On the 7th your tee shot stops eight feet away and you two-putt for par: that's the greenie. Hit it closer and make bogey, and in most groups nobody gets it.",
     ruleNote: {
@@ -131,8 +175,21 @@ export const sideGamesTerms: GlossaryTerm[] = [
     relatedContentPaths: ["/games/closest-to-pin"],
     canonical: { kind: "hub", anchor: "greenie" },
     capabilityIds: [],
-    sources: [],
-    status: "draft",
+    sources: [
+      {
+        title: "Golf Monthly",
+        url: "https://www.golfmonthly.com/features/the-game/oi-hacker-stop-whiffing-and-find-the-dance-floor-or-youll-make-a-snowman-an-a-z-glossary-of-golf-slang",
+        kind: "editorial",
+        accessedOn: "2026-10-29",
+      },
+      {
+        title: "Golf.com",
+        url: "https://practical-golf.com/golf-terms",
+        kind: "editorial",
+        accessedOn: "2026-10-29",
+      },
+    ],
+    status: "in-review",
   },
   {
     id: "sandy",
@@ -154,8 +211,21 @@ export const sideGamesTerms: GlossaryTerm[] = [
     relatedContentPaths: [],
     canonical: { kind: "hub", anchor: "sandy" },
     capabilityIds: [],
-    sources: [],
-    status: "draft",
+    sources: [
+      {
+        title: "Golf News Net",
+        url: "https://thegolfnewsnet.com/ryan_ballengee/2022/08/30/golf-terms-what-is-a-sandy-in-golf-and-what-does-it-mean-to-get-one-126969/",
+        kind: "editorial",
+        accessedOn: "2026-10-29",
+      },
+      {
+        title: "Golf Monthly",
+        url: "https://www.golfmonthly.com/features/the-game/oi-hacker-stop-whiffing-and-find-the-dance-floor-or-youll-make-a-snowman-an-a-z-glossary-of-golf-slang",
+        kind: "editorial",
+        accessedOn: "2026-10-29",
+      },
+    ],
+    status: "in-review",
   },
   {
     id: "junk",
@@ -177,8 +247,21 @@ export const sideGamesTerms: GlossaryTerm[] = [
     relatedContentPaths: ["/blog/who-pays-first"],
     canonical: { kind: "hub", anchor: "junk" },
     capabilityIds: [],
-    sources: [],
-    status: "draft",
+    sources: [
+      {
+        title: "Golf Monthly",
+        url: "https://www.golfmonthly.com/features/the-game/oi-hacker-stop-whiffing-and-find-the-dance-floor-or-youll-make-a-snowman-an-a-z-glossary-of-golf-slang",
+        kind: "editorial",
+        accessedOn: "2026-10-29",
+      },
+      {
+        title: "LINKS Magazine",
+        url: "https://linksmagazine.com/6-common-golf-games-explained/",
+        kind: "editorial",
+        accessedOn: "2026-10-29",
+      },
+    ],
+    status: "in-review",
   },
   {
     id: "settle-up",
@@ -191,7 +274,7 @@ export const sideGamesTerms: GlossaryTerm[] = [
     shortDefinition:
       "Squaring up after the round: working out what each player is up or down across every game, then who owes whom.",
     example:
-      "Four players, three games. Net each player's results into one number, then settle with a few transfers instead of paying game by game.",
+      "Four players, three games. Netted, Mike is $25 up, Tom $5 up, Jess $10 down and Sarah $20 down. Three payments square it: Sarah pays Mike $20, Jess pays Mike $5 and Tom $5.",
     goloNote:
       "GoLo nets every game into one number per player and lists who owes whom for the group. Each round settles on its own, and GoLo never holds, moves or processes money.",
     relatedTermIds: ["junk", "press"],
@@ -200,7 +283,7 @@ export const sideGamesTerms: GlossaryTerm[] = [
     capabilityIds: ["settle-up"],
     ctaIntent: "settle-up",
     sources: [],
-    status: "draft",
+    status: "in-review",
   },
   {
     id: "closest-to-the-pin",
@@ -219,14 +302,27 @@ export const sideGamesTerms: GlossaryTerm[] = [
       text: "Some groups also require the ball to be on the green, or a par, which makes it a greenie.",
     },
     goloNote:
-      "GoLo scores Closest to the Pin as a game, but it doesn't record a measured distance.",
+      "In GoLo the scorer marks the winner on the holes the group chose, and the amount goes into the settle-up. No distance is recorded, and whether a par is needed is the group's call.",
     relatedTermIds: ["greenie", "longest-drive"],
     relatedContentPaths: [],
     canonical: { kind: "existing", path: "/games/closest-to-pin" },
-    capabilityIds: ["game-library", "distance-logging"],
+    capabilityIds: ["closest-to-pin", "distance-logging"],
     ctaIntent: "games",
-    sources: [],
-    status: "draft",
+    sources: [
+      {
+        title: "lasvegasnational.com",
+        url: "https://lasvegasnational.com/contests/",
+        kind: "editorial",
+        accessedOn: "2026-10-29",
+      },
+      {
+        title: "web.stanford.edu",
+        url: "https://web.stanford.edu/group/Taekwondo/golfclassic2012/rules.html",
+        kind: "editorial",
+        accessedOn: "2026-10-29",
+      },
+    ],
+    status: "in-review",
   },
   {
     id: "longest-drive",
@@ -251,7 +347,20 @@ export const sideGamesTerms: GlossaryTerm[] = [
     canonical: { kind: "existing", path: "/games/longest-drive" },
     capabilityIds: ["game-library", "distance-logging"],
     ctaIntent: "games",
-    sources: [],
-    status: "draft",
+    sources: [
+      {
+        title: "lasvegasnational.com",
+        url: "https://lasvegasnational.com/contests/",
+        kind: "editorial",
+        accessedOn: "2026-10-29",
+      },
+      {
+        title: "web.stanford.edu",
+        url: "https://web.stanford.edu/group/Taekwondo/golfclassic2012/rules.html",
+        kind: "editorial",
+        accessedOn: "2026-10-29",
+      },
+    ],
+    status: "in-review",
   },
 ];
