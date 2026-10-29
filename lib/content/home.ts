@@ -174,7 +174,7 @@ const homeGameDescs: { slug: GameSlug; desc: string }[] = [
   },
   {
     slug: "closest-to-pin",
-    desc: "Stick it tight on the par 3s and take the greenie.",
+    desc: "Stick it tight on the par 3s and win the hole.",
   },
   {
     slug: "longest-drive",

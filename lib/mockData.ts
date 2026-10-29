@@ -128,6 +128,7 @@ const moneyRowSpecs: MoneyRowSpec[] = [
     tag: "winner takes",
   },
   {
+    // capabilities.ts closest-to-pin
     game: "closest-to-pin",
     iconColor: "#60a5fa",
     iconBg: "rgba(96,165,250,.14)",

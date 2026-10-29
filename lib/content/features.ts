@@ -131,6 +131,7 @@ export const featureBlocks: FeatureBlock[] = [
         rest: "every game's standing rolled into one running figure.",
       },
       {
+        // capabilities.ts live-skins
         lead: "Live skins and carries",
         rest: "watch each carried skin build hole by hole.",
       },
