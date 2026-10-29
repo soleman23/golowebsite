@@ -11,74 +11,44 @@ Gates are separate, and none implies another:
 5. editorially approved
 6. released
 
-CI runs only on PRs to `main` and pushes to `main`, so a stacked PR gets CI once it's retargeted to `main`. The session 2 table below is current; the session 1 sections after it are kept for the record.
+CI runs on PRs to `main` and pushes to `main`. A retargeted PR needs a push before CI runs.
 
-## Session 2, October 29, 2026: owner answers, PRs open
+## Where things stand (October 29, 2026, end of session 2)
 
-The owner answered #152 Q1–Q4, accepted #153 D1–D8, answered #154 Q-a to Q-e, and found the junk board overclaim (#172), which took priority. Rows 1–13 of `capability-check.md` are not re-confirmed.
+**On `main`, merged with merge commits, CI green on Node 24:**
 
-| PR | Issue | Base | CI (Node 24) |
-|---|---|---|---|
-| #173 junk board fix (owner review before merge) | #172 | `main` | green |
-| #175 Wolf post tees off last | #174 | `main` | green |
-| #177 skins validation CTA | #176 | `main` | green |
-| #179 registry: a press on a press | part of #154 | `main` | green |
-| #180 inventory, canonical map, editorial review | #152 | `main` | green (date-rule finding fixed) |
-| #181 capability checklist and answers | part of #154 | `main` | green |
-| #182 UX doc + this file | #153 | #180's branch | runs after retarget |
-| #183 model, flag, search, validation | #155 | `main` | green (126 glossary tests on Node 24.22.1) |
-| #184 hub | #156 | #183's branch | runs after retarget |
-| #185 search, filters, deep links | #157 | #184's branch | runs after retarget |
-| #186 SEO | #163 | #185's branch | runs after retarget |
-| #187 analytics | #165 | #186's branch | runs after retarget |
-| #188 → #189 → #190 → #191 → #192 drafts | part of #158–#162 | stacked on #183 | runs after retarget |
+| PR | Issue |
+|---|---|
+| #173 junk board overclaim | #172 |
+| #175 Wolf tees off last | #174 |
+| #177 skins validation CTA | #176 |
+| #179 registry: a press on a press | part of #154 |
+| #180 inventory, canonical map, editorial review | #152 |
+| #181 capability checklist and answers | part of #154 |
+| #182 UX doc and this file | #153 |
+| #183 model, flag, search, validation | #155 |
+| #184 hub | #156 |
+| #185 search, filters, deep links | #157 |
+| #186 SEO | #163 |
+| #187 analytics | #165 |
+| #193 push and halve in the skins guide | #178 |
 
-Other issues filed: #178 (push/halve in the skins guide; PR #193). #173 and #177 both add `OWNER_1029` to `capabilities.ts`; the second to merge needs a one-line conflict fix.
+`glossaryLive` is `false` on `main`. State A on `main` after #184 and #186 (production builds): `/glossary` and `/glossary?category=…` return 404; the sitemap, `llms.txt` and the home, `/games`, `/faq` and `/blog` pages have no glossary entries or links; there is no `DefinedTerm`.
 
-All 56 MVP records exist as drafts (#188–#192). None is reviewed. No rules or WHS source has been opened. Handicap GoLo notes wait on row 2.
+**Open:**
+- **#194** registry: `closest-to-pin` and `live-skins` are live (`OWNER_1029`); `junk-board` no longer lists greenies; the Closest to Pin copy says par-to-win is the group's call. CI green; waits on the owner. It asks whether GoLo carries an unclaimed Closest to Pin hole, and whether to restore the chips removed in #173.
+- **#188 → #192** content drafts, all 56 MVP records at `draft`, "Part of" #158–#162. #188 targets `main`; the rest are stacked. None is reviewed, no source is opened, and the handicap GoLo notes wait on row 2. After #194 merges, the Closest to Pin record (#189) should cite `closest-to-pin` instead of `game-library`.
 
-### Round 2 (owner review, same day)
+## Decisions and findings from session 2
 
-- **#175, #177, #179** accepted by the owner. Merge order now: #175, #179, #181, then #180, then #182 and #183 → #187 in order, each retargeted to `main` as the one below merges.
-- **Codex findings, all verified, fixed, answered and resolved:**
-  - #180: `reviewedOn ≤ publishedOn` would reject a re-approved published term. The doc (#180) and the validator (#183, 98b9e44) now check publication against the first approval; `reviewedOn` is the latest approval. 2 new test cases.
-  - #187: a cold load of `/glossary#<slug>` lost `glossary_term_open`, because AnalyticsLoader applies the saved choice one task after the hub's mount effect. Reproduced in a production build (0 events). Fixed in `components/sections/glossary/openReport.ts` (84cbd69); after the fix, 1 event with a saved grant and none with no choice then Allow. 4 test cases cover D5. A single-task wait fails them.
-  - #187: the search success rate now uses the same searches on both sides, bounded by the next search, from params already sent.
-- **#173 changes for the owner:** replacements trace to live registry entries; the Closest to Pin and live-standings replacements are gone; one more junk line (skins guide "Stack the side games"); screenshots refreshed on `pr-assets/junk-board`. `lint:content` passes on every glossary content branch with #173 merged in locally (not pushed).
-- **#193** opened for #178 (push/halve), against `main`.
-- **Unregistered claims already on main, for the owner:** Live Leaderboard "Live skins and carries"; skins guide "GoLo shows the live skins on the scoring screen"; the Closest to Pin game row in `lib/mockData.ts` and the guide's "let GoLo net it into the settle-up". The guide also treats greenie and closest to the pin as the same thing, which conflicts with the `junk-board` entry.
+- **Owner answers:** #152 Q1–Q5 and #153 D1–D8 accepted; #154 Q-a to Q-e answered (no junk board, a press on a press allowed, no skins validation). Closest to Pin is a live game that settles: the scorer marks the winner, no distance is recorded, and par-to-win is the group's call. Skins and carries build hole by hole on the scoring screen and the live leaderboard. Rows 1–13 of `capability-check.md` are not re-confirmed.
+- **Rule for product copy:** every product claim traces to a `live` entry in `capabilities.ts`, or it's asked about rather than written.
+- **Codex findings, all fixed and tested:** a re-approved published term keeps its `publishedOn` (validator and `editorial-review.md`); a deep-link arrival's `glossary_term_open` waits for the saved analytics choice (`openReport.ts`, 4 test cases); the search success rate uses the same searches on both sides, bounded by the next search. Codex then hit its usage limit and didn't review #181, #193 or #194; the owner accepted #181 and #193 without it.
+- **Stacked-branch hazard:** #182's first commit had been made on stale copies of `inventory.md` and `editorial-review.md`, and would have reverted the owner's Q5 decision. It was caught by checking the retargeted diff, then fixed. Check every retargeted diff for files outside the PR's issue.
 
-### Round 3: merges (owner answers, 2026-10-29)
+## Checks actually run in session 1 (October 29, 2026, Node 22.22 in the cloud container)
 
-Owner: #173 approved. Closest to Pin is a live game that settles (the scorer marks the winner; no distance; par-to-win is the group's call). Skins and carries build hole by hole on the scoring screen and the live leaderboard. Codex skipped for #181 and #193. Merges delegated, once CI is green on Node 24, in order.
-
-Merged with merge commits, which keep stacked branches' ancestry: #173, then #177 (its `OWNER_1029` conflict fixed in 766063c), #175, #179, #180, #181, #193, #183. #175, #179 and #193 were brought up to date with main first, so their CI ran against the current base.
-
-- **#194** (registry: `closest-to-pin` and `live-skins`, live; `junk-board` drops greenies; Closest to Pin copy says the group applies par-to-win) is open for the owner. Its CI is green.
-- **#182 held:** retargeted to main, its diff also reverted the owner's Q5 decision in `inventory.md` and `editorial-review.md`. Cause: 5490fdd was committed on stale copies of both files. Both now match main (fixed on the branch), so the diff is `ux.md` and `progress.md` only. It waits on the owner's OK, per the stop rule.
-- **Code chain:** #184, #185 and #186 merged in order. Before each merge, the PR was retargeted to main, main was merged into its branch and pushed (retargeting alone doesn't start the workflow), and CI on Node 24 went green. Each retargeted diff held only its own issue's files. #187 followed the same steps.
-- **Content stack:** #188 retargeted to main and green. #189–#192 are brought up to date but not merged: they aren't in the owner's list, and they stay "Part of" #158–#162 until the reviews and source checks are done.
-- **State A on main after #184 and #186** (production builds, flag false): `/glossary` and `/glossary?category=…` return 404; the sitemap, `llms.txt` and the home, `/games`, `/faq` and `/blog` pages have no glossary entries or links, and there is no `DefinedTerm`.
-
-## Branches (session 1; PRs now open, see the table above)
-
-| Issue | Branch | Base | State |
-|---|---|---|---|
-| #152 | `glossary/152-inventory` | `main` | Docs: `inventory.md`, `canonical-map.md`, `editorial-review.md`. Awaiting owner review (inventory Q1–Q4) |
-| #153 | `glossary/153-ux` | #152 | Docs: `ux.md`, this file. Awaiting owner review of D1–D8 |
-| #154 | `glossary/154-owner-checklist` | `main` | Docs: `capability-check.md`. Waiting on the owner's answers |
-| #155 | `glossary/155-model` | `main` | Code: model, `glossaryLive = false`, selectors, search, validation, `lint:content` integration, `scripts/test-glossary.mjs` (126 cases) in `npm test` and CI. Draft fixture only |
-| #156 | `glossary/156-hub` | #155 | Code: server-rendered hub, `notFound()` in production while the flag is off |
-| #157 | `glossary/157-search` | #156 | Code: search, category chips (`?category=`), A–Z, deep links, copy link; plus the URL-sanitizer fix for `?category=` |
-| #163 | `glossary/163-seo` | #157 (merged in) | Code: metadata, canonical, `DefinedTermSet`, sitemap and `llms.txt`, all gated; run sheet note; GSC groups |
-| #165 | `glossary/165-analytics` | #163 (merged in) | Code: four events + `share_click` reuse; data notes; `leads.sql` |
-| #158 | `glossary/158-formats` | #155 | Content: ten games-and-formats records at `draft`. No review stage done, no source opened, no GoLo notes |
-
-Merge order: #152 → #153 (docs, any time) · #155 → #156 → #157 → #163 → #165 · #154 (docs, any time). Each code branch contains the ones before it, so a PR for #156 opened against `main` before #155 merges would show both. Open them in order, or retarget each PR as the previous one merges.
-
-## Checks actually run (October 29, 2026, Node 22.22 in the cloud container)
-
-- `npm run lint`, `npm run typecheck`, `npm test`, `npm run build`: pass on #155, #156, #157, #163 and #165 with the committed records and the flag off. **Not run on Node 24**: installing it was blocked here. CI uses Node 24 from `.nvmrc`.
+- `npm run lint`, `npm run typecheck`, `npm test`, `npm run build`: pass on #155, #156, #157, #163 and #165 with the committed records and the flag off. Node 24 couldn't be installed in the container; CI runs Node 24 from `.nvmrc`, and every merged PR passed it.
 - **State A, flag off (production build, `next start`):** `/glossary` and `/glossary?category=…` return 404. Nothing glossary-related is in `sitemap.xml` or `llms.txt`, there's no schema, and home, `/games`, `/blog` and `/faq` have no `/glossary` links. Rechecked after #156, #157, #163 and #165.
 - **State B, temporary local launch simulation** (flag on, 18 uncommitted sample records marked published, reverted afterwards):
   - `/glossary` returns 200, with the title "Golf Glossary: Terms, Slang & Games Explained · GoLo".
@@ -103,18 +73,15 @@ Merge order: #152 → #153 (docs, any time) · #155 → #156 → #157 → #163 �
 ## Findings and decisions to know
 
 - **Vocabulary rule.** `NEVER_WORDS` in `scripts/check-content.mjs` bans "wager", "stakes", "bet(s)", "pot(s)", "payout(s)" and more site-wide. That affects the spec's category name, its Press draft and aliases, and three M8 term names. MVP names unaffected. `inventory.md` Q1, Q2.
-- **Existing-site conflicts:** Wolf tee order (#174, PR #175); skins validation wording (#176, PR #177); push/halve split (#178); junk board (#172, PR #173). `inventory.md` § Existing site definitions; also in `capability-check.md`.
+- **Existing-site conflicts, all fixed on `main`:** Wolf tee order (#174, PR #175); skins validation wording (#176, PR #177); push/halve split (#178, PR #193); junk board (#172, PR #173). `inventory.md` § Existing site definitions.
 - **#165 vs #164 sequencing.** #165 lists #164 as a dependency, and #164 ships with the launch. Resolution: the events, docs and gated discovery work are built now behind `glossaryLive`; public exposure (footer link, inbound links, flag flip) is the combined #164 + #166 launch change. #165's acceptance criteria are unchanged; its consent checks ran in the local launch simulation and run again on the live site after launch.
 - **Title format:** the site template gives "… · GoLo", not the spec's "| GoLo Golf". The repo convention was kept.
 - **`?category=` and the URL sanitizer:** `lib/analyticsPreference.ts` drops unlisted query params on every page load in production. `category` on `/glossary` was added to its allow-list (#157). Without that, the category would vanish from the address in production.
 
-## Owner actions (after session 2)
+## Owner actions
 
-1. **Review and merge**, never by an agent:
-   - #173 first (junk board, your review); then #177, which needs a one-line `OWNER_1029` conflict fix;
-   - #175, #179, #180, #181 any time;
-   - then #182, and #183 → #184 → #185 → #186 → #187 in order, retargeting each to `main` as the one below merges.
-2. **#154 rows 1–13:** re-confirm against the app. Handicap GoLo notes (row 2) wait on this.
+1. **#194:** review, and answer its two questions.
+2. **#154 rows 1–13:** re-confirm against the app. The handicap GoLo notes (row 2) wait on this.
 3. **Source checks:** a session that can reach `www.usga.org` and `www.randa.org`. No rules or WHS record moves past `draft` until then.
 4. **#171:** course photography, desktop 2688×1152 and mobile 1792×2240 masters.
 5. **Content approval (#158–#162):** the stages in `editorial-review.md`, record by record.

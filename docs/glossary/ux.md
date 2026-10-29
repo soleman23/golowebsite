@@ -324,13 +324,13 @@ Copy (hero, labels, empty state, Start here list, related guides) lives in `lib/
 
 ## Analytics hooks
 
-The events land in #165; #157 only leaves the calls at these points:
+As built in #165 (`docs/analytics-data-notes.md` has the params and the reporting definitions):
 
-- `glossary_search`: once per settled query (the 600ms announcement debounce), only when the normalised query changed. Params come from the closed sets in #165. Never the text.
+- `glossary_search`: once per settled search (600 ms after typing stops), only when the normalised query or the category changed since the last one reported. Params come from closed sets. Never the text.
 - `glossary_filter`: on a chip change made by the reader (not the initial URL read, not a deep-link reset).
-- `glossary_term_open`: **redefined by D5.** Since nothing expands, it fires when a reader opens a term: activating a search result, a related-term link, or arriving on a `#slug` deep link (once per page load per term). #165 records the redefinition.
-- Copy link: #165 decides between `glossary_share` and the existing `share_click` with `method: "copy"`.
-- `glossary_cta_click`: on the contextual CTA and guide links, `term_id` from the closed set.
+- `glossary_term_open`: **redefined by D5.** Since nothing expands, it fires when a reader opens a term: activating a search result, a related-term link, or arriving on a `#slug` deep link (once per page load per term). An arrival is reported only after the saved analytics choice has been applied, and an open made before any choice isn't replayed after Allow (`components/sections/glossary/openReport.ts`).
+- Copy link: the existing `share_click`, with `channel: "copy"` and `term_id`, so every share sits in one report.
+- `glossary_cta_click`: a term's guide or post link, with `term_id` and `destination_type`. The CTA band keeps the site's `cta_click` and `store_button_click`.
 
 ## QA mapping
 
@@ -346,7 +346,7 @@ The events land in #165; #157 only leaves the calls at these points:
 | GL-QA-13 | Screen readers |
 | GL-QA-14 | Wireframes; overflow rules |
 
-## Changes made while building (#156, #157)
+## Changes made while building (#156, #157, #165)
 
 Recorded here so the doc matches the code:
 
@@ -355,7 +355,8 @@ Recorded here so the doc matches the code:
 - In-text links are lime and underlined, as in blog prose.
 - A cold deep link that conflicts with `?category=` waits until the term is laid out before scrolling and focusing, because the URL sync can re-apply the old category for a frame.
 - `?category=` is on the analytics URL sanitizer's allow-list for `/glossary` (`lib/analyticsPreference.ts`), or production would strip it on load.
+- A deep-link arrival's `glossary_term_open` waits until AnalyticsLoader has applied the saved choice; sent at once, it was dropped (#187 review).
 
 ## Pending
 
-- Wireframe images on a `pr-assets/glossary-ux` branch (the repo's convention) aren't drawn. The ASCII wireframes above are the reviewable version; rendered screenshots come with #156, from the real page.
+- Wireframe images aren't drawn; the ASCII wireframes above are the reviewable version. Screenshots of the built hub at 320, 760, 1100 and 1440 px, with sample records, are on the `pr-assets/glossary-ux` branch.
