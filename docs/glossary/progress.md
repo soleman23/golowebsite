@@ -48,6 +48,16 @@ All 56 MVP records exist as drafts (#188–#192). None is reviewed. No rules or 
 - **#193** opened for #178 (push/halve), against `main`.
 - **Unregistered claims already on main, for the owner:** Live Leaderboard "Live skins and carries"; skins guide "GoLo shows the live skins on the scoring screen"; the Closest to Pin game row in `lib/mockData.ts` and the guide's "let GoLo net it into the settle-up". The guide also treats greenie and closest to the pin as the same thing, which conflicts with the `junk-board` entry.
 
+### Round 3: merges (owner answers, 2026-10-29)
+
+Owner: #173 approved. Closest to Pin is a live game that settles (the scorer marks the winner; no distance; par-to-win is the group's call). Skins and carries build hole by hole on the scoring screen and the live leaderboard. Codex skipped for #181 and #193. Merges delegated, once CI is green on Node 24, in order.
+
+Merged with merge commits, which keep stacked branches' ancestry: #173, then #177 (its `OWNER_1029` conflict fixed in 766063c), #175, #179, #180, #181, #193, #183. #175, #179 and #193 were brought up to date with main first, so their CI ran against the current base.
+
+- **#194** (registry: `closest-to-pin` and `live-skins`, live; `junk-board` drops greenies; Closest to Pin copy says the group applies par-to-win) is open for the owner. Its CI is green.
+- **#182 held:** retargeted to main, its diff also reverted the owner's Q5 decision in `inventory.md` and `editorial-review.md`. Cause: 5490fdd was committed on stale copies of both files. Both now match main (fixed on the branch), so the diff is `ux.md` and `progress.md` only. It waits on the owner's OK, per the stop rule.
+- **Stacks:** #184 and #188 retargeted to main, with main merged in, so CI runs on main as the base. Retargeting alone doesn't start the workflow.
+
 ## Branches (session 1; PRs now open, see the table above)
 
 | Issue | Branch | Base | State |
