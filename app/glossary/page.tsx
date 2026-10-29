@@ -176,6 +176,7 @@ export default function GlossaryPage() {
               actions={(t) => (
                 <CopyLinkButton
                   url={`${siteConfig.url}/glossary#${t.slug}`}
+                  termId={t.id}
                   term={t.term}
                   labels={copyLabels}
                 />

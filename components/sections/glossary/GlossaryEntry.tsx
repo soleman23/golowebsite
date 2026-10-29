@@ -25,6 +25,13 @@ type GlossaryEntryProps = {
   actions?: React.ReactNode;
 };
 
+/** The closed destination_type set for glossary_cta_click (#165). */
+function destinationType(path: string): "guide" | "post" | "page" {
+  if (path.startsWith("/games/")) return "guide";
+  if (path.startsWith("/blog/")) return "post";
+  return "page";
+}
+
 export function GlossaryEntry({ term, byId, actions }: GlossaryEntryProps) {
   const related = term.relatedTermIds
     .map((id) => byId.get(id))
@@ -34,7 +41,7 @@ export function GlossaryEntry({ term, byId, actions }: GlossaryEntryProps) {
 
   return (
     <div className={styles.entry} data-category={term.primaryCategory}>
-      <dt id={term.slug} className={styles.head} tabIndex={-1}>
+      <dt id={term.slug} className={styles.head} tabIndex={-1} data-term-id={term.id}>
         <a href={`#${term.slug}`} className={styles.name}>
           {term.term}
         </a>
@@ -82,7 +89,12 @@ export function GlossaryEntry({ term, byId, actions }: GlossaryEntryProps) {
           <ul className={styles.guides}>
             {[...(guide ? [guide] : []), ...reading].map((path) => (
               <li key={path}>
-                <Link href={path} className={styles.link}>
+                <Link
+                  href={path}
+                  className={styles.link}
+                  data-glossary-cta={destinationType(path)}
+                  data-term-id={term.id}
+                >
                   {glossaryPathLink(path)}
                 </Link>
               </li>

@@ -11,10 +11,14 @@
  * before hydration, as /blog does.
  */
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
+import { track } from "@/lib/analytics";
 import { ChipFilter, type ChipItem } from "@/components/ui/ChipFilter";
 import { FilterStatus } from "@/components/ui/FilterStatus";
 import {
+  glossaryMatchType,
+  glossaryResultBucket,
+  normalizeGlossaryText,
   prepareGlossarySearch,
   searchGlossary,
 } from "@/lib/content/glossary/search";
@@ -83,17 +87,32 @@ export function GlossaryControls({
     ? `${plural(results.length)}${category === "all" ? "" : ` in ${categoryLabels[category]}`}`
     : copy.noMatch;
 
-  // The search announcement, debounced. The query itself is never in it.
+  // The search announcement and glossary_search, both once typing settles.
+  // Neither carries the query: the event has the category, a result bucket
+  // and the match type, and the last reported query stays in this ref only
+  // to skip a repeat (#165).
   const [announced, setAnnounced] = useState("");
+  const reported = useRef("");
   useEffect(() => {
     if (!searching) {
       setAnnounced("");
+      reported.current = "";
       return;
     }
-    const timer = setTimeout(() => setAnnounced(resultLine), ANNOUNCE_AFTER_MS);
-    // #165: glossary_search fires here, once per settled query.
+    const timer = setTimeout(() => {
+      setAnnounced(resultLine);
+      const settled = `${category}|${normalizeGlossaryText(query)}`;
+      if (settled !== reported.current) {
+        reported.current = settled;
+        track("glossary_search", {
+          category,
+          result_bucket: glossaryResultBucket(results.length),
+          match_type: glossaryMatchType(results),
+        });
+      }
+    }, ANNOUNCE_AFTER_MS);
     return () => clearTimeout(timer);
-  }, [searching, resultLine, query]);
+  }, [searching, resultLine, query, category, results]);
 
   // A–Z letters with nothing in the chosen category: CSS greys them from
   // first paint; this takes them out of the tab order and says why.

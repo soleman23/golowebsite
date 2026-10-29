@@ -29,6 +29,7 @@ import {
 } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import { FilterUrlSync, useInitialFilter } from "@/components/ui/FilterUrlSync";
+import { track } from "@/lib/analytics";
 
 type GlossaryState = {
   /** The active category id or "all"; null until the URL has been read. */
@@ -81,6 +82,8 @@ export function GlossaryProvider({ ids, children }: ProviderProps) {
   // Read by reveal(), which runs from listeners outside React's render.
   const activeRef = useRef<string | null>(null);
   const queryRef = useRef("");
+  /** Terms already reported as opened on this page load. */
+  const opened = useRef(new Set<string>());
 
   const select = useCallback((id: string) => {
     activeRef.current = id;
@@ -96,6 +99,7 @@ export function GlossaryProvider({ ids, children }: ProviderProps) {
       const href = id === "all" ? pathname : `${pathname}?category=${id}`;
       // push, not replace: back walks through categories (GL-QA-11).
       router.push(href, { scroll: false });
+      track("glossary_filter", { category: id });
     },
     [pathname, router, select],
   );
@@ -139,6 +143,11 @@ export function GlossaryProvider({ ids, children }: ProviderProps) {
       }
       const name = target.querySelector("a")?.textContent ?? id;
       const category = (target.parentElement as HTMLElement | null)?.dataset.category;
+      const termId = target.dataset.termId;
+      if (termId && !opened.current.has(termId)) {
+        opened.current.add(termId);
+        track("glossary_term_open", { term_id: termId, category: category ?? "" });
+      }
       let note = "";
       if (queryRef.current) {
         setQuery("");
@@ -171,6 +180,21 @@ export function GlossaryProvider({ ids, children }: ProviderProps) {
     window.addEventListener("hashchange", fromHash);
     return () => window.removeEventListener("hashchange", fromHash);
   }, [reveal]);
+
+  // A term's guide or post link. The entry is server-rendered, so its links
+  // carry data attributes and one listener reports them.
+  useEffect(() => {
+    const onClick = (event: MouseEvent) => {
+      const link = (event.target as Element | null)?.closest?.<HTMLElement>("a[data-glossary-cta]");
+      if (!link?.dataset.termId) return;
+      track("glossary_cta_click", {
+        term_id: link.dataset.termId,
+        destination_type: link.dataset.glossaryCta ?? "page",
+      });
+    };
+    document.addEventListener("click", onClick, { capture: true });
+    return () => document.removeEventListener("click", onClick, { capture: true });
+  }, []);
 
   // While searching, the ranked results replace the directory (ux.md D4).
   useEffect(() => {
