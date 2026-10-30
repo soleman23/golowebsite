@@ -336,7 +336,7 @@ None. Every non-indexed URL in the report and in URL Inspection matches an expec
 - Named authorship: #72 was closed as not planned on October 15, and posts are credited "From the GoLo team". Don't invent credentials or people.
 - Revision dates: posts and guides carry one (#70). Change it on a substantive edit to rules, examples or GoLo claims, never for copy polish.
 - Evaluate performance opportunities after content and discovery work.
-- Open Phase 3 issues: #65 (SEO-07, run October 29; closes when that section merges), #68 (SEO-10, monthly report; a provisional first report is in `docs/seo-reports/2026-11.md`) and #78 (SEO-20, query-led content plan, `docs/content-plan.md`). The plan they came from is archived in docs/seo-phase3-backlog.md.
+- Open Phase 3 issues: #65 (SEO-07, run October 29; closes when that section merges), #68 (SEO-10, monthly report; `docs/seo-reports/2026-11.md` reports October 2026, provisional until October 28–31 is added in the first week of November) and #78 (SEO-20, query-led content plan, `docs/content-plan.md`). The plan they came from is archived in docs/seo-phase3-backlog.md.
 
 ## October 21, 2026: scheduled jobs on Hostinger (for #121)
 
