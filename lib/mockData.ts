@@ -265,7 +265,8 @@ export const standingRows: StandingRow[] = [
     name: "Sarah",
     initial: "S",
     color: "#60a5fa",
-    reason: "1 skin · Best Score",
+    // capabilities.ts closest-to-pin
+    reason: "1 skin · closest on 7",
     value: "+$11",
     up: true,
     move: "▲ 2",
