@@ -21,7 +21,7 @@ How a glossary term goes from draft to published, who checks what, and what coun
 | `published` | Set only by the launch PR (#166) or a later release PR | Public, once `glossaryLive` is true |
 | `archived` | Removed from the glossary | Nowhere public. Inbound links to it fail `lint:content` |
 
-Records merge at `approved` in the content PRs (#158–#162). Only the launch PR moves `approved` to `published`, and it sets `publishedOn` to the real date that PR merges and deploys. No agent sets `approved` or `published` on its own say-so.
+Records merge at `approved` in the content PRs (#158–#162). Only the launch PR moves `approved` to `published`, and it sets `publishedOn` to the real date that PR merges and deploys (if the merge slips past the date on the branch, the date is updated before merging). No agent sets `approved` or `published` on its own say-so.
 
 ## Stages
 
@@ -46,6 +46,8 @@ A record moves from `in-review` to `approved` only when stages 2–5 each have a
 | GoLo product audit (stage 3) | **The owner** | `capabilities.ts` changes only on an app check or the owner's word; this repo doesn't read the app repo |
 | SEO/canonical review (stage 4) | An agent prepares it, **the owner confirms** | Mechanical checks are in `lint:content`; the judgement calls are in `canonical-map.md` |
 | Approval (stage 5) | **The owner** | Content owner |
+
+**Delegation for the MVP launch (owner, October 29, 2026).** The owner delegated stages 2–4 for the 56 MVP records to an agent and approved the resulting content in writing, subject to those checks. The product audit for that pass was done against the app's code (golo `main`, read only), not just the registry (`capability-check.md` § Release recheck results). The records log stages 2–4 as `by: "agent"` and approval as `by: "owner"`, all dated October 29, 2026 (`lib/content/glossary/review.ts`). The owner didn't open the sources or test the app, and nothing says otherwise. Approval and publication for the MVP land together in the launch PR, so the records go from `in-review` to `published` there. Later records go back to the table above unless the owner delegates again.
 
 Never invent a reviewer, credential, review date or source check. If a stage hasn't happened, the record says so by not having that entry.
 
@@ -141,7 +143,7 @@ Spec §10.3, highest first. A lower source never overrides a higher one on the s
 4. Verified GoLo code and the capability registry for product behaviour.
 5. Golf community usage for slang and informal house rules, labelled as such.
 
-`inventory.md` § Source map names the source for each record, with the edition caveats. In particular, a Rules of Golf revision may take effect January 1, 2027, before or near launch.
+`inventory.md` § Source map names the source for each record, with the edition caveats. As checked October 29, 2026, the 2023 Rules of Golf and the 2024 Rules of Handicapping are current, and the next Rules of Golf edition is dated 1 January 2028.
 
 ## Review triggers
 

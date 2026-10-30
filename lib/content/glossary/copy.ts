@@ -8,7 +8,7 @@
 
 import { findPost } from "../blog";
 import { isGameSlug, rosterGame } from "../games";
-import type { NoteKind } from "./types";
+import type { CtaIntent, NoteKind } from "./types";
 
 /** The DefinedTermSet's name (#163). Title and description are in the page's
  * pageMetadata call, where the content check reads them. */
@@ -19,7 +19,7 @@ export const glossaryHero = {
   kicker: "KNOW THE GAME. TALK THE TALK.",
   title: "Golf Glossary:",
   titleAccentLine: "Terms, Slang & Games Explained",
-  lead: "From birdies and bogeys to skins, presses and sandbaggers. Golf's terminology explained without the clubhouse lecture.",
+  lead: "From birdies and bogeys to skins, presses and snowmen. Golf's terminology explained without the clubhouse lecture.",
 };
 
 /**
@@ -92,6 +92,26 @@ export function glossaryPathLink(path: string): string {
   if (post) return `Read “${post.title.split(":")[0].trim()}”`;
   return PAGE_LINKS[path] ?? `Open ${path}`;
 }
+
+/**
+ * The product link a term's `ctaIntent` adds under its guide links (#164,
+ * spec §9.2). Each label is a claim the registry backs: game-library,
+ * handicap-strokes and settle-up are live. "download" and "none" add
+ * nothing here; the closing band has the store buttons.
+ */
+export const glossaryIntentLinks: Record<
+  Exclude<CtaIntent, "download" | "none">,
+  { label: string; href: string }
+> = {
+  games: { label: "Browse the games GoLo scores", href: "/games" },
+  handicaps: { label: "See how GoLo places handicap strokes", href: "/features" },
+  "settle-up": { label: "See a round in GoLo, first tee to settle-up", href: "/how-it-works" },
+};
+
+/** The hub's closing band. The store buttons and fine print are FinalCTA's. */
+export const glossaryFinalCta = {
+  title: "Know the terms. Let GoLo keep the score.",
+};
 
 const PAGE_LINKS: Record<string, string> = {
   "/faq": "Read the FAQ",

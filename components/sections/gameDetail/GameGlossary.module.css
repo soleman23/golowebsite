@@ -29,6 +29,14 @@
   color: var(--accent);
 }
 
+/* A term with a glossary entry (#164): same colour, underlined like the
+   blog's prose links. The focus ring is the global one. */
+.termLink {
+  color: inherit;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
 .def {
   margin: 6px 0 0;
   font-size: 14px;

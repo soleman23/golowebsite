@@ -73,6 +73,7 @@ export const footerLinks: Record<FooterColumn, NavLink[]> = {
     { label: "All games", href: "/games" },
     { label: "Nassau", href: "/games/nassau" },
     { label: "Skins", href: "/games/skins" },
+    { label: "Golf glossary", href: "/glossary" },
   ],
   legal: [
     // /terms is built but stays unlinked until it clears legal review.
