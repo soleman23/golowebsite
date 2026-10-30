@@ -13,7 +13,28 @@ Gates are separate, and none implies another:
 
 CI runs on PRs to `main` and pushes to `main`. A retargeted PR needs a push before CI runs.
 
-## Where things stand (October 29, 2026, evening: the launch PR)
+## Where things stand (October 29, 2026, night: released)
+
+**Live since 2026-10-29 17:23 PDT.** The owner approved the merge in the session at 17:21 PDT (recorded in #166). #201 merged as `70d9686` (CI green, Codex 👍), and Hostinger deployed it two minutes later. www.golo.golf/glossary has 56 published terms.
+
+**Live checks, 2026-10-29** (details in #166):
+- **Routes:** `/glossary` 200, and the apex 308s to www; `/glossary/press` 404; `?category=` is self-canonical.
+- **Sitemap and llms.txt:** `/glossary` is in the sitemap with lastmod 2026-10-29, and in `llms.txt`.
+- **Page:** 56 `DefinedTerm`s, with no internal fields in the page.
+- **Suites:** GL-QA 32/32, consent 13/13 (Google answered locally), regression 22/22.
+- **Hero:** the served bytes hash-match the committed files at 7 viewport/DPR pairs.
+- **Live Lighthouse** varies a lot from one connection (`/glossary` median 3,679 ms, `/faq` 4,061 ms; Hostinger time to first byte ~0.36 s). It isn't comparable with the 2.5 s lab target, which the launch build met at 2,485 ms.
+
+**Search Console:** URL Inspection said "URL is unknown to Google". Indexing was requested on 2026-10-29 at about 17:30 PDT and added to the priority crawl queue.
+
+**Issues:**
+- **Closed with evidence:** #158–#162, #164, #171. #154 and #165 were already closed.
+- **#166:** open only for GL-QA-13, the screen-reader pass, which the owner accepted as a post-deploy check.
+- **#167:** dates set from launch day L = 2026-10-29: 2026-11-05, 2026-11-26, 2026-12-24, 2027-01-27.
+
+**Gates:** released. GL-QA-13 is the one check that hasn't happened.
+
+## The launch PR (October 29, 2026, evening)
 
 **On `main`:** #196 (chip count contrast), #197 (#164 CTAs), #198 (the 56 records at `in-review`), #199 (photo hero). Production still has `glossaryLive = false`: `/glossary` 404s (checked live after the deploy).
 
@@ -104,12 +125,11 @@ Gates: #196–#198 pushed, CI green, Codex 👍, merged by the owner's instructi
 
 ## Owner actions
 
-1. **GL-QA-13:** a VoiceOver or NVDA pass on `/glossary`, on the launch PR's Hostinger preview (the flag is on in this branch, and previews follow the constant), a local build, or live right after deploy. Script: rotor headings (one H1, Start here, Browse A–Z, letters); type "press" and listen for "2 terms match", then Tab to Clear and the results; pick Side games and listen for the active chip; read one entry (term, definition, example, notes, links); open `/glossary#press` cold.
-2. **Merge approval** for the launch PR. If the merge date isn't 2026-10-29, `publishedOn` moves to that date first.
-3. **#195:** decide whether to drop its carry sentence; it conflicts with the launch PR's `closest-to-pin` entry.
-4. **#200:** registry and site-copy corrections the app check found (Greenie and Sandie Skins options, scramble scorers, the CTP guide's carry).
+1. **GL-QA-13:** a VoiceOver or NVDA pass on www.golo.golf/glossary, then record it in #166 and close #166. Script: rotor headings (one H1, Start here, Browse A–Z, letters); type "press" and listen for "2 terms match", then Tab to Clear and the results; pick Side games and listen for the active chip; read one entry (term, definition, example, notes, links); open `/glossary#press` cold.
+2. **#195:** decide whether to drop its carry sentence; it conflicts with the released `closest-to-pin` entry.
+3. **#200:** registry and site-copy corrections the app check found (Greenie and Sandie Skins options, scramble scorers, the CTP guide's carry).
 
 ## Next ready
 
-- After the merge: the live checks and Search Console steps in `launch-packet.md` § Release steps; then #167's dates from the launch date (L+7, L+28, L+56, L+90).
+- #167's first checkpoint, 2026-11-05 (L+7): deployed and crawlable, sitemap and URL Inspection, events firing, broken links.
 - #200, separately from the glossary.
