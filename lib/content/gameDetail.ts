@@ -115,7 +115,11 @@ export type GameDetail = {
   };
   variations: { icon: IconName; title: string; body: string }[];
   tips: { tone: "good" | "bad"; title: string; body: string }[];
-  glossary: { term: string; def: string }[];
+  /**
+   * `href` links the term to its glossary entry (#164), for the few terms
+   * the glossary explains past what the guide needs.
+   */
+  glossary: { term: string; def: string; href?: string }[];
   faqs: { id: string; q: string; a: string }[];
   /** Slugs from games.ts. */
   related: GameSlug[];
@@ -308,6 +312,7 @@ const nassau: GameDetailCopy = {
     {
       term: "Press",
       def: "A new side match opened mid-nine by the player who’s behind, covering only the holes that remain.",
+      href: "/glossary#press",
     },
     {
       term: "All square (AS)",
@@ -433,7 +438,7 @@ const skins: GameDetailCopy = {
   ],
   glossary: [
     { term: "Skin", def: "The prize for one hole. Won only by the player with the outright lowest score on that hole." },
-    { term: "Carryover (carry)", def: "A skin nobody won. It rolls onto the next hole, stacking on top of that hole’s own skin." },
+    { term: "Carryover (carry)", def: "A skin nobody won. It rolls onto the next hole, stacking on top of that hole’s own skin.", href: "/glossary#carryover" },
     { term: "Push", def: "A tied low score. Nobody wins the hole and the skin carries." },
     { term: "Halve", def: "The match-play word for a tied hole. In skins the same tie is a push, and the skin carries." },
     { term: "Validation", def: "A house rule that carried skins only count on a birdie or better." },
@@ -533,7 +538,7 @@ const bestScore: GameDetailCopy = {
   glossary: [
     { term: "Best Score", def: "One amount, the same for everybody; the best score takes it, or the top two or three split it." },
     { term: "Amount", def: "What each player plays for, agreed before the first tee." },
-    { term: "Net score", def: "Your gross score minus handicap strokes." },
+    { term: "Net score", def: "Your gross score minus handicap strokes.", href: "/glossary#net-score" },
     { term: "Course handicap", def: "Your index adjusted for the tees you played." },
     { term: "Places", def: "How many finishers split it." },
     { term: "Quota", def: "A Stableford variant that scores points against a target." },
@@ -627,7 +632,7 @@ const wolf: GameDetailCopy = {
     { term: "Lone Wolf", def: "The Wolf declining all three partners and playing against the best opposing ball." },
     { term: "Blind Wolf", def: "Declaring alone before anyone hits, usually for double the Lone Wolf value." },
     { term: "The rotation", def: "The fixed order that determines the Wolf on each hole." },
-    { term: "Best ball", def: "The team’s better score on the hole, not a total." },
+    { term: "Best ball", def: "The team’s better score on the hole, not a total.", href: "/glossary#four-ball" },
     { term: "Point value", def: "What each point is worth at settlement." },
   ],
   faqs: gameFaqs("wolf", [
@@ -817,7 +822,7 @@ const scramble: GameDetailCopy = {
     { term: "Scramble", def: "A team format: everyone hits, the team picks the best shot, and all play the next one from there." },
     { term: "Team handicap", def: "The strokes a scramble team gets, worked out from its players’ Course Handicaps at a set percentage each." },
     { term: "Course handicap", def: "Your index adjusted for the tees you played." },
-    { term: "Stroke index", def: "The card’s ranking of holes from hardest (1) to easiest. Strokes go on the hardest first." },
+    { term: "Stroke index", def: "The card’s ranking of holes from hardest (1) to easiest. Strokes go on the hardest first.", href: "/glossary#stroke-index" },
     { term: "Texas scramble", def: "A scramble that requires each player’s drive to be used a minimum number of times." },
     { term: "Shamble", def: "Best drive, then everyone plays their own ball into the hole." },
   ],
@@ -907,7 +912,7 @@ const closestToPin: GameDetailCopy = {
     { tone: "good", title: "Treat the par putt like the game", body: "Under par-to-win, the four-footer is the one that counts." },
   ],
   glossary: [
-    { term: "Greenie", def: "Closest to the pin on a par 3, on in one, par or better to win." },
+    { term: "Greenie", def: "Closest to the pin on a par 3, on in one, par or better to win.", href: "/glossary#greenie" },
     { term: "On in one", def: "Your tee shot finished on the putting surface." },
     { term: "Par to win", def: "Closest gets nothing unless they finish in par or better." },
     { term: "Carry", def: "An unclaimed greenie rolling to the next par 3." },

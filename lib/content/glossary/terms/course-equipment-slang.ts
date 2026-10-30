@@ -2,12 +2,11 @@
  * Course and rules, equipment, slang (#162, GLS-006e). Thirteen MVP records
  * from docs/glossary/inventory.md § F, § G and § H.
  *
- * IN REVIEW. Drafted October 29, 2026 and revised the same day against the
- * primary sources: every source with `accessedOn` was opened that day by
- * the agent preparing the rules fact-check (docs/glossary/review-packet.md
- * records what each says and the recomputed examples). No review stage is
- * signed: the owner signs the rules fact-check, the product audit and
- * approval (editorial-review.md), so no record has a review log yet.
+ * PUBLISHED by the launch PR (#166). Drafted and source-checked October 29,
+ * 2026: every source with `accessedOn` was opened on that date
+ * (docs/glossary/review-packet.md records what each says and the recomputed
+ * examples). The review log is in ../review.ts: rules, product and SEO by an
+ * agent under the owner's delegation, approval by the owner in writing.
  *
  * Course terms use the Rules of Golf's defined terms
  * (teeing area, general area, bunker, penalty area); fairway and rough are
@@ -15,6 +14,7 @@
  * practices the Rules don't allow say so. Equipment: definitions, no brands.
  */
 
+import { MVP_REVIEWED_ON, mvpReviewLogNone } from "../review";
 import type { GlossaryTerm } from "../types";
 
 export const courseEquipmentSlangTerms: GlossaryTerm[] = [
@@ -62,14 +62,25 @@ export const courseEquipmentSlangTerms: GlossaryTerm[] = [
         kind: "editorial",
         accessedOn: "2026-10-29",
       },
+      {
+        title: "USGA: Golf's New Rules: Changing Terminology",
+        url: "https://www.usga.org/content/usga/home-page/articles/2019/04/golf-s-new-rules--changing-terminology.html",
+        kind: "official-rules",
+        ref: "2019 renamings",
+        accessedOn: "2026-10-29",
+      },
     ],
-    status: "in-review",
+    status: "published",
+    reviewedBy: "owner",
+    reviewLog: mvpReviewLogNone,
+    reviewedOn: MVP_REVIEWED_ON,
+    publishedOn: "2026-10-29",
   },
   {
     id: "fairway",
     slug: "fairway",
     term: "Fairway",
-    aliases: ["short grass"],
+    aliases: [],
     primaryCategory: "course-rules",
     tags: [],
     priority: "mvp",
@@ -104,7 +115,11 @@ export const courseEquipmentSlangTerms: GlossaryTerm[] = [
         accessedOn: "2026-10-29",
       },
     ],
-    status: "in-review",
+    status: "published",
+    reviewedBy: "owner",
+    reviewLog: mvpReviewLogNone,
+    reviewedOn: MVP_REVIEWED_ON,
+    publishedOn: "2026-10-29",
   },
   {
     id: "rough",
@@ -145,7 +160,11 @@ export const courseEquipmentSlangTerms: GlossaryTerm[] = [
         accessedOn: "2026-10-29",
       },
     ],
-    status: "in-review",
+    status: "published",
+    reviewedBy: "owner",
+    reviewLog: mvpReviewLogNone,
+    reviewedOn: MVP_REVIEWED_ON,
+    publishedOn: "2026-10-29",
   },
   {
     id: "bunker",
@@ -195,7 +214,11 @@ export const courseEquipmentSlangTerms: GlossaryTerm[] = [
         accessedOn: "2026-10-29",
       },
     ],
-    status: "in-review",
+    status: "published",
+    reviewedBy: "owner",
+    reviewLog: mvpReviewLogNone,
+    reviewedOn: MVP_REVIEWED_ON,
+    publishedOn: "2026-10-29",
   },
   {
     id: "penalty-area",
@@ -234,8 +257,19 @@ export const courseEquipmentSlangTerms: GlossaryTerm[] = [
         ref: "Definitions: Penalty Area",
         accessedOn: "2026-10-29",
       },
+      {
+        title: "USGA: Golf's New Rules: Changing Terminology",
+        url: "https://www.usga.org/content/usga/home-page/articles/2019/04/golf-s-new-rules--changing-terminology.html",
+        kind: "official-rules",
+        ref: "2019 renamings",
+        accessedOn: "2026-10-29",
+      },
     ],
-    status: "in-review",
+    status: "published",
+    reviewedBy: "owner",
+    reviewLog: mvpReviewLogNone,
+    reviewedOn: MVP_REVIEWED_ON,
+    publishedOn: "2026-10-29",
   },
 
   /* -------------------------------------------------------- equipment */
@@ -251,7 +285,7 @@ export const courseEquipmentSlangTerms: GlossaryTerm[] = [
       "The longest club in the bag, with the biggest head and the least loft apart from the putter, used for tee shots on most par 4s and par 5s.",
     explanation: "The driver is the club; the drive is the shot.",
     example:
-      "Most drivers have between 8 and 12 degrees of loft. A 7-iron has roughly three times as much.",
+      "Drivers range from about 7 to 13 degrees of loft. A 7-iron usually has around 34.",
     relatedTermIds: ["drive", "longest-drive"],
     relatedContentPaths: [],
     canonical: { kind: "hub", anchor: "driver" },
@@ -269,8 +303,18 @@ export const courseEquipmentSlangTerms: GlossaryTerm[] = [
         kind: "editorial",
         accessedOn: "2026-10-29",
       },
+      {
+        title: "Golf Monthly: What Degree Loft Should Your Golf Clubs Be?",
+        url: "https://www.golfmonthly.com/features/the-game/degree-golf-clubs-190027",
+        kind: "editorial",
+        accessedOn: "2026-10-29",
+      },
     ],
-    status: "in-review",
+    status: "published",
+    reviewedBy: "owner",
+    reviewLog: mvpReviewLogNone,
+    reviewedOn: MVP_REVIEWED_ON,
+    publishedOn: "2026-10-29",
   },
   {
     id: "putter",
@@ -302,7 +346,11 @@ export const courseEquipmentSlangTerms: GlossaryTerm[] = [
         accessedOn: "2026-10-29",
       },
     ],
-    status: "in-review",
+    status: "published",
+    reviewedBy: "owner",
+    reviewLog: mvpReviewLogNone,
+    reviewedOn: MVP_REVIEWED_ON,
+    publishedOn: "2026-10-29",
   },
 
   /* ------------------------------------------------------------ slang */
@@ -347,7 +395,11 @@ export const courseEquipmentSlangTerms: GlossaryTerm[] = [
         accessedOn: "2026-10-29",
       },
     ],
-    status: "in-review",
+    status: "published",
+    reviewedBy: "owner",
+    reviewLog: mvpReviewLogNone,
+    reviewedOn: MVP_REVIEWED_ON,
+    publishedOn: "2026-10-29",
   },
   {
     id: "gimme",
@@ -397,7 +449,11 @@ export const courseEquipmentSlangTerms: GlossaryTerm[] = [
         accessedOn: "2026-10-29",
       },
     ],
-    status: "in-review",
+    status: "published",
+    reviewedBy: "owner",
+    reviewLog: mvpReviewLogNone,
+    reviewedOn: MVP_REVIEWED_ON,
+    publishedOn: "2026-10-29",
   },
   {
     id: "breakfast-ball",
@@ -440,7 +496,11 @@ export const courseEquipmentSlangTerms: GlossaryTerm[] = [
         accessedOn: "2026-10-29",
       },
     ],
-    status: "in-review",
+    status: "published",
+    reviewedBy: "owner",
+    reviewLog: mvpReviewLogNone,
+    reviewedOn: MVP_REVIEWED_ON,
+    publishedOn: "2026-10-29",
   },
   {
     id: "snowman",
@@ -471,7 +531,11 @@ export const courseEquipmentSlangTerms: GlossaryTerm[] = [
         accessedOn: "2026-10-29",
       },
     ],
-    status: "in-review",
+    status: "published",
+    reviewedBy: "owner",
+    reviewLog: mvpReviewLogNone,
+    reviewedOn: MVP_REVIEWED_ON,
+    publishedOn: "2026-10-29",
   },
   {
     id: "19th-hole",
@@ -503,7 +567,11 @@ export const courseEquipmentSlangTerms: GlossaryTerm[] = [
         accessedOn: "2026-10-29",
       },
     ],
-    status: "in-review",
+    status: "published",
+    reviewedBy: "owner",
+    reviewLog: mvpReviewLogNone,
+    reviewedOn: MVP_REVIEWED_ON,
+    publishedOn: "2026-10-29",
   },
   {
     id: "worm-burner",
@@ -514,7 +582,7 @@ export const courseEquipmentSlangTerms: GlossaryTerm[] = [
     tags: ["informal"],
     priority: "mvp",
     shortDefinition:
-      "A shot that never gets off the ground and skims along the grass, usually from catching the top of the ball.",
+      "A shot that barely gets off the ground and skims along the grass.",
     example:
       "A worm burner off the tee can still run 150 yards on a firm fairway. It just won't look good doing it.",
     relatedTermIds: ["drive"],
@@ -529,12 +597,22 @@ export const courseEquipmentSlangTerms: GlossaryTerm[] = [
         accessedOn: "2026-10-29",
       },
       {
-        title: "Golf.com",
+        title: "Practical Golf",
         url: "https://practical-golf.com/golf-terms",
         kind: "editorial",
         accessedOn: "2026-10-29",
       },
+      {
+        title: "MyGolfSpy",
+        url: "https://mygolfspy.com/news-opinion/instruction/golf-shot-names-explained-from-hosel-rockets-to-worm-burners/",
+        kind: "editorial",
+        accessedOn: "2026-10-29",
+      },
     ],
-    status: "in-review",
+    status: "published",
+    reviewedBy: "owner",
+    reviewLog: mvpReviewLogNone,
+    reviewedOn: MVP_REVIEWED_ON,
+    publishedOn: "2026-10-29",
   },
 ];

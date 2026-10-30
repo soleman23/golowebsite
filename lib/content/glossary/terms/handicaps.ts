@@ -2,23 +2,23 @@
  * Handicaps and course ratings (#160, GLS-006c). Ten MVP records from
  * docs/glossary/inventory.md § D.
  *
- * IN REVIEW. Drafted October 29, 2026 and revised the same day against the
- * primary sources: every source with `accessedOn` was opened that day by
- * the agent preparing the rules fact-check (docs/glossary/review-packet.md
- * records what each says and the recomputed examples). No review stage is
- * signed: the owner signs the rules fact-check, the product audit and
- * approval (editorial-review.md), so no record has a review log yet.
+ * PUBLISHED by the launch PR (#166). Drafted and source-checked October 29,
+ * 2026: every source with `accessedOn` was opened on that date
+ * (docs/glossary/review-packet.md records what each says and the recomputed
+ * examples). The review log is in ../review.ts: rules, product and SEO by an
+ * agent under the owner's delegation, approval by the owner in writing.
  *
  * Worked numbers agree with /blog/index-vs-course-handicap (12.4 Index; blue
  * tees Slope 131, Course Rating 71.8; white tees 122, 69.6; par 72).
  *
- * GoLo notes come from handicap-strokes (live; app-check 0.6.2, not yet
- * re-confirmed under row 2 of docs/glossary/capability-check.md): full
+ * GoLo notes come from handicap-strokes (live; app-check 1.2.1 on
+ * 2026-10-29, docs/glossary/capability-check.md row 2): full
  * Course Handicap, one set of tees per group, no allowance except a
  * scramble's team handicap, nobody off the low man. Allowances, low-man play
  * and mixed tees are explained as golf, never as a GoLo setting.
  */
 
+import { MVP_REVIEWED_ON, mvpReviewLogApp, mvpReviewLogNone } from "../review";
 import type { GlossaryTerm } from "../types";
 
 export const handicapsTerms: GlossaryTerm[] = [
@@ -73,7 +73,11 @@ export const handicapsTerms: GlossaryTerm[] = [
         accessedOn: "2026-10-29",
       },
     ],
-    status: "in-review",
+    status: "published",
+    reviewedBy: "owner",
+    reviewLog: mvpReviewLogNone,
+    reviewedOn: MVP_REVIEWED_ON,
+    publishedOn: "2026-10-29",
   },
   {
     id: "course-handicap",
@@ -116,7 +120,11 @@ export const handicapsTerms: GlossaryTerm[] = [
         accessedOn: "2026-10-29",
       },
     ],
-    status: "in-review",
+    status: "published",
+    reviewedBy: "owner",
+    reviewLog: mvpReviewLogApp,
+    reviewedOn: MVP_REVIEWED_ON,
+    publishedOn: "2026-10-29",
   },
   {
     id: "playing-handicap",
@@ -162,7 +170,11 @@ export const handicapsTerms: GlossaryTerm[] = [
         accessedOn: "2026-10-29",
       },
     ],
-    status: "in-review",
+    status: "published",
+    reviewedBy: "owner",
+    reviewLog: mvpReviewLogNone,
+    reviewedOn: MVP_REVIEWED_ON,
+    publishedOn: "2026-10-29",
   },
   {
     id: "course-rating",
@@ -213,7 +225,11 @@ export const handicapsTerms: GlossaryTerm[] = [
         accessedOn: "2026-10-29",
       },
     ],
-    status: "in-review",
+    status: "published",
+    reviewedBy: "owner",
+    reviewLog: mvpReviewLogNone,
+    reviewedOn: MVP_REVIEWED_ON,
+    publishedOn: "2026-10-29",
   },
   {
     id: "slope-rating",
@@ -263,7 +279,11 @@ export const handicapsTerms: GlossaryTerm[] = [
         accessedOn: "2026-10-29",
       },
     ],
-    status: "in-review",
+    status: "published",
+    reviewedBy: "owner",
+    reviewLog: mvpReviewLogNone,
+    reviewedOn: MVP_REVIEWED_ON,
+    publishedOn: "2026-10-29",
   },
   {
     id: "stroke-index",
@@ -302,7 +322,11 @@ export const handicapsTerms: GlossaryTerm[] = [
         accessedOn: "2026-10-29",
       },
     ],
-    status: "in-review",
+    status: "published",
+    reviewedBy: "owner",
+    reviewLog: mvpReviewLogNone,
+    reviewedOn: MVP_REVIEWED_ON,
+    publishedOn: "2026-10-29",
   },
   {
     id: "handicap-stroke",
@@ -343,7 +367,11 @@ export const handicapsTerms: GlossaryTerm[] = [
         accessedOn: "2026-10-29",
       },
     ],
-    status: "in-review",
+    status: "published",
+    reviewedBy: "owner",
+    reviewLog: mvpReviewLogApp,
+    reviewedOn: MVP_REVIEWED_ON,
+    publishedOn: "2026-10-29",
   },
   {
     id: "handicap-allowance",
@@ -383,7 +411,11 @@ export const handicapsTerms: GlossaryTerm[] = [
         accessedOn: "2026-10-29",
       },
     ],
-    status: "in-review",
+    status: "published",
+    reviewedBy: "owner",
+    reviewLog: mvpReviewLogApp,
+    reviewedOn: MVP_REVIEWED_ON,
+    publishedOn: "2026-10-29",
   },
   {
     id: "net-double-bogey",
@@ -421,7 +453,11 @@ export const handicapsTerms: GlossaryTerm[] = [
         accessedOn: "2026-10-29",
       },
     ],
-    status: "in-review",
+    status: "published",
+    reviewedBy: "owner",
+    reviewLog: mvpReviewLogNone,
+    reviewedOn: MVP_REVIEWED_ON,
+    publishedOn: "2026-10-29",
   },
   {
     id: "score-differential",
@@ -461,6 +497,10 @@ export const handicapsTerms: GlossaryTerm[] = [
         accessedOn: "2026-10-29",
       },
     ],
-    status: "in-review",
+    status: "published",
+    reviewedBy: "owner",
+    reviewLog: mvpReviewLogNone,
+    reviewedOn: MVP_REVIEWED_ON,
+    publishedOn: "2026-10-29",
   },
 ];

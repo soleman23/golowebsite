@@ -2,23 +2,23 @@
  * Side games (#159, GLS-006b). Ten MVP records from
  * docs/glossary/inventory.md § C.
  *
- * IN REVIEW. Drafted October 29, 2026 and revised the same day against the
- * primary sources: every source with `accessedOn` was opened that day by
- * the agent preparing the rules fact-check (docs/glossary/review-packet.md
- * records what each says and the recomputed examples). No review stage is
- * signed: the owner signs the rules fact-check, the product audit and
- * approval (editorial-review.md), so no record has a review log yet.
+ * PUBLISHED by the launch PR (#166). Drafted and source-checked October 29,
+ * 2026: every source with `accessedOn` was opened on that date
+ * (docs/glossary/review-packet.md records what each says and the recomputed
+ * examples). The review log is in ../review.ts: rules, product and SEO by an
+ * agent under the owner's delegation, approval by the owner in writing.
  *
- * GoLo notes follow the registry as corrected by the owner on October 29,
- * 2026: presses on Overall Match only, called, never automatic, a press on
- * a press allowed with no more than two live (#179); settle-up never holds
- * or moves money; no measured distances. Closest to the Pin cites
- * closest-to-pin (#194): the scorer marks the winner, par-to-win is the
- * group's call. Whether an unwon hole carries is in open PR #195 and isn't
- * claimed here. There is no junk board (#172), so Junk, Greenie and Sandy
- * are golf education with no GoLo note.
+ * GoLo notes follow the registry as rechecked against the app's code on
+ * October 29, 2026 (capability-check.md): presses on Overall Match only,
+ * never automatic, up to two live, and no press on a press; settle-up never
+ * holds or moves money; no measured distances. Closest to the Pin: the
+ * scorer marks the winner on the game's par 3s, a hole nobody wins pays
+ * nothing, par-to-win is the group's call. Junk, Greenie and Sandy are golf
+ * education with no GoLo note: the app's Greenie and Sandie Skins options
+ * aren't in the registry yet (soleman23/golowebsite#200).
  */
 
+import { MVP_REVIEWED_ON, mvpReviewLogApp, mvpReviewLogNone } from "../review";
 import type { GlossaryTerm } from "../types";
 
 export const sideGamesTerms: GlossaryTerm[] = [
@@ -39,7 +39,7 @@ export const sideGamesTerms: GlossaryTerm[] = [
       text: "Groups decide whether presses are called or automatic, when they can be called, and whether a press can itself be pressed.",
     },
     goloNote:
-      "On GoLo's Overall Match game, the side two or more down calls a press at two, three or four times the amount, with up to two live at once. GoLo doesn't open presses automatically, and its Nassau takes none.",
+      "On GoLo's Overall Match game a press can start once a side is two or more down, at two, three or four times the amount, with up to two live at once. GoLo doesn't open presses automatically, and its Nassau takes none.",
     relatedTermIds: ["re-press", "nassau", "match-play"],
     relatedContentPaths: ["/games/nassau"],
     canonical: { kind: "existing", path: "/blog/pressing" },
@@ -53,7 +53,11 @@ export const sideGamesTerms: GlossaryTerm[] = [
         accessedOn: "2026-10-29",
       },
     ],
-    status: "in-review",
+    status: "published",
+    reviewedBy: "owner",
+    reviewLog: mvpReviewLogApp,
+    reviewedOn: MVP_REVIEWED_ON,
+    publishedOn: "2026-10-29",
   },
   {
     id: "re-press",
@@ -72,7 +76,7 @@ export const sideGamesTerms: GlossaryTerm[] = [
       text: "Some groups allow it, some cap the number of presses, and some never allow a press on a press. Agree before the first tee.",
     },
     goloNote:
-      "On GoLo's Overall Match game a side can press a press, with no more than two presses live at once.",
+      "GoLo doesn't press a press. On its Overall Match game a second press also needs a side two or more down in the main match.",
     relatedTermIds: ["press", "nassau"],
     relatedContentPaths: ["/blog/pressing"],
     canonical: { kind: "hub", anchor: "re-press" },
@@ -80,13 +84,18 @@ export const sideGamesTerms: GlossaryTerm[] = [
     ctaIntent: "settle-up",
     sources: [
       {
-        title: "CaddieHQ",
-        url: "https://www.caddiehq.com/resources/what-does-pressing-mean-in-golf",
+        title: "Stymie: What Is a Nassau in Golf?",
+        url: "https://stymie.golf/glossary/nassau",
         kind: "editorial",
+        ref: "Presses on presses",
         accessedOn: "2026-10-29",
       },
     ],
-    status: "in-review",
+    status: "published",
+    reviewedBy: "owner",
+    reviewLog: mvpReviewLogApp,
+    reviewedOn: MVP_REVIEWED_ON,
+    publishedOn: "2026-10-29",
   },
   {
     id: "carryover",
@@ -118,7 +127,11 @@ export const sideGamesTerms: GlossaryTerm[] = [
         accessedOn: "2026-10-29",
       },
     ],
-    status: "in-review",
+    status: "published",
+    reviewedBy: "owner",
+    reviewLog: mvpReviewLogApp,
+    reviewedOn: MVP_REVIEWED_ON,
+    publishedOn: "2026-10-29",
   },
   {
     id: "push",
@@ -153,7 +166,11 @@ export const sideGamesTerms: GlossaryTerm[] = [
         accessedOn: "2026-10-29",
       },
     ],
-    status: "in-review",
+    status: "published",
+    reviewedBy: "owner",
+    reviewLog: mvpReviewLogNone,
+    reviewedOn: MVP_REVIEWED_ON,
+    publishedOn: "2026-10-29",
   },
   {
     id: "greenie",
@@ -183,13 +200,17 @@ export const sideGamesTerms: GlossaryTerm[] = [
         accessedOn: "2026-10-29",
       },
       {
-        title: "Golf.com",
+        title: "Practical Golf",
         url: "https://practical-golf.com/golf-terms",
         kind: "editorial",
         accessedOn: "2026-10-29",
       },
     ],
-    status: "in-review",
+    status: "published",
+    reviewedBy: "owner",
+    reviewLog: mvpReviewLogNone,
+    reviewedOn: MVP_REVIEWED_ON,
+    publishedOn: "2026-10-29",
   },
   {
     id: "sandy",
@@ -225,7 +246,11 @@ export const sideGamesTerms: GlossaryTerm[] = [
         accessedOn: "2026-10-29",
       },
     ],
-    status: "in-review",
+    status: "published",
+    reviewedBy: "owner",
+    reviewLog: mvpReviewLogNone,
+    reviewedOn: MVP_REVIEWED_ON,
+    publishedOn: "2026-10-29",
   },
   {
     id: "junk",
@@ -261,7 +286,11 @@ export const sideGamesTerms: GlossaryTerm[] = [
         accessedOn: "2026-10-29",
       },
     ],
-    status: "in-review",
+    status: "published",
+    reviewedBy: "owner",
+    reviewLog: mvpReviewLogNone,
+    reviewedOn: MVP_REVIEWED_ON,
+    publishedOn: "2026-10-29",
   },
   {
     id: "settle-up",
@@ -283,7 +312,11 @@ export const sideGamesTerms: GlossaryTerm[] = [
     capabilityIds: ["settle-up"],
     ctaIntent: "settle-up",
     sources: [],
-    status: "in-review",
+    status: "published",
+    reviewedBy: "owner",
+    reviewLog: mvpReviewLogApp,
+    reviewedOn: MVP_REVIEWED_ON,
+    publishedOn: "2026-10-29",
   },
   {
     id: "closest-to-the-pin",
@@ -302,7 +335,7 @@ export const sideGamesTerms: GlossaryTerm[] = [
       text: "Some groups also require the ball to be on the green, or a par, which makes it a greenie.",
     },
     goloNote:
-      "In GoLo the scorer marks the winner on the holes the group chose, and the amount goes into the settle-up. No distance is recorded, and whether a par is needed is the group's call.",
+      "In GoLo the scorer marks the winner on each par 3 in the game, all of them or the back nine's, and the amount goes into the settle-up. No distance is recorded, a hole nobody wins pays nothing, and whether a par is needed is the group's call.",
     relatedTermIds: ["greenie", "longest-drive"],
     relatedContentPaths: [],
     canonical: { kind: "existing", path: "/games/closest-to-pin" },
@@ -322,7 +355,11 @@ export const sideGamesTerms: GlossaryTerm[] = [
         accessedOn: "2026-10-29",
       },
     ],
-    status: "in-review",
+    status: "published",
+    reviewedBy: "owner",
+    reviewLog: mvpReviewLogApp,
+    reviewedOn: MVP_REVIEWED_ON,
+    publishedOn: "2026-10-29",
   },
   {
     id: "longest-drive",
@@ -338,7 +375,7 @@ export const sideGamesTerms: GlossaryTerm[] = [
       "On the par-5 9th, a 260-yard drive in the rough loses to a 240-yard drive in the fairway.",
     ruleNote: {
       kind: "house-rules",
-      text: "Most groups only count a drive that finishes in the fairway; some allow the first cut.",
+      text: "Many groups only count a drive that finishes in the fairway; some allow the first cut.",
     },
     goloNote:
       "GoLo scores Longest Drive as a game, but it doesn't record a measured distance.",
@@ -361,6 +398,10 @@ export const sideGamesTerms: GlossaryTerm[] = [
         accessedOn: "2026-10-29",
       },
     ],
-    status: "in-review",
+    status: "published",
+    reviewedBy: "owner",
+    reviewLog: mvpReviewLogApp,
+    reviewedOn: MVP_REVIEWED_ON,
+    publishedOn: "2026-10-29",
   },
 ];

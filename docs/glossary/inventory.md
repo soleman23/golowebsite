@@ -221,7 +221,7 @@ Use the Rules' defined terms. "Fairway" and "rough" aren't defined areas; both a
 | # | id = slug | Term | MVP | Tags | Tier | Aliases | Related, not the same | Sources | Destination |
 |---|---|---|---|---|---|---|---|---|---|
 | 115 | `teeing-area` | Teeing Area | ✓ | rules | P2 | tee box, tee ground | `drive` | RoG Def. Teeing Area; RoG R. 6.2 | hub |
-| 116 | `fairway` | Fairway | ✓ | | P2 | short grass | `rough`, `general-area` | RoG Def. General Area | hub |
+| 116 | `fairway` | Fairway | ✓ | | P2 | | `rough`, `general-area` | RoG Def. General Area | hub |
 | 117 | `rough` | Rough | ✓ | | P2 | | `fairway`, `general-area` | RoG Def. General Area | hub |
 | 118 | `bunker` | Bunker | ✓ | rules | P2 | sand trap, trap | `penalty-area`, `sandy`, `fried-egg` | RoG Def. Bunker; RoG R. 12 | hub |
 | 119 | `penalty-area` | Penalty Area | ✓ | rules | P2 | water hazard, lateral hazard | `bunker`, `penalty-stroke`, `out-of-bounds` | RoG Def. Penalty Area; RoG R. 17 | hub |

@@ -2,17 +2,17 @@
  * Scoring and shots (#161, GLS-006d). Thirteen MVP records from
  * docs/glossary/inventory.md § A and § E.
  *
- * IN REVIEW. Drafted October 29, 2026 and revised the same day against the
- * primary sources: every source with `accessedOn` was opened that day by
- * the agent preparing the rules fact-check (docs/glossary/review-packet.md
- * records what each says and the recomputed examples). No review stage is
- * signed: the owner signs the rules fact-check, the product audit and
- * approval (editorial-review.md), so no record has a review log yet.
+ * PUBLISHED by the launch PR (#166). Drafted and source-checked October 29,
+ * 2026: every source with `accessedOn` was opened on that date
+ * (docs/glossary/review-packet.md records what each says and the recomputed
+ * examples). The review log is in ../review.ts: rules, product and SEO by an
+ * agent under the owner's delegation, approval by the owner in writing.
  *
  * Scoring examples use one hole with par and strokes
  * shown; net examples match the handicaps batch (Course Handicap 14).
  */
 
+import { MVP_REVIEWED_ON, mvpReviewLogNone } from "../review";
 import type { GlossaryTerm } from "../types";
 
 export const scoringShotsTerms: GlossaryTerm[] = [
@@ -61,7 +61,11 @@ export const scoringShotsTerms: GlossaryTerm[] = [
         accessedOn: "2026-10-29",
       },
     ],
-    status: "in-review",
+    status: "published",
+    reviewedBy: "owner",
+    reviewLog: mvpReviewLogNone,
+    reviewedOn: MVP_REVIEWED_ON,
+    publishedOn: "2026-10-29",
   },
   {
     id: "birdie",
@@ -92,7 +96,11 @@ export const scoringShotsTerms: GlossaryTerm[] = [
         accessedOn: "2026-10-29",
       },
     ],
-    status: "in-review",
+    status: "published",
+    reviewedBy: "owner",
+    reviewLog: mvpReviewLogNone,
+    reviewedOn: MVP_REVIEWED_ON,
+    publishedOn: "2026-10-29",
   },
   {
     id: "eagle",
@@ -123,7 +131,11 @@ export const scoringShotsTerms: GlossaryTerm[] = [
         accessedOn: "2026-10-29",
       },
     ],
-    status: "in-review",
+    status: "published",
+    reviewedBy: "owner",
+    reviewLog: mvpReviewLogNone,
+    reviewedOn: MVP_REVIEWED_ON,
+    publishedOn: "2026-10-29",
   },
   {
     id: "bogey",
@@ -155,7 +167,11 @@ export const scoringShotsTerms: GlossaryTerm[] = [
         accessedOn: "2026-10-29",
       },
     ],
-    status: "in-review",
+    status: "published",
+    reviewedBy: "owner",
+    reviewLog: mvpReviewLogNone,
+    reviewedOn: MVP_REVIEWED_ON,
+    publishedOn: "2026-10-29",
   },
   {
     id: "double-bogey",
@@ -194,7 +210,11 @@ export const scoringShotsTerms: GlossaryTerm[] = [
         accessedOn: "2026-10-29",
       },
     ],
-    status: "in-review",
+    status: "published",
+    reviewedBy: "owner",
+    reviewLog: mvpReviewLogNone,
+    reviewedOn: MVP_REVIEWED_ON,
+    publishedOn: "2026-10-29",
   },
   {
     id: "gross-score",
@@ -225,7 +245,11 @@ export const scoringShotsTerms: GlossaryTerm[] = [
         accessedOn: "2026-10-29",
       },
     ],
-    status: "in-review",
+    status: "published",
+    reviewedBy: "owner",
+    reviewLog: mvpReviewLogNone,
+    reviewedOn: MVP_REVIEWED_ON,
+    publishedOn: "2026-10-29",
   },
   {
     id: "net-score",
@@ -251,7 +275,11 @@ export const scoringShotsTerms: GlossaryTerm[] = [
         accessedOn: "2026-10-29",
       },
     ],
-    status: "in-review",
+    status: "published",
+    reviewedBy: "owner",
+    reviewLog: mvpReviewLogNone,
+    reviewedOn: MVP_REVIEWED_ON,
+    publishedOn: "2026-10-29",
   },
   {
     id: "stroke-play",
@@ -288,7 +316,11 @@ export const scoringShotsTerms: GlossaryTerm[] = [
         accessedOn: "2026-10-29",
       },
     ],
-    status: "in-review",
+    status: "published",
+    reviewedBy: "owner",
+    reviewLog: mvpReviewLogNone,
+    reviewedOn: MVP_REVIEWED_ON,
+    publishedOn: "2026-10-29",
   },
 
   /* ------------------------------------------------------------ shots */
@@ -323,7 +355,11 @@ export const scoringShotsTerms: GlossaryTerm[] = [
         accessedOn: "2026-10-29",
       },
     ],
-    status: "in-review",
+    status: "published",
+    reviewedBy: "owner",
+    reviewLog: mvpReviewLogNone,
+    reviewedOn: MVP_REVIEWED_ON,
+    publishedOn: "2026-10-29",
   },
   {
     id: "chip",
@@ -357,7 +393,11 @@ export const scoringShotsTerms: GlossaryTerm[] = [
         accessedOn: "2026-10-29",
       },
     ],
-    status: "in-review",
+    status: "published",
+    reviewedBy: "owner",
+    reviewLog: mvpReviewLogNone,
+    reviewedOn: MVP_REVIEWED_ON,
+    publishedOn: "2026-10-29",
   },
   {
     id: "pitch",
@@ -389,7 +429,11 @@ export const scoringShotsTerms: GlossaryTerm[] = [
         accessedOn: "2026-10-29",
       },
     ],
-    status: "in-review",
+    status: "published",
+    reviewedBy: "owner",
+    reviewLog: mvpReviewLogNone,
+    reviewedOn: MVP_REVIEWED_ON,
+    publishedOn: "2026-10-29",
   },
   {
     id: "putt",
@@ -421,7 +465,11 @@ export const scoringShotsTerms: GlossaryTerm[] = [
         accessedOn: "2026-10-29",
       },
     ],
-    status: "in-review",
+    status: "published",
+    reviewedBy: "owner",
+    reviewLog: mvpReviewLogNone,
+    reviewedOn: MVP_REVIEWED_ON,
+    publishedOn: "2026-10-29",
   },
   {
     id: "slice",
@@ -455,6 +503,10 @@ export const scoringShotsTerms: GlossaryTerm[] = [
         accessedOn: "2026-10-29",
       },
     ],
-    status: "in-review",
+    status: "published",
+    reviewedBy: "owner",
+    reviewLog: mvpReviewLogNone,
+    reviewedOn: MVP_REVIEWED_ON,
+    publishedOn: "2026-10-29",
   },
 ];

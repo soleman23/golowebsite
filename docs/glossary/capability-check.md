@@ -4,7 +4,7 @@ What the owner confirms against the current GoLo release before any glossary GoL
 
 Fill in the last three columns, or reply on #154 with the row numbers. An agent then updates the registry in a small PR (`verified: { by: "owner", date, appVersion }`, plus `limits` where useful) and runs `npm run lint:content`.
 
-**Status:** prepared October 29, 2026. Questions Q-a to Q-e answered by the owner on October 29, 2026 (below). Rows 1–13 are **not** re-confirmed yet: the owner will check them against the current build separately, and their `verified` entries stay as they are until then.
+**Status:** prepared October 29, 2026. Questions Q-a to Q-e answered by the owner on October 29, 2026 (below). Rows 1–13, junk-board and skins-validation were **rechecked by an agent against the app's code on October 29, 2026**, at the owner's request (the owner didn't recheck them or test the app): results in [Release recheck results](#release-recheck-results-2026-10-29). Three of the owner's answers don't match the shipped code (Q-a, Q-b, and the #195 carry).
 
 ## Capabilities the glossary will cite
 
@@ -60,3 +60,28 @@ Plus the two added on October 29: `junk-board` and `skins-validation`, both stil
 - Q-a, Q-b: the side-games batch (#159) writes its GoLo notes from the updated registry, by `capabilityIds`, never as literal status text.
 - Q-c: copied into #166's release recheck list.
 - Q-d, Q-e: each needs its own issue against the existing pages. They're listed here only because the glossary audit found them.
+
+## Release recheck results (2026-10-29)
+
+**Who and what:** an agent, at the owner's written request of October 29, 2026. The owner didn't recheck these rows or test the app. **Evidence:** the app's source at golo `main` 2237c1d55e44 (the production branch: GoLo 1.2.1, Android versionCode 28, iOS 1.2.1 build 28), read only; no app was run and no database was queried. golo `staging` (ae2eacd, 72 commits ahead) changes nothing under `src/`. Google Play listing `golf.golo.app` opened the same day (updated October 27, 2026). Paths below are in the golo repo.
+
+| # | Capability | Result | Evidence | Registry change in the launch PR |
+|---|---|---|---|---|
+| 1 | `overall-match-presses` | **Partly.** 2+ down, ×2/×3/×4, two live, Overall Match only, never automatic: confirmed. **"A side can press a press" is not in the code:** every press hangs off the Overall Match and a side qualifies on the main match's standing. Nobody "calls" it: the scorer enters it | `src/engines/pressBets.js` `MAX_ACTIVE_PRESSES = 2`, `MULTIPLIERS = [2, 3, 4]`, `margin >= 2` on the parent match, `parentBetId` | Summary reworded; press-on-press limit replaced; `verified` app-check 1.2.1, 2026-10-29. Press and Re-press GoLo notes narrowed |
+| 2 | `handicap-strokes` | **Confirmed.** One tee per round; Course Handicap from Index, Slope, Rating, par; strokes by stroke index; full Course Handicap, no allowance outside a scramble, no low-man code. The Index is typed in (no GHIN); a round can also be played Gross | `src/pages/SetupWizard.jsx` (`tee: storedTeeOf`, `calculateCourseHandicap`), `src/engines/handicap.js` | `verified` updated |
+| 3 | `hole-scoring` | **Partly.** Net and gross for every entity; one scorer, except a scramble, where each team can have its own | `src/lib/teamScorers.js`, `src/engines/scoring.js` | None in this PR (not cited by the glossary); follow-up #200 |
+| 4 | `auto-press` | **Not built** for users: hidden in Setup. A Nassau auto-press engine is still in the code, reachable only from an old saved round | `SetupWizard.jsx` "Auto-press is hidden for now"; `src/engines/nassau.js` | `verified` updated |
+| 5 | `nassau-presses` | **Not built** | `getPressEligibility` looks only for the Overall Match | `verified` updated |
+| 6 | `handicap-allowances` | **Not built** (scramble team percentages aside) | searched "allowance", "low man", "relative" | `verified` updated |
+| 7 | `mixed-tees` | **Not built**: one `round.tee` | searched per-player tee fields | `verified` updated |
+| 8 | `quota` | **Not built** | `src/engines/betResults.js` game types | `verified` updated |
+| 9 | `saved-groups` | **Confirmed** (members are crew members with accounts; guests aren't saved) | `supabase/migrations/0060_crew_groups.sql`, `src/lib/db/crew.js` | `verified` updated |
+| 10 | `settle-up` | **Confirmed**, including "not always the fewest" (traced +4, +3, −2, −2, −3 → 4 payments). GoLo tracks sent/received status only; no money moves | `src/engines/payouts.js`, `src/lib/venmo.js`, `src/lib/db/payments.js` | `verified` updated |
+| 11 | `scramble` | **Confirmed** | `src/lib/scrambleTeams.js`, `src/engines/handicap.js` team percentages, `SCRAMBLE_UNPLAYED` | `verified` updated |
+| 12 | `distance-logging` | **Confirmed not offered**: Closest to Pin and Longest Drive store a player id only. Longest Drive is a live game | `src/store/roundStore.js` `flagCTP` / `flagLD`; `src/engines/longestDrive.js` | `verified` updated |
+| 13 | `ios-app` | **iOS build exists (1.2.1); App Store status can't be read from code.** Unchanged: `siteConfig.iosLive` stays false, so no App Store link ships | `ios/App/App.xcodeproj` | None |
+| — | `junk-board` | **Contradicted.** The Skins game has **Greenie** (par-3 closest plus par or better; an unclaimed greenie carries to the next par 3) and **Sandie** options, scored and settled. Barkie, poley, snake, arnie: not found. The Play listing says "Junk: Greenies and Sandies" | `SetupWizard.jsx` Skins types; `src/engines/skins.js` | None in this PR: the glossary cites neither entry, and Junk, Greenie and Sandy stay education with no GoLo note. Follow-up #200 |
+| — | `skins-validation` | **Confirmed** for standard and carryover skins (lowest unique score wins, no birdie or par test). The Greenie and Sandie options do require par | `src/engines/skins.js` | `verified` updated |
+| — | `closest-to-pin` | **Partly.** Winner marked by the scorer, netted into settle-up, no distance, no par check: confirmed. Holes are all the par 3s or the back nine's, not any hole. **A hole nobody wins pays nothing and doesn't carry** (#195's carry claim is contradicted; the carry is the Skins Greenie's) | `src/engines/ctp.js` "Holes with no winner flagged are skipped"; `src/lib/roundBets.js` `ctpHolesOn` | Summary and limits corrected; `verified` updated; CTP GoLo note narrowed |
+| — | `live-skins` | **Confirmed** | `src/engines/betStatus.js` carried pill; `src/engines/skins.js` | `verified` updated |
+| — | `game-library` (Wolf) | Games confirmed. **No tee order in the code:** the wolf rotates by player order (`players[(hole − 1) % 4]`). The owner's "last" stays the site's guide wording, but no GoLo note can claim it, so Wolf has none | `src/engines/wolf.js` `getWolfOrder` | None; `verified` unchanged (its junk limits are contradicted; #200) |

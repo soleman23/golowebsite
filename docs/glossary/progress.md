@@ -13,7 +13,24 @@ Gates are separate, and none implies another:
 
 CI runs on PRs to `main` and pushes to `main`. A retargeted PR needs a push before CI runs.
 
-## Where things stand (October 29, 2026, end of session 3)
+## Where things stand (October 29, 2026, evening: the launch PR)
+
+**On `main`:** #196 (chip count contrast), #197 (#164 CTAs), #198 (the 56 records at `in-review`), #199 (photo hero). Production still has `glossaryLive = false`: `/glossary` 404s (checked live after the deploy).
+
+**Launch PR, branch `m7/launch-164-166`** (four commits; `launch-packet.md` § Launch diff): the app-code capability recheck, the final review and publication of all 56 records, the flag, footer and inbound links, and a lighter phone hero. **Not merged, not deployed:** nothing is published in production until the owner approves the merge.
+
+**How the owner's five open items were resolved** (owner's instruction of October 29, 2026):
+1. **Records and the eight questions:** the owner delegated the rules, product and SEO stages to an agent and approved the content in writing, subject to those checks. Done and logged per record (`review.ts`); answers in `review-packet.md` § Resolution.
+2. **Capability rows 1–13:** rechecked by an agent against the app's code at golo `main` 2237c1d (GoLo 1.2.1), not by the owner. Three owner answers don't match the code (press on a press, the Closest to Pin carry, no junk board); the glossary follows the code. `capability-check.md` § Release recheck results; out-of-scope findings in #200.
+3. **#195:** reviewed (comment on the PR). Its Closest to Pin carry is contradicted by the code; the launch PR doesn't depend on it. Not merged. If it merges as is, its `closest-to-pin` summary line will conflict with the launch PR's.
+4. **Screen reader (GL-QA-13):** **not done**, because it needs a person. axe and an accessibility-tree inspection are recorded as supplements.
+5. **Release go:** the owner's approval to merge and deploy is the last step.
+
+**Defect fixed on the way:** #171's acceptance needs lab LCP ≤ 2.5 s, and the photo hero measured 2,634 ms. The glossary phone AVIF now starts at q40 (24.9 KB at 768w), and the median is 2,485 ms, about 15 ms inside the target.
+
+**Gates:** implemented and QA'd on the launch build (Node 24.21.0); pushed and PR open (CI on the PR); content approved by the owner through the delegation; **not released**.
+
+## Session 3 (October 29, 2026, afternoon)
 
 Reconciled against GitHub and `origin/main` 488e5a8. Session 2's list below this one described #188–#192 and #194 as open; all six are merged.
 
@@ -87,16 +104,12 @@ Gates: #196–#198 pushed, CI green, Codex 👍, merged by the owner's instructi
 
 ## Owner actions
 
-1. **Content (#158–#162):** sign the four stages per record from `review-packet.md`, and answer its eight questions.
-2. **#154 rows 1–13:** re-confirm against the current app; row 2 backs the handicap GoLo notes.
-3. **#171:** done: the owner approved the hero image on 2026-10-29. The 2,634 ms lab LCP is recorded for the go decision. Higher-resolution renders are optional.
-4. **#195:** merge or close; then say whether the Closest to Pin entry should mention the carry.
-5. **Push and PRs:** done: #196–#198 merged 2026-10-29; #199 open.
-6. **Screen-reader pass** on the launch simulation (VoiceOver: rotor headings, the search results' live count, an entry's definition list).
-7. **Release (#166):** go/no-go from `launch-packet.md`; record the newsletter exception.
+1. **GL-QA-13:** a VoiceOver or NVDA pass on `/glossary`, on the launch PR's Hostinger preview (the flag is on in this branch, and previews follow the constant), a local build, or live right after deploy. Script: rotor headings (one H1, Start here, Browse A–Z, letters); type "press" and listen for "2 terms match", then Tab to Clear and the results; pick Side games and listen for the active chip; read one entry (term, definition, example, notes, links); open `/glossary#press` cold.
+2. **Merge approval** for the launch PR. If the merge date isn't 2026-10-29, `publishedOn` moves to that date first.
+3. **#195:** decide whether to drop its carry sentence; it conflicts with the launch PR's `closest-to-pin` entry.
+4. **#200:** registry and site-copy corrections the app check found (Greenie and Sandie Skins options, scramble scorers, the CTP guide's carry).
 
 ## Next ready
 
-- After owner approval of records: an agent adds the review logs (dated as signed), sets `approved`, and the launch branch moves them to `published`.
-- If higher-resolution originals arrive: replace `tmp/hero-src/glossary-*.png`, rerun `node scripts/generate-hero-images.mjs glossary` and the contrast, image-hash and Lighthouse runs on `m7/171-glossary-hero`.
-- After both: the launch PR (#164 + #166), per `launch-packet.md`.
+- After the merge: the live checks and Search Console steps in `launch-packet.md` § Release steps; then #167's dates from the launch date (L+7, L+28, L+56, L+90).
+- #200, separately from the glossary.

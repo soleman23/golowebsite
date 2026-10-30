@@ -12,4 +12,4 @@
  *
  * Typed `boolean` so a `false` literal doesn't narrow the checks that read it.
  */
-export const glossaryLive: boolean = false;
+export const glossaryLive: boolean = true;
