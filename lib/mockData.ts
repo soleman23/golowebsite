@@ -220,9 +220,10 @@ function gameTile(slug: GameSlug): GameTile {
 }
 
 /*
- * Roster games only. A "Junk board" tile used to close this list; the app has
- * none (soleman23/golowebsite#172), so Scramble, the newest format, takes its
- * highlighted slot.
+ * Roster games only. A "Junk board" tile used to close this list
+ * (soleman23/golowebsite#172): the app has no junk board as such. Greenies and
+ * sandies are Skins options (capabilities.ts skins-greenie-sandie), not a
+ * game of their own. Scramble, the newest format, takes the highlighted slot.
  */
 export const gameTiles: GameTile[] = [
   gameTile("nassau"),

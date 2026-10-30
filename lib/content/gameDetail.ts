@@ -89,6 +89,8 @@ export type GameDetail = {
     standings?: GameExampleStanding[];
     net: { label: string; sub: string; value: string };
     phone: {
+      /** The GoLo game the phone shows, when it isn't the page's own game. */
+      game?: string;
       opponent: string;
       through: string;
       of: string;
@@ -841,13 +843,13 @@ const scramble: GameDetailCopy = {
 const closestToPin: GameDetailCopy = {
   slug: "closest-to-pin", kicker: "SIDE GAME · PAR 3s",
   deeperReading: { href: "/blog/rangefinder", label: "Deeper reading: rangefinder or GPS watch, for the $10 crowd →" },
-  updated: "2026-10-15",
+  updated: "2026-10-29",
   seoTitle: "Closest to the Pin & Greenies: Golf Side Game Rules",
   tagline: "One tee shot, one hole. Stick it tighter than everybody else on the par 3s and win it. Play it as a greenie and you still have to make par from there.",
   metaDescription: "How closest to the pin and greenies work: who qualifies, par-to-win, measuring, carryovers, and how it settles up.",
   traits: ["Any group size", "Par 3s only", "Greenies", "Per-hole amount"],
   howTitle: "The oldest side game in golf, and the easiest to argue about.",
-  intro: "On every marked par 3, whoever hits their tee shot closest to the flag wins the hole. Most groups play it as a greenie, which adds two conditions: the ball has to finish on the green, and you have to make par before it is actually yours. Those are the group’s rules to apply; GoLo nets whoever the scorer marks as the winner.",
+  intro: "On every marked par 3, whoever hits their tee shot closest to the flag wins the hole. Most groups play it as a greenie, which adds two conditions: the ball has to finish on the green, and you have to make par before it is actually yours. In GoLo’s Closest to Pin game those are the group’s rules to apply, and GoLo nets whoever the scorer marks as the winner. For greenies with par to win, its Skins game has a Greenie option.",
   steps: [
     { n: "1", title: "Mark the holes and the amount", body: "Usually all four par 3s, at $5 a head. Some groups mark one signature hole." },
     { n: "2", title: "Tee shots only", body: "Only the ball you hit from the tee counts. Reload and you are out of the running." },
@@ -865,7 +867,7 @@ const closestToPin: GameDetailCopy = {
     ],
   },
   example: {
-    kicker: "WATCH IT PLAY OUT", title: "Four par 3s, $5 a greenie, one three-putt that handed over a $30 hole.", lead: "Four players, greenies on every par 3, par-to-win agreed on the first tee. On the seventh Tom was inside everybody — and walked off with nothing.",
+    kicker: "WATCH IT PLAY OUT", title: "Four par 3s, $5 a greenie, one three-putt that handed over a $30 hole.", lead: "Four players, greenies on every par 3, par to win, and an unclaimed greenie carries to the next par 3. That’s how GoLo’s Greenie skins play. On the seventh Tom was inside everybody — and walked off with nothing.",
     bets: [
       { tag: "H3", tagSub: "168 YDS", title: "You — 11 ft 4 in", detail: "Only ball on the green, two-putt par", value: "+$15", tone: "good" },
       { tag: "H7", tagSub: "205 YDS", title: "Nobody", detail: "Tom was inside everyone, then three-putted", value: "carry", tone: "neutral" },
@@ -880,16 +882,18 @@ const closestToPin: GameDetailCopy = {
     ],
     net: { label: "NET · YOU’RE OWED", sub: "Four par-3 holes, netted", value: "+$40" },
     phone: {
-      opponent: "Four-player greenies", through: "18", of: "/ 18", state: "FINAL", stateSub: "four par 3s",
+      // In GoLo a greenie that carries is the Skins game's Greenie option
+      // (capabilities.ts skins-greenie-sandie); Closest to Pin doesn't carry.
+      game: "Skins", opponent: "Four-player greenies", through: "18", of: "/ 18", state: "FINAL", stateSub: "four par 3s",
       sequence: ["h", "h", "w", "h", "h", "h", "h", "h", "h", "h", "h", "w", "h", "h", "h", "l", "h", "h"],
       stats: [
         { label: "GREENIES", status: "3", value: "of 4", tone: "good" },
         { label: "BIGGEST", status: "$30", value: "hole 12", tone: "good" },
         { label: "CARRIED", status: "1", value: "hole 7", tone: "neutral" },
       ],
-      callout: { label: "HOUSE RULE", note: "Tom’s three-putt carried hole 7" },
+      callout: { label: "NO PAR", note: "Tom’s three-putt carried hole 7" },
       settleTitle: "You’re owed", settleSub: "Greenies, netted", settleValue: "$40",
-      label: "Final closest-to-pin results: you win three of four greenies and are owed forty dollars.",
+      label: "Final greenie results in a Skins game: you win three of four greenies and are owed forty dollars.",
     },
   },
   headings: {
@@ -921,7 +925,7 @@ const closestToPin: GameDetailCopy = {
   ],
   faqs: gameFaqs("closest-to-pin", [
     { q: "Does the ball have to be on the green?", a: "In most groups, yes. Agree it either way, but decide before the first par 3." },
-    { q: "Do you really have to make par?", a: "Only if your group plays it as a greenie, where par-to-win is the standard rule. GoLo doesn’t check it: the group decides who won and the scorer marks that player." },
+    { q: "Do you really have to make par?", a: "Only if your group plays it as a greenie, where par-to-win is the standard rule. In GoLo’s Closest to Pin game it’s the group’s call: the scorer marks whoever the group says won. Its Skins game has a Greenie option that pays only on par or better and carries an unclaimed greenie to the next par 3." },
     { q: "How do we measure it?", a: "Eyeball obvious gaps, pace close ones, or use a rangefinder. The scorer marks the winner once everyone is on the green." },
     { q: "What if two players are the same distance?", a: "Split it or carry it to the next par 3." },
     { q: "Can we play it on par 4s and 5s?", a: "Yes. Closest in two and marked approaches use the same rules." },

@@ -95,6 +95,16 @@ const APP_CHECK_062 = {
  * searched for and not found. It replaces the earlier stamps on those
  * entries: settle-up's at 1.0.0 (acd6eee, soleman23/golowebsite#103) and
  * scramble's at 1.2.1 (2026-10-28), whose findings it confirms.
+ *
+ * The same check, applied in soleman23/golowebsite#200: the game list in
+ * src/pages/SetupWizard.jsx GAME_DEFS and src/engines/betResults.js; Greenie
+ * and Sandie in src/engines/skins.js calculateManualSkins, the Skins types in
+ * SetupWizard.jsx and the per-hole flags in src/pages/ScoringPage.jsx; one
+ * scorer per scramble team in src/lib/teamScorers.js; Wolf's rotation in
+ * src/engines/wolf.js getWolfOrder; Longest Drive in
+ * src/engines/longestDrive.js. Where it differs from the owner's answers of
+ * 2026-10-29 (no junk board, #172 and #154 Q-a; a press on a press, Q-b; a
+ * Closest to Pin carry, #195), the code wins.
  */
 const APP_CHECK_1029 = {
   by: "app-check",
@@ -113,22 +123,6 @@ const OWNER_1015 = { by: "owner", date: "2026-10-15" } as const;
  */
 const OWNER_1026 = { by: "owner", date: "2026-10-26" } as const;
 
-/**
- * Owner, 2026-10-29: the app has no junk board; bounties exist only as the
- * Skins game's birdie and eagle skin settings (soleman23/golowebsite#172,
- * answering #154 Q-a). It applies no skins validation rules
- * (soleman23/golowebsite#176, answering #154 Q-d). Closest to Pin is a live
- * game that settles, with par-to-win left to the group, and skins and carries
- * build hole by hole on the scoring screen and the live leaderboard.
- *
- * The app check of the same day (APP_CHECK_1029) contradicts the junk-board
- * answer: the Skins game has Greenie and Sandie options, scored and settled.
- * The entries still stamped OWNER_1029 (junk-board) await that correction
- * (docs/glossary/capability-check.md § Release recheck results;
- * soleman23/golowebsite#200).
- */
-const OWNER_1029 = { by: "owner", date: "2026-10-29" } as const;
-
 /** The site's own wording before the registry existed, unchecked. */
 const SITE_COPY_1015 = { by: "site-copy", date: "2026-10-15" } as const;
 
@@ -139,26 +133,25 @@ export const capabilities = [
     label: "Hole-by-hole scoring, net and gross",
     status: "live",
     summary:
-      "One scorer taps in each hole; net and gross are both kept for every player.",
-    verified: APP_CHECK_062,
+      "One scorer taps in each hole, or one per team in a scramble; net and gross are both kept for every player.",
+    verified: APP_CHECK_1029,
     roadmap: true,
   },
   {
     id: "game-library",
-    // "junk board" was in this label until 2026-10-29; there isn't one
-    // (see the junk-board entry below). Closest to Pin's distance limit moved
-    // to its own entry the same day. verified is unchanged: the rest of the
-    // entry hasn't been rechecked.
-    label: "Nassau, skins, Best Score, Wolf, Bingo Bango Bongo",
+    // Closest to Pin has its own entry, and so do the Skins game's Greenie
+    // and Sandie options (skins-greenie-sandie).
+    label: "Nassau, Overall Match, skins, Best Score, Wolf, Bingo Bango Bongo, Longest Drive",
     status: "live",
     summary:
       "Run several games in one round, each with its own amount, netted into one number per player.",
     limits: [
-      "Birdie and eagle bounties exist only as a Skins setting (Birdie Skin, Eagle Skin), gross birdies only, no cap.",
-      "No junk board: sandies, barkies, poleys, snakes and arnies aren't scored. Closest to Pin is its own game.",
-      "Longest Drive doesn't record a measured distance.",
+      "Birdie and eagle bounties are Skins settings (Birdie Skin, Eagle Skin), gross birdies only, no cap.",
+      "No separate junk board: greenies and sandies are Skins settings, and barkies, poleys, snakes and arnies aren't scored.",
+      "Longest Drive is played on one par 5 and doesn't record a measured distance.",
+      "Wolf takes exactly four players, and the wolf rotates in player order; GoLo sets no tee order.",
     ],
-    verified: OWNER_1015,
+    verified: APP_CHECK_1029,
     roadmap: true,
   },
   {
@@ -263,11 +256,12 @@ export const capabilities = [
     limits: [
       "No measured distance is recorded.",
       "A hole nobody wins pays nothing; it doesn't carry.",
-      "Par-to-win isn't enforced: a greenie's par condition is a house rule the group applies when it marks the winner.",
+      "Par-to-win isn't checked in this game: the group decides before the scorer marks the winner. The Skins game's Greenie option does check it.",
     ],
     verified: APP_CHECK_1029,
-    // The junk-board greenie phrases came out on 2026-10-29 (marking a winner
-    // is live); these catch par-to-win presented as something GoLo checks.
+    // These catch par-to-win presented as something GoLo's Closest to Pin
+    // game checks. Copy about the Greenie option says "par or better" instead,
+    // so it doesn't trip them.
     overclaims: [
       "enforces par",
       "enforces par-to-win",
@@ -276,6 +270,19 @@ export const capabilities = [
       "verifies par",
       "par-to-win check",
     ],
+  },
+  {
+    id: "skins-greenie-sandie",
+    label: "Greenie and Sandie skins",
+    status: "live",
+    summary:
+      "Skins options: on a par 3, the closest tee shot wins a greenie if that player makes par or better, and an unclaimed greenie carries to the next par 3; every par-or-better sand save wins a sandie.",
+    limits: [
+      "The scorer flags the closest player and the players who were in a bunker; GoLo checks the par from the gross score.",
+      "A greenie still carried after the last par 3 is lost.",
+      "No barkies, poleys, snakes or arnies.",
+    ],
+    verified: APP_CHECK_1029,
   },
   {
     id: "live-skins",
@@ -541,16 +548,15 @@ export const capabilities = [
     label: "Junk board",
     status: "not-offered",
     summary:
-      "Scoring junk side points (sandies, barkies, poleys, snakes, arnies). Bounties exist only as the Skins game's birdie and eagle skins. Greenies aren't scored as junk: Closest to Pin is its own live game, and a greenie's par condition is the group's call.",
-    verified: OWNER_1029,
-    // Golf copy may still explain junk; these catch it presented as
-    // something GoLo does (soleman23/golowebsite#172). No greenie phrases:
-    // marking a Closest to Pin winner is live, so they'd catch true copy.
+      "A separate board of junk side points (barkies, poleys, snakes, arnies). Greenies and sandies are Skins options, not a junk board.",
+    verified: APP_CHECK_1029,
+    // Golf copy may still explain junk; these catch a junk board presented as
+    // something GoLo has (soleman23/golowebsite#172). "log a sandie" came out
+    // in #200: the scorer does flag sandies, as a Skins option.
     claimPhrases: [
       // Any "junk" in product copy (education files only count strings that
       // name GoLo or the app); the rest catch the items by name.
       "junk",
-      "log a sandie",
       "log a barkie",
     ],
   },
@@ -560,6 +566,9 @@ export const capabilities = [
     status: "not-offered",
     summary:
       "House rules that carried skins only count on a birdie, a par minimum or a two-putt.",
+    limits: [
+      "The Greenie and Sandie options need par or better to pay; that's part of those skins, not a rule on carried skins.",
+    ],
     verified: APP_CHECK_1029,
     // The guide can explain validation as golf; these catch it presented as
     // something GoLo applies (soleman23/golowebsite#176).

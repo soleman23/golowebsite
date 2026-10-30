@@ -16,7 +16,9 @@ const dotColor: Record<string, string> = {
 /**
  * "features" shows a different foursome below Mike. Both close on the
  * hole-progress bar. The features variant used to close on greenie and sandie
- * buttons; the app has no junk board (soleman23/golowebsite#172).
+ * buttons, removed in soleman23/golowebsite#172 on the belief the app had no
+ * junk board. It does score them, as Skins options flagged per hole
+ * (capabilities.ts skins-greenie-sandie, #200); the mockup keeps the bar.
  */
 type ScoringPhoneProps = { variant?: "home" | "features" };
 
