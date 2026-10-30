@@ -13,6 +13,17 @@ Gates are separate, and none implies another:
 
 CI runs on PRs to `main` and pushes to `main`. A retargeted PR needs a push before CI runs.
 
+## Where things stand (October 30, 2026: M7 complete)
+
+**GL-QA-13 passed.** On 2026-10-30 the owner confirmed that the human screen-reader check (VoiceOver/NVDA) is complete and passed. This is owner-provided evidence. The browser, the screen reader and their versions, the day it was run and what was heard weren't supplied, so none are recorded here. The axe run and the accessibility tree from the launch build stay supplements, as before.
+
+- **#166:** closed on 2026-10-30. Every acceptance criterion is met (the closing comment maps each one to its evidence). The newsletter band stays an owner-approved exception (#121 on hold).
+- **M7 · Glossary MVP:** closed with #166; all 16 issues are closed.
+- **#167:** the next glossary work. First checkpoint 2026-11-05 (L+7); the run sheet is `docs/seo-reports/glossary-checkpoints.md`.
+- **#168–#170:** not started, each behind its own #167 gate: #168 waits for the 28-day section to be filed, #169 for the 56-day section and #78's plan, #170 for the 90-day section.
+
+The section below is the launch-night record and is kept as written.
+
 ## Where things stand (October 29, 2026, night: released)
 
 **Live since 2026-10-29 17:23 PDT.** The owner approved the merge in the session at 17:21 PDT (recorded in #166). #201 merged as `70d9686` (CI green, Codex 👍), and Hostinger deployed it two minutes later. www.golo.golf/glossary has 56 published terms.
@@ -125,11 +136,11 @@ Gates: #196–#198 pushed, CI green, Codex 👍, merged by the owner's instructi
 
 ## Owner actions
 
-1. **GL-QA-13:** a VoiceOver or NVDA pass on www.golo.golf/glossary, then record it in #166 and close #166. Script: rotor headings (one H1, Start here, Browse A–Z, letters); type "press" and listen for "2 terms match", then Tab to Clear and the results; pick Side games and listen for the active chip; read one entry (term, definition, example, notes, links); open `/glossary#press` cold.
+1. **GL-QA-13: done.** The owner confirmed the pass on 2026-10-30; it's recorded in #166, which is closed. The script posted for it in #166 was: rotor headings (one H1, Start here, Browse A–Z, letters); type "press" and listen for "2 terms match", then Tab to Clear and the results; pick Side games and listen for the active chip; read one entry (term, definition, example, notes, links); open `/glossary#press` cold.
 2. **#195:** decide whether to drop its carry sentence; it conflicts with the released `closest-to-pin` entry.
 3. **#200:** registry and site-copy corrections the app check found: in review on its own PR (Greenie and Sandie Skins options, scramble scorers, the CTP guide's greenie carry).
 
 ## Next ready
 
-- #167's first checkpoint, 2026-11-05 (L+7): deployed and crawlable, sitemap and URL Inspection, events firing, broken links.
+- #167's first checkpoint, 2026-11-05 (L+7): deployed and crawlable, sitemap and URL Inspection, events firing, broken links. Run sheet: `docs/seo-reports/glossary-checkpoints.md`.
 - #200, separately from the glossary.

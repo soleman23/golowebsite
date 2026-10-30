@@ -1,6 +1,6 @@
 # Glossary MVP: go/no-go packet, launch diff and rollback (#164 + #166)
 
-Prepared October 29, 2026 and brought current the same evening for the launch PR. **Released 2026-10-29 17:23 PDT:** the owner approved the merge at 17:21 PDT (recorded in #166), and #201 merged as `70d9686`. Live results are in #166 and `progress.md`. Evidence files are listed at the end; the numbers below are what was measured, on the date shown.
+Prepared October 29, 2026 and brought current the same evening for the launch PR. **Released 2026-10-29 17:23 PDT:** the owner approved the merge at 17:21 PDT (recorded in #166), and #201 merged as `70d9686`. Live results are in #166 and `progress.md`. **GL-QA-13 passed after deploy:** the owner confirmed the human screen-reader check on 2026-10-30, and #166 closed the same day. Evidence files are listed at the end; the numbers below are what was measured, on the date shown.
 
 ## Go/no-go
 
@@ -15,7 +15,7 @@ Prepared October 29, 2026 and brought current the same evening for the launch PR
 | CI | green on the launch PR head (see the PR) | — |
 | Owner go | — | written approval to merge and deploy |
 
-**Outcome: go**, given by the owner on 2026-10-29. The merge landed the same day (Pacific), so `publishedOn` 2026-10-29 stands. GL-QA-13 became a post-deploy check by the owner's choice.
+**Outcome: go**, given by the owner on 2026-10-29. The merge landed the same day (Pacific), so `publishedOn` 2026-10-29 stands. GL-QA-13 became a post-deploy check by the owner's choice. The owner confirmed it passed on 2026-10-30.
 
 ## QA results (the launch build, 2026-10-29)
 
@@ -35,7 +35,7 @@ Production build of the launch branch (`next build && next start`, Node 24.21.0,
 | GL-QA-10 | `/glossary#press` | **pass** at 390 px: entry in view | launch/qa-b.txt |
 | GL-QA-11 | back/forward, reload | **pass**: Handicaps → Slang → Back restores Handicaps; reload keeps it | launch/qa-b.txt |
 | GL-QA-12 | keyboard | **pass**: Tab walk at 320, 760, 1100 and 1440 px (449, 377, 449 and 382 stops); every stop draws the 2px lime ring, none clipped. Tab order matches `ux.md` § Keyboard and focus | launch/tabwalk-*.txt |
-| GL-QA-13 | screen reader | **blocked: needs a person.** No VoiceOver or NVDA pass was possible here (turning VoiceOver on is a system setting and takes over the screen). Supplementary, not a pass: axe (WCAG 2.1 AA + best practice) 0 violations at 320 and 1280 px; the accessibility tree has one H1, H2 sections and A–Z H3s, 56 `dt`/`dd` pairs, a labelled search field ("Search the glossary"), a status region that reads "2 terms match" after typing "press", a labelled results list, the active chip as `aria-current`, and the hero image hidden (`alt=""`) | launch/axe.txt, launch/a11y-tree.txt |
+| GL-QA-13 | screen reader | **blocked: needs a person.** No VoiceOver or NVDA pass was possible here (turning VoiceOver on is a system setting and takes over the screen). Supplementary, not a pass: axe (WCAG 2.1 AA + best practice) 0 violations at 320 and 1280 px; the accessibility tree has one H1, H2 sections and A–Z H3s, 56 `dt`/`dd` pairs, a labelled search field ("Search the glossary"), a status region that reads "2 terms match" after typing "press", a labelled results list, the active chip as `aria-current`, and the hero image hidden (`alt=""`). **Post-deploy, 2026-10-30: pass, owner-confirmed.** The owner confirmed the human VoiceOver/NVDA check is complete and passed. The browser, screen reader, versions, run date and observations weren't supplied, so none are recorded | launch/axe.txt, launch/a11y-tree.txt; #166 |
 | GL-QA-14 | 320/760/1100/1440 | **pass**: no horizontal page overflow (the chip row scrolls inside itself, by design); screenshots at all four | launch/qa-b.txt, launch/shots/ |
 | GL-QA-15 | unpublished detail URL | **pass**: `/glossary/press` 404 | launch/qa-b.txt |
 | GL-QA-16 | metadata, sitemap | **pass**: unique title and description, self-canonical, og image; one `/glossary` sitemap entry (lastmod 2026-10-29, from `publishedOn`), no fragments or `?category=`; `llms.txt` Glossary section. Exclusion: with one record held at `in-review` it's absent from HTML, RSC, static bundles, schema, sitemap and `llms.txt` (55 terms shown) | launch/qa-b.txt, launch/exclusion.txt |
@@ -88,8 +88,8 @@ Outbound, unchanged: every entry with an `existing` canonical links its guide or
 3. Live checks on `https://www.golo.golf` (the apex 308s): `/glossary` 200; `/glossary/press` 404; the sitemap lists `/glossary` with the publish date; `llms.txt` Glossary section; schema in the live source; footer and the ten inbound links; hero bytes per viewport; consent states and one event per action with consent; Lighthouse on the live URL (recorded as live lab data, not field data).
 4. Search Console: URL Inspection on `/glossary`, request indexing; record the date in #166.
 5. #167: fill the checkpoint dates from the real launch date L: L+7, L+28, L+56, L+90.
-6. GL-QA-13: the screen-reader pass, if it didn't happen before the merge.
-7. Close #158–#162, #164, #165, #171 and #166 once the live checks pass; keep #167 open.
+6. GL-QA-13: the screen-reader pass, if it didn't happen before the merge. **Done:** owner-confirmed pass, 2026-10-30.
+7. Close #158–#162, #164, #165, #171 and #166 once the live checks pass; keep #167 open. **Done:** #158–#162, #164 and #171 closed on 2026-10-29 (#165 was already closed); #166 closed on 2026-10-30.
 
 ## Rollback
 
