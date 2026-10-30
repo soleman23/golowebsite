@@ -127,7 +127,7 @@ Gates: #196–#198 pushed, CI green, Codex 👍, merged by the owner's instructi
 
 1. **GL-QA-13:** a VoiceOver or NVDA pass on www.golo.golf/glossary, then record it in #166 and close #166. Script: rotor headings (one H1, Start here, Browse A–Z, letters); type "press" and listen for "2 terms match", then Tab to Clear and the results; pick Side games and listen for the active chip; read one entry (term, definition, example, notes, links); open `/glossary#press` cold.
 2. **#195:** decide whether to drop its carry sentence; it conflicts with the released `closest-to-pin` entry.
-3. **#200:** registry and site-copy corrections the app check found (Greenie and Sandie Skins options, scramble scorers, the CTP guide's carry).
+3. **#200:** registry and site-copy corrections the app check found: in review on its own PR (Greenie and Sandie Skins options, scramble scorers, the CTP guide's greenie carry).
 
 ## Next ready
 

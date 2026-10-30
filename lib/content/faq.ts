@@ -91,7 +91,7 @@ export const faqCategories: FaqCategory[] = [
       {
         id: "q-which-games",
         q: "Which games can I run at once?",
-        a: "Stack as many as you want in one round: Skins, Nassau, Overall Match, Best Score, Wolf, Bingo Bango Bongo, Closest to Pin and Longest Drive, with birdie and eagle bounties as a Skins setting. Each is scored on its own, then netted into a single number per player at the end. Play the round as a scramble and they run team against team, without Wolf or Bingo Bango Bongo.",
+        a: "Stack as many as you want in one round: Skins, Nassau, Overall Match, Best Score, Wolf, Bingo Bango Bongo, Closest to Pin and Longest Drive, with birdie, eagle, greenie and sandie skins as Skins settings. Each is scored on its own, then netted into a single number per player at the end. Play the round as a scramble and they run team against team, without Wolf or Bingo Bango Bongo.",
         link: { label: "SEE ALL THE GAMES →", href: "/games" },
       },
       {
