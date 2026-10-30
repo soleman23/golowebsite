@@ -16,8 +16,10 @@ const dotColor: Record<string, string> = {
 /**
  * "home" closes on the hole-progress bar; "features" shows a different
  * foursome below Mike and closes on the skins carry instead (capabilities.ts
- * live-skins). It used to show greenie and sandie buttons; the app has no junk
- * board (soleman23/golowebsite#172).
+ * live-skins). It used to show greenie and sandie buttons, removed in
+ * soleman23/golowebsite#172 on the belief the app had no junk board. It does
+ * score them, as Skins options flagged per hole (capabilities.ts
+ * skins-greenie-sandie, #200).
  */
 type ScoringPhoneProps = { variant?: "home" | "features" };
 

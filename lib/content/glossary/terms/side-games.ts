@@ -14,8 +14,9 @@
  * holds or moves money; no measured distances. Closest to the Pin: the
  * scorer marks the winner on the game's par 3s, a hole nobody wins pays
  * nothing, par-to-win is the group's call. Junk, Greenie and Sandy are golf
- * education with no GoLo note: the app's Greenie and Sandie Skins options
- * aren't in the registry yet (soleman23/golowebsite#200).
+ * education with no GoLo note. The app's Greenie and Sandie Skins options are
+ * in the registry since soleman23/golowebsite#200 (skins-greenie-sandie); a
+ * note citing them would be a reviewed content change.
  */
 
 import { MVP_REVIEWED_ON, mvpReviewLogApp, mvpReviewLogNone } from "../review";

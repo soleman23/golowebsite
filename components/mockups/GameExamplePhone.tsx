@@ -43,7 +43,7 @@ export function GameExamplePhone({
             <span className={styles.pulseRing} />
           </span>
           <span className={styles.liveLabel}>LIVE</span>
-          <span className={styles.liveCourse}>{gameName}</span>
+          <span className={styles.liveCourse}>{phone.game ?? gameName}</span>
         </div>
         <span className={styles.matchOpponent}>{phone.opponent}</span>
       </div>
