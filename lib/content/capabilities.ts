@@ -119,9 +119,8 @@ const OWNER_1026 = { by: "owner", date: "2026-10-26" } as const;
  * Skins game's birdie and eagle skin settings (soleman23/golowebsite#172,
  * answering #154 Q-a). It applies no skins validation rules
  * (soleman23/golowebsite#176, answering #154 Q-d). Closest to Pin is a live
- * game that settles, with par-to-win left to the group, and a hole nobody wins
- * carries to the next one. Skins and carries build hole by hole on the scoring
- * screen and the live leaderboard.
+ * game that settles, with par-to-win left to the group, and skins and carries
+ * build hole by hole on the scoring screen and the live leaderboard.
  */
 const OWNER_1029 = { by: "owner", date: "2026-10-29" } as const;
 
@@ -251,7 +250,7 @@ export const capabilities = [
     label: "Closest to Pin",
     status: "live",
     summary:
-      "The scorer marks the winner on the holes the group chose, and the amount is netted into the settle-up with every other game. A hole nobody wins carries to the next one.",
+      "The scorer marks the winner on the holes the group chose, and the amount is netted into the settle-up with every other game.",
     limits: [
       "No measured distance is recorded.",
       "Par-to-win isn't enforced: a greenie's par condition is a house rule the group applies when it marks the winner.",
