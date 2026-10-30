@@ -1,10 +1,10 @@
 # Glossary MVP: go/no-go packet, launch diff and rollback (#164 + #166)
 
-Prepared October 29, 2026 and brought current the same evening for the launch PR. **No launch decision is made here.** The owner approves the merge and deploy; nothing is merged or deployed without that. Merging `main` deploys to Hostinger. Evidence files are listed at the end; the numbers below are what was measured, on the date shown.
+Prepared October 29, 2026 and brought current the same evening for the launch PR. **Released 2026-10-29 17:23 PDT:** the owner approved the merge at 17:21 PDT (recorded in #166), and #201 merged as `70d9686`. Live results are in #166 and `progress.md`. Evidence files are listed at the end; the numbers below are what was measured, on the date shown.
 
 ## Go/no-go
 
-| Gate | State on 2026-10-29 (evening) | Go needs |
+| Gate | State at the go decision, 2026-10-29 (evening) | Go needed |
 |---|---|---|
 | Content approved (#158–#162) | 56 records `published` on the launch branch, each with a review log: rules, product and SEO by an agent under the owner's delegation, approval by the owner in writing (`review.ts`, `review-packet.md` § Resolution) | merge |
 | Capability recheck (`capability-check.md` § Release recheck results) | done against the app's code, golo `main` 2237c1d (GoLo 1.2.1), by an agent; the owner didn't test the app. Two entries the glossary cites corrected (`overall-match-presses`, `closest-to-pin`); four GoLo notes narrowed; out-of-scope findings in #200 | merge |
@@ -15,7 +15,7 @@ Prepared October 29, 2026 and brought current the same evening for the launch PR
 | CI | green on the launch PR head (see the PR) | — |
 | Owner go | — | written approval to merge and deploy |
 
-**Today: ready for the owner's decision.** One check can't be done by an agent here (GL-QA-13). `publishedOn` is 2026-10-29 on every record: if the merge happens on a later date, it's updated to that date first, so the sitemap's `lastmod` and each term's dates stay honest.
+**Outcome: go**, given by the owner on 2026-10-29. The merge landed the same day (Pacific), so `publishedOn` 2026-10-29 stands. GL-QA-13 became a post-deploy check by the owner's choice.
 
 ## QA results (the launch build, 2026-10-29)
 
