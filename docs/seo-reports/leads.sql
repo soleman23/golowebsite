@@ -96,7 +96,7 @@ labelled AS (
         THEN "landingPath"
       WHEN "landingPath" ~ '^/games/(skins|nassau|best-score|wolf|bingo-bango-bongo|scramble|closest-to-pin|longest-drive|birdies)$'
         THEN "landingPath"
-      WHEN "landingPath" ~ '^/blog/(no-handicap-fair-game|different-tees|golf-games-for-2-players|net-vs-gross-scoring|first-tee-checklist|group-accountant|what-we-got-wrong|settle-up-screen|pressing|index-vs-course-handicap|sandbagging|bandon|scottsdale-trip-structure|rangefinder|who-pays-first|nassau|skins-carryover|wolf|bingo-bango-bongo)$'
+      WHEN "landingPath" ~ '^/blog/(no-handicap-fair-game|different-tees|golf-games-for-3-players|side-games-for-beginners|five-dollar-birdie|closest-to-the-pin-rules|skins-vs-nassau|match-play-vs-stroke-play|golf-games-for-2-players|net-vs-gross-scoring|first-tee-checklist|group-accountant|what-we-got-wrong|settle-up-screen|pressing|index-vs-course-handicap|sandbagging|bandon|scottsdale-trip-structure|rangefinder|who-pays-first|nassau|skins-carryover|wolf|bingo-bango-bongo)$'
         THEN "landingPath"
       WHEN "landingPath" LIKE '/blog/%' THEN '/blog/(unlisted post)'
       WHEN "landingPath" LIKE '/games/%' THEN '/games/(unlisted guide)'
