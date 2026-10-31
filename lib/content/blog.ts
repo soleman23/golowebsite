@@ -223,14 +223,14 @@ export const posts: Post[] = [
           id: "one-putt",
           title: "One putt, three games",
           paragraphs: [
-            "Most friendly rounds run more than one game on the same card. On Mike’s 6th, three of them care about the same three-footer, and each one would treat it differently if nobody had agreed anything.",
+            "Most friendly rounds run more than one game on the same card. On Mike’s 6th, three of them care about the same three-footer. Suppose Tom has conceded it for the match, but Mike still holes out for the skins and the total. The concession stays final even if Mike misses and then holes the next putt.",
           ],
           blocks: [
             {
               kind: "table",
-              head: ["Game", "If the putt counts", "If Mike misses"],
+              head: ["Game", "Mike holes it", "Misses, then holes next"],
               rows: [
-                ["Mike vs. Tom match", "Mike wins the hole", "Halved"],
+                ["Mike vs. Tom match", "Mike wins: conceded", "Mike wins: conceded"],
                 ["Skins, all four", "Mike and Jess tie: carries", "Jess wins the skin"],
                 ["Best Score total", "Mike’s 4", "Mike’s 5"],
               ],
@@ -258,7 +258,7 @@ export const posts: Post[] = [
           title: "How GoLo handles it",
           paragraphs: [
             "In GoLo, one scorer enters one score per player per hole, and every game in the round reads that score. There is no separate number for the match and another for the skins. So the group’s agreement decides what the scorer types: if Mike’s gimme counts, he gets a 4 and the skin carries; if the group says putt it, the scorer waits for the putt.",
-            "If the round is scored as match play between two players or two teams, the scorer can also mark a whole hole conceded. That hole goes to that side in the Overall Match, the Nassau and any presses. A foursome playing separate matches inside one round can’t mark one. Skins and Best Score ignore the concession and keep reading the scores. If the scorer moves on without entering a score for someone, GoLo writes par for them, and Skins and Best Score count that par. So on a conceded hole, agree a score for the player who picked up, such as the score they would most likely have made, and enter it.",
+            "If the round is scored as match play between two players or two teams, the scorer can also mark a whole hole conceded. That hole goes to that side in the Overall Match, the Nassau and any presses. A foursome playing separate matches inside one round can’t mark one. Skins and Best Score ignore the concession and keep reading the scores. If the scorer moves on without entering a score for someone, GoLo writes par for them, and Skins and Best Score count that par. For a casual game with an agreed pickup rule, enter that agreed score for the player who picked up. A regular stroke-play competition still requires holing out.",
             "GoLo has no setting for conceding a single putt. A gimme goes on the card the way the Rules count it, as a holed stroke, and GoLo keeps the tally from there. The money changes hands outside the app.",
           ],
         },
@@ -317,7 +317,7 @@ export const posts: Post[] = [
           title: "What changes over nine holes",
           paragraphs: [
             "Fewer holes means fewer chances. A bad hole is a bigger share of the round, skins carry for fewer holes before they run out, and a match has less time to come back. None of that is a reason not to play; it is a reason to choose a game with nine holes in mind.",
-            "Handicaps change too. The handicap system has a nine-hole course handicap of its own: half the Handicap Index, times the nine’s slope over 113, plus the nine’s course rating minus its par. On a nine rated 35.8 with a slope of 124 and a par of 36, a 14.0 gets 7.0 × 124 ÷ 113, minus 0.2: 7.48, so 7 strokes. A 22.0 gets 12.",
+            "Handicaps change too. The handicap system has a nine-hole course handicap of its own: half the Handicap Index rounded to the nearest tenth, times the nine’s slope over 113, plus the nine’s course rating minus its par. On a nine rated 35.8 with a slope of 124 and a par of 36, a 14.0 gets 7.0 × 124 ÷ 113, minus 0.2: 7.48, so 7 strokes. A 22.0 gets 12.",
           ],
           blocks: [
             {
@@ -364,7 +364,7 @@ export const posts: Post[] = [
           id: "one-evening",
           title: "One evening, worked through",
           paragraphs: [
-            "Here is an invented after-work foursome: $1 net skins with carryovers on, and $5 Best Score, net, one finishing place. Everyone plays off their nine-hole course handicap.",
+            "Here is an invented after-work foursome: $1 net standard skins with carryovers on and all extra skin types off, and $5 Best Score, net, one finishing place. Everyone plays off their nine-hole course handicap.",
           ],
           blocks: [
             {
@@ -402,7 +402,8 @@ export const posts: Post[] = [
           id: "in-golo",
           title: "Setting up nine in GoLo",
           paragraphs: [
-            "In GoLo, choose nine holes in setup. A nine-hole round plays holes 1 to 9 of the card, so it fits a front nine or a nine-hole course; it can’t score a course’s back nine yet. For strokes, GoLo halves each player’s eighteen-hole course handicap from the tee’s slope and rating, and places them by the card’s stroke index. On a nine-hole course’s own tees that is exactly the rule above. On the front nine of an eighteen-hole course, which has its own nine-hole ratings, it can be a stroke off: on a course rated 71.6 with a slope of 126 whose front nine is rated 35.5 with a slope of 122, a 22.0 gets 11 under the rule and 12 in GoLo. Over nine holes a Nassau is one match, settled once, and Closest to Pin plays every par 3 on the card.",
+            "In GoLo, choose nine holes in setup. A nine-hole round plays holes 1 to 9 of the card, so it fits a front nine or a nine-hole course; it can’t score a course’s back nine yet. For strokes, GoLo halves the unrounded eighteen-hole calculation from the selected tee’s slope and rating, then rounds the result once. It places those strokes by the card’s stroke index. This is different from Rule 6.1b, which first rounds half the index to a tenth and uses the ratings for the nine being played.",
+            "On the front nine of an eighteen-hole course, the nine’s own ratings aren’t in GoLo’s course data. On a par-72 course rated 71.6 with a slope of 126 whose par-36 front nine is rated 35.5 with a slope of 122, a 22.0 gets 11 under the rule and 12 in GoLo. Even on a nine-hole course’s own tees, rounding half the index can change the result: a 14.1 on a par-36 nine rated 35.7 with a slope of 125 gets 8 under the rule and 7 in GoLo. Over nine holes a Nassau is one match, settled once, and Closest to Pin plays every par 3 on the card.",
             "One scorer enters the gross scores, GoLo works out every game from the same card, and at the end it gives the group a short who-owes-whom list. The money changes hands outside the app, in the parking lot, before it gets dark.",
           ],
         },
@@ -415,9 +416,9 @@ export const posts: Post[] = [
           blocks: [
             { kind: "summary", title: "THE SHORT VERSION", items: [
               "Over nine holes, choose Best Score, skins or one match. A Nassau doesn’t shrink cleanly; GoLo plays it as one match.",
-              "Use the nine-hole course handicap: half the index, adjusted for the nine’s slope and rating. GoLo halves the eighteen-hole figure, which can be a stroke off on a front nine.",
+              "Use the nine-hole course handicap: half the index rounded to a tenth, adjusted for the nine’s slope and rating. GoLo instead halves the unrounded eighteen-hole calculation and rounds once; its result can differ.",
               "Agree tie rules and what happens if you lose the light before you start.",
-              "At $1 skins and $5 Best Score, the worst evening in a foursome is $14.",
+              "With $1 standard skins only and $5 Best Score, the most one player can lose over nine holes in a foursome is $14.",
             ] },
             { kind: "sources", items: [
               { label: "USGA Rules of Handicapping — Rule 6.1b: Course Handicap for a 9-hole round", href: "https://www.usga.org/handicapping/roh/Content/rules/6%201b%209%20holes.htm" },

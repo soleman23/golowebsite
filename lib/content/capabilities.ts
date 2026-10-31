@@ -233,10 +233,10 @@ export const capabilities = [
     label: "Nine-hole rounds",
     status: "live",
     summary:
-      "Play nine holes or eighteen; over nine holes each player gets half their eighteen-hole course handicap.",
+      "Play nine holes or eighteen; for nine holes GoLo halves the unrounded eighteen-hole handicap calculation, then rounds once.",
     limits: [
       "A nine-hole round plays holes 1 to 9 of the card; it can't score a course's back nine.",
-      "The nine-hole figure halves the eighteen-hole one from the tee's slope and rating: exactly the WHS nine-hole Course Handicap on a nine-hole tee, but it can be a stroke off on the front nine of an eighteen-hole course, whose own nine-hole ratings aren't in the course data.",
+      "This can differ from WHS Rule 6.1b: GoLo does not round half the index to a tenth first, and the front nine’s own ratings are not in the course data for an eighteen-hole course.",
       "Over nine holes a Nassau is one match, settled once, and Closest to Pin plays every par 3 on the card.",
     ],
     verified: APP_CHECK_1030_FORMATS,
