@@ -172,6 +172,244 @@ const blogMedia = {
 
 export const posts: Post[] = [
   {
+    slug: "golf-games-for-2-players",
+    category: "rules",
+    title: "Golf games for 2 players: make your usual match worth something",
+    metaDescription:
+      "Choose a golf game for two players: Best Score, skins or a Nassau. Simple example amounts, clear tie rules, and one scorecard to keep the round straight.",
+    excerpt:
+      "Same partner, same Saturday tee time. Start with one small game, then decide whether you want the whole round or every hole to matter.",
+    dek: "One round-long contest, a fresh chance on each hole, or three matches in a Nassau. Pick the game that fits the way you and your regular partner actually play.",
+    crumb: "Games for two",
+    author: "From the GoLo team",
+    date: "2026-10-30",
+    readMins: 5,
+    hero: {
+      src: "/images/blog/golf-games-for-2-players-hero.webp",
+      mobile: "/images/blog/golf-games-for-2-players-mobile.webp",
+      og: "/images/blog/golf-games-for-2-players-og.jpg",
+      alt: "Two golf partners carrying putters as they walk off a green beside a flagstick in late afternoon light",
+      position: "85% 50%",
+    },
+    related: ["net-vs-gross-scoring", "nassau", "skins-carryover"],
+    published: true,
+    body: article(
+      "You already have the tee time, the regular partner, and a reliable disagreement about whose turn it is to book. What you don't have is a game that survives the first bad hole. One of you says “five dollars on the round,” the other hears something about the back nine, and by the turn neither is entirely sure what's still alive. Two players should make this easier.",
+      [
+        {
+          id: "start-simple",
+          title: "Start with $5-each Best Score",
+          paragraphs: [
+            "For your first round with something on it, choose <a href=\"/games/best-score\">Best Score</a>: each player agrees the same $5 amount, one finishing place, and the lowest total wins. With two players, the winner finishes $5 up and the other player $5 down. You don't need to collect anything before the round; settle the difference afterwards.",
+            "Play net if you want handicap strokes to count, or gross if you both want the unadjusted total to decide it. Our <a href=\"/blog/net-vs-gross-scoring\">net-versus-gross example</a> shows why choosing that before the first tee matters. For this starter game, a tied total splits the combined amount equally: each player gets their own share back and neither owes anything.",
+            "These amounts and tie rules are editorial examples for a friendly round. They aren't a standard your partner somehow should have known. Say them out loud. If five dollars would spoil the afternoon, make the contest for bragging rights and keep exactly the same scoring.",
+          ],
+          blocks: [
+            { kind: "atAGlance", title: "THREE GAMES, TWO PLAYERS", items: [
+              { label: "ONE FINAL TOTAL", value: "Best Score — start here" },
+              { label: "A RESULT EACH HOLE", value: "Skins, with carries off" },
+              { label: "THREE CHANCES", value: "Nassau — front, back, overall" },
+              { label: "FIRST DECISION", value: "Net or gross, then the amount" },
+            ] },
+          ],
+        },
+        {
+          id: "choose",
+          title: "Choose by what keeps both of you interested",
+          paragraphs: [
+            "All three formats below support two players in GoLo. The difference is what a bad hole costs you. In Best Score, every stroke stays in the total. In skins, it costs you that hole's skin. In a Nassau, it costs you one hole in whichever matches are running, however ugly the number was.",
+          ],
+          blocks: [
+            { kind: "table", head: ["Game", "Example amount", "What decides it", "Suggested tie rule"], rows: [
+              ["Best Score", "$5 each", "Lowest 18-hole total", "Equal split; neither owes"],
+              ["Skins, no carries", "$1 from the other player per skin", "Outright low score on each hole", "No skin; next hole starts fresh"],
+              ["Nassau, no presses", "$2 for each of three matches", "Holes won on front, back and overall", "A tied match pushes"],
+            ] },
+            { kind: "p", html: "Pick one row for the next round. Being able to explain the whole arrangement before somebody starts a practice swing is a useful test." },
+          ],
+        },
+        {
+          id: "skins",
+          title: "Choose skins when you want a fresh chance every hole",
+          paragraphs: [
+            "If one of you can shoot 81 and still include a nine, <a href=\"/games/skins\">skins</a> gives that round somewhere to go. The lower score on a hole wins its skin. Lose the 3rd by four shots and you can still win the 4th. You are counting skins, not the margin in strokes.",
+            "For a simple two-player version, use $1 per skin from the other player, turn carryover off, and leave tied holes unclaimed. Win seven holes, lose five and tie six, and you finish $2 up: seven dollars coming your way, five going back. A tied 18th adds nothing. The maximum either player can lose in this plain 18-hole version is $18.",
+            "Keep the extra skin types off for this example. Carryovers are a good second conversation, because they change the feel of a hole. With carries on, several quiet ties can leave you putting for several skins at once. If that's the point, read the <a href=\"/blog/skins-carryover\">carryover guide</a> together and agree how an unfinished carry ends before you start.",
+          ],
+        },
+        {
+          id: "nassau",
+          title: "Choose a Nassau when the turn should mean a new start",
+          paragraphs: [
+            "A <a href=\"/games/nassau\">Nassau</a> is three match-play contests: front nine, back nine and overall eighteen. Each hole is won, lost or tied. Losing a hole by five shots still counts as losing one hole, so a blow-up doesn't drag five extra strokes through the afternoon.",
+            "Try $2 for each match, with no presses. Lose the front, win the back and tie the overall, and the two dollars cancel: neither player owes anything. Win all three and you collect $6. That is also the most either player can lose in this example, because no extra matches or other games are running.",
+            "The back-nine match starts level on 10 even if the overall match is going badly. That is the reason to choose a Nassau over one final score. For these suggested rules, tied holes don't change the standing, and a tied match pushes. GoLo's Nassau doesn't take presses, so this simple version also fits what the app scores today. The <a href=\"/blog/nassau\">full Nassau post</a> covers the house-rule conversation.",
+          ],
+          blocks: [
+            { kind: "quote", text: "The best two-player game is the one you're both still playing on the back nine." },
+          ],
+        },
+        {
+          id: "one-card",
+          title: "One scorecard feeds whichever game you chose",
+          paragraphs: [
+            "Set the course and tees in GoLo, add the two players, choose the game and amount, and agree the scoring basis. One scorer enters both gross scores after each hole. GoLo keeps gross and net, applies the handicap strokes, and uses the card to work out the supported game. A guest can be added with a name and an index, without an account.",
+            "The score entry is the same whether you chose Best Score, skins or Nassau. What changes is the question being asked of it: lowest total, lowest score on a hole, or which player won more holes in each match. You don't enter an extra set of scores just because you chose a different format.",
+            "GoLo uses one set of tees for the group and full course handicaps for individual play. It doesn't support mixed tees. It doesn't offer handicap allowances or playing off the low player. Check the <a href=\"/features\">current settings</a> before agreeing a game that depends on those options. At the end, GoLo shows who owes whom; you settle outside the app.",
+          ],
+        },
+        {
+          id: "add-later",
+          title: "Add a second game after the first one works",
+          paragraphs: [
+            "There is no prize for filling every line in setup. Play one format for a round or two. If Best Score keeps both of you interested, you have already solved the problem. If the total starts feeling settled by lunch, try skins or a Nassau next time before adding anything on top.",
+            "When you do want two games, agree both amounts and their combined exposure. A $5-each Best Score game plus the plain $1 skins example above can cost one player $23 if everything goes the wrong way. “Only a dollar a hole” does not include the five dollars you already agreed to.",
+            "GoLo can run several supported games from the same card and net their results together. That makes the tally easier, but the extra games still add to what the afternoon can cost. Start with one, see how it plays, then <a href=\"/how-it-works\">watch how one card handles a full round</a> or <a href=\"/#get\">get GoLo for your next tee time</a>.",
+          ],
+          blocks: [
+            { kind: "summary", title: "THE SHORT VERSION", items: [
+              "Start with $5-each Best Score, one finishing place, and an equal split on a tie.",
+              "Choose $1 skins without carries for a fresh chance on each hole, or a $2 Nassau for front, back and overall matches.",
+              "Agree net or gross, the exact amounts and tie rules before either player has a score to defend.",
+              "One GoLo scorecard feeds the chosen game. Add a second format only after the first one works for both of you.",
+            ] },
+          ],
+        },
+      ],
+    ),
+  },
+  {
+    slug: "net-vs-gross-scoring",
+    category: "handicaps",
+    title: "Net vs. gross golf scoring: which one should decide the money?",
+    metaDescription:
+      "Compare net and gross golf scoring on one hypothetical scorecard. See different winners, then choose the scoring basis before setting the amount.",
+    excerpt:
+      "Alex shoots 80. Jamie shoots 90. Either can win the same round — depending on the scoring basis they agreed before the first tee.",
+    dek: "The lowest number on the gross card and the lowest number after strokes can belong to different people. Decide which contest you're playing before deciding what it's worth.",
+    crumb: "Net or gross?",
+    author: "From the GoLo team",
+    date: "2026-10-30",
+    readMins: 6,
+    hero: {
+      src: "/images/blog/net-vs-gross-scoring-hero.webp",
+      mobile: "/images/blog/net-vs-gross-scoring-mobile.webp",
+      og: "/images/blog/net-vs-gross-scoring-og.jpg",
+      alt: "One golf scorecard and pencil beside a white ball and a yellow ball on the seat of a parked golf cart at dusk",
+      position: "85% 50%",
+    },
+    related: ["golf-games-for-2-players", "index-vs-course-handicap", "sandbagging"],
+    published: true,
+    body: article(
+      "Alex comes off 18 with an 80 and expects to collect. Jamie has shot 90 and is equally certain the five dollars belongs the other way round. Both have added the card correctly. One is looking at gross, the other at net, and neither remembers saying which one would decide the game. A calculator cannot settle a conversation you never had.",
+      [
+        {
+          id: "choose-first",
+          title: "Choose the contest before choosing the amount",
+          paragraphs: [
+            "Gross asks who took the fewest strokes, including penalties. Net asks who had the lowest score after the agreed handicap strokes were applied. Both are legitimate ways to score; the <a href=\"https://www.randa.org/en/rog/the-rules-of-golf/rule-3\">Rules of Golf distinguish gross and net competition</a>. They answer different questions about the same round.",
+            "If you and your regular partner want the unadjusted total to decide it, choose gross. If you want handicap strokes to count in a contest between different abilities, choose net. Then agree the amount and the tie rule. Knowing that it is a five-dollar game tells you very little until you know which number wins it.",
+          ],
+          blocks: [
+            { kind: "atAGlance", title: "SAME CARD, DIFFERENT QUESTION", items: [
+              { label: "GROSS", value: "Lowest total before handicap strokes" },
+              { label: "NET", value: "Lowest total after handicap strokes" },
+              { label: "AGREE FIRST", value: "The scoring basis, then the amount" },
+              { label: "ON A TIE", value: "A rule chosen before the result" },
+            ] },
+          ],
+        },
+        {
+          id: "hypothetical-card",
+          title: "One hypothetical scorecard, two possible winners",
+          paragraphs: [
+            "This is an invented 18-hole example, not a real course, an app screenshot or a player's recorded round. Alex has a course handicap of 6 and Jamie has 18 for the same tees. We are using their full course handicaps, with no percentage allowance. Those numbers have already been established; they are not Handicap Indexes typed straight onto the card.",
+            "Alex receives one stroke on the six holes with stroke index 1–6. Jamie receives one on every hole. Each net cell below is that hole's gross score minus the stroke received. The stroke-index column tells you where a stroke belongs, not the order in which the holes are played.",
+          ],
+          blocks: [
+            { kind: "table", head: ["Hole", "Stroke index", "Alex gross", "Alex net", "Jamie gross", "Jamie net"], rows: [
+              ["1", "3", "5", "4", "6", "5"],
+              ["2", "15", "4", "4", "5", "4"],
+              ["3", "7", "4", "4", "4", "3"],
+              ["4", "1", "4", "3", "5", "4"],
+              ["5", "11", "5", "5", "6", "5"],
+              ["6", "17", "3", "3", "4", "3"],
+              ["7", "5", "5", "4", "5", "4"],
+              ["8", "13", "5", "5", "5", "4"],
+              ["9", "9", "5", "5", "5", "4"],
+              ["Front 9", "—", "40", "37", "45", "36"],
+              ["10", "4", "5", "4", "6", "5"],
+              ["11", "16", "4", "4", "5", "4"],
+              ["12", "8", "4", "4", "4", "3"],
+              ["13", "2", "4", "3", "5", "4"],
+              ["14", "12", "5", "5", "6", "5"],
+              ["15", "18", "3", "3", "4", "3"],
+              ["16", "6", "5", "4", "5", "4"],
+              ["17", "14", "5", "5", "5", "4"],
+              ["18", "10", "5", "5", "5", "4"],
+              ["Back 9", "—", "40", "37", "45", "36"],
+              ["Total", "—", "80", "74", "90", "72"],
+            ] },
+            { kind: "p", html: "Gross: Alex wins, 80 to 90. Net: Jamie wins, 72 to 74. Alex's calculation is 80 − 6 = 74; Jamie's is 90 − 18 = 72. The eighteen scores never changed. The handicap adjustment changed which total was lower." },
+            { kind: "callout", title: "A DIFFERENT WINNER IS NOT A MISTAKE", html: "On this card, Alex took fewer actual strokes. Jamie finished lower after the strokes agreed for the contest. Neither result cancels the other; only one needs to decide the game you agreed to play." },
+          ],
+        },
+        {
+          id: "hole-and-round",
+          title: "The difference can show up before you add the totals",
+          paragraphs: [
+            "Look at the 3rd. Both players take four strokes. Alex gets no stroke there, so Alex's net is four. Jamie gets one, so Jamie's net is three. A gross comparison ties that hole; a net comparison gives Jamie the lower score.",
+            "That doesn't mean one hole decides a lowest-total game. It shows why you need to know which scores you're comparing as the round unfolds. Best Score adds the chosen scores across the round; a hole-by-hole format asks a different question. Don't settle a total-score contest by counting who won more holes.",
+          ],
+          blocks: [
+            { kind: "quote", text: "“I shot the lower round” and “I won the game” need the same scoring agreement behind them." },
+          ],
+        },
+        {
+          id: "which-basis",
+          title: "Which basis should your group choose?",
+          blocks: [
+            { kind: "cardGrid", items: [
+              { title: "Choose gross for the unadjusted contest", body: "You both want the actual stroke total to decide it. Similar ability can make that a close game; a wide gap can make the same player the favorite every Saturday. Choose it because that is the contest you want, not because nobody mentioned strokes." },
+              { title: "Choose net when the handicap adjustment matters", body: "You want different abilities to compete with handicap strokes included. Use current, credible handicaps and confirm them before play. Net gives you an agreed adjustment; it doesn't guarantee a close finish or prove that the winner's handicap is perfect." },
+            ] },
+            { kind: "p", html: "The mechanics of converting an index for the tees have their own <a href=\"/blog/index-vs-course-handicap\">index-versus-course-handicap guide</a>. Here the decision is what to do with the strokes once you know them. Don't reopen that decision because the result looks different from the gross card." },
+          ],
+        },
+        {
+          id: "best-score",
+          title: "Tell Best Score which number should decide it",
+          paragraphs: [
+            "In GoLo, one scorer enters the gross scores hole by hole. GoLo applies the handicap strokes and keeps net and gross on the same card. For <a href=\"/games/best-score\">Best Score</a>, agree net or gross in setup before the round, along with the equal amount per player and how many finishing places share it. You don't enter another card to get the other view.",
+            "Use the hypothetical card above with a $5 amount per player and one finishing place. If the agreed basis is gross, Alex finishes $5 up and Jamie $5 down. If it is net, Jamie finishes $5 up and Alex $5 down. Those are alternative agreements for the same example, not two games running together or permission to pick the result afterwards.",
+            "GoLo splits Best Score ties evenly. With two players tied for the only finishing place, each gets an equal share and neither finishes up or down on that game. A back-nine countback would be a separate house rule, not a Best Score setting in GoLo.",
+            "GoLo uses full course handicaps for individual play and one set of tees for the group. GoLo doesn't support handicap allowances or playing off the low player. Confirm that those settings fit your agreement on the <a href=\"/features\">features page</a>. The app keeps the tally; players settle outside it.",
+          ],
+        },
+        {
+          id: "say-it",
+          title: "Say the basis in the same sentence as the amount",
+          paragraphs: [
+            "“Five dollars each, Best Score, net, full course handicaps, one finishing place; ties split.” Or the same sentence with gross. Either is clear enough to put in a group text before the tee time. “Same as last week” is less useful when one of you remembers winning last week for an entirely different reason.",
+            "Settle that sentence first, then <a href=\"/how-it-works\">see how one scorecard feeds the round</a> or <a href=\"/#get\">get GoLo for the next game</a>. You can admire the low gross round and settle on net. You just have to have agreed to it while the card was still blank.",
+          ],
+          blocks: [
+            { kind: "summary", title: "THE SHORT VERSION", items: [
+              "Gross compares actual stroke totals. Net compares scores after handicap strokes.",
+              "On our hypothetical card, Alex's 80 wins gross; Jamie's 90 less 18 strokes is 72 and wins net.",
+              "Choose the basis before the amount, confirm the handicaps, and agree how ties end.",
+              "GoLo keeps both views from one scorecard; Best Score settles using the basis agreed for the game.",
+            ] },
+            { kind: "sources", items: [
+              { label: "The R&A — Rule 3: gross and net competition", href: "https://www.randa.org/en/rog/the-rules-of-golf/rule-3" },
+              { label: "USGA — Playing Handicap and stroke-index allocation", href: "https://www.usga.org/content/usga/home-page/handicapping/world-handicap-system/world-handicap-system-usga-golf-faqs.html" },
+            ] },
+          ],
+        },
+      ],
+    ),
+  },
+  {
     slug: "first-tee-checklist",
     category: "etiquette",
     title: "Golf side-bet rules: settle these before somebody loses $40", // vocab-ok: exact article headline explicitly requested by the owner on 2026-10-30; the article describes house agreements and GoLo as a scorekeeper.
