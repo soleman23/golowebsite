@@ -308,7 +308,7 @@ export const sideGamesTerms: GlossaryTerm[] = [
     goloNote:
       "GoLo nets every game into one number per player and lists who owes whom for the group. Each round settles on its own, and GoLo never holds, moves or processes money.",
     relatedTermIds: ["junk", "press"],
-    relatedContentPaths: ["/blog/who-pays-first", "/blog/settle-up-screen"],
+    relatedContentPaths: ["/blog/who-pays-first"],
     canonical: { kind: "hub", anchor: "settle-up" },
     capabilityIds: ["settle-up"],
     ctaIntent: "settle-up",
