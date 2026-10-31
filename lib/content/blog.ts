@@ -392,7 +392,7 @@ export const posts: Post[] = [
       { kind: "quote", text: "Nobody minds losing ten dollars. Everybody minds asking for it twice." },
       { kind: "h2", id: "why-it-matters", text: "Why any of this matters over eleven dollars" },
       { kind: "p", html: "Because the money was never the point. The game exists to make a twilight round on a Tuesday feel like it counts — to give the eight-footer on 12 a reason to matter. Settling is what keeps that device working. Pay fast, pay first, round against yourself, and the match stays a game instead of becoming a small unspoken thing between two guys who used to enjoy playing together." },
-      { kind: "p", html: "And if remembering all nine sounds like work: the honest reason groups break these rules isn't character, it's arithmetic. Nobody wants to do six-way netting in a parking lot with a beer in his hand. So don't. Let something else keep the tally and just move the money. (GoLo doesn’t score junk, so that part stays on the card.) Here is <a href=\"/blog/settle-up-screen\">how the netting works</a>, and <a href=\"/how-it-works\">one foursome’s round, first tee to settled</a>." },
+      { kind: "p", html: "And if remembering all nine sounds like work: the honest reason groups break these rules isn't character, it's arithmetic. Nobody wants to do six-way netting in a parking lot with a beer in his hand. So don't. Let something else keep the tally and just move the money. (GoLo doesn’t score junk, so that part stays on the card.) Here is <a href=\"/how-it-works\">one foursome’s round, first tee to settled</a>." },
     ],
   },
   {
@@ -883,7 +883,8 @@ export const posts: Post[] = [
       alt: "A flag on a green beside a raked bunker, at sunset",
       position: "50% 55%",
     },
-    published: true,
+    // Hidden for now at the owner's request (2026-10-30).
+    published: false,
     body: article(
       "GoLo’s commit history is more honest than our memory, so this is built from it. It covers what broke between the first commit on June 18, 2026 and the 1.0.0 build prepared as a Google Play candidate on October 15, and what each fix changed. That build wasn’t in the store yet when we wrote this; GoLo went live on Google Play on October 26, 2026. You won’t find tester counts here. We didn’t keep records good enough to publish numbers, so there aren’t any.",
       [
@@ -896,8 +897,9 @@ export const posts: Post[] = [
           { title: "October 7: re-agree only when the terms change", body: "Every save of Setup used to ask every player to agree to the side games again. Now that happens only when the terms actually change: an amount, a game, a player’s name or handicap, the card. A player’s colour doesn’t count, and neither do presses called during play." },
           { title: "October 7: money to the cent", body: "Settled amounts read “$12.50”, not “$12.5”. A small thing, until it’s the number someone is about to send." },
         ] }] },
+        // Unlinked while settle-up-screen is hidden; restore the <a href="/blog/settle-up-screen"> on republish.
         // claim-ok: quotes the site's old "fewest payments" claim in order to correct it (#103).
-        { id: "website", title: "And one on our own website", paragraphs: ["Until October 16 this site said GoLo settles a group “in the fewest payments.” The app doesn’t promise that. It lines up who owes and who is owed, biggest first, and works down both lists. That never needs more than n − 1 settle-ups for n players, but it isn’t always the minimum: balances of +4, +3, −2, −2, −3 come out as four settle-ups where three would do. We corrected fifteen claims and the share card, and added a check that stops the claim coming back. The method, with a worked example you can check, is in <a href=\"/blog/settle-up-screen\">building the settle-up screen</a>."] },
+        { id: "website", title: "And one on our own website", paragraphs: ["Until October 16 this site said GoLo settles a group “in the fewest payments.” The app doesn’t promise that. It lines up who owes and who is owed, biggest first, and works down both lists. That never needs more than n − 1 settle-ups for n players, but it isn’t always the minimum: balances of +4, +3, −2, −2, −3 come out as four settle-ups where three would do. We corrected fifteen claims and the share card, and added a check that stops the claim coming back. The method, with a worked example you can check, is in our post on building the settle-up screen."] },
         { id: "today", title: "Where that leaves the app", paragraphs: ["Setup is five steps, with every game starting at a $1 amount. One scorer enters the card, and any hole already played can be changed from the card view. Presses are called from a short sheet on the Overall Match and start on the next hole. Skins carries are automatic when carryover is on, which it is by default. The organizer can change a game’s amount mid-round in Setup: everyone agrees again, the new amount applies to the whole game, and a game with presses in play can’t be changed. A round that has ended settles into a short settle-up list; GoLo never holds, moves or processes the money.", "Some things aren’t in the app at all: GPS yardages, scorecard scanning, a chat, a feed of other groups’ rounds, shot stats. Everyone entering their own scores isn’t built yet. The full list of what works today and what doesn’t is on <a href=\"/features\">features</a>, and one real round, start to settle, is on <a href=\"/how-it-works\">how it works</a>."], blocks: [{ kind: "summary", title: "THE SHORT VERSION", items: ["Money adds up to the cent, or nobody trusts the rest of the screen. GoLo has settled in whole cents since August 1.", "Anything that happened on the course has to survive a fix in Setup. Presses were being deleted until September 26.", "A live number must be one the next hole can’t take back. Skins carries ride to the last hole since September 28.", "Check the claims as hard as the code. Our own site promised more than the settle-up does; it now says what the app does."] }] },
       ],
     ),
@@ -918,7 +920,8 @@ export const posts: Post[] = [
     updated: "2026-10-16",
     readMins: 5,
     hero: { src: blogMedia.turf, alt: "Close-up of close-mown turf in low sun, a flagstick soft in the distance", position: "50% 46%" },
-    published: true,
+    // Hidden for now at the owner's request (2026-10-30).
+    published: false,
     body: article(
       "The settle-up screen is the only screen in GoLo that has to be perfect. Everything before it happens while people are playing golf and forgiving. This one happens in a parking lot, with five people looking at one phone, and it either ends the round cleanly or starts the conversation we built the app to prevent. It took several versions to get right.",
       [
