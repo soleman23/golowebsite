@@ -172,6 +172,142 @@ const blogMedia = {
 
 export const posts: Post[] = [
   {
+    slug: "first-tee-checklist",
+    category: "etiquette",
+    title: "Golf side-bet rules: settle these before somebody loses $40", // vocab-ok: exact article headline explicitly requested by the owner on 2026-10-30; the article describes house agreements and GoLo as a scorekeeper.
+    metaDescription:
+      "A first-tee checklist for golf side games: agree amounts, handicaps, presses, ties and loss limits before “we never agreed to that” ends the round.",
+    excerpt:
+      "The five things to agree while everyone is still even — before a $5 game becomes a $40 argument.",
+    dek: "Amounts, strokes, presses, ties, and what the afternoon can actually cost. Five first-tee decisions that keep “we never agreed to that” out of the parking lot.",
+    crumb: "The first-tee checklist",
+    author: "From the GoLo team",
+    date: "2026-10-30",
+    readMins: 6,
+    hero: {
+      src: "/images/blog/first-tee-checklist-hero.webp",
+      mobile: "/images/blog/first-tee-checklist-mobile.webp",
+      og: "/images/blog/first-tee-checklist-og.jpg",
+      alt: "Four golfers gathered around a scorecard beside their bags on the first tee in morning light",
+      position: "83% 50%",
+    },
+    related: ["nassau", "pressing", "who-pays-first"],
+    published: true,
+    body: article(
+      "“We never agreed to that” usually arrives after the last putt, from the person who is down forty dollars. The person holding the card remembers a very clear conversation. The other two remember somebody saying “the usual” while they were looking for a tee. All four have just spent eighteen holes playing slightly different games.",
+      [
+        {
+          id: "amounts",
+          title: "1. Put a number beside every game",
+          paragraphs: [
+            "A friendly game needs terms, not a negotiation over every green. The useful conversation happens once, before anyone has a score worth defending. These are house agreements for your group, not a universal rulebook for side games.",
+            "Start with who's playing, who the partners are, and the amount for each game. “Five-dollar Nassau” usually means $5 for the front nine, $5 for the back, and $5 for the overall match. That is $15 before a single extra match opens. The <a href=\"/blog/nassau\">Nassau breakdown</a> covers the three matches.",
+            "Then say what the number buys. A dollar a skin from each opponent is different from a dollar for the whole group to share. In a foursome, one version costs each losing player a dollar; the winner collects three. Per player, per team, per hole, per match: say the unit. A bare dollar sign leaves plenty of room for an argument.",
+          ],
+          blocks: [
+            {
+              kind: "atAGlance",
+              title: "THE FIRST-TEE CHECKLIST",
+              items: [
+                { label: "AMOUNTS", value: "Each game, each player, each side" },
+                { label: "HANDICAPS", value: "Tees, strokes, net or gross" },
+                { label: "PRESSES", value: "Who, when, how much, how many" },
+                { label: "TIES", value: "Push, carry, and the final hole" },
+                { label: "LIMITS", value: "Per opponent or for the whole round?" },
+                { label: "THE RECORD", value: "One card everyone has agreed to" },
+              ],
+            },
+          ],
+        },
+        {
+          id: "handicaps",
+          title: "2. Agree the strokes before somebody needs one",
+          paragraphs: [
+            "“I'm a twelve” is the beginning of the conversation. A Handicap Index travels with the player; a course handicap depends on the tees. A playing handicap accounts for the allowance used for the format. The <a href=\"https://www.usga.org/content/usga/home-page/articles/2024/04/course-handicap-vs-playing-handicap.html\">USGA explains the distinction</a>; our <a href=\"/blog/index-vs-course-handicap\">index-to-course-handicap guide</a> walks through an example.",
+            "Confirm each player's number, the tees, whether each game is net or gross, and where the strokes fall on the card. If your group uses an allowance or plays off the low player, say so now. If a guest has no index, agree the number together before the guest makes three pars. Being surprised by someone's good start is not a handicap adjustment.",
+          ],
+        },
+        {
+          id: "presses",
+          title: "3. Write the press rule while nobody is losing",
+          paragraphs: [
+            "A press can add another match to the afternoon. It does not, by itself, erase what somebody already owes. Before you allow one, agree which match can be pressed, who may call it, the starting hole, and the amount. Then decide whether it needs the other side's acceptance or opens automatically under a rule everyone has already accepted.",
+            "“Two down” is not the whole policy. Can a press itself be pressed? How many can run at once? Is a one-hole press on 18 allowed? No presses is a complete answer, and often a useful one when the group includes a new player. The <a href=\"/blog/pressing\">pressing etiquette guide</a> covers the conversation after somebody asks.",
+          ],
+          blocks: [
+            { kind: "callout", title: "A PRESS LIMIT IS NOT A LOSS LIMIT", html: "Allowing only two extra matches limits the count. It does not tell anyone the most they can owe unless the amount of each match, and every other game running beside it, is also fixed." },
+          ],
+        },
+        {
+          id: "ties",
+          title: "4. Give ties an ending",
+          paragraphs: [
+            "A tied Nassau match can push, with nothing owed for that match. A tied skins hole can carry its value forward if that's how you're playing. Those are different answers to different questions. “Ties carry” written beside the skins does not settle an all-square back nine.",
+            "Agree what happens to any skin still riding after the final hole: split it under an agreed method, leave it unclaimed, or use a playoff everyone has time for. These are choices for the group, not a promise that every scoring tool offers every option. The <a href=\"/blog/skins-carryover\">skins carryover guide</a> explains why the ending matters.",
+            "While you're there, decide what a conceded putt means for the other games running alongside the match. “That's good” should not leave one player claiming a skin and another waiting to see the putt. If rain stops the round, decide which completed matches count and what happens to unfinished ones. An ending agreed in advance beats a vote by whoever is ahead.",
+          ],
+        },
+        {
+          id: "limits",
+          title: "5. Say what the whole afternoon can cost",
+          paragraphs: [
+            "A small starting amount is not a ceiling. Here is an illustrative two-player round: a $5 Nassau, three additional $5 presses, and $1 skins with no carries. One player loses all three original matches, all three presses, and ten skins; the other eight holes are tied for skins. Nothing doubled. It still costs forty dollars.",
+          ],
+          blocks: [
+            {
+              kind: "table",
+              head: ["What was lost", "Calculation", "Amount owed"],
+              rows: [
+                ["Front, back and overall", "3 × $5", "$15"],
+                ["Three additional presses", "3 × $5", "$15"],
+                ["Ten skins, no carries", "10 × $1", "$10"],
+                ["Whole round", "$15 + $15 + $10", "$40"],
+              ],
+            },
+            { kind: "p", html: "This is a house-rule example of how the amounts add up, not a GoLo press setup. If the group wants a hard limit, define it as carefully as the game: per opponent or across everyone, per game or across all games, before or after netting. Twenty dollars to each of three opponents can still mean sixty dollars for the round." },
+            { kind: "p", html: "For two players, a clear version is: “Combine both games first; neither player can owe the other more than $20 for the round. Anything above that is not collectible.” A $28 combined result then settles at $20. The limit was part of the agreement before play, not a discount requested by the loser." },
+            { kind: "p", html: "A foursome needs more care. Clipping each player's net loss without adjusting what the winners collect leaves a tally that doesn't balance. Either agree how the reduction is shared, or keep the structure simple enough that its maximum possible loss already fits the group's limit. Nobody should discover they were guaranteeing the other three players' afternoon." },
+            { kind: "quote", text: "If the rule only sounds obvious after you know who won, it needed saying on the first tee." },
+          ],
+        },
+        {
+          id: "agreement",
+          title: "A first-tee agreement you can put in the group text",
+          paragraphs: [
+            "This example is for two players. Adjust the numbers and the rules together; don't just forward it and assume silence means yes.",
+          ],
+          blocks: [
+            { kind: "summary", title: "TODAY'S GAME — TWO PLAYERS", items: [
+              "White tees. Net scoring, full course handicaps for each player, strokes marked on the card before we start.",
+              "$5 Nassau: $5 front, $5 back, $5 overall. Tied matches push. No presses.",
+              "$1 per skin, paid by the other player. Tied holes pay nothing and do not carry. That includes 18.",
+              "Combine Nassau and skins at the end. Maximum net amount owed by either player: $20 for the entire round, with any excess waived.",
+              "If we stop early, only a completed front-nine match and skins from completed holes count; unfinished Nassau matches are void. The same $20 combined limit applies.",
+              "One card, scores confirmed after each hole, settle before leaving. Any change needs both players' agreement before the affected play.",
+            ] },
+          ],
+        },
+        {
+          id: "golo",
+          title: "Let GoLo keep the card after the group agrees",
+          paragraphs: [
+            "Once everyone has said yes, set the supported games and amounts in GoLo and let one scorer enter the holes. GoLo runs the tallies from the same card and nets the recorded results into a short who-owes-whom list. Keep any extra house agreement, including a loss cap, alongside that record and apply it together before settling outside the app.",
+            "Check the fit first. GoLo uses one set of tees for the group and full course handicaps in individual play. GoLo doesn't support handicap allowances or playing off the low player. Its presses run on Overall Match, entered by the scorer once a side is at least two down, starting on the next hole; GoLo doesn't open them automatically or take presses on Nassau. The <a href=\"/features\">current feature list</a> lays out the settings.",
+            "The app can keep the numbers straight. The first-tee conversation gives those numbers meaning. <a href=\"/how-it-works\">See a round from setup to settle-up</a>, then <a href=\"/#get\">get GoLo for the next one</a>. The best time to agree what forty dollars means is while everybody still has it.",
+          ],
+          blocks: [
+            { kind: "summary", title: "THE SHORT VERSION", items: [
+              "Name the games, participants and units: per player, per team, per hole or per match.",
+              "Confirm tees, handicaps, stroke holes, and net or gross before the first shot.",
+              "Agree press amounts and limits, tied results, final carries, and an early finish.",
+              "Define the whole-round loss limit, record the agreement, and settle from one shared card.",
+            ] },
+          ],
+        },
+      ],
+    ),
+  },
+  {
     slug: "group-accountant",
     category: "etiquette",
     title: "How to track golf bets without becoming the group accountant", // vocab-ok: exact article headline explicitly requested by the owner on 2026-10-30; GoLo is described as a scorekeeper throughout.
