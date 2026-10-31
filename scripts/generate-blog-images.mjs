@@ -51,6 +51,12 @@ const TWO_MIDS = ["mid-1", "mid-2"];
 const POSTS = {
   gimmes: { mids: NO_MIDS, mobile: true, ogPosition: "right" },
   "nine-hole-games": { mids: NO_MIDS, mobile: true, ogPosition: "right" },
+  "golf-games-for-3-players": { mids: NO_MIDS, mobile: true, ogPosition: "right" },
+  "side-games-for-beginners": { mids: NO_MIDS, mobile: true, ogPosition: "right" },
+  "five-dollar-birdie": { mids: NO_MIDS, mobile: true, ogPosition: "right" },
+  "closest-to-the-pin-rules": { mids: NO_MIDS, mobile: true, ogPosition: "right" },
+  "skins-vs-nassau": { mids: NO_MIDS, mobile: true, ogPosition: "right" },
+  "match-play-vs-stroke-play": { mids: NO_MIDS, mobile: true, ogPosition: "right" },
   "golf-games-for-2-players": { mids: NO_MIDS, mobile: true, ogPosition: "right" },
   "net-vs-gross-scoring": { mids: NO_MIDS, mobile: true, ogPosition: "right" },
   "first-tee-checklist": { mids: NO_MIDS, mobile: true, ogPosition: "right" },

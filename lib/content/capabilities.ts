@@ -113,6 +113,20 @@ const APP_CHECK_1029 = {
 } as const;
 
 /**
+ * The blog pair-1 check (2026-10-30): golo `main` 2237c1d (GoLo 1.2.1) read
+ * again for the Skins-vs-Nassau and match-play posts. Team Play in
+ * src/pages/SetupWizard.jsx (the "Fixed partners · Team Play · 2v2" toggle,
+ * TEAM_GAME_KEYS, Wolf locked out) and src/engines/teamScoring.js
+ * deriveTeamHole (each team's lower gross and lower net on the hole); the
+ * head-to-head pairings in src/engines/nassau.js calculateNassauGroup and
+ * src/engines/overallPurse.js.
+ */
+const APP_CHECK_1030 = {
+  by: "app-check",
+  date: "2026-10-30",
+  appVersion: "1.2.1",
+} as const;
+/**
  * The blog pair-5 check (2026-10-30): golo `main` 2237c1d (GoLo 1.2.1).
  * Round formats in src/pages/SetupWizard.jsx (Stroke Play, Match Play,
  * Stableford); concessions in src/pages/ScoringPage.jsx canConcedeMatch and
@@ -168,6 +182,8 @@ export const capabilities = [
       "No separate junk board: greenies and sandies are Skins settings, and barkies, poleys, snakes and arnies aren't scored.",
       "Longest Drive is played on one par 5 and doesn't record a measured distance.",
       "Wolf takes exactly four players, and the wolf rotates in player order; GoLo sets no tee order.",
+      // From APP_CHECK_1030 (src/engines/nassau.js calculateNassauGroup).
+      "Without teams, Nassau and the Overall Match are played head to head: with three or four players, every pair has its own match.",
     ],
     verified: APP_CHECK_1029,
     roadmap: true,
@@ -186,6 +202,18 @@ export const capabilities = [
     ],
     verified: APP_CHECK_1029,
     roadmap: true,
+  },
+  {
+    id: "team-play",
+    label: "Team Play, two against two",
+    status: "live",
+    summary:
+      "Four players in two fixed pairs; each team's better score on a hole counts, and Skins, Nassau, Best Score and the Overall Match play team against team.",
+    limits: [
+      "Exactly four players, two teams of two.",
+      "Wolf isn't played in Team Play.",
+    ],
+    verified: APP_CHECK_1030,
   },
   {
     id: "round-formats",
