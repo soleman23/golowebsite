@@ -16,6 +16,7 @@ WT="$(cd "$(dirname "$0")/../.." && pwd)"
 PGBIN=/opt/homebrew/opt/postgresql@16/bin
 PGDATA=/tmp/golo-pg-reach-live
 DB=postgresql://postgres@127.0.0.1:54329/golo_reach_live
+PIDFILE=/tmp/golo-reach124-site.pid
 ONLY="${REACH_SYNC_ONLY:?set REACH_SYNC_ONLY to the comma-separated owner-controlled test addresses}"
 export LC_ALL=en_US.UTF-8
 
@@ -35,7 +36,11 @@ case "${1:-}" in
     (cd "$WT" && DATABASE_URL="$DB" DIRECT_URL="$DB" npx prisma db push --skip-generate >/dev/null && echo "schema pushed")
     ;;
   server)
-    (cd "$WT/.next/standalone" && cp -R ../static .next/ 2>/dev/null; with_token env PORT=3124 HOSTNAME=127.0.0.1 node server.js > /tmp/live124-server.log 2>&1 &)
+    if lsof -nP -iTCP:3124 -sTCP:LISTEN -t >/dev/null 2>&1; then
+      echo "Port 3124 is already occupied. Nothing started."; exit 1
+    fi
+    (cd "$WT/.next/standalone"; cp -R ../static .next/ 2>/dev/null || true
+      with_token env PORT=3124 HOSTNAME=127.0.0.1 sh -c 'printf "%s\n" "$$" > "$1"; exec node server.js' _ "$PIDFILE" > /tmp/live124-server.log 2>&1 &)
     for i in $(seq 1 30); do curl -s -o /dev/null http://127.0.0.1:3124/ && { echo "server up"; exit 0; }; sleep 1; done; echo "server did not start"; exit 1
     ;;
   signup)
@@ -53,7 +58,17 @@ case "${1:-}" in
     (cd "$WT" && printf '%s\n' "$2" | with_token node --disable-warning=MODULE_TYPELESS_PACKAGE_JSON scripts/newsletter-delete.mjs --confirm)
     ;;
   stop)
-    pkill -f "golowebsite-wt-121/.next/standalone/server.js" || pkill -f "standalone/server.js" || true
+    if [ -f "$PIDFILE" ]; then
+      pid="$(cat "$PIDFILE")"
+      case "$pid" in
+        ''|*[!0-9]*) echo "Invalid server PID; no process stopped." ;;
+        *)
+          cwd="$(lsof -a -p "$pid" -d cwd -Fn 2>/dev/null | sed -n 's/^n//p')"
+          if [ "$cwd" = "$WT/.next/standalone" ]; then kill "$pid" 2>/dev/null || true; fi
+          ;;
+      esac
+      rm -f "$PIDFILE"
+    fi
     "$PGBIN/pg_ctl" -D "$PGDATA" stop >/dev/null 2>&1 || true
     ;;
   *) sed -n 2,14p "$0" ;;

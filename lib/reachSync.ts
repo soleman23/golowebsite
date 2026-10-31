@@ -118,8 +118,8 @@ const BACKOFF_CAP_MS = 6 * 60 * 60 * 1000;
 
 /**
  * Rows the sync may hand to Reach in any rolling 24 hours, and in any rolling
- * 30 days (counted as rows it marked synced, which over-counts: an address
- * Reach already had counts too). The plan allows 1,000 unique recipients a
+ * 30 days (counted as synced rows or durable create reservations, which
+ * over-counts: an address Reach already had counts too). The plan allows 1,000 unique recipients a
  * calendar month (golo#791), which campaigns share, so the 30-day cap keeps
  * sign-ups to half of it and the daily cap spreads a flood over weeks. Over
  * either, a row waits, unclaimed, for a later run. Only the retry job sends,
@@ -282,6 +282,7 @@ export type SyncLead = {
   reachSyncStatus: string | null;
   reachSyncAttempts: number;
   reachLastAttemptAt: Date | null;
+  reachCreateReservedAt: Date | null;
 };
 
 export interface LeadSyncStore {
@@ -294,6 +295,8 @@ export interface LeadSyncStore {
    */
   claimAttempt(id: string, expectedAttempts: number, at: Date): Promise<boolean>;
   setStatus(id: string, status: ReachSyncStatus): Promise<void>;
+  /** Persist quota before POST; false if a deletion removed the row. */
+  reserveCreate(id: string, at: Date): Promise<boolean>;
   /**
    * Pending or failed rows with fewer than maxAttempts attempts that are due
    * at `now` (never attempted, or past their backoff), oldest sign-up first.
@@ -311,8 +314,8 @@ export interface LeadSyncStore {
    * up in Reach again before anything is created.
    */
   requeueFailed(maxAttempts: number, quietBefore: Date): Promise<number>;
-  /** Rows marked synced whose last attempt was at or after `since`. */
-  countSyncedSince(since: Date): Promise<number>;
+  /** Rows with a create reservation or a successful sync since `since`. */
+  countQuotaSince(since: Date): Promise<number>;
 }
 
 export type SyncLog = (message: string, fields?: Record<string, unknown>) => void;
@@ -380,9 +383,14 @@ export async function syncLead(id: string, deps: SyncDeps): Promise<SyncOutcome>
   // Before claiming, so a row held back by the limit keeps its attempts.
   const dailyLimit = deps.dailyLimit ?? DAILY_ADD_LIMIT;
   const monthlyLimit = deps.monthlyLimit ?? MONTHLY_ADD_LIMIT;
+  const daySince = new Date(at.getTime() - DAY_MS);
+  const monthSince = new Date(at.getTime() - MONTH_MS);
+  // A retry of an already reserved address occupies the same unique-recipient
+  // slot. It may proceed at the cap; a new address may not.
+  const reservedAt = lead.reachCreateReservedAt?.getTime() ?? -Infinity;
   if (
-    (await store.countSyncedSince(new Date(at.getTime() - DAY_MS))) >= dailyLimit ||
-    (await store.countSyncedSince(new Date(at.getTime() - MONTH_MS))) >= monthlyLimit
+    ((await store.countQuotaSince(daySince)) >= dailyLimit && reservedAt < daySince.getTime()) ||
+    ((await store.countQuotaSince(monthSince)) >= monthlyLimit && reservedAt < monthSince.getTime())
   ) {
     return "deferred";
   }
@@ -428,6 +436,10 @@ export async function syncLead(id: string, deps: SyncDeps): Promise<SyncOutcome>
   // mid-run; checked anyway, because stale queued work must never recreate a
   // deleted contact.
   if (!(await store.get(id))) return "not_found";
+  // A timeout can hide a successful upstream create. Reserve durably before
+  // sending and retain the reservation on failure, so the next row cannot
+  // consume capacity that Reach may already have used.
+  if (!(await store.reserveCreate(id, now()))) return "not_found";
 
   let created: CreateContactResult;
   try {

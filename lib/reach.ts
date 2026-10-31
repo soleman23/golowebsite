@@ -258,10 +258,12 @@ export function createHttpReachClient(
     async deleteContact(rawEmail): Promise<DeleteContactResult> {
       const found = await lookup(rawEmail.trim().toLowerCase());
       if (!found.ok) return found;
+      if (found.matches.some((match) => typeof match.uuid !== "string" || match.uuid === "")) {
+        return { ok: false, error: "missing_uuid" };
+      }
       let deleted = 0;
       for (const match of found.matches) {
-        if (typeof match.uuid !== "string" || match.uuid === "") return { ok: false, error: "missing_uuid" };
-        const res = await call(`${contactsUrl}/${encodeURIComponent(match.uuid)}`, { method: "DELETE" });
+        const res = await call(`${contactsUrl}/${encodeURIComponent(match.uuid as string)}`, { method: "DELETE" });
         if (typeof res === "string") return { ok: false, error: res };
         if (!res.ok) return { ok: false, error: `http_${res.status}` };
         deleted += 1;

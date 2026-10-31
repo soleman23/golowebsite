@@ -67,6 +67,9 @@ model NewsletterLead {
   reachSyncStatus    String?
   reachSyncAttempts  Int       @default(dbgenerated("0"))
   reachLastAttemptAt DateTime?
+  /// Reserved before a Reach create: an accepted request with a lost response
+  /// must still count toward the rolling recipient limits.
+  reachCreateReservedAt DateTime?
 
   @@index([createdAt])
   @@index([reachSyncStatus])

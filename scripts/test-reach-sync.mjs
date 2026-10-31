@@ -46,6 +46,7 @@ function memoryDb() {
         reachSyncStatus: null,
         reachSyncAttempts: 0,
         reachLastAttemptAt: null,
+        reachCreateReservedAt: null,
         ...fields,
       };
       rows.set(row.id, row);
@@ -64,6 +65,12 @@ function memoryDb() {
       },
     },
     syncStore: {
+      async reserveCreate(id, at) {
+        const row = rows.get(id);
+        if (!row) return false;
+        row.reachCreateReservedAt = at;
+        return true;
+      },
       async get(id) {
         const row = rows.get(id);
         return row ? { ...row } : null;
@@ -100,8 +107,8 @@ function memoryDb() {
         }
         return n;
       },
-      async countSyncedSince(since) {
-        return [...rows.values()].filter((r) => r.reachSyncStatus === "synced" && r.reachLastAttemptAt >= since).length;
+      async countQuotaSince(since) {
+        return [...rows.values()].filter((r) => (r.reachCreateReservedAt && r.reachCreateReservedAt >= since) || (r.reachSyncStatus === "synced" && r.reachLastAttemptAt >= since)).length;
       },
     },
     deletionStore: {
@@ -397,6 +404,37 @@ await test(`gives up after ${MAX_ATTEMPTS} attempts and logs without the address
   const s = await h.retry(at(30 * 24 * HOUR));
   expect(s.exhausted === 1 && s.checked === 0, `summary ${JSON.stringify(s)}`);
   expect(logLines.some((l) => l.includes("gave up")), "no give-up log line");
+});
+
+await test("an accepted create with a lost response still reserves daily and monthly capacity", async () => {
+  for (const limits of [{ dailyLimit: 2, monthlyLimit: 100 }, { dailyLimit: 100, monthlyLimit: 2 }]) {
+    const h = harness();
+    for (let n = 0; n < 3; n += 1) await h.signUp(`uncertain${n}@example.test`);
+    let posts = 0;
+    const client = {
+      ...h.stub,
+      async createContact(email) {
+        expect(h.db.byEmail(email).reachCreateReservedAt !== null, "POST preceded its durable reservation");
+        posts += 1;
+        return { ok: false, error: "timeout" };
+      },
+    };
+    const run = (at) => retryReachSync({ store: h.db.syncStore, client, now: () => at, ...limits });
+    const first = await run(T0);
+    expect(posts === 2 && first.deferred === 1, `uncertain requests exceeded cap: ${posts}`);
+    const retry = await run(at(6 * 60 * 1000));
+    expect(posts === 4 && retry.failed === 2 && retry.deferred === 1, "reserved leads cannot retry at cap, or a new lead bypassed it");
+    expect(h.db.byEmail("uncertain2@example.test").reachSyncAttempts === 0, "deferred row spent an attempt");
+  }
+});
+
+await test("a reservation write failure sends no create request", async () => {
+  const h = harness();
+  await h.signUp("reservation-error@example.test");
+  h.db.syncStore.reserveCreate = async () => { throw new Error("database unavailable"); };
+  let failed = false;
+  try { await h.flush(); } catch { failed = true; }
+  expect(failed && h.stub.creates() === 0, "create proceeded without a durable reservation");
 });
 
 await test("backfill dry run: counts only, no addresses, no writes", async () => {
@@ -818,8 +856,10 @@ await test("Prisma sync store: claim, requeue, exhausted and synced-since querie
   expect(rq.where.reachSyncStatus.in.join() === "pending,failed", "requeue must cover pending and failed");
   await store.countExhausted(MAX_ATTEMPTS);
   expect(last().where.reachSyncStatus.in.join() === "pending,failed" && last().where.reachSyncAttempts.gte === MAX_ATTEMPTS, "exhausted where");
-  await store.countSyncedSince(when);
-  expect(last().where.reachSyncStatus === "synced" && last().where.reachLastAttemptAt.gte === when, "synced-since where");
+  await store.countQuotaSince(when);
+  expect(last().where.OR[0].reachCreateReservedAt.gte === when && last().where.OR[1].reachSyncStatus === "synced" && last().where.OR[1].reachLastAttemptAt.gte === when, "quota includes uncertain creates and completed syncs");
+  expect(await store.reserveCreate("lead_1", when), "reservation failed");
+  expect(last().where.id === "lead_1" && last().data.reachCreateReservedAt === when, "create reservation not persisted");
   await store.listRetryable(MAX_ATTEMPTS, 7, at(10 * HOUR));
   expect(last().where.reachSyncAttempts.lt === MAX_ATTEMPTS && last().take === 7, "retryable where/take");
   const due = last().where.OR;
@@ -887,6 +927,19 @@ await test("deletion: website rows go first and case-insensitively; a match with
   });
   const r = await noUuid.deleteContact("gone@example.test");
   expect(!r.ok && r.error === "missing_uuid", JSON.stringify(r));
+});
+
+await test("a later exact match without a UUID prevents every deletion", async () => {
+  let deletes = 0;
+  const client = createHttpReachClient({ token: "t", profileUuid: "p" }, async (url, init) => {
+    if (init.method === "DELETE") { deletes += 1; return new Response(null, { status: 204 }); }
+    return new Response(JSON.stringify(listPage([
+      { email: "gone@example.test", uuid: "valid", subscription_status: "unsubscribed" },
+      { email: "gone@example.test", subscription_status: "unsubscribed" },
+    ])), { status: 200 });
+  });
+  const result = await client.deleteContact("gone@example.test");
+  expect(!result.ok && result.error === "missing_uuid" && deletes === 0, "lookup partially deleted contacts before validation");
 });
 
 await test("scripts never read a void lock function through $queryRaw", async () => {

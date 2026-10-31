@@ -30,6 +30,7 @@ const syncFields = {
   reachSyncStatus: true,
   reachSyncAttempts: true,
   reachLastAttemptAt: true,
+  reachCreateReservedAt: true,
 } as const;
 
 const RETRYABLE: ReachSyncStatus[] = ["pending", "failed"];
@@ -119,6 +120,13 @@ export function prismaLeadSyncStore(prisma: PrismaClient): LeadSyncStore {
         data: { reachSyncStatus: status },
       });
     },
+    async reserveCreate(id, at) {
+      const { count } = await prisma.newsletterLead.updateMany({
+        where: { id },
+        data: { reachCreateReservedAt: at },
+      });
+      return count === 1;
+    },
     async listRetryable(maxAttempts, limit, now) {
       // Only rows that are due: never attempted, or past the backoff for
       // their attempt count. So rows still waiting can't fill the scanned
@@ -159,9 +167,14 @@ export function prismaLeadSyncStore(prisma: PrismaClient): LeadSyncStore {
       });
       return count;
     },
-    async countSyncedSince(since) {
+    async countQuotaSince(since) {
       return prisma.newsletterLead.count({
-        where: { reachSyncStatus: "synced", reachLastAttemptAt: { gte: since } },
+        where: {
+          OR: [
+            { reachCreateReservedAt: { gte: since } },
+            { reachSyncStatus: "synced", reachLastAttemptAt: { gte: since } },
+          ],
+        },
       });
     },
   };
