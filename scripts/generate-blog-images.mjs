@@ -51,6 +51,7 @@ const TWO_MIDS = ["mid-1", "mid-2"];
 const POSTS = {
   gimmes: { mids: NO_MIDS, mobile: true, ogPosition: "right" },
   "nine-hole-games": { mids: NO_MIDS, mobile: true, ogPosition: "right" },
+  "best-ball-vs-scramble": { mids: NO_MIDS, mobile: true, ogPosition: "right" },
   "no-handicap-fair-game": { mids: NO_MIDS, mobile: true, ogPosition: "right" },
   "different-tees": { mids: NO_MIDS, mobile: true, ogPosition: "right" },
   "golf-games-for-3-players": { mids: NO_MIDS, mobile: true, ogPosition: "right" },
