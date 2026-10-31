@@ -768,7 +768,7 @@ const scramble: GameDetailCopy = {
     rows: [
       { tag: "1", title: "One-player team", detail: "No scramble advantage, so the full Course Handicap", value: "100%" },
       { tag: "2", title: "Two players", detail: "The WHS recommendation, lower handicap first", value: "35 / 15%" },
-      { tag: "3", title: "Three players", detail: "WHS has no three-player figure; this is the usual club split", value: "30 / 20 / 10%" },
+      { tag: "3", title: "Three players", detail: "The WHS recommendation, lowest handicap first", value: "30 / 20 / 10%" },
       { tag: "4", title: "Four players", detail: "The WHS recommendation, lowest handicap first", value: "25 / 20 / 15 / 10%" },
     ],
   },
