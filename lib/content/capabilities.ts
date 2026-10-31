@@ -367,6 +367,9 @@ export const capabilities = [
     label: "Guests without an account",
     status: "live",
     summary: "Add a guest with a name and an index; no account needed.",
+    // golo main 2237c1d (1.2.1) SetupWizard.jsx incHdcp and the hdcp stepper:
+    // a guest's index starts at 12 and moves in steps of 1.0 (2026-10-30).
+    limits: ["A guest’s index is set with a stepper in whole numbers."],
     verified: APP_CHECK_062,
   },
   {
