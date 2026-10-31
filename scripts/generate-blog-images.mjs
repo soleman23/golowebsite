@@ -51,6 +51,8 @@ const TWO_MIDS = ["mid-1", "mid-2"];
 const POSTS = {
   "golf-games-for-2-players": { mids: NO_MIDS, mobile: true, ogPosition: "right" },
   "net-vs-gross-scoring": { mids: NO_MIDS, mobile: true, ogPosition: "right" },
+  "first-tee-checklist": { mids: NO_MIDS, mobile: true, ogPosition: "right" },
+  "group-accountant": { mids: NO_MIDS, mobile: true, ogPosition: "right" },
   "bingo-bango-bongo": { prefix: "bbb", mids: ONE_MID, mobile: true, ogPosition: "centre" },
   wolf: { mids: ONE_MID, mobile: true, ogPosition: "right" },
   "skins-carryover": { prefix: "skins", mids: ONE_MID, mobile: true, ogPosition: "right" },
