@@ -172,6 +172,265 @@ const blogMedia = {
 
 export const posts: Post[] = [
   {
+    slug: "five-dollar-birdie",
+    category: "rules",
+    title: "Birdie bets in golf: what does a $5 birdie actually pay?", // vocab-ok: exact article headline requested by the owner on 2026-10-30 (16-idea list); the body describes Skins settings and house agreements.
+    metaDescription:
+      "A $5 birdie is $15 in a foursome, and less when two players make one on the same hole. Per player or a shared total, gross or net, and one round worked through.",
+    excerpt:
+      "Everyone agrees to five a birdie. Then two players birdie the 8th, somebody mentions net, and one number turns into four.",
+    dek: "The price is the easy part. Who pays it, what counts as a birdie and what happens when two land on the same hole decide what five dollars actually means.",
+    crumb: "The $5 birdie",
+    author: "From the GoLo team",
+    // Pair 2 of the 16-idea list (the junk post was cut: greenies, sandies and
+    // birdies are Skins options). GoLo facts: capabilities.ts game-library
+    // limits and skins-greenie-sandie; golo main 2237c1d src/engines/skins.js
+    // calculateBonusSkins (every opponent pays each birdie, gross, no carry;
+    // an eagle pays both tiers) and calculateSkinsBet (one skin amount for
+    // every type; Standard Skin can be off).
+    date: "2026-10-31",
+    readMins: 6,
+    hero: {
+      src: "/images/blog/five-dollar-birdie-hero.webp",
+      mobile: "/images/blog/five-dollar-birdie-mobile.webp",
+      og: "/images/blog/five-dollar-birdie-og.jpg",
+      alt: "A golf ball beside the cup on a green in low evening light, a putter and a golfer’s shoes just behind it",
+      position: "80% 50%",
+    },
+    related: ["closest-to-the-pin-rules", "skins-carryover", "net-vs-gross-scoring"],
+    published: true,
+    body: article(
+      "“Five a birdie” takes three seconds to agree on the first tee. What it means depends on who pays it, whether a handicap stroke can make one, and what happens when two players birdie the same hole. Most groups find out which version they were playing on the 8th green, from the player who has just made one.",
+      [
+        {
+          id: "from-whom",
+          title: "Five dollars from whom?",
+          paragraphs: [
+            "The usual version is per player: every other player pays the maker the agreed amount. In a foursome a $5 birdie is worth $15 to the player who makes it. In a threesome it’s $10. Whatever the group size, somebody else’s birdie costs you $5.",
+            "The other version is a shared total. Everyone puts in a set amount before the round, say $10 each, and at the end the $40 is divided by the number of birdies made. Nobody can lose more than their $10, and nobody knows what a birdie is worth until the 18th is finished. GoLo doesn’t run this version; it’s a house arrangement, so agree its two awkward cases too: what happens if nobody makes a birdie, and how $40 splits across three birdies.",
+          ],
+          blocks: [
+            {
+              kind: "atAGlance",
+              title: "THE $5 BIRDIE, AT A GLANCE",
+              items: [
+                { label: "PER PLAYER", value: "Every other player pays the maker" },
+                { label: "IN A FOURSOME", value: "$5 a birdie is worth $15" },
+                { label: "SHARED TOTAL", value: "A set amount in, split by birdies made" },
+                { label: "IN GOLO", value: "Birdie Skin: per player, gross only" },
+              ],
+            },
+            { kind: "p", html: "Here is the same invented foursome round under both. Four birdies were made: two by Mike, one each by Jess and Dave, and none by Tom. One hole, the 8th, had two of them." },
+            {
+              kind: "table",
+              head: ["Player", "Birdies", "Per player at $5", "Shared total, $10 each"],
+              rows: [
+                ["Mike", "2", "+$20", "+$10"],
+                ["Jess", "1", "$0", "$0"],
+                ["Dave", "1", "$0", "$0"],
+                ["Tom", "0", "−$20", "−$10"],
+                ["Total", "4", "$0", "$0"],
+              ],
+            },
+            { kind: "p", html: "Per player, Mike collects $15 for each of his birdies and pays $5 for each of Jess’s and Dave’s: $30 less $10. Jess and Dave each collect $15 and pay $15. Tom pays $5 four times. With the shared total, four birdies make each one worth $10: Mike takes $20 of the $40, Jess and Dave $10 each, and Tom’s $10 ends up with Mike." },
+            { kind: "p", html: "The two versions reward different rounds. Per player pays for volume: the more birdies, the more money moves, with no ceiling. A shared total pays for scarcity: if only one birdie is made all day, it is worth the whole $40." },
+          ],
+        },
+        {
+          id: "same-hole",
+          title: "Two birdies on one hole",
+          paragraphs: [
+            "On the 8th, Mike and Dave both made birdie. Per player, each of them is owed $5 by the other three, which includes each other. Those two payments cancel. Mike and Dave each finish the hole $10 up, not $15, and Jess and Tom each pay $10.",
+            "That surprises people because it isn’t how a hole usually works. Nobody won the 8th outright, and it doesn’t matter. A birdie bounty isn’t a contest for the hole: every birdie counts on its own, nothing carries, and two birdies are simply two birdies. That is how GoLo’s individual Skins counts them. In Team Play or a scramble, Skins is played team against team, and the arithmetic in this post doesn’t apply.",
+          ],
+          blocks: [
+            { kind: "callout", title: "A TIED BIRDIE ISN’T A TIE", html: "In standard skins, a tie for low wins nothing. A birdie bounty is different: both birdies are paid, and the two players who made them pay each other too." },
+          ],
+        },
+        {
+          id: "gross-or-net",
+          title: "Gross birdies or net birdies",
+          paragraphs: [
+            "A gross birdie is one under par in actual strokes. A net birdie is one under par after the handicap stroke on that hole, so a 20-handicap’s par on a stroke hole counts as a birdie. With a wide spread of handicaps, net birdies give the high handicap a real chance of making one. They also mean more birdies, and so more money moving, than the group may have pictured when it agreed on five dollars.",
+            "Decide it before the first one falls, not after. GoLo’s Birdie Skin counts gross birdies only, from each player’s gross score, whether the round’s other games are net or gross. A net-birdie bounty is a house rule GoLo doesn’t track. The <a href=\"/blog/net-vs-gross-scoring\">net-versus-gross example</a> shows why the scoring basis needs settling first.",
+          ],
+        },
+        {
+          id: "with-skins",
+          title: "When the birdie also wins the hole",
+          paragraphs: [
+            "In GoLo, a birdie bounty is a setting of the <a href=\"/games/skins\">Skins</a> game: Birdie Skin, and Eagle Skin beside it. Both use the Skins game’s one skin amount, and every opponent pays each one. Turn the Standard Skin off and you have a birdie game on its own. Leave it on and a birdie can pay twice.",
+            "Take the round from the <a href=\"/blog/skins-carryover\">carryover post</a>: $5 skins in a foursome, carryovers on, holes 1 to 3 halved, so the 4th is worth four standard skins. A birdie there that nobody matches takes all four, $60. Turn Birdie Skin on as well and the same birdie collects $5 more from each opponent.",
+          ],
+          blocks: [
+            { kind: "keyStat", value: "$75", label: "What one birdie takes on that 4th: four standard skins at $60 and a birdie skin at $15, at $5 skins in a foursome. Had a second player matched the birdie, the standard skins would have ridden on to the 5th and both players would have been paid a birdie skin." },
+            { kind: "p", html: "Eagle Skin works the same way at two under par. With Birdie Skin on as well, an eagle collects both, which is the familiar “eagles pay double.” An ace on a par 3 is two under, so it collects the same two skins and nothing more: GoLo has no separate ace bonus, and no cap setting. If your group wants a limit on what one hot round can cost, agree it on the first tee and settle the difference yourselves." },
+          ],
+        },
+        {
+          id: "worked-round",
+          title: "One round, worked through",
+          paragraphs: [
+            "Here are the same four players on another invented day, in GoLo: Birdie Skin and Eagle Skin on at $5, Standard Skin off, so nothing else is in the Skins game. Gross birdies on the 2nd, the 6th (two) and the 17th, and Mike’s eagle on the par-5 11th.",
+          ],
+          blocks: [
+            {
+              kind: "table",
+              head: ["Hole", "What happened", "Mike", "Jess", "Tom", "Dave"],
+              rows: [
+                ["2", "Dave birdie", "−$5", "−$5", "−$5", "+$15"],
+                ["6", "Jess and Tom birdie", "−$10", "+$10", "+$10", "−$10"],
+                ["11", "Mike eagle: birdie and eagle skins", "+$30", "−$10", "−$10", "−$10"],
+                ["17", "Jess birdie", "−$5", "+$15", "−$5", "−$5"],
+                ["Total", "Six skins", "+$10", "+$10", "−$10", "−$10"],
+              ],
+            },
+            { kind: "p", html: "Six skins changed hands and the round nets to two settle-ups: Tom and Dave each pay $10, one to Mike and one to Jess. Every row adds to zero, and so does the total. GoLo works this out from the card and puts it in the same who-owes-whom list as every other game in the round. The money moves outside the app." },
+            { kind: "quote", text: "Five a birdie is a price. Who pays it is the agreement." },
+          ],
+        },
+        {
+          id: "agree",
+          title: "Settle the price in one sentence",
+          paragraphs: [
+            "“Five a birdie from each of us, gross, eagles pay double, no cap” is a complete agreement. So is “ten each in, split by birdies at the end.” Either one is clear on the first tee. “Five a birdie” on its own leaves the 8th green to decide the rest.",
+            "The rules and the usual variations are on the <a href=\"/games/birdies\">birdies guide</a>, and the par-3 cousin of this argument, closest to the pin against a greenie, has <a href=\"/blog/closest-to-the-pin-rules\">its own post</a>. When the sentence is agreed, <a href=\"/how-it-works\">see one round from setup to settle-up</a> or <a href=\"/#get\">get GoLo for the next one</a>.",
+          ],
+          blocks: [
+            { kind: "summary", title: "THE SHORT VERSION", items: [
+              "Per player, a $5 birdie is $15 in a foursome. A shared total caps what anyone can lose and splits it by birdies made.",
+              "Two birdies on one hole are both paid, and the two makers pay each other: each nets $10 in a foursome.",
+              "Agree gross or net first. GoLo’s Birdie Skin counts gross birdies only.",
+              "In GoLo, Birdie Skin and Eagle Skin are Skins settings at the skin amount, with or without the Standard Skin, and there is no cap.",
+            ] },
+          ],
+        },
+      ],
+    ),
+  },
+  {
+    slug: "closest-to-the-pin-rules",
+    category: "rules",
+    title: "Closest to the pin rules: does it count if you three-putt?",
+    metaDescription:
+      "Closest to the pin or a greenie? One disputed par 3 shows how the green, the par, ties and an unclaimed hole change who gets paid, and how GoLo scores each.",
+    excerpt:
+      "Tom’s tee shot finished four feet away. He walked off with a bogey. Whether he still gets paid depends on a rule nobody said out loud.",
+    dek: "Plain closest to the pin pays the best tee shot. A greenie makes you finish the job. Decide which before the first par 3, not on the walk off it.",
+    crumb: "Closest to the pin",
+    author: "From the GoLo team",
+    // Pair 2 of the 16-idea list. GoLo facts: capabilities.ts closest-to-pin
+    // and skins-greenie-sandie; golo main 2237c1d src/engines/ctp.js (the
+    // marked winner is paid by every other player; no winner, no payment)
+    // and src/engines/skins.js calculateManualSkins (exactly one flagged
+    // player, gross par or better, carry to the next par 3).
+    date: "2026-10-31",
+    readMins: 6,
+    hero: {
+      src: "/images/blog/closest-to-the-pin-rules-hero.webp",
+      mobile: "/images/blog/closest-to-the-pin-rules-mobile.webp",
+      og: "/images/blog/closest-to-the-pin-rules-og.jpg",
+      alt: "A golf ball a few feet from the flagstick on a par 3 green guarded by a deep bunker, in late afternoon light",
+      position: "80% 50%",
+    },
+    related: ["five-dollar-birdie", "skins-carryover", "first-tee-checklist"],
+    published: true,
+    body: article(
+      "The 8th is 165 yards over a bunker. Tom’s tee shot stops four feet from the hole, and nobody else is inside ten. Then he misses the birdie putt, misses the one coming back and taps in for bogey. Mike, eleven feet away on the fringe, two-putts for par. Tom says closest is closest. Mike says you have to make par. It’s a $5 hole, $15 to the winner in a foursome, and both of them are describing a real game.",
+      [
+        {
+          id: "two-games",
+          title: "Two games with one name",
+          paragraphs: [
+            "Plain <a href=\"/games/closest-to-pin\">closest to the pin</a> pays the best tee shot on a par 3. Whatever happens after the ball stops is a separate matter. Tom wins the 8th, and his bogey is between him and his scorecard.",
+            "A greenie adds conditions. The usual ones are that the ball has to finish on the green and the player has to make par or better from there. Under greenie rules Tom’s three-putt costs him the hole. What happens to it next depends on more rules the group may never have agreed.",
+          ],
+          blocks: [
+            {
+              kind: "atAGlance",
+              title: "CLOSEST TO THE PIN AND GREENIES, AT A GLANCE",
+              items: [
+                { label: "CLOSEST TO THE PIN", value: "Best tee shot wins, whatever comes after" },
+                { label: "GREENIE", value: "Closest tee shot, then par or better" },
+                { label: "THE USUAL EXTRA", value: "The ball has to be on the green" },
+                { label: "IF NOBODY QUALIFIES", value: "It’s lost, or it carries to the next par 3" },
+              ],
+            },
+          ],
+        },
+        {
+          id: "four-rulings",
+          title: "One par 3, four rulings",
+          paragraphs: [
+            "Here is everyone’s 8th, invented but familiar. Tom is four feet away on the green and makes bogey. Mike is eleven feet away on the fringe and makes par. Jess is twenty-two feet away on the green and two-putts for par. Dave misses the green short and makes bogey. Each of these is a common house rule, and each gives a different answer.",
+          ],
+          blocks: [
+            { kind: "cardGrid", items: [
+              { eyebrow: "TOM WINS", title: "Closest tee shot, anywhere", body: "Plain closest to the pin. Four feet beats everyone, and the bogey doesn’t matter." },
+              { eyebrow: "NOBODY WINS", title: "The closest ball on the green makes par, or nobody wins", body: "Tom was closest on the green and made bogey, so the hole is lost or carries." },
+              { eyebrow: "JESS WINS", title: "The closest ball on the green that makes par", body: "Tom made bogey and Mike was on the fringe, so it goes to Jess at twenty-two feet." },
+              { eyebrow: "MIKE WINS", title: "The closest ball that makes par, fringe included", body: "Tom made bogey, and Mike’s eleven feet beats Jess’s twenty-two." },
+            ] },
+            { kind: "p", html: "None of these is wrong. The argument on the 8th green isn’t about golf. It’s about which of four sentences the group would have agreed to if anyone had said one on the first tee." },
+            { kind: "quote", text: "Closest to the pin rewards a shot. A greenie rewards a hole." },
+          ],
+        },
+        {
+          id: "decide",
+          title: "What to agree before the first par 3",
+          blocks: [
+            { kind: "cardGrid", items: [
+              { title: "Plain or greenie", body: "Does the best tee shot win outright, or does the player have to make par or better? Everything else follows from this one." },
+              { title: "On the green, or anywhere", body: "Most greenie games want the ball on the putting surface. If the fringe counts, say so, because eleven feet on the fringe will come up." },
+              { title: "Next closest, or nobody", body: "When the closest player misses par, does the hole go to the next closest who made it, or does nobody win it?" },
+              { title: "What a tie does", body: "Two balls the same distance away are rare and usually disputed. Split it, carry it, or call it nobody’s, and decide how you’ll measure before you need to. In GoLo, the scorer marks one player or nobody." },
+              { title: "Gross par or net par", body: "A greenie usually means par in actual strokes. If a handicap stroke can turn a bogey into a net par, agree that too." },
+              { title: "Lost or carried", body: "An unclaimed hole can be lost or ride to the next par 3. If it carries, agree what happens to one still riding after the last par 3." },
+            ] },
+          ],
+        },
+        {
+          id: "in-golo",
+          title: "Two ways to keep it in GoLo",
+          paragraphs: [
+            "GoLo’s Closest to Pin game is the plain version with the group as the judge. Choose its holes, all the par 3s or the back nine’s, and an amount. On each one, the scorer marks the winner the group agrees on, and every other player in the game pays that player the amount. GoLo doesn’t check par in this game and doesn’t record a distance. A hole with nobody marked pays nothing, and it doesn’t carry. On the 8th, the scorer marks Tom, Jess, Mike or nobody, depending on which sentence the group agreed.",
+            "The greenie lives in the <a href=\"/games/skins\">Skins</a> game, as its Greenie option. On each par 3 the scorer flags the one player who was closest, and GoLo checks the gross score for par or better. If that player made it, they win the greenie, paid by every opponent at the skins amount. If they didn’t, or nobody was flagged, the greenie carries to the next par 3, and a carry still riding after the last par 3 is lost. A tie the group can’t separate is flagged as nobody, so it carries.",
+          ],
+          blocks: [
+            { kind: "p", html: "Here is an invented round with four par 3s, $5 skins in a foursome and only the Greenie option on. On the 8th the group plays it strictly: the scorer flags Tom, and his bogey carries the greenie." },
+            {
+              kind: "table",
+              head: ["Par 3", "Flagged", "Result", "Paid"],
+              rows: [
+                ["4th", "Dave", "Par: one greenie", "+$15"],
+                ["8th", "Tom", "Bogey: carries", "—"],
+                ["14th", "Nobody", "Off the green: carries", "—"],
+                ["17th", "Mike", "Par: three greenies", "+$45"],
+              ],
+            },
+            { kind: "p", html: "Mike’s par on the 17th collects the 8th’s and the 14th’s greenies along with his own: three greenies at $5 from each of three opponents, $45. Had he made bogey, those three would have carried with no par 3 left to play, and nobody would have been paid for them. GoLo nets the greenies with every other game in the round, and the money changes hands outside the app." },
+          ],
+        },
+        {
+          id: "say-it",
+          title: "Say it on the first tee",
+          paragraphs: [
+            "“Greenies, five dollars, on the green and par to win, nobody else can claim it, carry to the next par 3” takes ten seconds. It would have settled the 8th before Tom’s tee shot landed. If your group prefers plain closest to the pin, that sentence is shorter still.",
+            "The variations, closest in two and marked approaches among them, are on the <a href=\"/games/closest-to-pin\">closest to the pin guide</a>. The other bounty that starts arguments on the green has <a href=\"/blog/five-dollar-birdie\">its own post</a>. Then <a href=\"/how-it-works\">see one round from setup to settle-up</a> or <a href=\"/#get\">get GoLo for the next one</a>.",
+          ],
+          blocks: [
+            { kind: "summary", title: "THE SHORT VERSION", items: [
+              "Plain closest to the pin pays the best tee shot. A greenie also asks for par or better, usually from the green.",
+              "One par 3 can produce four different winners under four common house rules. Agree the sentence before the first par 3.",
+              "Decide on the green or the fringe, next closest or nobody, ties, gross or net par, and whether an unclaimed hole carries.",
+              "In GoLo, Closest to Pin pays whoever the scorer marks, with no par check and no carry. The Skins Greenie option checks par and carries to the next par 3.",
+            ] },
+          ],
+        },
+      ],
+    ),
+  },
+  {
     slug: "golf-games-for-2-players",
     category: "rules",
     title: "Golf games for 2 players: make your usual match worth something",
