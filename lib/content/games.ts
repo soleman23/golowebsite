@@ -108,7 +108,7 @@ const roster = {
     name: "Scramble",
     rule: "Teams of up to four, one ball, one team handicap.",
     desc: "Everyone hits and the team plays its best shot. GoLo works out each team’s handicap and runs Skins, Nassau and Best Score team against team.",
-    how: "Split up to 12 players into 2 to 6 teams. Everyone hits, the team picks the best ball, and all play the next shot from there.",
+    how: "Split up to 12 players into 2 to 6 teams. Everyone hits, the team picks the best shot, and all play the next shot from there.",
     players: "2–12 players",
     format: "Teams of 1–4",
     tags: ["teams"],
