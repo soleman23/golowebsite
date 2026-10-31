@@ -467,9 +467,9 @@ const bestScore: GameDetailCopy = {
   kicker: "BEST SCORE · ONE NUMBER DECIDES IT",
   tagline: "Everybody plays for the same amount. Eighteen holes later the best score takes it. No per-hole math, no presses — one number decides it.",
   metaDescription: "Set up Best Score in GoLo with a fair amount, net or gross scoring, how many places split it, and a clean settle-up after 18 holes.",
-  traits: ["2–8 players", "18 holes", "One amount", "Net or gross"],
+  traits: ["2–12 players", "18 holes", "One amount", "Net or gross"],
   howTitle: "One amount, one number, one very long back nine.",
-  intro: "Best Score is the simplest side game in golf and the hardest to hide in. Everyone puts in the same amount before the round, plays their own ball for 18, and the best score after handicaps takes it, or the top two or three split it. Two decisions do all the work: whether you settle on net or gross, and whether one place takes it or more.",
+  intro: "Best Score is the simplest side game in golf and the hardest to hide in. Everyone puts in the same amount before the round, plays the round, and the best score after handicaps takes it, or the top two or three split it. Two decisions do all the work: whether you settle on net or gross, and whether one place takes it or more.",
   steps: [
     { n: "1", title: "Agree the amount", body: "One number, same for everybody, settled on the first tee. Most groups land between $10 and $50 a man." },
     { n: "2", title: "Net or gross", body: "Net is the default: handicap strokes come off before cards are compared. Gross works when everybody is within a couple of shots." },
@@ -552,7 +552,8 @@ const bestScore: GameDetailCopy = {
     { q: "What happens on a tie?", a: "Split it or use a card playoff: back nine, last six, then the 18th. Pick one before teeing off. GoLo splits ties evenly and has no card playoff." },
     { q: "Can we cap a blow-up hole?", a: "Yes, as a house rule. GoLo does not cap scores, so enter the capped number — double par, say — when that is what your group agreed." },
     { q: "Can we run Best Score alongside other games?", a: "Yes. GoLo tracks Best Score, skins, and side bounties from the same card and nets the result." },
-    { q: "Can teams play Best Score, or play it on Stableford points?", a: "Yes. In a Stableford round the most points takes it. In Team Play GoLo compares the two teams’ totals, from each team’s better score on each hole, or in Stableford its better player’s points or both players’ points added. In a scramble it compares each team’s recorded score. Everyone still puts in the same amount, and a team’s share is split between its players. With two teams, pay one place: a top-two split hands everyone their entry back." },
+    { q: "Can Best Score be played on Stableford points?", a: "Yes. In a Stableford round the most points takes it, with the same places and splits." },
+    { q: "Can teams play Best Score?", a: "Yes. In Team Play GoLo compares the two teams’ totals, built from each team’s better score on each hole, or in Stableford from each team’s better player’s points or both players’ points added. In a scramble it compares each team’s score, net of its team handicap unless played gross. Everyone puts in the same amount, and a team’s share is split among its players. In Team Play, pay one place: a top-two split hands everyone their entry back." },
   ]),
   related: ["skins", "nassau", "birdies"], prev: "nassau", next: "wolf",
 };

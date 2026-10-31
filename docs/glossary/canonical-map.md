@@ -42,7 +42,7 @@ Columns: **Canonical** is the target. **Related pages** are links the entry may 
 | Nassau | `/games/nassau` | Short definition + guide link | `/blog/nassau`, `/blog/pressing` | `match-play`, `press` |
 | Wolf | `/games/wolf` | Short definition + guide link; says tee order varies | `/blog/wolf` | `four-ball`, `match-play` |
 | Bingo Bango Bongo | `/games/bingo-bango-bongo` | Short definition + guide link | `/blog/bingo-bango-bongo` | `closest-to-the-pin`, `putt` |
-| Best Score | `/games/best-score` | Short definition + guide link; says how it differs from Four-Ball | — | `four-ball`, `gross-score`, `net-score` |
+| Best Score | `/games/best-score` | Short definition + guide link; says how it differs from Four-Ball | — | `four-ball`, `scramble`, `skins` |
 | Scramble | `/games/scramble` | Short definition + guide link | — | `four-ball`, `foursomes`, `handicap-allowance` |
 | Four-Ball | hub `#four-ball` | Full inline definition; "best ball" alias and informal use | `/games/scramble`, `/games/wolf` | `foursomes`, `best-score`, `match-play` |
 | Foursomes | hub `#foursomes` | Full inline definition; "alternate shot" alias | — | `four-ball`, `scramble`, `match-play` |
