@@ -49,6 +49,8 @@ const NO_MIDS = []; // the post's mid-article figures are still stock photos
 const ONE_MID = ["mid"];
 const TWO_MIDS = ["mid-1", "mid-2"];
 const POSTS = {
+  "five-dollar-birdie": { mids: NO_MIDS, mobile: true, ogPosition: "right" },
+  "closest-to-the-pin-rules": { mids: NO_MIDS, mobile: true, ogPosition: "right" },
   "skins-vs-nassau": { mids: NO_MIDS, mobile: true, ogPosition: "right" },
   "match-play-vs-stroke-play": { mids: NO_MIDS, mobile: true, ogPosition: "right" },
   "golf-games-for-2-players": { mids: NO_MIDS, mobile: true, ogPosition: "right" },
