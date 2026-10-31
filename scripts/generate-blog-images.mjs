@@ -49,6 +49,8 @@ const NO_MIDS = []; // the post's mid-article figures are still stock photos
 const ONE_MID = ["mid"];
 const TWO_MIDS = ["mid-1", "mid-2"];
 const POSTS = {
+  gimmes: { mids: NO_MIDS, mobile: true, ogPosition: "right" },
+  "nine-hole-games": { mids: NO_MIDS, mobile: true, ogPosition: "right" },
   "golf-games-for-2-players": { mids: NO_MIDS, mobile: true, ogPosition: "right" },
   "net-vs-gross-scoring": { mids: NO_MIDS, mobile: true, ogPosition: "right" },
   "first-tee-checklist": { mids: NO_MIDS, mobile: true, ogPosition: "right" },
