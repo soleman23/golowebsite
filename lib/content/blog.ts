@@ -308,6 +308,134 @@ export const posts: Post[] = [
     ),
   },
   {
+    slug: "group-accountant",
+    category: "etiquette",
+    title: "How to track golf bets without becoming the group accountant", // vocab-ok: exact article headline explicitly requested by the owner on 2026-10-30; GoLo is described as a scorekeeper throughout.
+    metaDescription:
+      "Keep golf side games straight without doing everyone's math. Agree the terms, keep one card, and let GoLo turn the results into a short settle-up list.",
+    excerpt:
+      "You volunteered to keep score. Somehow that came with three tallies, a disputed press, and a Tuesday collection round.",
+    dek: "You agreed to keep score, not reconcile four people's Saturday. One card, clear terms, and a tally you don't have to carry in your head.",
+    crumb: "The group accountant",
+    author: "From the GoLo team",
+    date: "2026-10-30",
+    readMins: 5,
+    hero: {
+      src: "/images/blog/group-accountant-hero.webp",
+      mobile: "/images/blog/group-accountant-mobile.webp",
+      og: "/images/blog/group-accountant-og.jpg",
+      alt: "An open golf scorecard, a pencil and a dark glove on a wooden bench beside the final green at sunset",
+      position: "82% 50%",
+    },
+    related: ["who-pays-first", "nassau", "pressing"],
+    published: true,
+    body: article(
+      "You took the pencil because nobody else reached for it. By the turn you're keeping the Nassau, counting skins, and answering whether Jess gets a stroke on 10. By the parking lot you're doing subtraction while three people change their shoes. On Tuesday somebody texts, “What did I owe again?” The round took four hours. Your shift is still going.",
+      [
+        {
+          id: "the-job",
+          title: "Keeping score should not come with a second job",
+          paragraphs: [
+            "The scores are usually the easy part. Four numbers after a hole. The work is remembering what those numbers mean in three different games, which amount everyone agreed to, and whether the thing somebody called from the next fairway was an actual press.",
+            "A paper card can hold all of that. So can a spreadsheet. The catch is that somebody has to maintain the system, explain it, and defend the answer at the end. If that somebody is always you, the group has quietly hired an accountant and is paying in unsolicited swing advice.",
+            "The way out is to give the round one record everyone agrees on, then let the arithmetic follow that record. GoLo is built for exactly that job. Before the phone can help, though, the group has to agree what it is playing.",
+          ],
+          blocks: [
+            {
+              kind: "atAGlance",
+              title: "LESS BOOKKEEPING, AT A GLANCE",
+              items: [
+                { label: "BEFORE THE ROUND", value: "Games, amounts, strokes, house rules" },
+                { label: "DURING THE ROUND", value: "One card, confirmed hole by hole" },
+                { label: "AFTER THE ROUND", value: "One net number per player" },
+                { label: "WHO PAYS", value: "The players, outside GoLo" },
+              ],
+            },
+          ],
+        },
+        {
+          id: "first-tee",
+          title: "Spend a minute on the first tee",
+          paragraphs: [
+            "“Same as last week” is fine until someone wasn't there last week. Say the terms while everyone can still decline them without looking like they're protecting a lead.",
+          ],
+          blocks: [
+            {
+              kind: "steps",
+              items: [
+                { title: "Name every game and who's in it", body: "A team Nassau and an individual skins game are two separate arrangements. Say the partners out loud. A late arrival is not automatically in everything because somebody wrote his name on the card." },
+                { title: "Put an amount beside each one", body: "Five dollars a Nassau side, a dollar a skin, whatever your group chose. Be specific about whether an amount is per player or per team. “Just a small game” is a mood, not a number." },
+                { title: "Set the strokes and the exceptions", body: "Net or gross? Which tees? Do tied skins carry? Are presses allowed, and on which match? If one of those answers would change someone's decision to play, it belongs in the conversation now." },
+              ],
+            },
+            { kind: "callout", title: "THE SCOREKEEPER DOESN'T SET THE TERMS", html: "Everyone agrees to the games. One person records them. Handing somebody the card does not make that person responsible for a rule the group never discussed." },
+          ],
+        },
+        {
+          id: "one-card",
+          title: "Keep one card. Let GoLo keep the tallies.",
+          paragraphs: [
+            "In GoLo, pick the course and tees, add the players, then choose the games and amounts. A guest can be added with a name and an index, without an account. You don't need to hold up the first tee while the fourth player finds a password.",
+            "For an ordinary individual round, one scorer enters everyone's gross score after each hole. GoLo applies the handicap strokes and works out the supported side games from the same card. Nassau, skins and Best Score can run together without three sets of pencil marks. Signed-in players can join the round and follow it on their own phones; score entry stays with the scorer.",
+            "Have each player say the score before you move on. Four, five, five, six. Fix a wrong number while the hole is still fresh. The app can do the subtraction; it cannot know that the six you entered was actually a seven.",
+            "Check that your group's rules fit before you start. GoLo uses one set of tees for the group and full course handicaps for individual play. GoLo doesn't support mixed tees or playing off the low handicap today. The <a href=\"/features\">features page</a> has the current list.",
+          ],
+          blocks: [
+            { kind: "quote", text: "You should have to remember your score, not everybody's balance." },
+          ],
+        },
+        {
+          id: "changes",
+          title: "Record the change while everyone remembers it",
+          paragraphs: [
+            "The fastest way to lose the tally is to leave a change in somebody's memory. If the group agrees to a press, record it when it is called. If you're keeping anything on paper, mark the starting hole and amount beside the match it belongs to. A diagonal line and “ask Dave” will not improve with age.",
+            "In GoLo, the scorer enters presses on the Overall Match game once a side is at least two down, and they start on the next hole. GoLo does not open presses automatically or support presses on the Nassau game. If your Saturday depends on pressing that game, keep those separately and account for them before paying anyone.",
+            "The same habit applies to a side contest the app doesn't score: write down the agreed result immediately. A half-tracked extra game is how the scorekeeper gets the second job back.",
+          ],
+        },
+        {
+          id: "settle",
+          title: "Finish with what each player owes",
+          paragraphs: [
+            "Winning one game and losing another does not require two people to pass the same money back and forth. Net the games into one balance per player, then work out who owes whom. Here is an illustrative foursome's completed Nassau and skins tally; the plus signs mean a player is up, the minus signs mean a player is down.",
+          ],
+          blocks: [
+            {
+              kind: "table",
+              head: ["Player", "Nassau", "Skins", "Net"],
+              rows: [
+                ["Mike", "+$10", "+$12", "+$22"],
+                ["Sarah", "+$10", "−$4", "+$6"],
+                ["Jess", "−$10", "+$4", "−$6"],
+                ["Tom", "−$10", "−$12", "−$22"],
+                ["Total", "$0", "$0", "$0"],
+              ],
+            },
+            { kind: "p", html: "Tom pays Mike $22. Jess pays Sarah $6. Two settle-ups clear the example, and nobody needs to collect the Nassau and pay back the skins separately. Each game's column adds to zero, and so does the net. If a hand-kept tally doesn't balance, find the mistake before anyone pays." },
+            { kind: "p", html: "GoLo does that netting and gives the group a short who-owes-whom list, with the games behind the numbers available to check. Read it out while everyone is still there. If someone questions the total, look at the card together. The scorekeeper shouldn't have to deliver a closing argument over six dollars. See <a href=\"/how-it-works\">one round from setup to settle-up</a> for the same process on the app's screens." },
+          ],
+        },
+        {
+          id: "hand-it-back",
+          title: "Put the result in the group chat. Then put the phone away.",
+          paragraphs: [
+            "Share GoLo's card with the final scores, results and who owes whom in the thread your group already uses. Everyone has the same record, including the person who left early. Save the thread for the photograph of the approach shot, not a reconstruction of the back nine.",
+            "GoLo never holds, moves or processes the money. Players settle outside the app however they already pay each other. Do it before everyone leaves, then mark it settled. The <a href=\"/blog/who-pays-first\">unwritten rules of settling up</a> cover the part no scorecard can enforce.",
+            "Next Saturday, you can still be the person who keeps score. Set up the games in GoLo, enter the holes, and share the result. <a href=\"/how-it-works\">See one round from setup to settle-up</a>, or <a href=\"/#get\">get GoLo for your next round</a>. Taking the pencil should not mean taking the work home.",
+          ],
+          blocks: [
+            { kind: "summary", title: "THE SHORT VERSION", items: [
+              "Agree the games, amounts, strokes and house rules before the first tee shot.",
+              "Keep one card, confirm scores hole by hole, and record changes when they happen.",
+              "Let GoLo tally the supported games and turn the results into a short who-owes-whom list.",
+              "Share the result, settle outside the app, and leave the bookkeeping at the course.",
+            ] },
+          ],
+        },
+      ],
+    ),
+  },
+  {
     slug: "who-pays-first",
     category: "etiquette",
     title: "Who pays first? The unwritten rules of settling up",

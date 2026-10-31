@@ -50,6 +50,7 @@ const ONE_MID = ["mid"];
 const TWO_MIDS = ["mid-1", "mid-2"];
 const POSTS = {
   "first-tee-checklist": { mids: NO_MIDS, mobile: true, ogPosition: "right" },
+  "group-accountant": { mids: NO_MIDS, mobile: true, ogPosition: "right" },
   "bingo-bango-bongo": { prefix: "bbb", mids: ONE_MID, mobile: true, ogPosition: "centre" },
   wolf: { mids: ONE_MID, mobile: true, ogPosition: "right" },
   "skins-carryover": { prefix: "skins", mids: ONE_MID, mobile: true, ogPosition: "right" },
