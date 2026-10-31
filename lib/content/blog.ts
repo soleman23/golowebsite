@@ -191,7 +191,7 @@ export const posts: Post[] = [
       alt: "An open golf scorecard, a pencil and a dark glove on a wooden bench beside the final green at sunset",
       position: "82% 50%",
     },
-    related: ["settle-up-screen", "who-pays-first", "nassau"],
+    related: ["who-pays-first", "nassau", "pressing"],
     published: true,
     body: article(
       "You took the pencil because nobody else reached for it. By the turn you're keeping the Nassau, counting skins, and answering whether Jess gets a stroke on 10. By the parking lot you're doing subtraction while three people change their shoes. On Tuesday somebody texts, “What did I owe again?” The round took four hours. Your shift is still going.",
@@ -276,7 +276,7 @@ export const posts: Post[] = [
               ],
             },
             { kind: "p", html: "Tom pays Mike $22. Jess pays Sarah $6. Two settle-ups clear the example, and nobody needs to collect the Nassau and pay back the skins separately. Each game's column adds to zero, and so does the net. If a hand-kept tally doesn't balance, find the mistake before anyone pays." },
-            { kind: "p", html: "GoLo does that netting and gives the group a short who-owes-whom list, with the games behind the numbers available to check. Read it out while everyone is still there. If someone questions the total, look at the card together. The scorekeeper shouldn't have to deliver a closing argument over six dollars. For the method behind the list, read <a href=\"/blog/settle-up-screen\">how the settle-up screen works</a>." },
+            { kind: "p", html: "GoLo does that netting and gives the group a short who-owes-whom list, with the games behind the numbers available to check. Read it out while everyone is still there. If someone questions the total, look at the card together. The scorekeeper shouldn't have to deliver a closing argument over six dollars. See <a href=\"/how-it-works\">one round from setup to settle-up</a> for the same process on the app's screens." },
           ],
         },
         {
