@@ -172,6 +172,263 @@ const blogMedia = {
 
 export const posts: Post[] = [
   {
+    slug: "gimmes",
+    category: "etiquette",
+    title: "Gimmes in golf: when “that’s good” starts an argument",
+    metaDescription:
+      "A gimme is a match-play concession, not a stroke-play rule. What the Rules allow, why one putt can matter to three games, and what to agree first.",
+    excerpt:
+      "Tom says “that’s good” to Mike’s three-footer. Jess, who is in the skins, would like to see it go in. Both of them have a point.",
+    dek: "In a match, a conceded putt is part of the Rules. In every other game on the same hole it’s a favor somebody else didn’t agree to. Settle which putts are good, and for what, before the first green.",
+    crumb: "Gimmes",
+    author: "From the GoLo team",
+    // Pair 5 of the 16-idea list. Rules: R&A Rule 3.2b and 3.3c (2023),
+    // read 2026-10-30. GoLo facts: capabilities.ts round-formats
+    // (APP_CHECK_1030_FORMATS, golo main 2237c1d).
+    date: "2026-10-31",
+    readMins: 6,
+    hero: {
+      src: "/images/blog/gimmes-hero.webp",
+      mobile: "/images/blog/gimmes-mobile.webp",
+      og: "/images/blog/gimmes-og.jpg",
+      alt: "A golf ball a few feet from the cup on a green, a putter resting on the grass beside it, in late afternoon light",
+      position: "80% 50%",
+    },
+    related: ["first-tee-checklist", "pressing", "who-pays-first"],
+    published: true,
+    body: article(
+      "Here is an invented 6th, a par 4. Mike has three feet for par. Tom, his opponent in their match, is in with a 5 and waves the putt away: “that’s good.” Mike picks up. Jess already has her par, Dave has a 6, and all four of them are in a skins game. Jess says she’d like to see it holed. If Mike’s putt counts, he ties Jess and the skin carries. If he misses, Jess wins it. Tom has just made a decision about Jess’s skin, and nobody asked her.",
+      [
+        {
+          id: "what-the-rules-say",
+          title: "What the Rules actually allow",
+          paragraphs: [
+            "In match play, a <a href=\"/glossary#gimme\">gimme</a> is a concession, and the Rules of Golf allow it. Under <a href=\"https://www.randa.org/en/rog/the-rules-of-golf/rule-3\">Rule 3.2b</a>, a player may concede the opponent’s next stroke, a hole or the whole match. A conceded stroke counts as holed, the ball can be picked up, and the concession is final: it can’t be declined or taken back.",
+            "In regular stroke play, there is no such thing. Rule 3.3c says a player must hole out on every hole, and in a real competition a player who doesn’t, and doesn’t correct it before teeing off on the next hole, is disqualified. (Stableford is scored differently and doesn’t disqualify.) A gimme in stroke play isn’t a rule. It’s a house agreement, and it only binds the people who agreed to it.",
+          ],
+          blocks: [
+            {
+              kind: "atAGlance",
+              title: "GIMMES, AT A GLANCE",
+              items: [
+                { label: "IN MATCH PLAY", value: "A concession, allowed by Rule 3.2b" },
+                { label: "IN STROKE PLAY", value: "Not in the Rules: hole out" },
+                { label: "WHO CAN GIVE ONE", value: "Only the opponent in that match" },
+                { label: "ONCE GIVEN", value: "Final; it can’t be taken back" },
+              ],
+            },
+          ],
+        },
+        {
+          id: "one-putt",
+          title: "One putt, three games",
+          paragraphs: [
+            "Most friendly rounds run more than one game on the same card. On Mike’s 6th, three of them care about the same three-footer. Suppose Tom has conceded it for the match, but Mike still holes out for the skins and the total. The concession stays final even if Mike misses and then holes the next putt.",
+          ],
+          blocks: [
+            {
+              kind: "table",
+              head: ["Game", "Mike holes it", "Misses, then holes next"],
+              rows: [
+                ["Mike vs. Tom match", "Mike wins: conceded", "Mike wins: conceded"],
+                ["Skins, all four", "Mike and Jess tie: carries", "Jess wins the skin"],
+                ["Best Score total", "Mike’s 4", "Mike’s 5"],
+              ],
+            },
+            { kind: "p", html: "Tom could concede the putt in his match, and under the Rules that is his to give. He can’t concede it for the skins, where Jess and Dave have a say, or for a total-score game, where every stroke counts for everyone. The trouble starts when one sentence on the green settles three games at once." },
+            { kind: "quote", text: "A gimme is a gift from your opponent. It isn’t a gift from everyone else in the group." },
+          ],
+        },
+        {
+          id: "agree",
+          title: "What to agree before the first green",
+          blocks: [
+            { kind: "cardGrid", items: [
+              { title: "The match only, or everything", body: "The simplest rule: gimmes count in head-to-head matches and nowhere else. If a skin or a total is live on the hole, putt it. The other option is a length that counts for every game." },
+              { title: "How close is good", body: "If you use a length, measure it. A common one is inside the leather: with the putter head at the cup, the ball is closer than the bottom of the grip. With a 34-inch putter that’s about two feet, so Mike’s three-footer wouldn’t qualify. Use one putter for the measuring, not whoever’s is longest." },
+              { title: "Who can give one", body: "In a match, only the opponent. In a group game, nobody can give a putt on behalf of the others, so “that’s good” from one player doesn’t settle the skins." },
+              { title: "Putts that win something", body: "A putt for a birdie, for a carried skin or to close out the match is worth holing. Many groups agree that those are never good, whatever the length." },
+              { title: "What goes on the card", body: "A conceded putt counts as one stroke, holed. Mike’s three-footer for par goes down as a 4, not as a 3 and not as “picked up.”" },
+              { title: "One number per hole", body: "Whatever you agree, each player has one score on each hole. If two games would need two different numbers, the agreement isn’t finished." },
+            ] },
+          ],
+        },
+        {
+          id: "in-golo",
+          title: "How GoLo handles it",
+          paragraphs: [
+            "In GoLo, one scorer enters one score per player per hole, and every game in the round reads that score. There is no separate number for the match and another for the skins. So the group’s agreement decides what the scorer types: if Mike’s gimme counts, he gets a 4 and the skin carries; if the group says putt it, the scorer waits for the putt.",
+            "If the round is scored as match play between two players or two teams, the scorer can also mark a whole hole conceded. That hole goes to that side in the Overall Match, the Nassau and any presses. A foursome playing separate matches inside one round can’t mark one. Skins and Best Score ignore the concession and keep reading the scores. If the scorer moves on without entering a score for someone, GoLo writes par for them, and Skins and Best Score count that par. For a casual game with an agreed pickup rule, enter that agreed score for the player who picked up. A regular stroke-play competition still requires holing out.",
+            "GoLo has no setting for conceding a single putt. A gimme goes on the card the way the Rules count it, as a holed stroke, and GoLo keeps the tally from there. The money changes hands outside the app.",
+          ],
+        },
+        {
+          id: "say-it",
+          title: "Say it on the first tee",
+          paragraphs: [
+            "“Gimmes in the match only. If a skin or the total is live, putt it.” That sentence would have kept Jess’s skin out of Tom’s hands. If your group prefers a length, name it and the putter it’s measured with. Either way, agree it before anyone is standing over a three-footer.",
+            "The rest of what’s worth agreeing is in <a href=\"/blog/first-tee-checklist\">the first-tee checklist</a>, and the other on-course argument about matches is <a href=\"/blog/pressing\">pressing</a>. Then <a href=\"/how-it-works\">see one round from setup to settle-up</a> or <a href=\"/#get\">get GoLo for the next one</a>.",
+          ],
+          blocks: [
+            { kind: "summary", title: "THE SHORT VERSION", items: [
+              "In match play a gimme is a concession under Rule 3.2b, and it’s final. In stroke play there are no gimmes: Rule 3.3c says hole out.",
+              "One putt can matter to a match, the skins and a total at once. Only the match opponent can concede it, and only for the match.",
+              "Agree before the first green: match only or a measured length, who can give one, which putts are never good, and what goes on the card.",
+              "In GoLo every game reads the one score entered. A conceded hole counts in the match games; Skins and Best Score use the scores, so agree one for the player who picked up.",
+            ] },
+            { kind: "sources", items: [
+              { label: "The R&A — Rule 3.2b: concessions; Rule 3.3c: failure to hole out", href: "https://www.randa.org/en/rog/the-rules-of-golf/rule-3" },
+            ] },
+          ],
+        },
+      ],
+    ),
+  },
+  {
+    slug: "nine-hole-games",
+    category: "rules",
+    title: "Golf games for 9 holes: short round, full bragging rights",
+    metaDescription:
+      "An after-work nine needs a game that fits nine holes: a total, skins or one match, small amounts, a defined finish and a tie rule. One round worked through.",
+    excerpt:
+      "Tee time 5:40, sunset 7:25, nine holes. A Nassau doesn’t shrink cleanly. Here is what does, and what the worst evening can cost.",
+    dek: "An 18-hole game squeezed into nine holes usually breaks somewhere. Pick a format that fits nine, keep the amounts small, and agree how the evening ends before the light does.",
+    crumb: "Games for nine",
+    author: "From the GoLo team",
+    // Pair 5 of the 16-idea list. Rules: USGA Rules of Handicapping 6.1b,
+    // read 2026-10-30. GoLo facts: capabilities.ts nine-hole-rounds
+    // (APP_CHECK_1030_FORMATS, golo main 2237c1d), game-library, settle-up.
+    date: "2026-10-31",
+    readMins: 6,
+    hero: {
+      src: "/images/blog/nine-hole-games-hero.webp",
+      mobile: "/images/blog/nine-hole-games-mobile.webp",
+      og: "/images/blog/nine-hole-games-og.jpg",
+      alt: "Four golfers walking up the 9th fairway toward a green and clubhouse as the sun sets",
+      position: "80% 50%",
+    },
+    related: ["skins-carryover", "golf-games-for-2-players", "first-tee-checklist"],
+    published: true,
+    body: article(
+      "Tee time 5:40, sunset 7:25, nine holes if nobody looks for a ball for long. Four of you, after work, and somebody suggests the usual Nassau. Over nine holes the front nine is the whole round and the back nine doesn’t exist. A game built for eighteen needs rebuilding for nine, and the rebuild is easier than it sounds.",
+      [
+        {
+          id: "what-changes",
+          title: "What changes over nine holes",
+          paragraphs: [
+            "Fewer holes means fewer chances. A bad hole is a bigger share of the round, skins carry for fewer holes before they run out, and a match has less time to come back. None of that is a reason not to play; it is a reason to choose a game with nine holes in mind.",
+            "Handicaps change too. The handicap system has a nine-hole course handicap of its own: half the Handicap Index rounded to the nearest tenth, times the nine’s slope over 113, plus the nine’s course rating minus its par. On a nine rated 35.8 with a slope of 124 and a par of 36, a 14.0 gets 7.0 × 124 ÷ 113, minus 0.2: 7.48, so 7 strokes. A 22.0 gets 12.",
+          ],
+          blocks: [
+            {
+              kind: "atAGlance",
+              title: "NINE HOLES, AT A GLANCE",
+              items: [
+                { label: "SIMPLEST", value: "Best Score over the nine" },
+                { label: "EVERY HOLE", value: "Skins: nine of them, carries end on the 9th" },
+                { label: "HEAD TO HEAD", value: "One match, not a Nassau" },
+                { label: "HANDICAPS", value: "The nine-hole course handicap" },
+              ],
+            },
+          ],
+        },
+        {
+          id: "choose",
+          title: "Pick a game that fits nine",
+          blocks: [
+            { kind: "cardGrid", items: [
+              { eyebrow: "BEST SCORE", title: "One total over nine holes", body: "Everyone puts in the same amount, the lowest total takes it. Nothing to track hole by hole, and it ends when the 9th is holed." },
+              { eyebrow: "SKINS", title: "Nine chances to win something", body: "Each hole is its own prize. With carries on, two or three ties can make the 8th or 9th the hole everyone remembers." },
+              { eyebrow: "ONE MATCH", title: "Head to head, without splitting the nine", body: "A match over nine holes, won by whoever wins more holes. There is no front and back to split." },
+              { eyebrow: "LEAVE FOR SATURDAY", title: "Presses and stacked games", body: "An hour and three-quarters of daylight is not the time to add a third game. Pick one, or two at most." },
+            ] },
+            { kind: "p", html: "Some groups split a nine-hole match into three-hole matches, or into the first four and last five plus the overall. Those are house versions. GoLo plays a Nassau over nine holes as one match, settled once, which is the same thing as a plain match. If your group wants the split version, keep it on paper." },
+          ],
+        },
+        {
+          id: "finish",
+          title: "Agree how the evening ends",
+          paragraphs: [
+            "A nine-hole game needs a finish line and a tie rule, agreed before the first tee shot. Ties come up more often when there are fewer holes to separate anyone.",
+          ],
+          blocks: [
+            { kind: "steps", items: [
+              { title: "A tied total", body: "Best Score splits a tied place evenly in GoLo. If your group wants a playoff instead, agree where, and remember it’s a house rule GoLo won’t score." },
+              { title: "A tied match", body: "A match all square after nine holes is halved: nothing changes hands. Decide now if you would rather play an extra hole." },
+              { title: "A skin carried into the 9th", body: "In GoLo the card’s last hole ends the carries. If the 9th is tied with skins riding, the tied players split them." },
+              { title: "Losing the light", body: "Decide before you start whether an unfinished round counts at all. If you finish the round in GoLo on the 7th, it settles what seven holes decided: Best Score on the holes played, a match only if it was already won, and any skins still riding go to nobody." },
+            ] },
+          ],
+        },
+        {
+          id: "one-evening",
+          title: "One evening, worked through",
+          paragraphs: [
+            "Here is an invented after-work foursome: $1 net standard skins with carryovers on and all extra skin types off, and $5 Best Score, net, one finishing place. Everyone plays off their nine-hole course handicap.",
+          ],
+          blocks: [
+            {
+              kind: "table",
+              head: ["Hole", "Skins"],
+              rows: [
+                ["1", "Mike wins one"],
+                ["2", "Tied: carries"],
+                ["3", "Dave wins two"],
+                ["4", "Jess wins one"],
+                ["5", "Mike wins one"],
+                ["6", "Tied: carries"],
+                ["7", "Tied: carries"],
+                ["8", "Dave wins three"],
+                ["9", "Mike wins one"],
+              ],
+            },
+            { kind: "p", html: "Dave’s five skins are worth $3 each, $15, and he pays $1 on each of the four skins the others won: $11 up. Mike’s three come to $3 up, Jess’s one to $5 down, and Tom, with none, is $9 down. Jess has the lowest net total, so Best Score puts her $15 up and everyone else $5 down." },
+            {
+              kind: "table",
+              head: ["Player", "Skins", "Best Score", "Net"],
+              rows: [
+                ["Jess", "−$5", "+$15", "+$10"],
+                ["Dave", "+$11", "−$5", "+$6"],
+                ["Mike", "+$3", "−$5", "−$2"],
+                ["Tom", "−$9", "−$5", "−$14"],
+                ["Total", "$0", "$0", "$0"],
+              ],
+            },
+            { kind: "p", html: "Tom pays Jess $10 and Dave $4, and Mike pays Dave $2. Tom’s $14 is also the most anyone could lose at these amounts: nine skins at $1 and the $5 he put in. An after-work game whose worst evening is $14 is easy to say yes to." },
+            { kind: "quote", text: "Nine holes is long enough to win something and short enough that nobody minds losing it." },
+          ],
+        },
+        {
+          id: "in-golo",
+          title: "Setting up nine in GoLo",
+          paragraphs: [
+            "In GoLo, choose nine holes in setup. A nine-hole round plays holes 1 to 9 of the card, so it fits a front nine or a nine-hole course; it can’t score a course’s back nine yet. For strokes, GoLo halves the unrounded eighteen-hole calculation from the selected tee’s slope and rating, then rounds the result once. It places those strokes by the card’s stroke index. This is different from Rule 6.1b, which first rounds half the index to a tenth and uses the ratings for the nine being played.",
+            "On the front nine of an eighteen-hole course, the nine’s own ratings aren’t in GoLo’s course data. On a par-72 course rated 71.6 with a slope of 126 whose par-36 front nine is rated 35.5 with a slope of 122, a 22.0 gets 11 under the rule and 12 in GoLo. Even on a nine-hole course’s own tees, rounding half the index can change the result: a 14.1 on a par-36 nine rated 35.7 with a slope of 125 gets 8 under the rule and 7 in GoLo. Over nine holes a Nassau is one match, settled once, and Closest to Pin plays every par 3 on the card.",
+            "One scorer enters the gross scores, GoLo works out every game from the same card, and at the end it gives the group a short who-owes-whom list. The money changes hands outside the app, in the parking lot, before it gets dark.",
+          ],
+        },
+        {
+          id: "next",
+          title: "Before the next after-work nine",
+          paragraphs: [
+            "Pick one game, two at most, and say the amounts, the scoring basis and the tie rules on the first tee. Skins carries have <a href=\"/blog/skins-carryover\">their own post</a>, and the rest of the first-tee conversation is in <a href=\"/blog/first-tee-checklist\">the checklist</a>. Then <a href=\"/how-it-works\">see one round from setup to settle-up</a> or <a href=\"/#get\">get GoLo for the next one</a>.",
+          ],
+          blocks: [
+            { kind: "summary", title: "THE SHORT VERSION", items: [
+              "Over nine holes, choose Best Score, skins or one match. A Nassau doesn’t shrink cleanly; GoLo plays it as one match.",
+              "Use the nine-hole course handicap: half the index rounded to a tenth, adjusted for the nine’s slope and rating. GoLo instead halves the unrounded eighteen-hole calculation and rounds once; its result can differ.",
+              "Agree tie rules and what happens if you lose the light before you start.",
+              "With $1 standard skins only and $5 Best Score, the most one player can lose over nine holes in a foursome is $14.",
+            ] },
+            { kind: "sources", items: [
+              { label: "USGA Rules of Handicapping — Rule 6.1b: Course Handicap for a 9-hole round", href: "https://www.usga.org/handicapping/roh/Content/rules/6%201b%209%20holes.htm" },
+            ] },
+          ],
+        },
+      ],
+    ),
+  },
+  {
     slug: "best-ball-vs-scramble",
     category: "rules",
     title: "Best ball vs. scramble: know the difference before picking teams",

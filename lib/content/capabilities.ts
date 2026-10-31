@@ -126,6 +126,24 @@ const APP_CHECK_1030 = {
   date: "2026-10-30",
   appVersion: "1.2.1",
 } as const;
+/**
+ * The blog pair-5 check (2026-10-30): golo `main` 2237c1d (GoLo 1.2.1).
+ * Round formats in src/pages/SetupWizard.jsx (Stroke Play, Match Play,
+ * Stableford); concessions in src/pages/ScoringPage.jsx canConcedeMatch and
+ * src/components/scoring/MatchPanel.jsx ("Concede hole"), honoured by
+ * src/engines/betResults.js matchConcessions for Overall Match, Nassau and
+ * presses only; Skins skips a hole without every score (skins.js) and Best
+ * Score waits for even cards (strokePurse.js). Nine holes: SetupWizard.jsx
+ * [9, 18], holesOnly(st.pars, 9) and nineHoleDesc, nassau.js (one match,
+ * GOLO-187), handicap.js courseHandicapTerms (the eighteen-hole value
+ * halved, GOLO-124/148), roundBets.js ctpHolesOn. ScoringPage.jsx
+ * seedParForHole writes par for a player left unscored when the scorer moves on.
+ */
+const APP_CHECK_1030_FORMATS = {
+  by: "app-check",
+  date: "2026-10-30",
+  appVersion: "1.2.1",
+} as const;
 /** Owner's answers on 2026-10-15 (soleman23/golowebsite#61). */
 const OWNER_1015 = { by: "owner", date: "2026-10-15" } as const;
 
@@ -196,6 +214,32 @@ export const capabilities = [
       "Wolf isn't played in Team Play.",
     ],
     verified: APP_CHECK_1030,
+  },
+  {
+    id: "round-formats",
+    label: "Stroke play, match play and Stableford rounds",
+    status: "live",
+    summary:
+      "Score a round as stroke play, match play or Stableford. In a match-play round between two sides, the scorer can mark a hole conceded.",
+    limits: [
+      "Concessions are for a match-play round between two players or two teams.",
+      "A conceded hole counts in the Overall Match, Nassau and presses; Skins and Best Score use the scores entered.",
+      "Whole holes only: there is no setting for conceding a single stroke.",
+    ],
+    verified: APP_CHECK_1030_FORMATS,
+  },
+  {
+    id: "nine-hole-rounds",
+    label: "Nine-hole rounds",
+    status: "live",
+    summary:
+      "Play nine holes or eighteen; for nine holes GoLo halves the unrounded eighteen-hole handicap calculation, then rounds once.",
+    limits: [
+      "A nine-hole round plays holes 1 to 9 of the card; it can't score a course's back nine.",
+      "This can differ from WHS Rule 6.1b: GoLo does not round half the index to a tenth first, and the front nine’s own ratings are not in the course data for an eighteen-hole course.",
+      "Over nine holes a Nassau is one match, settled once, and Closest to Pin plays every par 3 on the card.",
+    ],
+    verified: APP_CHECK_1030_FORMATS,
   },
   {
     id: "overall-match-presses",
