@@ -323,6 +323,261 @@ export const posts: Post[] = [
     ),
   },
   {
+    slug: "golf-games-for-3-players",
+    category: "rules",
+    title: "Golf games for 3 players: when your fourth bails",
+    metaDescription:
+      "The fourth cancelled and Wolf is off. Which games work for three: Best Score, skins, a head-to-head Nassau or Bingo Bango Bongo, and what the money games can cost.",
+    excerpt:
+      "The fourth texts at 6:40 a.m. Wolf needs four. Here is what three players can play instead, and what it costs each of them.",
+    dek: "Three players breaks the usual foursome games. Choose by how far apart the handicaps are, how much counting you want, and how much the afternoon should be able to cost.",
+    crumb: "Games for three",
+    author: "From the GoLo team",
+    // Pair 3 of the 16-idea list. GoLo facts: capabilities.ts game-library
+    // (Wolf takes exactly four) and team-play is four only; golo main 2237c1d
+    // SetupWizard.jsx GAME_DEFS (every other game takes two or more; Best
+    // Score's Winner takes all / Top 2 / Top 3 split), skins.js, nassau.js
+    // calculateNassauGroup, strokePurse.js distributePot.
+    date: "2026-10-31",
+    readMins: 6,
+    hero: {
+      src: "/images/blog/golf-games-for-3-players-hero.webp",
+      mobile: "/images/blog/golf-games-for-3-players-mobile.webp",
+      og: "/images/blog/golf-games-for-3-players-og.jpg",
+      alt: "Three golfers walking off a tee box together in early morning light, seen from behind",
+      position: "80% 50%",
+    },
+    related: ["golf-games-for-2-players", "bingo-bango-bongo", "skins-carryover"],
+    published: true,
+    body: article(
+      "The fourth texts at 6:40 a.m.: kid’s sick, sorry, next week. The tee time is at 7:30 and the plan was Wolf. Wolf, as most groups play it, needs four. So does any game built on two pairs. Three players can still have a good game; it just has to be one that works with an odd number, and somebody has to pick it in the parking lot.",
+      [
+        {
+          id: "what-changes",
+          title: "What changes with three",
+          paragraphs: [
+            "Partner games stop working. Nobody can play two against two, and a game that rotates partners needs a fourth to rotate through. In GoLo, Wolf takes exactly four players and Team Play takes exactly four, so both are off.",
+            "Most other games are fine with three, and some get better. Skins has one fewer score on each hole that can tie the low one, so a hole is a little more likely to be won outright. And every player has only two opponents, so each hole moves less money than it would in a foursome.",
+          ],
+          blocks: [
+            {
+              kind: "atAGlance",
+              title: "THREE PLAYERS, AT A GLANCE",
+              items: [
+                { label: "OFF THE LIST", value: "Wolf and two-against-two games" },
+                { label: "SIMPLEST", value: "Best Score: one total, one amount" },
+                { label: "EVERY HOLE COUNTS", value: "Skins, two opponents a hole" },
+                { label: "HEAD TO HEAD", value: "A Nassau: three pairings" },
+              ],
+            },
+          ],
+        },
+        {
+          id: "choose",
+          title: "Pick by the group you actually have",
+          blocks: [
+            { kind: "cardGrid", items: [
+              { eyebrow: "BEST SCORE", title: "Three similar players who want it simple", body: "Everyone puts in the same amount and the lowest total takes it. One number to agree on, one result at the end, nothing to track along the way." },
+              { eyebrow: "SKINS", title: "You want every hole to be worth something", body: "Each hole is its own prize, and a bad hole costs only that hole. With carryovers on, a few ties build a hole worth playing for." },
+              { eyebrow: "NASSAU", title: "You’d rather play matches than a total", body: "Played head to head, three players make three pairings. Each player plays two Nassaus, one against each opponent: front, back and overall." },
+              { eyebrow: "BINGO BANGO BONGO", title: "The handicaps are far apart", body: "First on the green, closest once everyone is on, first in the hole. Order of play does more than length, so a high handicap wins points." },
+            ] },
+            { kind: "p", html: "The <a href=\"/blog/bingo-bango-bongo\">Bingo Bango Bongo post</a> explains why the order of play matters more than length. If the handicaps are far apart and you choose Best Score, skins or a Nassau, play it net. GoLo gives each player their full course handicap and places the strokes by the card’s stroke index, so a 6, a 14 and a 24 can share a game that is still decided on the course." },
+          ],
+        },
+        {
+          id: "cost",
+          title: "What each one can cost",
+          paragraphs: [
+            "Three players means two opponents each, which changes the numbers. Here is the most one player can lose at some ordinary amounts, as GoLo scores each game.",
+          ],
+          blocks: [
+            {
+              kind: "table",
+              head: ["Game", "Amount", "Most you can lose"],
+              rows: [
+                ["Best Score", "$5 each", "$5"],
+                ["Skins", "$2 a skin", "$36"],
+                ["Nassau", "$2 a match", "$12"],
+              ],
+            },
+            { kind: "p", html: "Best Score here pays one place. The skins are standard skins with carryovers on: each of the other two pays the winner $2, so a skin is worth $4 to whoever takes it, and losing all eighteen costs $36. Extra skin types add to that. The Nassau is head to head: each player has two opponents and three matches against each, so losing all six costs $12, and GoLo’s Nassau doesn’t take presses, so that is its ceiling in the app. Best Score can only cost the amount you put in. Bingo Bango Bongo depends on how your group pays its points, so it isn’t in the table." },
+          ],
+        },
+        {
+          id: "best-score-split",
+          title: "With three, the top-two split means don’t finish last",
+          paragraphs: [
+            "<a href=\"/games/best-score\">Best Score</a> in GoLo can pay one place, or split between the top two or three. With three players, the top-two split does something useful: first and second share the total equally, so the round comes down to not finishing last.",
+            "At $5 each, the total is $15. Winner takes all: the lowest score finishes $10 up and the other two $5 down. Top two split: first and second each get $7.50, so both finish $2.50 up and last place is $5 down. GoLo splits tied places evenly: if the two players behind the leader tie under the top-two split, they share second place’s $7.50, $3.75 each, so each finishes $1.25 down and the leader $2.50 up. A top-three split with three players just hands everyone their $5 back.",
+          ],
+          blocks: [
+            { kind: "quote", text: "With three players, “don’t finish last” is a perfectly good game." },
+          ],
+        },
+        {
+          id: "one-round",
+          title: "One round, from setup to settled",
+          paragraphs: [
+            "Here is an invented threesome in GoLo. Mike sets up the round, picks the course and tees, adds Jess and Tom, and chooses two games: $2 net standard skins with carryovers on, and $5 Best Score, net, top two split. One scorer enters the gross scores after each hole, and GoLo applies the strokes for both games.",
+            "By the 18th all eighteen skins have been won: Mike seven, Jess six, Tom five. On net totals Jess is lowest, Tom second and Mike last.",
+          ],
+          blocks: [
+            {
+              kind: "table",
+              head: ["Player", "Skins", "Best Score", "Net"],
+              rows: [
+                ["Mike", "+$6.00", "−$5.00", "+$1.00"],
+                ["Jess", "$0.00", "+$2.50", "+$2.50"],
+                ["Tom", "−$6.00", "+$2.50", "−$3.50"],
+                ["Total", "$0.00", "$0.00", "$0.00"],
+              ],
+            },
+            { kind: "p", html: "Mike’s seven skins are worth $28 and he pays $2 for each of the other eleven, so he’s $6 up in skins. Jess’s six skins and Tom’s five work the same way. Mike also finished last in Best Score, so the two games nearly cancel for him. Tom pays Jess $2.50 and Mike $1.00, and the round is settled. GoLo shows that list at the end; the money moves outside the app." },
+          ],
+        },
+        {
+          id: "not-in-golo",
+          title: "Nines, the threesome game GoLo doesn’t score",
+          paragraphs: [
+            "Nines, also called 5-3-1, was made for three. Each hole is worth nine points: five to the low score, three to the middle, one to the high. Ties share: two tied for low take four each and the third gets one; two tied for high take two each behind the five; all three tied take three each. At the end, players settle the difference in points at an agreed amount a point.",
+            "It’s a good game, and GoLo doesn’t score it. If your group wants Nines, keep it on paper and run Best Score or skins in GoLo beside it, or keep the whole round on paper. Don’t expect the settle-up list to include a game the app didn’t score.",
+          ],
+        },
+        {
+          id: "next-week",
+          title: "When the fourth comes back",
+          paragraphs: [
+            "Next week the foursome is back, and Wolf is available again. Until then, pick one game, say the amount and the scoring basis out loud, and play. <a href=\"/blog/golf-games-for-2-players\">Games for two</a> covers the regular twosome, and the <a href=\"/games\">game guides</a> have the rules for each format.",
+            "When you’ve chosen, <a href=\"/how-it-works\">see one round from setup to settle-up</a> or <a href=\"/#get\">get GoLo for the next one</a>.",
+          ],
+          blocks: [
+            { kind: "summary", title: "THE SHORT VERSION", items: [
+              "Wolf and two-against-two games need four. In GoLo, Wolf and Team Play take exactly four players.",
+              "Best Score, skins, a head-to-head Nassau and Bingo Bango Bongo all work with three.",
+              "With two opponents each, $2 skins can cost $36 and a $2 Nassau $12. Best Score costs only the amount put in.",
+              "Best Score’s top-two split makes the round about not finishing last. Nines works well for three, but GoLo doesn’t score it.",
+            ] },
+          ],
+        },
+      ],
+    ),
+  },
+  {
+    slug: "side-games-for-beginners",
+    category: "etiquette",
+    title: "Golf side games for beginners: start with one bet, not five", // vocab-ok: exact article headline requested by the owner on 2026-10-30 (16-idea list); the body uses house vocabulary.
+    metaDescription:
+      "A first side game for a group with new golfers: one format, a small amount, net or gross, a tie rule. What to leave off, and when to add a second game.",
+    excerpt:
+      "Somebody suggests a Nassau with presses, skins with carries and a birdie on top. Half the group has played six rounds. Start smaller.",
+    dek: "A new golfer can enjoy a game with something on it. Five at once is a different matter. Agree on one, make it small, and add the next only when everyone can explain the first.",
+    crumb: "Your first side game",
+    author: "From the GoLo team",
+    // Pair 3 of the 16-idea list. GoLo facts: capabilities.ts handicap-strokes,
+    // guests, game-library; golo main 2237c1d SetupWizard.jsx GAME_DEFS (Best
+    // Score splits) and strokePurse.js distributePot (equal places, even ties).
+    date: "2026-10-31",
+    readMins: 6,
+    hero: {
+      src: "/images/blog/side-games-for-beginners-hero.webp",
+      mobile: "/images/blog/side-games-for-beginners-mobile.webp",
+      og: "/images/blog/side-games-for-beginners-og.jpg",
+      alt: "Four golfers chatting on a first tee beside a bag stand in soft morning light",
+      position: "80% 50%",
+    },
+    related: ["golf-games-for-2-players", "first-tee-checklist", "who-pays-first"],
+    published: true,
+    body: article(
+      "Two of your foursome have played golf for years. The other two started this spring. On the first tee, one of the regulars suggests the usual: a Nassau, presses, skins with carryovers, a dollar a birdie and greenies on the par 3s. The two new players nod, because nodding is easier than asking what a press is. By the 6th they have no idea what they owe, and by the 12th they have stopped asking.",
+      [
+        {
+          id: "one-game",
+          title: "Start with one game",
+          paragraphs: [
+            "The problem with five games at once isn’t the arithmetic. An app can do that. It’s the agreement. Every extra game is another set of rules that every player has to understand before the first tee shot, and a new player is the least likely to say they don’t.",
+            "One game means one thing to understand, one amount to agree on and one result at the end. It also means that when somebody asks “what’s going on?” on the 9th, there is a one-sentence answer.",
+          ],
+          blocks: [
+            {
+              kind: "atAGlance",
+              title: "A FIRST GAME, AT A GLANCE",
+              items: [
+                { label: "HOW MANY GAMES", value: "One" },
+                { label: "AMOUNT", value: "Small enough that nobody minds losing it" },
+                { label: "SCORING", value: "Net if handicaps differ, agreed first" },
+                { label: "TIES", value: "A rule chosen before anyone ties" },
+              ],
+            },
+          ],
+        },
+        {
+          id: "four-decisions",
+          title: "Five decisions, made before the first tee shot",
+          blocks: [
+            { kind: "steps", items: [
+              { title: "The format", body: "Best Score is the easiest to explain: everyone puts in the same amount and the lowest total takes it. Nothing to track hole by hole, nothing to call on the course." },
+              { title: "The amount", body: "Pick a number the newest player would happily lose. Five dollars is plenty, and the amount is the same for everyone." },
+              { title: "Net or gross", body: "With new players in the group, play net, so handicap strokes are part of the score. Gross between a 9 and a 32 isn’t a game, it’s a forecast." },
+              { title: "Ties", body: "Say what happens to a tie before there is one. In GoLo, Best Score splits a tied place evenly, which is the simplest rule there is." },
+              { title: "Picking up", body: "New players pick up, and they should. Agree what goes on the card when they do, say double par, so every player has a number on every hole. Best Score compares totals, and GoLo won’t settle it while one card is missing holes." },
+            ] },
+            { kind: "callout", title: "SAY IT OUT LOUD", html: "“Five dollars each, Best Score, net, ties split.” If the newest player in the group can repeat it back, the game is ready." },
+          ],
+        },
+        {
+          id: "split",
+          title: "Paying two places is friendlier than one",
+          paragraphs: [
+            "GoLo’s <a href=\"/games/best-score\">Best Score</a> can pay one place or split between the top two or three. For a foursome with new players, the top-two split is worth a look.",
+            "At $5 each the total is $20. Winner takes all: the low net score finishes $15 up and the other three are $5 down. Top two split: first and second each get $10, so both finish $5 up and third and fourth are $5 down. Nobody can lose more than $5 either way. With clear first and second places, two people finish ahead, and a new player who has a decent back nine has a real chance of being one of them. If players tie across the paid places, they share those places’ money, so more than two players can share the total.",
+          ],
+        },
+        {
+          id: "handicaps",
+          title: "Handicaps for players who don’t have one yet",
+          paragraphs: [
+            "Net scoring needs a number for everyone. A player with a Handicap Index enters it, and GoLo works out the course handicap for the tees and places the strokes by stroke index. A guest can be added with a name and an index, no account needed.",
+            "A new player often has no index yet. The group can agree on an index for the day, entered like any other, and GoLo turns it into strokes for the tees. Agree on it before the round, not after the front nine. If nobody wants to guess, play the first round gross and for nothing, and start the game once the new player has a number. In GoLo everyone plays from the same set of tees, so a new player moving up to the forward tees isn’t something the app handles yet. The <a href=\"/blog/index-vs-course-handicap\">index-versus-course-handicap guide</a> explains what the number means, and <a href=\"/blog/net-vs-gross-scoring\">net against gross</a> shows how much the choice can change.",
+          ],
+          blocks: [
+            { kind: "quote", text: "The number you agree on the first tee is fair. The number you argue about on the 10th tee isn’t." },
+          ],
+        },
+        {
+          id: "leave-off",
+          title: "What to leave off for now",
+          blocks: [
+            { kind: "cardGrid", items: [
+              { title: "Presses", body: "A press adds a new match partway through. It’s the quickest way for a small game to become a confusing one." },
+              { title: "Skins carryovers", body: "Carries turn quiet holes into big ones, which is the fun of them and the trouble with them." },
+              { title: "Birdie and greenie skins", body: "Extra skin types pay for things a new player rarely does. That’s a reason to wait, not a reason to add them." },
+              { title: "A second game", body: "Two games means two sets of rules and two amounts to add together. Play the first one a few times before you stack another on it." },
+            ] },
+            { kind: "p", html: "When the group is ready for them, <a href=\"/blog/pressing\">the pressing post</a> and <a href=\"/blog/skins-carryover\">how a $5 skin becomes a $60 hole</a> explain the two that cause the most confusion." },
+          ],
+        },
+        {
+          id: "next",
+          title: "When to add the next game",
+          paragraphs: [
+            "Add a second game when every player can explain the first without help, usually after a few rounds. A sensible second step is $1 standard skins with carryovers off: each hole is its own prize, a tied hole goes to nobody, and a hole won by someone else costs you $1. In a foursome, a hole you win is worth $3.",
+            "After that, try carryovers on, or a Nassau without presses. The <a href=\"/blog/golf-games-for-2-players\">games-for-two post</a> walks through skins and a Nassau at small amounts, and <a href=\"/blog/first-tee-checklist\">the first-tee checklist</a> lists everything worth agreeing once the games stack up.",
+          ],
+          blocks: [
+            { kind: "p", html: "Whatever you play, settle it before anyone leaves, and be generous with a new player’s money: <a href=\"/blog/who-pays-first\">the unwritten rules of settling up</a> cover that. GoLo keeps the card, applies the strokes and nets the games into a short who-owes-whom list; the money moves outside the app. <a href=\"/how-it-works\">See one round from setup to settle-up</a>, or <a href=\"/#get\">get GoLo for the next one</a>." },
+            { kind: "summary", title: "THE SHORT VERSION", items: [
+              "Start with one game. Best Score is the easiest to explain: same amount each, lowest total takes it.",
+              "Keep the amount small, play net when handicaps differ, and agree what a tie does before there is one.",
+              "In a foursome, Best Score’s top-two split pays two places, shared when tied, and nobody loses more than the amount put in.",
+              "Leave presses, carryovers and extra skin types for later. Add a second game when everyone can explain the first.",
+            ] },
+          ],
+        },
+      ],
+    ),
+  },
+  {
     slug: "five-dollar-birdie",
     category: "rules",
     title: "Birdie bets in golf: what does a $5 birdie actually pay?", // vocab-ok: exact article headline requested by the owner on 2026-10-30 (16-idea list); the body describes Skins settings and house agreements.
