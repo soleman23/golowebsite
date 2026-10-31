@@ -20,11 +20,36 @@ Before ~01:07 UTC the site was opt-in with no notice (effectively only the
 owner). From ~04:12 UTC it is explicit opt-in (#115). Treat GA and Clarity data
 inside the window as collected without consent, and report it separately.
 
+## Glossary events and reporting definitions (#165)
+
+Added with the glossary hub; nothing fires until the glossary is live (`lib/content/glossary/launch.ts`) and a visitor has opted in. Every call goes through `track()`, so the consent gate (`__goloAnalyticsAllowed`), GPC and redaction apply. Params are closed sets: a published term id, a category id, a bucket. **The search text is never sent**: not as a param, not in a URL (it never enters the URL), not in the console.
+
+| Event | Fires | Params |
+|---|---|---|
+| `glossary_search` | Once per settled search: 600 ms after typing stops, and only if the normalised query or category changed since the last one reported. A 10-character query typed straight through sends one event. | `category` (`all` or a category id), `result_bucket` (`0`, `1`, `2-5`, `6+`), `match_type` (`exact`, `alias`, `partial`, `none`) |
+| `glossary_filter` | The reader chose a category: a chip, Clear, or "Search all terms". Not the initial read of `?category=` and not a deep link resetting it. | `category` |
+| `glossary_term_open` | A term was opened: a search result, a related-term link, or arrival on `/glossary#<slug>`. Once per term per page load. Nothing expands on the hub (docs/glossary/ux.md D5), so this replaces the spec's "definition expanded". | `term_id`, `category` |
+| `glossary_cta_click` | A term's guide, post or product link was followed (product links, by `ctaIntent`, go to `/games`, `/features` or `/how-it-works` and report `page`). | `term_id`, `destination_type` (`guide`, `post`, `page`) |
+| `share_click` | Reused for the copy-link button, so every share sits in one report. A blog share has `post`; a glossary share has `term_id`. | `channel` (`copy`), `term_id` |
+
+Unchanged and reused: `store_button_click` and `cta_click` (with `page: "glossary"`) for the CTA band, `link_click` for internal links (a term anchor reports as `/glossary#press`, the term name as its text), `newsletter_signup` (the hub has no newsletter band while #121 is on hold). `docs/seo-reports/leads.sql` counts `/glossary` as a landing path; a category view lands as `/glossary` because `landingPath` never keeps the query string.
+
+Metric definitions (spec §9.4). Report each with its date range and its source, and never combine the two sources into one funnel rate:
+
+- **Non-brand organic clicks**: Search Console clicks to `/glossary` from queries outside the Branded group (`scripts/gsc-groups.mjs`). Search Console totals, not a sample.
+- **Glossary landing visits**: GA4 sessions starting on `/glossary`. A consented sample, not all visitors.
+- **Glossary-to-product CTR**: consented sessions on `/glossary` with a `glossary_cta_click`, `cta_click` or `store_button_click`, divided by consented sessions on `/glossary`.
+- **Store-click rate**: consented sessions on `/glossary` with a `store_button_click`, divided by consented sessions on `/glossary`. A store click is not an install.
+- **Search success**: of the `glossary_search` events whose `result_bucket` isn't `0`, the share followed by a `glossary_term_open` or `glossary_cta_click` before the next `glossary_search` in the same session. Computed from event order within a session (`ga_session_id`, then `event_timestamp` in the BigQuery export, or a path exploration in GA4) and the `result_bucket` param; no search text is sent or needed. Numerator and denominator are the same set of searches, so the rate can't pass 100%, and a zero-result search never counts as a success.
+- **Zero-result rate**: `glossary_search` with `result_bucket` `0`, divided by all `glossary_search`.
+- **Newsletter signup rate**: not measured on the hub while the band is on hold.
+- **Verified acquisition**: only from store or app attribution where it exists. Never inferred from clicks.
+
 ## Test traffic
 
 Created while building and verifying #114 and #115 (October 19–20), and by later
 verification runs for the marketing work in soleman23/golo#789 and #790
-(October 21). None of it is a real visitor. Where an entry says requests were
+(October 21–23). None of it is a real visitor. Where an entry says requests were
 *sent*, that was observed in the browser; whether GA4 processed them into
 reports is stated separately.
 
@@ -74,8 +99,59 @@ reports is stated separately.
     yet, so any count for it on that day is this test.
   - **Not filtered.**
   - **Elsewhere:** one internal sign-up notification email was sent, and one
-    test `NewsletterLead` row was created at 18:57:40 UTC. The owner deletes
-    the row; this note doesn't claim it's gone.
+    test `NewsletterLead` row was created at 18:57:40 UTC (`cmvih5f580000863usxb5rsfl`,
+    deleted 2026-10-22 00:21 UTC along with the post-deploy diagnostic row
+    `cmvikw6v60000b4xl2qb7y4q6`, which declined analytics and sent no GA4 hits).
+    Because this run used Playwright's default headless user agent, GA4's
+    known-bot filter most likely dropped the session (see the October 22 entry
+    below).
+- **October 22, 21:26–21:28 UTC (2:26–2:28 PM PDT): the golowebsite#119
+  fallback test, owner-approved.** These were controlled visits tagged
+  `utm_medium=qa`, `utm_campaign=golowebsite-119`, each choosing "Allow
+  analytics":
+  - **21:26 UTC (Playwright's headless user agent):** `qa119-ga-only`
+    (/about), `qa119-google-only` (/contact) and `qa119-both` (/faq). GA4
+    Realtime showed none of them, most likely because of known-bot filtering.
+  - **21:27:57–21:28:27 UTC (normal Chrome user agent):** `qa119-ga-only-2`
+    (/about), `qa119-google-only-2` (/contact) and `qa119-both-2` (/faq). GA4
+    Realtime showed 3 users, one view each of About, Contact and FAQ, and
+    `web_vitals` ×12.
+  - **Reporting rule (raw data kept, no GA4 filter or deletion):** leave out
+    sessions whose session source starts with `qa119`, or whose session
+    medium is `qa`.
+  - **Observed so far:**
+    - At 2026-10-23 01:0x UTC, Traffic acquisition for Oct 22 ("mostly
+      complete data") listed `qa119-google-only-2` with 1 session and 8 events.
+    - The other two hadn't appeared yet.
+    - GA4 showed an Oct 22 total of 3 sessions, with rows `(direct)` 2,
+      `(not set)` 1 and `qa119-google-only-2` 1. The rows overlap, as GA4's own
+      percentages show, so they don't add up to the total.
+  - **Not yet reconciled:** final totals with and without the rule, once all
+    three are processed. The scheduled task `golo-ga4-qa119-verify` (2026-10-24
+    09:00 PDT) checks that and updates this entry.
+- **October 23, 02:33:00–02:33:22 UTC (October 22, 7:33 PM PDT): one approved
+  live-profile Instagram acceptance run (soleman23/golo#790).** Started on the
+  signed-out public profile `https://www.instagram.com/gologolfapp/` in a clean
+  browser context with a normal Chrome user agent and GPC off:
+  - It clicked the live bio link (`l.instagram.com` → `https://www.golo.golf/?utm_source=instagram&utm_medium=organic_social&utm_campaign=golo_prelaunch_2026q4&utm_content=bio`),
+    chose "Allow analytics" on `/`, navigated to `/blog` through the top nav,
+    and submitted the newsletter form once with the designated test address
+    `qa+utm-ig-web-20261022@golo.golf`.
+  - **Requests the browser sent (observed):** `page_view` on `/` (02:33:08 UTC,
+    `dl` carrying all four `utm_*` parameters and `dr=https://l.instagram.com/`),
+    `link_click` (`/blog`, nav), `page_view` on `/blog` (02:33:13 UTC),
+    `scroll_depth`, `form_start` (02:33:15 UTC), `newsletter_signup`
+    (02:33:20 UTC), `user_engagement` and `web_vitals`.
+  - **Expected effect on reports:** 1 desktop user and session on October 22
+    (Pacific) attributed to `instagram / organic_social`, campaign
+    `golo_prelaunch_2026q4`, and 1 `newsletter_signup` event.
+  - **Not filtered.**
+  - **Elsewhere:** one internal sign-up notification email was sent. The
+    `NewsletterLead` row (`cmvkcv5kj0000k10h1xu3iu0m`, created 02:33:14.996 UTC)
+    was verified with `source=blog`, `landingPath=/`,
+    `referrerHost=l.instagram.com`, `landingSource=instagram`,
+    `landingMedium=organic_social`, `landingCampaign=golo_prelaunch_2026q4` and
+    `landingContent=bio`, then deleted at 02:34 UTC (`0` `qa+` rows remain).
 
 **Clarity**
 - Sessions whose entry URL is on `localhost`, about 02:20–05:30 UTC on

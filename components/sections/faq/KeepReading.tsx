@@ -1,22 +1,33 @@
 /**
  * "Keep reading" — three cards out to the pages people go to next when the
- * FAQ didn't cover it.
+ * FAQ didn't cover it. The glossary hub passes its own cards and heading.
  */
 
 import Link from "next/link";
-import { faqKeepReading } from "@/lib/content";
+import { faqKeepReading, type FaqReadNext } from "@/lib/content";
 import styles from "./KeepReading.module.css";
 
-export function KeepReading() {
+type KeepReadingProps = {
+  items?: readonly FaqReadNext[];
+  heading?: string;
+  /** For aria-labelledby; unique per page. */
+  headingId?: string;
+};
+
+export function KeepReading({
+  items = faqKeepReading,
+  heading = "KEEP READING",
+  headingId = "keep-reading-heading",
+}: KeepReadingProps) {
   return (
-    <section className={styles.section} aria-labelledby="keep-reading-heading">
+    <section className={styles.section} aria-labelledby={headingId}>
       <div className={styles.inner}>
-        <h2 id="keep-reading-heading" className={styles.label}>
-          KEEP READING
+        <h2 id={headingId} className={styles.label}>
+          {heading}
         </h2>
 
         <ul className={styles.grid}>
-          {faqKeepReading.map((doc) => (
+          {items.map((doc) => (
             <li key={doc.href}>
               <Link href={doc.href} className={styles.card}>
                 <span className={styles.name}>{doc.label}</span>

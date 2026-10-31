@@ -7,7 +7,7 @@
 - /games and /blog are static, so their title, description, canonical and Open Graph tags are in the initial <head> rather than streamed into the body.
 - Every route sets its own canonical, og:url, og:title and og:description — through lib/pageMetadata.ts for the static pages, generateMetadata for game guides and articles. The root layout carries only site-wide defaults (site name, share card, card type), so nothing page-specific leaks to routes that don't override it.
 - X / Twitter cards come from each page's Open Graph tags: the layout sets only the card type, and Next fills title, description and image from openGraph.
-- Every "get the app" button — nav pill, page CTAs, closing bands — reads appCtaLabel (lib/content/nav.ts): "Get the launch link" while appLive is false, "Get the app" after. The /games closing-band lead follows appLive too.
+- Every "get the app" button — nav pill, page CTAs, closing bands — reads appCtaLabel (lib/content/nav.ts): "Get the app" since Google Play went live on 2026-10-26 (it was "Get the launch link" while appLive gated it). The /games closing-band lead says to download the app.
 - Sitemap omits lastModified on undated static pages and game guides. The blog index uses its newest post's date; article publication dates and legal effective dates remain.
 - Lint, typecheck and production build verified. No deployment performed.
 
@@ -22,7 +22,7 @@ Owner decisions this round: the web app is not public yet; Instagram is @gologol
 - Game guides have keyword titles (GameDetail.seoTitle); the H1 stays the game's name. Closest to Pin and Birdies descriptions expanded.
 - Guide/article overlap: /blog/nassau and /blog/skins-carryover retitled to their own angle, with short meta descriptions (Post.metaDescription). All four paired posts link their guide in the intro; the four guides link back ("Deeper reading", under the tips).
 - Home game cards link to all eight guides.
-- Prelaunch wording: the default closing-band lead and the footer "Download" link follow appLive.
+- Launch wording: since 2026-10-26 the default closing-band lead and the footer "Download" link no longer follow appLive; the store row shows with Google Play live.
 - Footer column labels are no longer h2s.
 - Baseline security headers (HSTS without includeSubDomains, nosniff, Referrer-Policy, X-Frame-Options, Permissions-Policy) in next.config.mjs.
 - Lint, typecheck and production build verified; pages checked in the dev server at 320 px and desktop.
@@ -42,7 +42,7 @@ Domain property `sc-domain:golo.golf`, already verified. Taken while production 
 
 ## Implemented October 10, 2026 (branch seo/phase-2)
 
-- The /blog and /faq hero status pills ("isn't live yet", "Not live yet") render only while appLive is false; their labels moved to lib/content.
+- The /blog hero status pill renders only while appLive is false; the /faq pill follows the ios-app capability ("On Google Play · iPhone app coming soon"). Their labels live in lib/content.
 - Leads record where the visit started. PhoneLead and NewsletterLead gain nullable `landingPath` (first path of the visit, no query string) and `referrerHost` (outside referrer's host only; empty for direct visits and in-site reloads). Captured once per page load by LandingCapture in the root layout and held in memory only, so the cookie policy's storage inventory is unchanged. The API drops a malformed value instead of rejecting the lead.
 - PhoneLead `source` is now the form's placement (`hero`, `final_cta_<page>`). Before this, every phone lead was saved as `hero`, closing-band ones included.
 - Web app noindex confirmed live: soleman23/golo PR #499 merged October 8 and gologolf.netlify.app serves `<meta name="robots" content="noindex">`.
@@ -98,8 +98,8 @@ GA4 is the "GoLo Golf" property, G-36182P0H4D. It received nothing before Octobe
 Approved by the owner on October 21 under soleman23/golo#790; the link design is soleman23/golo `marketing/social/MEASUREMENT.md` §2.
 
 - Leads also record `landingMedium`, `landingCampaign` and `landingContent`: the landing URL's `utm_medium`, `utm_campaign` and `utm_content`, read from the same first landing as `landingSource`. Same rules as the other attribution fields: memory only on the client, no cookie or storage, so the cookie policy is unchanged.
-- The three are kept only as a complete combination from the link dictionary (`lib/campaigns.ts`) for the landing's source: `instagram` / `organic_social` / a social campaign / `bio` or `story_` + `^[a-z]{2}[0-9]{2}_[a-z]$`; `tiktok` / `organic_social` / a social campaign / `bio`; `youtube` / `organic_social` / a social campaign / `channel`; `hostinger_reach` / `email` / an email campaign / `header` or `cta_button`. Anything else stores all three as null; a failed check never rejects the lead. Values are trimmed and lower-cased first.
-- Campaign IDs are a list in `lib/campaigns.ts`, each marked social or email. Today the only one is `golo_prelaunch_2026q4` (social). Add a new ID in the same change that first uses it in a link; until then it's stored as null.
+- The three are kept only as a complete combination from the link dictionary (`lib/campaigns.ts`) for the landing's source: `instagram` / `organic_social` / a social campaign / `bio` or `story_` + `^[a-z]{2}[0-9]{2}_[a-z]$`; `tiktok` / `organic_social` / a social campaign / `bio`; `youtube` / `organic_social` / a social campaign / `channel`; `hostinger_reach` / `email` / an email campaign / `header` or `cta_button`; `table_tent` / `print` / a print campaign / `qr` (added October 26, 2026 for the sim-bay table tent). Anything else stores all three as null; a failed check never rejects the lead. Values are trimmed and lower-cased first.
+- Campaign IDs are a list in `lib/campaigns.ts`, each marked social, email or print. Today they are `golo_prelaunch_2026q4` (social) and `golo_launch_2026q4_sim_bay` (print: the QR on the printed sim-bay table tent, whose full query string is `utm_source=table_tent&utm_medium=print&utm_campaign=golo_launch_2026q4_sim_bay&utm_content=qr`). Add a new ID in the same change that first uses it in a link; until then it's stored as null.
 - `landingSource` keeps its pattern and is also dropped when it looks personal (an `@` or a run of seven or more digits, `looksPersonal` in `lib/analytics.ts`) or like an identifier (a UUID or a run of 16+ hex characters), so a phone-shaped or ID-shaped `utm_source` is no longer stored. `landingPath` is kept only as a path: the server drops a value containing `?` or `#`. The browser applies the same checks before sending (`lib/attribution.ts`); the server's (`lib/validation.ts`) are the ones that count.
 - A repeat newsletter sign-up still leaves the row alone (`update: {}`), new fields included.
 - Privacy Policy, "Information you provide": new item "Where a website sign-up came from", which names landing page, referrer domain and the four link names explicitly (this also settles the "related technical records" question below for those fields). "Data Retention": new item "Newsletter sign-up records": kept until the subscriber asks for deletion (via Your Choices and Privacy Rights); unsubscribing stops emails but doesn't delete the record; attribution details are kept and deleted with the sign-up or download-link record. "Last updated" is October 21, 2026, the deploy date (the same day as #122).
@@ -251,16 +251,209 @@ CREATE INDEX "NewsletterLead_reachSyncStatus_idx" ON "NewsletterLead"("reachSync
 7. **Privacy wording:** the final words, from verified behaviour only, approved and shipped together with the change that turns sync on, with "Last updated" revised.
 8. **Backfill:** only after the owner reviews the dry-run counts.
 
+## Published October 28, 2026 (soleman23/golowebsite#147, #148)
+
+- New guide: /games/scramble (HowTo + FAQPage, in the sitemap), with a Scramble card on /games under a new "Team formats" filter and in the /how-it-works game cards in place of Birdies. Rules checked read-only against golo `main` 2237c1d (GoLo 1.2.1) and recorded as the `scramble` capability. Copy says "percentages", not "allowance", while handicap allowances are planned.
+- The GSC run sheet and the leads report allow-list include /games/scramble; there are nine guides.
+
+## Search Console revalidation, October 29, 2026 (SEO-07, #65)
+
+Run on 2026-10-29, about 18:20–19:10 PDT, by an agent in the owner's Chrome, following `docs/seo-reports/gsc-revalidation.md`. Property `sc-domain:golo.golf`, search type Web (the export's filter reads "Web (text-based)"; Search Console now also offers "Web: multimodal", which isn't included), no other filters.
+
+- **Before:** 2026-09-10 – 2026-10-07, the 28 days before the October 8 deploy.
+- **After:** 2026-09-30 – 2026-10-27, 28 days ending on the latest complete day. On the run date the chart marked October 28 and 29 "Data is still being collected", so the window ends on October 27.
+- **Overlap:** 8 days (September 30 – October 7). The windows share those days, so the deltas below understate any change and read as direction, not size.
+- The October 8 baseline above (347 impressions, 2 clicks, position 45.8, 92 queries) covers three months. It isn't the Before window and isn't compared here.
+- Exports and the sitemap snapshot stay outside the repo: `~/gsc/2026-10-29-before/`, `~/gsc/2026-10-29-after/`, `~/gsc/sitemap-2026-10-29.xml` (35 URLs). To reproduce the tables: `node scripts/gsc-groups.mjs ~/gsc/2026-10-29-after --baseline ~/gsc/2026-10-29-before --sitemap ~/gsc/sitemap-2026-10-29.xml`.
+
+### Performance totals (chart)
+
+| Window | Clicks | Impressions | CTR | Position |
+|---|---:|---:|---:|---:|
+| Before (Sep 10 – Oct 7) | 2 | 222 | 0.9% | 36.2 |
+| After (Sep 30 – Oct 27) | 4 | 404 | 1.0% | 25.0 |
+
+The chart totals are the property's numbers. The exports cover less:
+
+- **Queries:** Before has 59 rows, 121 impressions (55% of the chart) and 0 clicks; After has 65 rows, 177 impressions (44%) and 2 of the 4 clicks. The rest are anonymized queries. Neither file is near the 1,000-row export cap.
+- **Pages:** Before has 15 URLs and 297 impressions; After has 29 URLs and 542. Page rows add up to more than the chart because Search Console counts the page table by page and the chart by property: one result showing two golo.golf URLs is one property impression and two page impressions.
+- **Position in the group tables** is the impression-weighted mean of the exported queries' average positions. It's a summary, not a number Search Console reports.
+
+### Query groups
+
+| Group | Queries | Impressions | Δ | Clicks | Δ | CTR | Position | Before position |
+|---|---:|---:|---:|---:|---:|---:|---:|---:|
+| Branded | 2 | 32 | +22 | 2 | +2 | 6.3% | 11.8 | 6.4 |
+| Ambiguous GOLO | 0 | 0 | 0 | 0 | 0 | – | – | – |
+| Off-topic GOLO | 2 | 9 | -8 | 0 | 0 | 0.0% | 39.3 | 48.6 |
+| Nassau | 13 | 64 | +12 | 0 | 0 | 0.0% | 31.2 | 50.5 |
+| Settle-up | 0 | 0 | 0 | 0 | 0 | – | – | – |
+| Handicap | 4 | 4 | +3 | 0 | 0 | 0.0% | 75.3 | 87.0 |
+| Trips | 0 | 0 | 0 | 0 | 0 | – | – | – |
+| Other games | 31 | 53 | +35 | 0 | 0 | 0.0% | 61.6 | 76.6 |
+| Glossary / definitions | 3 | 4 | -1 | 0 | 0 | 0.0% | 70.5 | 78.8 |
+| Unassigned | 10 | 11 | -7 | 0 | 0 | 0.0% | 76.4 | 76.3 |
+
+The groups are the ones defined in `scripts/gsc-groups.mjs`, unchanged; #68's monthly reports use the same file. Branded After is "golo golf" (20 impressions, 2 clicks, position 16.5; both clicks on `/`, which shows at 6.4 for it) and "golo bet" (12 impressions, position 4.0, on `/games` and `/`). The Before window's three branded queries had 10 impressions and no clicks.
+
+### Watched queries
+
+| Query | Before | After | Landing pages, After (impressions) |
+|---|---|---|---|
+| golo board | 5 impressions, position 40.6 | 8 impressions, position 43.1 | `/contact` 4, `/faq` 3, `/terms` 1, `/about` 1 |
+| mongolian reversal | 3 impressions, position 73.3 | 1 impression, position 76.0 | `/blog` 1 |
+
+Before, "golo board" landed on `/contact`, `/faq` and `/` and "mongolian reversal" on `/blog`. Both still show. "golo board" is the GOLO dice game (Off-topic GOLO); "mongolian reversal" lands on the blog index, not on a page about it. Landing pages come from Performance with an exact-query filter and the Pages tab; page counts can add up to more than the query's total for the reason above.
+
+### Page groups
+
+| Group | URLs | Impressions | Δ | Clicks | Δ | CTR | Position | Before position |
+|---|---:|---:|---:|---:|---:|---:|---:|---:|
+| Guides | 9 | 214 | +103 | 0 | 0 | 0.0% | 28.2 | 38.8 |
+| Posts | 8 | 49 | +47 | 0 | 0 | 0.0% | 28.4 | 8.5 |
+| Core pages | 12 | 279 | +95 | 4 | +2 | 1.4% | 14.1 | 29.3 |
+
+"Guides" counts `/games/stroke-purse`, a legacy URL that 308s to `/games/best-score` (2 impressions). The Posts "Before position" of 8.5 is one post, `/blog/skins-carryover`, with 2 impressions.
+
+### Guides, After
+
+| Page | Impressions | Clicks | CTR | Position | Before (impressions, position) |
+|---|---:|---:|---:|---:|---|
+| /games/nassau | 85 | 0 | 0.0% | 27.3 | 62, 45.0 |
+| /games/skins | 31 | 0 | 0.0% | 47.0 | 24, 54.9 |
+| /games/bingo-bango-bongo | 25 | 0 | 0.0% | 25.5 | 1, 10.0 |
+| /games/closest-to-pin | 25 | 0 | 0.0% | 11.6 | 23, 7.9 |
+| /games/wolf | 20 | 0 | 0.0% | 52.6 | not in the export |
+| /games/longest-drive | 14 | 0 | 0.0% | 10.6 | not in the export |
+| /games/best-score | 6 | 0 | 0.0% | 9.8 | not in the export |
+| /games/birdies | 6 | 0 | 0.0% | 8.8 | not in the export |
+| /games/stroke-purse (308 to best-score) | 2 | 0 | 0.0% | 7.5 | 1, 9.0 |
+| /games/scramble | not in the export (published 2026-10-28, after the window) | – | – | – | – |
+
+### Posts, After
+
+| Page | Impressions | Clicks | CTR | Position |
+|---|---:|---:|---:|---:|
+| /blog/nassau | 14 | 0 | 0.0% | 10.1 |
+| /blog/index-vs-course-handicap | 10 | 0 | 0.0% | 38.2 |
+| /blog/bingo-bango-bongo | 10 | 0 | 0.0% | 45.7 |
+| /blog/pressing | 6 | 0 | 0.0% | 16.2 |
+| /blog/what-we-got-wrong | 3 | 0 | 0.0% | 6.3 |
+| /blog/wolf | 3 | 0 | 0.0% | 67.0 |
+| /blog/sandbagging | 2 | 0 | 0.0% | 41.5 |
+| /blog/settle-up-screen | 1 | 0 | 0.0% | 10.0 |
+| /blog/bandon | not in the export | – | – | – |
+| /blog/scottsdale-trip-structure | not in the export | – | – | – |
+| /blog/rangefinder | not in the export | – | – | – |
+| /blog/who-pays-first | not in the export | – | – | – |
+| /blog/skins-carryover | not in the export | – | – | – |
+
+Before, only `/blog/skins-carryover` had impressions (2, position 8.5).
+
+### Core pages, After
+
+| Page | Impressions | Clicks | Position |
+|---|---:|---:|---:|
+| / | 44 | 2 | 3.8 |
+| /games | 45 | 0 | 9.8 |
+| /blog | 28 | 0 | 66.1 |
+| /faq | 27 | 0 | 10.9 |
+| /terms | 25 | 1 | 6.2 |
+| /privacy | 24 | 0 | 6.0 |
+| /delete-account | 22 | 0 | 6.0 |
+| /contact | 20 | 0 | 20.1 |
+| /features | 18 | 1 | 11.2 |
+| /about | 15 | 0 | 7.9 |
+| /cookies | 6 | 0 | 2.0 |
+| /how-it-works | 5 | 0 | 3.4 |
+
+### Page indexing
+
+Indexing → Pages, all known pages, report dated 2026-10-22 (Search Console's "Last update"; it runs days behind URL Inspection): **33 indexed, 12 not indexed**, for three reasons. "Discovered – currently not indexed" lists 0, down from 6 on October 8. Every indexed URL is in today's sitemap; the two sitemap URLs missing from it, `/games/scramble` and `/glossary`, were published after the report date.
+
+| URL | Reason (last crawled) | Expected / issue |
+|---|---|---|
+| `http://golo.golf/` | Page with redirect (Oct 21) | Expected: http and apex. 301 to `https://golo.golf/`, then 308 to `https://www.golo.golf/` (two hops, checked live). |
+| `https://golo.golf/` | Page with redirect (Oct 21) | Expected: apex. 308 to `https://www.golo.golf/`, one hop. |
+| `https://golo.golf/privacy` | Page with redirect (Sep 9) | Expected: apex. 308 to `https://www.golo.golf/privacy`, one hop. |
+| `https://www.golo.golf/games/stroke-purse` | Page with redirect (Oct 23) | Expected: legacy redirect in `next.config.mjs`. 308 to `/games/best-score`, one hop. |
+| `https://www.golo.golf/contact?topic=idea` | Alternate page with proper canonical tag (Oct 10) | Expected: it declares `https://www.golo.golf/contact` (checked live). |
+| `https://www.golo.golf/images/heroes/contact-desktop-1920.avif` | Crawled – currently not indexed (Oct 23) | Expected: an image file, not a page (200, `image/avif`), not in the sitemap. |
+| `https://www.golo.golf/images/heroes/features-mobile-768.avif` | Crawled – currently not indexed (Oct 22) | Expected: image file, as above. |
+| `https://www.golo.golf/images/heroes/features-desktop-1920.avif` | Crawled – currently not indexed (Oct 22) | Expected: image file, as above. |
+| `https://www.golo.golf/images/heroes/blog-mobile-768.avif` | Crawled – currently not indexed (Oct 21) | Expected: image file, as above. |
+| `https://www.golo.golf/images/heroes/blog-desktop-1920.avif` | Crawled – currently not indexed (Oct 21) | Expected: image file, as above. |
+| `https://www.golo.golf/manifest.webmanifest` | Crawled – currently not indexed (Oct 21) | Expected: the web app manifest (200, `application/manifest+json`), not a page. |
+| `https://www.golo.golf/favicon.ico` | Crawled – currently not indexed (Sep 11) | Expected: the favicon (200, `image/x-icon`), not a page. |
+
+The run sheet's third expected redirect, `http://www.golo.golf/blog/`, isn't in the report this time. Checked live anyway: 301 to `https://www.golo.golf/blog/`, then 308 to `/blog`. The other legacy redirects (`/faqs`, `/privacy-policy`, `/terms-of-service`, `/tos`, `/game/nassau`, `/games/nassau-explained`, `/blog/who-pays`) each 308 to their destination in one hop. The "Not found (404)" reason has no URLs.
+
+`/cookies` is indexed (crawled October 20). The run sheet expected it under noindex; the Cookie Policy was published on October 20 (`b0628a6`) and is now indexable and in the sitemap, so that expectation is out of date. `/acceptable-use` still serves `noindex, nofollow` and isn't in either list.
+
+### URL Inspection
+
+Live URL Inspection on 2026-10-29. "Canonical matches" means the user-declared canonical is the inspected URL and the Google-selected canonical reads "Inspected URL". Crawl times are as Search Console shows them in the browser (Pacific).
+
+| URL | Published | On Google | Canonical matches | Last crawl |
+|---|---|---|---|---|
+| /games/skins | before Oct 8 | Yes | Yes | Oct 17, 9:20 PM |
+| /games/nassau | before Oct 8 | Yes | Yes | Oct 20, 8:50 PM |
+| /games/best-score | before Oct 8 | Yes | Yes | Oct 27, 6:36 PM |
+| /games/wolf | before Oct 8 | Yes | Yes | Oct 24, 6:34 AM |
+| /games/bingo-bango-bongo | before Oct 8 | Yes | Yes | Oct 20, 5:51 PM |
+| /games/scramble | 2026-10-28 | No: "URL is unknown to Google" | – (declares itself, checked live) | never |
+| /games/closest-to-pin | before Oct 8 | Yes | Yes | Oct 21, 2:37 AM |
+| /games/longest-drive | before Oct 8 | Yes | Yes | Oct 27, 7:51 PM |
+| /games/birdies | before Oct 8 | Yes | Yes | Oct 24, 11:17 AM |
+| /blog/what-we-got-wrong | 2026-10-16 | Yes | Yes | Oct 22, 7:23 AM |
+| /blog/settle-up-screen | 2026-10-15 | Yes | Yes | Oct 18, 1:44 PM |
+| /blog/pressing | 2026-10-10 | Yes | Yes | Oct 22, 11:19 AM |
+| /blog/index-vs-course-handicap | 2026-10-10 | Yes | Yes | Oct 21, 5:07 AM |
+| /blog/sandbagging | 2026-10-10 | Yes | Yes | Oct 22, 11:23 AM |
+| /blog/bandon | 2026-10-09 | Yes | Yes | Oct 17, 9:49 PM |
+| /blog/scottsdale-trip-structure | 2026-10-08 | Yes | Yes | Oct 20, 9:37 PM |
+| /blog/rangefinder | 2026-10-07 | Yes | Yes | Oct 21, 5:17 PM |
+| /blog/who-pays-first | 2026-08-11 | Yes | Yes | Oct 23, 10:57 PM |
+| /blog/nassau | 2026-07-28 | Yes | Yes | Oct 24, 12:12 AM |
+| /blog/skins-carryover | 2026-07-14 | Yes | Yes | Oct 20, 5:51 PM |
+| /blog/wolf | 2026-07-02 | Yes | Yes | Oct 20, 3:34 AM |
+| /blog/bingo-bango-bongo | 2026-06-18 | Yes | Yes | Oct 21, 12:07 AM |
+| /glossary | 2026-10-29 | Yes | Yes | Oct 29, 5:32 PM |
+
+- **21 of the 22 guides and posts** are on Google with the canonical we declare. The 22nd, `/games/scramble`, was published the day before the run: expected under the 21-day rule, not a defect.
+- **Discovery detail:** five indexed URLs (`/games/wolf`, `/blog/what-we-got-wrong`, `/blog/pressing`, `/blog/index-vs-course-handicap`, `/blog/bandon`) show "Sitemaps: Temporary processing error" under Discovery. The Sitemaps report reads Success, and all five are indexed, so it isn't an indexation defect. If it's still there on the next run, look again.
+- **Glossary, a launch observation:** `/glossary` went live at 17:23 PDT on October 29. Indexing was requested at about 17:31 (#166), and Googlebot crawled it at 17:32. It's on Google with the declared canonical, discovered without a sitemap (the sitemap was last read October 20). This is one inspection on launch day, not #167's launch + 7 days checkpoint, which stays due on November 5.
+
+### Sitemap
+
+`https://www.golo.golf/sitemap.xml`: Search Console shows it submitted October 10, last read **October 20**, status Success, **32 discovered** pages, 0 videos. The Pages report filtered to this sitemap (dated October 22) shows **32 indexed, 0 not indexed**: every URL from that read is indexed. The live sitemap had 35 URLs on the run date. The three added since the read are `/cookies` (published October 20, already indexed), `/games/scramble` (October 28) and `/glossary` (October 29).
+
+### Core Web Vitals
+
+Mobile and desktop both read "Not enough usage data in the last 90 days for this device type." No field data; no lab numbers substituted.
+
+### Generative AI features report
+
+Performance → Generative AI features (labelled Beta) exists for this property. For the After window it shows **28 impressions**. By page: `/` 8, `/games/closest-to-pin` 5, `/features` 3, `/how-it-works` 2, and 11 pages with 1 each. It reports impressions only. Its tabs are Pages, Countries, Devices and Days, with no Queries tab. Google's help page (support.google.com/webmasters/answer/16984139, read on the run date) says it covers AI Overviews and AI Mode and "includes data from the Web search type". It doesn't say whether these impressions are also counted in the Web totals, so don't add them to the 404.
+
+### Against the October 8 baseline
+
+Not like-for-like (three months there, 28 days here), so only the indexing state compares: **16 indexed → 33**; not indexed **11 → 12**, but the mix changed. Discovered-not-indexed went from 6 to 0. Crawled-not-indexed went from 1 to 7, all non-HTML files. Page with redirect went from 3 to 4, and alternate canonical stayed at 1.
+
+### Defects opened
+
+None. Every non-indexed URL in the report and in URL Inspection matches an expected case.
+
 ## Remaining
 
-- Search Console: re-check index coverage, selected canonicals and field Core Web Vitals against the October 8 baseline. Due between October 22 and November 5 (two to four weeks after the deploy).
-- GA4 has been on since the October 8 build (NEXT_PUBLIC_ANALYTICS_ENABLED=true in hPanel; measurement ID G-36182P0H4D, the siteConfig default), but it only receives data since the October 16 fix (#100). `generate_lead` is a key event as of October 18; see above. Still to do: mark `newsletter_signup` as a secondary key event once it first arrives.
+- Search Console revalidation: run on October 29 (section above, #65). No indexation defects. `/games/scramble` was unknown to Google one day after publication; #167's launch + 7 days checkpoint (November 5) is the next Search Console read, and the first monthly report (#68) the next full one.
+- GA4 has been on since the October 8 build (NEXT_PUBLIC_ANALYTICS_ENABLED=true in hPanel; measurement ID G-36182P0H4D, the siteConfig default), but it only receives data since the October 16 fix (#100). `generate_lead` is a key event as of October 18; see above. `newsletter_signup` has arrived: on October 29 it was in Admin → Events → Recent events, from one event in October 1–27, which matches the documented October 22 Instagram acceptance run (`docs/analytics-data-notes.md`). It isn't starred. Marking it as a secondary key event is the owner's call; it isn't marked yet.
 - GA4 is explicit opt-in (notice on first visit, Privacy choices in the footer), back from the brief October 19 opt-out. Microsoft Clarity was turned off on October 20 (#116). Read GA as an opted-in sample, not total traffic: visitors who decline or ignore the notice, send Global Privacy Control, or block trackers aren't counted. Search Console clicks and the lead table (landing page and referrer) remain the volume cross-check. October 19–20 data includes the opt-out period and localhost test visits; `docs/analytics-data-notes.md` has the exact window, the test traffic and the exclusion options.
 - Privacy policy: the download-link bullet mentions "related technical records", and the usage section lists "referring pages". Counsel to confirm that covers landing page and referrer host on lead rows, or add them explicitly. Since #120 the "Where a website sign-up came from" item lists them explicitly, with the campaign fields; counsel to review that item and the new newsletter retention item (kept until the subscriber asks for deletion; unsubscribing doesn't delete the record).
-- Verifiable authorship / reviewer information; do not invent credentials or people.
-- Dedicated hero and mid-article photos for /blog/pressing and /blog/index-vs-course-handicap (source PNGs into tmp/img-src/, then scripts/generate-blog-images.mjs).
-- Add maintained article revision dates when substantively editing content.
+- Named authorship: #72 was closed as not planned on October 15, and posts are credited "From the GoLo team". Don't invent credentials or people.
+- Revision dates: posts and guides carry one (#70). Change it on a substantive edit to rules, examples or GoLo claims, never for copy polish.
 - Evaluate performance opportunities after content and discovery work.
+- Open Phase 3 issues: #65 (SEO-07, run October 29; closes when that section merges), #68 (SEO-10, monthly report; `docs/seo-reports/2026-11.md` reports October 2026, provisional until October 28–31 is added in the first week of November) and #78 (SEO-20, query-led content plan, `docs/content-plan.md`). The plan they came from is archived in docs/seo-phase3-backlog.md.
 
 ## October 21, 2026: scheduled jobs on Hostinger (for #121)
 

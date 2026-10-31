@@ -96,8 +96,8 @@ Copy from [`.env.example`](.env.example). Never commit `.env`.
 | `RESEND_API_KEY`               | No\*\*   | Server-only | Resend API key — needed to email contact-form notifications |
 | `CONTACT_NOTIFY_EMAIL`         | No       | Server-only | Inbox that receives contact-form notifications (default `info@golo.golf`) |
 | `CONTACT_FROM_EMAIL`           | No       | Server-only | Sender address Resend sends as                      |
-| `NEXT_PUBLIC_APP_STORE_URL`    | No       | **Public**  | App Store link (falls back to `#get`)               |
-| `NEXT_PUBLIC_GOOGLE_PLAY_URL`  | No       | **Public**  | Google Play link (falls back to `#get`)             |
+| `NEXT_PUBLIC_APP_STORE_URL`    | No       | **Public**  | App Store link; read only once `siteConfig.iosLive` is true (falls back to `#get`) |
+| `NEXT_PUBLIC_GOOGLE_PLAY_URL`  | No       | **Public**  | Ignored: the live listing (`id=golf.golo.app`) is in `lib/siteConfig.ts` |
 | `NEXT_PUBLIC_SITE_URL`         | No       | **Public**  | Canonical URL for SEO/OG tags                       |
 | `NEXT_PUBLIC_DOWNLOAD_URL`     | No       | **Public**  | Link texted to users                                |
 | `NEXT_PUBLIC_SHOW_STATS`       | No       | **Public**  | `true`/`false` — show the stats band                |
@@ -112,13 +112,20 @@ Copy from [`.env.example`](.env.example). Never commit `.env`.
 
 ### Launch controls
 
-`NEXT_PUBLIC_APP_LIVE` is what keeps the site honest before release. While it's
-`false`, the hero and the closing CTA show the **"text me the link" capture
-instead of the App Store / Google Play buttons**, the fine print reads "in
-testing with real groups", and `/features` shows the beta-pricing note. Flipping
-it to `true` — *and* setting the two store URLs — turns the store buttons back on
-everywhere at once. Don't flip one without the other: `store_button_click` fires
-`destination_configured: false` if you do.
+The Android app has been on Google Play since October 26, 2026, so the
+download row is always on: the hero and the closing CTA show the Google Play
+button, an App Store "coming soon" tile (not a link) and a line sending iPhone
+owners to the web app (`siteConfig.webAppUrl`). The hero keeps the "text me the
+link" capture under it. These are code facts in `lib/siteConfig.ts`, not env
+vars: on the day the App Store listing is public, set `iosLive: true` there
+and `NEXT_PUBLIC_APP_STORE_URL`, and the tile becomes the App Store link, the
+web-app line goes, and the `ios-app` capability, the FAQ, `/about` and the
+home `SoftwareApplication` follow.
+
+`NEXT_PUBLIC_APP_LIVE` is now the rest of the launch: while it's `false`,
+`/features` keeps "free while we're in beta", its pricing note and its launch
+quick answer, and `/blog` keeps its build-notes pill. It no longer touches the
+store buttons.
 
 `NEXT_PUBLIC_TERMS_PUBLISHED` gates `/terms`. The current copy is authorized as
 interim website Terms but must be approved or replaced before
@@ -152,6 +159,12 @@ removed on October 20, 2026 (see "Microsoft Clarity (off)" below).
   opt-out build read only that key and treat a missing value as allowed.
 - "Privacy choices" in the footer links to `/privacy#analytics-choices`, the
   persistent control. The same control is on `/cookies`.
+- Not governed by the choice: the Google Play button's install referrer.
+  When the landing carried a campaign from the link dictionary
+  (`lib/campaigns.ts`), the Play link adds its source, medium and campaign as
+  `&referrer=` (`playStoreUrl`), whatever the analytics choice, because it's
+  part of the link the visitor follows. No cookie and nothing personal. The
+  privacy policy says so under Website Analytics → "Links to Google Play".
 - Withdrawal reloads the page because Google documents `ga-disable-<ID>` only
   when it's set before gtag runs; a fresh page without the script is what
   guarantees collection has ended.

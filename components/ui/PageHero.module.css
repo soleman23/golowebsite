@@ -89,6 +89,16 @@
 .hero[data-photo="contact"] .scrim {
   --copy-span: 860px;
 }
+/* Measured 2026-10-29 at 768–1920px: the H1's accent line reaches 624px.
+   Without the cap on .title below it fits on one line between about 760 and
+   1126px, reaches 879px and runs over the sun in the photo; held to 640px it
+   wraps the same way at every width. */
+.hero[data-photo="glossary"] .scrim {
+  --copy-span: 660px;
+}
+.hero[data-photo="glossary"] .title {
+  max-width: 640px;
+}
 
 .inner {
   position: relative;
@@ -140,6 +150,12 @@
   margin: 0 0 30px;
   max-width: 640px;
   text-wrap: pretty;
+}
+
+/* The /glossary search field: under the lead, inside the copy column, so the
+   scrim's dark band covers it like the copy. */
+.search {
+  max-width: 560px;
 }
 
 .ctaRow {

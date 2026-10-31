@@ -36,8 +36,21 @@ declare global {
  * - blog_filter        a chip on /blog was selected
  * - newsletter_signup  a newsletter address was accepted
  * - newsletter_error   a newsletter signup failed (validation or server)
- * - share_click        a share control on a blog post was clicked
+ * - share_click        a share control on a blog post, or a glossary term's
+ *                      copy-link button (channel "copy", term_id), was clicked
  * - cta_click          a hero or closing CTA button was clicked
+ *
+ * The glossary (/glossary, #165). Params come from closed sets only: a
+ * published term id, a category id, a bucket. Never the search text.
+ * - glossary_search    a search settled (once per changed query, after typing
+ *                      stops): category, result_bucket (0 / 1 / 2-5 / 6+),
+ *                      match_type (exact / alias / partial / none)
+ * - glossary_filter    the reader chose a category (chip, Clear): category
+ * - glossary_term_open a term was opened: a search result, a related-term
+ *                      link or a deep link, once per term per page load:
+ *                      term_id, category
+ * - glossary_cta_click a term's guide, post or product link was followed:
+ *                      term_id, destination_type (guide / post / page)
  *
  * Sent by components/analytics/SessionTracking.tsx for every page:
  * - scroll_depth       the reader passed 25, 50, 75 or 90% of a page
@@ -60,6 +73,10 @@ export type AnalyticsEvent =
   | "newsletter_error"
   | "share_click"
   | "cta_click"
+  | "glossary_search"
+  | "glossary_filter"
+  | "glossary_term_open"
+  | "glossary_cta_click"
   | "scroll_depth"
   | "link_click"
   | "contact_click"

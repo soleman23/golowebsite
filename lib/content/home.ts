@@ -99,6 +99,7 @@ export const features: Feature[] = [
     checklist: [
       { lead: "Net · Gross · Results", rest: "one tap to see every angle." },
       {
+        // capabilities.ts live-skins
         lead: "Live skins & carries",
         rest: "watch each carried skin build hole to hole.",
       },
@@ -174,7 +175,7 @@ const homeGameDescs: { slug: GameSlug; desc: string }[] = [
   },
   {
     slug: "closest-to-pin",
-    desc: "Stick it tight on the par 3s and take the greenie.",
+    desc: "Stick it tight on the par 3s and win the hole.",
   },
   {
     slug: "longest-drive",
@@ -205,6 +206,7 @@ export const steps: Step[] = [
     icon: "flame",
     // Corrected from the prototype's stray HTML entity "Play &amp; track".
     title: "Play & track",
+    // capabilities.ts live-skins
     body: "Tap in scores hole by hole. The leaderboard updates live — strokes, skins, carries and all.",
   },
   {

@@ -25,13 +25,13 @@ Before launch, add "In private testing" wherever a status field exists. Don't de
 
 ## Profiles
 
-`sameAs` in `lib/siteConfig.ts` feeds the Organization's structured data: the company's own profiles, live and official, nothing else. The App Store and Google Play listings describe the app, not the company, so they belong to the home page's `SoftwareApplication` node instead. That node picks them up on its own from `NEXT_PUBLIC_APP_STORE_URL` and `NEXT_PUBLIC_GOOGLE_PLAY_URL` once the store apps are live.
+`sameAs` in `lib/siteConfig.ts` feeds the Organization's structured data: the company's own profiles, live and official, nothing else. The App Store and Google Play listings describe the app, not the company, so they belong to the home page's `SoftwareApplication` node instead. That node picks them up on its own: Google Play from `siteConfig.googlePlayUrl` (live), the App Store from `NEXT_PUBLIC_APP_STORE_URL` once `siteConfig.iosLive` is true.
 
 | Profile | URL | Status | In `sameAs` |
 |---|---|---|---|
 | Instagram | https://www.instagram.com/gologolfapp/ | Live | Yes |
-| Apple App Store | — | At launch | No: on the SoftwareApplication, from the env var |
-| Google Play | — | At launch | No: on the SoftwareApplication, from the env var |
+| Apple App Store | — | Coming soon (waits on Apple) | No: on the SoftwareApplication, from the env var, once `siteConfig.iosLive` is true |
+| Google Play | https://play.google.com/store/apps/details?id=golf.golo.app | Live since 2026-10-26 | No: on the SoftwareApplication (`siteConfig.googlePlayUrl`) |
 | Product Hunt | — | Optional, at launch | Only if a listing is made |
 | Other social accounts | — | Only if someone will actually post there | Only when live |
 
@@ -41,15 +41,23 @@ Use this file's description for every profile, link back to https://www.golo.gol
 
 ## Launch-day checklist
 
+**Split launch (2026-10-26):** Android went live on Google Play before iOS. The
+download row, CTA labels, closing-band copy, FAQ availability answers, `/about`
+status and the home `SoftwareApplication` were moved off `appLive` and onto the
+`android-app` / `ios-app` capabilities, so steps 4 and 5 below now describe
+only what `appLive` still controls (/features pricing and beta lines, the /blog
+pill). For the App Store day: set `iosLive: true` in `lib/siteConfig.ts` and
+`NEXT_PUBLIC_APP_STORE_URL` in hPanel in the same release. (`NEXT_PUBLIC_GOOGLE_PLAY_URL` is no longer read; the listing is in code.)
+
 `NEXT_PUBLIC_*` values are inlined at build time. In hPanel, **Apply changes** immediately redeploys whatever `main` is at that moment. A merge to `main` also deploys on its own, a few minutes later, with the flags as they were.
 
 1. **Preconditions.**
    - Both store listings are published, and their URLs are copied.
    - The Terms are approved or replaced by counsel. README and `app/(content)/terms/page.tsx` make this a condition of setting `NEXT_PUBLIC_APP_LIVE=true`.
-2. **Merge the launch PR first** (copy, pricing, the `offers` block). It deploys with `appLive` still false, so gate everything in it on `siteConfig.appLive` or `capability("store-apps")`. If something can't be gated, run Apply as soon as the merge deploy finishes, so the ungated copy isn't live alone for long.
+2. **Merge the launch PR first** (copy, pricing, the `offers` block). It deploys with `appLive` still false, so gate everything in it on `siteConfig.appLive`, or for iPhone copy on `siteConfig.iosLive` / `capability("ios-app")` (`store-apps` was split into `android-app` and `ios-app` on 2026-10-26). If something can't be gated, run Apply as soon as the merge deploy finishes, so the ungated copy isn't live alone for long.
 3. **Set the environment in hPanel** (Websites → golo.golf → Environment variables), then Apply once with all of these set:
    - `NEXT_PUBLIC_APP_LIVE=true`
-   - `NEXT_PUBLIC_APP_STORE_URL` and `NEXT_PUBLIC_GOOGLE_PLAY_URL`
+   - `NEXT_PUBLIC_APP_STORE_URL` (the Google Play URL is in code, `lib/siteConfig.ts`; `NEXT_PUBLIC_GOOGLE_PLAY_URL` is no longer read)
    - `NEXT_PUBLIC_DOWNLOAD_URL`: the URL the "text me the link" SMS sends. It falls back to the site URL, not a store. Check `SMS_MESSAGE_TEMPLATE` reads right for launch.
    - `NEXT_PUBLIC_TERMS_PUBLISHED=true`, if the approved Terms go public at the same time. This links /terms, indexes it and adds it to the sitemap.
 4. **What changes on its own** when `appLive` is true. Check each on the live site:
@@ -57,7 +65,7 @@ Use this file's description for every profile, link back to https://www.golo.gol
    - **Closing bands:** store buttons replace the phone capture. The lead says "Download GoLo…", and the fine print reads "On iPhone & Android".
    - **The /games closing-band lead** says to download it.
    - **CTA labels:** "Get the app", in the nav pill and its mobile version. The footer's "Launch link" becomes "Download".
-   - **`capabilities.ts`:** `store-apps` becomes live, so the /features roadmap moves "iPhone and Android apps" into "In the app today".
+   - **`capabilities.ts`:** not driven by `appLive`. `android-app` is already live; `ios-app` follows `siteConfig.iosLive` and joins the /features roadmap's "In the app today" only then.
    - **FAQ:** "Is GoLo available yet?" answers yes, and the tablet answer names the apps.
    - **/features:** the "When does it launch?" quick answer disappears, the roadmap heading drops "We're in beta", and the "Free while we're in beta" pill and pricing note disappear.
    - **/blog and /faq:** the prelaunch status pills disappear.

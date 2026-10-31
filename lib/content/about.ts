@@ -8,7 +8,7 @@
 import { siteConfig } from "@/lib/siteConfig";
 import { capability } from "./capabilities";
 
-const launched = capability("store-apps").status === "live";
+const iosLive = capability("ios-app").status === "live";
 
 /** The registry's money line, word for word; a reworded limit fails the build. */
 const moneyLimit = capability("settle-up").limits?.find((l) => /money/i.test(l));
@@ -44,16 +44,16 @@ export const aboutContent = {
 
   status: {
     kicker: "WHERE IT IS TODAY",
-    body: launched
-      ? // claim-ok: only once the store-apps entry is live
+    body: iosLive
+      ? // claim-ok: only once the ios-app entry is live
         "GoLo is on iPhone and Android."
-      : "In private testing with real groups. GoLo runs in a phone browser today, there’s no public sign-up yet, and iPhone and Android apps are on the list.",
+      : "GoLo is on Google Play for Android, and runs in any phone browser. The iPhone app is coming to the App Store; until then, iPhone owners use it in Safari.",
     link: { label: "What it does today →", href: "/features" },
   },
 
   money: {
     kicker: "WHAT IT DOESN’T DO",
-    body: `${moneyLimit} It doesn’t take a cut. Your group settles up outside the app, in cash, Venmo or whatever it already uses.`,
+    body: `${moneyLimit} It doesn’t take a cut. Your group settles up outside the app, in person, on Venmo or however it already does.`,
   },
 
   honesty: {
@@ -62,11 +62,9 @@ export const aboutContent = {
     paragraphs: [
       "What the app does is kept in one list, with each feature marked live, in testing or not built. The site’s automated checks fail when a page calls an unfinished feature working, overstates a live one or names an unfinished one in a search title. Where something isn’t finished, the page says so.",
       "The worked example on How it works is a real round played through the app, on its own screens.",
-      "When the app gets something wrong, we write it up. The build notes go through the worst fixes in the commit log: settle-up amounts computed in floating point, presses lost when Setup was saved again, a skins carry counted before it was won, and an overstated claim about settle-up on this site.",
     ],
     links: [
       { label: "See the round →", href: "/how-it-works" },
-      { label: "Read what we got wrong →", href: "/blog/what-we-got-wrong" },
     ],
   },
 

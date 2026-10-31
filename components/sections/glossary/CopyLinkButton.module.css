@@ -1,0 +1,19 @@
+/* Sits at the end of the term's heading row; 44px tall for touch. */
+.button {
+  margin-left: auto;
+  min-height: 44px;
+  padding: 0 14px;
+  border-radius: var(--radius-pill);
+  border: 1px solid var(--card-border);
+  background: transparent;
+  color: var(--text-secondary);
+  font: inherit;
+  font-size: 12.5px;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.button:hover {
+  color: var(--text-primary);
+  border-color: var(--accent-border);
+}

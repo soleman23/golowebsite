@@ -1,0 +1,175 @@
+.controls {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: clamp(24px, 4vw, 36px) var(--gutter) 0;
+}
+
+.chips {
+  margin-bottom: 12px;
+}
+
+.bar {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  min-height: 44px;
+}
+
+.count {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text-muted);
+}
+
+/* While searching, the result line counts instead. */
+html[data-glossary-search] .count {
+  display: none;
+}
+
+.clear {
+  min-height: 44px;
+  padding: 0 16px;
+  border-radius: var(--radius-pill);
+  border: 1px solid var(--card-border);
+  background: transparent;
+  color: var(--text-primary);
+  font: inherit;
+  font-size: 13px;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.clear:hover {
+  border-color: var(--accent-border);
+}
+
+.results {
+  margin-top: 18px;
+}
+
+.resultLine {
+  margin: 0 0 14px;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text-secondary);
+}
+
+.resultList {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 10px;
+}
+
+.result {
+  padding: 16px 18px;
+  border-radius: var(--radius-tile);
+  background: var(--glass-surface);
+  border: 1px solid var(--card-border);
+}
+
+.resultName {
+  font-size: 18px;
+  font-weight: 800;
+  color: var(--text-primary);
+  margin-right: 10px;
+}
+
+.resultName:hover {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.resultCategory,
+.resultAlias {
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 1.2px;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+  margin-right: 10px;
+}
+
+.resultAlias {
+  text-transform: none;
+  letter-spacing: 0;
+  font-size: 12.5px;
+}
+
+.resultDefinition {
+  margin: 6px 0 0;
+  max-width: 68ch;
+  font-size: 15px;
+  font-weight: 500;
+  line-height: 1.6;
+  color: var(--text-secondary);
+}
+
+.empty p {
+  margin: 0 0 12px;
+  font-size: 15.5px;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.emptyActions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px 16px;
+}
+
+.missing {
+  font-size: 13.5px;
+  font-weight: 800;
+  color: var(--accent);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+/* ---- Filtering ----------------------------------------------------------
+   Same mechanism as /blog (PostGrid.module.css): every count variant and
+   every chip ships, and these rules choose from <html data-filter>, which
+   FilterBoot sets during parse, so /glossary?category=… paints right before
+   any JS runs. One line per category; the ids are glossaryCategories in
+   lib/content/glossary/categories.ts, and `npm run lint` fails if one is
+   missing (scripts/check-filter-css.mjs). The entries and A–Z letters are
+   filtered in GlossaryDirectory.module.css and GlossaryAlphabet.module.css. */
+html[data-filter="scoring"] .count > [data-for="all"],
+html[data-filter="formats"] .count > [data-for="all"],
+html[data-filter="side-games"] .count > [data-for="all"],
+html[data-filter="handicaps"] .count > [data-for="all"],
+html[data-filter="shots"] .count > [data-for="all"],
+html[data-filter="course-rules"] .count > [data-for="all"],
+html[data-filter="equipment"] .count > [data-for="all"],
+html[data-filter="slang"] .count > [data-for="all"] {
+  display: none;
+}
+
+html[data-filter="scoring"] .count > [data-for="scoring"],
+html[data-filter="formats"] .count > [data-for="formats"],
+html[data-filter="side-games"] .count > [data-for="side-games"],
+html[data-filter="handicaps"] .count > [data-for="handicaps"],
+html[data-filter="shots"] .count > [data-for="shots"],
+html[data-filter="course-rules"] .count > [data-for="course-rules"],
+html[data-filter="equipment"] .count > [data-for="equipment"],
+html[data-filter="slang"] .count > [data-for="slang"] {
+  display: inline;
+}
+
+/* The lit chip before hydration; ChipFilter's .active takes over after. */
+html:not([data-filter]) .chips [data-chip="all"],
+html[data-filter="all"] .chips [data-chip="all"],
+html[data-filter="scoring"] .chips [data-chip="scoring"],
+html[data-filter="formats"] .chips [data-chip="formats"],
+html[data-filter="side-games"] .chips [data-chip="side-games"],
+html[data-filter="handicaps"] .chips [data-chip="handicaps"],
+html[data-filter="shots"] .chips [data-chip="shots"],
+html[data-filter="course-rules"] .chips [data-chip="course-rules"],
+html[data-filter="equipment"] .chips [data-chip="equipment"],
+html[data-filter="slang"] .chips [data-chip="slang"] {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: var(--accent-ink);
+}

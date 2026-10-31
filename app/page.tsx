@@ -36,15 +36,14 @@ export const metadata: Metadata = pageMetadata({
  * WebSite nodes come from lib/schema.ts, which every other page's JSON-LD
  * refers to.
  *
- * No `aggregateRating` and no `datePublished` — the app isn't released and has
- * no ratings, and inventing either is the kind of thing that gets structured
- * data ignored site-wide. No `offers` either: nothing can be downloaded or
- * bought yet and pricing isn't set, and an Offer says otherwise. Add one at
- * launch, from the pricing decision, not before.
+ * No `aggregateRating` and no `datePublished`: there are no ratings to
+ * report, and inventing either is the kind of thing that gets structured data
+ * ignored site-wide. No `offers` either: pricing isn't set (see the FAQ), and
+ * an Offer would state a price. Add one from the pricing decision, not before.
  *
- * `operatingSystem` comes from the capability registry, so it says "Web
- * browser" while the app runs in a browser and gains iOS and Android only when
- * the store apps are live there.
+ * `operatingSystem` comes from the capability registry: "Web browser" and
+ * "Android" while those are live, and "iOS" only once the ios-app entry is
+ * (siteConfig.iosLive).
  *
  * The home page carries no FAQPage even though it ends with an FAQ section —
  * those same questions are the canonical /faq block, and the same Q/A marked
@@ -52,21 +51,19 @@ export const metadata: Metadata = pageMetadata({
  */
 const platforms = [
   capability("web-app").status === "live" ? "Web browser" : null,
-  // claim-ok: only once the store-apps entry is live
-  capability("store-apps").status === "live" ? "iOS, Android" : null,
+  capability("android-app").status === "live" ? "Android" : null,
+  capability("ios-app").status === "live" ? "iOS" : null,
 ].filter(Boolean);
 
 /**
  * The store listings are the app's other identities, so they go on the
- * SoftwareApplication, not the Organization: once the store apps are live and
- * their URLs are set (they fall back to "#get"), not before.
+ * SoftwareApplication, not the Organization: each once its app is live and
+ * its URL is a real listing (the App Store one falls back to "#get").
  */
-const storeListings =
-  capability("store-apps").status === "live"
-    ? [siteConfig.appStoreUrl, siteConfig.googlePlayUrl].filter((url) =>
-        url.startsWith("https://"),
-      )
-    : [];
+const storeListings = [
+  capability("android-app").status === "live" ? siteConfig.googlePlayUrl : "",
+  capability("ios-app").status === "live" ? siteConfig.appStoreUrl : "",
+].filter((url) => url.startsWith("https://"));
 
 const homeJsonLd = {
   "@context": "https://schema.org",

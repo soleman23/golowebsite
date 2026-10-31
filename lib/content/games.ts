@@ -15,9 +15,8 @@
  */
 
 import type { IconName } from "@/components/ui/Icon";
-import { siteConfig } from "@/lib/siteConfig";
 
-export type GameTag = "pots" | "match" | "points" | "side";
+export type GameTag = "pots" | "match" | "points" | "teams" | "side";
 
 export const GAME_SLUGS = [
   "skins",
@@ -25,6 +24,7 @@ export const GAME_SLUGS = [
   "best-score",
   "wolf",
   "bingo-bango-bongo",
+  "scramble",
   "closest-to-pin",
   "longest-drive",
   "birdies",
@@ -103,12 +103,22 @@ const roster = {
     format: "3 points / hole",
     tags: ["points"],
   },
+  scramble: {
+    icon: "team",
+    name: "Scramble",
+    rule: "Teams of up to four, one ball, one team handicap.",
+    desc: "Everyone hits and the team plays its best shot. GoLo works out each team’s handicap and runs Skins, Nassau and Best Score team against team.",
+    how: "Split up to 12 players into 2 to 6 teams. Everyone hits, the team picks the best shot, and all play the next shot from there.",
+    players: "2–12 players",
+    format: "Teams of 1–4",
+    tags: ["teams"],
+  },
   "closest-to-pin": {
     icon: "pin",
     name: "Closest to Pin",
     rule: "The par-3 side game, settled on the green.",
-    desc: "Stick your tee shot tightest on the par 3s and take the greenie.",
-    how: "On each designated par 3, whoever lands closest to the flag and makes par or better takes that hole’s greenie.",
+    desc: "Stick your tee shot tightest on the marked par 3s and win the hole.",
+    how: "On each marked par 3, whoever lands closest to the flag wins the hole. Playing it as a greenie, with par or better to win, is the group’s call.",
     players: "Any group",
     format: "Par 3s only",
     tags: ["side"],
@@ -126,9 +136,9 @@ const roster = {
   birdies: {
     icon: "bird",
     name: "Birdies",
-    rule: "Every birdie on the card gets paid.",
-    desc: "A standing bounty on every birdie — paid out by everyone who didn’t make one.",
-    how: "Set a per-birdie amount. Card a birdie and every other player pays you. Eagles usually count double.",
+    rule: "Every birdie on the card counts.",
+    desc: "A standing bounty on every birdie — owed by everyone who didn’t make one.",
+    how: "Set a per-birdie amount. Card a birdie and every other player owes you. Eagles usually count double.",
     players: "Any group",
     format: "Per-birdie bounty",
     tags: ["side"],
@@ -145,6 +155,7 @@ export const gameFilters: GameFilter[] = [
   { id: "pots", label: "Skins & Best Score" },
   { id: "match", label: "Match play" },
   { id: "points", label: "Points" },
+  { id: "teams", label: "Team formats" },
   { id: "side", label: "Side games" },
 ];
 
@@ -153,18 +164,16 @@ export const gamesHero = {
   kicker: "EVERY GAME, SCORED AUTOMATICALLY",
   title: "Golf side games:",
   titleAccentLine: "Rules, scoring, and settling up.",
-  lead: "Skins, Nassau, Wolf, the junk your buddy always forgets to settle — GoLo runs every one, stacks them in a single round, and nets it all into one number per player. Browse the whole roster below.",
+  lead: "Skins, Nassau, Wolf, Best Score, the birdie skin your buddy always forgets to settle — GoLo runs every one, stacks them in a single round, and nets it all into one number per player. Browse the whole roster below.",
 };
 
 /**
- * The /games closing band. The lead follows siteConfig.appLive the way the
- * band's own buttons do: no "download it" before there's anything to download.
+ * The /games closing band. The band's own download row sits under it: Google
+ * Play, and the web app for iPhone until the App Store app is out.
  */
 export const gamesFinalCta = {
   title: "Stack 'em all. Settle in seconds.",
-  lead: siteConfig.appLive
-    ? "Set up every game before the first tee and let GoLo keep score. Download it, and never do parking-lot math again."
-    : "Set up every game before the first tee and let GoLo keep score. Get the launch link and let GoLo handle the parking-lot math.",
+  lead: "Set up every game before the first tee and let GoLo keep score. Download it, and never do parking-lot math again.",
 };
 
 export function isGameSlug(slug: string): slug is GameSlug {

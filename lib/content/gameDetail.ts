@@ -89,6 +89,8 @@ export type GameDetail = {
     standings?: GameExampleStanding[];
     net: { label: string; sub: string; value: string };
     phone: {
+      /** The GoLo game the phone shows, when it isn't the page's own game. */
+      game?: string;
       opponent: string;
       through: string;
       of: string;
@@ -115,7 +117,11 @@ export type GameDetail = {
   };
   variations: { icon: IconName; title: string; body: string }[];
   tips: { tone: "good" | "bad"; title: string; body: string }[];
-  glossary: { term: string; def: string }[];
+  /**
+   * `href` links the term to its glossary entry (#164), for the few terms
+   * the glossary explains past what the guide needs.
+   */
+  glossary: { term: string; def: string; href?: string }[];
   faqs: { id: string; q: string; a: string }[];
   /** Slugs from games.ts. */
   related: GameSlug[];
@@ -243,7 +249,7 @@ const nassau: GameDetailCopy = {
     tips: {
       kicker: "PLAY SMART",
       title: "When to press — and when to shut up.",
-      lead: "A Nassau rewards momentum. Read your own game before you throw more money at a nine you're spraying all over the lot.",
+      lead: "A Nassau rewards momentum. Read your own game before you throw another match at a nine you're spraying all over the lot.",
     },
     glossary: { kicker: "TALK THE TALK", title: "The terms you'll hear on the tee." },
     faq: { kicker: "NASSAU, ANSWERED", title: "Before you tee it up." },
@@ -308,6 +314,7 @@ const nassau: GameDetailCopy = {
     {
       term: "Press",
       def: "A new side match opened mid-nine by the player who’s behind, covering only the holes that remain.",
+      href: "/glossary#press",
     },
     {
       term: "All square (AS)",
@@ -331,7 +338,7 @@ const nassau: GameDetailCopy = {
     {
       id: "what-is-a-press",
       q: "What exactly is a press?",
-      a: "When you fall two holes down, you can start a new match — same amount — that only covers the holes still to play on that nine. It’s a fresh chance to win money back on a nine you’ve already lost. GoLo doesn’t take presses on a Nassau; in the app they’re on the Overall Match game.",
+      a: "When you fall two holes down, you can start a new match — same amount — that only covers the holes still to play on that nine. It’s a fresh chance to get even on a nine you’ve already lost. GoLo doesn’t take presses on a Nassau; in the app they’re on the Overall Match game.",
     },
     {
       id: "auto-press",
@@ -411,18 +418,20 @@ const skins: GameDetailCopy = {
     },
   },
   headings: {
-    variations: { kicker: "CARRYOVERS & VARIATIONS", title: "The carryover is what makes skins mean.", lead: "Tie a hole and nobody wins it — the skin carries forward. GoLo tracks every carried skin so you always know what’s on the line." },
+    // "GoLo tracks every carried skin": capabilities.ts live-skins.
+    variations: { kicker: "CARRYOVERS & VARIATIONS", title: "The carryover is what makes skins mean.", lead: "Tie a hole and nobody wins it — the skin carries forward. GoLo tracks every carried skin so you always know what the next hole is worth." },
     tips: { kicker: "PLAY SMART", title: "Skins pays birdies, not steady golf.", lead: "Every hole resets, so the money goes to whoever is willing to make one great swing at the right moment." },
     glossary: { kicker: "TALK THE TALK", title: "The terms you'll hear on the tee." },
     faq: { kicker: "SKINS, ANSWERED", title: "Before you tee it up." },
     related: { kicker: "STACK IT WITH", title: "Crews that play skins also run…", lead: "Skins is the easiest game to stack — run any of these alongside it and GoLo nets the whole pile into one number." },
-    cta: { title: "Never argue about a carryover again.", lead: "Set your skin value, add the group, and GoLo tracks every carry, every validation, and who owes what at the 18th." },
+    cta: { title: "Never argue about a carryover again.", lead: "Set your skin value, add the group, and GoLo tracks every carry and who owes what at the 18th." },
   },
   variations: [
+    // "live skins on the scoring screen": capabilities.ts live-skins.
     { icon: "stack", title: "The carryover", body: "Every halved hole rolls forward. GoLo shows the live skins on the scoring screen before anyone stands over the next putt." },
     { icon: "pin", title: "Validation rules", body: "Make players earn a big carry with birdie-to-win or a par minimum on carried skins." },
     { icon: "shield", title: "Net skins", body: "Play off handicaps and GoLo allocates strokes by stroke index, hole by hole." },
-    { icon: "dice", title: "Stack the side games", body: "Run skins beside greenies, barkies, or a birdie bounty, then settle once." },
+    { icon: "dice", title: "Stack the side games", body: "Run skins beside a Nassau, Best Score or Wolf, then settle once." },
   ],
   tips: [
     { tone: "good", title: "Go at the pin when the carry is big", body: "A big carry rewards one aggressive swing. Safe golf wins nothing when two other players are also making par." },
@@ -431,8 +440,9 @@ const skins: GameDetailCopy = {
   ],
   glossary: [
     { term: "Skin", def: "The prize for one hole. Won only by the player with the outright lowest score on that hole." },
-    { term: "Carryover (carry)", def: "A skin nobody won. It rolls onto the next hole, stacking on top of that hole’s own skin." },
-    { term: "Push / halve", def: "A tied low score. Nobody wins and the skin carries." },
+    { term: "Carryover (carry)", def: "A skin nobody won. It rolls onto the next hole, stacking on top of that hole’s own skin.", href: "/glossary#carryover" },
+    { term: "Push", def: "A tied low score. Nobody wins the hole and the skin carries." },
+    { term: "Halve", def: "The match-play word for a tied hole. In skins the same tie is a push, and the skin carries." },
     { term: "Validation", def: "A house rule that carried skins only count on a birdie or better." },
     { term: "Net skins", def: "Skins played off handicaps, with strokes allocated hole by hole." },
     { term: "Barkie / sandy", def: "Bonus mini-skins for making par after hitting a tree or getting up and down from a bunker." },
@@ -530,7 +540,7 @@ const bestScore: GameDetailCopy = {
   glossary: [
     { term: "Best Score", def: "One amount, the same for everybody; the best score takes it, or the top two or three split it." },
     { term: "Amount", def: "What each player plays for, agreed before the first tee." },
-    { term: "Net score", def: "Your gross score minus handicap strokes." },
+    { term: "Net score", def: "Your gross score minus handicap strokes.", href: "/glossary#net-score" },
     { term: "Course handicap", def: "Your index adjusted for the tees you played." },
     { term: "Places", def: "How many finishers split it." },
     { term: "Quota", def: "A Stableford variant that scores points against a target." },
@@ -575,7 +585,7 @@ const wolf: GameDetailCopy = {
     kicker: "WATCH IT PLAY OUT", title: "Three trips alone, one of them blind.", lead: "Four players, $1 a point. You were Wolf five times and went it alone on three of them — including the 18th, before anyone had hit a shot.",
     bets: [
       { tag: "H2", title: "Took Dave off the tee", detail: "His birdie held up — two points each", value: "+2", tone: "good" },
-      { tag: "H7", title: "Lone Wolf, cashed", detail: "Passed on all three, stuffed it to four feet", value: "+4", tone: "good" },
+      { tag: "H7", title: "Lone Wolf, won", detail: "Passed on all three, stuffed it to four feet", value: "+4", tone: "good" },
       { tag: "H11", title: "Lone Wolf, buried", detail: "Alone into the wind, made bogey", value: "0", tone: "bad" },
       { tag: "H18", title: "Blind Wolf", detail: "Declared before anyone hit — double or nothing", value: "+8", tone: "good" },
       { tag: "REST", title: "The other fourteen holes", detail: "Partner wins and two holes beating the other team", value: "+12", tone: "neutral" },
@@ -612,7 +622,7 @@ const wolf: GameDetailCopy = {
     { icon: "wolf", title: "Lone Wolf", body: "Turn down all three drives and play against the best ball of the group for four points." },
     { icon: "shield", title: "Blind Wolf", body: "Call it before a ball is struck. Most groups pay eight points if you pull it off." },
     { icon: "auto", title: "Rotation and the last two", body: "GoLo handles holes 17 and 18 using the trailing players or a restarted order." },
-    { icon: "cash", title: "Points to cash", body: "Settle the spread between every pair, then collapse the grid into one number per player." },
+    { icon: "cash", title: "Points to the settle-up", body: "Settle the spread between every pair, then collapse the grid into one number per player." },
   ],
   tips: [
     { tone: "good", title: "Judge the drive, not the driver", body: "Take the ball that is playable, even if it belongs to the higher handicap." },
@@ -624,7 +634,7 @@ const wolf: GameDetailCopy = {
     { term: "Lone Wolf", def: "The Wolf declining all three partners and playing against the best opposing ball." },
     { term: "Blind Wolf", def: "Declaring alone before anyone hits, usually for double the Lone Wolf value." },
     { term: "The rotation", def: "The fixed order that determines the Wolf on each hole." },
-    { term: "Best ball", def: "The team’s better score on the hole, not a total." },
+    { term: "Best ball", def: "The team’s better score on the hole, not a total.", href: "/glossary#four-ball" },
     { term: "Point value", def: "What each point is worth at settlement." },
   ],
   faqs: gameFaqs("wolf", [
@@ -723,24 +733,127 @@ const bingoBangoBongo: GameDetailCopy = {
     { q: "Does order of play really matter?", a: "It is the game. Playing out of turn can hand away bingo or bongo." },
     { q: "Can we play with three or five?", a: "Three works well. Five gets slow because every point waits for all five balls." },
   ]),
-  related: ["wolf", "skins", "closest-to-pin"], prev: "wolf", next: "closest-to-pin",
+  related: ["wolf", "skins", "closest-to-pin"], prev: "wolf", next: "scramble",
+};
+
+// Checked against golo `main` 2237c1d (GoLo 1.2.1): Scramble is a round
+// format, not a bet. 2 to 6 teams of 1 to 4, up to 12 players; team handicap
+// Net (default), Gross or Manual 0–99, from docs/GOLO-032-SCRAMBLE-HANDICAP.md;
+// Skins, Nassau, Best Score and Overall Match play between teams, each team's
+// result split evenly; Wolf and Bingo Bango Bongo are off. The example's team
+// handicaps: 0.35 × 8 + 0.15 × 14 = 4.9 → 5, and 0.35 × 2 + 0.15 × 18 = 3.4 → 3.
+// Keep the ledger, standings and phone reconciled: front 4–2 (2 up), back 2–3
+// (1 down), total 6–5 (1 up), no match decided before its last hole.
+const scramble: GameDetailCopy = {
+  slug: "scramble",
+  updated: "2026-10-31",
+  seoTitle: "Golf Scramble Rules: Team Handicaps & Side Games",
+  kicker: "TEAMS · ONE BALL",
+  tagline: "Teams play one ball: everyone hits, the best shot gets played, and one score a hole goes on the card. GoLo works out each team’s handicap and settles your games team against team.",
+  metaDescription: "How a golf scramble works, the WHS team handicap percentages for two, three and four players, and how GoLo runs Skins, Nassau and Best Score between teams.",
+  traits: ["2–12 players", "2–6 teams", "Team handicap", "One ball a team"],
+  howTitle: "Everyone hits. One ball goes on.",
+  intro: "A scramble turns a group into teams that play one ball. Everyone hits, the team picks the best shot, and everyone plays the next one from there until it’s holed. One score per team goes on the card, so a 25-handicap and a 5 can play together and both count. The part groups argue about is the team handicap, so GoLo works it out the same way every time.",
+  steps: [
+    { n: "1", title: "Split into teams", body: "Two to six teams of one to four players, up to twelve in all. GoLo deals the group out evenly and you move players around before the first tee. In GoLo, any group of more than four plays as a scramble." },
+    { n: "2", title: "Everyone hits, the best shot plays", body: "All of you tee off, the team picks the best drive, and everyone plays their next shot from that spot. Repeat until the ball is in the hole." },
+    { n: "3", title: "Set the team handicaps", body: "Net is the default: GoLo works out a handicap for each team from its players’ Course Handicaps, using the percentages below. Gross plays it scratch. Manual lets the organizer set each team’s number." },
+    { n: "4", title: "Put games on it", body: "Skins, Nassau, Best Score and the Overall Match play team against team. Wolf and Bingo Bango Bongo aren’t played in a scramble." },
+    { n: "5", title: "One scorer per team", body: "Each team’s scorer enters one score a hole. GoLo nets it by the team’s strokes, settles every game, and splits each team’s result evenly between its players." },
+  ],
+  scoring: {
+    kicker: "TEAM HANDICAPS",
+    title: "Four team sizes, four sets of percentages.",
+    lead: "GoLo takes each player’s Course Handicap before rounding, lowest first, multiplies it by the percentage for its place, adds them up and rounds once, half up. A team never goes below 0, so it never gives strokes back.",
+    rows: [
+      { tag: "1", title: "One-player team", detail: "No scramble advantage, so the full Course Handicap", value: "100%" },
+      { tag: "2", title: "Two players", detail: "The WHS recommendation, lower handicap first", value: "35 / 15%" },
+      { tag: "3", title: "Three players", detail: "The WHS recommendation, lowest handicap first", value: "30 / 20 / 10%" },
+      { tag: "4", title: "Four players", detail: "The WHS recommendation, lowest handicap first", value: "25 / 20 / 15 / 10%" },
+    ],
+  },
+  example: {
+    kicker: "WATCH IT PLAY OUT",
+    title: "A $20 Nassau between two scramble teams.",
+    lead: "You and Mike, Course Handicaps 8 and 14, against Tom and Dave, 2 and 18, playing Net. Your team handicap is 35% of 8 plus 15% of 14: 4.9, which plays as 5. Theirs is 0.7 plus 2.7: 3.4, which plays as 3. Each team’s result is split between its two players.",
+    bets: [
+      { tag: "F9", title: "Front nine", detail: "2 up through 9; the team’s $20, split two ways", value: "+$10", tone: "good" },
+      { tag: "B9", title: "Back nine", detail: "Tom and Dave took it 1 up", value: "−$10", tone: "bad" },
+      { tag: "18", title: "Overall match", detail: "1 up, held with a half on 18", value: "+$10", tone: "good" },
+    ],
+    standings: [
+      { name: "You", note: "half of the team’s +$20", value: "+$10", tone: "good" },
+      { name: "Mike", note: "half of the team’s +$20", value: "+$10", tone: "good" },
+      { name: "Tom", note: "half of the team’s −$20", value: "−$10", tone: "bad" },
+      { name: "Dave", note: "half of the team’s −$20", value: "−$10", tone: "bad" },
+    ],
+    net: { label: "NET · YOU’RE OWED", sub: "Your half of the team’s +$20", value: "+$10" },
+    phone: {
+      opponent: "vs Tom & Dave", through: "18", of: "/ 18", state: "FINAL", stateSub: "two-player teams",
+      sequence: ["h", "w", "l", "w", "h", "w", "h", "l", "w", "l", "w", "h", "l", "w", "l", "h", "h", "h"],
+      stats: [
+        { label: "FRONT", status: "2↑", value: "+$10", tone: "good" },
+        { label: "BACK", status: "1↓", value: "−$10", tone: "bad" },
+        { label: "TOTAL", status: "1↑", value: "+$10", tone: "good" },
+      ],
+      callout: { label: "TEAM HCP", note: "Yours 5, theirs 3: your extra two fall on stroke index 4 and 5" },
+      settleTitle: "You’re owed", settleSub: "your half, netted", settleValue: "$10",
+      label: "The finished scramble Nassau against Tom and Dave: front nine won, back nine lost, overall match won 1 up. Your team is up 20 dollars and your half is 10.",
+    },
+  },
+  headings: {
+    variations: { kicker: "HOUSE FORMATS", title: "Same idea, different rules about whose ball you play.", lead: "GoLo runs the plain scramble. These are the versions groups and events add on top, and what GoLo does with each." },
+    tips: { kicker: "PLAY SMART", title: "A scramble is won on the order you hit in.", lead: "Four players and one ball only help if the first shot makes the next three easier." },
+    glossary: { kicker: "TALK THE TALK", title: "The terms on a scramble card." },
+    faq: { kicker: "SCRAMBLE, ANSWERED", title: "Before you split the teams." },
+    related: { kicker: "PUT IT ON THE TEAMS", title: "The games GoLo runs between scramble teams.", lead: "Skins, Nassau and Best Score all play team against team, and each team’s result is split between its players." },
+    cta: { title: "Twelve players, one score a team.", lead: "Deal the teams, let GoLo work out the team handicaps, and settle every game when the last putt drops." },
+  },
+  variations: [
+    { icon: "drive", title: "Texas scramble", body: "Each player’s drive has to be used a set number of times, often four each over 18. GoLo doesn’t track whose drive was used, so keep that count on paper." },
+    { icon: "swap", title: "Shamble", body: "Everyone plays from the best drive, then plays their own ball into the hole. GoLo has no shamble setting." },
+    { icon: "shield", title: "Uneven teams", body: "A 1+3 or 2+3 split plays, but each team uses the percentages for its own size, so it isn’t fully evened out. GoLo says so on the setup screen." },
+    { icon: "grid", title: "Your own team numbers", body: "Events often use their own formula, such as a share of the team’s combined handicaps. Pick Manual and set each team’s handicap yourself, 0 to 99." },
+  ],
+  tips: [
+    { tone: "good", title: "Safe ball first", body: "Get one ball in the fairway or on the green before anyone gets clever. Everyone after can swing at the flag." },
+    { tone: "bad", title: "Don’t take the long drive by reflex", body: "Ten yards closer from the rough is worse than the fairway. Pick the ball with the easiest next shot." },
+    { tone: "good", title: "Lag first, charge after", body: "The first putt should reach the hole. Once the team has the read and a tap-in to fall back on, the rest can go at it." },
+  ],
+  glossary: [
+    { term: "Scramble", def: "A team format: everyone hits, the team picks the best shot, and all play the next one from there." },
+    { term: "Team handicap", def: "The strokes a scramble team gets, worked out from its players’ Course Handicaps at a set percentage each." },
+    { term: "Course handicap", def: "Your index adjusted for the tees you played." },
+    { term: "Stroke index", def: "The card’s ranking of holes from hardest (1) to easiest. Strokes go on the hardest first.", href: "/glossary#stroke-index" },
+    { term: "Texas scramble", def: "A scramble that requires each player’s drive to be used a minimum number of times." },
+    { term: "Shamble", def: "Best drive, then everyone plays their own ball into the hole." },
+  ],
+  faqs: gameFaqs("scramble", [
+    { q: "How is a scramble team handicap worked out?", a: "Each player’s Course Handicap, lowest first, times a percentage: 35% and 15% for two players, 30, 20 and 10% for three, 25, 20, 15 and 10% for four. Add the shares and round once, half up. A team of 5, 10, 15 and 20 comes to 7.5, which plays as 8." },
+    { q: "How many players can play a scramble in GoLo?", a: "Up to twelve, in two to six teams of one to four. A group of more than four plays as a scramble; the other formats hold four." },
+    { q: "Can teams of different sizes play each other?", a: "Yes. Each team uses the percentages for its own size, so a 1+3 split plays but isn’t fully evened out, and GoLo says so when you set it up." },
+    { q: "Which games can we put on a scramble?", a: "Skins, Nassau, Best Score and the Overall Match, all team against team. With three or more teams, every pair of teams plays its own Nassau. Wolf and Bingo Bango Bongo aren’t played in a scramble." },
+    { q: "Who pays what when a team wins?", a: "A team’s result is split evenly between its players. Win a $20 Nassau match as a two-player team and you each take $10. In Best Score everyone puts in the same amount, and whatever a team wins is split between its players." },
+    { q: "Can we play it without handicaps?", a: "Yes. Pick Gross and every team plays scratch, or pick Manual and set each team’s number yourself, 0 to 99." },
+    { q: "Who keeps score?", a: "One scorer per team. Anyone else in the round who is signed in can follow it live on their own phone." },
+  ]),
+  related: ["skins", "nassau", "best-score"], prev: "bingo-bango-bongo", next: "closest-to-pin",
 };
 
 const closestToPin: GameDetailCopy = {
   slug: "closest-to-pin", kicker: "SIDE GAME · PAR 3s",
-  deeperReading: { href: "/blog/rangefinder", label: "Deeper reading: rangefinder or GPS watch, for the $10 crowd →" },
-  updated: "2026-10-15",
+  updated: "2026-10-29",
   seoTitle: "Closest to the Pin & Greenies: Golf Side Game Rules",
-  tagline: "One tee shot, one hole. Stick it tighter than everybody else on the par 3s and take the greenie — as long as you can still make par from there.",
+  tagline: "One tee shot, one hole. Stick it tighter than everybody else on the par 3s and win it. Play it as a greenie and you still have to make par from there.",
   metaDescription: "How closest to the pin and greenies work: who qualifies, par-to-win, measuring, carryovers, and how it settles up.",
   traits: ["Any group size", "Par 3s only", "Greenies", "Per-hole amount"],
   howTitle: "The oldest side game in golf, and the easiest to argue about.",
-  intro: "Also known as a greenie. On every par 3, whoever hits their tee shot closest to the flag takes that hole’s greenie. Two rules do all the work: the ball usually has to finish on the green, and most groups make you two-putt for par before the greenie is actually yours.",
+  intro: "On every marked par 3, whoever hits their tee shot closest to the flag wins the hole. Most groups play it as a greenie, which adds two conditions: the ball has to finish on the green, and you have to make par before it is actually yours. In GoLo’s Closest to Pin game those are the group’s rules to apply, and GoLo nets whoever the scorer marks as the winner. For greenies with par to win, its Skins game has a Greenie option.",
   steps: [
     { n: "1", title: "Mark the holes and the amount", body: "Usually all four par 3s, at $5 a head. Some groups mark one signature hole." },
     { n: "2", title: "Tee shots only", body: "Only the ball you hit from the tee counts. Reload and you are out of the running." },
-    { n: "3", title: "Closest to the flag wins", body: "Nearest ball takes the greenie — on the green, in almost every house rule." },
-    { n: "4", title: "Then make your par", body: "Three-putt and the greenie goes to the next closest, or carries." },
+    { n: "3", title: "Closest to the flag wins", body: "Nearest ball takes the hole. Greenie rules add that it has to be on the green." },
+    { n: "4", title: "Then make your par", body: "Under greenie rules, a three-putt hands it to the next closest, or it carries. The group makes that call before the scorer marks a winner." },
     { n: "5", title: "GoLo settles the hole", body: "Record the winner on the hole and GoLo nets it into the settle-up with every other game. GoLo keeps the tally; it never holds money." },
   ],
   scoring: {
@@ -753,7 +866,7 @@ const closestToPin: GameDetailCopy = {
     ],
   },
   example: {
-    kicker: "WATCH IT PLAY OUT", title: "Four par 3s, $5 a greenie, one three-putt that handed over a $30 hole.", lead: "Four players, greenies on every par 3, par-to-win turned on. On the seventh Tom was inside everybody — and walked off with nothing.",
+    kicker: "WATCH IT PLAY OUT", title: "Four par 3s, $5 a greenie, one three-putt that handed over a $30 hole.", lead: "Four players, greenies on every par 3, par to win, and an unclaimed greenie carries to the next par 3. That’s how GoLo’s Greenie skins play. On the seventh Tom was inside everybody — and walked off with nothing.",
     bets: [
       { tag: "H3", tagSub: "168 YDS", title: "You — 11 ft 4 in", detail: "Only ball on the green, two-putt par", value: "+$15", tone: "good" },
       { tag: "H7", tagSub: "205 YDS", title: "Nobody", detail: "Tom was inside everyone, then three-putted", value: "carry", tone: "neutral" },
@@ -768,16 +881,18 @@ const closestToPin: GameDetailCopy = {
     ],
     net: { label: "NET · YOU’RE OWED", sub: "Four par-3 holes, netted", value: "+$40" },
     phone: {
-      opponent: "Four-player greenies", through: "18", of: "/ 18", state: "FINAL", stateSub: "four par 3s",
+      // In GoLo a greenie that carries is the Skins game's Greenie option
+      // (capabilities.ts skins-greenie-sandie); Closest to Pin doesn't carry.
+      game: "Skins", opponent: "Four-player greenies", through: "18", of: "/ 18", state: "FINAL", stateSub: "four par 3s",
       sequence: ["h", "h", "w", "h", "h", "h", "h", "h", "h", "h", "h", "w", "h", "h", "h", "l", "h", "h"],
       stats: [
         { label: "GREENIES", status: "3", value: "of 4", tone: "good" },
-        { label: "CLOSEST", status: "3′2″", value: "hole 12", tone: "good" },
+        { label: "BIGGEST", status: "$30", value: "hole 12", tone: "good" },
         { label: "CARRIED", status: "1", value: "hole 7", tone: "neutral" },
       ],
-      callout: { label: "PAR TO WIN", note: "Tom’s three-putt carried hole 7" },
+      callout: { label: "NO PAR", note: "Tom’s three-putt carried hole 7" },
       settleTitle: "You’re owed", settleSub: "Greenies, netted", settleValue: "$40",
-      label: "Final closest-to-pin results: you win three of four greenies and are owed forty dollars.",
+      label: "Final greenie results in a Skins game: you win three of four greenies and are owed forty dollars.",
     },
   },
   headings: {
@@ -785,14 +900,14 @@ const closestToPin: GameDetailCopy = {
     tips: { kicker: "PLAY SMART", title: "The greenie isn't yours until the putt drops.", lead: "Par-to-win separates this from a target contest. Four feet means nothing if you three-putt." },
     glossary: { kicker: "TALK THE TALK", title: "The terms you'll hear on the tee." },
     faq: { kicker: "CLOSEST TO PIN, ANSWERED", title: "Before you tee it up." },
-    related: { kicker: "STACK IT WITH", title: "Nobody plays this one on its own.", lead: "Greenies are a garnish. Put a real game underneath them and let GoLo settle the whole plate." },
+    related: { kicker: "STACK IT WITH", title: "Nobody plays this one on its own.", lead: "Closest to the pin is a garnish. Put a real game underneath it and let GoLo settle the whole plate." },
     cta: { title: "Retire the pencil on the greenie stick.", lead: "Mark the par 3s, record each winner, and let GoLo net it into the settle-up." },
   },
   variations: [
     { icon: "pin", title: "Greenies on every par 3", body: "Four separate greenies over 18 holes, one on each par 3." },
     { icon: "target", title: "Closest in two", body: "Run it on a par 5 and measure after everyone’s second shot." },
     { icon: "drive", title: "Approach on a marked par 4", body: "Settle on approach shots instead of tee shots." },
-    { icon: "cash", title: "One for the whole round", body: "Everybody puts in once and the tightest single shot takes it." },
+    { icon: "cash", title: "One for the whole round", body: "One amount for the round, and the tightest single shot wins it." },
   ],
   tips: [
     { tone: "good", title: "Play to the middle when the pin is tucked", body: "Thirty feet on the green beats hole-high in the sand every time." },
@@ -800,7 +915,7 @@ const closestToPin: GameDetailCopy = {
     { tone: "good", title: "Treat the par putt like the game", body: "Under par-to-win, the four-footer is the one that counts." },
   ],
   glossary: [
-    { term: "Greenie", def: "Closest to the pin on a par 3, on in one, par or better to win." },
+    { term: "Greenie", def: "Closest to the pin on a par 3, on in one, par or better to win.", href: "/glossary#greenie" },
     { term: "On in one", def: "Your tee shot finished on the putting surface." },
     { term: "Par to win", def: "Closest gets nothing unless they finish in par or better." },
     { term: "Carry", def: "An unclaimed greenie rolling to the next par 3." },
@@ -808,19 +923,18 @@ const closestToPin: GameDetailCopy = {
     { term: "Inside the leather", def: "Old shorthand for a distance close enough to call even." },
   ],
   faqs: gameFaqs("closest-to-pin", [
-    { q: "Does the ball have to be on the green?", a: "In most groups, yes. Set it either way, but decide before the first par 3." },
-    { q: "Do you really have to make par?", a: "It is the standard validation rule and makes the whole hole count." },
-    { q: "How do we measure it?", a: "Eyeball obvious gaps, pace close ones, or use a rangefinder. Log it when you reach the green." },
+    { q: "Does the ball have to be on the green?", a: "In most groups, yes. Agree it either way, but decide before the first par 3." },
+    { q: "Do you really have to make par?", a: "Only if your group plays it as a greenie, where par-to-win is the standard rule. In GoLo’s Closest to Pin game it’s the group’s call: the scorer marks whoever the group says won. Its Skins game has a Greenie option that pays only on par or better and carries an unclaimed greenie to the next par 3." },
+    { q: "How do we measure it?", a: "Eyeball obvious gaps, pace close ones, or use a rangefinder. The scorer marks the winner once everyone is on the green." },
     { q: "What if two players are the same distance?", a: "Split it or carry it to the next par 3." },
     { q: "Can we play it on par 4s and 5s?", a: "Yes. Closest in two and marked approaches use the same rules." },
     { q: "Can it be one greenie for the whole round?", a: "Yes. The tightest tee shot across all par 3s takes it." },
   ]),
-  related: ["longest-drive", "birdies", "bingo-bango-bongo"], prev: "bingo-bango-bongo", next: "longest-drive",
+  related: ["longest-drive", "birdies", "bingo-bango-bongo"], prev: "scramble", next: "longest-drive",
 };
 
 const longestDrive: GameDetailCopy = {
   slug: "longest-drive", kicker: "SIDE GAME · ONE MARKED HOLE",
-  deeperReading: { href: "/blog/rangefinder", label: "Deeper reading: rangefinder or GPS watch, for the $10 crowd →" },
   updated: "2026-10-15",
   seoTitle: "Longest Drive Golf Side Game: Rules & Settling Up",
   tagline: "Pick a hole, swing out of your shoes, and the longest ball that finishes in the fairway takes it. Short grass or nothing.",
@@ -1008,6 +1122,7 @@ export const gameDetails = {
   "best-score": withRoster(bestScore),
   wolf: withRoster(wolf),
   "bingo-bango-bongo": withRoster(bingoBangoBongo),
+  scramble: withRoster(scramble),
   "closest-to-pin": withRoster(closestToPin),
   "longest-drive": withRoster(longestDrive),
   birdies: withRoster(birdies),

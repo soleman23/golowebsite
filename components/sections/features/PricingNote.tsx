@@ -1,6 +1,6 @@
 /**
- * What it costs. Only rendered while siteConfig.appLive is false — "free while
- * we're in beta" stops being true the moment the app ships.
+ * What it costs. Only rendered while siteConfig.appLive is false: the full
+ * launch is when pricing is set, and this note goes then.
  */
 
 import { pricing } from "@/lib/content";

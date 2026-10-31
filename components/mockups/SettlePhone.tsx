@@ -23,7 +23,7 @@ export function SettlePhone({ variant = "home" }: SettlePhoneProps) {
       scrim="linear-gradient(180deg, rgba(6,14,9,.78) 0%, rgba(6,14,9,.6) 26%, rgba(4,12,8,.92) 100%)"
       label={
         isFeatures
-          ? "GoLo settle-up screen — Mike is owed $85 across the Nassau, skins and junk, netted to three settle-ups with one already marked settled."
+          ? "GoLo settle-up screen — Mike is owed $85 across the Nassau, skins and Best Score, netted to three settle-ups with one already marked settled."
           : "GoLo settle-up screen — Mike is owed $85, with who owes whom netted out."
       }
     >

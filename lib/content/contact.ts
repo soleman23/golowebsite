@@ -33,7 +33,7 @@ export const contactRoutes: ContactRoute[] = [
     kicker: "SOMETHING'S WRONG",
     title: "Report a bug",
     blurb:
-      "The skins didn’t carry, a press paid the wrong way, the app quit on 14. Tell us the round and the hole and we’ll chase it down.",
+      "The skins didn’t carry, a press scored the wrong way, the app quit on 14. Tell us the round and the hole and we’ll chase it down.",
     cta: "REPORT IT",
   },
   {
@@ -154,7 +154,7 @@ export const contactFaqs: ContactFaqItem[] = [
   {
     id: "touch-money",
     q: "Does GoLo touch the money?",
-    a: "Never. The ledger is a scoreboard. Cash moves between you and your buddy in the parking lot, not through us.",
+    a: "Never. The ledger is a scoreboard. Settling up happens between you and your buddy in the parking lot, not through us.",
   },
   {
     id: "outside-us",

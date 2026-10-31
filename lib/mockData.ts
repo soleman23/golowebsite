@@ -128,6 +128,7 @@ const moneyRowSpecs: MoneyRowSpec[] = [
     tag: "winner takes",
   },
   {
+    // capabilities.ts closest-to-pin
     game: "closest-to-pin",
     iconColor: "#60a5fa",
     iconBg: "rgba(96,165,250,.14)",
@@ -206,7 +207,7 @@ export type SetupGameChip = { label: string; tone: "accent" | "plain" | "add" };
 export const setupGameChips: SetupGameChip[] = [
   { label: "Nassau $5", tone: "accent" },
   { label: "Skins $2", tone: "accent" },
-  { label: "Junk $1", tone: "plain" },
+  { label: "Birdie skins", tone: "plain" },
   { label: "+ add game", tone: "add" },
 ];
 
@@ -218,29 +219,25 @@ function gameTile(slug: GameSlug): GameTile {
   return { name, rule };
 }
 
-const rosterTiles: GameTile[] = [
+/*
+ * Roster games only. A "Junk board" tile used to close this list
+ * (soleman23/golowebsite#172): the app has no junk board as such. Greenies and
+ * sandies are Skins options (capabilities.ts skins-greenie-sandie), not a
+ * game of their own. Scramble, the newest format, takes the highlighted slot.
+ */
+export const gameTiles: GameTile[] = [
   gameTile("nassau"),
   gameTile("skins"),
   gameTile("wolf"),
   gameTile("best-score"),
   gameTile("bingo-bango-bongo"),
-];
-
-export const gameTiles: GameTile[] = [
-  ...rosterTiles,
-  // Not a roster game: the junk side games, grouped.
-  {
-    name: "Junk board",
-    rule: "Greenies, sandies, closest-to-pin, long drive.",
-    highlight: true,
-  },
+  { ...gameTile("scramble"), highlight: true },
 ];
 
 /** The GameStackCard's accessible name. */
-export const gameTilesLabel = `The GoLo game library: ${andList([
-  ...rosterTiles.map((tile) => tile.name),
-  "the junk board",
-])}, each with its scoring rule.`;
+export const gameTilesLabel = `The GoLo game library: ${andList(
+  gameTiles.map((tile) => tile.name),
+)}, each with its scoring rule.`;
 
 export type StandingRow = {
   name: string;
@@ -268,7 +265,7 @@ export const standingRows: StandingRow[] = [
     name: "Sarah",
     initial: "S",
     color: "#60a5fa",
-    reason: "1 skin · greenie on 7",
+    reason: "1 skin · Best Score",
     value: "+$11",
     up: true,
     move: "▲ 2",
@@ -366,7 +363,7 @@ export type SettleBreakdown = { label: string };
 export const settleBreakdown: SettleBreakdown[] = [
   { label: "Nassau +$10" },
   { label: "Skins +$66" },
-  { label: "Junk +$9" },
+  { label: "Best Score +$9" },
 ];
 
 export type LockerFormatRow = { format: string; record: string; net: string };
@@ -374,7 +371,7 @@ export type LockerFormatRow = { format: string; record: string; net: string };
 export const lockerFormats: LockerFormatRow[] = [
   { format: "Nassau", record: "14–6", net: "+$180" },
   { format: "Skins", record: "9–11", net: "−$45" },
-  { format: "Junk board", record: "17–3", net: "+$96" },
+  { format: "Best Score", record: "17–3", net: "+$96" },
 ];
 
 export const transferRows: TransferRow[] = [
