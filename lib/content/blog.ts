@@ -271,7 +271,7 @@ export const posts: Post[] = [
           title: "Entering it in GoLo",
           paragraphs: [
             "GoLo doesn’t need an official handicap or a membership number. Add Jess as a guest with her name and an index, no account needed. A guest’s index is set with a stepper in whole numbers, so round the agreed 20.5 to 21. GoLo turns it into strokes for the tees the group is playing, using their slope and rating, and places them by the card’s stroke index. On today’s tees, 21 gives 23 strokes, the same as the working above.",
-            "If the group would rather not estimate at all, set the round to gross and no strokes are given to anyone. Whichever you choose, everyone plays from the same set of tees in GoLo, and every player gets their full course handicap. The app keeps the tally; the money changes hands outside it.",
+            "If the group would rather not estimate at all, set the round to gross and no strokes are given to anyone. Everyone plays from the same set of tees in GoLo. In a net round, every player gets their full course handicap; in a gross round, no handicap strokes are applied. The app keeps the tally; the money changes hands outside it.",
           ],
           blocks: [
             { kind: "quote", text: "An agreed number is fair if you can show where it came from." },
@@ -354,7 +354,7 @@ export const posts: Post[] = [
           id: "worked",
           title: "Mike from the back, Dave from the front",
           paragraphs: [
-            "Here are two invented sets of tees on the same course, both par 72.",
+            "Here are two invented sets of tees on the same course, both par 72. These examples use full handicaps, a 100% allowance, so the playing handicap is the course handicap before any adjustment for different pars.",
           ],
           blocks: [
             {
