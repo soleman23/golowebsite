@@ -462,7 +462,7 @@ const skins: GameDetailCopy = {
 const bestScore: GameDetailCopy = {
   slug: "best-score",
   deeperReading: { href: "/blog/index-vs-course-handicap", label: "Deeper reading: index vs. course handicap, and the number Best Score is played off →" },
-  updated: "2026-10-11",
+  updated: "2026-10-31",
   seoTitle: "Best Score Golf Game: Net or Gross, Places & Splits",
   kicker: "BEST SCORE · ONE NUMBER DECIDES IT",
   tagline: "Everybody plays for the same amount. Eighteen holes later the best score takes it. No per-hole math, no presses — one number decides it.",
@@ -552,6 +552,7 @@ const bestScore: GameDetailCopy = {
     { q: "What happens on a tie?", a: "Split it or use a card playoff: back nine, last six, then the 18th. Pick one before teeing off. GoLo splits ties evenly and has no card playoff." },
     { q: "Can we cap a blow-up hole?", a: "Yes, as a house rule. GoLo does not cap scores, so enter the capped number — double par, say — when that is what your group agreed." },
     { q: "Can we run Best Score alongside other games?", a: "Yes. GoLo tracks Best Score, skins, and side bounties from the same card and nets the result." },
+    { q: "Can teams play Best Score, or play it on Stableford points?", a: "Yes. In a Stableford round the most points takes it. In Team Play GoLo compares the two teams’ totals, from each team’s better score on each hole, or in Stableford its better player’s points or both players’ points added. In a scramble it compares each team’s recorded score. Everyone still puts in the same amount, and a team’s share is split between its players. With two teams, pay one place: a top-two split hands everyone their entry back." },
   ]),
   related: ["skins", "nassau", "birdies"], prev: "nassau", next: "wolf",
 };
