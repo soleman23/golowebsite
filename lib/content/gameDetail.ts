@@ -842,7 +842,6 @@ const scramble: GameDetailCopy = {
 
 const closestToPin: GameDetailCopy = {
   slug: "closest-to-pin", kicker: "SIDE GAME · PAR 3s",
-  deeperReading: { href: "/blog/rangefinder", label: "Deeper reading: rangefinder or GPS watch, for the $10 crowd →" },
   updated: "2026-10-29",
   seoTitle: "Closest to the Pin & Greenies: Golf Side Game Rules",
   tagline: "One tee shot, one hole. Stick it tighter than everybody else on the par 3s and win it. Play it as a greenie and you still have to make par from there.",
@@ -936,7 +935,6 @@ const closestToPin: GameDetailCopy = {
 
 const longestDrive: GameDetailCopy = {
   slug: "longest-drive", kicker: "SIDE GAME · ONE MARKED HOLE",
-  deeperReading: { href: "/blog/rangefinder", label: "Deeper reading: rangefinder or GPS watch, for the $10 crowd →" },
   updated: "2026-10-15",
   seoTitle: "Longest Drive Golf Side Game: Rules & Settling Up",
   tagline: "Pick a hole, swing out of your shoes, and the longest ball that finishes in the fairway takes it. Short grass or nothing.",
