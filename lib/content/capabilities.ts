@@ -120,8 +120,10 @@ const APP_CHECK_1029 = {
  * src/engines/betResults.js matchConcessions for Overall Match, Nassau and
  * presses only; Skins skips a hole without every score (skins.js) and Best
  * Score waits for even cards (strokePurse.js). Nine holes: SetupWizard.jsx
- * [9, 18] and nineHoleDesc, nassau.js (one match, GOLO-187), handicap.js
- * (nine-hole Course Handicap, GOLO-124), roundBets.js ctpHolesOn.
+ * [9, 18], holesOnly(st.pars, 9) and nineHoleDesc, nassau.js (one match,
+ * GOLO-187), handicap.js courseHandicapTerms (the eighteen-hole value
+ * halved, GOLO-124/148), roundBets.js ctpHolesOn. ScoringPage.jsx
+ * seedParForHole writes par for a player left unscored when the scorer moves on.
  */
 const APP_CHECK_1030_FORMATS = {
   by: "app-check",
@@ -203,9 +205,10 @@ export const capabilities = [
     label: "Nine-hole rounds",
     status: "live",
     summary:
-      "Play nine holes or eighteen; nine holes use the World Handicap System's nine-hole course handicap.",
+      "Play nine holes or eighteen; over nine holes each player gets half their eighteen-hole course handicap.",
     limits: [
-      "A nine-hole round plays holes 1 to 9 of the card.",
+      "A nine-hole round plays holes 1 to 9 of the card; it can't score a course's back nine.",
+      "The nine-hole figure halves the eighteen-hole one from the tee's slope and rating: exactly the WHS nine-hole Course Handicap on a nine-hole tee, but it can be a stroke off on the front nine of an eighteen-hole course, whose own nine-hole ratings aren't in the course data.",
       "Over nine holes a Nassau is one match, settled once, and Closest to Pin plays every par 3 on the card.",
     ],
     verified: APP_CHECK_1030_FORMATS,
