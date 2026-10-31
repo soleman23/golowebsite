@@ -2367,6 +2367,7 @@ export const posts: Post[] = [
     excerpt:
       "Three points a hole, no strokes required. The fairest game in golf for a group with a 6 and a 22 in it.",
     date: "2026-06-18",
+    updated: "2026-10-31",
     readMins: 5,
     dek: "Three points a hole, no strokes required. The fairest game in golf for a group with a 6 and a 22 — and why order of play does all the work.",
     crumb: "Bingo Bango Bongo",
@@ -2389,8 +2390,13 @@ export const posts: Post[] = [
             { title: "You win bango", body: "Distances are compared with everybody on. You are eight feet away, closest of the four." },
             { title: "Mike wins bongo", body: "Mike is farthest at 25 feet, so he putts first — and pours it in. Three points, three players, one hole." },
           ] },
-          { kind: "table", head: ["Player", "Points over 18", "Net at $2 a point"], rows: [["You · 12 index", "15", "+$12"], ["Mike · 6 index", "14", "+$4"], ["Tom · 15 index", "13", "−$4"], ["Dave · 22 index", "12", "−$12"], ["54 points", "Three a hole, all claimed", "$0 net"]] },
-          { kind: "p", html: "Each point moves $2 from each of the other three players, so a point is worth $6 to whoever wins it. Nobody took strokes." },
+          // GoLo 1.2.1 (golo `main` 2237c1d, bingobangobongo.js): points × $2,
+          // less an equal share of the $108 awarded ($27 each). The difference-
+          // with-each-player figures (+$12/−$12) are 4× that, and GoLo
+          // doesn't calculate them.
+          { kind: "table", head: ["Player", "Points over 18", "Net at $2 a point"], rows: [["You · 12 index", "15", "+$3"], ["Mike · 6 index", "14", "+$1"], ["Tom · 15 index", "13", "−$1"], ["Dave · 22 index", "12", "−$3"], ["54 points", "Three a hole, all claimed", "$0 net"]] },
+          { kind: "p", html: "In GoLo each point is worth $2 to whoever wins it, and every player puts in an equal share of the total: 54 points at $2 is $108, or $27 each. Your 15 points are $30, so you finish $3 up; Dave’s 12 are $24, so he is $3 down. Nobody took strokes." },
+          { kind: "p", html: "Some groups settle the difference with each player instead: Dave is three points behind you, so he owes you $6, and so on around the group. In a foursome that pays four times as much, +$12 for you and −$12 for Dave, and GoLo doesn’t calculate it. Set $8 a point in GoLo and the money comes out the same." },
           { kind: "keyStat", value: "3", label: "Points on every hole, which means there is no such thing as a dead hole. Make a triple and you can still walk off with a point — that is the reason the 22 is still paying attention on the 16th." },
           { kind: "image", src: "/images/blog/bingo-bango-bongo-mid.webp", alt: "Four golf balls on the green at different distances from the hole, the closest just chipped on from the rough", caption: "Bango is measured once every ball is on the green, which is why a chip-on can beat three good approach shots.", position: "50% 60%" },
         ] },
@@ -2401,7 +2407,7 @@ export const posts: Post[] = [
           { title: "Playing out of turn forfeits the point", body: "Hit before the player who is farther away and you give up whatever point you just won. No argument, no discussion." },
           { title: "It fights with ready golf", body: "Strict order is slower than everybody hitting when ready. On a busy Saturday, keep order on the approach and green and let tee shots go however they go." },
         ] }] },
-        { id: "tracking", title: "Keeping 54 points straight", paragraphs: ["The format’s only real weakness is bookkeeping. Three points a hole across 18 holes is 54 separate results, and nobody is writing that on a scorecard margin. Groups either lose track by the turn or quietly stop counting bingos.", "GoLo tallies all three points per hole, keeps a running total per player, and settles the point value at the end. You play the order of play. The app does the multiplication."], blocks: [{ kind: "summary", title: "THE SHORT VERSION", items: ["Three points a hole: first on the green, closest once all are on, first in the hole.", "Farthest from the hole always plays first — that rule is what makes it fair.", "No handicaps needed, which is why it works with a 6 and a 22 in the same group.", "Play out of turn and you forfeit the point. Settle the fringe question up front."] }] },
+        { id: "tracking", title: "Keeping 54 points straight", paragraphs: ["The format’s only real weakness is bookkeeping. Three points a hole across 18 holes is 54 separate results, and nobody is writing that on a scorecard margin. Groups either lose track by the turn or quietly stop counting bingos.", "GoLo tallies all three points per hole, keeps a running total per player, and at the end nets each player’s points against an equal share of everything awarded. You play the order of play. The app does the arithmetic."], blocks: [{ kind: "summary", title: "THE SHORT VERSION", items: ["Three points a hole: first on the green, closest once all are on, first in the hole.", "Farthest from the hole always plays first — that rule is what makes it fair.", "No handicaps needed, which is why it works with a 6 and a 22 in the same group.", "Play out of turn and you forfeit the point. Settle the fringe question up front."] }] },
       ],
     ),
   },
