@@ -186,11 +186,7 @@ export const faqCategories: FaqCategory[] = [
       {
         id: "q-trips",
         q: "What about multi-day trips?",
-        a: "Today each round settles on its own. A running tally across a trip’s rounds is on the list, not built. Until it is, settle each round in the app, or write down each player’s number after every round and net the totals once on the last day — the Scottsdale trip guide shows how.",
-        link: {
-          label: "THE FOUR-DAY TRIP STRUCTURE →",
-          href: "/blog/scottsdale-trip-structure",
-        },
+        a: "Today each round settles on its own. A running tally across a trip’s rounds is on the list, not built. Until it is, settle each round in the app, or write down each player’s number after every round and net the totals once on the last day.",
       },
       {
         id: "q-roster",
