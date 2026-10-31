@@ -176,13 +176,13 @@ export const posts: Post[] = [
     category: "rules",
     title: "Best ball vs. scramble: know the difference before picking teams",
     metaDescription:
-      "Best ball: everyone plays their own ball and the side keeps the lower score. Scramble: one ball, the best shot every time. Handicaps, partners, and GoLo.",
+      "Best ball: everyone plays their own ball and the side keeps the lower score. Scramble: one ball, the best shot every time. Handicaps, partners and GoLo.",
     excerpt:
-      "Two team formats, both with “best” in the description, and they play nothing alike. Whose ball you hit, whose score counts, and who you want as a partner.",
-    dek: "In best ball, everyone plays their own ball and the team keeps the lower score. In a scramble, the team plays one ball and picks the best shot every time. Same four players, a different card, different handicaps, and a different partner worth picking.",
+      "Two team formats, both with “best” in the description, that play nothing alike. Whose ball you hit, whose score counts and who you want as a partner.",
+    dek: "In best ball, everyone plays their own ball and the team keeps the lower score. In a scramble, the team plays one ball and picks the best shot every time. Same four players, a different card, different handicaps and a different partner worth picking.",
     crumb: "Best ball vs. scramble",
     author: "From the GoLo team",
-    // The last of the 16-idea list. Rules: R&A Rule 23 (2023); USGA Rules of
+    // The last of the 16-idea list. Rules: R&A Rules 23 and 21.5 (2023); USGA Rules of
     // Handicapping Appendix C and Rule 2.1a, read 2026-10-31. GoLo facts:
     // capabilities.ts team-play (APP_CHECK_1030), scramble and
     // handicap-strokes (APP_CHECK_1029); golo main 2237c1d
@@ -203,14 +203,14 @@ export const posts: Post[] = [
     related: ["skins-vs-nassau", "match-play-vs-stroke-play", "first-tee-checklist"],
     published: true,
     body: article(
-      "Somebody on the first tee says “teams, best ball,” and half the group hears “scramble.” You and Mike plan to play your own balls into every green. Tom and Dave are already deciding whose drive to play. Both formats put partners on a side, and both have “best” somewhere in the description. They play nothing alike, and the difference changes the card, the handicaps and the partner you’d want.",
+      "Somebody on the first tee says “teams, best ball,” and half the group hears “scramble.” You and Mike plan to play your own balls into every green. Tom and Dave are already deciding whose drive to play. Both formats put partners on a side, and both have “best” somewhere in the description. They aren’t the same game, and the difference changes the card, the handicaps and the partner you’d want.",
       [
         {
           id: "whose-ball",
           title: "Whose ball, whose score",
           paragraphs: [
             "In best ball, every player plays their own ball from the tee until it’s in the hole. Nobody picks a drive or plays from anybody else’s spot. When the hole is finished, the team’s score is the lower of the two partners’ scores. The Rules of Golf call this Four-Ball, and <a href=\"https://www.randa.org/en/rog/the-rules-of-golf/rule-23\">Rule 23</a> says exactly that: the side’s score on a hole is whichever partner’s score is lower. The Rules keep the name Best-Ball for something narrower, one player against the better ball of a side. On most first tees, best ball means Four-Ball.",
-            "In a scramble, everyone on the team tees off, the team picks the best drive, and everyone plays their next shot from that spot. Repeat until the ball is in the hole. One ball, one score per team. The Rules of Golf don’t cover scrambles at all. The format is whatever the group or the event says it is, which is one more reason to say it out loud.",
+            "In a scramble, everyone on the team tees off, the team picks the best drive, and everyone plays their next shot from that spot. Repeat until the ball is in the hole. One ball, one score per team. The Rules of Golf have no Rule for scrambles. <a href=\"https://www.randa.org/en/rog/the-rules-of-golf/rule-21\">Rule 21.5</a> says the Rules can be adapted for them, and the details are whatever the group or the event agrees, which is one more reason to say them out loud.",
           ],
           blocks: [
             {
@@ -249,13 +249,13 @@ export const posts: Post[] = [
           id: "handicaps",
           title: "Handicaps don’t carry over",
           paragraphs: [
-            "In best ball, each player keeps their own handicap. Strokes fall on the holes the card ranks hardest, each player’s net score is worked out separately, and the side counts the lower net. If Mike’s course handicap is 18, he gets a stroke on every hole, and a net par from him is as good as a gross par from you.",
+            "In best ball, each player keeps their own handicap. Strokes fall on the holes the card ranks hardest, each player’s net score is worked out separately, and the side counts the lower net. If Mike’s course handicap is 18, he gets a stroke on every hole, and a net par from him is as good as a gross par from a scratch player.",
           ],
           blocks: [
             { kind: "keyStat", value: "85% / 90%", label: "What the World Handicap System recommends for best ball: 85% of each player’s course handicap in stroke play, 90% in match play. A high handicap is worth more when only its good holes count." },
-            { kind: "p", html: "GoLo’s Team Play gives every player their full course handicap and takes no percentage off. With partners of similar handicaps that barely matters. With a 4 and a 24 on the same side, know it before you agree the amount." },
+            { kind: "p", html: "GoLo’s Team Play gives every player their full course handicap and takes no percentage off. When all four handicaps are close, that barely matters. With a 4 and a 24 in the group, know it before you agree on the amount." },
             { kind: "p", html: "In a scramble there’s one ball, so there’s one handicap: the team’s. The usual method adds up a share of each player’s course handicap, with the biggest share from the lowest handicap, because a scramble team mostly plays its better players’ shots. The World Handicap System recommends 35% and 15% for two players; 30, 20 and 10% for three; and 25, 20, 15 and 10% for four, lowest handicap first." },
-            { kind: "p", html: "Run the same foursome both ways and the numbers look nothing alike. With course handicaps of 6 and 18, in best ball you get six strokes and Mike gets one on every hole. As a two-player scramble team you get five for the round between you: 35% of 6 is 2.1, 15% of 18 is 2.7, and 4.8 plays as 5. Tom and Dave, on 10 and 14, get 6. Both sides add up to 24, and the scramble still gives Tom and Dave a stroke more, because the formula leans on the lower handicap. The <a href=\"/blog/index-vs-course-handicap\">index-to-course-handicap guide</a> covers where those course handicaps come from." },
+            { kind: "p", html: "Run the same foursome both ways and the strokes come out very differently. With course handicaps of 6 and 18, best ball at full handicaps, the way GoLo plays it, gives you six strokes and Mike one on every hole. As a two-player scramble team you get five for the round between you: 35% of 6 is 2.1, 15% of 18 is 2.7, and 4.8 plays as 5. Tom and Dave, on 10 and 14, get 6. Both sides add up to 24, and the scramble still gives Tom and Dave a stroke more, because the formula leans on the lower handicap. The <a href=\"/blog/index-vs-course-handicap\">index-to-course-handicap guide</a> covers where those course handicaps come from." },
           ],
         },
         {
@@ -280,11 +280,11 @@ export const posts: Post[] = [
           id: "team-play",
           title: "Best ball in GoLo is Team Play",
           paragraphs: [
-            "With exactly four players, turn on Teams on the Games step. GoLo splits you into Team A and Team B, and you can move players between them. Every player’s score goes in on every hole, and GoLo counts each team’s lower gross and lower net. Skins, the Nassau, Best Score and the Overall Match play team against team; Wolf is off. In a Stableford round you choose whether a team scores its better player’s points or both players’ points added together.",
+            "With exactly four players, turn on Teams on the Games step. GoLo splits you into Team A and Team B, and you can move players between them. The scorer enters every player’s score on every hole, and GoLo counts each team’s lower gross and lower net. Skins, the Nassau, Best Score and the Overall Match play team against team; Wolf is off. In a Stableford round you choose whether a team scores its better player’s points or both players’ points added together.",
           ],
           blocks: [
-            { kind: "callout", title: "When a partner picks up", html: "The Rules let a side count one partner’s score when the other picks up. GoLo counts a team’s hole only once both partners have a score, and a blank becomes par when the scorer moves on, which can hand the team a par nobody made. So when a partner picks up, enter a score for them that can’t beat their partner’s, net or gross." },
-            { kind: "p", html: "One name to keep apart: GoLo’s Best Score game isn’t best ball. Best Score is a total-score game: everyone puts in the same entry and the best total for the round wins. In Team Play it compares the two teams’ best-ball totals. Without teams it compares each player’s card." },
+            { kind: "callout", title: "When a partner picks up", html: "The Rules let a side count one partner’s score when the other picks up. GoLo counts a team’s hole only once both partners have a score, and a blank becomes par when the scorer moves on, which can hand the team a par nobody made. So when a partner picks up, enter a score for them that can’t count: one that can’t beat their partner’s, net or gross, or in a Combined Stableford round, one worth no points, a net double bogey or worse." },
+            { kind: "p", html: "One name to keep apart: GoLo’s Best Score game isn’t best ball, which is a way of scoring a hole. Best Score is played on totals: everyone puts in the same entry, and the best total for the round takes it, or the top two or three split it. Without teams it compares each player’s card. In Team Play it compares the two teams’ totals, so pay first place only: with two teams, a top-two split hands everyone their entry back." },
           ],
         },
         {
@@ -294,7 +294,7 @@ export const posts: Post[] = [
             "A scramble is its own format: pick Scramble when you set up the round. It takes up to 12 players in two to six teams of up to four, with one score per team on each hole, and each team can have its own scorer. Team handicaps come from the percentages above, or play gross, or set each team’s number yourself. Skins, the Nassau, Best Score and the Overall Match play team against team; Wolf and Bingo Bango Bongo aren’t played. GoLo doesn’t count Texas scramble drives and has no shamble setting.",
           ],
           blocks: [
-            { kind: "callout", title: "The amount means different things", html: "In Team Play, the Skins, Nassau and Overall Match amounts are per player: win the front nine of a $5 Nassau and you and Mike each collect $5, while Tom and Dave each owe $5. In a scramble, the same games’ amounts are per team and split between its players, so a two-player team that wins a $5 match gets $2.50 each. Best Score works the same way in both: everyone puts in the entry, and the winning team shares it." },
+            { kind: "callout", title: "The amount means different things", html: "In Team Play, the Skins, Nassau and Overall Match amounts are per player: win the front nine of a $5 Nassau and you and Mike each collect $5, while Tom and Dave each owe $5. In a scramble, the same games’ amounts are per team and split between its players, so a two-player team that wins a $5 match gets $2.50 each. Best Score is an entry from every player in both, and whatever a team wins is shared between its players." },
           ],
         },
         {
@@ -310,10 +310,11 @@ export const posts: Post[] = [
               "Best ball, Four-Ball in the Rules: everyone plays their own ball and the side counts the lower score. Scramble: one ball per team, the best shot every time.",
               "Best ball keeps each player’s handicap, and the World Handicap System recommends 85% of it in stroke play and 90% in match play. A scramble plays off one team handicap built from a share of each player’s.",
               "Pair best-ball partners who miss differently. Build scramble teams that cover the shots and match in size.",
-              "In GoLo, best ball is Team Play for four players at full handicaps, and a scramble takes up to 12. Team Play amounts are per player; scramble amounts are per team.",
+              "In GoLo, best ball is Team Play for four players at full handicaps, and a scramble takes up to 12. Team Play’s Skins, Nassau and Overall Match amounts are per player; a scramble’s are per team and split. Best Score is an entry per player in both.",
             ] },
             { kind: "sources", items: [
               { label: "The R&A — Rule 23: Four-Ball", href: "https://www.randa.org/en/rog/the-rules-of-golf/rule-23" },
+              { label: "The R&A — Rule 21.5: other forms of play, including scrambles", href: "https://www.randa.org/en/rog/the-rules-of-golf/rule-21" },
               { label: "Rules of Handicapping, Appendix C: Handicap Allowances", href: "https://www.usga.org/handicapping/roh/Content/rules/Appendix%20C%20Handicap%20Allowances.htm" },
               { label: "Rules of Handicapping, Rule 2.1a: authorized formats of play", href: "https://www.usga.org/handicapping/roh/Content/rules/2%201a%20Played%20in%20an%20Authorized%20Format%20of%20Play.htm" },
             ] },
