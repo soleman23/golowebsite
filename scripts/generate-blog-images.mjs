@@ -50,6 +50,8 @@ const ONE_MID = ["mid"];
 const TWO_MIDS = ["mid-1", "mid-2"];
 const POSTS = {
   "best-ball-vs-scramble": { mids: NO_MIDS, mobile: true, ogPosition: "right" },
+  "no-handicap-fair-game": { mids: NO_MIDS, mobile: true, ogPosition: "right" },
+  "different-tees": { mids: NO_MIDS, mobile: true, ogPosition: "right" },
   "golf-games-for-3-players": { mids: NO_MIDS, mobile: true, ogPosition: "right" },
   "side-games-for-beginners": { mids: NO_MIDS, mobile: true, ogPosition: "right" },
   "five-dollar-birdie": { mids: NO_MIDS, mobile: true, ogPosition: "right" },

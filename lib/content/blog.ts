@@ -324,6 +324,267 @@ export const posts: Post[] = [
     ),
   },
   {
+    slug: "no-handicap-fair-game",
+    category: "handicaps",
+    title: "No golf handicap? How to set up a fair game anyway",
+    metaDescription:
+      "No Handicap Index? Estimate one the way the World Handicap System would, keep it honest, and know what the number is and isn’t. One worked example.",
+    excerpt:
+      "Jess took up golf this year and has no Handicap Index. “Give her 26” is a guess. Here is a better one, and what it can’t promise.",
+    dek: "An official Handicap Index takes submitted scores. A game this Saturday doesn’t have to wait for one, but the number you agree on should come from her scores, not from a shrug on the first tee.",
+    crumb: "No handicap yet",
+    author: "From the GoLo team",
+    // Pair 4 of the 16-idea list. Rules: USGA Rules of Handicapping 3.1a,
+    // 5.1a, 5.2a, 6.1a (2024 edition), read 2026-10-30. GoLo facts:
+    // capabilities.ts guests, handicap-strokes, course-data; golo main
+    // 2237c1d src/engines/handicap.js calculateCourseHandicap (WHS formula,
+    // .5 rounds up), the round's Net/Gross setting and the guest index
+    // stepper (whole-number steps from 12, incHdcp) in SetupWizard.jsx.
+    date: "2026-10-31",
+    readMins: 6,
+    hero: {
+      src: "/images/blog/no-handicap-fair-game-hero.webp",
+      mobile: "/images/blog/no-handicap-fair-game-mobile.webp",
+      og: "/images/blog/no-handicap-fair-game-og.jpg",
+      alt: "A paper scorecard and a pencil on a bench beside a practice green in early morning light",
+      position: "80% 50%",
+    },
+    related: ["index-vs-course-handicap", "different-tees", "sandbagging"],
+    published: true,
+    body: article(
+      "Jess took up golf this year and doesn’t have a Handicap Index. She has kept the cards from her three rounds so far. The rest of the group has indexes. On the first tee somebody says “give her 26,” because she usually shoots somewhere around 98. Everyone nods, and by the turn she is either out of it or running away with it, and nobody can say which number would have been right. There is a better way to pick one.",
+      [
+        {
+          id: "official-or-agreed",
+          title: "An official index and an agreed number are different things",
+          paragraphs: [
+            "A Handicap Index comes from scores submitted through a golf club or association under the World Handicap System. It is calculated from a player’s better rounds, revised as new scores come in, and it travels from course to course.",
+            "A number your group agrees on for a Saturday is none of those things. It isn’t official, it can’t be used in a club competition, and it needs agreeing again each time you play. That is fine for a friendly game, as long as everyone knows which kind of number it is and how it was chosen.",
+          ],
+          blocks: [
+            {
+              kind: "atAGlance",
+              title: "NO HANDICAP, AT A GLANCE",
+              items: [
+                { label: "OFFICIAL INDEX", value: "From submitted scores, revised as you play" },
+                { label: "AGREED NUMBER", value: "For today only, chosen by the group" },
+                { label: "BEST ESTIMATE", value: "Her recent scores, worked the WHS way" },
+                { label: "NO SCORES AT ALL", value: "A round gross and for nothing, then estimate" },
+              ],
+            },
+          ],
+        },
+        {
+          id: "estimate",
+          title: "Estimate it the way the handicap system would",
+          paragraphs: [
+            "Under the Rules of Handicapping, a first Handicap Index can come from as few as three 18-hole scores. With three, the index is the lowest score differential minus 2.0. A score differential is the score adjusted for the course and tees: 113 divided by the slope rating, multiplied by the score minus the course rating (leaving aside a daily playing-conditions adjustment, usually zero), rounded to a tenth. Before a player has an index, no hole counts for more than par plus five.",
+            "Jess’s three rounds were all at her home course, a par 72 rated 70.1 with a slope of 125. After capping every hole at par plus five, her scores are 98, 102 and 95. This is an invented example, but the method is the system’s own.",
+          ],
+          blocks: [
+            {
+              kind: "table",
+              head: ["Score", "Minus course rating", "× 113 ÷ 125", "Differential"],
+              rows: [
+                ["98", "27.9", "25.22", "25.2"],
+                ["102", "31.9", "28.84", "28.8"],
+                ["95", "24.9", "22.51", "22.5"],
+              ],
+            },
+            { kind: "p", html: "Her lowest differential is 22.5. Take off 2.0 and her estimate is 20.5. Today the group plays tees rated 71.3 with a slope of 128 and a par of 72, so her course handicap is 20.5 × 128 ÷ 113, minus 0.7: 22.52, which rounds to 23." },
+          ],
+        },
+        {
+          id: "why-not-average",
+          title: "Why “she shoots about 98” gives too many strokes",
+          paragraphs: [
+            "The first-tee guess works from her average: 98 is 26 over par, so give her 26. As strokes, that is three more than the 23 her scores support. Entered as her index, 26 does more: on today’s tees, 26 × 128 ÷ 113, minus 0.7, is 28.75, which rounds to 29 strokes, six more.",
+            "The gap isn’t a quirk. A Handicap Index is built from a player’s better rounds, not her average. The USGA says a player plays to their handicap only 20 to 25 percent of the time and scores two to five strokes higher in most rounds. A number built from an average gives strokes for the bad days too.",
+          ],
+          blocks: [
+            { kind: "keyStat", value: "23", label: "Jess’s strokes on today’s tees from an estimate worked the handicap system’s way. “Give her 26” gives her three more; 26 entered as her index gives her 29." },
+          ],
+        },
+        {
+          id: "house-rules",
+          title: "Keep the number honest",
+          blocks: [
+            { kind: "cardGrid", items: [
+              { title: "Show the working", body: "Say where the number came from: which three rounds, which course rating and slope. Anyone can check it, and nobody has to take it on trust." },
+              { title: "Agree it before the round", body: "Settle the number on the first tee and leave it there. Changing it after a good front nine turns a handicap into a negotiation." },
+              { title: "Review it, not the result", body: "Agree to work it out again after another few rounds, from the new scores. Don’t adjust it because of who won last week." },
+              { title: "No scores at all", body: "If she has no recent rounds to work from, play the first one gross and for nothing, and start the game once she has three scores." },
+            ] },
+            { kind: "p", html: "Whatever you agree, it is a house number. It doesn’t make her handicap official, and an estimate can’t promise a close game. It just gives the group a number that came from her golf rather than from a guess. If she keeps playing, the real thing comes from submitting scores through a club or golf association. The <a href=\"/blog/sandbagging\">sandbagging post</a> covers what to do when a number, official or not, stops matching the golf." },
+          ],
+        },
+        {
+          id: "in-golo",
+          title: "Entering it in GoLo",
+          paragraphs: [
+            "GoLo doesn’t need an official handicap or a membership number. Add Jess as a guest with her name and an index, no account needed. A guest’s index is set with a stepper in whole numbers, so round the agreed 20.5 to 21. GoLo turns it into strokes for the tees the group is playing, using their slope and rating, and places them by the card’s stroke index. On today’s tees, 21 gives 23 strokes, the same as the working above.",
+            "If the group would rather not estimate at all, set the round to gross and no strokes are given to anyone. Everyone plays from the same set of tees in GoLo. In a net round, every player gets their full course handicap; in a gross round, no handicap strokes are applied. The app keeps the tally; the money changes hands outside it.",
+          ],
+          blocks: [
+            { kind: "quote", text: "An agreed number is fair if you can show where it came from." },
+          ],
+        },
+        {
+          id: "next",
+          title: "Before the next round",
+          paragraphs: [
+            "Work out the number at home, from real scores, and bring it to the first tee with the working. If you want the background, the <a href=\"/blog/index-vs-course-handicap\">index-versus-course-handicap guide</a> explains how an index becomes strokes, and <a href=\"/blog/different-tees\">playing from different tees</a> covers the other first-tee argument about fairness. Then <a href=\"/how-it-works\">see one round from setup to settle-up</a> or <a href=\"/#get\">get GoLo for the next one</a>.",
+          ],
+          blocks: [
+            { kind: "summary", title: "THE SHORT VERSION", items: [
+              "An official Handicap Index comes from submitted scores. A number agreed for one Saturday isn’t official, and everyone should know which it is.",
+              "Estimate it the system’s way: three score differentials, the lowest one, minus 2.0, with holes capped at par plus five.",
+              "A number taken from an average score gives too many strokes. In our example, three too many as strokes, six if 26 goes in as her index.",
+              "In GoLo, add the player as a guest, set the agreed index in whole numbers, and GoLo converts it for the tees. Or play the round gross.",
+            ] },
+            { kind: "sources", items: [
+              { label: "USGA Rules of Handicapping — Rule 3.1a: maximum hole score before an index is established", href: "https://www.usga.org/handicapping/roh/Content/rules/3%201a%20Before%20a%20Handicap%20Index%20Has%20Been%20Established.htm" },
+              { label: "USGA Rules of Handicapping — Rule 5.1a: calculation of a score differential", href: "https://www.usga.org/handicapping/roh/Content/rules/5%201a%20Calculation%20of%20a%20Score%20Differential18Hole.htm" },
+              { label: "USGA Rules of Handicapping — Rule 5.2a: fewer than 20 scores", href: "https://www.usga.org/handicapping/roh/Content/rules/5%202a%20For%20Fewer%20Than%2020%20Scores.htm" },
+              { label: "USGA — Course Handicap: formula and typical scoring", href: "https://www.usga.org/content/usga/home-page/handicapping/world-handicap-system/topics/course-handicap.html" },
+            ] },
+          ],
+        },
+      ],
+    ),
+  },
+  {
+    slug: "different-tees",
+    category: "handicaps",
+    title: "Playing golf from different tees: fair match or free advantage?",
+    metaDescription:
+      "One player moves to the forward tees. Is that free strokes? How course rating, slope and par differences keep the game fair, worked through with the USGA formulas.",
+    excerpt:
+      "Dave has moved up to the forward tees. Mike says that’s free strokes. The handicap system has already answered the question, and it isn’t Mike’s answer.",
+    dek: "Moving up isn’t a confession and it isn’t a free pass. Ratings, slope and one rule about par decide what a tee is worth, so the argument can be about numbers.",
+    crumb: "Different tees",
+    author: "From the GoLo team",
+    // Pair 4 of the 16-idea list. Rules: USGA Rules of Handicapping 6.1a and
+    // 6.2b (2024 edition), the USGA forward-tees FAQ and Course Handicap
+    // topic, read 2026-10-30. GoLo facts: capabilities.ts handicap-strokes
+    // (one set of tees per group) and mixed-tees (planned).
+    date: "2026-10-31",
+    readMins: 6,
+    hero: {
+      src: "/images/blog/different-tees-hero.webp",
+      mobile: "/images/blog/different-tees-mobile.webp",
+      og: "/images/blog/different-tees-og.jpg",
+      alt: "Blue tee markers on a back tee box and white markers on a forward tee box further down a tree-lined hole at sunset",
+      position: "80% 50%",
+    },
+    related: ["index-vs-course-handicap", "no-handicap-fair-game", "net-vs-gross-scoring"],
+    published: true,
+    body: article(
+      "Dave has started playing the forward tees. He is an 18, he enjoys the game more from there, and he hits more greens. Mike, a 10 who still plays the back tees, has a view about this, and he shares it on the first tee: Dave is getting free strokes. Dave says the handicap system sorts it out. Dave is closer to right, and the arithmetic is short.",
+      [
+        {
+          id: "what-a-rating-does",
+          title: "What the handicap system already does",
+          paragraphs: [
+            "Every set of tees has a course rating, roughly what a scratch golfer would shoot from them, and a slope rating, how much harder they play for a bogey golfer than for a scratch one. A player’s course handicap is worked out for the tees they actually play: index × slope ÷ 113, plus the course rating minus par. The USGA says this is what makes an index portable across courses and tees of different difficulty.",
+            "So a player who moves up doesn’t keep the strokes they had from the back. Their course handicap is recalculated for an easier set of tees, and it usually goes down. The <a href=\"/blog/index-vs-course-handicap\">index-versus-course-handicap guide</a> runs the formula for one player on two sets of tees. Here, the question is two players on two sets of tees.",
+          ],
+          blocks: [
+            {
+              kind: "atAGlance",
+              title: "DIFFERENT TEES, AT A GLANCE",
+              items: [
+                { label: "COURSE HANDICAP", value: "Worked out for the tees each player plays" },
+                { label: "EASIER TEES", value: "Fewer strokes, usually" },
+                { label: "DIFFERENT PARS", value: "The higher-par tees get the difference" },
+                { label: "IN GOLO TODAY", value: "One set of tees per group" },
+              ],
+            },
+          ],
+        },
+        {
+          id: "worked",
+          title: "Mike from the back, Dave from the front",
+          paragraphs: [
+            "Here are two invented sets of tees on the same course, both par 72. These examples use full handicaps, a 100% allowance, so the playing handicap is the course handicap before any adjustment for different pars.",
+          ],
+          blocks: [
+            {
+              kind: "table",
+              head: ["Tees", "Par", "Course rating", "Slope"],
+              rows: [
+                ["Back", "72", "72.4", "131"],
+                ["Forward", "72", "69.1", "121"],
+              ],
+            },
+            { kind: "p", html: "Mike’s 10.0 from the back: 10 × 131 ÷ 113 is 11.59, plus 0.4, which is 11.99. He gets 12. Dave’s 18.0 from the back would be 20.87 plus 0.4, or 21. From the forward tees it is 18 × 121 ÷ 113, which is 19.27, minus 2.9, or 16.37. He gets 16." },
+            {
+              kind: "table",
+              head: ["Player", "Tees", "Course handicap", "Target score"],
+              rows: [
+                ["Mike, 10.0", "Back", "12", "84"],
+                ["Dave, 18.0", "Back", "21", "93"],
+                ["Dave, 18.0", "Forward", "16", "88"],
+              ],
+            },
+            { kind: "p", html: "The USGA calls course handicap plus par a player’s target score: what they shoot when they play to their handicap. Moving up costs Dave five strokes, because the forward tees rate 3.3 shots easier for a scratch player and carry a lower slope. Played to their handicaps, both players finish on a net 72. Dave isn’t being handed strokes. He is being handed a shorter course and fewer strokes to go with it." },
+          ],
+        },
+        {
+          id: "different-pars",
+          title: "When the two tees have different pars",
+          paragraphs: [
+            "Forward tees often carry a higher par, playing a long par 4 as a par 5, so the two sets of tees have different pars. The Rules of Handicapping deal with that in Rule 6.2b: in stroke play and match play scored as gross or net, the player on the higher-par tees gets extra strokes equal to the difference in par, added to their playing handicap. When most of a field plays the higher-par tees, the rule also allows taking the difference away from the lower-par players instead.",
+            "Say the forward tees play the 4th as a par 5, making them par 73, with the same rating. Dave’s course handicap uses par 73: 19.27 plus (69.1 − 73), which is 15.37, so 15. His tees carry the higher par, so Rule 6.2b adds the one-stroke difference and he plays off 16. Mike’s 12 doesn’t change. The gap between them is four strokes either way, which is the point of the rule.",
+          ],
+          blocks: [
+            { kind: "callout", title: "WHEN NO EXTRA STROKES ARE NEEDED", html: "If the pars are the same, nothing is added. And in formats scored against par rather than by total strokes, such as Stableford, Rule 6.2b adds nothing either, because a par is a par from any tee." },
+          ],
+        },
+        {
+          id: "fair",
+          title: "Fair on average, which is what a handicap is",
+          paragraphs: [
+            "Ratings describe how a typical scratch golfer and a typical bogey golfer score from a set of tees. Any one player on any one day can beat them or fall short of them, from either tee. A long hitter on a short course may find the forward tees suit them unusually well, and a headwind can make the back tees play longer than their rating. That is true of every handicap game, on any tees.",
+            "Which tees a player chooses isn’t a character question. The USGA doesn’t recommend tees by age, gender or driving distance, and leaves recreational players to pick their own. The fair-play question is only whether the strokes were worked out for the tees each player is on. If they were, the game is as fair as handicap golf gets.",
+          ],
+          blocks: [
+            { kind: "quote", text: "Moving up changes the course. The strokes change with it." },
+          ],
+        },
+        {
+          id: "in-golo",
+          title: "What GoLo does with tees today",
+          paragraphs: [
+            "GoLo loads the par, course rating, slope and stroke index for the tees your group picks, and gives every player their full course handicap for those tees, rounded the way the handicap system rounds it. That covers a group playing one set of tees, which is how GoLo works today.",
+            "GoLo doesn’t support players on different tees yet; it is on the list, not built. If Dave plays the forward tees and Mike the back, GoLo can’t give each of them strokes for their own tees in the same round. Until it can, either play one set together or keep the split-tee game on paper using the numbers above. The app keeps the tally for what it scores; the money changes hands outside it.",
+          ],
+        },
+        {
+          id: "settle-it",
+          title: "Settle it on the first tee",
+          paragraphs: [
+            "“Dave’s on the forward tees, his course handicap is 16 from there, Mike’s is 12 from the back, same par” is one sentence, and it covers everything. Work the numbers out before the round, from the ratings on the card. If someone in the group has no index at all, <a href=\"/blog/no-handicap-fair-game\">setting up a fair game without one</a> covers that. Then <a href=\"/how-it-works\">see one round from setup to settle-up</a> or <a href=\"/#get\">get GoLo for the next one</a>.",
+          ],
+          blocks: [
+            { kind: "summary", title: "THE SHORT VERSION", items: [
+              "A course handicap is worked out for the tees each player plays, so moving up usually means fewer strokes.",
+              "In our example, Dave gets 21 from the back and 16 from the forward tees; Mike gets 12. Played to their handicaps, both finish on a net 72.",
+              "When pars differ, Rule 6.2b gives the higher-par player the difference in strokes, which keeps the gap the same.",
+              "GoLo uses one set of tees per group today. Splitting a group across tees is on the list, not built.",
+            ] },
+            { kind: "sources", items: [
+              { label: "USGA Rules of Handicapping — Rule 6.1a: Course Handicap", href: "https://www.usga.org/handicapping/roh/Content/rules/6%201a%2018%20holes.htm" },
+              { label: "USGA Rules of Handicapping — Rule 6.2b: multiple tees in a competition", href: "https://www.usga.org/handicapping/roh/Content/rules/6%202b%20Calculation%20When%20Multiple%20Tees%20Are%20Used%20in%20a%20Competition.htm" },
+              { label: "USGA — Course Handicap: portability across tees and target score", href: "https://www.usga.org/content/usga/home-page/handicapping/world-handicap-system/topics/course-handicap.html" },
+              { label: "USGA — FAQs: playing from forward tees", href: "https://www.usga.org/content/usga/home-page/handicapping/world-handicap-system/world-handicap-system-usga-golf-faqs/faqs---playing-from-forward-tees.html" },
+            ] },
+          ],
+        },
+      ],
+    ),
+  },
+  {
     slug: "golf-games-for-3-players",
     category: "rules",
     title: "Golf games for 3 players: when your fourth bails",
@@ -1962,7 +2223,7 @@ export const posts: Post[] = [
           { title: "Formats have allowances", body: "Handicap allowances exist because some formats amplify a high handicap. Four-ball match play is commonly played at 90%; individual match play at 100%. Casual groups can skip them if everybody knows that is the choice." },
           { title: "Cap the hole, not the round", body: "Net double bogey is the standard maximum for posting purposes, and it works as a house rule. It keeps one lost ball from distorting every game on the card." },
         ] }] },
-        { id: "why-index-moves", title: "Why the index moves", paragraphs: ["Your index is the average of the best 8 <a href=\"/glossary#score-differential\">score differentials</a> out of your most recent 20 rounds, and it updates the day after each new score is posted. That is why it drifts down after a good week and why one bad round rarely moves it: a score only counts if it lands among your best eight of twenty, so a single 92 usually changes nothing.", "If nobody in your group carries an official index, agree on informal numbers and write them down. Consistency matters more than accuracy: a made-up 15 that everybody agrees on settles more matches than a real 12.4 that only one person remembers. And if somebody’s number stops matching his golf, <a href=\"/blog/sandbagging\">here is how to fix it without accusing anybody</a>."], blocks: [{ kind: "summary", title: "THE SHORT VERSION", items: ["Index is portable and has a decimal. Course handicap is per tee set and is a whole number.", "Course handicap = index × (slope ÷ 113) + (course rating − par).", "Strokes land on specific holes by stroke index, not at the end of the round.", "In a match, the low handicap plays off scratch and everybody else gets the difference."] }] },
+        { id: "why-index-moves", title: "Why the index moves", paragraphs: ["Your index is the average of the best 8 <a href=\"/glossary#score-differential\">score differentials</a> out of your most recent 20 rounds, and it updates the day after each new score is posted. That is why it drifts down after a good week and why one bad round rarely moves it: a score only counts if it lands among your best eight of twenty, so a single 92 usually changes nothing.", "If nobody in your group carries an official index, agree on informal numbers and write them down. Consistency matters: a number everybody agreed on settles more matches than a real 12.4 that only one person remembers. If someone has no index at all, <a href=\"/blog/no-handicap-fair-game\">work one out from their scores</a> rather than making one up. And if somebody’s number stops matching his golf, <a href=\"/blog/sandbagging\">here is how to fix it without accusing anybody</a>."], blocks: [{ kind: "summary", title: "THE SHORT VERSION", items: ["Index is portable and has a decimal. Course handicap is per tee set and is a whole number.", "Course handicap = index × (slope ÷ 113) + (course rating − par).", "Strokes land on specific holes by stroke index, not at the end of the round.", "In a match, the low handicap plays off scratch and everybody else gets the difference."] }] },
       ],
       ),
       {
