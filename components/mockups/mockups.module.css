@@ -846,16 +846,10 @@
   justify-content: center;
   height: 38px;
   border-radius: 11px;
-  background: rgba(255, 255, 255, 0.09);
-  border: 1px solid rgba(255, 255, 255, 0.16);
+  background: var(--accent-16);
+  border: 1px solid var(--accent-border);
   font-size: 12px;
   font-weight: 800;
-  color: #fff;
-}
-
-.gameChipAccent {
-  background: var(--accent-16);
-  border-color: var(--accent-border);
   color: var(--accent);
 }
 

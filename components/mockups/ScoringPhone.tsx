@@ -33,7 +33,7 @@ export function ScoringPhone({ variant = "home" }: ScoringPhoneProps) {
       bgPosition="50% 60%"
       label={
         isFeatures
-          ? "GoLo scoring screen for hole 7 — Mike's score being tapped in with his handicap stroke, the rest of the foursome's net and gross below, and three skins carried."
+          ? "GoLo scoring screen for hole 7 — Mike's score being tapped in with his handicap stroke, the rest of the foursome's net and gross below, and $18 carried over in Skins."
           : "GoLo scoring screen for hole 7 — tapping in Mike's score with net and gross for the group."
       }
     >
@@ -87,10 +87,10 @@ export function ScoringPhone({ variant = "home" }: ScoringPhoneProps) {
       </div>
 
       {isFeatures ? (
-        /* the skins carry on this hole */
+        /* capabilities.ts live-skins: the app shows the carried pot in dollars. */
         <div className={styles.gameRow}>
-          <span className={`${styles.gameChip} ${styles.gameChipAccent}`}>
-            Skins · 3 carried
+          <span className={styles.gameChip}>
+            Skins · $18 carried over
           </span>
         </div>
       ) : (
