@@ -16,9 +16,10 @@
 
 import { spawnSync } from "node:child_process";
 import { existsSync } from "node:fs";
+import { fileURLToPath } from "node:url";
 
 const root = new URL("../.next/standalone/", import.meta.url);
-const script = new URL("scripts/reach-retry.mjs", root).pathname;
+const script = fileURLToPath(new URL("scripts/reach-retry.mjs", root));
 const failures = [];
 
 function run(env) {
