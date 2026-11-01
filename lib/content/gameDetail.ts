@@ -719,8 +719,8 @@ const bingoBangoBongo: GameDetailCopy = {
   },
   variations: [
     { icon: "clock", title: "Order of play", body: "Furthest from the hole plays first, tee to green. It is the rule the game depends on." },
-    { icon: "pin", title: "Ties and half points", body: "Split the point or carry it when two balls are genuinely even." },
-    { icon: "shield", title: "No handicaps required", body: "The game equalizes itself, though GoLo can still allocate strokes if your group wants them." },
+    { icon: "pin", title: "Ties and half points", body: "Some groups split or carry a tied point as a house rule. GoLo records one winner per point and cannot split or carry it; leave it unmarked if nobody wins." },
+    { icon: "shield", title: "No handicaps required", body: "The game equalizes itself. Handicap strokes can apply to the round’s other games, but they do not change the Bingo Bango Bongo points the scorer marks." },
     { icon: "stack", title: "Run it under another game", body: "It stacks beneath Skins or Best Score without changing the card." },
   ],
   tips: [
@@ -739,9 +739,9 @@ const bingoBangoBongo: GameDetailCopy = {
   faqs: gameFaqs("bingo-bango-bongo", [
     { q: "Do we need handicaps for this?", a: "No. The point order gives higher handicaps a genuine chance without allocated strokes." },
     { q: "What if nobody hits the green?", a: "Bingo goes to the first ball that eventually reaches the putting surface." },
-    { q: "What if two players are on after the same shot?", a: "The ball that came to rest first takes bingo; if you cannot tell, split or carry the point." },
+    { q: "What if two players are on after the same shot?", a: "The ball that came to rest first takes bingo. If you cannot tell, some groups split or carry the point as a house rule. GoLo records one winner per point and cannot split or carry it; leave it unmarked if nobody wins." },
     { q: "Does order of play really matter?", a: "It is the game. Playing out of turn can hand away bingo or bongo." },
-    { q: "Can we play with three or five?", a: "Three works well. Five gets slow because every point waits for all five balls." },
+    { q: "Can we play with three or five?", a: "Three works well. Five is a casual group variant and gets slow because every point waits for all five balls. GoLo supports two to four players without teams; Bingo Bango Bongo is not available in a scramble." },
   ]),
   related: ["wolf", "skins", "closest-to-pin"], prev: "wolf", next: "scramble",
 };

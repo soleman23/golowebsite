@@ -191,7 +191,7 @@ export const capabilities = [
       // (src/pages/ScoringPage.jsx BBBPanel, src/store/roundStore.js flagBBB)
       // takes one winner per point, and an unmarked point isn't in the total.
       "Bingo Bango Bongo isn't settled head to head: each point's value goes to its winner and every player puts in an equal share of the total awarded, so 16 of 54 points at $1 in a foursome nets +$2.50.",
-      "Each Bingo Bango Bongo point has one winner: the scorer can't split a tied point, and a point left unmarked costs nobody anything.",
+      "Each Bingo Bango Bongo point has one winner: the scorer can't split or carry a tied point, and a point left unmarked costs nobody anything. Handicap strokes do not affect these manually marked points.",
     ],
     verified: APP_CHECK_1029,
     roadmap: true,
