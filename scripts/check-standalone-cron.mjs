@@ -49,7 +49,7 @@ if (!existsSync(script)) {
     });
     if (/ERR_MODULE_NOT_FOUND|Cannot find (module|package)/.test(on.out)) {
       failures.push(`switch on: a module is missing from the standalone build:\n${on.out.slice(0, 600)}`);
-    } else if (on.status !== 1 || !/127\.0\.0\.1:1|P1001|Can't reach database/.test(on.out)) {
+    } else if (on.status !== 1 || !/PrismaClientInitializationError|P1001|Can't reach database|127\.0\.0\.1:1/.test(on.out)) {
       failures.push(`switch on: expected a database failure (exit 1), got exit ${on.status}:\n${on.out.slice(0, 600)}`);
     }
   }
