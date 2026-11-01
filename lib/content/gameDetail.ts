@@ -650,8 +650,15 @@ const wolf: GameDetailCopy = {
   related: ["skins", "nassau", "bingo-bango-bongo"], prev: "best-score", next: "bingo-bango-bongo",
 };
 
+// Checked against golo `main` 2237c1d (GoLo 1.2.1), src/engines/
+// bingobangobongo.js calculateBBBPayouts: each point's value goes to its
+// winner, then every player puts in an equal share of the total awarded, so a
+// player nets (points − points awarded ÷ players) × value. Not head to head.
+// The example: 54 points at $1 is $13.50 each; 16 − 13.50 = +$2.50,
+// 15 → +$1.50, 13 → −$0.50, 10 → −$3.50. Keep standings, net and phone equal.
 const bingoBangoBongo: GameDetailCopy = {
   slug: "bingo-bango-bongo", kicker: "POINTS · 3 PER HOLE",
+  updated: "2026-10-31",
   seoTitle: "Bingo Bango Bongo Golf Game: Rules & Scoring",
   deeperReading: { href: "/blog/bingo-bango-bongo", label: "Deeper reading: why Bingo Bango Bongo suits mixed handicaps →" },
   tagline: "Three points on every hole: first ball on the green, closest once everyone is on, and first in the cup. Your total score never comes into it — which is why the shortest hitter in the group keeps winning.",
@@ -660,7 +667,7 @@ const bingoBangoBongo: GameDetailCopy = {
   howTitle: "Fifty-four points that ignore your scorecard.",
   intro: "Every hole hands out exactly three points, one for each stage of the hole. Nobody is playing for a total — they are playing for whichever point is still available. The result is a game where a 20-handicap and a scratch player have a real fight, no strokes required.",
   steps: [
-    { n: "1", title: "Agree what a point is worth", body: "A dollar a point is standard, and 54 points get handed out over 18 holes." },
+    { n: "1", title: "Agree what a point is worth", body: "A dollar a point is standard, and 54 points get handed out over 18 holes. Each point’s value goes to its winner, and everyone puts in an equal share of the total: $13.50 each in a foursome at $1." },
     { n: "2", title: "Bingo — first on the green", body: "The first ball to come to rest on the putting surface takes it, no matter how many shots it took." },
     { n: "3", title: "Bango — closest once all are on", body: "When every ball is on the green, whoever is nearest the flag takes the point." },
     { n: "4", title: "Bongo — first in the hole", body: "First ball to disappear. Play in proper order and the furthest away gets the first crack." },
@@ -683,12 +690,12 @@ const bingoBangoBongo: GameDetailCopy = {
       { tag: "TOM", title: "Nothing", detail: "Hit it 310 down the middle, played last all hole", value: "0", tone: "bad" },
     ],
     standings: [
-      { name: "You", note: "5 bingo · 7 bango · 4 bongo", value: "+$10", tone: "good" },
-      { name: "Dave", note: "15 points", value: "+$6", tone: "good" },
-      { name: "Mike", note: "13 points", value: "−$2", tone: "bad" },
-      { name: "Tom", note: "10 points", value: "−$14", tone: "bad" },
+      { name: "You", note: "5 bingo · 7 bango · 4 bongo", value: "+$2.50", tone: "good" },
+      { name: "Dave", note: "15 points", value: "+$1.50", tone: "good" },
+      { name: "Mike", note: "13 points", value: "−$0.50", tone: "bad" },
+      { name: "Tom", note: "10 points", value: "−$3.50", tone: "bad" },
     ],
-    net: { label: "NET · YOU’RE OWED", sub: "54 points at $1", value: "+$10" },
+    net: { label: "NET · YOU’RE OWED", sub: "$16 in points, less a $13.50 share", value: "+$2.50" },
     phone: {
       opponent: "Four-player points", through: "18", of: "/ 18", state: "FINAL", stateSub: "54 points awarded",
       sequence: ["w", "l", "w", "w", "l", "l", "w", "w", "l", "w", "w", "l", "w", "l", "w", "w", "l", "w"],
@@ -698,8 +705,8 @@ const bingoBangoBongo: GameDetailCopy = {
         { label: "BONGO", status: "4", value: "first in", tone: "neutral" },
       ],
       callout: { label: "ORDER", note: "Furthest away plays first until every ball is holed" },
-      settleTitle: "You’re owed", settleSub: "Point spreads, netted", settleValue: "$10",
-      label: "Final Bingo Bango Bongo standings: you lead with 16 points and are owed ten dollars.",
+      settleTitle: "You’re owed", settleSub: "Equal shares, netted", settleValue: "$2.50",
+      label: "Final Bingo Bango Bongo standings: you lead with 16 points and are owed two dollars fifty.",
     },
   },
   headings: {
@@ -708,12 +715,12 @@ const bingoBangoBongo: GameDetailCopy = {
     glossary: { kicker: "TALK THE TALK", title: "The terms you'll hear on the tee." },
     faq: { kicker: "BINGO BANGO BONGO, ANSWERED", title: "Before you tee it up." },
     related: { kicker: "STACK IT WITH", title: "Crews that run Bingo Bango Bongo also play…", lead: "It does not care about your total score, so it stacks cleanly under anything that does." },
-    cta: { title: "Fifty-four points is a lot to remember.", lead: "Let GoLo keep the order, award every point, and settle the spread after 18." },
+    cta: { title: "Fifty-four points is a lot to remember.", lead: "Mark who won each point as the hole finishes. GoLo keeps the count and nets it after 18." },
   },
   variations: [
     { icon: "clock", title: "Order of play", body: "Furthest from the hole plays first, tee to green. It is the rule the game depends on." },
-    { icon: "pin", title: "Ties and half points", body: "Split the point or carry it when two balls are genuinely even." },
-    { icon: "shield", title: "No handicaps required", body: "The game equalizes itself, though GoLo can still allocate strokes if your group wants them." },
+    { icon: "pin", title: "Ties and half points", body: "Some groups split or carry a tied point as a house rule. GoLo records one winner per point and cannot split or carry it; leave it unmarked if nobody wins." },
+    { icon: "shield", title: "No handicaps required", body: "The game equalizes itself. Handicap strokes can apply to the round’s other games, but they do not change the Bingo Bango Bongo points the scorer marks." },
     { icon: "stack", title: "Run it under another game", body: "It stacks beneath Skins or Best Score without changing the card." },
   ],
   tips: [
@@ -732,9 +739,9 @@ const bingoBangoBongo: GameDetailCopy = {
   faqs: gameFaqs("bingo-bango-bongo", [
     { q: "Do we need handicaps for this?", a: "No. The point order gives higher handicaps a genuine chance without allocated strokes." },
     { q: "What if nobody hits the green?", a: "Bingo goes to the first ball that eventually reaches the putting surface." },
-    { q: "What if two players are on after the same shot?", a: "The ball that came to rest first takes bingo; if you cannot tell, split or carry the point." },
+    { q: "What if two players are on after the same shot?", a: "The ball that came to rest first takes bingo. If you cannot tell, some groups split or carry the point as a house rule. GoLo records one winner per point and cannot split or carry it; leave it unmarked if nobody wins." },
     { q: "Does order of play really matter?", a: "It is the game. Playing out of turn can hand away bingo or bongo." },
-    { q: "Can we play with three or five?", a: "Three works well. Five gets slow because every point waits for all five balls." },
+    { q: "Can we play with three or five?", a: "Three works well. Five is a casual group variant and gets slow because every point waits for all five balls. GoLo supports two to four players without teams; Bingo Bango Bongo is not available in a scramble." },
   ]),
   related: ["wolf", "skins", "closest-to-pin"], prev: "wolf", next: "scramble",
 };
