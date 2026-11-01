@@ -98,9 +98,9 @@ Subtotal: 8 MVP + 16 expansion = 24.
 | 26 | `nassau` | Nassau | ✓ | match-play | P0 | | `match-play`, `press`, `front-nine`, `back-nine` | GoLo `game-library`, `overall-match-presses` (Nassau takes no presses) | → `/games/nassau` |
 | 27 | `wolf` | Wolf | ✓ | team | P0 | | `lone-wolf`, `four-ball` | GoLo `game-library` | → `/games/wolf` |
 | 28 | `bingo-bango-bongo` | Bingo Bango Bongo | ✓ | | P0 | bbb | `closest-to-the-pin`, `greenie` | GoLo `game-library` | → `/games/bingo-bango-bongo` |
-| 29 | `best-score` | Best Score | ✓ | | P0 | | **Four-Ball** (`four-ball`). Best Score is GoLo's name for "the best single score in the group takes it" (`lib/content/games.ts`: "Net or gross: the best score takes it"). It is an individual format. It is **not** best ball, and the entry says how they differ. `stroke-play`, `net-score` | GoLo `game-library` | → `/games/best-score` |
+| 29 | `best-score` | Best Score | ✓ | | P0 | | **Four-Ball** (`four-ball`). Best Score is GoLo's name for "the best single score in the group takes it" (`lib/content/games.ts`: "Net or gross: the best score takes it"). It ranks players, or teams in Team Play and scrambles (owner's correction, 2026-10-31). It is **not** best ball, and the entry says how they differ. `stroke-play`, `net-score` | GoLo `game-library` | → `/games/best-score` |
 | 30 | `scramble` | Scramble | ✓ | team, scramble | P0 | captain's choice | `texas-scramble`, `florida-scramble`, `shamble`, `four-ball` | RoH Appendix C (scramble allowances); GoLo `scramble` | → `/games/scramble` |
-| 31 | `four-ball` | Four-Ball | ✓ | team, match-play, stroke-play | P1 | best ball, better ball, fourball | **Best Score** (`best-score`: not a team format); `foursomes`, `scramble`, `wolf` | RoG Def. Four-Ball; RoG R. 23; RoH Appendix C | hub |
+| 31 | `four-ball` | Four-Ball | ✓ | team, match-play, stroke-play | P1 | best ball, better ball, fourball | **Best Score** (`best-score`: a side game on the round's result, not a way of scoring a hole); `foursomes`, `scramble`, `wolf` | RoG Def. Four-Ball; RoG R. 23; RoH Appendix C | hub |
 | 32 | `foursomes` | Foursomes | ✓ | team | P1 | alternate shot | `greensomes`, `chapman`; a casual "foursome" (four players in a group) is not this format: say so in the entry | RoG Def. Foursomes; RoG R. 22; RoH Appendix C | hub |
 | 33 | `match-play` | Match Play | ✓ | match-play | P1 | matchplay | `stroke-play`, `halve`, `dormie`, `all-square`, `nassau` | RoG Def. Match Play; RoG R. 3.2 | hub |
 | 34 | `stableford` | Stableford | ✓ | stroke-play | P1 | | `modified-stableford`, `quota`, `par-competition` | RoG Def. Stableford; RoG R. 21.1 | hub |
@@ -299,7 +299,7 @@ The six from #152, each resolved to exactly one record:
 
 | Alias | Record | Reason |
 |---|---|---|
-| best ball | `four-ball` | In the formal sense, "best ball" is a partnership format where each team counts its better score: Four-Ball (RoG R. 23). People also say "best ball" loosely for other things, so the Four-Ball entry notes the informal use. It never resolves to `best-score`: GoLo's Best Score is an individual format ("the best score takes it"), and its entry says how it differs. |
+| best ball | `four-ball` | In the formal sense, "best ball" is a partnership format where each team counts its better score: Four-Ball (RoG R. 23). People also say "best ball" loosely for other things, so the Four-Ball entry notes the informal use. It never resolves to `best-score`: GoLo's Best Score is a side game decided on the round's result, for players or teams ("the best score takes it"), and its entry says how it differs. |
 | alternate shot | `foursomes` | Foursomes is the Rules' name for partners alternating strokes on one ball (RoG R. 22). Casual "alternate shot" variants where both partners drive (Greensomes, Chapman) are separate records, and the Foursomes entry points to them. |
 | tee box | `teeing-area` | The 2019 Rules renamed the "teeing ground" the teeing area; "tee box" is what most golfers say. |
 | double eagle | `albatross` | The same score, three under par on a hole. US usage. |

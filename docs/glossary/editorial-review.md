@@ -116,7 +116,7 @@ Spec §10.2, the house rules, and what the claim and vocabulary checks enforce. 
   - skins validation rules (#176);
   - Wolf or Bingo Bango Bongo in a scramble;
   - a Texas scramble drive count, or a shamble.
-- [ ] Unsupported formats carry no GoLo badge or note. Stableford, Quota and Vegas are golf, full stop.
+- [ ] Unsupported formats carry no GoLo badge or note. Quota and Vegas are golf, full stop. Stableford rounds are supported (`round-formats`); any GoLo note must stay within that live capability's limits.
 
 **Voice**
 - [ ] Plain, dry, specific. No hype, no emoji, no exclamation marks.

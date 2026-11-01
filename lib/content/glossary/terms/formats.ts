@@ -9,7 +9,8 @@
  * agent under the owner's delegation, approval by the owner in writing.
  *
  * GoLo notes come from live registry entries only (game-library,
- * live-skins, scramble, overall-match-presses); Four-Ball, Foursomes, Match
+ * live-skins, scramble, overall-match-presses, and since 2026-10-31
+ * team-play and round-formats for Best Score); Four-Ball, Foursomes, Match
  * Play and Stableford get none, only the "games GoLo scores" link.
  *
  * Where a guide owns the intent (canonical-map.md), the entry is a short
@@ -197,15 +198,23 @@ export const formatsTerms: GlossaryTerm[] = [
     tags: [],
     priority: "mvp",
     shortDefinition:
-      "An individual game where everyone plays for the same amount and the best score for the round takes it, net or gross, or the top two or three finishers split it.",
+      "A golf side game where players or teams compete for the best overall result for the round, net, gross or on Stableford points. Everyone plays for the same amount; the top finisher takes it, or the top two or three share it.",
     explanation:
-      "It isn't best ball. Best ball, or Four-Ball, is a team format where a side counts its better score on each hole. Best Score compares each player's own total.",
+      "It isn't best ball. Best ball, or Four-Ball, is how a side scores a hole: partners play their own balls and the side counts the better score. Best Score is a side game decided on the round's result; in team play, that result can be a best-ball total.",
     example:
-      "Four players at $10 each, played net. The low net score, a 70, takes $10 from each of the other three and finishes $30 up. Split two ways, the top two each finish $10 up and the other two $10 down.",
-    relatedTermIds: ["four-ball", "skins"],
+      "Four players at $10 each, played net. The low net score, a 70, takes $10 from each of the other three and finishes $30 up. Split two ways, the top two each finish $10 up and the other two $10 down. Played as two teams of two, the team with the better total takes the $40, and each partner finishes $10 up.",
+    // Owner's correction of 2026-10-31: Best Score isn't individual-only.
+    // golo main 2237c1d src/engines/strokePurse.js: calculateStrokePurse
+    // (each player's total: net, gross, or Stableford points),
+    // calculateFixedTeamPurse (Team Play: each team's better net or gross on a
+    // hole added up, or Stableford Best Of / Combined points) and
+    // calculateScramblePurse (each scramble team's one score a hole).
+    goloNote:
+      "Without teams, GoLo compares each player's total: net or gross as set, or Stableford points in a Stableford round. In Team Play it compares the two teams' totals, built from each team's better score on each hole, or in a Stableford round from each team's better player's points or both players' points added. In a scramble it compares each team's score, net of its team handicap unless played gross.",
+    relatedTermIds: ["four-ball", "scramble", "skins"],
     relatedContentPaths: [],
     canonical: { kind: "existing", path: "/games/best-score" },
-    capabilityIds: ["game-library"],
+    capabilityIds: ["game-library", "team-play", "scramble", "round-formats"],
     ctaIntent: "games",
     sources: [
       {
@@ -218,9 +227,36 @@ export const formatsTerms: GlossaryTerm[] = [
     ],
     status: "published",
     reviewedBy: "owner",
-    reviewLog: mvpReviewLogApp,
-    reviewedOn: MVP_REVIEWED_ON,
+    reviewLog: [
+      ...mvpReviewLogApp,
+      {
+        stage: "rules",
+        by: "agent",
+        on: "2026-10-31",
+        note: "Four-Ball against R&A Rule 23 (the side's score is the lower partner score); example recomputed through the golo engines.",
+      },
+      {
+        stage: "product",
+        by: "agent",
+        on: "2026-10-31",
+        note: "Individual, Team Play and scramble Best Score checked against golo main 2237c1d (strokePurse.js, teamScoring.js, betResults.js).",
+      },
+      {
+        stage: "seo",
+        by: "agent",
+        on: "2026-10-31",
+        note: "Canonical unchanged; scramble added as a related term; lint:content passes.",
+      },
+      {
+        stage: "approval",
+        by: "owner",
+        on: "2026-10-31",
+        note: "The owner's written instruction of 2026-10-31 approved this correction and its suggested definition, subject to the agent's checks; final wording in soleman23/golowebsite#218 for the owner's sign-off before merge.",
+      },
+    ],
+    reviewedOn: "2026-10-31",
     publishedOn: "2026-10-29",
+    updatedOn: "2026-10-31",
   },
   {
     id: "scramble",
