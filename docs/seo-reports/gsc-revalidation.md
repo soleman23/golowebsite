@@ -51,7 +51,8 @@ The October 8 baseline in `docs/seo-progress.md` covers three months, not 28 day
    - **Expected:** the three redirects: the apex domain, `http://`, and the trailing slash. For example, `http://www.golo.golf/blog/` takes two hops: a 301 to `https://www.golo.golf/blog/`, then a 308 to `/blog`.
    - **Expected:** the legacy redirects in `next.config.mjs` under "Page with redirect": `/privacy-policy`, `/terms-of-service`, `/tos`, `/faqs`, `/game/*`, `/games/nassau-explained`, `/games/stroke-purse` and `/blog/who-pays`. Each is permanent and should land on its destination in one hop: `curl -s -o /dev/null -w '%{http_code} %{redirect_url}\n' https://www.golo.golf/faqs` shows 308 and the new URL. A redirect that chains, loops or lands on a 404 is a defect.
    - **Expected:** "Alternate page with proper canonical tag", provided the canonical is the URL we declare.
-   - **Expected:** `/cookies` and `/acceptable-use` under "Excluded by 'noindex' tag". Both are noindex on purpose.
+   - **Expected:** `/acceptable-use` under "Excluded by 'noindex' tag". It's noindex on purpose. `/cookies` was too until the Cookie Policy was published on October 20, 2026 (`b0628a6`); it's now indexable and in the sitemap.
+   - **Expected:** files that aren't pages under "Crawled – currently not indexed": images (`/images/…`), `/manifest.webmanifest`, `/favicon.ico`. Googlebot fetches them while rendering pages, and they aren't in the sitemap. Check that each returns 200 with a non-HTML content type; an HTML URL here is triaged like any other.
    - **Expected for now:** a sitemap URL first published fewer than 21 days before the run date and still "Discovered" or "Crawled – currently not indexed".
    - **Expected:** `/terms` under "Excluded by 'noindex' tag", but only while `NEXT_PUBLIC_TERMS_PUBLISHED` is off. Check with `curl -s https://www.golo.golf/terms | grep -o '<meta name="robots"[^>]*>'`: a `noindex` there means it's off. On October 16, production served `/terms` without `noindex` and listed it in the sitemap, so today it should be indexed. `/tos` and `/terms-of-service` 308 to it.
    - **Expected:** a "Not found (404)" URL that was never meant to exist (a typo or an old guess), provided it isn't in the sitemap and no page on the site links to it. Use the report's referring-page details, and run `npm run lint:content`, which fails on broken internal links. A 404 that's in the sitemap or linked from the site is a defect.
@@ -61,8 +62,8 @@ The October 8 baseline in `docs/seo-progress.md` covers three months, not 28 day
 
 Inspect each URL below. For each one, record whether it's indexed, whether Google's selected canonical matches the canonical we declare, and the last crawl date.
 
-<!-- url-list-checked-until: 2026-11-05 -->
-Until November 5, 2026, `npm run lint:content` fails while a published post or guide is missing from the two lists below, or while they list a page the site doesn't serve. After that date, the lists are the record of this run and the check stops. If the run happens earlier, change the date in the comment above to the run date.
+<!-- url-list-checked-until: 2026-10-29 -->
+Until the date in the comment above, `npm run lint:content` fails while a published post or guide is missing from the two lists below, or while they list a page the site doesn't serve. After that date, the lists are the record of this run and the check stops. The run happened on October 29, 2026 (results in `docs/seo-progress.md`), so the date is the run date.
 
 **Guides (9):**
 

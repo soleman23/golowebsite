@@ -746,7 +746,7 @@ const bingoBangoBongo: GameDetailCopy = {
 // (1 down), total 6–5 (1 up), no match decided before its last hole.
 const scramble: GameDetailCopy = {
   slug: "scramble",
-  updated: "2026-10-28",
+  updated: "2026-10-31",
   seoTitle: "Golf Scramble Rules: Team Handicaps & Side Games",
   kicker: "TEAMS · ONE BALL",
   tagline: "Teams play one ball: everyone hits, the best shot gets played, and one score a hole goes on the card. GoLo works out each team’s handicap and settles your games team against team.",
@@ -756,7 +756,7 @@ const scramble: GameDetailCopy = {
   intro: "A scramble turns a group into teams that play one ball. Everyone hits, the team picks the best shot, and everyone plays the next one from there until it’s holed. One score per team goes on the card, so a 25-handicap and a 5 can play together and both count. The part groups argue about is the team handicap, so GoLo works it out the same way every time.",
   steps: [
     { n: "1", title: "Split into teams", body: "Two to six teams of one to four players, up to twelve in all. GoLo deals the group out evenly and you move players around before the first tee. In GoLo, any group of more than four plays as a scramble." },
-    { n: "2", title: "Everyone hits, the best ball plays", body: "All of you tee off, the team picks the best drive, and everyone plays their next shot from that spot. Repeat until the ball is in the hole." },
+    { n: "2", title: "Everyone hits, the best shot plays", body: "All of you tee off, the team picks the best drive, and everyone plays their next shot from that spot. Repeat until the ball is in the hole." },
     { n: "3", title: "Set the team handicaps", body: "Net is the default: GoLo works out a handicap for each team from its players’ Course Handicaps, using the percentages below. Gross plays it scratch. Manual lets the organizer set each team’s number." },
     { n: "4", title: "Put games on it", body: "Skins, Nassau, Best Score and the Overall Match play team against team. Wolf and Bingo Bango Bongo aren’t played in a scramble." },
     { n: "5", title: "One scorer per team", body: "Each team’s scorer enters one score a hole. GoLo nets it by the team’s strokes, settles every game, and splits each team’s result evenly between its players." },
@@ -768,7 +768,7 @@ const scramble: GameDetailCopy = {
     rows: [
       { tag: "1", title: "One-player team", detail: "No scramble advantage, so the full Course Handicap", value: "100%" },
       { tag: "2", title: "Two players", detail: "The WHS recommendation, lower handicap first", value: "35 / 15%" },
-      { tag: "3", title: "Three players", detail: "WHS has no three-player figure; this is the usual club split", value: "30 / 20 / 10%" },
+      { tag: "3", title: "Three players", detail: "The WHS recommendation, lowest handicap first", value: "30 / 20 / 10%" },
       { tag: "4", title: "Four players", detail: "The WHS recommendation, lowest handicap first", value: "25 / 20 / 15 / 10%" },
     ],
   },
@@ -842,7 +842,6 @@ const scramble: GameDetailCopy = {
 
 const closestToPin: GameDetailCopy = {
   slug: "closest-to-pin", kicker: "SIDE GAME · PAR 3s",
-  deeperReading: { href: "/blog/rangefinder", label: "Deeper reading: rangefinder or GPS watch, for the $10 crowd →" },
   updated: "2026-10-29",
   seoTitle: "Closest to the Pin & Greenies: Golf Side Game Rules",
   tagline: "One tee shot, one hole. Stick it tighter than everybody else on the par 3s and win it. Play it as a greenie and you still have to make par from there.",
@@ -936,7 +935,6 @@ const closestToPin: GameDetailCopy = {
 
 const longestDrive: GameDetailCopy = {
   slug: "longest-drive", kicker: "SIDE GAME · ONE MARKED HOLE",
-  deeperReading: { href: "/blog/rangefinder", label: "Deeper reading: rangefinder or GPS watch, for the $10 crowd →" },
   updated: "2026-10-15",
   seoTitle: "Longest Drive Golf Side Game: Rules & Settling Up",
   tagline: "Pick a hole, swing out of your shoes, and the longest ball that finishes in the fairway takes it. Short grass or nothing.",

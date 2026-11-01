@@ -172,6 +172,1975 @@ const blogMedia = {
 
 export const posts: Post[] = [
   {
+    slug: "gimmes",
+    category: "etiquette",
+    title: "Gimmes in golf: when “that’s good” starts an argument",
+    metaDescription:
+      "A gimme is a match-play concession, not a stroke-play rule. What the Rules allow, why one putt can matter to three games, and what to agree first.",
+    excerpt:
+      "Tom says “that’s good” to Mike’s three-footer. Jess, who is in the skins, would like to see it go in. Both of them have a point.",
+    dek: "In a match, a conceded putt is part of the Rules. In every other game on the same hole it’s a favor somebody else didn’t agree to. Settle which putts are good, and for what, before the first green.",
+    crumb: "Gimmes",
+    author: "From the GoLo team",
+    // Pair 5 of the 16-idea list. Rules: R&A Rule 3.2b and 3.3c (2023),
+    // read 2026-10-30. GoLo facts: capabilities.ts round-formats
+    // (APP_CHECK_1030_FORMATS, golo main 2237c1d).
+    date: "2026-10-31",
+    readMins: 6,
+    hero: {
+      src: "/images/blog/gimmes-hero.webp",
+      mobile: "/images/blog/gimmes-mobile.webp",
+      og: "/images/blog/gimmes-og.jpg",
+      alt: "A golf ball a few feet from the cup on a green, a putter resting on the grass beside it, in late afternoon light",
+      position: "80% 50%",
+    },
+    related: ["first-tee-checklist", "pressing", "who-pays-first"],
+    published: true,
+    body: article(
+      "Here is an invented 6th, a par 4. Mike has three feet for par. Tom, his opponent in their match, is in with a 5 and waves the putt away: “that’s good.” Mike picks up. Jess already has her par, Dave has a 6, and all four of them are in a skins game. Jess says she’d like to see it holed. If Mike’s putt counts, he ties Jess and the skin carries. If he misses, Jess wins it. Tom has just made a decision about Jess’s skin, and nobody asked her.",
+      [
+        {
+          id: "what-the-rules-say",
+          title: "What the Rules actually allow",
+          paragraphs: [
+            "In match play, a <a href=\"/glossary#gimme\">gimme</a> is a concession, and the Rules of Golf allow it. Under <a href=\"https://www.randa.org/en/rog/the-rules-of-golf/rule-3\">Rule 3.2b</a>, a player may concede the opponent’s next stroke, a hole or the whole match. A conceded stroke counts as holed, the ball can be picked up, and the concession is final: it can’t be declined or taken back.",
+            "In regular stroke play, there is no such thing. Rule 3.3c says a player must hole out on every hole, and in a real competition a player who doesn’t, and doesn’t correct it before teeing off on the next hole, is disqualified. (Stableford is scored differently and doesn’t disqualify.) A gimme in stroke play isn’t a rule. It’s a house agreement, and it only binds the people who agreed to it.",
+          ],
+          blocks: [
+            {
+              kind: "atAGlance",
+              title: "GIMMES, AT A GLANCE",
+              items: [
+                { label: "IN MATCH PLAY", value: "A concession, allowed by Rule 3.2b" },
+                { label: "IN STROKE PLAY", value: "Not in the Rules: hole out" },
+                { label: "WHO CAN GIVE ONE", value: "Only the opponent in that match" },
+                { label: "ONCE GIVEN", value: "Final; it can’t be taken back" },
+              ],
+            },
+          ],
+        },
+        {
+          id: "one-putt",
+          title: "One putt, three games",
+          paragraphs: [
+            "Most friendly rounds run more than one game on the same card. On Mike’s 6th, three of them care about the same three-footer. Suppose Tom has conceded it for the match, but Mike still holes out for the skins and the total. The concession stays final even if Mike misses and then holes the next putt.",
+          ],
+          blocks: [
+            {
+              kind: "table",
+              head: ["Game", "Mike holes it", "Misses, then holes next"],
+              rows: [
+                ["Mike vs. Tom match", "Mike wins: conceded", "Mike wins: conceded"],
+                ["Skins, all four", "Mike and Jess tie: carries", "Jess wins the skin"],
+                ["Best Score total", "Mike’s 4", "Mike’s 5"],
+              ],
+            },
+            { kind: "p", html: "Tom could concede the putt in his match, and under the Rules that is his to give. He can’t concede it for the skins, where Jess and Dave have a say, or for a total-score game, where every stroke counts for everyone. The trouble starts when one sentence on the green settles three games at once." },
+            { kind: "quote", text: "A gimme is a gift from your opponent. It isn’t a gift from everyone else in the group." },
+          ],
+        },
+        {
+          id: "agree",
+          title: "What to agree before the first green",
+          blocks: [
+            { kind: "cardGrid", items: [
+              { title: "The match only, or everything", body: "The simplest rule: gimmes count in head-to-head matches and nowhere else. If a skin or a total is live on the hole, putt it. The other option is a length that counts for every game." },
+              { title: "How close is good", body: "If you use a length, measure it. A common one is inside the leather: with the putter head at the cup, the ball is closer than the bottom of the grip. With a 34-inch putter that’s about two feet, so Mike’s three-footer wouldn’t qualify. Use one putter for the measuring, not whoever’s is longest." },
+              { title: "Who can give one", body: "In a match, only the opponent. In a group game, nobody can give a putt on behalf of the others, so “that’s good” from one player doesn’t settle the skins." },
+              { title: "Putts that win something", body: "A putt for a birdie, for a carried skin or to close out the match is worth holing. Many groups agree that those are never good, whatever the length." },
+              { title: "What goes on the card", body: "A conceded putt counts as one stroke, holed. Mike’s three-footer for par goes down as a 4, not as a 3 and not as “picked up.”" },
+              { title: "One number per hole", body: "Whatever you agree, each player has one score on each hole. If two games would need two different numbers, the agreement isn’t finished." },
+            ] },
+          ],
+        },
+        {
+          id: "in-golo",
+          title: "How GoLo handles it",
+          paragraphs: [
+            "In GoLo, one scorer enters one score per player per hole, and every game in the round reads that score. There is no separate number for the match and another for the skins. So the group’s agreement decides what the scorer types: if Mike’s gimme counts, he gets a 4 and the skin carries; if the group says putt it, the scorer waits for the putt.",
+            "If the round is scored as match play between two players or two teams, the scorer can also mark a whole hole conceded. That hole goes to that side in the Overall Match, the Nassau and any presses. A foursome playing separate matches inside one round can’t mark one. Skins and Best Score ignore the concession and keep reading the scores. If the scorer moves on without entering a score for someone, GoLo writes par for them, and Skins and Best Score count that par. For a casual game with an agreed pickup rule, enter that agreed score for the player who picked up. A regular stroke-play competition still requires holing out.",
+            "GoLo has no setting for conceding a single putt. A gimme goes on the card the way the Rules count it, as a holed stroke, and GoLo keeps the tally from there. The money changes hands outside the app.",
+          ],
+        },
+        {
+          id: "say-it",
+          title: "Say it on the first tee",
+          paragraphs: [
+            "“Gimmes in the match only. If a skin or the total is live, putt it.” That sentence would have kept Jess’s skin out of Tom’s hands. If your group prefers a length, name it and the putter it’s measured with. Either way, agree it before anyone is standing over a three-footer.",
+            "The rest of what’s worth agreeing is in <a href=\"/blog/first-tee-checklist\">the first-tee checklist</a>, and the other on-course argument about matches is <a href=\"/blog/pressing\">pressing</a>. Then <a href=\"/how-it-works\">see one round from setup to settle-up</a> or <a href=\"/#get\">get GoLo for the next one</a>.",
+          ],
+          blocks: [
+            { kind: "summary", title: "THE SHORT VERSION", items: [
+              "In match play a gimme is a concession under Rule 3.2b, and it’s final. In stroke play there are no gimmes: Rule 3.3c says hole out.",
+              "One putt can matter to a match, the skins and a total at once. Only the match opponent can concede it, and only for the match.",
+              "Agree before the first green: match only or a measured length, who can give one, which putts are never good, and what goes on the card.",
+              "In GoLo every game reads the one score entered. A conceded hole counts in the match games; Skins and Best Score use the scores, so agree one for the player who picked up.",
+            ] },
+            { kind: "sources", items: [
+              { label: "The R&A — Rule 3.2b: concessions; Rule 3.3c: failure to hole out", href: "https://www.randa.org/en/rog/the-rules-of-golf/rule-3" },
+            ] },
+          ],
+        },
+      ],
+    ),
+  },
+  {
+    slug: "nine-hole-games",
+    category: "rules",
+    title: "Golf games for 9 holes: short round, full bragging rights",
+    metaDescription:
+      "An after-work nine needs a game that fits nine holes: a total, skins or one match, small amounts, a defined finish and a tie rule. One round worked through.",
+    excerpt:
+      "Tee time 5:40, sunset 7:25, nine holes. A Nassau doesn’t shrink cleanly. Here is what does, and what the worst evening can cost.",
+    dek: "An 18-hole game squeezed into nine holes usually breaks somewhere. Pick a format that fits nine, keep the amounts small, and agree how the evening ends before the light does.",
+    crumb: "Games for nine",
+    author: "From the GoLo team",
+    // Pair 5 of the 16-idea list. Rules: USGA Rules of Handicapping 6.1b,
+    // read 2026-10-30. GoLo facts: capabilities.ts nine-hole-rounds
+    // (APP_CHECK_1030_FORMATS, golo main 2237c1d), game-library, settle-up.
+    date: "2026-10-31",
+    readMins: 6,
+    hero: {
+      src: "/images/blog/nine-hole-games-hero.webp",
+      mobile: "/images/blog/nine-hole-games-mobile.webp",
+      og: "/images/blog/nine-hole-games-og.jpg",
+      alt: "Four golfers walking up the 9th fairway toward a green and clubhouse as the sun sets",
+      position: "80% 50%",
+    },
+    related: ["skins-carryover", "golf-games-for-2-players", "first-tee-checklist"],
+    published: true,
+    body: article(
+      "Tee time 5:40, sunset 7:25, nine holes if nobody looks for a ball for long. Four of you, after work, and somebody suggests the usual Nassau. Over nine holes the front nine is the whole round and the back nine doesn’t exist. A game built for eighteen needs rebuilding for nine, and the rebuild is easier than it sounds.",
+      [
+        {
+          id: "what-changes",
+          title: "What changes over nine holes",
+          paragraphs: [
+            "Fewer holes means fewer chances. A bad hole is a bigger share of the round, skins carry for fewer holes before they run out, and a match has less time to come back. None of that is a reason not to play; it is a reason to choose a game with nine holes in mind.",
+            "Handicaps change too. The handicap system has a nine-hole course handicap of its own: half the Handicap Index rounded to the nearest tenth, times the nine’s slope over 113, plus the nine’s course rating minus its par. On a nine rated 35.8 with a slope of 124 and a par of 36, a 14.0 gets 7.0 × 124 ÷ 113, minus 0.2: 7.48, so 7 strokes. A 22.0 gets 12.",
+          ],
+          blocks: [
+            {
+              kind: "atAGlance",
+              title: "NINE HOLES, AT A GLANCE",
+              items: [
+                { label: "SIMPLEST", value: "Best Score over the nine" },
+                { label: "EVERY HOLE", value: "Skins: nine of them, carries end on the 9th" },
+                { label: "HEAD TO HEAD", value: "One match, not a Nassau" },
+                { label: "HANDICAPS", value: "The nine-hole course handicap" },
+              ],
+            },
+          ],
+        },
+        {
+          id: "choose",
+          title: "Pick a game that fits nine",
+          blocks: [
+            { kind: "cardGrid", items: [
+              { eyebrow: "BEST SCORE", title: "One total over nine holes", body: "Everyone puts in the same amount, the lowest total takes it. Nothing to track hole by hole, and it ends when the 9th is holed." },
+              { eyebrow: "SKINS", title: "Nine chances to win something", body: "Each hole is its own prize. With carries on, two or three ties can make the 8th or 9th the hole everyone remembers." },
+              { eyebrow: "ONE MATCH", title: "Head to head, without splitting the nine", body: "A match over nine holes, won by whoever wins more holes. There is no front and back to split." },
+              { eyebrow: "LEAVE FOR SATURDAY", title: "Presses and stacked games", body: "An hour and three-quarters of daylight is not the time to add a third game. Pick one, or two at most." },
+            ] },
+            { kind: "p", html: "Some groups split a nine-hole match into three-hole matches, or into the first four and last five plus the overall. Those are house versions. GoLo plays a Nassau over nine holes as one match, settled once, which is the same thing as a plain match. If your group wants the split version, keep it on paper." },
+          ],
+        },
+        {
+          id: "finish",
+          title: "Agree how the evening ends",
+          paragraphs: [
+            "A nine-hole game needs a finish line and a tie rule, agreed before the first tee shot. Ties come up more often when there are fewer holes to separate anyone.",
+          ],
+          blocks: [
+            { kind: "steps", items: [
+              { title: "A tied total", body: "Best Score splits a tied place evenly in GoLo. If your group wants a playoff instead, agree where, and remember it’s a house rule GoLo won’t score." },
+              { title: "A tied match", body: "A match all square after nine holes is halved: nothing changes hands. Decide now if you would rather play an extra hole." },
+              { title: "A skin carried into the 9th", body: "In GoLo the card’s last hole ends the carries. If the 9th is tied with skins riding, the tied players split them." },
+              { title: "Losing the light", body: "Decide before you start whether an unfinished round counts at all. If you finish the round in GoLo on the 7th, it settles what seven holes decided: Best Score on the holes played, a match only if it was already won, and any skins still riding go to nobody." },
+            ] },
+          ],
+        },
+        {
+          id: "one-evening",
+          title: "One evening, worked through",
+          paragraphs: [
+            "Here is an invented after-work foursome: $1 net standard skins with carryovers on and all extra skin types off, and $5 Best Score, net, one finishing place. Everyone plays off their nine-hole course handicap.",
+          ],
+          blocks: [
+            {
+              kind: "table",
+              head: ["Hole", "Skins"],
+              rows: [
+                ["1", "Mike wins one"],
+                ["2", "Tied: carries"],
+                ["3", "Dave wins two"],
+                ["4", "Jess wins one"],
+                ["5", "Mike wins one"],
+                ["6", "Tied: carries"],
+                ["7", "Tied: carries"],
+                ["8", "Dave wins three"],
+                ["9", "Mike wins one"],
+              ],
+            },
+            { kind: "p", html: "Dave’s five skins are worth $3 each, $15, and he pays $1 on each of the four skins the others won: $11 up. Mike’s three come to $3 up, Jess’s one to $5 down, and Tom, with none, is $9 down. Jess has the lowest net total, so Best Score puts her $15 up and everyone else $5 down." },
+            {
+              kind: "table",
+              head: ["Player", "Skins", "Best Score", "Net"],
+              rows: [
+                ["Jess", "−$5", "+$15", "+$10"],
+                ["Dave", "+$11", "−$5", "+$6"],
+                ["Mike", "+$3", "−$5", "−$2"],
+                ["Tom", "−$9", "−$5", "−$14"],
+                ["Total", "$0", "$0", "$0"],
+              ],
+            },
+            { kind: "p", html: "Tom pays Jess $10 and Dave $4, and Mike pays Dave $2. Tom’s $14 is also the most anyone could lose at these amounts: nine skins at $1 and the $5 he put in. An after-work game whose worst evening is $14 is easy to say yes to." },
+            { kind: "quote", text: "Nine holes is long enough to win something and short enough that nobody minds losing it." },
+          ],
+        },
+        {
+          id: "in-golo",
+          title: "Setting up nine in GoLo",
+          paragraphs: [
+            "In GoLo, choose nine holes in setup. A nine-hole round plays holes 1 to 9 of the card, so it fits a front nine or a nine-hole course; it can’t score a course’s back nine yet. For strokes, GoLo halves the unrounded eighteen-hole calculation from the selected tee’s slope and rating, then rounds the result once. It places those strokes by the card’s stroke index. This is different from Rule 6.1b, which first rounds half the index to a tenth and uses the ratings for the nine being played.",
+            "On the front nine of an eighteen-hole course, the nine’s own ratings aren’t in GoLo’s course data. On a par-72 course rated 71.6 with a slope of 126 whose par-36 front nine is rated 35.5 with a slope of 122, a 22.0 gets 11 under the rule and 12 in GoLo. Even on a nine-hole course’s own tees, rounding half the index can change the result: a 14.1 on a par-36 nine rated 35.7 with a slope of 125 gets 8 under the rule and 7 in GoLo. Over nine holes a Nassau is one match, settled once, and Closest to Pin plays every par 3 on the card.",
+            "One scorer enters the gross scores, GoLo works out every game from the same card, and at the end it gives the group a short who-owes-whom list. The money changes hands outside the app, in the parking lot, before it gets dark.",
+          ],
+        },
+        {
+          id: "next",
+          title: "Before the next after-work nine",
+          paragraphs: [
+            "Pick one game, two at most, and say the amounts, the scoring basis and the tie rules on the first tee. Skins carries have <a href=\"/blog/skins-carryover\">their own post</a>, and the rest of the first-tee conversation is in <a href=\"/blog/first-tee-checklist\">the checklist</a>. Then <a href=\"/how-it-works\">see one round from setup to settle-up</a> or <a href=\"/#get\">get GoLo for the next one</a>.",
+          ],
+          blocks: [
+            { kind: "summary", title: "THE SHORT VERSION", items: [
+              "Over nine holes, choose Best Score, skins or one match. A Nassau doesn’t shrink cleanly; GoLo plays it as one match.",
+              "Use the nine-hole course handicap: half the index rounded to a tenth, adjusted for the nine’s slope and rating. GoLo instead halves the unrounded eighteen-hole calculation and rounds once; its result can differ.",
+              "Agree tie rules and what happens if you lose the light before you start.",
+              "With $1 standard skins only and $5 Best Score, the most one player can lose over nine holes in a foursome is $14.",
+            ] },
+            { kind: "sources", items: [
+              { label: "USGA Rules of Handicapping — Rule 6.1b: Course Handicap for a 9-hole round", href: "https://www.usga.org/handicapping/roh/Content/rules/6%201b%209%20holes.htm" },
+            ] },
+          ],
+        },
+      ],
+    ),
+  },
+  {
+    slug: "best-ball-vs-scramble",
+    category: "rules",
+    title: "Best ball vs. scramble: know the difference before picking teams",
+    metaDescription:
+      "Best ball: everyone plays their own ball and the side keeps the lower score. Scramble: one ball, the best shot every time. Handicaps, partners and GoLo.",
+    excerpt:
+      "Two team formats, both with “best” in the description, that play nothing alike. Whose ball you hit, whose score counts and who you want as a partner.",
+    dek: "In best ball, everyone plays their own ball and the team keeps the lower score. In a scramble, the team plays one ball and picks the best shot every time. Same four players, a different card, different handicaps and a different partner worth picking.",
+    crumb: "Best ball vs. scramble",
+    author: "From the GoLo team",
+    // The last of the 16-idea list. Rules: R&A Rules 23 and 21.5 (2023); USGA Rules of
+    // Handicapping Appendix C and Rule 2.1a, read 2026-10-31. GoLo facts:
+    // capabilities.ts team-play (APP_CHECK_1030), scramble and
+    // handicap-strokes (APP_CHECK_1029); golo main 2237c1d
+    // src/engines/teamScoring.js deriveTeamHole (a team's hole counts once
+    // both partners have a score) and expandTeamPayouts with betResults.js
+    // (Team Play's Skins, Nassau and Overall Match pay each partner the full
+    // amount; a scramble splits the team's result), and ScoringPage.jsx
+    // seedParForHole (a blank becomes par when the scorer moves on).
+    date: "2026-10-31",
+    readMins: 7,
+    hero: {
+      src: "/images/blog/best-ball-vs-scramble-hero.webp",
+      mobile: "/images/blog/best-ball-vs-scramble-mobile.webp",
+      og: "/images/blog/best-ball-vs-scramble-og.jpg",
+      alt: "Four golfers standing around two balls in a fairway in late afternoon light, one crouching to mark a ball with a tee",
+      position: "80% 50%",
+    },
+    related: ["skins-vs-nassau", "match-play-vs-stroke-play", "first-tee-checklist"],
+    published: true,
+    body: article(
+      "Somebody on the first tee says “teams, best ball,” and half the group hears “scramble.” You and Mike plan to play your own balls into every green. Tom and Dave are already deciding whose drive to play. Both formats put partners on a side, and both have “best” somewhere in the description. They aren’t the same game, and the difference changes the card, the handicaps and the partner you’d want.",
+      [
+        {
+          id: "whose-ball",
+          title: "Whose ball, whose score",
+          paragraphs: [
+            "In best ball, every player plays their own ball from the tee until it’s in the hole. Nobody picks a drive or plays from anybody else’s spot. When the hole is finished, the team’s score is the lower of the two partners’ scores. The Rules of Golf call this Four-Ball, and <a href=\"https://www.randa.org/en/rog/the-rules-of-golf/rule-23\">Rule 23</a> says exactly that: the side’s score on a hole is whichever partner’s score is lower. The Rules keep the name Best-Ball for something narrower, one player against the better ball of a side. On most first tees, best ball means Four-Ball.",
+            "In a scramble, everyone on the team tees off, the team picks the best drive, and everyone plays their next shot from that spot. Repeat until the ball is in the hole. One ball, one score per team. The Rules of Golf have no Rule for scrambles. <a href=\"https://www.randa.org/en/rog/the-rules-of-golf/rule-21\">Rule 21.5</a> says the Rules can be adapted for them, and the details are whatever the group or the event agrees, which is one more reason to say them out loud.",
+          ],
+          blocks: [
+            {
+              kind: "atAGlance",
+              title: "BEST BALL VS. SCRAMBLE, AT A GLANCE",
+              items: [
+                { label: "BEST BALL", value: "Own ball each; the lower score counts" },
+                { label: "SCRAMBLE", value: "One ball a team; the best shot every time" },
+                { label: "HANDICAPS", value: "Each player’s own, or one team number" },
+                { label: "IN GOLO", value: "Team Play for four; Scramble for up to 12" },
+              ],
+            },
+          ],
+        },
+        {
+          id: "one-hole",
+          title: "One hole, played both ways",
+          paragraphs: [
+            "The 7th is a 390-yard par 4. You and Mike against Tom and Dave, scored without handicaps to keep it simple.",
+            "Played as best ball: you hook your drive into the trees, punch out, reach the green in three and two-putt for a 5. Mike splits the fairway, hits the green and two-putts for a 4. Your side’s score is Mike’s 4, and your 5 never mattered. Tom and Dave both make 5, so you win the hole.",
+            "Played as a scramble: you play Mike’s drive. You both hit approaches from the fairway; yours finishes 12 feet away, so you both putt from there. Mike holes it, and your team makes 3. Tom and Dave make 4 the same way, playing whichever of their shots was better each time.",
+          ],
+          blocks: [
+            {
+              kind: "table",
+              head: ["Team", "Best ball", "Scramble"],
+              rows: [
+                ["You and Mike", "4 (Mike’s)", "3"],
+                ["Tom and Dave", "5", "4"],
+              ],
+            },
+            { kind: "p", html: "A scramble score is a team’s best shot, every shot, so it runs well below what any one of them would make alone. A best-ball score is still one person’s real score on the hole. That difference drives everything else: the handicaps, the strategy and who you want on your side." },
+          ],
+        },
+        {
+          id: "handicaps",
+          title: "Handicaps don’t carry over",
+          paragraphs: [
+            "In best ball, each player keeps their own handicap. Strokes fall on the holes the card ranks hardest, each player’s net score is worked out separately, and the side counts the lower net. If Mike’s course handicap is 18, he gets a stroke on every hole, and a net par from him is as good as a gross par from a scratch player.",
+          ],
+          blocks: [
+            { kind: "keyStat", value: "85% / 90%", label: "What the World Handicap System recommends for best ball: 85% of each player’s course handicap in stroke play, 90% in match play. A high handicap is worth more when only its good holes count." },
+            { kind: "p", html: "GoLo’s Team Play gives every player their full course handicap and takes no percentage off. When all four handicaps are close, that barely matters. With a 4 and a 24 in the group, know it before you agree on the amount." },
+            { kind: "p", html: "In a scramble there’s one ball, so there’s one handicap: the team’s. The usual method adds up a share of each player’s course handicap, with the biggest share from the lowest handicap, because a scramble team mostly plays its better players’ shots. The World Handicap System recommends 35% and 15% for two players; 30, 20 and 10% for three; and 25, 20, 15 and 10% for four, lowest handicap first." },
+            { kind: "p", html: "Run the same foursome both ways and the strokes come out very differently. With course handicaps of 6 and 18, best ball at full handicaps, the way GoLo plays it, gives you six strokes and Mike one on every hole. As a two-player scramble team you get five for the round between you: 35% of 6 is 2.1, 15% of 18 is 2.7, and 4.8 plays as 5. Tom and Dave, on 10 and 14, get 6. Both sides add up to 24, and the scramble still gives Tom and Dave a stroke more, because the formula leans on the lower handicap. The <a href=\"/blog/index-vs-course-handicap\">index-to-course-handicap guide</a> covers where those course handicaps come from." },
+          ],
+        },
+        {
+          id: "picking-teams",
+          title: "Picking teams for each",
+          paragraphs: [
+            "The format changes what a good partner looks like.",
+          ],
+          blocks: [
+            { kind: "cardGrid", items: [
+              { eyebrow: "BEST BALL", title: "Pair players who miss differently", body: "Only one score a hole has to be good, so two steady bogey players make a weak side. A straight hitter with a wild long one covers more holes: when one is in trouble, the other is usually in play." },
+              { eyebrow: "BEST BALL", title: "Draw partners by handicap", body: "Rank the four by handicap and pair first with fourth, second with third. The sides start close, and nobody picks their way into an easy afternoon." },
+              { eyebrow: "BEST BALL", title: "Let one of you play safe", body: "When your partner is in trouble, your job is the middle of the green. Once one ball is safely on, the other can go at the flag." },
+              { eyebrow: "SCRAMBLE", title: "Cover the shots", body: "A team only plays its best shot, so a long driver and a good putter can carry most of a scramble between them. Two players who are good at the same thing mostly duplicate each other." },
+              { eyebrow: "SCRAMBLE", title: "Keep the teams the same size", body: "Each team’s handicap uses the percentages for its own size, so a team of three against a team of two isn’t fully evened out. Six players split cleanly into two threes or three twos; five don’t." },
+              { eyebrow: "SCRAMBLE", title: "Decide the order", body: "Whoever is most likely to find the fairway hits first. Once there is a ball in play, everyone after can swing freely." },
+            ] },
+            { kind: "p", html: "There are more scramble tips, and the house versions groups add, on <a href=\"/games/scramble\">the scramble page</a>." },
+          ],
+        },
+        {
+          id: "team-play",
+          title: "Best ball in GoLo is Team Play",
+          paragraphs: [
+            "With exactly four players, turn on Teams on the Games step. GoLo splits you into Team A and Team B, and you can move players between them. The scorer enters every player’s score on every hole, and GoLo counts each team’s lower gross and lower net. Skins, the Nassau, Best Score and the Overall Match play team against team; Wolf is off. In a Stableford round you choose whether a team scores its better player’s points or both players’ points added together.",
+          ],
+          blocks: [
+            { kind: "callout", title: "When a partner picks up", html: "The Rules let a side count one partner’s score when the other picks up. GoLo counts a team’s hole only once both partners have a score, and a blank becomes par when the scorer moves on, which can hand the team a par nobody made. So when a partner picks up, enter a score for them that can’t count: one that can’t beat their partner’s, net or gross, or in a Combined Stableford round, one worth no points, a net double bogey or worse." },
+            { kind: "p", html: "One name to keep apart: GoLo’s Best Score game isn’t best ball, which is a way of scoring a hole. Best Score is played on totals: everyone puts in the same entry, and the best total for the round takes it, or the top two or three split it. Without teams it compares each player’s card. In Team Play it compares the two teams’ totals, so pay first place only: with two teams, a top-two split hands everyone their entry back." },
+          ],
+        },
+        {
+          id: "scramble-in-golo",
+          title: "A scramble in GoLo",
+          paragraphs: [
+            "A scramble is its own format: pick Scramble when you set up the round. It takes up to 12 players in two to six teams of up to four, with one score per team on each hole, and each team can have its own scorer. Team handicaps come from the percentages above, or play gross, or set each team’s number yourself. Skins, the Nassau, Best Score and the Overall Match play team against team; Wolf and Bingo Bango Bongo aren’t played. GoLo doesn’t count Texas scramble drives and has no shamble setting.",
+          ],
+          blocks: [
+            { kind: "callout", title: "The amount means different things", html: "In Team Play, the Skins, Nassau and Overall Match amounts are per player: win the front nine of a $5 Nassau and you and Mike each collect $5, while Tom and Dave each owe $5. In a scramble, the same games’ amounts are per team and split between its players, so a two-player team that wins a $5 match gets $2.50 each. Best Score is an entry from every player in both, and whatever a team wins is shared between its players." },
+          ],
+        },
+        {
+          id: "which",
+          title: "Which one to play",
+          paragraphs: [
+            "Play best ball when everyone wants their own game to count. Each player still has a real score on every hole, a bad hole is covered by a partner instead of ending the day, and Four-Ball rounds can count for handicap: <a href=\"https://www.usga.org/handicapping/roh/Content/rules/2%201a%20Played%20in%20an%20Authorized%20Format%20of%20Play.htm\">it’s on the World Handicap System’s list of authorized formats</a>. A scramble isn’t.",
+            "Play a scramble when the group is bigger than four, when the handicaps are far apart, or when some of you would rather not hole out every 8. Nobody’s own score is on display, and the highest handicap in the group still hits the shot that gets played now and then.",
+            "Either way, say the format, the partners and the amount on the first tee. The rest of what’s worth agreeing is in <a href=\"/blog/first-tee-checklist\">the first-tee checklist</a>, and the games that go on top are in <a href=\"/blog/skins-vs-nassau\">Skins vs. Nassau</a> and <a href=\"/blog/match-play-vs-stroke-play\">match play vs. stroke play</a>. Then <a href=\"/how-it-works\">see one round from setup to settle-up</a> or <a href=\"/#get\">get GoLo for the next one</a>.",
+          ],
+          blocks: [
+            { kind: "summary", title: "THE SHORT VERSION", items: [
+              "Best ball, Four-Ball in the Rules: everyone plays their own ball and the side counts the lower score. Scramble: one ball per team, the best shot every time.",
+              "Best ball keeps each player’s handicap, and the World Handicap System recommends 85% of it in stroke play and 90% in match play. A scramble plays off one team handicap built from a share of each player’s.",
+              "Pair best-ball partners who miss differently. Build scramble teams that cover the shots and match in size.",
+              "In GoLo, best ball is Team Play for four players at full handicaps, and a scramble takes up to 12. Team Play’s Skins, Nassau and Overall Match amounts are per player; a scramble’s are per team and split. Best Score is an entry per player in both.",
+            ] },
+            { kind: "sources", items: [
+              { label: "The R&A — Rule 23: Four-Ball", href: "https://www.randa.org/en/rog/the-rules-of-golf/rule-23" },
+              { label: "The R&A — Rule 21.5: other forms of play, including scrambles", href: "https://www.randa.org/en/rog/the-rules-of-golf/rule-21" },
+              { label: "Rules of Handicapping, Appendix C: Handicap Allowances", href: "https://www.usga.org/handicapping/roh/Content/rules/Appendix%20C%20Handicap%20Allowances.htm" },
+              { label: "Rules of Handicapping, Rule 2.1a: authorized formats of play", href: "https://www.usga.org/handicapping/roh/Content/rules/2%201a%20Played%20in%20an%20Authorized%20Format%20of%20Play.htm" },
+            ] },
+          ],
+        },
+      ],
+    ),
+  },
+  {
+    slug: "no-handicap-fair-game",
+    category: "handicaps",
+    title: "No golf handicap? How to set up a fair game anyway",
+    metaDescription:
+      "No Handicap Index? Estimate one the way the World Handicap System would, keep it honest, and know what the number is and isn’t. One worked example.",
+    excerpt:
+      "Jess took up golf this year and has no Handicap Index. “Give her 26” is a guess. Here is a better one, and what it can’t promise.",
+    dek: "An official Handicap Index takes submitted scores. A game this Saturday doesn’t have to wait for one, but the number you agree on should come from her scores, not from a shrug on the first tee.",
+    crumb: "No handicap yet",
+    author: "From the GoLo team",
+    // Pair 4 of the 16-idea list. Rules: USGA Rules of Handicapping 3.1a,
+    // 5.1a, 5.2a, 6.1a (2024 edition), read 2026-10-30. GoLo facts:
+    // capabilities.ts guests, handicap-strokes, course-data; golo main
+    // 2237c1d src/engines/handicap.js calculateCourseHandicap (WHS formula,
+    // .5 rounds up), the round's Net/Gross setting and the guest index
+    // stepper (whole-number steps from 12, incHdcp) in SetupWizard.jsx.
+    date: "2026-10-31",
+    readMins: 6,
+    hero: {
+      src: "/images/blog/no-handicap-fair-game-hero.webp",
+      mobile: "/images/blog/no-handicap-fair-game-mobile.webp",
+      og: "/images/blog/no-handicap-fair-game-og.jpg",
+      alt: "A paper scorecard and a pencil on a bench beside a practice green in early morning light",
+      position: "80% 50%",
+    },
+    related: ["index-vs-course-handicap", "different-tees", "sandbagging"],
+    published: true,
+    body: article(
+      "Jess took up golf this year and doesn’t have a Handicap Index. She has kept the cards from her three rounds so far. The rest of the group has indexes. On the first tee somebody says “give her 26,” because she usually shoots somewhere around 98. Everyone nods, and by the turn she is either out of it or running away with it, and nobody can say which number would have been right. There is a better way to pick one.",
+      [
+        {
+          id: "official-or-agreed",
+          title: "An official index and an agreed number are different things",
+          paragraphs: [
+            "A Handicap Index comes from scores submitted through a golf club or association under the World Handicap System. It is calculated from a player’s better rounds, revised as new scores come in, and it travels from course to course.",
+            "A number your group agrees on for a Saturday is none of those things. It isn’t official, it can’t be used in a club competition, and it needs agreeing again each time you play. That is fine for a friendly game, as long as everyone knows which kind of number it is and how it was chosen.",
+          ],
+          blocks: [
+            {
+              kind: "atAGlance",
+              title: "NO HANDICAP, AT A GLANCE",
+              items: [
+                { label: "OFFICIAL INDEX", value: "From submitted scores, revised as you play" },
+                { label: "AGREED NUMBER", value: "For today only, chosen by the group" },
+                { label: "BEST ESTIMATE", value: "Her recent scores, worked the WHS way" },
+                { label: "NO SCORES AT ALL", value: "A round gross and for nothing, then estimate" },
+              ],
+            },
+          ],
+        },
+        {
+          id: "estimate",
+          title: "Estimate it the way the handicap system would",
+          paragraphs: [
+            "Under the Rules of Handicapping, a first Handicap Index can come from as few as three 18-hole scores. With three, the index is the lowest score differential minus 2.0. A score differential is the score adjusted for the course and tees: 113 divided by the slope rating, multiplied by the score minus the course rating (leaving aside a daily playing-conditions adjustment, usually zero), rounded to a tenth. Before a player has an index, no hole counts for more than par plus five.",
+            "Jess’s three rounds were all at her home course, a par 72 rated 70.1 with a slope of 125. After capping every hole at par plus five, her scores are 98, 102 and 95. This is an invented example, but the method is the system’s own.",
+          ],
+          blocks: [
+            {
+              kind: "table",
+              head: ["Score", "Minus course rating", "× 113 ÷ 125", "Differential"],
+              rows: [
+                ["98", "27.9", "25.22", "25.2"],
+                ["102", "31.9", "28.84", "28.8"],
+                ["95", "24.9", "22.51", "22.5"],
+              ],
+            },
+            { kind: "p", html: "Her lowest differential is 22.5. Take off 2.0 and her estimate is 20.5. Today the group plays tees rated 71.3 with a slope of 128 and a par of 72, so her course handicap is 20.5 × 128 ÷ 113, minus 0.7: 22.52, which rounds to 23." },
+          ],
+        },
+        {
+          id: "why-not-average",
+          title: "Why “she shoots about 98” gives too many strokes",
+          paragraphs: [
+            "The first-tee guess works from her average: 98 is 26 over par, so give her 26. As strokes, that is three more than the 23 her scores support. Entered as her index, 26 does more: on today’s tees, 26 × 128 ÷ 113, minus 0.7, is 28.75, which rounds to 29 strokes, six more.",
+            "The gap isn’t a quirk. A Handicap Index is built from a player’s better rounds, not her average. The USGA says a player plays to their handicap only 20 to 25 percent of the time and scores two to five strokes higher in most rounds. A number built from an average gives strokes for the bad days too.",
+          ],
+          blocks: [
+            { kind: "keyStat", value: "23", label: "Jess’s strokes on today’s tees from an estimate worked the handicap system’s way. “Give her 26” gives her three more; 26 entered as her index gives her 29." },
+          ],
+        },
+        {
+          id: "house-rules",
+          title: "Keep the number honest",
+          blocks: [
+            { kind: "cardGrid", items: [
+              { title: "Show the working", body: "Say where the number came from: which three rounds, which course rating and slope. Anyone can check it, and nobody has to take it on trust." },
+              { title: "Agree it before the round", body: "Settle the number on the first tee and leave it there. Changing it after a good front nine turns a handicap into a negotiation." },
+              { title: "Review it, not the result", body: "Agree to work it out again after another few rounds, from the new scores. Don’t adjust it because of who won last week." },
+              { title: "No scores at all", body: "If she has no recent rounds to work from, play the first one gross and for nothing, and start the game once she has three scores." },
+            ] },
+            { kind: "p", html: "Whatever you agree, it is a house number. It doesn’t make her handicap official, and an estimate can’t promise a close game. It just gives the group a number that came from her golf rather than from a guess. If she keeps playing, the real thing comes from submitting scores through a club or golf association. The <a href=\"/blog/sandbagging\">sandbagging post</a> covers what to do when a number, official or not, stops matching the golf." },
+          ],
+        },
+        {
+          id: "in-golo",
+          title: "Entering it in GoLo",
+          paragraphs: [
+            "GoLo doesn’t need an official handicap or a membership number. Add Jess as a guest with her name and an index, no account needed. A guest’s index is set with a stepper in whole numbers, so round the agreed 20.5 to 21. GoLo turns it into strokes for the tees the group is playing, using their slope and rating, and places them by the card’s stroke index. On today’s tees, 21 gives 23 strokes, the same as the working above.",
+            "If the group would rather not estimate at all, set the round to gross and no strokes are given to anyone. Everyone plays from the same set of tees in GoLo. In a net round, every player gets their full course handicap; in a gross round, no handicap strokes are applied. The app keeps the tally; the money changes hands outside it.",
+          ],
+          blocks: [
+            { kind: "quote", text: "An agreed number is fair if you can show where it came from." },
+          ],
+        },
+        {
+          id: "next",
+          title: "Before the next round",
+          paragraphs: [
+            "Work out the number at home, from real scores, and bring it to the first tee with the working. If you want the background, the <a href=\"/blog/index-vs-course-handicap\">index-versus-course-handicap guide</a> explains how an index becomes strokes, and <a href=\"/blog/different-tees\">playing from different tees</a> covers the other first-tee argument about fairness. Then <a href=\"/how-it-works\">see one round from setup to settle-up</a> or <a href=\"/#get\">get GoLo for the next one</a>.",
+          ],
+          blocks: [
+            { kind: "summary", title: "THE SHORT VERSION", items: [
+              "An official Handicap Index comes from submitted scores. A number agreed for one Saturday isn’t official, and everyone should know which it is.",
+              "Estimate it the system’s way: three score differentials, the lowest one, minus 2.0, with holes capped at par plus five.",
+              "A number taken from an average score gives too many strokes. In our example, three too many as strokes, six if 26 goes in as her index.",
+              "In GoLo, add the player as a guest, set the agreed index in whole numbers, and GoLo converts it for the tees. Or play the round gross.",
+            ] },
+            { kind: "sources", items: [
+              { label: "USGA Rules of Handicapping — Rule 3.1a: maximum hole score before an index is established", href: "https://www.usga.org/handicapping/roh/Content/rules/3%201a%20Before%20a%20Handicap%20Index%20Has%20Been%20Established.htm" },
+              { label: "USGA Rules of Handicapping — Rule 5.1a: calculation of a score differential", href: "https://www.usga.org/handicapping/roh/Content/rules/5%201a%20Calculation%20of%20a%20Score%20Differential18Hole.htm" },
+              { label: "USGA Rules of Handicapping — Rule 5.2a: fewer than 20 scores", href: "https://www.usga.org/handicapping/roh/Content/rules/5%202a%20For%20Fewer%20Than%2020%20Scores.htm" },
+              { label: "USGA — Course Handicap: formula and typical scoring", href: "https://www.usga.org/content/usga/home-page/handicapping/world-handicap-system/topics/course-handicap.html" },
+            ] },
+          ],
+        },
+      ],
+    ),
+  },
+  {
+    slug: "different-tees",
+    category: "handicaps",
+    title: "Playing golf from different tees: fair match or free advantage?",
+    metaDescription:
+      "One player moves to the forward tees. Is that free strokes? How course rating, slope and par differences keep the game fair, worked through with the USGA formulas.",
+    excerpt:
+      "Dave has moved up to the forward tees. Mike says that’s free strokes. The handicap system has already answered the question, and it isn’t Mike’s answer.",
+    dek: "Moving up isn’t a confession and it isn’t a free pass. Ratings, slope and one rule about par decide what a tee is worth, so the argument can be about numbers.",
+    crumb: "Different tees",
+    author: "From the GoLo team",
+    // Pair 4 of the 16-idea list. Rules: USGA Rules of Handicapping 6.1a and
+    // 6.2b (2024 edition), the USGA forward-tees FAQ and Course Handicap
+    // topic, read 2026-10-30. GoLo facts: capabilities.ts handicap-strokes
+    // (one set of tees per group) and mixed-tees (planned).
+    date: "2026-10-31",
+    readMins: 6,
+    hero: {
+      src: "/images/blog/different-tees-hero.webp",
+      mobile: "/images/blog/different-tees-mobile.webp",
+      og: "/images/blog/different-tees-og.jpg",
+      alt: "Blue tee markers on a back tee box and white markers on a forward tee box further down a tree-lined hole at sunset",
+      position: "80% 50%",
+    },
+    related: ["index-vs-course-handicap", "no-handicap-fair-game", "net-vs-gross-scoring"],
+    published: true,
+    body: article(
+      "Dave has started playing the forward tees. He is an 18, he enjoys the game more from there, and he hits more greens. Mike, a 10 who still plays the back tees, has a view about this, and he shares it on the first tee: Dave is getting free strokes. Dave says the handicap system sorts it out. Dave is closer to right, and the arithmetic is short.",
+      [
+        {
+          id: "what-a-rating-does",
+          title: "What the handicap system already does",
+          paragraphs: [
+            "Every set of tees has a course rating, roughly what a scratch golfer would shoot from them, and a slope rating, how much harder they play for a bogey golfer than for a scratch one. A player’s course handicap is worked out for the tees they actually play: index × slope ÷ 113, plus the course rating minus par. The USGA says this is what makes an index portable across courses and tees of different difficulty.",
+            "So a player who moves up doesn’t keep the strokes they had from the back. Their course handicap is recalculated for an easier set of tees, and it usually goes down. The <a href=\"/blog/index-vs-course-handicap\">index-versus-course-handicap guide</a> runs the formula for one player on two sets of tees. Here, the question is two players on two sets of tees.",
+          ],
+          blocks: [
+            {
+              kind: "atAGlance",
+              title: "DIFFERENT TEES, AT A GLANCE",
+              items: [
+                { label: "COURSE HANDICAP", value: "Worked out for the tees each player plays" },
+                { label: "EASIER TEES", value: "Fewer strokes, usually" },
+                { label: "DIFFERENT PARS", value: "The higher-par tees get the difference" },
+                { label: "IN GOLO TODAY", value: "One set of tees per group" },
+              ],
+            },
+          ],
+        },
+        {
+          id: "worked",
+          title: "Mike from the back, Dave from the front",
+          paragraphs: [
+            "Here are two invented sets of tees on the same course, both par 72. These examples use full handicaps, a 100% allowance, so the playing handicap is the course handicap before any adjustment for different pars.",
+          ],
+          blocks: [
+            {
+              kind: "table",
+              head: ["Tees", "Par", "Course rating", "Slope"],
+              rows: [
+                ["Back", "72", "72.4", "131"],
+                ["Forward", "72", "69.1", "121"],
+              ],
+            },
+            { kind: "p", html: "Mike’s 10.0 from the back: 10 × 131 ÷ 113 is 11.59, plus 0.4, which is 11.99. He gets 12. Dave’s 18.0 from the back would be 20.87 plus 0.4, or 21. From the forward tees it is 18 × 121 ÷ 113, which is 19.27, minus 2.9, or 16.37. He gets 16." },
+            {
+              kind: "table",
+              head: ["Player", "Tees", "Course handicap", "Target score"],
+              rows: [
+                ["Mike, 10.0", "Back", "12", "84"],
+                ["Dave, 18.0", "Back", "21", "93"],
+                ["Dave, 18.0", "Forward", "16", "88"],
+              ],
+            },
+            { kind: "p", html: "The USGA calls course handicap plus par a player’s target score: what they shoot when they play to their handicap. Moving up costs Dave five strokes, because the forward tees rate 3.3 shots easier for a scratch player and carry a lower slope. Played to their handicaps, both players finish on a net 72. Dave isn’t being handed strokes. He is being handed a shorter course and fewer strokes to go with it." },
+          ],
+        },
+        {
+          id: "different-pars",
+          title: "When the two tees have different pars",
+          paragraphs: [
+            "Forward tees often carry a higher par, playing a long par 4 as a par 5, so the two sets of tees have different pars. The Rules of Handicapping deal with that in Rule 6.2b: in stroke play and match play scored as gross or net, the player on the higher-par tees gets extra strokes equal to the difference in par, added to their playing handicap. When most of a field plays the higher-par tees, the rule also allows taking the difference away from the lower-par players instead.",
+            "Say the forward tees play the 4th as a par 5, making them par 73, with the same rating. Dave’s course handicap uses par 73: 19.27 plus (69.1 − 73), which is 15.37, so 15. His tees carry the higher par, so Rule 6.2b adds the one-stroke difference and he plays off 16. Mike’s 12 doesn’t change. The gap between them is four strokes either way, which is the point of the rule.",
+          ],
+          blocks: [
+            { kind: "callout", title: "WHEN NO EXTRA STROKES ARE NEEDED", html: "If the pars are the same, nothing is added. And in formats scored against par rather than by total strokes, such as Stableford, Rule 6.2b adds nothing either, because a par is a par from any tee." },
+          ],
+        },
+        {
+          id: "fair",
+          title: "Fair on average, which is what a handicap is",
+          paragraphs: [
+            "Ratings describe how a typical scratch golfer and a typical bogey golfer score from a set of tees. Any one player on any one day can beat them or fall short of them, from either tee. A long hitter on a short course may find the forward tees suit them unusually well, and a headwind can make the back tees play longer than their rating. That is true of every handicap game, on any tees.",
+            "Which tees a player chooses isn’t a character question. The USGA doesn’t recommend tees by age, gender or driving distance, and leaves recreational players to pick their own. The fair-play question is only whether the strokes were worked out for the tees each player is on. If they were, the game is as fair as handicap golf gets.",
+          ],
+          blocks: [
+            { kind: "quote", text: "Moving up changes the course. The strokes change with it." },
+          ],
+        },
+        {
+          id: "in-golo",
+          title: "What GoLo does with tees today",
+          paragraphs: [
+            "GoLo loads the par, course rating, slope and stroke index for the tees your group picks, and gives every player their full course handicap for those tees, rounded the way the handicap system rounds it. That covers a group playing one set of tees, which is how GoLo works today.",
+            "GoLo doesn’t support players on different tees yet; it is on the list, not built. If Dave plays the forward tees and Mike the back, GoLo can’t give each of them strokes for their own tees in the same round. Until it can, either play one set together or keep the split-tee game on paper using the numbers above. The app keeps the tally for what it scores; the money changes hands outside it.",
+          ],
+        },
+        {
+          id: "settle-it",
+          title: "Settle it on the first tee",
+          paragraphs: [
+            "“Dave’s on the forward tees, his course handicap is 16 from there, Mike’s is 12 from the back, same par” is one sentence, and it covers everything. Work the numbers out before the round, from the ratings on the card. If someone in the group has no index at all, <a href=\"/blog/no-handicap-fair-game\">setting up a fair game without one</a> covers that. Then <a href=\"/how-it-works\">see one round from setup to settle-up</a> or <a href=\"/#get\">get GoLo for the next one</a>.",
+          ],
+          blocks: [
+            { kind: "summary", title: "THE SHORT VERSION", items: [
+              "A course handicap is worked out for the tees each player plays, so moving up usually means fewer strokes.",
+              "In our example, Dave gets 21 from the back and 16 from the forward tees; Mike gets 12. Played to their handicaps, both finish on a net 72.",
+              "When pars differ, Rule 6.2b gives the higher-par player the difference in strokes, which keeps the gap the same.",
+              "GoLo uses one set of tees per group today. Splitting a group across tees is on the list, not built.",
+            ] },
+            { kind: "sources", items: [
+              { label: "USGA Rules of Handicapping — Rule 6.1a: Course Handicap", href: "https://www.usga.org/handicapping/roh/Content/rules/6%201a%2018%20holes.htm" },
+              { label: "USGA Rules of Handicapping — Rule 6.2b: multiple tees in a competition", href: "https://www.usga.org/handicapping/roh/Content/rules/6%202b%20Calculation%20When%20Multiple%20Tees%20Are%20Used%20in%20a%20Competition.htm" },
+              { label: "USGA — Course Handicap: portability across tees and target score", href: "https://www.usga.org/content/usga/home-page/handicapping/world-handicap-system/topics/course-handicap.html" },
+              { label: "USGA — FAQs: playing from forward tees", href: "https://www.usga.org/content/usga/home-page/handicapping/world-handicap-system/world-handicap-system-usga-golf-faqs/faqs---playing-from-forward-tees.html" },
+            ] },
+          ],
+        },
+      ],
+    ),
+  },
+  {
+    slug: "golf-games-for-3-players",
+    category: "rules",
+    title: "Golf games for 3 players: when your fourth bails",
+    metaDescription:
+      "The fourth cancelled and Wolf is off. Which games work for three: Best Score, skins, a head-to-head Nassau or Bingo Bango Bongo, and what the money games can cost.",
+    excerpt:
+      "The fourth texts at 6:40 a.m. Wolf needs four. Here is what three players can play instead, and what it costs each of them.",
+    dek: "Three players breaks the usual foursome games. Choose by how far apart the handicaps are, how much counting you want, and how much the afternoon should be able to cost.",
+    crumb: "Games for three",
+    author: "From the GoLo team",
+    // Pair 3 of the 16-idea list. GoLo facts: capabilities.ts game-library
+    // (Wolf takes exactly four) and team-play is four only; golo main 2237c1d
+    // SetupWizard.jsx GAME_DEFS (every other game takes two or more; Best
+    // Score's Winner takes all / Top 2 / Top 3 split), skins.js, nassau.js
+    // calculateNassauGroup, strokePurse.js distributePot.
+    date: "2026-10-31",
+    readMins: 6,
+    hero: {
+      src: "/images/blog/golf-games-for-3-players-hero.webp",
+      mobile: "/images/blog/golf-games-for-3-players-mobile.webp",
+      og: "/images/blog/golf-games-for-3-players-og.jpg",
+      alt: "Three golfers walking off a tee box together in early morning light, seen from behind",
+      position: "80% 50%",
+    },
+    related: ["golf-games-for-2-players", "bingo-bango-bongo", "skins-carryover"],
+    published: true,
+    body: article(
+      "The fourth texts at 6:40 a.m.: kid’s sick, sorry, next week. The tee time is at 7:30 and the plan was Wolf. Wolf, as most groups play it, needs four. So does any game built on two pairs. Three players can still have a good game; it just has to be one that works with an odd number, and somebody has to pick it in the parking lot.",
+      [
+        {
+          id: "what-changes",
+          title: "What changes with three",
+          paragraphs: [
+            "Partner games stop working. Nobody can play two against two, and a game that rotates partners needs a fourth to rotate through. In GoLo, Wolf takes exactly four players and Team Play takes exactly four, so both are off.",
+            "Most other games are fine with three, and some get better. Skins has one fewer score on each hole that can tie the low one, so a hole is a little more likely to be won outright. And every player has only two opponents, so each hole moves less money than it would in a foursome.",
+          ],
+          blocks: [
+            {
+              kind: "atAGlance",
+              title: "THREE PLAYERS, AT A GLANCE",
+              items: [
+                { label: "OFF THE LIST", value: "Wolf and two-against-two games" },
+                { label: "SIMPLEST", value: "Best Score: one total, one amount" },
+                { label: "EVERY HOLE COUNTS", value: "Skins, two opponents a hole" },
+                { label: "HEAD TO HEAD", value: "A Nassau: three pairings" },
+              ],
+            },
+          ],
+        },
+        {
+          id: "choose",
+          title: "Pick by the group you actually have",
+          blocks: [
+            { kind: "cardGrid", items: [
+              { eyebrow: "BEST SCORE", title: "Three similar players who want it simple", body: "Everyone puts in the same amount and the lowest total takes it. One number to agree on, one result at the end, nothing to track along the way." },
+              { eyebrow: "SKINS", title: "You want every hole to be worth something", body: "Each hole is its own prize, and a bad hole costs only that hole. With carryovers on, a few ties build a hole worth playing for." },
+              { eyebrow: "NASSAU", title: "You’d rather play matches than a total", body: "Played head to head, three players make three pairings. Each player plays two Nassaus, one against each opponent: front, back and overall." },
+              { eyebrow: "BINGO BANGO BONGO", title: "The handicaps are far apart", body: "First on the green, closest once everyone is on, first in the hole. Order of play does more than length, so a high handicap wins points." },
+            ] },
+            { kind: "p", html: "The <a href=\"/blog/bingo-bango-bongo\">Bingo Bango Bongo post</a> explains why the order of play matters more than length. If the handicaps are far apart and you choose Best Score, skins or a Nassau, play it net. GoLo gives each player their full course handicap and places the strokes by the card’s stroke index, so a 6, a 14 and a 24 can share a game that is still decided on the course." },
+          ],
+        },
+        {
+          id: "cost",
+          title: "What each one can cost",
+          paragraphs: [
+            "Three players means two opponents each, which changes the numbers. Here is the most one player can lose at some ordinary amounts, as GoLo scores each game.",
+          ],
+          blocks: [
+            {
+              kind: "table",
+              head: ["Game", "Amount", "Most you can lose"],
+              rows: [
+                ["Best Score", "$5 each", "$5"],
+                ["Skins", "$2 a skin", "$36"],
+                ["Nassau", "$2 a match", "$12"],
+              ],
+            },
+            { kind: "p", html: "Best Score here pays one place. The skins are standard skins with carryovers on: each of the other two pays the winner $2, so a skin is worth $4 to whoever takes it, and losing all eighteen costs $36. Extra skin types add to that. The Nassau is head to head: each player has two opponents and three matches against each, so losing all six costs $12, and GoLo’s Nassau doesn’t take presses, so that is its ceiling in the app. Best Score can only cost the amount you put in. Bingo Bango Bongo depends on how your group pays its points, so it isn’t in the table." },
+          ],
+        },
+        {
+          id: "best-score-split",
+          title: "With three, the top-two split means don’t finish last",
+          paragraphs: [
+            "<a href=\"/games/best-score\">Best Score</a> in GoLo can pay one place, or split between the top two or three. With three players, the top-two split does something useful: first and second share the total equally, so the round comes down to not finishing last.",
+            "At $5 each, the total is $15. Winner takes all: the lowest score finishes $10 up and the other two $5 down. Top two split: first and second each get $7.50, so both finish $2.50 up and last place is $5 down. GoLo splits tied places evenly: if the two players behind the leader tie under the top-two split, they share second place’s $7.50, $3.75 each, so each finishes $1.25 down and the leader $2.50 up. A top-three split with three players just hands everyone their $5 back.",
+          ],
+          blocks: [
+            { kind: "quote", text: "With three players, “don’t finish last” is a perfectly good game." },
+          ],
+        },
+        {
+          id: "one-round",
+          title: "One round, from setup to settled",
+          paragraphs: [
+            "Here is an invented threesome in GoLo. Mike sets up the round, picks the course and tees, adds Jess and Tom, and chooses two games: $2 net standard skins with carryovers on, and $5 Best Score, net, top two split. One scorer enters the gross scores after each hole, and GoLo applies the strokes for both games.",
+            "By the 18th all eighteen skins have been won: Mike seven, Jess six, Tom five. On net totals Jess is lowest, Tom second and Mike last.",
+          ],
+          blocks: [
+            {
+              kind: "table",
+              head: ["Player", "Skins", "Best Score", "Net"],
+              rows: [
+                ["Mike", "+$6.00", "−$5.00", "+$1.00"],
+                ["Jess", "$0.00", "+$2.50", "+$2.50"],
+                ["Tom", "−$6.00", "+$2.50", "−$3.50"],
+                ["Total", "$0.00", "$0.00", "$0.00"],
+              ],
+            },
+            { kind: "p", html: "Mike’s seven skins are worth $28 and he pays $2 for each of the other eleven, so he’s $6 up in skins. Jess’s six skins and Tom’s five work the same way. Mike also finished last in Best Score, so the two games nearly cancel for him. Tom pays Jess $2.50 and Mike $1.00, and the round is settled. GoLo shows that list at the end; the money moves outside the app." },
+          ],
+        },
+        {
+          id: "not-in-golo",
+          title: "Nines, the threesome game GoLo doesn’t score",
+          paragraphs: [
+            "Nines, also called 5-3-1, was made for three. Each hole is worth nine points: five to the low score, three to the middle, one to the high. Ties share: two tied for low take four each and the third gets one; two tied for high take two each behind the five; all three tied take three each. At the end, players settle the difference in points at an agreed amount a point.",
+            "It’s a good game, and GoLo doesn’t score it. If your group wants Nines, keep it on paper and run Best Score or skins in GoLo beside it, or keep the whole round on paper. Don’t expect the settle-up list to include a game the app didn’t score.",
+          ],
+        },
+        {
+          id: "next-week",
+          title: "When the fourth comes back",
+          paragraphs: [
+            "Next week the foursome is back, and Wolf is available again. Until then, pick one game, say the amount and the scoring basis out loud, and play. <a href=\"/blog/golf-games-for-2-players\">Games for two</a> covers the regular twosome, and the <a href=\"/games\">game guides</a> have the rules for each format.",
+            "When you’ve chosen, <a href=\"/how-it-works\">see one round from setup to settle-up</a> or <a href=\"/#get\">get GoLo for the next one</a>.",
+          ],
+          blocks: [
+            { kind: "summary", title: "THE SHORT VERSION", items: [
+              "Wolf and two-against-two games need four. In GoLo, Wolf and Team Play take exactly four players.",
+              "Best Score, skins, a head-to-head Nassau and Bingo Bango Bongo all work with three.",
+              "With two opponents each, $2 skins can cost $36 and a $2 Nassau $12. Best Score costs only the amount put in.",
+              "Best Score’s top-two split makes the round about not finishing last. Nines works well for three, but GoLo doesn’t score it.",
+            ] },
+          ],
+        },
+      ],
+    ),
+  },
+  {
+    slug: "side-games-for-beginners",
+    category: "etiquette",
+    title: "Golf side games for beginners: start with one bet, not five", // vocab-ok: exact article headline requested by the owner on 2026-10-30 (16-idea list); the body uses house vocabulary.
+    metaDescription:
+      "A first side game for a group with new golfers: one format, a small amount, net or gross, a tie rule. What to leave off, and when to add a second game.",
+    excerpt:
+      "Somebody suggests a Nassau with presses, skins with carries and a birdie on top. Half the group has played six rounds. Start smaller.",
+    dek: "A new golfer can enjoy a game with something on it. Five at once is a different matter. Agree on one, make it small, and add the next only when everyone can explain the first.",
+    crumb: "Your first side game",
+    author: "From the GoLo team",
+    // Pair 3 of the 16-idea list. GoLo facts: capabilities.ts handicap-strokes,
+    // guests, game-library; golo main 2237c1d SetupWizard.jsx GAME_DEFS (Best
+    // Score splits) and strokePurse.js distributePot (equal places, even ties).
+    date: "2026-10-31",
+    readMins: 6,
+    hero: {
+      src: "/images/blog/side-games-for-beginners-hero.webp",
+      mobile: "/images/blog/side-games-for-beginners-mobile.webp",
+      og: "/images/blog/side-games-for-beginners-og.jpg",
+      alt: "Four golfers chatting on a first tee beside a bag stand in soft morning light",
+      position: "80% 50%",
+    },
+    related: ["golf-games-for-2-players", "first-tee-checklist", "who-pays-first"],
+    published: true,
+    body: article(
+      "Two of your foursome have played golf for years. The other two started this spring. On the first tee, one of the regulars suggests the usual: a Nassau, presses, skins with carryovers, a dollar a birdie and greenies on the par 3s. The two new players nod, because nodding is easier than asking what a press is. By the 6th they have no idea what they owe, and by the 12th they have stopped asking.",
+      [
+        {
+          id: "one-game",
+          title: "Start with one game",
+          paragraphs: [
+            "The problem with five games at once isn’t the arithmetic. An app can do that. It’s the agreement. Every extra game is another set of rules that every player has to understand before the first tee shot, and a new player is the least likely to say they don’t.",
+            "One game means one thing to understand, one amount to agree on and one result at the end. It also means that when somebody asks “what’s going on?” on the 9th, there is a one-sentence answer.",
+          ],
+          blocks: [
+            {
+              kind: "atAGlance",
+              title: "A FIRST GAME, AT A GLANCE",
+              items: [
+                { label: "HOW MANY GAMES", value: "One" },
+                { label: "AMOUNT", value: "Small enough that nobody minds losing it" },
+                { label: "SCORING", value: "Net if handicaps differ, agreed first" },
+                { label: "TIES", value: "A rule chosen before anyone ties" },
+              ],
+            },
+          ],
+        },
+        {
+          id: "four-decisions",
+          title: "Five decisions, made before the first tee shot",
+          blocks: [
+            { kind: "steps", items: [
+              { title: "The format", body: "Best Score is the easiest to explain: everyone puts in the same amount and the lowest total takes it. Nothing to track hole by hole, nothing to call on the course." },
+              { title: "The amount", body: "Pick a number the newest player would happily lose. Five dollars is plenty, and the amount is the same for everyone." },
+              { title: "Net or gross", body: "With new players in the group, play net, so handicap strokes are part of the score. Gross between a 9 and a 32 isn’t a game, it’s a forecast." },
+              { title: "Ties", body: "Say what happens to a tie before there is one. In GoLo, Best Score splits a tied place evenly, which is the simplest rule there is." },
+              { title: "Picking up", body: "New players pick up, and they should. Agree what goes on the card when they do, say double par, so every player has a number on every hole. Best Score compares totals, and GoLo won’t settle it while one card is missing holes." },
+            ] },
+            { kind: "callout", title: "SAY IT OUT LOUD", html: "“Five dollars each, Best Score, net, ties split.” If the newest player in the group can repeat it back, the game is ready." },
+          ],
+        },
+        {
+          id: "split",
+          title: "Paying two places is friendlier than one",
+          paragraphs: [
+            "GoLo’s <a href=\"/games/best-score\">Best Score</a> can pay one place or split between the top two or three. For a foursome with new players, the top-two split is worth a look.",
+            "At $5 each the total is $20. Winner takes all: the low net score finishes $15 up and the other three are $5 down. Top two split: first and second each get $10, so both finish $5 up and third and fourth are $5 down. Nobody can lose more than $5 either way. With clear first and second places, two people finish ahead, and a new player who has a decent back nine has a real chance of being one of them. If players tie across the paid places, they share those places’ money, so more than two players can share the total.",
+          ],
+        },
+        {
+          id: "handicaps",
+          title: "Handicaps for players who don’t have one yet",
+          paragraphs: [
+            "Net scoring needs a number for everyone. A player with a Handicap Index enters it, and GoLo works out the course handicap for the tees and places the strokes by stroke index. A guest can be added with a name and an index, no account needed.",
+            "A new player often has no index yet. The group can agree on an index for the day, entered like any other, and GoLo turns it into strokes for the tees. Agree on it before the round, not after the front nine. If nobody wants to guess, play the first round gross and for nothing, and start the game once the new player has a number. In GoLo everyone plays from the same set of tees, so a new player moving up to the forward tees isn’t something the app handles yet. The <a href=\"/blog/index-vs-course-handicap\">index-versus-course-handicap guide</a> explains what the number means, and <a href=\"/blog/net-vs-gross-scoring\">net against gross</a> shows how much the choice can change.",
+          ],
+          blocks: [
+            { kind: "quote", text: "The number you agree on the first tee is fair. The number you argue about on the 10th tee isn’t." },
+          ],
+        },
+        {
+          id: "leave-off",
+          title: "What to leave off for now",
+          blocks: [
+            { kind: "cardGrid", items: [
+              { title: "Presses", body: "A press adds a new match partway through. It’s the quickest way for a small game to become a confusing one." },
+              { title: "Skins carryovers", body: "Carries turn quiet holes into big ones, which is the fun of them and the trouble with them." },
+              { title: "Birdie and greenie skins", body: "Extra skin types pay for things a new player rarely does. That’s a reason to wait, not a reason to add them." },
+              { title: "A second game", body: "Two games means two sets of rules and two amounts to add together. Play the first one a few times before you stack another on it." },
+            ] },
+            { kind: "p", html: "When the group is ready for them, <a href=\"/blog/pressing\">the pressing post</a> and <a href=\"/blog/skins-carryover\">how a $5 skin becomes a $60 hole</a> explain the two that cause the most confusion." },
+          ],
+        },
+        {
+          id: "next",
+          title: "When to add the next game",
+          paragraphs: [
+            "Add a second game when every player can explain the first without help, usually after a few rounds. A sensible second step is $1 standard skins with carryovers off: each hole is its own prize, a tied hole goes to nobody, and a hole won by someone else costs you $1. In a foursome, a hole you win is worth $3.",
+            "After that, try carryovers on, or a Nassau without presses. The <a href=\"/blog/golf-games-for-2-players\">games-for-two post</a> walks through skins and a Nassau at small amounts, and <a href=\"/blog/first-tee-checklist\">the first-tee checklist</a> lists everything worth agreeing once the games stack up.",
+          ],
+          blocks: [
+            { kind: "p", html: "Whatever you play, settle it before anyone leaves, and be generous with a new player’s money: <a href=\"/blog/who-pays-first\">the unwritten rules of settling up</a> cover that. GoLo keeps the card, applies the strokes and nets the games into a short who-owes-whom list; the money moves outside the app. <a href=\"/how-it-works\">See one round from setup to settle-up</a>, or <a href=\"/#get\">get GoLo for the next one</a>." },
+            { kind: "summary", title: "THE SHORT VERSION", items: [
+              "Start with one game. Best Score is the easiest to explain: same amount each, lowest total takes it.",
+              "Keep the amount small, play net when handicaps differ, and agree what a tie does before there is one.",
+              "In a foursome, Best Score’s top-two split pays two places, shared when tied, and nobody loses more than the amount put in.",
+              "Leave presses, carryovers and extra skin types for later. Add a second game when everyone can explain the first.",
+            ] },
+          ],
+        },
+      ],
+    ),
+  },
+  {
+    slug: "five-dollar-birdie",
+    category: "rules",
+    title: "Birdie bets in golf: what does a $5 birdie actually pay?", // vocab-ok: exact article headline requested by the owner on 2026-10-30 (16-idea list); the body describes Skins settings and house agreements.
+    metaDescription:
+      "A $5 birdie is $15 in a foursome, and less when two players make one on the same hole. Per player or a shared total, gross or net, and one round worked through.",
+    excerpt:
+      "Everyone agrees to five a birdie. Then two players birdie the 8th, somebody mentions net, and one number turns into four.",
+    dek: "The price is the easy part. Who pays it, what counts as a birdie and what happens when two land on the same hole decide what five dollars actually means.",
+    crumb: "The $5 birdie",
+    author: "From the GoLo team",
+    // Pair 2 of the 16-idea list (the junk post was cut: greenies, sandies and
+    // birdies are Skins options). GoLo facts: capabilities.ts game-library
+    // limits and skins-greenie-sandie; golo main 2237c1d src/engines/skins.js
+    // calculateBonusSkins (every opponent pays each birdie, gross, no carry;
+    // an eagle pays both tiers) and calculateSkinsBet (one skin amount for
+    // every type; Standard Skin can be off).
+    date: "2026-10-31",
+    readMins: 6,
+    hero: {
+      src: "/images/blog/five-dollar-birdie-hero.webp",
+      mobile: "/images/blog/five-dollar-birdie-mobile.webp",
+      og: "/images/blog/five-dollar-birdie-og.jpg",
+      alt: "A golf ball beside the cup on a green in low evening light, a putter and a golfer’s shoes just behind it",
+      position: "80% 50%",
+    },
+    related: ["closest-to-the-pin-rules", "skins-carryover", "net-vs-gross-scoring"],
+    published: true,
+    body: article(
+      "“Five a birdie” takes three seconds to agree on the first tee. What it means depends on who pays it, whether a handicap stroke can make one, and what happens when two players birdie the same hole. Most groups find out which version they were playing on the 8th green, from the player who has just made one.",
+      [
+        {
+          id: "from-whom",
+          title: "Five dollars from whom?",
+          paragraphs: [
+            "The usual version is per player: every other player pays the maker the agreed amount. In a foursome a $5 birdie is worth $15 to the player who makes it. In a threesome it’s $10. Whatever the group size, somebody else’s birdie costs you $5.",
+            "The other version is a shared total. Everyone puts in a set amount before the round, say $10 each, and at the end the $40 is divided by the number of birdies made. Nobody can lose more than their $10, and nobody knows what a birdie is worth until the 18th is finished. GoLo doesn’t run this version; it’s a house arrangement, so agree its two awkward cases too: what happens if nobody makes a birdie, and how $40 splits across three birdies.",
+          ],
+          blocks: [
+            {
+              kind: "atAGlance",
+              title: "THE $5 BIRDIE, AT A GLANCE",
+              items: [
+                { label: "PER PLAYER", value: "Every other player pays the maker" },
+                { label: "IN A FOURSOME", value: "$5 a birdie is worth $15" },
+                { label: "SHARED TOTAL", value: "A set amount in, split by birdies made" },
+                { label: "IN GOLO", value: "Birdie Skin: per player, gross only" },
+              ],
+            },
+            { kind: "p", html: "Here is the same invented foursome round under both. Four birdies were made: two by Mike, one each by Jess and Dave, and none by Tom. One hole, the 8th, had two of them." },
+            {
+              kind: "table",
+              head: ["Player", "Birdies", "Per player at $5", "Shared total, $10 each"],
+              rows: [
+                ["Mike", "2", "+$20", "+$10"],
+                ["Jess", "1", "$0", "$0"],
+                ["Dave", "1", "$0", "$0"],
+                ["Tom", "0", "−$20", "−$10"],
+                ["Total", "4", "$0", "$0"],
+              ],
+            },
+            { kind: "p", html: "Per player, Mike collects $15 for each of his birdies and pays $5 for each of Jess’s and Dave’s: $30 less $10. Jess and Dave each collect $15 and pay $15. Tom pays $5 four times. With the shared total, four birdies make each one worth $10: Mike takes $20 of the $40, Jess and Dave $10 each, and Tom’s $10 ends up with Mike." },
+            { kind: "p", html: "The two versions reward different rounds. Per player pays for volume: the more birdies, the more money moves, with no ceiling. A shared total pays for scarcity: if only one birdie is made all day, it is worth the whole $40." },
+          ],
+        },
+        {
+          id: "same-hole",
+          title: "Two birdies on one hole",
+          paragraphs: [
+            "On the 8th, Mike and Dave both made birdie. Per player, each of them is owed $5 by the other three, which includes each other. Those two payments cancel. Mike and Dave each finish the hole $10 up, not $15, and Jess and Tom each pay $10.",
+            "That surprises people because it isn’t how a hole usually works. Nobody won the 8th outright, and it doesn’t matter. A birdie bounty isn’t a contest for the hole: every birdie counts on its own, nothing carries, and two birdies are simply two birdies. That is how GoLo’s individual Skins counts them. In Team Play or a scramble, Skins is played team against team, and the arithmetic in this post doesn’t apply.",
+          ],
+          blocks: [
+            { kind: "callout", title: "A TIED BIRDIE ISN’T A TIE", html: "In standard skins, a tie for low wins nothing. A birdie bounty is different: both birdies are paid, and the two players who made them pay each other too." },
+          ],
+        },
+        {
+          id: "gross-or-net",
+          title: "Gross birdies or net birdies",
+          paragraphs: [
+            "A gross birdie is one under par in actual strokes. A net birdie is one under par after the handicap strokes on that hole. A par on a hole where the player receives one stroke is a net birdie; with two strokes, that same par is a net eagle. With a wide spread of handicaps, net birdies give the high handicap a real chance of making one. They also mean more birdies, and so more money moving, than the group may have pictured when it agreed on five dollars.",
+            "Decide it before the first one falls, not after. GoLo’s Birdie Skin counts gross birdies only, from each player’s gross score, whether the round’s other games are net or gross. A net-birdie bounty is a house rule GoLo doesn’t track. The <a href=\"/blog/net-vs-gross-scoring\">net-versus-gross example</a> shows why the scoring basis needs settling first.",
+          ],
+        },
+        {
+          id: "with-skins",
+          title: "When the birdie also wins the hole",
+          paragraphs: [
+            "In GoLo, a birdie bounty is a setting of the <a href=\"/games/skins\">Skins</a> game: Birdie Skin, and Eagle Skin beside it. Both use the Skins game’s one skin amount, and every opponent pays each one. Turn the Standard Skin off and you have a birdie game on its own. Leave it on and a birdie can pay twice.",
+            "Take the round from the <a href=\"/blog/skins-carryover\">carryover post</a>: $5 skins in a foursome, carryovers on, holes 1 to 3 halved, so the 4th is worth four standard skins. A birdie there that nobody matches takes all four, $60. Turn Birdie Skin on as well and the same birdie collects $5 more from each opponent.",
+          ],
+          blocks: [
+            { kind: "keyStat", value: "$75", label: "What one birdie takes on that 4th: four standard skins at $60 and a birdie skin at $15, at $5 skins in a foursome. Had a second player matched the birdie, the standard skins would have ridden on to the 5th and both players would have been paid a birdie skin." },
+            { kind: "p", html: "Eagle Skin works the same way at two under par. With Birdie Skin on as well, an eagle collects both, which is the familiar “eagles pay double.” An ace on a par 3 is two under, so it collects the same two skins and nothing more: GoLo has no separate ace bonus, and no cap setting. If your group wants a limit on what one hot round can cost, agree it on the first tee and settle the difference yourselves." },
+          ],
+        },
+        {
+          id: "worked-round",
+          title: "One round, worked through",
+          paragraphs: [
+            "Here are the same four players on another invented day, in GoLo: Birdie Skin and Eagle Skin on at $5, Standard Skin off, so nothing else is in the Skins game. Gross birdies on the 2nd, the 6th (two) and the 17th, and Mike’s eagle on the par-5 11th.",
+          ],
+          blocks: [
+            {
+              kind: "table",
+              head: ["Hole", "What happened", "Mike", "Jess", "Tom", "Dave"],
+              rows: [
+                ["2", "Dave birdie", "−$5", "−$5", "−$5", "+$15"],
+                ["6", "Jess and Tom birdie", "−$10", "+$10", "+$10", "−$10"],
+                ["11", "Mike eagle: birdie and eagle skins", "+$30", "−$10", "−$10", "−$10"],
+                ["17", "Jess birdie", "−$5", "+$15", "−$5", "−$5"],
+                ["Total", "Six skins", "+$10", "+$10", "−$10", "−$10"],
+              ],
+            },
+            { kind: "p", html: "Six skins changed hands and the round nets to two settle-ups: Tom and Dave each pay $10, one to Mike and one to Jess. Every row adds to zero, and so does the total. GoLo works this out from the card and puts it in the same who-owes-whom list as every other game in the round. The money moves outside the app." },
+            { kind: "quote", text: "Five a birdie is a price. Who pays it is the agreement." },
+          ],
+        },
+        {
+          id: "agree",
+          title: "Settle the price in one sentence",
+          paragraphs: [
+            "“Five a birdie from each of us, gross, eagles pay double, no cap” is a complete agreement. So is “ten each in, split by birdies at the end.” Either one is clear on the first tee. “Five a birdie” on its own leaves the 8th green to decide the rest.",
+            "The rules and the usual variations are on the <a href=\"/games/birdies\">birdies guide</a>, and the par-3 cousin of this argument, closest to the pin against a greenie, has <a href=\"/blog/closest-to-the-pin-rules\">its own post</a>. When the sentence is agreed, <a href=\"/how-it-works\">see one round from setup to settle-up</a> or <a href=\"/#get\">get GoLo for the next one</a>.",
+          ],
+          blocks: [
+            { kind: "summary", title: "THE SHORT VERSION", items: [
+              "Per player, a $5 birdie is $15 in a foursome. A shared total caps what anyone can lose and splits it by birdies made.",
+              "Two birdies on one hole are both paid, and the two makers pay each other: each nets $10 in a foursome.",
+              "Agree gross or net first. GoLo’s Birdie Skin counts gross birdies only.",
+              "In GoLo, Birdie Skin and Eagle Skin are Skins settings at the skin amount, with or without the Standard Skin, and there is no cap.",
+            ] },
+          ],
+        },
+      ],
+    ),
+  },
+  {
+    slug: "closest-to-the-pin-rules",
+    category: "rules",
+    title: "Closest to the pin rules: does it count if you three-putt?",
+    metaDescription:
+      "Closest to the pin or a greenie? One disputed par 3 shows how the green, the par, ties and an unclaimed hole change who gets paid, and how GoLo scores each.",
+    excerpt:
+      "Tom’s tee shot finished four feet away. He walked off with a bogey. Whether he still gets paid depends on a rule nobody said out loud.",
+    dek: "Plain closest to the pin pays the best tee shot. A greenie makes you finish the job. Decide which before the first par 3, not on the walk off it.",
+    crumb: "Closest to the pin",
+    author: "From the GoLo team",
+    // Pair 2 of the 16-idea list. GoLo facts: capabilities.ts closest-to-pin
+    // and skins-greenie-sandie; golo main 2237c1d src/engines/ctp.js (the
+    // marked winner is paid by every other player; no winner, no payment)
+    // and src/engines/skins.js calculateManualSkins (exactly one flagged
+    // player, gross par or better, carry to the next par 3).
+    date: "2026-10-31",
+    readMins: 6,
+    hero: {
+      src: "/images/blog/closest-to-the-pin-rules-hero.webp",
+      mobile: "/images/blog/closest-to-the-pin-rules-mobile.webp",
+      og: "/images/blog/closest-to-the-pin-rules-og.jpg",
+      alt: "A golf ball a few feet from the flagstick on a par 3 green guarded by a deep bunker, in late afternoon light",
+      position: "80% 50%",
+    },
+    related: ["five-dollar-birdie", "skins-carryover", "first-tee-checklist"],
+    published: true,
+    body: article(
+      "The 8th is 165 yards over a bunker. Tom’s tee shot stops four feet from the hole, and nobody else is inside ten. Then he misses the birdie putt, misses the one coming back and taps in for bogey. Mike, eleven feet away on the fringe, two-putts for par. Tom says closest is closest. Mike says you have to make par. It’s a $5 hole, $15 to the winner in a foursome, and both of them are describing a real game.",
+      [
+        {
+          id: "two-games",
+          title: "Two games with one name",
+          paragraphs: [
+            "Plain <a href=\"/games/closest-to-pin\">closest to the pin</a> pays the best tee shot on a par 3. Whatever happens after the ball stops is a separate matter. Tom wins the 8th, and his bogey is between him and his scorecard.",
+            "A greenie adds conditions. The usual ones are that the ball has to finish on the green and the player has to make par or better from there. Under greenie rules Tom’s three-putt costs him the hole. What happens to it next depends on more rules the group may never have agreed.",
+          ],
+          blocks: [
+            {
+              kind: "atAGlance",
+              title: "CLOSEST TO THE PIN AND GREENIES, AT A GLANCE",
+              items: [
+                { label: "CLOSEST TO THE PIN", value: "Best tee shot wins, whatever comes after" },
+                { label: "GREENIE", value: "Closest tee shot, then par or better" },
+                { label: "THE USUAL EXTRA", value: "The ball has to be on the green" },
+                { label: "IF NOBODY QUALIFIES", value: "It’s lost, or it carries to the next par 3" },
+              ],
+            },
+          ],
+        },
+        {
+          id: "four-rulings",
+          title: "One par 3, four rulings",
+          paragraphs: [
+            "Here is everyone’s 8th, invented but familiar. Tom is four feet away on the green and makes bogey. Mike is eleven feet away on the fringe and makes par. Jess is twenty-two feet away on the green and two-putts for par. Dave misses the green short and makes bogey. Each of these is a common house rule, and each gives a different answer.",
+          ],
+          blocks: [
+            { kind: "cardGrid", items: [
+              { eyebrow: "TOM WINS", title: "Closest tee shot, anywhere", body: "Plain closest to the pin. Four feet beats everyone, and the bogey doesn’t matter." },
+              { eyebrow: "NOBODY WINS", title: "The closest ball on the green makes par, or nobody wins", body: "Tom was closest on the green and made bogey, so the hole is lost or carries." },
+              { eyebrow: "JESS WINS", title: "The closest ball on the green that makes par", body: "Tom made bogey and Mike was on the fringe, so it goes to Jess at twenty-two feet." },
+              { eyebrow: "MIKE WINS", title: "The closest ball that makes par, fringe included", body: "Tom made bogey, and Mike’s eleven feet beats Jess’s twenty-two." },
+            ] },
+            { kind: "p", html: "None of these is wrong. The argument on the 8th green isn’t about golf. It’s about which of four sentences the group would have agreed to if anyone had said one on the first tee." },
+            { kind: "quote", text: "Closest to the pin rewards a shot. A greenie rewards a hole." },
+          ],
+        },
+        {
+          id: "decide",
+          title: "What to agree before the first par 3",
+          blocks: [
+            { kind: "cardGrid", items: [
+              { title: "Plain or greenie", body: "Does the best tee shot win outright, or does the player have to make par or better? Everything else follows from this one." },
+              { title: "On the green, or anywhere", body: "Most greenie games want the ball on the putting surface. If the fringe counts, say so, because eleven feet on the fringe will come up." },
+              { title: "Next closest, or nobody", body: "When the closest player misses par, does the hole go to the next closest who made it, or does nobody win it?" },
+              { title: "What a tie does", body: "Two balls the same distance away are rare and usually disputed. Split it, carry it, or call it nobody’s, and decide how you’ll measure before you need to. In GoLo, the scorer marks one player or nobody." },
+              { title: "Gross par or net par", body: "A greenie usually means par in actual strokes. If a handicap stroke can turn a bogey into a net par, agree that too." },
+              { title: "Lost or carried", body: "An unclaimed hole can be lost or ride to the next par 3. If it carries, agree what happens to one still riding after the last par 3." },
+            ] },
+          ],
+        },
+        {
+          id: "in-golo",
+          title: "Two ways to keep it in GoLo",
+          paragraphs: [
+            "GoLo’s Closest to Pin game is the plain version with the group as the judge. Choose its holes, all the par 3s or the back nine’s, and an amount. On each one, the scorer marks the winner the group agrees on, and every other player in the game pays that player the amount. GoLo doesn’t check par in this game and doesn’t record a distance. A hole with nobody marked pays nothing, and it doesn’t carry. On the 8th, the scorer marks Tom, Jess, Mike or nobody, depending on which sentence the group agreed.",
+            "The greenie lives in the <a href=\"/games/skins\">Skins</a> game, as its Greenie option. On each par 3 the scorer flags the one player who was closest, and GoLo checks the gross score for par or better. If that player made it, they win the greenie, paid by every opponent at the skins amount. If they didn’t, or nobody was flagged, the greenie carries to the next par 3, and a carry still riding after the last par 3 is lost. A tie the group can’t separate is flagged as nobody, so it carries.",
+          ],
+          blocks: [
+            { kind: "p", html: "Here is an invented round with four par 3s, $5 skins in a foursome and only the Greenie option on. On the 8th the group plays it strictly: the scorer flags Tom, and his bogey carries the greenie." },
+            {
+              kind: "table",
+              head: ["Par 3", "Flagged", "Result", "Paid"],
+              rows: [
+                ["4th", "Dave", "Par: one greenie", "+$15"],
+                ["8th", "Tom", "Bogey: carries", "—"],
+                ["14th", "Nobody", "Off the green: carries", "—"],
+                ["17th", "Mike", "Par: three greenies", "+$45"],
+              ],
+            },
+            { kind: "p", html: "Mike’s par on the 17th collects the 8th’s and the 14th’s greenies along with his own: three greenies at $5 from each of three opponents, $45. Had he made bogey, those three would have carried with no par 3 left to play, and nobody would have been paid for them. GoLo nets the greenies with every other game in the round, and the money changes hands outside the app." },
+          ],
+        },
+        {
+          id: "say-it",
+          title: "Say it on the first tee",
+          paragraphs: [
+            "“Greenies, five dollars, on the green and par to win, nobody else can claim it, carry to the next par 3” takes ten seconds. It would have settled the 8th before Tom’s tee shot landed. If your group prefers plain closest to the pin, that sentence is shorter still.",
+            "The variations, closest in two and marked approaches among them, are on the <a href=\"/games/closest-to-pin\">closest to the pin guide</a>. The other bounty that starts arguments on the green has <a href=\"/blog/five-dollar-birdie\">its own post</a>. Then <a href=\"/how-it-works\">see one round from setup to settle-up</a> or <a href=\"/#get\">get GoLo for the next one</a>.",
+          ],
+          blocks: [
+            { kind: "summary", title: "THE SHORT VERSION", items: [
+              "Plain closest to the pin pays the best tee shot. A greenie also asks for par or better, usually from the green.",
+              "One par 3 can produce four different winners under four common house rules. Agree the sentence before the first par 3.",
+              "Decide on the green or the fringe, next closest or nobody, ties, gross or net par, and whether an unclaimed hole carries.",
+              "In GoLo, Closest to Pin pays whoever the scorer marks, with no par check and no carry. The Skins Greenie option checks par and carries to the next par 3.",
+            ] },
+          ],
+        },
+      ],
+    ),
+  },
+  {
+    slug: "skins-vs-nassau",
+    category: "rules",
+    title: "Skins vs. Nassau: which golf game fits your foursome?",
+    metaDescription:
+      "Skins pays for single holes; a Nassau runs three matches. How each treats a blow-up, a handicap gap and a tie, and how to run both on one card.",
+    excerpt:
+      "One game pays whoever wins a hole outright. The other runs three matches at once. Which one keeps all four of you interested until the 18th?",
+    dek: "Skins pays for the one great hole. A Nassau pays for winning more holes than the player you’re matched against. Choose by how your group plays, not by which name sounds more serious.",
+    crumb: "Skins or Nassau",
+    author: "From the GoLo team",
+    // Pair 1 of the 16-idea list. GoLo facts: capabilities.ts game-library,
+    // team-play and settle-up (APP_CHECK_1030, golo main 2237c1d).
+    date: "2026-10-30",
+    readMins: 6,
+    hero: {
+      src: "/images/blog/skins-vs-nassau-hero.webp",
+      mobile: "/images/blog/skins-vs-nassau-mobile.webp",
+      og: "/images/blog/skins-vs-nassau-og.jpg",
+      alt: "Four golfers walking up a fairway toward a green in low evening light, seen from behind",
+      position: "80% 50%",
+    },
+    related: ["match-play-vs-stroke-play", "skins-carryover", "nassau"],
+    published: true,
+    body: article(
+      "Four of you on the first tee, a minute before the group behind pulls up, and somebody asks: skins or a Nassau? They pay for different things. Skins pays whoever wins a hole outright. A Nassau pays whoever wins more holes than their opponent, three times over. Pick the one that doesn’t suit the group and somebody has stopped playing for anything by the 6th.",
+      [
+        {
+          id: "difference",
+          title: "One pays for holes, the other for matches",
+          paragraphs: [
+            "In <a href=\"/games/skins\">skins</a>, every hole is worth one skin. The lowest score on the hole wins it, but only if nobody else matches it. If two or more players tie for low, nobody wins the hole, and with carryovers on, the skin rides to the next one. Everyone plays everyone on every hole, and nothing that happened earlier changes what a hole is worth, apart from a carry.",
+            "A <a href=\"/games/nassau\">Nassau</a> is three matches: the front nine, the back nine and the overall eighteen. Each hole is won, lost or halved against an opponent, and whoever has won more holes when a nine ends wins that match. A Nassau keeps a running score of a contest. Skins keeps a list of separate prizes.",
+          ],
+          blocks: [
+            {
+              kind: "atAGlance",
+              title: "SKINS AND NASSAU, AT A GLANCE",
+              items: [
+                { label: "SKINS PAYS FOR", value: "Winning a hole outright" },
+                { label: "A NASSAU PAYS FOR", value: "The front, back and overall matches" },
+                { label: "A TIED HOLE IN SKINS", value: "Nobody wins it; it can carry" },
+                { label: "A TIED HOLE IN A NASSAU", value: "Halved; the match doesn’t move" },
+              ],
+            },
+          ],
+        },
+        {
+          id: "one-hole",
+          title: "Same hole, two different results",
+          paragraphs: [
+            "Take one invented hole in a net foursome game. After strokes: Mike 4, Jess 4, Tom 5, Dave 6. Nobody won it outright, so skins pays nothing. If carryovers are on, the next hole is now worth two skins.",
+            "In a Nassau, the same hole keeps everyone busy. Without teams, GoLo plays a foursome’s Nassau head to head: each player has a Nassau against each of the other three, six pairings in all. On this hole, five of the six pairings moved.",
+          ],
+          blocks: [
+            {
+              kind: "table",
+              head: ["Pairing", "Net scores", "Result on the hole"],
+              rows: [
+                ["Mike v Jess", "4 – 4", "Halved"],
+                ["Mike v Tom", "4 – 5", "Mike wins"],
+                ["Mike v Dave", "4 – 6", "Mike wins"],
+                ["Jess v Tom", "4 – 5", "Jess wins"],
+                ["Jess v Dave", "4 – 6", "Jess wins"],
+                ["Tom v Dave", "5 – 6", "Tom wins"],
+              ],
+            },
+            { kind: "p", html: "That is the whole difference in one hole. In skins, the only score that counts is the lowest one, and only when it stands alone. In a Nassau, Tom’s 5 counted: it beat Dave. A player who will rarely post the low number in a foursome still has a match to win." },
+          ],
+        },
+        {
+          id: "which-group",
+          title: "Which game suits which group",
+          paragraphs: [
+            "Neither game is fairer in general. Each rewards a different kind of round, so start with the round your group usually plays.",
+          ],
+          blocks: [
+            { kind: "cardGrid", items: [
+              { eyebrow: "LEAN TOWARD SKINS", title: "Every hole should be its own event", body: "Each hole is a fresh prize. A bad start costs nothing on the next tee, and a quiet group still has something to play for on the 14th." },
+              { eyebrow: "LEAN TOWARD SKINS", title: "Someone in the group makes a birdie or two a round", body: "Skins pays for the outright low score on a hole, so the player who can produce one gets paid for it, whatever else is on their card." },
+              { eyebrow: "LEAN TOWARD A NASSAU", title: "You’d rather beat the player beside you than the whole group", body: "A Nassau pays for winning more holes than your opponent. Second-best on a hole still beats the player behind you, and one great hole doesn’t decide it." },
+              { eyebrow: "LEAN TOWARD A NASSAU", title: "Two partnerships", body: "The foursome classic is two against two. GoLo’s Team Play runs it on each team’s better score." },
+            ] },
+            { kind: "p", html: "Play either one net if the handicaps are far apart. In gross skins, the best player in a foursome tends to take a large share of the holes anyone wins outright, and a gross Nassau makes the 24-handicap’s matches against the 6 a long walk. GoLo gives each player their full course handicap and places the strokes by the card’s stroke index, in both games. A Nassau is also kind to a newer player: the back nine starts level on 10, so a rough front nine isn’t the end of the day." },
+            { kind: "p", html: "In GoLo’s Team Play, four players form two fixed pairs and each team’s better score on a hole is the one that counts. That gives a foursome the familiar two-against-two Nassau. Skins, Best Score and the Overall Match can run team against team the same way; Wolf isn’t played in Team Play." },
+          ],
+        },
+        {
+          id: "cost",
+          title: "Same ceiling, different route to it",
+          paragraphs: [
+            "Here are two example amounts for a GoLo foursome without teams. In $1 standard skins, with the Birdie, Eagle, Greenie and Sandie skins left off, every opponent pays the winner $1 for each skin, so a single skin is worth $3 to the player who takes it. Carries stack: win the hole after two ties and the three skins are worth $9. The most any one player can lose is $18, which needs the other three to win all eighteen skins between them. Each extra skin type adds to that, and GoLo puts no cap on Birdie and Eagle skins.",
+            "In a $2 Nassau played head to head with no presses, each player has three opponents and three matches against each of them. Lose all nine and that is $18. Presses would add to it; in GoLo, presses are on the Overall Match game, not the Nassau.",
+          ],
+          blocks: [
+            { kind: "keyStat", value: "$18", label: "The most one player can lose in a GoLo foursome at $1 standard skins, or in a $2 head-to-head Nassau without presses. Skins tends to get there in lumps, a carry at a time. A Nassau gets there one match at a time." },
+            { kind: "quote", text: "Skins asks who was best on the hole. A Nassau asks who was better than you." },
+          ],
+        },
+        {
+          id: "both",
+          title: "Or play both from one card",
+          paragraphs: [
+            "Nothing stops a group running both: the Nassau gives the round a structure and the skins give the quiet holes something to play for. Add the ceilings first. At the amounts above, with standard skins only, playing both means a player could lose $36, not $18.",
+            "Here is an invented final tally for the same foursome after a $2 head-to-head Nassau and $1 standard skins with carries on, all eighteen skins won. The plus signs are players who are up.",
+          ],
+          blocks: [
+            {
+              kind: "table",
+              head: ["Player", "Nassau", "Skins", "Net"],
+              rows: [
+                ["Mike", "+$10", "+$2", "+$12"],
+                ["Jess", "+$4", "−$2", "+$2"],
+                ["Tom", "−$6", "+$6", "$0"],
+                ["Dave", "−$8", "−$6", "−$14"],
+                ["Total", "$0", "$0", "$0"],
+              ],
+            },
+            { kind: "p", html: "Tom came out $6 down in the Nassau and won six skins, and finishes square. Mike came out furthest ahead. Dave pays Mike $12 and Jess $2; nobody pays Tom and Tom pays nobody. Each column adds to zero, which is the first thing to check on any hand-kept tally." },
+            { kind: "p", html: "GoLo works both games out from the same scores, nets them into one number per player and gives the group a short who-owes-whom list. The money changes hands outside the app, however your group already does it. <a href=\"/how-it-works\">See one round from setup to settle-up</a>." },
+          ],
+        },
+        {
+          id: "start",
+          title: "If you still can’t decide",
+          paragraphs: [
+            "Play skins this week and a Nassau next week, with the same four players and the same small amounts. The group will tell you which one it preferred by how much talking there was on the 16th tee. The rules for each are on the <a href=\"/games/skins\">skins guide</a> and the <a href=\"/games/nassau\">Nassau guide</a>; how a carry gets out of hand is in <a href=\"/blog/skins-carryover\">the carryover post</a>, and the house rules a Nassau needs are in <a href=\"/blog/nassau\">the $2 Nassau post</a>.",
+            "If the real argument is about match play against a total score, that is a different question, and it has <a href=\"/blog/match-play-vs-stroke-play\">its own post</a>. When you’ve chosen, <a href=\"/#get\">get GoLo for the next round</a> and let one card keep both games.",
+          ],
+          blocks: [
+            { kind: "summary", title: "THE SHORT VERSION", items: [
+              "Skins pays for winning a hole outright; a Nassau pays for winning more holes than an opponent across three matches.",
+              "Choose skins for streaky groups and fresh starts on every hole; choose a Nassau for steady play, partnerships and a reset at the turn.",
+              "Play net when handicaps are far apart. GoLo gives full course handicaps by stroke index in both games.",
+              "You can play both. Add the two ceilings together before the first tee, then let one card net them.",
+            ] },
+          ],
+        },
+      ],
+    ),
+  },
+  {
+    slug: "match-play-vs-stroke-play",
+    category: "rules",
+    title: "Match play vs. stroke play: pick your argument before you tee off",
+    metaDescription:
+      "Match play counts holes won; stroke play counts every shot. One invented card with a 9 on a par 4 shows how the same round can produce two winners.",
+    excerpt:
+      "Sam makes a 9 on the 7th and still wins the match. Chris shoots two lower and wins the round. Both of them added it up correctly.",
+    dek: "Match play asks who won more holes. Stroke play asks who took fewer shots. Same round, same card, and sometimes two different winners.",
+    crumb: "Match or stroke play",
+    author: "From the GoLo team",
+    // Pair 1 of the 16-idea list. Rules: R&A Rule 3.2 and 3.3. GoLo facts:
+    // capabilities.ts game-library, team-play (APP_CHECK_1030).
+    date: "2026-10-30",
+    readMins: 6,
+    hero: {
+      src: "/images/blog/match-play-vs-stroke-play-hero.webp",
+      mobile: "/images/blog/match-play-vs-stroke-play-mobile.webp",
+      og: "/images/blog/match-play-vs-stroke-play-og.jpg",
+      alt: "Two golfers on an elevated tee looking down a tree-lined fairway at sunset, one holding a driver",
+      position: "80% 50%",
+    },
+    related: ["skins-vs-nassau", "nassau", "net-vs-gross-scoring"],
+    published: true,
+    body: article(
+      "Sam makes a 9 on the 7th: two tee shots out of bounds and a three-putt. Chris makes a routine 4 and assumes the afternoon is settled. It isn’t. Sam wins the match on the 17th green, and Chris walks off the 18th with the lower score by two. Neither of them added anything up wrong. They played the same eighteen holes under two different questions, and only one of those questions was agreed on the first tee.",
+      [
+        {
+          id: "two-questions",
+          title: "Two formats, two questions",
+          paragraphs: [
+            "In match play you play against an opponent, one hole at a time. Fewer strokes wins the hole; the same number halves it. The match ends as soon as one side is ahead by more holes than are left to play. That is <a href=\"https://www.randa.org/en/rog/the-rules-of-golf/rule-3\">Rule 3.2 of the Rules of Golf</a>.",
+            "In stroke play, every stroke on every hole counts, penalty strokes included, and the lowest total wins. In a real stroke-play competition you hole out on every hole, however it is going. That is Rule 3.3. A 9 is a 9, and it stays on the card all afternoon.",
+          ],
+          blocks: [
+            {
+              kind: "atAGlance",
+              title: "MATCH PLAY AND STROKE PLAY, AT A GLANCE",
+              items: [
+                { label: "MATCH PLAY COUNTS", value: "Holes won against an opponent" },
+                { label: "STROKE PLAY COUNTS", value: "Every stroke, every hole" },
+                { label: "A BLOW-UP HOLE COSTS", value: "One hole, or every extra stroke" },
+                { label: "IT’S OVER WHEN", value: "The match can’t be caught, or after 18" },
+              ],
+            },
+          ],
+        },
+        {
+          id: "the-card",
+          title: "One invented card, two winners",
+          paragraphs: [
+            "This is an invented round between two players of similar ability, played gross, with no handicap strokes. It isn’t a real course, an app screenshot or anyone’s recorded score. The last column is the match standing after each hole.",
+          ],
+          blocks: [
+            {
+              kind: "table",
+              head: ["Hole", "Par", "Sam", "Chris", "Hole won by", "Match after the hole"],
+              rows: [
+                ["1", "4", "5", "5", "Halved", "All square"],
+                ["2", "4", "4", "5", "Sam", "Sam 1 up"],
+                ["3", "3", "3", "4", "Sam", "Sam 2 up"],
+                ["4", "5", "6", "6", "Halved", "Sam 2 up"],
+                ["5", "4", "5", "4", "Chris", "Sam 1 up"],
+                ["6", "3", "4", "4", "Halved", "Sam 1 up"],
+                ["7", "4", "9", "4", "Chris", "All square"],
+                ["8", "4", "5", "5", "Halved", "All square"],
+                ["9", "5", "5", "6", "Sam", "Sam 1 up"],
+                ["Out", "36", "46", "43", "—", "—"],
+                ["10", "4", "5", "5", "Halved", "Sam 1 up"],
+                ["11", "5", "5", "6", "Sam", "Sam 2 up"],
+                ["12", "3", "4", "3", "Chris", "Sam 1 up"],
+                ["13", "4", "4", "5", "Sam", "Sam 2 up"],
+                ["14", "4", "5", "5", "Halved", "Sam 2 up"],
+                ["15", "4", "5", "4", "Chris", "Sam 1 up"],
+                ["16", "3", "3", "4", "Sam", "Sam 2 up"],
+                ["17", "5", "6", "6", "Halved", "Sam wins, 2 and 1"],
+                ["18", "4", "5", "5", "—", "Match already over"],
+                ["In", "36", "42", "43", "—", "—"],
+                ["Total", "72", "88", "86", "—", "—"],
+              ],
+            },
+            { kind: "p", html: "Stroke play: Chris wins, 86 to 88. Match play: Sam won six holes, Chris won four and seven were halved; the 18th wasn’t needed. After the 17th Sam is two up with one to play, so the match is over: Sam wins 2 and 1. The 18th still counts for the stroke-play total, so they play it anyway." },
+            { kind: "p", html: "Look at the front nine alone. Chris is three strokes better and one hole down. Sam won three holes by a stroke each, lost the 5th by one and the 7th by five. In stroke play that is three strokes the wrong way. In match play it is three holes against two." },
+          ],
+        },
+        {
+          id: "blow-up",
+          title: "What the 9 on the 7th actually cost",
+          paragraphs: [
+            "In stroke play, Sam’s 9 cost five strokes against Chris’s 4. Over the other seventeen holes Sam was a stroke better six times and a stroke worse three times, which wins back three of the five. That is the whole stroke-play result: Chris by two.",
+            "In match play, the same 9 cost exactly one hole. Once the second tee shot went out of bounds, Sam could have conceded the hole and walked to the 8th; Rule 3.2b lets a player concede a hole at any time. The extra strokes don’t follow Sam anywhere, because match play doesn’t keep them. The exception is a stroke-play game running alongside, like the one at the end of this post: then every hole needs a score, and Sam plays the 7th out.",
+          ],
+          blocks: [
+            { kind: "callout", title: "THE STRATEGY CHANGES TOO", html: "In match play you play the opponent. If they are in trouble off the tee, the sensible shot is the safe one. In stroke play you play the course, because a bogey you avoided is a stroke saved whatever anyone else did." },
+            { kind: "quote", text: "Match play asks who won the hole. Stroke play asks what it cost." },
+          ],
+        },
+        {
+          id: "choose",
+          title: "Which argument does your group want?",
+          blocks: [
+            { kind: "cardGrid", items: [
+              { title: "Choose match play when", body: "Most rounds in your group include one hole nobody wants to talk about. You like a game that can finish early. You want a result between two players or two teams, decided hole by hole, where a bad hole costs that hole and nothing more." },
+              { title: "Choose stroke play when", body: "You want every shot to count. You want one result that ranks the whole group at once, not a set of pairings. You’re content that a disaster on the 7th means chasing for eleven holes, because that is the game." },
+            ] },
+            { kind: "p", html: "Size matters. Match play is between two sides, so a foursome either pairs off or plays two against two. Stroke play ranks any number of players in one list. A foursome that wants a single winner, and no pairings to keep track of, is asking for stroke play whether it uses the name or not." },
+          ],
+        },
+        {
+          id: "in-golo",
+          title: "Which GoLo game asks which question",
+          paragraphs: [
+            "For match play, use the <a href=\"/games/nassau\">Nassau</a>, three matches in one round, or the Overall Match, one match over all eighteen holes, which is the game that takes presses in GoLo. Without teams, both are played head to head, and with three or four players every pair has its own match. With four players, Team Play makes it two against two on each team’s better score.",
+            "For stroke play, use <a href=\"/games/best-score\">Best Score</a>. Everyone puts in the same amount, the lowest total takes it, net or gross as agreed, with one finishing place or more and ties split evenly. One scorer enters the gross scores; GoLo applies the handicap strokes and works out every game from the same card.",
+            "Run the invented card above through both. A $2 Nassau goes to Sam three times: one up on the front, one up on the back after winning the 11th, 13th and 16th and losing the 12th and 15th, and the overall match. Sam is $6 up. A $5 Best Score, gross, one finishing place, goes to Chris, who is $5 up. Play both and the afternoon nets to Chris paying Sam a dollar.",
+          ],
+          blocks: [
+            { kind: "p", html: "Skins asks a third question: the lowest score on each hole, against the whole group. If that’s the comparison your foursome is really making, <a href=\"/blog/skins-vs-nassau\">skins against a Nassau</a> is the post for it." },
+          ],
+        },
+        {
+          id: "say-it",
+          title: "Say the format in the same sentence as the amount",
+          paragraphs: [
+            "“Two-dollar Nassau, gross, no presses” is match play. “Five dollars each, Best Score, gross, low total takes it” is stroke play. Either sentence is clear before the first tee shot. “Let’s play for five” is clear to nobody, and the person who makes the 9 on the 7th will remember it whichever way suits them.",
+            "Agree the question, then <a href=\"/how-it-works\">see one round go from setup to settle-up</a> or <a href=\"/#get\">get GoLo for the next one</a>. GoLo keeps the tally; the money moves outside the app.",
+          ],
+          blocks: [
+            { kind: "summary", title: "THE SHORT VERSION", items: [
+              "Match play counts holes won against an opponent; stroke play counts every stroke on every hole.",
+              "On our invented card, Sam’s 9 cost one hole in match play and five strokes in stroke play: Sam wins the match 2 and 1, Chris wins on strokes, 86 to 88.",
+              "Choose match play for head-to-head games that forgive one bad hole; choose stroke play for one ranking of the whole group.",
+              "In GoLo, Nassau and the Overall Match are decided by holes won; Best Score by the lowest total. Agree which before anyone has a score to defend.",
+            ] },
+            { kind: "sources", items: [
+              { label: "The R&A — Rule 3: match play (3.2), concessions (3.2b) and stroke play (3.3)", href: "https://www.randa.org/en/rog/the-rules-of-golf/rule-3" },
+            ] },
+          ],
+        },
+      ],
+    ),
+  },
+  {
+    slug: "golf-games-for-2-players",
+    category: "rules",
+    title: "Golf games for 2 players: make your usual match worth something",
+    metaDescription:
+      "Choose a golf game for two players: Best Score, skins or a Nassau. Simple example amounts, clear tie rules, and one scorecard to keep the round straight.",
+    excerpt:
+      "Same partner, same Saturday tee time. Start with one small game, then decide whether you want the whole round or every hole to matter.",
+    dek: "One round-long contest, a fresh chance on each hole, or three matches in a Nassau. Pick the game that fits the way you and your regular partner actually play.",
+    crumb: "Games for two",
+    author: "From the GoLo team",
+    date: "2026-10-30",
+    readMins: 5,
+    hero: {
+      src: "/images/blog/golf-games-for-2-players-hero.webp",
+      mobile: "/images/blog/golf-games-for-2-players-mobile.webp",
+      og: "/images/blog/golf-games-for-2-players-og.jpg",
+      alt: "Two golf partners carrying putters as they walk off a green beside a flagstick in late afternoon light",
+      position: "85% 50%",
+    },
+    related: ["net-vs-gross-scoring", "nassau", "skins-carryover"],
+    published: true,
+    body: article(
+      "You already have the tee time, the regular partner, and a reliable disagreement about whose turn it is to book. What you don't have is a game that survives the first bad hole. One of you says “five dollars on the round,” the other hears something about the back nine, and by the turn neither is entirely sure what's still alive. Two players should make this easier.",
+      [
+        {
+          id: "start-simple",
+          title: "Start with $5-each Best Score",
+          paragraphs: [
+            "For your first round with something on it, choose <a href=\"/games/best-score\">Best Score</a>: each player agrees the same $5 amount, one finishing place, and the lowest total wins. With two players, the winner finishes $5 up and the other player $5 down. You don't need to collect anything before the round; settle the difference afterwards.",
+            "Play net if you want handicap strokes to count, or gross if you both want the unadjusted total to decide it. Our <a href=\"/blog/net-vs-gross-scoring\">net-versus-gross example</a> shows why choosing that before the first tee matters. For this starter game, a tied total splits the combined amount equally: each player gets their own share back and neither owes anything.",
+            "These amounts and tie rules are editorial examples for a friendly round. They aren't a standard your partner somehow should have known. Say them out loud. If five dollars would spoil the afternoon, make the contest for bragging rights and keep exactly the same scoring.",
+          ],
+          blocks: [
+            { kind: "atAGlance", title: "THREE GAMES, TWO PLAYERS", items: [
+              { label: "ONE FINAL TOTAL", value: "Best Score — start here" },
+              { label: "A RESULT EACH HOLE", value: "Skins, with carries off" },
+              { label: "THREE CHANCES", value: "Nassau — front, back, overall" },
+              { label: "FIRST DECISION", value: "Net or gross, then the amount" },
+            ] },
+          ],
+        },
+        {
+          id: "choose",
+          title: "Choose by what keeps both of you interested",
+          paragraphs: [
+            "All three formats below support two players in GoLo. The difference is what a bad hole costs you. In Best Score, every stroke stays in the total. In skins, it costs you that hole's skin. In a Nassau, it costs you one hole in whichever matches are running, however ugly the number was.",
+          ],
+          blocks: [
+            { kind: "table", head: ["Game", "Example amount", "What decides it", "Suggested tie rule"], rows: [
+              ["Best Score", "$5 each", "Lowest 18-hole total", "Equal split; neither owes"],
+              ["Skins, no carries", "$1 from the other player per skin", "Outright low score on each hole", "No skin; next hole starts fresh"],
+              ["Nassau, no presses", "$2 for each of three matches", "Holes won on front, back and overall", "A tied match pushes"],
+            ] },
+            { kind: "p", html: "Pick one row for the next round. Being able to explain the whole arrangement before somebody starts a practice swing is a useful test." },
+          ],
+        },
+        {
+          id: "skins",
+          title: "Choose skins when you want a fresh chance every hole",
+          paragraphs: [
+            "If one of you can shoot 81 and still include a nine, <a href=\"/games/skins\">skins</a> gives that round somewhere to go. The lower score on a hole wins its skin. Lose the 3rd by four shots and you can still win the 4th. You are counting skins, not the margin in strokes.",
+            "For a simple two-player version, use $1 per skin from the other player, turn carryover off, and leave tied holes unclaimed. Win seven holes, lose five and tie six, and you finish $2 up: seven dollars coming your way, five going back. A tied 18th adds nothing. The maximum either player can lose in this plain 18-hole version is $18.",
+            "Keep the extra skin types off for this example. Carryovers are a good second conversation, because they change the feel of a hole. With carries on, several quiet ties can leave you putting for several skins at once. If that's the point, read the <a href=\"/blog/skins-carryover\">carryover guide</a> together and agree how an unfinished carry ends before you start.",
+          ],
+        },
+        {
+          id: "nassau",
+          title: "Choose a Nassau when the turn should mean a new start",
+          paragraphs: [
+            "A <a href=\"/games/nassau\">Nassau</a> is three match-play contests: front nine, back nine and overall eighteen. Each hole is won, lost or tied. Losing a hole by five shots still counts as losing one hole, so a blow-up doesn't drag five extra strokes through the afternoon.",
+            "Try $2 for each match, with no presses. Lose the front, win the back and tie the overall, and the two dollars cancel: neither player owes anything. Win all three and you collect $6. That is also the most either player can lose in this example, because no extra matches or other games are running.",
+            "The back-nine match starts level on 10 even if the overall match is going badly. That is the reason to choose a Nassau over one final score. For these suggested rules, tied holes don't change the standing, and a tied match pushes. GoLo's Nassau doesn't take presses, so this simple version also fits what the app scores today. The <a href=\"/blog/nassau\">full Nassau post</a> covers the house-rule conversation.",
+          ],
+          blocks: [
+            { kind: "quote", text: "The best two-player game is the one you're both still playing on the back nine." },
+          ],
+        },
+        {
+          id: "one-card",
+          title: "One scorecard feeds whichever game you chose",
+          paragraphs: [
+            "Set the course and tees in GoLo, add the two players, choose the game and amount, and agree the scoring basis. One scorer enters both gross scores after each hole. GoLo keeps gross and net, applies the handicap strokes, and uses the card to work out the supported game. A guest can be added with a name and an index, without an account.",
+            "The score entry is the same whether you chose Best Score, skins or Nassau. What changes is the question being asked of it: lowest total, lowest score on a hole, or which player won more holes in each match. You don't enter an extra set of scores just because you chose a different format.",
+            "GoLo uses one set of tees for the group and full course handicaps for individual play. It doesn't support mixed tees. It doesn't offer handicap allowances or playing off the low player. Check the <a href=\"/features\">current settings</a> before agreeing a game that depends on those options. At the end, GoLo shows who owes whom; you settle outside the app.",
+          ],
+        },
+        {
+          id: "add-later",
+          title: "Add a second game after the first one works",
+          paragraphs: [
+            "There is no prize for filling every line in setup. Play one format for a round or two. If Best Score keeps both of you interested, you have already solved the problem. If the total starts feeling settled by lunch, try skins or a Nassau next time before adding anything on top.",
+            "When you do want two games, agree both amounts and their combined exposure. A $5-each Best Score game plus the plain $1 skins example above can cost one player $23 if everything goes the wrong way. “Only a dollar a hole” does not include the five dollars you already agreed to.",
+            "GoLo can run several supported games from the same card and net their results together. That makes the tally easier, but the extra games still add to what the afternoon can cost. Start with one, see how it plays, then <a href=\"/how-it-works\">watch how one card handles a full round</a> or <a href=\"/#get\">get GoLo for your next tee time</a>.",
+          ],
+          blocks: [
+            { kind: "summary", title: "THE SHORT VERSION", items: [
+              "Start with $5-each Best Score, one finishing place, and an equal split on a tie.",
+              "Choose $1 skins without carries for a fresh chance on each hole, or a $2 Nassau for front, back and overall matches.",
+              "Agree net or gross, the exact amounts and tie rules before either player has a score to defend.",
+              "One GoLo scorecard feeds the chosen game. Add a second format only after the first one works for both of you.",
+            ] },
+          ],
+        },
+      ],
+    ),
+  },
+  {
+    slug: "net-vs-gross-scoring",
+    category: "handicaps",
+    title: "Net vs. gross golf scoring: which one should decide the money?",
+    metaDescription:
+      "Compare net and gross golf scoring on one hypothetical scorecard. See different winners, then choose the scoring basis before setting the amount.",
+    excerpt:
+      "Alex shoots 80. Jamie shoots 90. Either can win the same round — depending on the scoring basis they agreed before the first tee.",
+    dek: "The lowest number on the gross card and the lowest number after strokes can belong to different people. Decide which contest you're playing before deciding what it's worth.",
+    crumb: "Net or gross?",
+    author: "From the GoLo team",
+    date: "2026-10-30",
+    readMins: 6,
+    hero: {
+      src: "/images/blog/net-vs-gross-scoring-hero.webp",
+      mobile: "/images/blog/net-vs-gross-scoring-mobile.webp",
+      og: "/images/blog/net-vs-gross-scoring-og.jpg",
+      alt: "One golf scorecard and pencil beside a white ball and a yellow ball on the seat of a parked golf cart at dusk",
+      position: "85% 50%",
+    },
+    related: ["golf-games-for-2-players", "index-vs-course-handicap", "sandbagging"],
+    published: true,
+    body: article(
+      "Alex comes off 18 with an 80 and expects to collect. Jamie has shot 90 and is equally certain the five dollars belongs the other way round. Both have added the card correctly. One is looking at gross, the other at net, and neither remembers saying which one would decide the game. A calculator cannot settle a conversation you never had.",
+      [
+        {
+          id: "choose-first",
+          title: "Choose the contest before choosing the amount",
+          paragraphs: [
+            "Gross asks who took the fewest strokes, including penalties. Net asks who had the lowest score after the agreed handicap strokes were applied. Both are legitimate ways to score; the <a href=\"https://www.randa.org/en/rog/the-rules-of-golf/rule-3\">Rules of Golf distinguish gross and net competition</a>. They answer different questions about the same round.",
+            "If you and your regular partner want the unadjusted total to decide it, choose gross. If you want handicap strokes to count in a contest between different abilities, choose net. Then agree the amount and the tie rule. Knowing that it is a five-dollar game tells you very little until you know which number wins it.",
+          ],
+          blocks: [
+            { kind: "atAGlance", title: "SAME CARD, DIFFERENT QUESTION", items: [
+              { label: "GROSS", value: "Lowest total before handicap strokes" },
+              { label: "NET", value: "Lowest total after handicap strokes" },
+              { label: "AGREE FIRST", value: "The scoring basis, then the amount" },
+              { label: "ON A TIE", value: "A rule chosen before the result" },
+            ] },
+          ],
+        },
+        {
+          id: "hypothetical-card",
+          title: "One hypothetical scorecard, two possible winners",
+          paragraphs: [
+            "This is an invented 18-hole example, not a real course, an app screenshot or a player's recorded round. Alex has a course handicap of 6 and Jamie has 18 for the same tees. We are using their full course handicaps, with no percentage allowance. Those numbers have already been established; they are not Handicap Indexes typed straight onto the card.",
+            "Alex receives one stroke on the six holes with stroke index 1–6. Jamie receives one on every hole. Each net cell below is that hole's gross score minus the stroke received. The stroke-index column tells you where a stroke belongs, not the order in which the holes are played.",
+          ],
+          blocks: [
+            { kind: "table", head: ["Hole", "Stroke index", "Alex gross", "Alex net", "Jamie gross", "Jamie net"], rows: [
+              ["1", "3", "5", "4", "6", "5"],
+              ["2", "15", "4", "4", "5", "4"],
+              ["3", "7", "4", "4", "4", "3"],
+              ["4", "1", "4", "3", "5", "4"],
+              ["5", "11", "5", "5", "6", "5"],
+              ["6", "17", "3", "3", "4", "3"],
+              ["7", "5", "5", "4", "5", "4"],
+              ["8", "13", "5", "5", "5", "4"],
+              ["9", "9", "5", "5", "5", "4"],
+              ["Front 9", "—", "40", "37", "45", "36"],
+              ["10", "4", "5", "4", "6", "5"],
+              ["11", "16", "4", "4", "5", "4"],
+              ["12", "8", "4", "4", "4", "3"],
+              ["13", "2", "4", "3", "5", "4"],
+              ["14", "12", "5", "5", "6", "5"],
+              ["15", "18", "3", "3", "4", "3"],
+              ["16", "6", "5", "4", "5", "4"],
+              ["17", "14", "5", "5", "5", "4"],
+              ["18", "10", "5", "5", "5", "4"],
+              ["Back 9", "—", "40", "37", "45", "36"],
+              ["Total", "—", "80", "74", "90", "72"],
+            ] },
+            { kind: "p", html: "Gross: Alex wins, 80 to 90. Net: Jamie wins, 72 to 74. Alex's calculation is 80 − 6 = 74; Jamie's is 90 − 18 = 72. The eighteen scores never changed. The handicap adjustment changed which total was lower." },
+            { kind: "callout", title: "A DIFFERENT WINNER IS NOT A MISTAKE", html: "On this card, Alex took fewer actual strokes. Jamie finished lower after the strokes agreed for the contest. Neither result cancels the other; only one needs to decide the game you agreed to play." },
+          ],
+        },
+        {
+          id: "hole-and-round",
+          title: "The difference can show up before you add the totals",
+          paragraphs: [
+            "Look at the 3rd. Both players take four strokes. Alex gets no stroke there, so Alex's net is four. Jamie gets one, so Jamie's net is three. A gross comparison ties that hole; a net comparison gives Jamie the lower score.",
+            "That doesn't mean one hole decides a lowest-total game. It shows why you need to know which scores you're comparing as the round unfolds. Best Score adds the chosen scores across the round; a hole-by-hole format asks a different question. Don't settle a total-score contest by counting who won more holes.",
+          ],
+          blocks: [
+            { kind: "quote", text: "“I shot the lower round” and “I won the game” need the same scoring agreement behind them." },
+          ],
+        },
+        {
+          id: "which-basis",
+          title: "Which basis should your group choose?",
+          blocks: [
+            { kind: "cardGrid", items: [
+              { title: "Choose gross for the unadjusted contest", body: "You both want the actual stroke total to decide it. Similar ability can make that a close game; a wide gap can make the same player the favorite every Saturday. Choose it because that is the contest you want, not because nobody mentioned strokes." },
+              { title: "Choose net when the handicap adjustment matters", body: "You want different abilities to compete with handicap strokes included. Use current, credible handicaps and confirm them before play. Net gives you an agreed adjustment; it doesn't guarantee a close finish or prove that the winner's handicap is perfect." },
+            ] },
+            { kind: "p", html: "The mechanics of converting an index for the tees have their own <a href=\"/blog/index-vs-course-handicap\">index-versus-course-handicap guide</a>. Here the decision is what to do with the strokes once you know them. Don't reopen that decision because the result looks different from the gross card." },
+          ],
+        },
+        {
+          id: "best-score",
+          title: "Tell Best Score which number should decide it",
+          paragraphs: [
+            "In GoLo, one scorer enters the gross scores hole by hole. GoLo applies the handicap strokes and keeps net and gross on the same card. For <a href=\"/games/best-score\">Best Score</a>, agree net or gross in setup before the round, along with the equal amount per player and how many finishing places share it. You don't enter another card to get the other view.",
+            "Use the hypothetical card above with a $5 amount per player and one finishing place. If the agreed basis is gross, Alex finishes $5 up and Jamie $5 down. If it is net, Jamie finishes $5 up and Alex $5 down. Those are alternative agreements for the same example, not two games running together or permission to pick the result afterwards.",
+            "GoLo splits Best Score ties evenly. With two players tied for the only finishing place, each gets an equal share and neither finishes up or down on that game. A back-nine countback would be a separate house rule, not a Best Score setting in GoLo.",
+            "GoLo uses full course handicaps for individual play and one set of tees for the group. GoLo doesn't support handicap allowances or playing off the low player. Confirm that those settings fit your agreement on the <a href=\"/features\">features page</a>. The app keeps the tally; players settle outside it.",
+          ],
+        },
+        {
+          id: "say-it",
+          title: "Say the basis in the same sentence as the amount",
+          paragraphs: [
+            "“Five dollars each, Best Score, net, full course handicaps, one finishing place; ties split.” Or the same sentence with gross. Either is clear enough to put in a group text before the tee time. “Same as last week” is less useful when one of you remembers winning last week for an entirely different reason.",
+            "Settle that sentence first, then <a href=\"/how-it-works\">see how one scorecard feeds the round</a> or <a href=\"/#get\">get GoLo for the next game</a>. You can admire the low gross round and settle on net. You just have to have agreed to it while the card was still blank.",
+          ],
+          blocks: [
+            { kind: "summary", title: "THE SHORT VERSION", items: [
+              "Gross compares actual stroke totals. Net compares scores after handicap strokes.",
+              "On our hypothetical card, Alex's 80 wins gross; Jamie's 90 less 18 strokes is 72 and wins net.",
+              "Choose the basis before the amount, confirm the handicaps, and agree how ties end.",
+              "GoLo keeps both views from one scorecard; Best Score settles using the basis agreed for the game.",
+            ] },
+            { kind: "sources", items: [
+              { label: "The R&A — Rule 3: gross and net competition", href: "https://www.randa.org/en/rog/the-rules-of-golf/rule-3" },
+              { label: "USGA — Playing Handicap and stroke-index allocation", href: "https://www.usga.org/content/usga/home-page/handicapping/world-handicap-system/world-handicap-system-usga-golf-faqs.html" },
+            ] },
+          ],
+        },
+      ],
+    ),
+  },
+  {
+    slug: "first-tee-checklist",
+    category: "etiquette",
+    title: "Golf side-bet rules: settle these before somebody loses $40", // vocab-ok: exact article headline explicitly requested by the owner on 2026-10-30; the article describes house agreements and GoLo as a scorekeeper.
+    metaDescription:
+      "A first-tee checklist for golf side games: agree amounts, handicaps, presses, ties and loss limits before “we never agreed to that” ends the round.",
+    excerpt:
+      "The five things to agree while everyone is still even — before a $5 game becomes a $40 argument.",
+    dek: "Amounts, strokes, presses, ties, and what the afternoon can actually cost. Five first-tee decisions that keep “we never agreed to that” out of the parking lot.",
+    crumb: "The first-tee checklist",
+    author: "From the GoLo team",
+    date: "2026-10-30",
+    readMins: 6,
+    hero: {
+      src: "/images/blog/first-tee-checklist-hero.webp",
+      mobile: "/images/blog/first-tee-checklist-mobile.webp",
+      og: "/images/blog/first-tee-checklist-og.jpg",
+      alt: "Four golfers gathered around a scorecard beside their bags on the first tee in morning light",
+      position: "83% 50%",
+    },
+    related: ["nassau", "pressing", "who-pays-first"],
+    published: true,
+    body: article(
+      "“We never agreed to that” usually arrives after the last putt, from the person who is down forty dollars. The person holding the card remembers a very clear conversation. The other two remember somebody saying “the usual” while they were looking for a tee. All four have just spent eighteen holes playing slightly different games.",
+      [
+        {
+          id: "amounts",
+          title: "1. Put a number beside every game",
+          paragraphs: [
+            "A friendly game needs terms, not a negotiation over every green. The useful conversation happens once, before anyone has a score worth defending. These are house agreements for your group, not a universal rulebook for side games.",
+            "Start with who's playing, who the partners are, and the amount for each game. “Five-dollar Nassau” usually means $5 for the front nine, $5 for the back, and $5 for the overall match. That is $15 before a single extra match opens. The <a href=\"/blog/nassau\">Nassau breakdown</a> covers the three matches.",
+            "Then say what the number buys. A dollar a skin from each opponent is different from a dollar for the whole group to share. In a foursome, one version costs each losing player a dollar; the winner collects three. Per player, per team, per hole, per match: say the unit. A bare dollar sign leaves plenty of room for an argument.",
+          ],
+          blocks: [
+            {
+              kind: "atAGlance",
+              title: "THE FIRST-TEE CHECKLIST",
+              items: [
+                { label: "AMOUNTS", value: "Each game, each player, each side" },
+                { label: "HANDICAPS", value: "Tees, strokes, net or gross" },
+                { label: "PRESSES", value: "Who, when, how much, how many" },
+                { label: "TIES", value: "Push, carry, and the final hole" },
+                { label: "LIMITS", value: "Per opponent or for the whole round?" },
+                { label: "THE RECORD", value: "One card everyone has agreed to" },
+              ],
+            },
+          ],
+        },
+        {
+          id: "handicaps",
+          title: "2. Agree the strokes before somebody needs one",
+          paragraphs: [
+            "“I'm a twelve” is the beginning of the conversation. A Handicap Index travels with the player; a course handicap depends on the tees. A playing handicap accounts for the allowance used for the format. The <a href=\"https://www.usga.org/content/usga/home-page/articles/2024/04/course-handicap-vs-playing-handicap.html\">USGA explains the distinction</a>; our <a href=\"/blog/index-vs-course-handicap\">index-to-course-handicap guide</a> walks through an example.",
+            "Confirm each player's number, the tees, whether each game is net or gross, and where the strokes fall on the card. If your group uses an allowance or plays off the low player, say so now. If a guest has no index, agree the number together before the guest makes three pars. Being surprised by someone's good start is not a handicap adjustment.",
+          ],
+        },
+        {
+          id: "presses",
+          title: "3. Write the press rule while nobody is losing",
+          paragraphs: [
+            "A press can add another match to the afternoon. It does not, by itself, erase what somebody already owes. Before you allow one, agree which match can be pressed, who may call it, the starting hole, and the amount. Then decide whether it needs the other side's acceptance or opens automatically under a rule everyone has already accepted.",
+            "“Two down” is not the whole policy. Can a press itself be pressed? How many can run at once? Is a one-hole press on 18 allowed? No presses is a complete answer, and often a useful one when the group includes a new player. The <a href=\"/blog/pressing\">pressing etiquette guide</a> covers the conversation after somebody asks.",
+          ],
+          blocks: [
+            { kind: "callout", title: "A PRESS LIMIT IS NOT A LOSS LIMIT", html: "Allowing only two extra matches limits the count. It does not tell anyone the most they can owe unless the amount of each match, and every other game running beside it, is also fixed." },
+          ],
+        },
+        {
+          id: "ties",
+          title: "4. Give ties an ending",
+          paragraphs: [
+            "A tied Nassau match can push, with nothing owed for that match. A tied skins hole can carry its value forward if that's how you're playing. Those are different answers to different questions. “Ties carry” written beside the skins does not settle an all-square back nine.",
+            "Agree what happens to any skin still riding after the final hole: split it under an agreed method, leave it unclaimed, or use a playoff everyone has time for. These are choices for the group, not a promise that every scoring tool offers every option. The <a href=\"/blog/skins-carryover\">skins carryover guide</a> explains why the ending matters.",
+            "While you're there, decide what a conceded putt means for the other games running alongside the match. “That's good” should not leave one player claiming a skin and another waiting to see the putt. If rain stops the round, decide which completed matches count and what happens to unfinished ones. An ending agreed in advance beats a vote by whoever is ahead.",
+          ],
+        },
+        {
+          id: "limits",
+          title: "5. Say what the whole afternoon can cost",
+          paragraphs: [
+            "A small starting amount is not a ceiling. Here is an illustrative two-player round: a $5 Nassau, three additional $5 presses, and $1 skins with no carries. One player loses all three original matches, all three presses, and ten skins; the other eight holes are tied for skins. Nothing doubled. It still costs forty dollars.",
+          ],
+          blocks: [
+            {
+              kind: "table",
+              head: ["What was lost", "Calculation", "Amount owed"],
+              rows: [
+                ["Front, back and overall", "3 × $5", "$15"],
+                ["Three additional presses", "3 × $5", "$15"],
+                ["Ten skins, no carries", "10 × $1", "$10"],
+                ["Whole round", "$15 + $15 + $10", "$40"],
+              ],
+            },
+            { kind: "p", html: "This is a house-rule example of how the amounts add up, not a GoLo press setup. If the group wants a hard limit, define it as carefully as the game: per opponent or across everyone, per game or across all games, before or after netting. Twenty dollars to each of three opponents can still mean sixty dollars for the round." },
+            { kind: "p", html: "For two players, a clear version is: “Combine both games first; neither player can owe the other more than $20 for the round. Anything above that is not collectible.” A $28 combined result then settles at $20. The limit was part of the agreement before play, not a discount requested by the loser." },
+            { kind: "p", html: "A foursome needs more care. Clipping each player's net loss without adjusting what the winners collect leaves a tally that doesn't balance. Either agree how the reduction is shared, or keep the structure simple enough that its maximum possible loss already fits the group's limit. Nobody should discover they were guaranteeing the other three players' afternoon." },
+            { kind: "quote", text: "If the rule only sounds obvious after you know who won, it needed saying on the first tee." },
+          ],
+        },
+        {
+          id: "agreement",
+          title: "A first-tee agreement you can put in the group text",
+          paragraphs: [
+            "This example is for two players. Adjust the numbers and the rules together; don't just forward it and assume silence means yes.",
+          ],
+          blocks: [
+            { kind: "summary", title: "TODAY'S GAME — TWO PLAYERS", items: [
+              "White tees. Net scoring, full course handicaps for each player, strokes marked on the card before we start.",
+              "$5 Nassau: $5 front, $5 back, $5 overall. Tied matches push. No presses.",
+              "$1 per skin, paid by the other player. Tied holes pay nothing and do not carry. That includes 18.",
+              "Combine Nassau and skins at the end. Maximum net amount owed by either player: $20 for the entire round, with any excess waived.",
+              "If we stop early, only a completed front-nine match and skins from completed holes count; unfinished Nassau matches are void. The same $20 combined limit applies.",
+              "One card, scores confirmed after each hole, settle before leaving. Any change needs both players' agreement before the affected play.",
+            ] },
+          ],
+        },
+        {
+          id: "golo",
+          title: "Let GoLo keep the card after the group agrees",
+          paragraphs: [
+            "Once everyone has said yes, set the supported games and amounts in GoLo and let one scorer enter the holes. GoLo runs the tallies from the same card and nets the recorded results into a short who-owes-whom list. Keep any extra house agreement, including a loss cap, alongside that record and apply it together before settling outside the app.",
+            "Check the fit first. GoLo uses one set of tees for the group and full course handicaps in individual play. GoLo doesn't support handicap allowances or playing off the low player. Its presses run on Overall Match, entered by the scorer once a side is at least two down, starting on the next hole; GoLo doesn't open them automatically or take presses on Nassau. The <a href=\"/features\">current feature list</a> lays out the settings.",
+            "The app can keep the numbers straight. The first-tee conversation gives those numbers meaning. <a href=\"/how-it-works\">See a round from setup to settle-up</a>, then <a href=\"/#get\">get GoLo for the next one</a>. The best time to agree what forty dollars means is while everybody still has it.",
+          ],
+          blocks: [
+            { kind: "summary", title: "THE SHORT VERSION", items: [
+              "Name the games, participants and units: per player, per team, per hole or per match.",
+              "Confirm tees, handicaps, stroke holes, and net or gross before the first shot.",
+              "Agree press amounts and limits, tied results, final carries, and an early finish.",
+              "Define the whole-round loss limit, record the agreement, and settle from one shared card.",
+            ] },
+          ],
+        },
+      ],
+    ),
+  },
+  {
+    slug: "group-accountant",
+    category: "etiquette",
+    title: "How to track golf bets without becoming the group accountant", // vocab-ok: exact article headline explicitly requested by the owner on 2026-10-30; GoLo is described as a scorekeeper throughout.
+    metaDescription:
+      "Keep golf side games straight without doing everyone's math. Agree the terms, keep one card, and let GoLo turn the results into a short settle-up list.",
+    excerpt:
+      "You volunteered to keep score. Somehow that came with three tallies, a disputed press, and a Tuesday collection round.",
+    dek: "You agreed to keep score, not reconcile four people's Saturday. One card, clear terms, and a tally you don't have to carry in your head.",
+    crumb: "The group accountant",
+    author: "From the GoLo team",
+    date: "2026-10-30",
+    readMins: 5,
+    hero: {
+      src: "/images/blog/group-accountant-hero.webp",
+      mobile: "/images/blog/group-accountant-mobile.webp",
+      og: "/images/blog/group-accountant-og.jpg",
+      alt: "An open golf scorecard, a pencil and a dark glove on a wooden bench beside the final green at sunset",
+      position: "82% 50%",
+    },
+    related: ["who-pays-first", "nassau", "pressing"],
+    published: true,
+    body: article(
+      "You took the pencil because nobody else reached for it. By the turn you're keeping the Nassau, counting skins, and answering whether Jess gets a stroke on 10. By the parking lot you're doing subtraction while three people change their shoes. On Tuesday somebody texts, “What did I owe again?” The round took four hours. Your shift is still going.",
+      [
+        {
+          id: "the-job",
+          title: "Keeping score should not come with a second job",
+          paragraphs: [
+            "The scores are usually the easy part. Four numbers after a hole. The work is remembering what those numbers mean in three different games, which amount everyone agreed to, and whether the thing somebody called from the next fairway was an actual press.",
+            "A paper card can hold all of that. So can a spreadsheet. The catch is that somebody has to maintain the system, explain it, and defend the answer at the end. If that somebody is always you, the group has quietly hired an accountant and is paying in unsolicited swing advice.",
+            "The way out is to give the round one record everyone agrees on, then let the arithmetic follow that record. GoLo is built for exactly that job. Before the phone can help, though, the group has to agree what it is playing.",
+          ],
+          blocks: [
+            {
+              kind: "atAGlance",
+              title: "LESS BOOKKEEPING, AT A GLANCE",
+              items: [
+                { label: "BEFORE THE ROUND", value: "Games, amounts, strokes, house rules" },
+                { label: "DURING THE ROUND", value: "One card, confirmed hole by hole" },
+                { label: "AFTER THE ROUND", value: "One net number per player" },
+                { label: "WHO PAYS", value: "The players, outside GoLo" },
+              ],
+            },
+          ],
+        },
+        {
+          id: "first-tee",
+          title: "Spend a minute on the first tee",
+          paragraphs: [
+            "“Same as last week” is fine until someone wasn't there last week. Say the terms while everyone can still decline them without looking like they're protecting a lead.",
+          ],
+          blocks: [
+            {
+              kind: "steps",
+              items: [
+                { title: "Name every game and who's in it", body: "A team Nassau and an individual skins game are two separate arrangements. Say the partners out loud. A late arrival is not automatically in everything because somebody wrote his name on the card." },
+                { title: "Put an amount beside each one", body: "Five dollars a Nassau side, a dollar a skin, whatever your group chose. Be specific about whether an amount is per player or per team. “Just a small game” is a mood, not a number." },
+                { title: "Set the strokes and the exceptions", body: "Net or gross? Which tees? Do tied skins carry? Are presses allowed, and on which match? If one of those answers would change someone's decision to play, it belongs in the conversation now." },
+              ],
+            },
+            { kind: "callout", title: "THE SCOREKEEPER DOESN'T SET THE TERMS", html: "Everyone agrees to the games. One person records them. Handing somebody the card does not make that person responsible for a rule the group never discussed." },
+          ],
+        },
+        {
+          id: "one-card",
+          title: "Keep one card. Let GoLo keep the tallies.",
+          paragraphs: [
+            "In GoLo, pick the course and tees, add the players, then choose the games and amounts. A guest can be added with a name and an index, without an account. You don't need to hold up the first tee while the fourth player finds a password.",
+            "For an ordinary individual round, one scorer enters everyone's gross score after each hole. GoLo applies the handicap strokes and works out the supported side games from the same card. Nassau, skins and Best Score can run together without three sets of pencil marks. Signed-in players can join the round and follow it on their own phones; score entry stays with the scorer.",
+            "Have each player say the score before you move on. Four, five, five, six. Fix a wrong number while the hole is still fresh. The app can do the subtraction; it cannot know that the six you entered was actually a seven.",
+            "Check that your group's rules fit before you start. GoLo uses one set of tees for the group and full course handicaps for individual play. GoLo doesn't support mixed tees or playing off the low handicap today. The <a href=\"/features\">features page</a> has the current list.",
+          ],
+          blocks: [
+            { kind: "quote", text: "You should have to remember your score, not everybody's balance." },
+          ],
+        },
+        {
+          id: "changes",
+          title: "Record the change while everyone remembers it",
+          paragraphs: [
+            "The fastest way to lose the tally is to leave a change in somebody's memory. If the group agrees to a press, record it when it is called. If you're keeping anything on paper, mark the starting hole and amount beside the match it belongs to. A diagonal line and “ask Dave” will not improve with age.",
+            "In GoLo, the scorer enters presses on the Overall Match game once a side is at least two down, and they start on the next hole. GoLo does not open presses automatically or support presses on the Nassau game. If your Saturday depends on pressing that game, keep those separately and account for them before paying anyone.",
+            "The same habit applies to a side contest the app doesn't score: write down the agreed result immediately. A half-tracked extra game is how the scorekeeper gets the second job back.",
+          ],
+        },
+        {
+          id: "settle",
+          title: "Finish with what each player owes",
+          paragraphs: [
+            "Winning one game and losing another does not require two people to pass the same money back and forth. Net the games into one balance per player, then work out who owes whom. Here is an illustrative foursome's completed Nassau and skins tally; the plus signs mean a player is up, the minus signs mean a player is down.",
+          ],
+          blocks: [
+            {
+              kind: "table",
+              head: ["Player", "Nassau", "Skins", "Net"],
+              rows: [
+                ["Mike", "+$10", "+$12", "+$22"],
+                ["Sarah", "+$10", "−$4", "+$6"],
+                ["Jess", "−$10", "+$4", "−$6"],
+                ["Tom", "−$10", "−$12", "−$22"],
+                ["Total", "$0", "$0", "$0"],
+              ],
+            },
+            { kind: "p", html: "Tom pays Mike $22. Jess pays Sarah $6. Two settle-ups clear the example, and nobody needs to collect the Nassau and pay back the skins separately. Each game's column adds to zero, and so does the net. If a hand-kept tally doesn't balance, find the mistake before anyone pays." },
+            { kind: "p", html: "GoLo does that netting and gives the group a short who-owes-whom list, with the games behind the numbers available to check. Read it out while everyone is still there. If someone questions the total, look at the card together. The scorekeeper shouldn't have to deliver a closing argument over six dollars. See <a href=\"/how-it-works\">one round from setup to settle-up</a> for the same process on the app's screens." },
+          ],
+        },
+        {
+          id: "hand-it-back",
+          title: "Put the result in the group chat. Then put the phone away.",
+          paragraphs: [
+            "Share GoLo's card with the final scores, results and who owes whom in the thread your group already uses. Everyone has the same record, including the person who left early. Save the thread for the photograph of the approach shot, not a reconstruction of the back nine.",
+            "GoLo never holds, moves or processes the money. Players settle outside the app however they already pay each other. Do it before everyone leaves, then mark it settled. The <a href=\"/blog/who-pays-first\">unwritten rules of settling up</a> cover the part no scorecard can enforce.",
+            "Next Saturday, you can still be the person who keeps score. Set up the games in GoLo, enter the holes, and share the result. <a href=\"/how-it-works\">See one round from setup to settle-up</a>, or <a href=\"/#get\">get GoLo for your next round</a>. Taking the pencil should not mean taking the work home.",
+          ],
+          blocks: [
+            { kind: "summary", title: "THE SHORT VERSION", items: [
+              "Agree the games, amounts, strokes and house rules before the first tee shot.",
+              "Keep one card, confirm scores hole by hole, and record changes when they happen.",
+              "Let GoLo tally the supported games and turn the results into a short who-owes-whom list.",
+              "Share the result, settle outside the app, and leave the bookkeeping at the course.",
+            ] },
+          ],
+        },
+      ],
+    ),
+  },
+  {
     slug: "who-pays-first",
     category: "etiquette",
     title: "Who pays first? The unwritten rules of settling up",
@@ -264,7 +2233,7 @@ export const posts: Post[] = [
       { kind: "quote", text: "Nobody minds losing ten dollars. Everybody minds asking for it twice." },
       { kind: "h2", id: "why-it-matters", text: "Why any of this matters over eleven dollars" },
       { kind: "p", html: "Because the money was never the point. The game exists to make a twilight round on a Tuesday feel like it counts — to give the eight-footer on 12 a reason to matter. Settling is what keeps that device working. Pay fast, pay first, round against yourself, and the match stays a game instead of becoming a small unspoken thing between two guys who used to enjoy playing together." },
-      { kind: "p", html: "And if remembering all nine sounds like work: the honest reason groups break these rules isn't character, it's arithmetic. Nobody wants to do six-way netting in a parking lot with a beer in his hand. So don't. Let something else keep the tally and just move the money. (GoLo doesn’t score junk, so that part stays on the card.) Here is <a href=\"/blog/settle-up-screen\">how the netting works</a>, and <a href=\"/how-it-works\">one foursome’s round, first tee to settled</a>." },
+      { kind: "p", html: "And if remembering all nine sounds like work: the honest reason groups break these rules isn't character, it's arithmetic. Nobody wants to do six-way netting in a parking lot with a beer in his hand. So don't. Let something else keep the tally and just move the money. (GoLo doesn’t score junk, so that part stays on the card.) Here is <a href=\"/how-it-works\">one foursome’s round, first tee to settled</a>." },
     ],
   },
   {
@@ -511,7 +2480,7 @@ export const posts: Post[] = [
           { title: "Formats have allowances", body: "Handicap allowances exist because some formats amplify a high handicap. Four-ball match play is commonly played at 90%; individual match play at 100%. Casual groups can skip them if everybody knows that is the choice." },
           { title: "Cap the hole, not the round", body: "Net double bogey is the standard maximum for posting purposes, and it works as a house rule. It keeps one lost ball from distorting every game on the card." },
         ] }] },
-        { id: "why-index-moves", title: "Why the index moves", paragraphs: ["Your index is the average of the best 8 <a href=\"/glossary#score-differential\">score differentials</a> out of your most recent 20 rounds, and it updates the day after each new score is posted. That is why it drifts down after a good week and why one bad round rarely moves it: a score only counts if it lands among your best eight of twenty, so a single 92 usually changes nothing.", "If nobody in your group carries an official index, agree on informal numbers and write them down. Consistency matters more than accuracy: a made-up 15 that everybody agrees on settles more matches than a real 12.4 that only one person remembers. And if somebody’s number stops matching his golf, <a href=\"/blog/sandbagging\">here is how to fix it without accusing anybody</a>."], blocks: [{ kind: "summary", title: "THE SHORT VERSION", items: ["Index is portable and has a decimal. Course handicap is per tee set and is a whole number.", "Course handicap = index × (slope ÷ 113) + (course rating − par).", "Strokes land on specific holes by stroke index, not at the end of the round.", "In a match, the low handicap plays off scratch and everybody else gets the difference."] }] },
+        { id: "why-index-moves", title: "Why the index moves", paragraphs: ["Your index is the average of the best 8 <a href=\"/glossary#score-differential\">score differentials</a> out of your most recent 20 rounds, and it updates the day after each new score is posted. That is why it drifts down after a good week and why one bad round rarely moves it: a score only counts if it lands among your best eight of twenty, so a single 92 usually changes nothing.", "If nobody in your group carries an official index, agree on informal numbers and write them down. Consistency matters: a number everybody agreed on settles more matches than a real 12.4 that only one person remembers. If someone has no index at all, <a href=\"/blog/no-handicap-fair-game\">work one out from their scores</a> rather than making one up. And if somebody’s number stops matching his golf, <a href=\"/blog/sandbagging\">here is how to fix it without accusing anybody</a>."], blocks: [{ kind: "summary", title: "THE SHORT VERSION", items: ["Index is portable and has a decimal. Course handicap is per tee set and is a whole number.", "Course handicap = index × (slope ÷ 113) + (course rating − par).", "Strokes land on specific holes by stroke index, not at the end of the round.", "In a match, the low handicap plays off scratch and everybody else gets the difference."] }] },
       ],
       ),
       {
@@ -622,7 +2591,8 @@ export const posts: Post[] = [
     // glance for the second.
     hero: { src: "/images/blog/rangefinder-hero.webp", alt: "A laser rangefinder, a golf ball and a GPS watch lying on the fairway, a flag soft in the distance", position: "85% 50%", mobile: "/images/blog/rangefinder-mobile.webp", og: "/images/blog/rangefinder-og.jpg" },
     related: ["bandon", "scottsdale-trip-structure", "skins-carryover"],
-    published: true,
+    // Hidden for now at the owner's request (2026-10-30).
+    published: false,
     body: article(
       "If you play for ten dollars a side with the same three guys, this decision is smaller than the internet makes it. A laser gives you one exact number. A watch gives you three approximate ones without you doing anything. The honest answer depends on how you miss, how fast your group plays, and whether you will actually use the thing.",
       [
@@ -654,7 +2624,7 @@ export const posts: Post[] = [
     date: "2026-10-09",
     readMins: 5,
     hero: { src: "/images/blog/bandon-hero.webp", alt: "A golfer and caddie walking toward a clifftop links green as a rain squall rolls in off the ocean, the flag blowing straight out", position: "94% 50%", mobile: "/images/blog/bandon-mobile.webp", og: "/images/blog/bandon-og.jpg" },
-    related: ["scottsdale-trip-structure", "nassau", "index-vs-course-handicap"],
+    related: ["skins-carryover", "nassau", "index-vs-course-handicap"],
     published: true,
     body: article(
       "You booked a links trip, you are walking every hole, and on the second morning it is blowing 30 out of the southwest with rain in it. Your golf will be fine — that is what you came for. Your side game will not. Stroke play does not survive weather like this, and the group usually finds that out somewhere around the 12th, when two of the four have stopped keeping score.",
@@ -675,7 +2645,7 @@ export const posts: Post[] = [
         ] }, { kind: "callout", title: "PLAY THE NINE, NOT THE EIGHTEEN", html: "Links weather changes inside a round. A front nine downwind and a back nine into it are two different golf courses, so make them two different matches. Anyone who gets buried in the first half starts even after the turn, and the group stays honest about the fact that the wind, not the golf, did most of it." }, { kind: "image", src: "/images/blog/bandon-mid-2.webp", alt: "A hooded caddie in the rain holding a scorecard sealed in a plastic sleeve, a golf bag on his shoulder", caption: "On foot, in weather, the scorecard is the first thing to fail. Give it to somebody with dry hands.", position: "50% 5%" }] },
         // The design says GoLo scores quota and rolls the day into one number.
         // It does neither yet (47f2b8c), so this paragraph keeps the draft.
-        { id: "one-number", title: "Thirty-six holes, one number", paragraphs: ["The practical problem out here is not the formats, it is the bookkeeping. Two rounds a day, a different game each time, and a scorecard that has been through the ocean. By dinner nobody can reconstruct the morning, so the group defaults to “call it even” — a quiet way of saying the game did not matter.", "GoLo scores match play and <a href=\"/games/skins\">skins</a> off the same card and nets each round to one number. It does not score quota, and it does not add the morning and the afternoon together yet, so a 36-hole day is two settle-ups — the <a href=\"/blog/scottsdale-trip-structure\">Scottsdale trip guide</a> makes the case for one running number across them, added up by hand. You still keep your hands in your pockets and let the wind be the only thing you argue about."], blocks: [{ kind: "summary", title: "THE SHORT VERSION", items: ["Wind adds more shots to high handicaps than low ones. Net stroke play cannot absorb that.", "Match play caps a disaster at one hole. Quota with a floor at zero does the same thing.", "Split the round into two nine-hole matches, because the weather already did.", "Cap the day rather than the round, and let the caddie keep the card."] }] },
+        { id: "one-number", title: "Thirty-six holes, one number", paragraphs: ["The practical problem out here is not the formats, it is the bookkeeping. Two rounds a day, a different game each time, and a scorecard that has been through the ocean. By dinner nobody can reconstruct the morning, so the group defaults to “call it even” — a quiet way of saying the game did not matter.", "GoLo scores match play and <a href=\"/games/skins\">skins</a> off the same card and nets each round to one number. It does not score quota, and it does not add the morning and the afternoon together yet, so a 36-hole day is two settle-ups. Write down each player’s number after the morning round and net the two by hand at dinner. You still keep your hands in your pockets and let the wind be the only thing you argue about."], blocks: [{ kind: "summary", title: "THE SHORT VERSION", items: ["Wind adds more shots to high handicaps than low ones. Net stroke play cannot absorb that.", "Match play caps a disaster at one hole. Quota with a floor at zero does the same thing.", "Split the round into two nine-hole matches, because the weather already did.", "Cap the day rather than the round, and let the caddie keep the card."] }] },
       ],
     ),
   },
@@ -696,7 +2666,8 @@ export const posts: Post[] = [
     // settle-up for the second.
     hero: { src: "/images/blog/scottsdale-trip-structure-hero.webp", alt: "Four golf bags standing at the edge of a desert tee box, saguaros and a rocky ridge behind them in the low sun", position: "85% 50%", mobile: "/images/blog/scottsdale-trip-structure-mobile.webp", og: "/images/blog/scottsdale-trip-structure-og.jpg" },
     related: ["bandon", "nassau", "who-pays-first"],
-    published: true,
+    // Hidden for now at the owner's request (2026-10-30).
+    published: false,
     body: article(
       "Eight guys, four rounds, one desert. The golf takes care of itself. What ruins buddies trips is the side games: a different game every morning, nobody sure what the running total is, and by Sunday two players have quietly stopped caring because they are down $80 with no way back. Here is a four-day structure that fixes both problems.",
       [
@@ -755,7 +2726,8 @@ export const posts: Post[] = [
       alt: "A flag on a green beside a raked bunker, at sunset",
       position: "50% 55%",
     },
-    published: true,
+    // Hidden for now at the owner's request (2026-10-30).
+    published: false,
     body: article(
       "GoLo’s commit history is more honest than our memory, so this is built from it. It covers what broke between the first commit on June 18, 2026 and the 1.0.0 build prepared as a Google Play candidate on October 15, and what each fix changed. That build wasn’t in the store yet when we wrote this; GoLo went live on Google Play on October 26, 2026. You won’t find tester counts here. We didn’t keep records good enough to publish numbers, so there aren’t any.",
       [
@@ -768,8 +2740,9 @@ export const posts: Post[] = [
           { title: "October 7: re-agree only when the terms change", body: "Every save of Setup used to ask every player to agree to the side games again. Now that happens only when the terms actually change: an amount, a game, a player’s name or handicap, the card. A player’s colour doesn’t count, and neither do presses called during play." },
           { title: "October 7: money to the cent", body: "Settled amounts read “$12.50”, not “$12.5”. A small thing, until it’s the number someone is about to send." },
         ] }] },
+        // Unlinked while settle-up-screen is hidden; restore the <a href="/blog/settle-up-screen"> on republish.
         // claim-ok: quotes the site's old "fewest payments" claim in order to correct it (#103).
-        { id: "website", title: "And one on our own website", paragraphs: ["Until October 16 this site said GoLo settles a group “in the fewest payments.” The app doesn’t promise that. It lines up who owes and who is owed, biggest first, and works down both lists. That never needs more than n − 1 settle-ups for n players, but it isn’t always the minimum: balances of +4, +3, −2, −2, −3 come out as four settle-ups where three would do. We corrected fifteen claims and the share card, and added a check that stops the claim coming back. The method, with a worked example you can check, is in <a href=\"/blog/settle-up-screen\">building the settle-up screen</a>."] },
+        { id: "website", title: "And one on our own website", paragraphs: ["Until October 16 this site said GoLo settles a group “in the fewest payments.” The app doesn’t promise that. It lines up who owes and who is owed, biggest first, and works down both lists. That never needs more than n − 1 settle-ups for n players, but it isn’t always the minimum: balances of +4, +3, −2, −2, −3 come out as four settle-ups where three would do. We corrected fifteen claims and the share card, and added a check that stops the claim coming back. The method, with a worked example you can check, is in our post on building the settle-up screen."] },
         { id: "today", title: "Where that leaves the app", paragraphs: ["Setup is five steps, with every game starting at a $1 amount. One scorer enters the card, and any hole already played can be changed from the card view. Presses are called from a short sheet on the Overall Match and start on the next hole. Skins carries are automatic when carryover is on, which it is by default. The organizer can change a game’s amount mid-round in Setup: everyone agrees again, the new amount applies to the whole game, and a game with presses in play can’t be changed. A round that has ended settles into a short settle-up list; GoLo never holds, moves or processes the money.", "Some things aren’t in the app at all: GPS yardages, scorecard scanning, a chat, a feed of other groups’ rounds, shot stats. Everyone entering their own scores isn’t built yet. The full list of what works today and what doesn’t is on <a href=\"/features\">features</a>, and one real round, start to settle, is on <a href=\"/how-it-works\">how it works</a>."], blocks: [{ kind: "summary", title: "THE SHORT VERSION", items: ["Money adds up to the cent, or nobody trusts the rest of the screen. GoLo has settled in whole cents since August 1.", "Anything that happened on the course has to survive a fix in Setup. Presses were being deleted until September 26.", "A live number must be one the next hole can’t take back. Skins carries ride to the last hole since September 28.", "Check the claims as hard as the code. Our own site promised more than the settle-up does; it now says what the app does."] }] },
       ],
     ),
@@ -790,7 +2763,8 @@ export const posts: Post[] = [
     updated: "2026-10-16",
     readMins: 5,
     hero: { src: blogMedia.turf, alt: "Close-up of close-mown turf in low sun, a flagstick soft in the distance", position: "50% 46%" },
-    published: true,
+    // Hidden for now at the owner's request (2026-10-30).
+    published: false,
     body: article(
       "The settle-up screen is the only screen in GoLo that has to be perfect. Everything before it happens while people are playing golf and forgiving. This one happens in a parking lot, with five people looking at one phone, and it either ends the round cleanly or starts the conversation we built the app to prevent. It took several versions to get right.",
       [
