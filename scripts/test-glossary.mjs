@@ -290,6 +290,29 @@ const boundary = statuses.map((status) =>
 }
 
 {
+  // Best Score covers individual and team play (owner's correction,
+  // 2026-10-31), and stays distinct from best ball / Four-Ball.
+  const bs = glossaryTerms.find((t) => t.id === "best-score");
+  check("best-score: the record exists", Boolean(bs));
+  if (bs) {
+    const copy = [bs.shortDefinition, bs.explanation, bs.example, bs.goloNote].join(" ");
+    check("best-score: not described as individual-only", !/\bindividual (game|format)\b|each player['’]s own total/i.test(copy));
+    check("best-score: definition includes teams", /\bteams?\b/i.test(bs.shortDefinition));
+    check("best-score: goloNote covers Team Play and scramble", /Team Play/.test(bs.goloNote ?? "") && /\bscramble\b/i.test(bs.goloNote ?? ""));
+    check(
+      "best-score: keeps net, gross and Stableford",
+      /\bnet\b/i.test(bs.shortDefinition) && /\bgross\b/i.test(bs.shortDefinition) && /\bStableford\b/.test(bs.shortDefinition),
+    );
+    check("best-score: still says it isn't best ball", /isn['’]t best ball/.test(bs.explanation ?? "") && /Four-Ball/.test(bs.explanation ?? ""));
+    check(
+      "best-score: cites the team capabilities",
+      ["team-play", "scramble"].every((id) => bs.capabilityIds.includes(id)),
+      bs.capabilityIds.join(","),
+    );
+  }
+}
+
+{
   // Which path a build takes. Production never reviews; the route only shows
   // in production once the flag is on.
   const saved = process.env.NODE_ENV;
