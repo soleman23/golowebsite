@@ -236,6 +236,8 @@ Sent by the site:
 | `faq_open` | `page`, `question_id` | An FAQ answer was opened |
 | `game_filter` / `blog_filter` | `filter` / `category` | A filter chip was selected |
 | `share_click` | `post`, `channel` | A blog share control was used |
+| `chooser_result` | `group`, `result_count`, `top_pick` | A side-game chooser answer set stood for 1.5 s (docs/analytics-data-notes.md) |
+| `chooser_guide_click` | `format`, `rank` | A chooser pick's guide link was followed |
 | `scroll_depth` | `percent_scrolled` (25, 50, 75, 90) | Each mark, once per page view |
 | `link_click` | `link_url` (path + hash), `link_text`, `location` (nav, footer, main) | An internal link was clicked |
 | `contact_click` | `method` (email, phone), `location` | A `mailto:` / `tel:` link was clicked; the address is never sent |

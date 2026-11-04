@@ -45,6 +45,28 @@ Metric definitions (spec §9.4). Report each with its date range and its source,
 - **Newsletter signup rate**: not measured on the hub while the band is on hold.
 - **Verified acquisition**: only from store or app attribution where it exists. Never inferred from clicks.
 
+## Side-game chooser events and reporting definitions (#224)
+
+Added with `/games/chooser`. As with every event, nothing is sent until a visitor opts in, and every call goes through `track()`. Params are closed sets: radio values, a player count from 2 to 12, a format id and a rank. Nothing typed is ever sent, because the chooser has no text input. The shared URL carries the same closed values and nothing else (`lib/chooser/url.ts`).
+
+| Event | Fires | Params |
+|---|---|---|
+| `chooser_result` | An answer set has stood for 1.5 seconds with a player count chosen. Once per distinct answer set per page load. A shared link's answers count; clicking through the five radio groups sends at most one event per set the reader stopped on. | `group` (`players/partners/handicaps/scoring/holes`, `-` where unanswered, e.g. `4/either/apart/simple/18`), `result_count` (picks shown, `0`–`3`), `top_pick` (format id, or `none`) |
+| `chooser_guide_click` | A pick's guide or further-reading link was followed, in the live results only. The worked example's links report through `link_click` as usual. | `format` (format id), `rank` (`1`–`3`) |
+| `share_click` | Reused for "Copy link to these answers". | `channel` (`copy`), `page` (`chooser`) |
+
+Unchanged and reused: `cta_click` and `store_button_click` with `page: "chooser"` for the closing band, and `link_click` for every internal link. `leads.sql` counts `/games/chooser` as a landing path. `scripts/gsc-groups.mjs` puts it in its own **Tools** page group, so it never inflates the guide totals.
+
+**Custom definitions.** `group`, `result_count`, `top_pick`, `format` and `rank` are new parameters. GA4 reports them only once they're registered as event-scoped custom dimensions (README § Analytics), and it doesn't backfill. Registering them is a property change for the owner to approve. Until then, report the event counts and say the breakdowns are "not available before <registration date>".
+
+What each one is for:
+
+- **Group shapes** (`group`): which sizes and constraints people bring. It's evidence for the next tool. For example, many `5/`–`12/` groups would support the trip-format builder (#106 Phase 2, tool 4).
+- **Empty-result rate**: `chooser_result` with `result_count` `0`, divided by all `chooser_result`. The rules make only two- or three-player team requests empty, so a high rate means the partner question needs rewording, not that formats are missing.
+- **First-pick distribution** (`top_pick`): which guides the chooser sends people towards. Read it against those guides' Search Console and engagement numbers before deepening one.
+- **Pick-to-guide rate**: consented sessions with a `chooser_guide_click`, divided by consented sessions with a `chooser_result`. A GA4 sample, never compared with Search Console. Its `rank` split shows whether the first pick is the one people open.
+- **What these events aren't**: a guide click isn't a decision to play, and a `store_button_click` isn't an install. Verified acquisition comes only from store or app attribution.
+
 ## Test traffic
 
 Created while building and verifying #114 and #115 (October 19–20), and by later

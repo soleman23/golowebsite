@@ -1,0 +1,298 @@
+/* Form above results; side by side from 1100px. The form isn't sticky: a
+   pinned column would need the scroll-margin work the nav has (see
+   Nav.module.css) to keep Shift+Tab from jumping the page. */
+.chooser {
+  display: grid;
+  gap: clamp(24px, 4vw, 40px);
+  align-items: start;
+}
+
+@media (min-width: 1100px) {
+  .chooser {
+    grid-template-columns: minmax(340px, 400px) 1fr;
+  }
+}
+
+.form {
+  min-width: 0;
+}
+
+.formTitle,
+.resultsTitle {
+  margin: 0 0 16px;
+  font-size: 13px;
+  font-weight: 800;
+  letter-spacing: 1.4px;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+
+.formTitle:focus-visible,
+.resultsTitle:focus-visible {
+  outline: var(--focus-ring-width) solid var(--focus-ring-color);
+  outline-offset: var(--focus-ring-offset);
+}
+
+.dropped {
+  margin: 0 0 16px;
+  padding: 12px 14px;
+  border-radius: var(--radius-tile);
+  border: 1px solid var(--card-border);
+  background: var(--glass-raised);
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--text-primary);
+}
+
+.fieldset {
+  margin: 0 0 20px;
+  padding: 0;
+  border: 0;
+  min-width: 0;
+}
+
+.legend {
+  padding: 0;
+  margin-bottom: 8px;
+  font-size: 16px;
+  font-weight: 800;
+  color: var(--text-primary);
+}
+
+.hint {
+  margin: -2px 0 10px;
+  font-size: 13px;
+  line-height: 1.45;
+  color: var(--text-muted);
+}
+
+.options {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+/* 2 to 12: a grid of equal squares, six to a row on a phone. */
+.numbers {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(44px, 1fr));
+  max-width: 400px;
+}
+
+.option {
+  position: relative;
+  display: flex;
+}
+
+/* The real radio stays in the tab order and the accessibility tree; it's
+   drawn by the label text beside it. */
+.input {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.optionLabel {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  min-height: 44px;
+  padding: 0 16px;
+  border-radius: var(--radius-pill);
+  border: 1px solid var(--card-border);
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--text-secondary);
+  font-size: 14px;
+  font-weight: 800;
+  text-align: center;
+  transition: border-color 0.14s ease, background 0.14s ease, color 0.14s ease;
+}
+
+.numbers .optionLabel {
+  padding: 0;
+  border-radius: var(--radius-tile);
+  font-size: 16px;
+}
+
+.option:hover .input:not(:checked) + .optionLabel {
+  border-color: var(--accent-border);
+  color: var(--text-primary);
+}
+
+.input:checked + .optionLabel {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: var(--accent-ink);
+}
+
+.input:focus-visible + .optionLabel {
+  outline: var(--focus-ring-width) solid var(--focus-ring-color);
+  outline-offset: var(--focus-ring-offset);
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 4px;
+}
+
+.action {
+  min-height: 44px;
+  padding: 0 18px;
+  border-radius: var(--radius-pill);
+  border: 1px solid var(--card-border);
+  background: transparent;
+  color: var(--text-primary);
+  font: inherit;
+  font-size: 14px;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.action:hover:not(:disabled) {
+  border-color: var(--accent-border);
+}
+
+.action:disabled {
+  color: var(--text-muted);
+  cursor: default;
+}
+
+.jump {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  margin-top: 14px;
+  font-size: 14px;
+  font-weight: 800;
+  color: var(--accent);
+}
+
+/* Side by side, the results are already beside the form. */
+@media (min-width: 1100px) {
+  .jump {
+    display: none;
+  }
+}
+
+.results {
+  min-width: 0;
+  /* A deep link fills this after hydration; holding some height keeps the
+     sections below from jumping as much. */
+  min-height: 240px;
+}
+
+.placeholder,
+.emptyMessage {
+  margin: 0;
+  padding: 22px;
+  border-radius: var(--radius-card);
+  border: 1px dashed var(--card-border);
+  font-size: 15px;
+  line-height: 1.55;
+  color: var(--text-secondary);
+}
+
+.empty {
+  display: grid;
+  gap: 12px;
+}
+
+.emptyHelp {
+  margin: 4px 0 0;
+  font-size: 14px;
+  font-weight: 800;
+  color: var(--text-primary);
+}
+
+.relaxations {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.relax {
+  min-height: 44px;
+  padding: 0 18px;
+  border-radius: var(--radius-pill);
+  border: 1px solid var(--accent-border);
+  background: var(--accent-soft);
+  color: var(--text-primary);
+  font: inherit;
+  font-size: 14px;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.count {
+  margin: 0 0 14px;
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--text-secondary);
+}
+
+.picks {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 14px;
+}
+
+.also {
+  margin: 16px 0 0;
+  font-size: 14px;
+  color: var(--text-secondary);
+}
+
+.also a {
+  color: var(--accent);
+  font-weight: 800;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.ruledOut {
+  margin-top: 16px;
+  font-size: 14px;
+  color: var(--text-secondary);
+}
+
+.ruledOut summary {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  font-weight: 800;
+  color: var(--text-primary);
+  cursor: pointer;
+}
+
+.ruledOut summary:focus-visible {
+  outline: var(--focus-ring-width) solid var(--focus-ring-color);
+  outline-offset: var(--focus-ring-offset);
+  border-radius: 4px;
+}
+
+.ruledOut ul {
+  margin: 6px 0 0;
+  padding-left: 18px;
+  display: grid;
+  gap: 6px;
+  line-height: 1.5;
+}
+
+.ruledOut strong {
+  color: var(--text-primary);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .optionLabel {
+    transition: none;
+  }
+}

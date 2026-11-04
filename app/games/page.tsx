@@ -4,6 +4,7 @@ import { pageMetadata } from "@/lib/pageMetadata";
 import { PageHero } from "@/components/ui/PageHero";
 import { FilterBoot } from "@/components/ui/FilterBoot";
 import { GamesGrid } from "@/components/sections/games/GamesGrid";
+import { ChooserTeaser } from "@/components/sections/chooser/ChooserTeaser";
 import { FinalCTA } from "@/components/sections/FinalCTA";
 
 export const metadata: Metadata = pageMetadata({
@@ -34,6 +35,8 @@ export default function GamesPage() {
         {...gamesHero}
         breadcrumbs={[{ label: "Home", href: "/" }, { label: "Games" }]}
       />
+
+      <ChooserTeaser />
 
       <GamesGrid />
 
