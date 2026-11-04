@@ -48,9 +48,11 @@
  *    capability ids and paths that resolve; real dates in order; a review
  *    record on every approved or published term (lib/content/glossary/
  *    validate.ts, #155).
- * 6. Orphans. Every published post needs a link in from another page's copy
- *    and a link out of its own body (#77, #221). The /blog index and the
- *    "Keep reading" rail don't count, and neither do a hidden post's links.
+ * 6. Orphans. Every published post needs a link in from another page's copy,
+ *    reachable from a guide, the glossary or a page rather than only from
+ *    posts that link to each other, and a link out of its own body (#77,
+ *    #221). The /blog index, the "Keep reading" rail, the nav and footer, and
+ *    a hidden post's links don't count.
  *
  * Comments are ignored throughout. Exit 1 with one line per problem.
  */
@@ -365,10 +367,14 @@ for (const file of files) {
 
 /**
  * A post that only the index and the "Keep reading" rail link to is orphaned:
- * the index lists everything, and the rail fills with the newest posts. Posts,
- * guides and glossary records are read as data, so each link is credited to
- * the page it appears on and a hidden post's links never count. Every other
- * file is scanned for hrefs as above, and counts as one page.
+ * the index lists everything, and the rail fills with the newest posts. So is
+ * a set of posts that only link to each other, as a new batch can. Every post
+ * has to be reachable through in-body links from a page that isn't a post: a
+ * guide, the glossary, or a page's own copy. Posts, guides and glossary
+ * records are read as data, so each link is credited to the page it appears
+ * on and a hidden post's links never count. Every other file is scanned for
+ * hrefs as above and counts as one page, except the nav and footer, which are
+ * on every page and aren't in-body links.
  */
 {
   const pathOf = (href) => href.split(/[?#]/)[0].replace(/\/$/, "") || "/";
@@ -408,11 +414,25 @@ for (const file of files) {
   for (const file of files) {
     if (file === "lib/content/blog.ts" || file === "lib/content/gameDetail.ts") continue;
     if (file === "lib/content/glossary/terms.ts" || file.startsWith("lib/content/glossary/terms/")) continue;
+    if (file === "lib/content/nav.ts" || file.startsWith("components/layout/")) continue;
     const text = stripComments(read(file), file);
     add(
       file,
       [...text.matchAll(HREF)].map((m) => m[2]).filter((href) => !href.includes("${")).map(pathOf),
     );
+  }
+
+  /** Posts reachable from the rest of the site, following post-to-post links. */
+  const postPaths = new Set(publishedPosts.map((p) => `/blog/${p.slug}`));
+  const reached = new Set();
+  const queue = [...linksFrom]
+    .filter(([page]) => !postPaths.has(page))
+    .flatMap(([, paths]) => [...paths].filter((p) => postPaths.has(p)));
+  while (queue.length) {
+    const path = queue.pop();
+    if (reached.has(path)) continue;
+    reached.add(path);
+    for (const next of linksFrom.get(path)) if (postPaths.has(next)) queue.push(next);
   }
 
   const blog = read("lib/content/blog.ts");
@@ -422,6 +442,8 @@ for (const file of files) {
     const linkedIn = [...linksFrom].some(([page, paths]) => page !== path && paths.has(path));
     if (!linkedIn) {
       report("lib/content/blog.ts", line, `${path} has no in-body link from another page (the /blog index and the Keep reading rail don't count)`);
+    } else if (!reached.has(path)) {
+      report("lib/content/blog.ts", line, `${path} is linked only from posts that no guide, glossary entry or page leads to`);
     }
     // The home page is the download link (/#get), not further reading.
     const linksOut = [...linksFrom.get(path)].some((p) => p !== path && p !== "/" && pages.has(p));

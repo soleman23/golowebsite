@@ -1131,7 +1131,7 @@ export const posts: Post[] = [
           id: "from-whom",
           title: "Five dollars from whom?",
           paragraphs: [
-            "The usual version is per player: every other player pays the maker the agreed amount. In a foursome a $5 birdie is worth $15 to the player who makes it. In <a href=\"/blog/golf-games-for-3-players#cost\">a threesome</a> it’s $10. Whatever the group size, somebody else’s birdie costs you $5.",
+            "The usual version is per player: every other player pays the maker the agreed amount. In a foursome a $5 birdie is worth $15 to the player who makes it. In <a href=\"/blog/golf-games-for-3-players\">a threesome</a> it’s $10. Whatever the group size, somebody else’s birdie costs you $5.",
             "The other version is a shared total. Everyone puts in a set amount before the round, say $10 each, and at the end the $40 is divided by the number of birdies made. Nobody can lose more than their $10, and nobody knows what a birdie is worth until the 18th is finished. GoLo doesn’t run this version; it’s a house arrangement, so agree its two awkward cases too: what happens if nobody makes a birdie, and how $40 splits across three birdies.",
           ],
           blocks: [
