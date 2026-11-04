@@ -148,14 +148,14 @@ export const featureBlocks: FeatureBlock[] = [
     kicker: "PRESS TRACKING",
     status: TODAY,
     title: "Every press logged the second it's called.",
-    lead: "Presses are where friendly side games get messy — three of them deep and nobody agrees what's live. In GoLo they're on the Overall Match game: the side that's 2 or more down taps it on the tee and the ladder stays legible — which holes, at what amount, and who's up in it right now.",
+    lead: "Presses are where friendly side games get messy — three of them deep and nobody agrees what's live. In GoLo they're on the Overall Match game: the scorer enters one for the side that's 2 or more down, and the ladder stays legible — which holes, at what amount, and whether the original match is still running.",
     checklist: [
       {
         lead: "Called, not automatic",
         rest: "auto-press isn't in the app yet, and Nassau doesn't take presses.",
       },
       {
-        lead: "Up to two live at once",
+        lead: "Two a round",
         rest: "at two, three or four times the amount, and still readable at the end.",
       },
       {
@@ -165,7 +165,7 @@ export const featureBlocks: FeatureBlock[] = [
     ],
     visualSide: "right",
     visual: "pressLadder",
-    link: { label: "How presses work →", href: "/games/nassau" },
+    link: { label: "How presses work →", href: "/games/overall-match" },
   },
   {
     id: "handicaps-strokes",

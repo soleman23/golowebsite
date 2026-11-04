@@ -107,6 +107,7 @@ export const roundSteps: RoundStep[] = [
       "Live standings for every game on the card",
       "Presses run on the Overall Match game, not the Nassau — yet",
     ],
+    link: { label: "How presses work on the Overall Match →", href: "/games/overall-match" },
     screen: "/images/how-it-works/step-04.webp",
   },
   {

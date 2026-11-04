@@ -144,6 +144,23 @@ const APP_CHECK_1030_FORMATS = {
   date: "2026-10-30",
   appVersion: "1.2.1",
 } as const;
+/**
+ * The Overall Match guide check (soleman23/golowebsite#205, 2026-11-03):
+ * golo `main` 2237c1d (GoLo 1.2.1) read again, and one round scored through
+ * its own UI in a local-only build with two presses. The per-round limit is
+ * from the code: src/engines/pressBets.js activePressCount counts every press
+ * whose status is `active`, and nothing ever changes that status or removes
+ * a press (src/store/roundStore.js only appends them), so a decided press
+ * still counts. The replay only showed the limit with both presses still
+ * running ("2/2 presses", no third offered at 2 down on 13), which fits
+ * either reading. src/components/scoring/PressSheet.jsx keeps the original
+ * running or closes it through the hole.
+ */
+const APP_CHECK_1103 = {
+  by: "app-check",
+  date: "2026-11-03",
+  appVersion: "1.2.1",
+} as const;
 /** Owner's answers on 2026-10-15 (soleman23/golowebsite#61). */
 const OWNER_1015 = { by: "owner", date: "2026-10-15" } as const;
 
@@ -254,7 +271,7 @@ export const capabilities = [
     label: "Presses on the Overall Match game",
     status: "live",
     summary:
-      "A press can start once a side is 2 or more down, at two, three or four times the amount; up to two live at once.",
+      "A press can start once a side is 2 or more down, at two, three or four times the amount; two a round.",
     // The owner's "a side can press a press" (2026-10-29, #154 Q-b) isn't in
     // the code: every press hangs off the Overall Match, and a side qualifies
     // on the main match's standing, never on a press's (APP_CHECK_1029).
@@ -262,8 +279,11 @@ export const capabilities = [
       "Entered by the scorer, never automatic.",
       "Nassau doesn't take presses.",
       "A press can't itself be pressed: a second press also needs a side 2 or more down in the main match.",
+      // APP_CHECK_1103: a press is never retired, so the two are per round.
+      "Two presses a round on the game, shared by every pairing; a decided press still counts, and a press can't be taken back.",
+      "When a press starts, the original match either keeps running to the last hole or settles where it stands.",
     ],
-    verified: APP_CHECK_1029,
+    verified: APP_CHECK_1103,
     roadmap: true,
   },
   {

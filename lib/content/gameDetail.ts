@@ -122,7 +122,11 @@ export type GameDetail = {
    * the glossary explains past what the guide needs.
    */
   glossary: { term: string; def: string; href?: string }[];
-  faqs: { id: string; q: string; a: string }[];
+  /**
+   * `link` goes under the answer, as on /faq, for an answer that sends the
+   * reader to another page. The FAQPage schema keeps the answer text only.
+   */
+  faqs: { id: string; q: string; a: string; link?: { label: string; href: string } }[];
   /** Slugs from games.ts. */
   related: GameSlug[];
   prev?: GameSlug;
@@ -339,6 +343,7 @@ const nassau: GameDetailCopy = {
       id: "what-is-a-press",
       q: "What exactly is a press?",
       a: "When you fall two holes down, you can start a new match — same amount — that only covers the holes still to play on that nine. It’s a fresh chance to get even on a nine you’ve already lost. GoLo doesn’t take presses on a Nassau; in the app they’re on the Overall Match game.",
+      link: { label: "PRESSES ON THE OVERALL MATCH →", href: "/games/overall-match" },
     },
     {
       id: "auto-press",
@@ -353,12 +358,12 @@ const nassau: GameDetailCopy = {
   ],
   related: ["skins", "wolf", "best-score"],
   prev: "skins",
-  next: "best-score",
+  next: "overall-match",
 };
 
 function gameFaqs(
   slug: GameSlug,
-  entries: { q: string; a: string }[],
+  entries: Omit<GameDetail["faqs"][number], "id">[],
 ): GameDetail["faqs"] {
   return entries.map((entry, index) => ({
     id: `${slug}-${index + 1}`,
@@ -459,6 +464,202 @@ const skins: GameDetailCopy = {
   next: "nassau",
 };
 
+// Checked against golo `main` 2237c1d (GoLo 1.2.1) on 2026-11-03.
+// src/engines/overallPurse.js settles one amount per pairing on holes up, and
+// a level match pushes. src/engines/pressBets.js getPressEligibility lets the
+// side 2 or more down in the main match press from the latest hole scored,
+// not on the last hole and not once the match is decided, at MULTIPLIERS 2, 3
+// and 4. It counts MAX_ACTIVE_PRESSES (2) over the whole round: no press is
+// ever retired or removed (src/store/roundStore.js only adds them). A press
+// plays the next hole to the last as its own match, and
+// src/components/scoring/PressSheet.jsx keeps the original running or closes
+// it through the hole.
+//
+// The worked example was entered hole by hole through that build's own UI
+// (local-only, no account) on 2026-11-03: Lost Tracks, Tournament tees, Match
+// Play, Gross, a $5 Overall Match, Mike scoring against Tom. Every amount is
+// the app's: "Mike wins $5 (1 up)", "Press x2 (from 6): Tom wins $10 (1 up)",
+// "Press x3 (from 11): Tom wins $15 (1 up)", "Mike owes Tom $20". Mike 78,
+// Tom 79. The phone's sequence is Tom's, hole by hole. Keep it, the ledger and
+// the net reconciled: the match six holes to five for Mike, the ×2 press five
+// to four for Tom over 6–18, the ×3 press three to two for Tom over 11–18.
+const overallMatch: GameDetailCopy = {
+  slug: "overall-match",
+  updated: "2026-11-03",
+  seoTitle: "Overall Match Rules: How Presses Work in Golf",
+  deeperReading: { href: "/blog/pressing", label: "Deeper reading: when calling a press is fair, and when it’s rude →" },
+  kicker: "MATCH PLAY · PRESSES FROM 2 DOWN",
+  tagline:
+    "One match over all eighteen holes, for one amount. Fall two holes behind and you can press: a fresh match from the next hole to the 18th, at two, three or four times the amount.",
+  metaDescription:
+    "How GoLo’s Overall Match works: one 18-hole match, presses from 2 down at two to four times the amount, two a round, and a worked settle-up.",
+  traits: ["2–12 players by format", "Match play", "Presses from 2 down", "18 holes"],
+  howTitle: "One match, eighteen holes, and a way back in.",
+  intro:
+    "The Overall Match is one match over the whole round, scored as match play. Win a hole and you go 1 up, lose one and you go 1 down, and whoever is ahead after the 18th wins the amount. It’s the game GoLo takes presses on. When a side falls two holes behind, it can open a press, a second match over the holes that are left, so a bad front nine doesn’t settle the afternoon. Presses are a custom between players, not part of the Rules of Golf; the match underneath them is ordinary match play under Rule 3.2.",
+  steps: [
+    {
+      n: "1",
+      title: "Set one amount",
+      body: "Agree what the match is worth before the first tee: $5, say. It’s one amount, paid once to whoever wins, however many holes up they finish. With three or four players and no teams, every pair plays its own match.",
+    },
+    {
+      n: "2",
+      title: "Play it as match play",
+      body: "The lower score wins the hole and puts you 1 up; a tie is a halve and changes nothing. The match is over when one side is more holes up than there are holes left, or after the 18th. A match that finishes level pushes.",
+    },
+    {
+      n: "3",
+      title: "Press from 2 down",
+      body: "Once a side is 2 or more down, it can press: a new match from the next hole to the 18th, at two, three or four times the match amount. The scorer enters it from the side games on the live scoreboard, on the hole that put the side 2 down, before moving on. Nothing opens on its own.",
+    },
+    {
+      n: "4",
+      title: "Keep the original, or close it",
+      body: "When the press goes in, the scorer picks what happens to the match underneath. Keep it running and it plays through the 18th beside the press. Close it and it settles where it stands: the side that’s up takes the amount there and then.",
+    },
+    {
+      n: "5",
+      title: "Net it at the 18th",
+      body: "GoLo settles the match and each press as separate matches, then nets them into one number per player and a short who-owes-whom list. It keeps the tally; it never holds money.",
+    },
+  ],
+  scoring: {
+    kicker: "THE PRESS, IN GOLO",
+    title: "Five rules the app holds every press to.",
+    lead: "Groups argue about presses because nobody agreed the terms. In GoLo these are fixed, and the press sheet shows the amount before anyone confirms.",
+    rows: [
+      { title: "When a side can press", detail: "2 or more down in the match, with a hole still to play and the match not yet decided", value: "2 DOWN" },
+      { title: "What it’s worth", detail: "A multiple of the match amount, picked on the press sheet. There’s no press for the same amount", value: "×2 · ×3 · ×4" },
+      { title: "Which holes it covers", detail: "From the hole after the one on screen through the 18th, scored as a match of its own. Open it before moving on", value: "NEXT HOLE TO 18" },
+      { title: "How many", detail: "Two a round on the game, shared by every pair. A press that’s already decided still counts", value: "2 A ROUND" },
+      { title: "Who opens it", detail: "The scorer, from the side games on the live scoreboard, once the group agrees. It never opens on its own", value: "THE SCORER" },
+    ],
+  },
+  example: {
+    kicker: "WATCH IT PLAY OUT",
+    title: "Lost the match 1 down. Won $25 on the presses, $20 net.",
+    lead: "Mike and Tom, a $5 Overall Match, gross. Tom went 2 down on the 5th and pressed at double, then 2 down again on the 10th and pressed at triple. The card was entered in GoLo 1.2.1 hole by hole, and every amount here is the app’s own settle-up.",
+    bets: [
+      { tag: "18", tagSub: "HOLES", title: "The match · $5", detail: "Mike won it 1 up, six holes to five", value: "−$5", tone: "bad" },
+      { tag: "×2", tagSub: "6–18", title: "First press · $10", detail: "Tom 2 down after the 5th; Tom won it 1 up", value: "+$10", tone: "good" },
+      { tag: "×3", tagSub: "11–18", title: "Second press · $15", detail: "Tom 2 down again after the 10th; Tom won it 1 up", value: "+$15", tone: "good" },
+      { tag: "13", tagSub: "HOLE", title: "No third press", detail: "Tom was 2 down again, with both presses already in", value: "2 of 2", tone: "neutral" },
+    ],
+    standings: [
+      { name: "Tom", note: "79 · lost the match, won both presses", value: "+$20", tone: "good" },
+      { name: "Mike", note: "78 · won the match, lost both presses", value: "−$20", tone: "bad" },
+    ],
+    net: { label: "NET · TOM IS OWED", sub: "−$5 + $10 + $15: Mike owes Tom", value: "+$20" },
+    phone: {
+      opponent: "Tom vs Mike",
+      through: "18",
+      of: "/ 18",
+      state: "FINAL",
+      stateSub: "2 of 2 presses",
+      sequence: [
+        "h", "l", "h", "h", "l", "w", "l", "h", "w",
+        "l", "w", "h", "l", "w", "h", "w", "l", "h",
+      ],
+      stats: [
+        { label: "MATCH", status: "1↓", value: "−$5", tone: "bad" },
+        { label: "PRESS ×2", status: "1↑", value: "+$10", tone: "good" },
+        { label: "PRESS ×3", status: "1↑", value: "+$15", tone: "good" },
+      ],
+      callout: { label: "2 OF 2", note: "Tom 2 down again on 13; no third press" },
+      settleTitle: "Mike owes Tom",
+      settleSub: "match and 2 presses, netted",
+      settleValue: "$20",
+      label:
+        "The finished Overall Match, Tom against Mike: Mike won the match 1 up for 5 dollars, Tom won the double press from the 6th for 10 dollars and the triple press from the 11th for 15. Mike owes Tom 20 dollars.",
+    },
+  },
+  headings: {
+    variations: {
+      kicker: "PRESSES & HOUSE RULES",
+      title: "The press your group plays, and the one GoLo keeps.",
+      lead: "Groups press in different ways. Here are four common ones and what GoLo does with each. Where the app can’t follow your house rule, keep that part on the card.",
+    },
+    tips: {
+      kicker: "PLAY SMART",
+      title: "A press is a bigger match, not a do-over.",
+      lead: "In GoLo every press is at least double the amount, so it can cost more than the match it was meant to rescue.",
+    },
+    glossary: { kicker: "TALK THE TALK", title: "The match-play words on the card." },
+    faq: { kicker: "OVERALL MATCH, ANSWERED", title: "Before you press." },
+    related: {
+      kicker: "STACK IT WITH",
+      title: "Crews that play the Overall Match also run…",
+      lead: "The Overall Match runs beside any of these in the same round, and GoLo nets the whole stack into one number.",
+    },
+    cta: {
+      title: "Set up the Overall Match before the first tee.",
+      lead: "Pick the amount and the players. When a side goes 2 down, the press is a few taps on the live scoreboard.",
+    },
+  },
+  variations: [
+    {
+      icon: "press",
+      title: "Called presses",
+      body: "The side that’s 2 down asks on the tee, and the other side can say no. GoLo has no accept step: the scorer enters the press once the group has agreed to it.",
+    },
+    {
+      icon: "auto",
+      title: "Automatic 2-down presses",
+      body: "A common house rule: a press opens the moment a side goes 2 down. GoLo doesn’t do automatic presses yet; the scorer enters each one.",
+    },
+    {
+      icon: "stack",
+      title: "Pressing a press",
+      body: "Some groups let a side that falls 2 down in a press open another press on it. GoLo doesn’t: a second press also needs a side 2 or more down in the main match, and two a round is the limit.",
+    },
+    {
+      icon: "cash",
+      title: "Same-amount presses",
+      body: "The traditional press is for the amount of the match it presses. GoLo’s smallest press is double, so a $5 match presses for $10, $15 or $20.",
+    },
+  ],
+  tips: [
+    {
+      tone: "good",
+      title: "Price the press before you confirm it",
+      body: "A ×2 press on a $5 match puts $15 in play while the original keeps running. The press sheet shows that total before anyone confirms; read it out.",
+    },
+    {
+      tone: "bad",
+      title: "Don’t spend both presses early",
+      body: "Two a round is the limit, and a decided press still counts. Two presses on the front nine leave nothing for a 2-down on the back nine.",
+    },
+    {
+      tone: "good",
+      title: "Agree what happens to the original",
+      body: "Keeping the original running costs the side that’s down nothing extra: the most it can lose is still the match amount. Closing it locks in the leader’s win at that hole. Decide which your group means before the first tee.",
+    },
+  ],
+  glossary: [
+    { term: "Overall Match", def: "GoLo’s name for one match over the whole round, scored as match play, for one amount. The game GoLo takes presses on." },
+    { term: "Press", def: "A new match opened by the side that’s behind, over the holes that are left.", href: "/glossary#press" },
+    { term: "Match play", def: "Hole-by-hole scoring: the lower score wins the hole, and the match goes to whoever wins more of them.", href: "/glossary#match-play" },
+    { term: "1 up / 2 down", def: "The standing: how many more holes one side has won than the other." },
+    { term: "Dormie", def: "Up by exactly as many holes as are left. The side that’s up can’t lose the match, only win or halve it." },
+    { term: "Closed out (3&2)", def: "Decided early: three up with two to play. The match is over even though holes remain." },
+  ],
+  faqs: gameFaqs("overall-match", [
+    { q: "What is the Overall Match in GoLo?", a: "One match over all eighteen holes, scored as match play, for one amount. Two players or two teams play it head to head; with three or four players and no teams every pair plays its own match, and in a scramble every pair of teams does. In a nine-hole round it runs over the nine, and so do its presses. It’s the game GoLo takes presses on." },
+    { q: "How is it different from a Nassau?", a: "A Nassau is three matches: the front nine, the back nine and the overall eighteen, each for the amount. The Overall Match is the eighteen on its own. GoLo’s Nassau takes no presses, so a group that presses puts the Overall Match on the card, alone or beside a Nassau." },
+    { q: "When can you press?", a: "Once a side is 2 or more down in the match, as long as the match isn’t already decided and it isn’t the last hole. A press starts on the hole after the one on screen and runs to the 18th, so the scorer opens it on the hole that put the side 2 down, before moving on. The press sheet shows the start hole." },
+    { q: "How much is a press worth?", a: "Two, three or four times the match amount, picked on the press sheet. On a $5 match that’s $10, $15 or $20. GoLo has no press for the same amount as the match." },
+    { q: "How many presses can we have?", a: "Two a round on the Overall Match, shared by every pair playing it. A press still counts once it’s decided, and GoLo has no undo for a press, so check the sheet before you confirm." },
+    { q: "Can you press a press?", a: "Not in GoLo. A press only opens from the main match’s standing, so a side that’s 2 down in a press but level in the match can’t press. Plenty of groups allow it; keep that one on the card." },
+    { q: "Do presses open by themselves?", a: "Not in GoLo. The scorer enters each press after the group agrees to it. Opening one every time a side goes 2 down is a common house rule the app doesn’t do yet." },
+    { q: "What if the match or a press finishes level?", a: "It pushes, and nobody owes anything on it. Under the Rules of Golf a tied match goes to extra holes unless the competition says otherwise (Rule 3.2a(4)); GoLo settles every match and press after the last hole, with no extra holes." },
+    { q: "Do handicaps, conceded holes and teams carry into a press?", a: "Yes. A press is scored like the match: net or gross as the round is set, and in a match-play round a hole the scorer marks conceded counts in the match and in every press running. In Team Play each partner wins or owes the full amount; in a scramble a team’s result is split between its players." },
+  ]),
+  related: ["nassau", "skins", "best-score"],
+  prev: "nassau",
+  next: "best-score",
+};
+
 const bestScore: GameDetailCopy = {
   slug: "best-score",
   deeperReading: { href: "/blog/index-vs-course-handicap", label: "Deeper reading: index vs. course handicap, and the number Best Score is played off →" },
@@ -556,7 +757,7 @@ const bestScore: GameDetailCopy = {
     { q: "How many players can play Best Score in GoLo?", a: "Without teams, two to four players. Team Play is exactly four players in two pairs. A scramble supports up to 12 players in two to six teams, with up to four players per team." },
     { q: "Can teams play Best Score?", a: "Yes. In Team Play GoLo compares the two teams’ totals, built from each team’s better score on each hole, or in Stableford from each team’s better player’s points or both players’ points added. In a scramble it compares each team’s score, net of its team handicap unless played gross. Everyone puts in the same amount, and a team’s share is split among its players. In Team Play, pay one place: a top-two split hands everyone their entry back." },
   ]),
-  related: ["skins", "nassau", "birdies"], prev: "nassau", next: "wolf",
+  related: ["skins", "nassau", "birdies"], prev: "overall-match", next: "wolf",
 };
 
 const wolf: GameDetailCopy = {
@@ -1131,6 +1332,7 @@ const birdies: GameDetailCopy = {
 export const gameDetails = {
   skins: withRoster(skins),
   nassau: withRoster(nassau),
+  "overall-match": withRoster(overallMatch),
   "best-score": withRoster(bestScore),
   wolf: withRoster(wolf),
   "bingo-bango-bongo": withRoster(bingoBangoBongo),

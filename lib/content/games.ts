@@ -21,6 +21,7 @@ export type GameTag = "pots" | "match" | "points" | "teams" | "side";
 export const GAME_SLUGS = [
   "skins",
   "nassau",
+  "overall-match",
   "best-score",
   "wolf",
   "bingo-bango-bongo",
@@ -72,6 +73,17 @@ const roster = {
     format: "3 matches in 1",
     tags: ["match"],
     popular: true,
+  },
+  // The game GoLo takes presses on (capabilities.ts overall-match-presses).
+  "overall-match": {
+    icon: "press",
+    name: "Overall Match",
+    rule: "One 18-hole match, with presses from 2 down.",
+    desc: "One match over all eighteen holes, for one amount. Go 2 down and you can press for two, three or four times that.",
+    how: "Win more holes than your opponent over the round. Two down? Press: a new match from the next hole to the 18th.",
+    players: "2–12 players",
+    format: "1 match + presses",
+    tags: ["match"],
   },
   "best-score": {
     icon: "cash",
