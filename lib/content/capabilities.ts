@@ -144,6 +144,21 @@ const APP_CHECK_1030_FORMATS = {
   date: "2026-10-30",
   appVersion: "1.2.1",
 } as const;
+/**
+ * The Overall Match guide check (soleman23/golowebsite#205, 2026-11-03):
+ * golo `main` 2237c1d (GoLo 1.2.1) read again, and one round scored through
+ * its own UI in a local-only build with two presses. src/engines/pressBets.js
+ * counts MAX_ACTIVE_PRESSES over every press on the game, and nothing retires
+ * or removes one (src/store/roundStore.js only adds them), so the second
+ * press is the last of the round; the Match screen shows "2/2 presses" and
+ * offered no third at 2 down. src/components/scoring/PressSheet.jsx keeps the
+ * original running or closes it through the hole.
+ */
+const APP_CHECK_1103 = {
+  by: "app-check",
+  date: "2026-11-03",
+  appVersion: "1.2.1",
+} as const;
 /** Owner's answers on 2026-10-15 (soleman23/golowebsite#61). */
 const OWNER_1015 = { by: "owner", date: "2026-10-15" } as const;
 
@@ -262,8 +277,11 @@ export const capabilities = [
       "Entered by the scorer, never automatic.",
       "Nassau doesn't take presses.",
       "A press can't itself be pressed: a second press also needs a side 2 or more down in the main match.",
+      // APP_CHECK_1103: a press is never retired, so the two are per round.
+      "Two presses a round on the game, shared by every pairing; a decided press still counts, and a press can't be taken back.",
+      "When a press starts, the original match either keeps running to the last hole or settles where it stands.",
     ],
-    verified: APP_CHECK_1029,
+    verified: APP_CHECK_1103,
     roadmap: true,
   },
   {

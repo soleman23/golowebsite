@@ -94,7 +94,7 @@ labelled AS (
       WHEN "landingPath" IS NULL THEN '(not recorded)'
       WHEN "landingPath" ~ '^/(features|how-it-works|games|blog|faq|about|contact|privacy|terms|cookies|acceptable-use|delete-account|glossary)?$'
         THEN "landingPath"
-      WHEN "landingPath" ~ '^/games/(skins|nassau|best-score|wolf|bingo-bango-bongo|scramble|closest-to-pin|longest-drive|birdies)$'
+      WHEN "landingPath" ~ '^/games/(skins|nassau|overall-match|best-score|wolf|bingo-bango-bongo|scramble|closest-to-pin|longest-drive|birdies)$'
         THEN "landingPath"
       WHEN "landingPath" ~ '^/blog/(gimmes|nine-hole-games|best-ball-vs-scramble|no-handicap-fair-game|different-tees|golf-games-for-3-players|side-games-for-beginners|five-dollar-birdie|closest-to-the-pin-rules|skins-vs-nassau|match-play-vs-stroke-play|golf-games-for-2-players|net-vs-gross-scoring|first-tee-checklist|group-accountant|what-we-got-wrong|settle-up-screen|pressing|index-vs-course-handicap|sandbagging|bandon|scottsdale-trip-structure|rangefinder|who-pays-first|nassau|skins-carryover|wolf|bingo-bango-bongo)$'
         THEN "landingPath"
@@ -103,7 +103,7 @@ labelled AS (
       ELSE '(other path)'
     END AS landing_path,
     CASE
-      WHEN "source" ~ '^(hero|blog|post|final_cta_(home|faq|features|how_it_works|blog|contact|post|games|privacy|terms|cookies|acceptable-use|game_(skins|nassau|best-score|wolf|bingo-bango-bongo|closest-to-pin|longest-drive|birdies)))$'
+      WHEN "source" ~ '^(hero|blog|post|final_cta_(home|faq|features|how_it_works|blog|contact|post|games|privacy|terms|cookies|acceptable-use|game_(skins|nassau|overall-match|best-score|wolf|bingo-bango-bongo|scramble|closest-to-pin|longest-drive|birdies)))$'
         THEN "source"
       ELSE '(other placement)'
     END AS placement

@@ -1,7 +1,9 @@
 /**
  * "Nassau, answered" — the accordion, reporting opens against this game's page.
+ * An answer with a `link` gets it underneath, as on /faq.
  */
 
+import Link from "next/link";
 import type { GameDetail } from "@/lib/content";
 import { SectionHeader } from "@/components/ui/SectionHeader";
 import { TrackedAccordion } from "@/components/ui/TrackedAccordion";
@@ -24,7 +26,16 @@ export function GameFaq({ game }: { game: GameDetail }) {
           items={game.faqs.map((f) => ({
             id: f.id,
             question: f.q,
-            answer: f.a,
+            answer: f.link ? (
+              <>
+                <p>{f.a}</p>
+                <Link href={f.link.href} className={styles.link}>
+                  {f.link.label}
+                </Link>
+              </>
+            ) : (
+              f.a
+            ),
           }))}
         />
       </div>

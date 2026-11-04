@@ -163,6 +163,13 @@
   color: var(--text-faint);
 }
 
+/* The amount keeps its width, as .betValue does: at 320px a long note
+   otherwise squeezes "−$20" until it breaks after the minus. */
+.standing > strong {
+  flex: 0 0 auto;
+  white-space: nowrap;
+}
+
 .net {
   position: relative;
   overflow: hidden;

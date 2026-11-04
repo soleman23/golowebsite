@@ -42,7 +42,7 @@ export const sideGamesTerms: GlossaryTerm[] = [
     goloNote:
       "On GoLo's Overall Match game a press can start once a side is two or more down, at two, three or four times the amount, with up to two live at once. GoLo doesn't open presses automatically, and its Nassau takes none.",
     relatedTermIds: ["re-press", "nassau", "match-play"],
-    relatedContentPaths: ["/games/nassau"],
+    relatedContentPaths: ["/games/overall-match", "/games/nassau"],
     canonical: { kind: "existing", path: "/blog/pressing" },
     capabilityIds: ["overall-match-presses", "auto-press", "nassau-presses"],
     ctaIntent: "settle-up",
