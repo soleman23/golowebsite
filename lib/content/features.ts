@@ -148,7 +148,7 @@ export const featureBlocks: FeatureBlock[] = [
     kicker: "PRESS TRACKING",
     status: TODAY,
     title: "Every press logged the second it's called.",
-    lead: "Presses are where friendly side games get messy — three of them deep and nobody agrees what's live. In GoLo they're on the Overall Match game: the scorer enters one for the side that's 2 or more down, and the ladder stays legible — which holes, at what amount, and who's up in it right now.",
+    lead: "Presses are where friendly side games get messy — three of them deep and nobody agrees what's live. In GoLo they're on the Overall Match game: the scorer enters one for the side that's 2 or more down, and the ladder stays legible — which holes, at what amount, and whether the original match is still running.",
     checklist: [
       {
         lead: "Called, not automatic",

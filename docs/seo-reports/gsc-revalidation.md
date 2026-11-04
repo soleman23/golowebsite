@@ -77,7 +77,7 @@ Until the date in the comment above, `npm run lint:content` fails while a publis
 - `https://www.golo.golf/games/longest-drive`
 - `https://www.golo.golf/games/birdies`
 
-Published after this run, so not part of its record: `https://www.golo.golf/games/overall-match` (#205, November 2026). Check it with URL Inspection 21 days after it goes live (the 21-day rule above), and it appears in the next monthly report's new-pages table.
+Published after this run, so not part of its record: `https://www.golo.golf/games/overall-match` (#205, November 2026). Check it with URL Inspection 21 days after it goes live (the 21-day rule above), and it appears in the next monthly report's §3 Content discovery.
 
 **Posts (13, publication date in brackets):**
 

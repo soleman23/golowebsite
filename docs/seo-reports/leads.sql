@@ -103,7 +103,7 @@ labelled AS (
       ELSE '(other path)'
     END AS landing_path,
     CASE
-      WHEN "source" ~ '^(hero|blog|post|final_cta_(home|faq|features|how_it_works|blog|contact|post|games|privacy|terms|cookies|acceptable-use|game_(skins|nassau|overall-match|best-score|wolf|bingo-bango-bongo|scramble|closest-to-pin|longest-drive|birdies)))$'
+      WHEN "source" ~ '^(hero|blog|post|final_cta_(home|faq|features|how_it_works|blog|contact|post|games|privacy|terms|cookies|acceptable-use|game_(skins|nassau|best-score|wolf|bingo-bango-bongo|closest-to-pin|longest-drive|birdies)))$'
         THEN "source"
       ELSE '(other placement)'
     END AS placement

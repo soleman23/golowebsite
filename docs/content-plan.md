@@ -40,7 +40,7 @@ One brief. A second wasn't justified: no other candidate in the issue has an obs
 
 ### Brief A: Overall Match, presses on an 18-hole match
 
-**Status:** approved by the owner on November 3, 2026 (#205) and written as `/games/overall-match`. The worked example is a round entered through GoLo 1.2.1's own UI on November 3 (the `/how-it-works` method), not an invented one. The app check that day found the two-press limit is per round, not per moment: a press is never retired, so a decided one still counts. The registry's `overall-match-presses` limits say so.
+**Status:** approved by the owner on November 3, 2026 (#205) and written as `/games/overall-match`. The worked example is a scorecard entered hole by hole through GoLo 1.2.1's own UI on November 3, the way `/how-it-works` was made (#26): the scores were entered for the example, and every result and amount is the app's. The owner chose this over sending a round of their own. The app check that day found the two-press limit is per round, not per moment: nothing retires a press, so a decided one still counts. The registry's `overall-match-presses` summary and limits say so.
 
 - **Audience and job:** a group that already plays presses, and the scorer deciding whether GoLo can carry them. The job: know how a press works on GoLo's Overall Match before the first tee, and know what the app won't do.
 - **Angle:** GoLo puts presses on its Overall Match game, not on the Nassau. Every page that says so sends the reader to a game the site never explains. This page explains it: one 18-hole match, presses opened by the scorer when a side is 2 or more down, at two, three or four times the amount, up to two live at once.

@@ -16,6 +16,7 @@
  */
 
 import { useCallback, useEffect, useRef, useState } from "react";
+import Link from "next/link";
 import type { RoundStep } from "@/lib/content";
 import styles from "./RoundTimeline.module.css";
 
@@ -164,7 +165,11 @@ export function RoundTimeline({ steps, screens }: RoundTimelineProps) {
                     </li>
                   ))}
                 </ul>
-                {step.link ? (
+                {step.link?.href.startsWith("/") ? (
+                  <Link href={step.link.href} className={styles.stepLink}>
+                    {step.link.label}
+                  </Link>
+                ) : step.link ? (
                   <a href={step.link.href} className={styles.stepLink}>
                     {step.link.label}
                   </a>

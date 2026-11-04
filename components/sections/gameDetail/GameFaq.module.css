@@ -13,7 +13,8 @@
   margin-bottom: 32px;
 }
 
-/* The /faq answer link (CategoryAnswers.module.css .link). */
+/* The /faq answer link (CategoryAnswers.module.css .link). The accordion's
+   `.answer a` already underlines it. */
 .link {
   display: inline-block;
   margin-top: 12px;
@@ -21,9 +22,4 @@
   font-weight: 800;
   letter-spacing: 0.7px;
   color: var(--accent);
-}
-
-.link:hover {
-  text-decoration: underline;
-  text-underline-offset: 3px;
 }

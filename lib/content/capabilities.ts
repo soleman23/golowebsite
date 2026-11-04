@@ -147,12 +147,14 @@ const APP_CHECK_1030_FORMATS = {
 /**
  * The Overall Match guide check (soleman23/golowebsite#205, 2026-11-03):
  * golo `main` 2237c1d (GoLo 1.2.1) read again, and one round scored through
- * its own UI in a local-only build with two presses. src/engines/pressBets.js
- * counts MAX_ACTIVE_PRESSES over every press on the game, and nothing retires
- * or removes one (src/store/roundStore.js only adds them), so the second
- * press is the last of the round; the Match screen shows "2/2 presses" and
- * offered no third at 2 down. src/components/scoring/PressSheet.jsx keeps the
- * original running or closes it through the hole.
+ * its own UI in a local-only build with two presses. The per-round limit is
+ * from the code: src/engines/pressBets.js activePressCount counts every press
+ * whose status is `active`, and nothing ever changes that status or removes
+ * a press (src/store/roundStore.js only appends them), so a decided press
+ * still counts. The replay only showed the limit with both presses still
+ * running ("2/2 presses", no third offered at 2 down on 13), which fits
+ * either reading. src/components/scoring/PressSheet.jsx keeps the original
+ * running or closes it through the hole.
  */
 const APP_CHECK_1103 = {
   by: "app-check",
@@ -269,7 +271,7 @@ export const capabilities = [
     label: "Presses on the Overall Match game",
     status: "live",
     summary:
-      "A press can start once a side is 2 or more down, at two, three or four times the amount; up to two live at once.",
+      "A press can start once a side is 2 or more down, at two, three or four times the amount; two a round.",
     // The owner's "a side can press a press" (2026-10-29, #154 Q-b) isn't in
     // the code: every press hangs off the Overall Match, and a side qualifies
     // on the main match's standing, never on a press's (APP_CHECK_1029).

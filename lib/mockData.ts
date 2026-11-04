@@ -305,7 +305,7 @@ export type PressRung = {
  * A $5 Overall Match, Tom vs Mike, through 13 — the only game the app takes
  * presses on, and only when called. Tom, 2 down after 6, pressed at 2× and
  * closed the original; 3 down after 13, he pressed again at 3×. That's the
- * app's limit of two live presses. Amounts are Mike's side of it.
+ * app's limit of two presses a round. Amounts are Mike's side of it.
  */
 export const pressRungs: PressRung[] = [
   {
