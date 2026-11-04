@@ -7,56 +7,81 @@
  * props from lib/content/chooser.ts, built on the server, so the capability
  * registry isn't shipped to the browser.
  *
- * The form is server-rendered with nothing chosen. On mount the URL's answers
- * (a shared link) are read before paint, and from then on every change is
- * written back with replaceState: the address bar always holds a link to
- * these answers, and answering doesn't fill the history. Parameters the
- * chooser doesn't own (utm_source) are kept. A Link to this page with other
- * answers is picked up by the Suspense'd sync leaf, as FilterUrlSync does.
+ * The URL is read, not followed. The form is server-rendered with nothing
+ * chosen; on mount a shared link's answers are read before paint, and a Link
+ * to this page with other answers is picked up by the Suspense'd sync leaf,
+ * as FilterUrlSync does. Answering doesn't rewrite the address bar: GA4's
+ * enhanced measurement counts every history change as a page view, so a
+ * write per answer would add a page view per tap. "Copy link" builds the
+ * link from the answers instead. If the reader changes anything while the
+ * address bar still holds a link's answers, those are cleared once, so the
+ * bar never shows answers the page no longer has. Parameters the chooser
+ * doesn't own (utm_source) are kept.
  *
- * Announcements: a change the reader made is announced once it renders
- * ("3 games fit. First: Scramble."); arriving from a link isn't, since the
- * page already shows it.
+ * Announcements: a change the reader made is announced once its result has
+ * stood a moment; arriving from a link isn't, since the page already shows it.
  */
 
 import { Suspense, useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 import { usePathname, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { NO_ANSWERS, PLAYER_COUNTS, type Answers } from "@/lib/chooser/engine";
-import { answersKey, parseAnswers, sameAnswers, serializeAnswers, type Question } from "@/lib/chooser/url";
+import {
+  answersKey,
+  hasChooserParams,
+  parseAnswers,
+  sameAnswers,
+  serializeAnswers,
+  type Question,
+} from "@/lib/chooser/url";
 import { chooserView, type ChooserCopy, type ChooserView, type PickView } from "@/lib/chooser/view";
 import type { chooserQuestionNames, chooserQuestions, chooserUi } from "@/lib/content";
 import { track } from "@/lib/analytics";
 import { ChooserPickCard } from "./ChooserPickCard";
 import styles from "./SideGameChooser.module.css";
 
+type Ui = typeof chooserUi;
+
 type SideGameChooserProps = {
   copy: ChooserCopy;
   questions: typeof chooserQuestions;
   questionNames: typeof chooserQuestionNames;
-  ui: typeof chooserUi;
+  ui: Ui;
 };
 
 /** How long an answer set has to stand before chooser_result reports it. */
 const SETTLE_MS = 1500;
-/** Between clearing the live region and filling it. */
+/**
+ * How long a result has to stand before it's announced. Arrowing through the
+ * eleven player counts changes the answer on every key, and each one would
+ * otherwise queue its own message.
+ */
+const RESULT_ANNOUNCE_MS = 400;
+/** Between clearing the live region and filling it, for one-off messages. */
 const ANNOUNCE_MS = 60;
 
-function listOf(items: string[]): string {
+function listOf(items: string[], ui: Ui): string {
   if (items.length < 2) return items.join("");
-  return `${items.slice(0, -1).join(", ")} and ${items.at(-1)}`;
+  return `${items.slice(0, -1).join(", ")} ${ui.listAnd} ${items.at(-1)}`;
 }
 
-/** "3 games fit these answers." Every format that fits, the three picks and the rest. */
-function countOf(view: Extract<ChooserView, { status: "ok" }>, ui: SideGameChooserProps["ui"]): string {
+/** "3 games fit these answers." Every format that fits, the picks and the rest. */
+function countOf(view: Extract<ChooserView, { status: "ok" }>, ui: Ui): string {
   const count = view.picks.length + view.alsoFits.length;
   return count === 1 ? ui.fitsOne : ui.fitsMany.replace("{n}", String(count));
 }
 
-function summaryOf(view: ChooserView, ui: SideGameChooserProps["ui"]): string {
+/** The words that lead into the ordered picks, if there's more than one. */
+function orderOf(view: Extract<ChooserView, { status: "ok" }>, ui: Ui): string {
+  if (view.alsoFits.length) return ui.showingTop;
+  return view.picks.length > 1 ? ui.inOrder : "";
+}
+
+function summaryOf(view: ChooserView, ui: Ui): string {
   if (view.status === "needs-players") return ui.needsPlayers;
   if (view.status === "empty") return `${ui.emptyTitle}. ${view.message}`;
-  return `${countOf(view, ui)} ${listOf(view.picks.map((p) => p.name))}.`;
+  const order = orderOf(view, ui);
+  return `${countOf(view, ui)} ${order ? `${order} ` : ""}${listOf(view.picks.map((p) => p.name), ui)}.`;
 }
 
 /** Re-reads the URL when it changes under the page (a Link to other answers). */
@@ -74,25 +99,37 @@ export function SideGameChooser({ copy, questions, questionNames, ui }: SideGame
   const [dropped, setDropped] = useState<Question[]>([]);
   const [message, setMessage] = useState("");
   const [copyState, setCopyState] = useState<"idle" | "copied" | "failed">("idle");
-  // Becomes true once the URL has been read; until then nothing is written back.
+  const [failedLink, setFailedLink] = useState("");
+  // Becomes true once the URL has been read; analytics waits for it.
   const [ready, setReady] = useState(false);
   const answersRef = useRef(answers);
   answersRef.current = answers;
-  // Set by a change the reader made, so the next render is announced.
+  // Whether the address bar still carries chooser answers from a link.
+  const urlHasAnswers = useRef(false);
+  // The query this component last wrote, so the sync leaf doesn't adopt it.
+  const ownWrite = useRef<string | null>(null);
+  // Set by a change the reader made, so the next result is announced.
   const announceNext = useRef(false);
+  const announceTimer = useRef<number | undefined>(undefined);
   const resultsHeading = useRef<HTMLHeadingElement>(null);
   const formHeading = useRef<HTMLHeadingElement>(null);
   const reported = useRef(new Set<string>());
 
   const view = useMemo(() => chooserView(answers, copy), [answers, copy]);
 
-  /** Polite, one-off. Cleared first, so the same text twice is read twice. */
-  const announce = useCallback((text: string) => {
+  /** Polite. Cleared first, so the same text twice is read twice; a newer message cancels an older one still waiting. */
+  const announce = useCallback((text: string, delay = ANNOUNCE_MS) => {
+    window.clearTimeout(announceTimer.current);
     setMessage("");
-    window.setTimeout(() => setMessage(text), ANNOUNCE_MS);
+    // A timeout, not a frame: frames don't run in a background tab.
+    announceTimer.current = window.setTimeout(() => setMessage(text), delay);
   }, []);
+  useEffect(() => () => window.clearTimeout(announceTimer.current), []);
 
   const adoptUrl = useCallback((search: string) => {
+    const normalized = new URLSearchParams(search).toString();
+    if (ownWrite.current !== null && normalized === ownWrite.current) return;
+    urlHasAnswers.current = hasChooserParams(search);
     const parsed = parseAnswers(search);
     if (sameAnswers(parsed.answers, answersRef.current) && !parsed.dropped.length) return;
     setAnswers(parsed.answers);
@@ -105,26 +142,24 @@ export function SideGameChooser({ copy, questions, questionNames, ui }: SideGame
     setReady(true);
   }, [adoptUrl]);
 
-  // The address bar follows the answers. Dropped parameters go with the first write.
-  useEffect(() => {
-    if (!ready) return;
-    const query = serializeAnswers(answers, window.location.search);
-    if (query !== window.location.search) {
-      window.history.replaceState(null, "", `${pathname}${query}${window.location.hash}`);
-    }
-  }, [answers, pathname, ready]);
+  /** Once the reader changes something, a link's answers in the address bar are out of date: clear them, once. */
+  const clearStaleUrl = useCallback(() => {
+    if (!urlHasAnswers.current) return;
+    urlHasAnswers.current = false;
+    const query = serializeAnswers(NO_ANSWERS, window.location.search);
+    ownWrite.current = new URLSearchParams(query).toString();
+    window.history.replaceState(null, "", `${pathname}${query}${window.location.hash}`);
+  }, [pathname]);
 
-  // Announce a change the reader made, once its result has rendered.
+  // Announce a change the reader made, once its result has stood a moment.
   useEffect(() => {
     if (!announceNext.current) return;
     announceNext.current = false;
-    // A timeout, not a frame, in announce(): frames don't run in a
-    // background tab.
-    announce(summaryOf(view, ui));
+    announce(summaryOf(view, ui), RESULT_ANNOUNCE_MS);
   }, [announce, view, ui]);
 
   // "Link copied" goes back to the button's label, as the glossary's does. A
-  // failure note stays until the next answer, since it says where the link is.
+  // failure note stays until the next answer, since it holds the link.
   useEffect(() => {
     if (copyState !== "copied") return;
     const timer = window.setTimeout(() => setCopyState("idle"), 2000);
@@ -147,20 +182,25 @@ export function SideGameChooser({ copy, questions, questionNames, ui }: SideGame
     return () => window.clearTimeout(timer);
   }, [answers, ready, view]);
 
-  const answer = useCallback(<Q extends Question>(question: Q, value: Answers[Q]) => {
-    announceNext.current = true;
-    setCopyState("idle");
-    setDropped([]);
-    setAnswers((current) => ({ ...current, [question]: value }));
-  }, []);
+  const answer = useCallback(
+    <Q extends Question>(question: Q, value: Answers[Q]) => {
+      announceNext.current = true;
+      setCopyState("idle");
+      setDropped([]);
+      clearStaleUrl();
+      setAnswers((current) => ({ ...current, [question]: value }));
+    },
+    [clearStaleUrl],
+  );
 
   const reset = useCallback(() => {
     setAnswers(NO_ANSWERS);
     setDropped([]);
     setCopyState("idle");
+    clearStaleUrl();
     announce(ui.resetDone);
     formHeading.current?.focus();
-  }, [announce, ui.resetDone]);
+  }, [announce, clearStaleUrl, ui.resetDone]);
 
   const relax = useCallback(
     <Q extends Question>(question: Q, value: Answers[Q]) => {
@@ -181,6 +221,7 @@ export function SideGameChooser({ copy, questions, questionNames, ui }: SideGame
       // The blog's and glossary's share event, so every share is in one report.
       track("share_click", { channel: "copy", page: "chooser" });
     } catch {
+      setFailedLink(link);
       setCopyState("failed");
       announce(ui.copyFailed);
     }
@@ -192,9 +233,10 @@ export function SideGameChooser({ copy, questions, questionNames, ui }: SideGame
 
   const answered = Object.values(answers).some((v) => v !== null);
   const droppedText = dropped.length
-    ? ui.dropped
-        .replace("{questions}", listOf(dropped.map((q) => questionNames[q])))
-        .replace("{verb}", dropped.length === 1 ? "was" : "were")
+    ? (dropped.length === 1 ? ui.droppedOne : ui.droppedMany).replace(
+        "{questions}",
+        listOf(dropped.map((q) => questionNames[q]), ui),
+      )
     : "";
 
   const radio = <Q extends Question>(question: Q, value: string, label: string, parse: (v: string) => Answers[Q]) => {
@@ -281,7 +323,21 @@ export function SideGameChooser({ copy, questions, questionNames, ui }: SideGame
             {ui.reset}
           </button>
         </div>
-        {copyState === "failed" ? <p className={styles.hint}>{ui.copyFailed}</p> : null}
+        {copyState === "failed" ? (
+          <div className={styles.copyFailed}>
+            <label htmlFor="chooser-link" className={styles.hint}>
+              {ui.copyFailed}
+            </label>
+            <input
+              id="chooser-link"
+              className={styles.linkField}
+              type="text"
+              readOnly
+              value={failedLink}
+              onFocus={(e) => e.currentTarget.select()}
+            />
+          </div>
+        ) : null}
 
         {/* Narrow screens: the results are below the form, so say so. */}
         {view.status !== "needs-players" ? (
@@ -325,7 +381,7 @@ export function SideGameChooser({ copy, questions, questionNames, ui }: SideGame
           <>
             <p className={styles.count}>
               {countOf(view, ui)}
-              {view.alsoFits.length ? ` ${ui.showingTop}` : view.picks.length > 1 ? ` ${ui.inOrder}` : ""}
+              {orderOf(view, ui) ? ` ${orderOf(view, ui)}` : ""}
             </p>
             <ol className={styles.picks}>
               {view.picks.map((pick) => (

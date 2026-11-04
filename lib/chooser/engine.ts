@@ -34,10 +34,9 @@ export const MIN_PLAYERS = 2;
 export const MAX_PLAYERS = 12;
 export const PLAYER_COUNTS = [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12] as const;
 
-export const PARTNER_VALUES = ["solo", "teams", "either"] as const;
-export const HANDICAP_VALUES = ["close", "apart", "none"] as const;
-export const SCORING_VALUES = ["simple", "more"] as const;
-export const HOLE_VALUES = ["18", "9"] as const;
+import { HANDICAP_VALUES, HOLE_VALUES, PARTNER_VALUES, SCORING_VALUES } from "./params";
+
+export { HANDICAP_VALUES, HOLE_VALUES, PARTNER_VALUES, SCORING_VALUES };
 
 export type Partners = (typeof PARTNER_VALUES)[number];
 export type Handicaps = (typeof HANDICAP_VALUES)[number];
@@ -156,7 +155,8 @@ export function exclusionReasons(rule: FormatRule, answers: Answers & { players:
   const { players } = answers;
   if (players < rule.players.min || players > rule.players.max) reasons.push("players");
   if (answers.partners && !STYLES_FOR[answers.partners].includes(rule.style)) reasons.push("partners");
-  if (answers.scoring === "simple" && players > rule.simpleUpTo) reasons.push("scoring");
+  // Simplicity is judged at a size the format takes; at any other, size says it.
+  if (answers.scoring === "simple" && !reasons.includes("players") && players > rule.simpleUpTo) reasons.push("scoring");
   return reasons;
 }
 

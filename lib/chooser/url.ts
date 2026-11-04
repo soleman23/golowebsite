@@ -11,36 +11,23 @@
  * free text or personal data can travel in this URL.
  */
 
-import {
-  HANDICAP_VALUES,
-  HOLE_VALUES,
-  NO_ANSWERS,
-  PARTNER_VALUES,
-  SCORING_VALUES,
-  type Answers,
-} from "./engine";
+import { NO_ANSWERS, type Answers } from "./engine";
+import { CHOOSER_PATH, QUESTIONS, isChooserParam } from "./params";
+
+export { CHOOSER_PATH, QUESTIONS, isChooserParam };
 
 export type Question = keyof Answers;
 
-/** Query-string order, and the order questions are asked. */
-export const QUESTIONS: readonly Question[] = ["players", "partners", "handicaps", "scoring", "holes"];
-
-/** 2 to 12, written plainly: no sign, no leading zero, no decimals. */
-const PLAYERS = /^(?:[2-9]|1[0-2])$/;
-
+/** A raw value, already checked by isChooserParam, as its answer type. */
 function parseValue(question: Question, raw: string): Answers[Question] | undefined {
-  switch (question) {
-    case "players":
-      return PLAYERS.test(raw) ? Number(raw) : undefined;
-    case "partners":
-      return (PARTNER_VALUES as readonly string[]).includes(raw) ? (raw as Answers["partners"]) : undefined;
-    case "handicaps":
-      return (HANDICAP_VALUES as readonly string[]).includes(raw) ? (raw as Answers["handicaps"]) : undefined;
-    case "scoring":
-      return (SCORING_VALUES as readonly string[]).includes(raw) ? (raw as Answers["scoring"]) : undefined;
-    case "holes":
-      return (HOLE_VALUES as readonly string[]).includes(raw) ? (raw as Answers["holes"]) : undefined;
-  }
+  if (!isChooserParam(question, raw)) return undefined;
+  return question === "players" ? Number(raw) : (raw as Answers[Question]);
+}
+
+/** Whether the query string carries any chooser parameter, valid or not. */
+export function hasChooserParams(search: string | URLSearchParams): boolean {
+  const params = typeof search === "string" ? new URLSearchParams(search) : search;
+  return QUESTIONS.some((question) => params.has(question));
 }
 
 export type ParsedAnswers = {

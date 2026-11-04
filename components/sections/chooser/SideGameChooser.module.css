@@ -296,3 +296,24 @@
     transition: none;
   }
 }
+
+.copyFailed {
+  margin-top: 10px;
+}
+
+.copyFailed .hint {
+  display: block;
+  margin: 0 0 6px;
+}
+
+.linkField {
+  width: 100%;
+  min-height: 44px;
+  padding: 0 12px;
+  border-radius: var(--radius-tile);
+  border: 1px solid var(--card-border);
+  background: var(--glass-raised);
+  color: var(--text-primary);
+  font: inherit;
+  font-size: 14px;
+}

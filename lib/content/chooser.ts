@@ -74,6 +74,7 @@ const twoToFour = registryLine("game-library", "Without teams, a round takes two
 const bestScore: FormatCopy = {
   name: "Best Score",
   summary: [{ text: "Everyone puts in the same amount, and the best total takes it." }],
+  fit: [{ text: "Each player for their own total, at any size from two to twelve." }],
   guide: { href: "/games/best-score", label: "Best Score guide" },
   more: { href: "/blog/side-games-for-beginners", label: "Starting with one game" },
   tradeoff: [{ text: "Nothing resets: one bad hole stays in the total all round." }],
@@ -105,7 +106,8 @@ const bestScore: FormatCopy = {
 
 const skins: FormatCopy = {
   name: "Skins",
-  summary: [{ text: "Each hole is its own prize: the low score alone wins it, and a tie carries it on." }],
+  summary: [{ text: "Each hole is its own prize, won by the low score alone. With carryovers on, a tie sends it to the next hole." }],
+  fit: [{ text: "Each player on their own, two to six players, and a bad hole costs only that hole." }],
   guide: { href: "/games/skins", label: "Skins guide" },
   more: { href: "/blog/skins-carryover", label: "How carryovers add up" },
   tradeoff: [{ text: "Steady golf can win nothing: a skin needs the low score on its own." }],
@@ -139,14 +141,20 @@ const skins: FormatCopy = {
 const nassau: FormatCopy = {
   name: "Nassau",
   summary: [
-    { text: "Over nine holes it’s one match, won by whoever wins more holes.", when: { holes: ["9"] } },
+    { text: "Over nine holes it’s one match, won by whoever wins more holes.", when: { holes: ["9"], players: { max: 2 } } },
+    { text: "Over nine holes it’s one match per pair: every player plays each of the others once.", when: { holes: ["9"] } },
     { text: "Three matches against one opponent: the front nine, the back nine and the 18.", when: { players: { max: 2 } } },
     { text: "Head to head, every pair plays its own three matches: front nine, back nine and the 18." },
+  ],
+  fit: [
+    { text: "Two players: one opponent all round.", when: { players: { max: 2 } } },
+    { text: "Head to head among three or four: every pair has its own match.", when: { players: { min: 3 } } },
   ],
   guide: { href: "/games/nassau", label: "Nassau guide" },
   more: { href: "/blog/nassau", label: "Presses and house rules" },
   tradeoff: [
-    { text: "Nine holes leave less time to come back from a bad start.", when: { holes: ["9"] } },
+    { text: "Nine holes leave less time to come back from a bad start.", when: { holes: ["9"], players: { max: 2 } } },
+    { text: "Three or six pairings at once, with nine holes to come back in.", when: { holes: ["9"] } },
     { text: "Three results to follow, and the back nine starts level whatever happened on the front.", when: { players: { max: 2 } } },
     { text: "Three players make three pairings and four make six, each with its own matches: more to follow than one total." },
   ],
@@ -182,6 +190,7 @@ const nassau: FormatCopy = {
 const bestBall: FormatCopy = {
   name: "Best ball, two against two",
   summary: [{ text: "Two fixed pairs. Everyone plays their own ball, and each side counts its better score on the hole." }],
+  fit: [{ text: "Exactly four players, in two sides of two." }],
   guide: { href: "/blog/best-ball-vs-scramble", label: "Best ball vs. scramble" },
   more: { href: "/glossary#four-ball", label: "Four-ball, defined" },
   tradeoff: [{ text: "Partners are fixed for the round, so how the sides are picked matters." }],
@@ -209,6 +218,7 @@ const bestBall: FormatCopy = {
 const scramble: FormatCopy = {
   name: "Scramble",
   summary: [{ text: "Teams play one ball: everyone hits, the team picks the best shot, and all play the next one from there." }],
+  fit: [{ text: "Two to six teams of up to four, so any group from four to twelve fits." }],
   guide: { href: "/games/scramble", label: "Scramble guide" },
   more: { href: "/blog/best-ball-vs-scramble", label: "Best ball vs. scramble" },
   tradeoff: [{ text: "One score a team, so nobody’s own round counts on its own." }],
@@ -229,7 +239,7 @@ const scramble: FormatCopy = {
         when: { handicaps: ["none"] },
       },
       {
-        text: "One ball a team, so a 25-handicap and a 5 both count on every hole.",
+        text: "One ball a team, so a 25-handicap and a 5 can play together and both count.",
         when: { handicaps: ["apart"] },
       },
     ],
@@ -245,6 +255,7 @@ const scramble: FormatCopy = {
       { text: summary("scramble") },
       { text: registryLine("scramble", "Team handicaps follow the WHS percentages") },
       { text: registryLine("scramble", "Teams of different sizes"), when: { unevenTeams: true } },
+      { text: registryLine("scramble", "No Texas scramble drive count") },
       { text: summary("nine-hole-rounds"), when: { holes: ["9"] } },
     ],
   },
@@ -253,6 +264,7 @@ const scramble: FormatCopy = {
 const bingoBangoBongo: FormatCopy = {
   name: "Bingo Bango Bongo",
   summary: [{ text: "Three points a hole: first on the green, closest once everyone is on, first in the hole." }],
+  fit: [{ text: "Two to four players, each for their own points." }],
   guide: { href: "/games/bingo-bango-bongo", label: "Bingo Bango Bongo guide" },
   more: { href: "/blog/bingo-bango-bongo", label: "Why it suits mixed handicaps" },
   tradeoff: [{ text: "It needs a strict order of play, and someone watching who was on first." }],
@@ -287,6 +299,7 @@ const bingoBangoBongo: FormatCopy = {
 const wolf: FormatCopy = {
   name: "Wolf",
   summary: [{ text: "A new Wolf each hole picks a partner after watching the drives, or goes alone for double." }],
+  fit: [{ text: "Partners change every hole, so nobody is stuck with one all round." }],
   guide: { href: "/games/wolf", label: "Wolf guide" },
   more: { href: "/blog/wolf", label: "Wolf for foursomes" },
   tradeoff: [{ text: "A decision on every tee, and points to follow for all four players." }],
@@ -313,6 +326,7 @@ const wolf: FormatCopy = {
 const nines: FormatCopy = {
   name: "Nines (5-3-1)",
   summary: [{ text: "Nine points a hole: five to the low score, three to the middle, one to the high." }],
+  fit: [{ text: "Each player for their own points, with no partners to sort out." }],
   guide: { href: "/blog/golf-games-for-3-players#not-in-golo", label: "Nines, explained" },
   more: { href: "/blog/golf-games-for-3-players", label: "Games for three" },
   tradeoff: [{ text: "Tied holes split the points, so someone keeps a running count." }],
@@ -433,11 +447,14 @@ export const chooserUi = {
   golo: "In GoLo",
   copy: "Copy link to these answers",
   copied: "Link copied",
-  copyFailed: "Couldn’t copy. The address bar has the link.",
+  copyFailed: "Couldn’t copy. Here’s the link to copy yourself:",
   reset: "Start over",
   resetDone: "Answers cleared.",
   /** {questions} is a list of chooserQuestionNames. */
-  dropped: "Part of that link couldn’t be read, so {questions} {verb} left blank.",
+  droppedOne: "Part of that link couldn’t be read, so {questions} was left blank.",
+  droppedMany: "Part of that link couldn’t be read, so {questions} were left blank.",
+  /** Joins the last two items of a list: "Scramble, Best Score and Skins". */
+  listAnd: "and",
   noscript: "The chooser needs JavaScript. Every format’s player count, partners and handicap rules are in the table below.",
   rankLabel: "Pick {n}",
 };
@@ -471,7 +488,7 @@ export const chooserHow = {
     },
     {
       title: "Handicaps change the order, never the list",
-      body: "If someone has no handicap, Bingo Bango Bongo comes first (it uses no strokes), then a scramble (the organizer can set team numbers). If the handicaps are far apart, both come first. Every other game is played net, and its card says so.",
+      body: "If someone has no handicap, Bingo Bango Bongo comes first (it uses no strokes), then a scramble (the organizer can set team numbers). If the handicaps are far apart, both come first, and every other game’s card says to play it net.",
     },
     {
       title: "Then simplicity, then group size, then a fixed order",
@@ -486,7 +503,7 @@ export const chooserHow = {
 
 export const chooserTable = {
   title: "Every format at a glance",
-  lead: "The rules the chooser applies, one row per format. GoLo’s column comes from the app’s capability list.",
+  lead: "The rules the chooser applies, one row per format. GoLo’s column follows the app’s capability list, and a test checks the two agree.",
   head: ["Format", "Players", "Partners", "Simple?", "Handicap strokes", "In GoLo"],
 };
 
@@ -515,7 +532,7 @@ export const chooserExample = {
     "Four players with course handicaps of 6, 12, 18 and 24, 18 holes, nobody fussed about partners, and two of them would rather not count anything complicated. The answers: 4 players, either, further apart, keep it simple, 18 holes.",
   steps: [
     "Size and partners rule out Nines, which needs three. “Keep it simple” rules out Wolf, Bingo Bango Bongo and the head-to-head Nassau, which among four players means six pairings.",
-    "That leaves Best Score, Skins, best ball and a scramble. Far-apart handicaps put the scramble first: one ball a team, and every player’s shots count.",
+    "That leaves Best Score, Skins, best ball and a scramble. Far-apart handicaps put the scramble first: one ball a team, so the 6 and the 24 can play together and both count.",
     "Best Score comes next as the simplest game to explain, played net. Skins and best ball keep the fixed order, so Skins is third and best ball is listed as also fitting.",
   ],
   math: "Drawn as 6 and 24 against 12 and 18, the WHS two-player scramble percentages, 35% of the lower course handicap and 15% of the higher, give 0.35 × 6 + 0.15 × 24 = 5.7, which plays as 6, and 0.35 × 12 + 0.15 × 18 = 6.9, which plays as 7. The second team gets one stroke more for the round.",

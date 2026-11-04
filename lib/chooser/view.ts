@@ -40,6 +40,8 @@ export type FormatCopy = {
   name: string;
   /** Lines in order; the first that applies is the card's one-line summary. */
   summary: readonly Line[];
+  /** Why it fits this group, whatever the ranking: the first lines under "Why it fits". */
+  fit: readonly Line[];
   guide: { href: string; label: string };
   more?: { href: string; label: string };
   tradeoff: readonly Line[];
@@ -103,7 +105,7 @@ export function pickView(id: FormatId, rank: number, reasons: readonly RankReaso
     summary: firstLine(format.summary, answers)?.text ?? "",
     guide: format.guide,
     more: format.more,
-    why: reasons.flatMap((reason) => linesFor(format.reasons[reason], answers)),
+    why: [...linesFor(format.fit, answers), ...reasons.flatMap((reason) => linesFor(format.reasons[reason], answers))],
     tradeoff: firstLine(format.tradeoff, answers),
     agree: linesFor(format.agree, answers),
     golo: { scored: verdict.scored, label: verdict.label, lines: linesFor(format.golo.lines, answers) },

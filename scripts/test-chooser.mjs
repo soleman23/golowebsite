@@ -56,9 +56,10 @@ const { capabilities } = await load("lib/content/capabilities.ts");
 const { publishedPosts } = await load("lib/content/blog.ts");
 const { gameDetailSlugsWithContent } = await load("lib/content/gameDetail.ts");
 const { glossaryLive, publishedGlossaryTerms } = await load("lib/content/glossary/index.ts");
+const { dropUnusedQueryParams, isKeptQueryParam } = await load("lib/analyticsPreference.ts");
 
 const { choose, FORMAT_IDS, FORMAT_RULES, NO_ANSWERS, PLAYER_COUNTS, evenTeams } = engine;
-const { parseAnswers, serializeAnswers, sameAnswers, answersKey } = url;
+const { parseAnswers, serializeAnswers, sameAnswers, answersKey, isChooserParam, hasChooserParams, CHOOSER_PATH } = url;
 const { chooserView } = view;
 const { chooserCopy, chooserExample, chooserTableCells, chooserKeepReading, chooserSideGames, chooserTeaser } = content;
 
@@ -203,8 +204,8 @@ for (const players of [2, 3]) {
               const v = chooserView(answers, chooserCopy);
               if (v.status === "ok") {
                 for (const p of v.picks) {
-                  if (!p.summary || !p.golo.label || !p.agree.length) {
-                    failures.push(`${answersKey(answers)} ${p.id}: card missing summary, GoLo verdict or house rules`);
+                  if (!p.summary || !p.golo.label || !p.agree.length || !p.why.length || !p.tradeoff) {
+                    failures.push(`${answersKey(answers)} ${p.id}: card missing summary, why, trade-off, GoLo verdict or house rules`);
                   }
                 }
               }
@@ -218,6 +219,29 @@ for (const players of [2, 3]) {
           }
   check("only 2 or 3 players with teams can be empty",
     empties.every((k) => /^(2|3)\/teams\//.test(k)), empties.filter((k) => !/^(2|3)\/teams\//.test(k)).slice(0, 5).join(", "));
+}
+
+/* ------------------------------------------------ card consistency */
+
+{
+  // A Nassau over nine among three or four is one match per pair; the card
+  // must not say "one match" alone while its GoLo line says every pair plays.
+  for (const players of [3, 4]) {
+    const v = view.pickView("nassau", 1, [], { ...NO_ANSWERS, players, holes: "9" }, chooserCopy);
+    check(`Nassau, ${players} players, 9 holes: summary is per pair`, v.summary.includes("per pair"), v.summary);
+    check(`Nassau, ${players} players, 9 holes: trade-off names the pairings`, v.tradeoff.text.includes("pairings"), v.tradeoff.text);
+  }
+  const two = view.pickView("nassau", 1, [], { ...NO_ANSWERS, players: 2, holes: "9" }, chooserCopy);
+  check("Nassau, 2 players, 9 holes: one match", two.summary.startsWith("Over nine holes it’s one match,"), two.summary);
+  // A format too big or too small for the group is ruled out on size alone.
+  const r = ask({ players: 6, scoring: "simple" });
+  const nassauOut = r.ruledOut.find((x) => x.id === "nassau");
+  check("6 simple: Nassau ruled out on size only", eq(nassauOut.reasons, ["players"]), JSON.stringify(nassauOut));
+  const r4 = ask({ players: 4, scoring: "simple" });
+  check("4 simple: Nassau ruled out on simplicity", eq(r4.ruledOut.find((x) => x.id === "nassau").reasons, ["scoring"]));
+  // The scramble card lists the registry's drive-count limit beside its drive-rule house rule.
+  const s = view.pickView("scramble", 1, [], { ...NO_ANSWERS, players: 8 }, chooserCopy);
+  check("scramble: Texas scramble limit shown", s.golo.lines.some((l) => l.text.startsWith("No Texas scramble drive count")));
 }
 
 /* ---------------------------------------------------------------- URL */
@@ -270,6 +294,43 @@ check("serialize: reset keeps foreign params only", serializeAnswers(NO_ANSWERS,
   check("round trip: every answer set", bad === 0, `${bad} failed`);
 }
 check("analytics key is closed-set", answersKey({ ...NO_ANSWERS, players: 4, scoring: "simple" }) === "4/-/-/simple/-");
+check("hasChooserParams", hasChooserParams("?players=x") && hasChooserParams("holes=9") && !hasChooserParams("?utm_source=x"));
+check("isChooserParam", isChooserParam("players", "12") && !isChooserParam("players", "13") && !isChooserParam("utm_source", "x"));
+
+/* --------------------------------- analytics URL cleaner keeps answers */
+
+// lib/analyticsPreference.ts strips unknown parameters before analytics
+// loads (and again when a consented tab comes back). It must keep every
+// answer the chooser writes, on the chooser's route only, and nothing the
+// chooser would refuse. Run the real function against a stub window.
+{
+  const run = (href) => {
+    let written = null;
+    globalThis.window = {
+      location: { href },
+      history: { replaceState: (_state, _title, next) => (written = String(next)) },
+    };
+    dropUnusedQueryParams();
+    delete globalThis.window;
+    return written ?? href;
+  };
+  let lost = 0;
+  for (const players of PLAYER_COUNTS)
+    for (const partners of [null, "solo", "teams", "either"])
+      for (const handicaps of [null, "close", "apart", "none"])
+        for (const scoring of [null, "simple", "more"])
+          for (const holes of [null, "18", "9"]) {
+            const query = serializeAnswers({ players, partners, handicaps, scoring, holes });
+            const href = `https://www.golo.golf${CHOOSER_PATH}${query}&utm_source=newsletter`;
+            if (run(href) !== href) lost++;
+          }
+  check("cleaner keeps every chooser answer set on /games/chooser", lost === 0, `${lost} stripped`);
+  check("cleaner drops invalid chooser values",
+    run(`https://www.golo.golf${CHOOSER_PATH}?players=5551234567&partners=solo`) === `https://www.golo.golf${CHOOSER_PATH}?partners=solo`);
+  check("cleaner drops chooser params on other routes",
+    run("https://www.golo.golf/games?players=4&filter=match") === "https://www.golo.golf/games?filter=match");
+  check("isKeptQueryParam: route-scoped", isKeptQueryParam("holes", "9", CHOOSER_PATH) && !isKeptQueryParam("holes", "9", "/blog"));
+}
 
 /* ------------------------------------------------- GoLo lines vs registry */
 
