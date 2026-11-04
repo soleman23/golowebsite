@@ -756,6 +756,7 @@ const bingoBangoBongo: GameDetailCopy = {
 // (1 down), total 6–5 (1 up), no match decided before its last hole.
 const scramble: GameDetailCopy = {
   slug: "scramble",
+  deeperReading: { href: "/blog/best-ball-vs-scramble", label: "Deeper reading: best ball vs. scramble, and the partner worth picking for each →" },
   updated: "2026-10-31",
   seoTitle: "Golf Scramble Rules: Team Handicaps & Side Games",
   kicker: "TEAMS · ONE BALL",
@@ -852,6 +853,7 @@ const scramble: GameDetailCopy = {
 
 const closestToPin: GameDetailCopy = {
   slug: "closest-to-pin", kicker: "SIDE GAME · PAR 3s",
+  deeperReading: { href: "/blog/closest-to-the-pin-rules", label: "Deeper reading: closest to the pin vs. a greenie, and the three-putt ruling →" },
   updated: "2026-10-29",
   seoTitle: "Closest to the Pin & Greenies: Golf Side Game Rules",
   tagline: "One tee shot, one hole. Stick it tighter than everybody else on the par 3s and win it. Play it as a greenie and you still have to make par from there.",
@@ -1036,7 +1038,7 @@ const longestDrive: GameDetailCopy = {
 
 const birdies: GameDetailCopy = {
   slug: "birdies", kicker: "BOUNTY · ALL 18 HOLES",
-  deeperReading: { href: "/blog/skins-carryover", label: "Deeper reading: how skins carryovers stack up →" },
+  deeperReading: { href: "/blog/five-dollar-birdie", label: "Deeper reading: what a $5 birdie pays, and who pays it →" },
   updated: "2026-10-11",
   seoTitle: "Birdie Bounties in Golf: Side Game Rules & Settling Up",
   tagline: "A standing price on every birdie. Card one and everybody who did not pays you. Eagles double it, and nobody has ever complained about paying.",
