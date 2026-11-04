@@ -10,7 +10,8 @@
  *
  * GoLo notes follow the registry as rechecked against the app's code on
  * October 29, 2026 (capability-check.md): presses on Overall Match only,
- * never automatic, up to two live, and no press on a press; settle-up never
+ * never automatic, two a round (corrected from "two live at once" on
+ * November 3, #205), and no press on a press; settle-up never
  * holds or moves money; no measured distances. Closest to the Pin: the
  * scorer marks the winner on the game's par 3s, a hole nobody wins pays
  * nothing, par-to-win is the group's call. Junk, Greenie and Sandy are golf
@@ -40,7 +41,7 @@ export const sideGamesTerms: GlossaryTerm[] = [
       text: "Groups decide whether presses are called or automatic, when they can be called, and whether a press can itself be pressed.",
     },
     goloNote:
-      "On GoLo's Overall Match game a press can start once a side is two or more down, at two, three or four times the amount, with up to two live at once. GoLo doesn't open presses automatically, and its Nassau takes none.",
+      "On GoLo's Overall Match game a press can start once a side is two or more down, at two, three or four times the amount, with two presses a round. GoLo doesn't open presses automatically, and its Nassau takes none.",
     relatedTermIds: ["re-press", "nassau", "match-play"],
     relatedContentPaths: ["/games/overall-match", "/games/nassau"],
     canonical: { kind: "existing", path: "/blog/pressing" },
@@ -56,9 +57,27 @@ export const sideGamesTerms: GlossaryTerm[] = [
     ],
     status: "published",
     reviewedBy: "owner",
-    reviewLog: mvpReviewLogApp,
-    reviewedOn: MVP_REVIEWED_ON,
+    // The GoLo note changed on 2026-11-03: "up to two live at once" became
+    // "two presses a round", the registry's limit after the #205 app check
+    // (no press is ever retired, so a decided one still counts).
+    reviewLog: [
+      ...mvpReviewLogApp,
+      {
+        stage: "product",
+        by: "agent",
+        on: "2026-11-03",
+        note: "GoLo note narrowed to two presses a round, per overall-match-presses after the app check of golo main 2237c1d (GoLo 1.2.1) in #205.",
+      },
+      {
+        stage: "approval",
+        by: "owner",
+        on: "2026-11-03",
+        note: "The owner approved changing the note to two presses a round, in writing on 2026-11-03.",
+      },
+    ],
+    reviewedOn: "2026-11-03",
     publishedOn: "2026-10-29",
+    updatedOn: "2026-11-03",
   },
   {
     id: "re-press",
