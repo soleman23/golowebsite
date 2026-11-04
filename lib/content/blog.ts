@@ -2150,6 +2150,7 @@ export const posts: Post[] = [
     crumb: "Settling up",
     author: "From the GoLo team",
     date: "2026-08-11",
+    updated: "2026-11-03",
     readMins: 5,
     hero: { src: "/images/blog/who-pays-first-hero.webp", alt: "An open SUV tailgate in a wet clubhouse parking lot at dusk, a golf bag leaning on the bumper and golf shoes and a cap in the trunk", position: "87% 50%", mobile: "/images/blog/who-pays-first-mobile.webp", og: "/images/blog/who-pays-first-og.jpg" },
     related: ["settle-up-screen", "nassau", "pressing"],
@@ -2233,7 +2234,7 @@ export const posts: Post[] = [
       { kind: "quote", text: "Nobody minds losing ten dollars. Everybody minds asking for it twice." },
       { kind: "h2", id: "why-it-matters", text: "Why any of this matters over eleven dollars" },
       { kind: "p", html: "Because the money was never the point. The game exists to make a twilight round on a Tuesday feel like it counts — to give the eight-footer on 12 a reason to matter. Settling is what keeps that device working. Pay fast, pay first, round against yourself, and the match stays a game instead of becoming a small unspoken thing between two guys who used to enjoy playing together." },
-      { kind: "p", html: "And if remembering all nine sounds like work: the honest reason groups break these rules isn't character, it's arithmetic. Nobody wants to do six-way netting in a parking lot with a beer in his hand. So don't. <a href=\"/blog/group-accountant\">Let something else keep the tally</a> and just move the money. (GoLo doesn’t score junk, so that part stays on the card.) Here is <a href=\"/how-it-works\">one foursome’s round, first tee to settled</a>." },
+      { kind: "p", html: "And if remembering all nine sounds like work: the honest reason groups break these rules isn't character, it's arithmetic. Nobody wants to do six-way netting in a parking lot with a beer in his hand. So don't. <a href=\"/blog/group-accountant\">Let something else keep the tally</a> and just move the money. (GoLo scores greenies, sandies, birdie skins and eagle skins as Skins options, and closest to the pin as its own game. It doesn’t score anything else your group calls junk, so that part stays on the card.) Here is <a href=\"/how-it-works\">one foursome’s round, first tee to settled</a>." },
     ],
   },
   {
