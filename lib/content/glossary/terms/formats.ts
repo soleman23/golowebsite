@@ -327,7 +327,7 @@ export const formatsTerms: GlossaryTerm[] = [
       text: "The Rules of Golf define Four-Ball and cover it in Rule 23.",
     },
     relatedTermIds: ["best-score", "foursomes", "match-play", "scramble"],
-    relatedContentPaths: ["/games/wolf"],
+    relatedContentPaths: ["/games/wolf", "/blog/best-ball-vs-scramble"],
     canonical: { kind: "hub", anchor: "four-ball" },
     capabilityIds: [],
     ctaIntent: "games",

@@ -1131,7 +1131,7 @@ export const posts: Post[] = [
           id: "from-whom",
           title: "Five dollars from whom?",
           paragraphs: [
-            "The usual version is per player: every other player pays the maker the agreed amount. In a foursome a $5 birdie is worth $15 to the player who makes it. In a threesome it’s $10. Whatever the group size, somebody else’s birdie costs you $5.",
+            "The usual version is per player: every other player pays the maker the agreed amount. In a foursome a $5 birdie is worth $15 to the player who makes it. In <a href=\"/blog/golf-games-for-3-players\">a threesome</a> it’s $10. Whatever the group size, somebody else’s birdie costs you $5.",
             "The other version is a shared total. Everyone puts in a set amount before the round, say $10 each, and at the end the $40 is divided by the number of birdies made. Nobody can lose more than their $10, and nobody knows what a birdie is worth until the 18th is finished. GoLo doesn’t run this version; it’s a house arrangement, so agree its two awkward cases too: what happens if nobody makes a birdie, and how $40 splits across three birdies.",
           ],
           blocks: [
@@ -1937,7 +1937,7 @@ export const posts: Post[] = [
           title: "3. Write the press rule while nobody is losing",
           paragraphs: [
             "A press can add another match to the afternoon. It does not, by itself, erase what somebody already owes. Before you allow one, agree which match can be pressed, who may call it, the starting hole, and the amount. Then decide whether it needs the other side's acceptance or opens automatically under a rule everyone has already accepted.",
-            "“Two down” is not the whole policy. Can a press itself be pressed? How many can run at once? Is a one-hole press on 18 allowed? No presses is a complete answer, and often a useful one when the group includes a new player. The <a href=\"/blog/pressing\">pressing etiquette guide</a> covers the conversation after somebody asks.",
+            "“Two down” is not the whole policy. Can a press itself be pressed? How many can run at once? Is a one-hole press on 18 allowed? No presses is a complete answer, and often a useful one when the group includes <a href=\"/blog/side-games-for-beginners#leave-off\">a new player</a>. The <a href=\"/blog/pressing\">pressing etiquette guide</a> covers the conversation after somebody asks.",
           ],
           blocks: [
             { kind: "callout", title: "A PRESS LIMIT IS NOT A LOSS LIMIT", html: "Allowing only two extra matches limits the count. It does not tell anyone the most they can owe unless the amount of each match, and every other game running beside it, is also fixed." },
@@ -1949,7 +1949,7 @@ export const posts: Post[] = [
           paragraphs: [
             "A tied Nassau match can push, with nothing owed for that match. A tied skins hole can carry its value forward if that's how you're playing. Those are different answers to different questions. “Ties carry” written beside the skins does not settle an all-square back nine.",
             "Agree what happens to any skin still riding after the final hole: split it under an agreed method, leave it unclaimed, or use a playoff everyone has time for. These are choices for the group, not a promise that every scoring tool offers every option. The <a href=\"/blog/skins-carryover\">skins carryover guide</a> explains why the ending matters.",
-            "While you're there, decide what a conceded putt means for the other games running alongside the match. “That's good” should not leave one player claiming a skin and another waiting to see the putt. If rain stops the round, decide which completed matches count and what happens to unfinished ones. An ending agreed in advance beats a vote by whoever is ahead.",
+            "While you're there, decide <a href=\"/blog/gimmes\">what a conceded putt means for the other games</a> running alongside the match. “That's good” should not leave one player claiming a skin and another waiting to see the putt. If rain stops the round, decide which completed matches count and <a href=\"/blog/nine-hole-games#finish\">what happens to unfinished ones</a>. An ending agreed in advance beats a vote by whoever is ahead.",
           ],
         },
         {
@@ -2233,7 +2233,7 @@ export const posts: Post[] = [
       { kind: "quote", text: "Nobody minds losing ten dollars. Everybody minds asking for it twice." },
       { kind: "h2", id: "why-it-matters", text: "Why any of this matters over eleven dollars" },
       { kind: "p", html: "Because the money was never the point. The game exists to make a twilight round on a Tuesday feel like it counts — to give the eight-footer on 12 a reason to matter. Settling is what keeps that device working. Pay fast, pay first, round against yourself, and the match stays a game instead of becoming a small unspoken thing between two guys who used to enjoy playing together." },
-      { kind: "p", html: "And if remembering all nine sounds like work: the honest reason groups break these rules isn't character, it's arithmetic. Nobody wants to do six-way netting in a parking lot with a beer in his hand. So don't. Let something else keep the tally and just move the money. (GoLo doesn’t score junk, so that part stays on the card.) Here is <a href=\"/how-it-works\">one foursome’s round, first tee to settled</a>." },
+      { kind: "p", html: "And if remembering all nine sounds like work: the honest reason groups break these rules isn't character, it's arithmetic. Nobody wants to do six-way netting in a parking lot with a beer in his hand. So don't. <a href=\"/blog/group-accountant\">Let something else keep the tally</a> and just move the money. (GoLo doesn’t score junk, so that part stays on the card.) Here is <a href=\"/how-it-works\">one foursome’s round, first tee to settled</a>." },
     ],
   },
   {

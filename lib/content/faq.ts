@@ -187,6 +187,7 @@ export const faqCategories: FaqCategory[] = [
         id: "q-trips",
         q: "What about multi-day trips?",
         a: "Today each round settles on its own. A running tally across a trip’s rounds is on the list, not built. Until it is, settle each round in the app, or write down each player’s number after every round and net the totals once on the last day.",
+        link: { label: "NETTING A 36-HOLE DAY AT BANDON →", href: "/blog/bandon#one-number" },
       },
       {
         id: "q-roster",

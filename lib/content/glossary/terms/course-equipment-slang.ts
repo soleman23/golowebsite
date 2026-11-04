@@ -418,7 +418,7 @@ export const courseEquipmentSlangTerms: GlossaryTerm[] = [
       text: "In match play an opponent can concede your next stroke (Rule 3.2b). In regular stroke play you must hole out on every hole (Rule 3.3c). For handicap posting, a ball left within five feet on the green counts as one more stroke (Rules of Handicapping 3.3).",
     },
     relatedTermIds: ["putt", "match-play"],
-    relatedContentPaths: [],
+    relatedContentPaths: ["/blog/gimmes"],
     canonical: { kind: "hub", anchor: "gimme" },
     capabilityIds: [],
     sources: [
