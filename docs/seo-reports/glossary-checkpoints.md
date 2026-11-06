@@ -6,9 +6,11 @@ The four post-launch readings of `/glossary`, with the same definitions each tim
 
 **Status on 2026-10-30:** none due. No results exist yet, and none are written below.
 
+**Status on 2026-11-05:** launch + 7 days is filed in `2026-12.md`. Its Search Console re-read is pending, because November 4 was still being collected. The other three aren't due.
+
 | Checkpoint | Run on | Window (Pacific days) | Filed in | Status |
 |---|---|---|---|---|
-| Launch + 7 days | Thu 2026-11-05 | 2026-10-29 – 2026-11-04 (7 days) | `2026-12.md` | pending |
+| Launch + 7 days | Thu 2026-11-05 | 2026-10-29 – 2026-11-04 (7 days) | `2026-12.md` | filed in `2026-12.md` (PR pending); Search Console re-read pending (Nov 4 incomplete on Nov 5) |
 | Launch + 28 days | Thu 2026-11-26 | 2026-10-29 – 2026-11-25 (28 days) | `2026-12.md` | pending |
 | Launch + 56 days | Thu 2026-12-24 | 2026-10-29 – 2026-12-23 (56 days) | `2027-01.md` | pending |
 | Launch + 90 days | Wed 2027-01-27 | 2026-10-29 – 2027-01-26 (90 days) | `2027-02.md` | pending |
@@ -82,7 +84,7 @@ node scripts/gsc-groups.mjs ~/gsc/glossary-L<N>/page
 
 Property "GoLo Golf" (README § Where the dashboards live). Date range = the window.
 
-- **Before the first read (L+7): check the custom definitions.** Admin → Custom definitions should list event-scoped dimensions for `result_bucket`, `match_type`, `term_id`, `destination_type` and the glossary's `category`. The README records 20 registered before the glossary existed; whether these were added isn't recorded. GA4 doesn't backfill a dimension registered later, so report any rate that needs a missing dimension as "not available before <registration date>". Registering one is a change to the GA4 property for the owner to approve, not part of this run.
+- **Before the first read (L+7): check the custom definitions.** Admin → Custom definitions should list event-scoped dimensions for `result_bucket`, `match_type`, `term_id`, `destination_type` and the glossary's `category`. The README records 20 registered before the glossary existed. `category` was already among them ("Blog category"); the other four were registered on 2026-11-05, after the L+7 read, with the owner's approval (`2026-12.md` § D). GA4 doesn't backfill a dimension registered later, so report any rate that needs a missing dimension as "not available before <registration date>". Registering one is a change to the GA4 property for the owner to approve, not part of this run.
 - **Glossary landing visits:** sessions whose landing page is `/glossary` (Reports → Engagement → Landing page). Also engaged sessions.
 - **Event counts:** `glossary_search`, `glossary_filter`, `glossary_term_open`, `glossary_cta_click`, `share_click` with a `term_id`, and on `/glossary` `store_button_click` and `cta_click` (`page: "glossary"`).
 - **Rates**, exactly as `docs/analytics-data-notes.md` § Glossary events and reporting definitions defines them: glossary-to-product CTR, store-click rate, search success, zero-result rate. Print each rate with its numerator and denominator.
@@ -118,7 +120,7 @@ A dry run of both loops on 2026-10-30 checked 39 internal paths and 75 fragments
 
 ## Launch + 7 days: 2026-11-05
 
-**Status: pending.** Window 2026-10-29 – 2026-11-04. Reads: C, F, D (events firing only), B (first impression only).
+**Status: filed in `2026-12.md` on 2026-11-05.** The two Search Console cells it marks provisional get re-read once November 4 is complete. The table below is the checklist; the results are in the report. Window 2026-10-29 – 2026-11-04. Reads: C, F, D (events firing only), B (first impression only).
 
 | Check | Expected | Result (date checked) |
 |---|---|---|
