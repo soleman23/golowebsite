@@ -208,7 +208,7 @@ export const ruleOverviews: RuleOverview[] = [
   // Course areas and procedures
   rule(12, {
     summary:
-      "Rule 12 covers playing from a bunker: when your ball is in one, and what you may touch before the stroke. It's in if any part touches sand inside the edge, or rests on something there, like a rake; on grass or soil inside the edge, not touching sand, it isn't. Before playing, you can't touch the sand to test it, with the club just in front of or behind the ball, or in a practice swing or backswing. Each costs the general penalty: two strokes in stroke play, loss of the hole in match play. Digging in your feet or moving a rake is fine. Once your ball is out, or you're taking relief outside, you can rake.",
+      "Rule 12 covers when your ball is in a bunker and what you may touch there. It's in if any part touches sand inside the edge, sits where sand has washed or blown away, or rests on something there, like a rake; on grass inside the edge, not touching sand, it isn't. Before playing, you can't touch the sand to test it, with the club just in front of or behind the ball, or in a practice swing or backswing. Each costs the general penalty: two strokes in stroke play, loss of the hole in match play. Digging in your feet or moving a rake is fine. Once your ball is out, or you're taking relief outside, you can rake.",
     commonQuestions: [
       "Is my ball in the bunker if it's on grass inside the edge?",
       "Can my practice swing brush the sand?",
@@ -240,7 +240,7 @@ export const ruleOverviews: RuleOverview[] = [
   rule(14, {
     aliases: ["wrong place"],
     summary:
-      "Rule 14 covers the procedures behind relief: marking, lifting, replacing and dropping a ball, and playing from a wrong place. Mark the spot before lifting a ball you'll replace; skipping that costs a penalty stroke. Drop from knee height, straight down, into the relief area, usually one or two club-lengths from a reference point, where it must stay; if it rolls out twice, place it where the second drop landed. A wrong drop, placement or replacement can be redone free before you play the ball. Playing from a wrong place costs the general penalty, two strokes or loss of the hole in match play; in stroke play, a serious breach must be corrected before the next tee, or you're disqualified.",
+      "Rule 14 covers marking, lifting, replacing and dropping a ball, and playing from a wrong place. Mark the spot before lifting a ball you'll replace; skipping that costs a penalty stroke. Drop from knee height, straight down, into the relief area, where the ball must stay; if it rolls out twice, place it where the second drop landed. A wrong drop, placement or replacement can be redone free before you play. Playing from a wrong place costs the general penalty, two strokes or loss of the hole in match play; in stroke play, a serious breach must be corrected before the next tee, or on the last hole before you return your card, or you're disqualified.",
     commonQuestions: [
       "Do I have to mark my ball before lifting it?",
       "How do I drop, and what if the ball rolls out of the relief area?",
@@ -250,13 +250,13 @@ export const ruleOverviews: RuleOverview[] = [
     sources: opened(
       OPENED_238,
       ["14", "14.1a", "14.3b", "14.3c", "14.5a", "14.7a", "14.7b"],
-      ["Relief Area", "Club-Length", "General Penalty"],
+      ["Relief Area", "General Penalty"],
     ),
     status: "in-review",
   }),
   rule(15, {
     summary:
-      "Rule 15 covers two kinds of things you can usually move out of the way without penalty. Loose impediments are unattached natural objects, such as leaves, twigs and stones. Movable obstructions are artificial objects you can move with reasonable effort and without damage, such as rakes, bottles and towels. Off the putting green and teeing area, if removing a loose impediment moves your ball, replace it and add a penalty stroke; if removing a movable obstruction moves it, just replace it. If your ball sits on a movable obstruction, lift it, remove the object and drop within one club-length of the spot beneath, no nearer the hole; on the green, place it there.",
+      "Rule 15 covers two kinds of things you can usually move out of the way without penalty. Loose impediments are unattached natural objects, such as leaves, twigs and stones. Movable obstructions are artificial objects you can move with reasonable effort and without damage, such as rakes, bottles and towels. Off the putting green and teeing area, if removing a loose impediment moves your ball, replace it and add a penalty stroke; if removing a movable obstruction moves it, just replace it. If your ball sits on a movable obstruction, lift it, remove the object and drop within one club-length of the spot beneath, no nearer the hole, without leaving that area of the course; on the green, place it there.",
     commonQuestions: [
       "Can I move a twig or a leaf that's touching my ball?",
       "My ball is resting against a rake: what do I do?",
@@ -273,7 +273,7 @@ export const ruleOverviews: RuleOverview[] = [
   rule(16, {
     aliases: ["plugged ball", "embedded ball", "casual water"],
     summary:
-      "Rule 16 covers free relief from abnormal course conditions (ground under repair, temporary water, animal holes and immovable obstructions such as paved paths), from dangerous animals, and for a ball in the general area that plugs in its own pitch-mark. A condition has to interfere with your lie, stance or swing, or, on the green, your line; one that only distracts you doesn't count. In the general area, find the nearest point of complete relief: the closest spot, no nearer the hole, free of the condition for the shot you'd have played. Drop within one club-length of it, no nearer the hole and clear of the condition. None of this applies in a penalty area, except dangerous-animal relief.",
+      "Rule 16 covers free relief from abnormal course conditions (ground under repair, temporary water, animal holes and immovable obstructions like paved paths), from dangerous animals, and for a ball in the general area that plugs in its own pitch-mark. A condition must interfere with your lie, stance or swing, or, on the green, your line. In the general area, find the nearest point of complete relief, the closest spot, no nearer the hole, clear of it for the shot you'd have played, and drop within one club-length, no nearer the hole and clear of it. For a plugged ball, the club-length is measured from the spot just behind it. None of this applies in a penalty area, except dangerous-animal relief.",
     commonQuestions: [
       "My ball is on a cart path: where do I drop?",
       "Does a soggy patch of fairway count as temporary water?",
