@@ -706,3 +706,213 @@ Each summary is 117–120 words. The longest run shared with the official text i
 **Copy distance:** longest run shared with the R&A text is 7 words ("hits another ball at rest on the"); no run of 8 or more.
 
 **Owner approval:** pending.
+
+## #239 · Rules 20–25
+
+Rulings, formats and accessibility. Sources opened November 6, 2026; both reviewer agents ran the same day.
+
+**Result.** Agent A found 2 errors, both fixed. Rule 20 offered the two-ball option without saying it is stroke play only. Rule 22's "playing out of order" read as playing out of turn, which carries no penalty, when the breach is the wrong partner playing. Agent B found no errors. The gaps and should-fix items are fixed or answered below. Each summary is 115–120 words. The longest run shared with the official text is 7 words. `npm run lint:content` and `npm test` pass, and all 40 subrule anchors resolve against the pages fetched that day.
+
+- **Rule 21** says scrambles have no Rule of their own, and points to 21.5, which says the Rules can be adapted to them. It doesn't suggest the Rules define a scramble.
+- **Rules 22 and 23** link the glossary's `foursomes` and `four-ball` terms and describe each format in one clause, consistent with those entries. Rule 23 also links `best-score`: that entry still separates Best Score from best ball and Four-Ball, so the condition `inventory.md` sets for the link is met.
+- **Rule 25** is plain and person-first, with no humour. It names eligibility and the R&A's broader reading of each category.
+
+**For the owner to decide:** the related reading for Rules 21 and 23 is deferred, as for Rule 3 (#237, item 3). Nothing else in this batch needs a call.
+### Rule 20 · Resolving Rules Issues During Round; Rulings by Referee and Committee
+
+**Summary (119 words):** Rule 20 covers Rules questions mid-round and rulings by referees and the Committee. If no referee or Committee member is available in reasonable time, decide and play on. In match play the players can agree how to settle a question, and that answer stands even if it was wrong, unless they agreed to ignore a Rule or penalty they knew applied; either player can instead ask for a ruling, before either tees off on the next hole. In stroke play you can't settle a question by agreement; if you're unsure of the procedure, decide before your next stroke to finish the hole with two balls, choose which should count, and report it to the Committee before returning your scorecard.
+
+**Look here when:** We disagree about a Rules question in our match: how do we settle it? · I'm not sure how to take relief in stroke play: what can I do? · Can our group settle a Rules question by agreement in stroke play? · Does an answer we agreed in our match stand if it was wrong?
+
+**Glossary:** none · **Aliases:** none · **Sources:** 20, 20.1a, 20.1b, 20.1c, 20.2a, 20.2b
+
+| # | Sentence | Rests on |
+|---:|---|---|
+| 1 | Rule 20 covers Rules questions mid-round and rulings by referees and the Committee. | [20.2a](https://www.randa.org/en/rog/the-rules-of-golf/rule-20#20_2a), [20.2b](https://www.randa.org/en/rog/the-rules-of-golf/rule-20#20_2b) |
+| 2 | If no referee or Committee member is available in reasonable time, decide and play on. | [20.1a](https://www.randa.org/en/rog/the-rules-of-golf/rule-20#20_1a) |
+| 3 | In match play the players can agree how to settle a question, and that answer stands even if it was wrong, unless they agreed to ignore a Rule or penalty they knew applied; either player can instead ask for a ruling, before either tees off on the next hole. | [20.1b](https://www.randa.org/en/rog/the-rules-of-golf/rule-20#20_1b) |
+| 4 | In stroke play you can't settle a question by agreement; if you're unsure of the procedure, decide before your next stroke to finish the hole with two balls, choose which should count, and report it to the Committee before returning your scorecard. | [20.1c](https://www.randa.org/en/rog/the-rules-of-golf/rule-20#20_1c) |
+| Q1 | We disagree about a Rules question in our match: how do we settle it? | [20.1b](https://www.randa.org/en/rog/the-rules-of-golf/rule-20#20_1b) |
+| Q2 | I'm not sure how to take relief in stroke play: what can I do? | [20.1c](https://www.randa.org/en/rog/the-rules-of-golf/rule-20#20_1c) |
+| Q3 | Can our group settle a Rules question by agreement in stroke play? | [20.1c](https://www.randa.org/en/rog/the-rules-of-golf/rule-20#20_1c) |
+| Q4 | Does an answer we agreed in our match stand if it was wrong? | [20.1b](https://www.randa.org/en/rog/the-rules-of-golf/rule-20#20_1b) |
+
+**Review findings and resolution:**
+
+- *Rules accuracy (agent A), error:* The two-ball sentence wasn't limited to stroke play; 20.1b(4) denies the option in match play. **Resolution:** Fixed: it now sits in the stroke-play sentence ("In stroke play you can't settle a question by agreement; if you're unsure ...").
+- *Rules accuracy (agent A), gap:* The decision to play two balls must come before your next stroke; "say first" didn't say before what (20.1c(3)). **Resolution:** Fixed: "decide before your next stroke to finish the hole with two balls, choose which should count".
+- *Rules accuracy (agent A), gap:* "Unless they knowingly ignored a Rule" dropped penalties and the agreement test (20.1b(1)). **Resolution:** Fixed: "unless they agreed to ignore a Rule or penalty they knew applied".
+- *Rules accuracy (agent A), gap:* 20.2a and 20.2b back only the topic clause and Q4 (appeals). **Resolution:** Kept for the first sentence's topic. Q4 now asks whether an agreed answer stands, which the summary answers.
+- *Rules accuracy (agent A), nit:* "Requested in time" is undefined (20.1b(2)). **Resolution:** Fixed: "before either tees off on the next hole".
+- *Rules accuracy (agent A), nit:* "Ruling" means a referee's or the Committee's decision. **Resolution:** Fixed: Q1 says "a Rules question".
+- *Site rules (agent B), should-fix:* Same match-play scoping point; "say first" ambiguous; "in time" vague; Q4 (appeals) unanswered and rare in a casual group. **Resolution:** Fixed with agent A's items; Q4 is now "Does an answer we agreed in our match stand if it was wrong?"
+- *Site rules (agent B), nit:* "Hold up the course"; "it" pointed two clauses back; "Committee" unexplained. **Resolution:** The first two fixed in the rewrite. Committee is explained in Rule 4's overview; no room here.
+
+**Copy distance:** longest run shared with the R&A text is 6 words ("to ignore a rule or penalty"); no run of 8 or more.
+
+**Owner approval:** pending.
+
+### Rule 21 · Other Forms of Individual Stroke Play and Match Play
+
+**Summary (119 words):** Rule 21 covers four other individual formats. Stableford awards points on each hole against a fixed score, par unless the Committee sets another, and most points wins. Maximum Score caps each hole at a number the Committee sets, such as twice par or net double bogey. Par/Bogey plays each hole as a match against a fixed score. In Three-Ball Match Play, each player plays the other two in separate matches. In the three stroke-play forms you can pick up once your result on a hole can't get worse, and some mistakes that disqualify in regular stroke play only cost that hole's result. Scrambles have no Rule of their own; Rule 21.5 says the Rules can be adapted to them.
+
+**Look here when:** How does Stableford scoring work? · In Stableford or Maximum Score, can I pick up partway through a hole? · What counts as the maximum score on a hole? · Does a scramble have its own Rule?
+
+**Glossary:** `stableford`, `scramble` · **Aliases:** none · **Sources:** 21, 21.1a, 21.1b, 21.1c, 21.2a, 21.2b, 21.2c, 21.3a, 21.3b, 21.3c, 21.4a, 21.5
+
+| # | Sentence | Rests on |
+|---:|---|---|
+| 1 | Rule 21 covers four other individual formats. | [Rule 21](https://www.randa.org/en/rog/the-rules-of-golf/rule-21) |
+| 2 | Stableford awards points on each hole against a fixed score, par unless the Committee sets another, and most points wins. | [21.1a](https://www.randa.org/en/rog/the-rules-of-golf/rule-21#21_1a), [21.1b](https://www.randa.org/en/rog/the-rules-of-golf/rule-21#21_1b) |
+| 3 | Maximum Score caps each hole at a number the Committee sets, such as twice par or net double bogey. | [21.2a](https://www.randa.org/en/rog/the-rules-of-golf/rule-21#21_2a) |
+| 4 | Par/Bogey plays each hole as a match against a fixed score. | [21.3a](https://www.randa.org/en/rog/the-rules-of-golf/rule-21#21_3a), [21.3b](https://www.randa.org/en/rog/the-rules-of-golf/rule-21#21_3b) |
+| 5 | In Three-Ball Match Play, each player plays the other two in separate matches. | [21.4a](https://www.randa.org/en/rog/the-rules-of-golf/rule-21#21_4a) |
+| 6 | In the three stroke-play forms you can pick up once your result on a hole can't get worse, and some mistakes that disqualify in regular stroke play only cost that hole's result. | [21.1b](https://www.randa.org/en/rog/the-rules-of-golf/rule-21#21_1b), [21.1c](https://www.randa.org/en/rog/the-rules-of-golf/rule-21#21_1c), [21.2b](https://www.randa.org/en/rog/the-rules-of-golf/rule-21#21_2b), [21.2c](https://www.randa.org/en/rog/the-rules-of-golf/rule-21#21_2c), [21.3b](https://www.randa.org/en/rog/the-rules-of-golf/rule-21#21_3b), [21.3c](https://www.randa.org/en/rog/the-rules-of-golf/rule-21#21_3c) |
+| 7 | Scrambles have no Rule of their own; Rule 21.5 says the Rules can be adapted to them. | [21.5](https://www.randa.org/en/rog/the-rules-of-golf/rule-21#21_5) |
+| Q1 | How does Stableford scoring work? | [21.1a](https://www.randa.org/en/rog/the-rules-of-golf/rule-21#21_1a), [21.1b](https://www.randa.org/en/rog/the-rules-of-golf/rule-21#21_1b) |
+| Q2 | In Stableford or Maximum Score, can I pick up partway through a hole? | [21.1b](https://www.randa.org/en/rog/the-rules-of-golf/rule-21#21_1b), [21.2b](https://www.randa.org/en/rog/the-rules-of-golf/rule-21#21_2b) |
+| Q3 | What counts as the maximum score on a hole? | [21.2a](https://www.randa.org/en/rog/the-rules-of-golf/rule-21#21_2a), [21.2b](https://www.randa.org/en/rog/the-rules-of-golf/rule-21#21_2b) |
+| Q4 | Does a scramble have its own Rule? | [21.5](https://www.randa.org/en/rog/the-rules-of-golf/rule-21#21_5) |
+
+**Review findings and resolution:**
+
+- *Rules accuracy (agent A), gap:* The penalty-change sentence covers Par/Bogey too, but 21.3c wasn't cited. **Resolution:** Fixed: 21.3c added.
+- *Rules accuracy (agent A), nit:* "Once the hole can't count for more" was ambiguous; "cost only that hole" is wrong for Maximum Score. **Resolution:** Fixed: "once your result on a hole can't get worse, and some mistakes that disqualify in regular stroke play only cost that hole's result."
+- *Rules accuracy (agent A), nit:* Q2 "Can I pick up once I can't score?" is no in regular stroke play. **Resolution:** Fixed: "In Stableford or Maximum Score, can I pick up partway through a hole?"
+- *Site rules (agent B), should-fix:* canonical-map.md says Rule 21 may link /games. **Resolution:** Deferred with Rule 3's links (see #237, owner item 3): the test fixture serves only four paths.
+- *Site rules (agent B), should-fix:* Three-Ball read like one three-way match. **Resolution:** Fixed: "each player plays the other two in separate matches."
+- *Site rules (agent B), nit:* "Four more" (more than what?); "Scrambles aren't covered" could read as the Rules not applying. **Resolution:** Fixed: "four other individual formats"; "Scrambles have no Rule of their own". Q4 also stopped using "Rules" so a search for "rules" doesn't match this card (scripts/test-rules.mjs guards that).
+
+**Copy distance:** longest run shared with the R&A text is 7 words ("in three ball match play each player"); no run of 8 or more.
+
+**Owner approval:** pending.
+
+### Rule 22 · Foursomes (Also Known as Alternate Shot)
+
+**Summary (119 words):** Rule 22 covers Foursomes, the alternate-shot format, in match play or stroke play. The side counts as one player under Rules 1–20. Partners alternate who tees off from hole to hole, then alternate strokes until the ball is holed; penalty strokes don't change whose turn it is. If the wrong partner plays, the side gets the general penalty, and in stroke play must put it right before teeing off on the next hole or be disqualified. Either partner may mark, lift, drop or place the side's ball. Partners may share clubs if they have 14 or fewer between them, and neither may stand on the line behind the ball during the other's stroke to learn about the next shot.
+
+**Look here when:** Who tees off on each hole in Foursomes? · What happens if the wrong partner plays? · Can partners share one set of clubs? · Can my partner drop the ball for me?
+
+**Glossary:** `foursomes` · **Aliases:** none · **Sources:** 22, 22.1, 22.2, 22.3, 22.5, 22.6
+
+| # | Sentence | Rests on |
+|---:|---|---|
+| 1 | Rule 22 covers Foursomes, the alternate-shot format, in match play or stroke play. | [Rule 22](https://www.randa.org/en/rog/the-rules-of-golf/rule-22), [22.1](https://www.randa.org/en/rog/the-rules-of-golf/rule-22#22_1) |
+| 2 | The side counts as one player under Rules 1–20. | [22.1](https://www.randa.org/en/rog/the-rules-of-golf/rule-22#22_1) |
+| 3 | Partners alternate who tees off from hole to hole, then alternate strokes until the ball is holed; penalty strokes don't change whose turn it is. | [22.3](https://www.randa.org/en/rog/the-rules-of-golf/rule-22#22_3) |
+| 4 | If the wrong partner plays, the side gets the general penalty, and in stroke play must put it right before teeing off on the next hole or be disqualified. | [22.3](https://www.randa.org/en/rog/the-rules-of-golf/rule-22#22_3) |
+| 5 | Either partner may mark, lift, drop or place the side's ball. | [22.2](https://www.randa.org/en/rog/the-rules-of-golf/rule-22#22_2) |
+| 6 | Partners may share clubs if they have 14 or fewer between them, and neither may stand on the line behind the ball during the other's stroke to learn about the next shot. | [22.5](https://www.randa.org/en/rog/the-rules-of-golf/rule-22#22_5), [22.6](https://www.randa.org/en/rog/the-rules-of-golf/rule-22#22_6) |
+| Q1 | Who tees off on each hole in Foursomes? | [22.3](https://www.randa.org/en/rog/the-rules-of-golf/rule-22#22_3) |
+| Q2 | What happens if the wrong partner plays? | [22.3](https://www.randa.org/en/rog/the-rules-of-golf/rule-22#22_3) |
+| Q3 | Can partners share one set of clubs? | [22.5](https://www.randa.org/en/rog/the-rules-of-golf/rule-22#22_5) |
+| Q4 | Can my partner drop the ball for me? | [22.2](https://www.randa.org/en/rog/the-rules-of-golf/rule-22#22_2) |
+
+**Review findings and resolution:**
+
+- *Rules accuracy (agent A), error:* "Playing out of order is the general penalty" reads as playing out of turn (Rule 6.4, no penalty); the breach is the wrong partner playing (22.3). **Resolution:** Fixed: "If the wrong partner plays, the side gets the general penalty".
+- *Rules accuracy (agent A), nit:* On the last hole the correction deadline is before returning the scorecard. **Resolution:** Not added, for length.
+- *Rules accuracy (agent A), nit:* "Behind the line" is loose (22.6). **Resolution:** Fixed: "neither may stand on the line behind the ball during the other's stroke".
+- *Site rules (agent B), should-fix:* Same two points as agent A. **Resolution:** Fixed as above.
+- *Site rules (agent B), nit:* "In stroke play the side must correct" is a 7-word run with 22.3. **Resolution:** Fixed: "must put it right".
+- *Site rules (agent B), nit:* Re-defining the format: the alternation sentence is 22.3's substance and answers Q1. **Resolution:** Kept; the glossary's foursomes term is linked.
+
+**Copy distance:** longest run shared with the R&A text is 6 words ("in match play or stroke play"); no run of 8 or more.
+
+**Owner approval:** pending.
+
+### Rule 23 · Four-Ball
+
+**Summary (119 words):** Rule 23 covers Four-Ball: partners each play their own ball and the side counts the lower score on each hole, in match play or stroke play. Once one partner has holed out, the other doesn't have to. In stroke play the card must show which partner made each of the side's scores, or the side is disqualified. Partners may play in the order they choose, share clubs if they have 14 or fewer between them, and mark, lift, drop or place each other's ball, though the ball's owner takes any penalty that results. A penalty stroke or loss of hole usually stays with the partner who incurred it, with exceptions, such as a breach that helps the other partner.
+
+**Look here when:** If my partner has holed out, do I have to finish? · Can we choose which of us putts first? · Does my penalty count against my partner? · How do we fill in the scorecard in stroke play?
+
+**Glossary:** `four-ball`, `best-score` · **Aliases:** none · **Sources:** 23, 23.1, 23.2a, 23.2b, 23.5a, 23.5b, 23.6, 23.7, 23.9a
+
+| # | Sentence | Rests on |
+|---:|---|---|
+| 1 | Rule 23 covers Four-Ball: partners each play their own ball and the side counts the lower score on each hole, in match play or stroke play. | [Rule 23](https://www.randa.org/en/rog/the-rules-of-golf/rule-23), [23.1](https://www.randa.org/en/rog/the-rules-of-golf/rule-23#23_1) |
+| 2 | Once one partner has holed out, the other doesn't have to. | [23.2a](https://www.randa.org/en/rog/the-rules-of-golf/rule-23#23_2a) |
+| 3 | In stroke play the card must show which partner made each of the side's scores, or the side is disqualified. | [23.2b](https://www.randa.org/en/rog/the-rules-of-golf/rule-23#23_2b) |
+| 4 | Partners may play in the order they choose, share clubs if they have 14 or fewer between them, and mark, lift, drop or place each other's ball, though the ball's owner takes any penalty that results. | [23.6](https://www.randa.org/en/rog/the-rules-of-golf/rule-23#23_6), [23.7](https://www.randa.org/en/rog/the-rules-of-golf/rule-23#23_7), [23.5a](https://www.randa.org/en/rog/the-rules-of-golf/rule-23#23_5a), [23.5b](https://www.randa.org/en/rog/the-rules-of-golf/rule-23#23_5b) |
+| 5 | A penalty stroke or loss of hole usually stays with the partner who incurred it, with exceptions, such as a breach that helps the other partner. | [23.9a](https://www.randa.org/en/rog/the-rules-of-golf/rule-23#23_9a) |
+| Q1 | If my partner has holed out, do I have to finish? | [23.2a](https://www.randa.org/en/rog/the-rules-of-golf/rule-23#23_2a) |
+| Q2 | Can we choose which of us putts first? | [23.6](https://www.randa.org/en/rog/the-rules-of-golf/rule-23#23_6) |
+| Q3 | Does my penalty count against my partner? | [23.9a](https://www.randa.org/en/rog/the-rules-of-golf/rule-23#23_9a) |
+| Q4 | How do we fill in the scorecard in stroke play? | [23.2b](https://www.randa.org/en/rog/the-rules-of-golf/rule-23#23_2b) |
+
+**Review findings and resolution:**
+
+- *Rules accuracy (agent A), gap:* "Handle each other's ball" omitted that a breach while handling your partner's ball counts against the partner (23.5b). **Resolution:** Fixed: "though the ball's owner takes any penalty that results"; 23.5b added.
+- *Rules accuracy (agent A), gap:* 23.9a covers penalties other than disqualification only. **Resolution:** Fixed: "A penalty stroke or loss of hole usually stays with the partner who incurred it".
+- *Site rules (agent B), should-fix:* The best-score glossary entry still separates Best Score from best ball and Four-Ball, so inventory.md's condition for linking it is met. **Resolution:** Fixed: best-score added.
+- *Site rules (agent B), should-fix:* canonical-map.md says Rule 23 links /blog/best-ball-vs-scramble. **Resolution:** Deferred with Rule 3's links (see #237, owner item 3).
+- *Site rules (agent B), should-fix:* "The side takes the lower score" could be read as the round total. **Resolution:** Fixed: "the side counts the lower score on each hole".
+- *Site rules (agent B), nit:* "Handle" was vague; "marked as the score of" collides with ball-marking; a 7-word run in the penalty sentence. **Resolution:** Fixed: "mark, lift, drop or place each other's ball"; "the card must show which partner made each of the side's scores"; the penalty sentence was reworded.
+
+**Copy distance:** longest run shared with the R&A text is 6 words ("in match play or stroke play"); no run of 8 or more.
+
+**Owner approval:** pending.
+
+### Rule 24 · Team Competitions
+
+**Summary (115 words):** Rule 24 covers team competitions, where players or sides combine their results into a team score. The Committee sets the terms: the form of play, how the team score is worked out, and whether and how ties are broken. A team may name a captain to pick who plays, in what order and with whom. Teammates can't ask each other for advice or give it unless they're partners, whether or not they're in the same group; that's the general penalty. A team may have one named advice giver, who can be the captain, only if the Committee adopts a Local Rule allowing it, and one who is also playing can't advise during their own round.
+
+**Look here when:** Can I give advice to a teammate in another group? · Can our captain give us advice during the round? · How is the team score worked out?
+
+**Glossary:** none · **Aliases:** none · **Sources:** 24, 24.1, 24.2, 24.3, 24.4a, 24.4b, 24.4c
+
+| # | Sentence | Rests on |
+|---:|---|---|
+| 1 | Rule 24 covers team competitions, where players or sides combine their results into a team score. | [Rule 24](https://www.randa.org/en/rog/the-rules-of-golf/rule-24), [24.1](https://www.randa.org/en/rog/the-rules-of-golf/rule-24#24_1) |
+| 2 | The Committee sets the terms: the form of play, how the team score is worked out, and whether and how ties are broken. | [24.2](https://www.randa.org/en/rog/the-rules-of-golf/rule-24#24_2) |
+| 3 | A team may name a captain to pick who plays, in what order and with whom. | [24.3](https://www.randa.org/en/rog/the-rules-of-golf/rule-24#24_3) |
+| 4 | Teammates can't ask each other for advice or give it unless they're partners, whether or not they're in the same group; that's the general penalty. | [24.4c](https://www.randa.org/en/rog/the-rules-of-golf/rule-24#24_4c) |
+| 5 | A team may have one named advice giver, who can be the captain, only if the Committee adopts a Local Rule allowing it, and one who is also playing can't advise during their own round. | [24.4a](https://www.randa.org/en/rog/the-rules-of-golf/rule-24#24_4a), [24.4b](https://www.randa.org/en/rog/the-rules-of-golf/rule-24#24_4b) |
+| Q1 | Can I give advice to a teammate in another group? | [24.4c](https://www.randa.org/en/rog/the-rules-of-golf/rule-24#24_4c) |
+| Q2 | Can our captain give us advice during the round? | [24.4a](https://www.randa.org/en/rog/the-rules-of-golf/rule-24#24_4a), [24.4b](https://www.randa.org/en/rog/the-rules-of-golf/rule-24#24_4b) |
+| Q3 | How is the team score worked out? | [24.2](https://www.randa.org/en/rog/the-rules-of-golf/rule-24#24_2) |
+
+**Review findings and resolution:**
+
+- *Rules accuracy (agent A), gap:* An advice giver who is also playing can't act in that role during their own round (24.4b); Q2 asks about a captain. **Resolution:** Fixed: "and one who is also playing can't advise during their own round"; 24.4b added.
+- *Rules accuracy (agent A), nit:* The ban covers asking as well as giving (24.4c). **Resolution:** Fixed: "can't ask each other for advice or give it".
+- *Rules accuracy (agent A), nit:* "How ties are settled" assumes ties are always broken (24.2). **Resolution:** Fixed: "whether and how ties are broken".
+- *Site rules (agent B), nit:* The list blurred; the captain can be the advice giver; "partners on the same side" is redundant; advice isn't explained. **Resolution:** Fixed the first three: the list was shortened and reordered, "who can be the captain" added, and "partners" alone. Advice is explained in Rule 10's overview.
+
+**Copy distance:** longest run shared with the R&A text is 5 words ("rule 24 covers team competitions"); no run of 8 or more.
+
+**Owner approval:** pending.
+
+### Rule 25 · Modifications for Players with Disabilities
+
+**Summary (120 words):** Rule 25 makes specific modifications so eligible players with certain disabilities can play fairly with anyone. It covers four categories: players who are blind (including some with low vision), players who are amputees (including limb deficiency), players with an intellectual disability, and players who use a wheelchair, crutches or another assistive mobility device. A player who is blind may have an aide help with stance and aim. A player who is an amputee and can't swing most clubs without anchoring may anchor. A player using a wheelchair or other wheeled mobility device measures lateral relief from a red penalty area or an unplayable ball with four club-lengths instead of two. Other disabilities aren't covered; for medical equipment, see Rule 4.3b.
+
+**Look here when:** Who can use the modifications in Rule 25? · Can a player who is blind get help lining up? · How does relief work for a player who uses a wheelchair?
+
+**Glossary:** none · **Aliases:** none · **Sources:** 25, 25.1, 25.2a, 25.3b, 25.4m, 4.3b
+
+| # | Sentence | Rests on |
+|---:|---|---|
+| 1 | Rule 25 makes specific modifications so eligible players with certain disabilities can play fairly with anyone. | [Rule 25](https://www.randa.org/en/rog/the-rules-of-golf/rule-25), [25.1](https://www.randa.org/en/rog/the-rules-of-golf/rule-25#25_1) |
+| 2 | It covers four categories: players who are blind (including some with low vision), players who are amputees (including limb deficiency), players with an intellectual disability, and players who use a wheelchair, crutches or another assistive mobility device. | [25.1](https://www.randa.org/en/rog/the-rules-of-golf/rule-25#25_1) |
+| 3 | A player who is blind may have an aide help with stance and aim. | [25.2a](https://www.randa.org/en/rog/the-rules-of-golf/rule-25#25_2a) |
+| 4 | A player who is an amputee and can't swing most clubs without anchoring may anchor. | [25.3b](https://www.randa.org/en/rog/the-rules-of-golf/rule-25#25_3b) |
+| 5 | A player using a wheelchair or other wheeled mobility device measures lateral relief from a red penalty area or an unplayable ball with four club-lengths instead of two. | [25.4m](https://www.randa.org/en/rog/the-rules-of-golf/rule-25#25_4m) |
+| 6 | Other disabilities aren't covered; for medical equipment, see Rule 4.3b. | [25.1](https://www.randa.org/en/rog/the-rules-of-golf/rule-25#25_1), [4.3b](https://www.randa.org/en/rog/the-rules-of-golf/rule-4#4_3b) |
+| Q1 | Who can use the modifications in Rule 25? | [25.1](https://www.randa.org/en/rog/the-rules-of-golf/rule-25#25_1) |
+| Q2 | Can a player who is blind get help lining up? | [25.2a](https://www.randa.org/en/rog/the-rules-of-golf/rule-25#25_2a) |
+| Q3 | How does relief work for a player who uses a wheelchair? | [25.4m](https://www.randa.org/en/rog/the-rules-of-golf/rule-25#25_4m) |
+
+**Review findings and resolution:**
+
+- *Rules accuracy (agent A), gap:* Eligibility, with the category, decides who can use the modifications (25.1). **Resolution:** Fixed: "so eligible players with certain disabilities".
+- *Rules accuracy (agent A), gap:* The R&A's categories are broader than the plain labels: blind includes some vision impairment, amputees includes limb deficiency. **Resolution:** Fixed: "players who are blind (including some with low vision), players who are amputees (including limb deficiency)".
+- *Rules accuracy (agent A), nit:* "An amputee who ..." isn't person-first; Q3 "a player in a wheelchair" likewise. **Resolution:** Fixed: "A player who is an amputee"; "a player who uses a wheelchair".
+- *Rules accuracy (agent A), nit:* Use the R&A's "wheeled mobility device" and "unplayable ball"; soften the 4.3b pointer. **Resolution:** Fixed: both terms, and "for medical equipment, see Rule 4.3b".
+- *Site rules (agent B), should-fix:* Person-first wording, as agent A; the four categories didn't read as four. **Resolution:** Fixed: the mobility category, with its internal commas, now comes last.
+- *Site rules (agent B), nit:* The first sentence followed the R&A purpose statement's structure. **Resolution:** Rewritten: "Rule 25 makes specific modifications so eligible players with certain disabilities can play fairly with anyone." It also no longer uses "Rules", which the search guard in scripts/test-rules.mjs needs.
+
+**Copy distance:** longest run shared with the R&A text is 7 words ("a player who is blind may have"); no run of 8 or more.
+
+**Owner approval:** pending.
