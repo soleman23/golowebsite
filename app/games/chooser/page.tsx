@@ -17,7 +17,7 @@ import {
 } from "@/lib/content";
 import { FORMAT_RULES } from "@/lib/chooser/engine";
 import { serializeAnswers } from "@/lib/chooser/url";
-import { chooserView } from "@/lib/chooser/view";
+import { chooserView, goloCell, simpleCell } from "@/lib/chooser/view";
 import { pageMetadata } from "@/lib/pageMetadata";
 import { PageHero } from "@/components/ui/PageHero";
 import { Icon } from "@/components/ui/Icon";
@@ -55,13 +55,16 @@ export default function ChooserPage() {
     rows: FORMAT_RULES.map((rule) => {
       const cells = chooserTableCells[rule.id];
       const { min, max } = rule.players;
+      const { players, words } = chooserTable;
       return [
         chooserCopy.formats[rule.id].name,
-        min === max ? `Exactly ${min}` : `${min}–${max}`,
+        min === max
+          ? players.exactly.replace("{n}", String(min))
+          : players.range.replace("{min}", String(min)).replace("{max}", String(max)),
         cells.partners,
-        cells.simple,
+        simpleCell(rule, words.simple),
         cells.strokes,
-        cells.golo,
+        goloCell(rule, chooserCopy.formats[rule.id].golo, words.golo),
       ];
     }),
   };

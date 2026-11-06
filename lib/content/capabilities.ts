@@ -196,9 +196,11 @@ export const capabilities = [
       "Run several games in one round, each with its own amount, netted into one number per player.",
     limits: [
       // Already in app-checked guide copy (APP_CHECK_1029; the Best Score,
-      // Bingo Bango Bongo and scramble FAQs in gameDetail.ts); recorded here
-      // for the side-game chooser (soleman23/golowebsite#224), which reads
-      // GoLo's limits from this file only.
+      // Bingo Bango Bongo and scramble FAQs and the scramble steps in
+      // gameDetail.ts); recorded here for the side-game chooser
+      // (soleman23/golowebsite#224), which reads GoLo's limits from this file
+      // only. Owner review pending: carried from that copy, not rechecked
+      // against the app or confirmed by the owner for #224.
       "Without teams, a round takes two to four players; a group of five or more plays as a scramble.",
       "Birdie and eagle bounties are Skins settings (Birdie Skin, Eagle Skin), gross birdies only, no cap.",
       "No separate junk board: greenies and sandies are Skins settings, and barkies, poleys, snakes and arnies aren't scored.",

@@ -26,14 +26,14 @@ function LineText({ line }: { line: Line }) {
   return (
     <>
       {line.text}
-      {line.href && line.linkLabel ? (
-        <>
-          {" "}
-          <Link href={line.href} className={styles.inlineLink}>
-            {line.linkLabel}
+      {line.links?.map((link, i) => (
+        <span key={link.href}>
+          {i ? <span aria-hidden="true"> · </span> : " "}
+          <Link href={link.href} className={styles.inlineLink}>
+            {link.label}
           </Link>
-        </>
-      ) : null}
+        </span>
+      ))}
     </>
   );
 }

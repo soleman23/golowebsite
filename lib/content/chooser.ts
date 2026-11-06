@@ -17,7 +17,7 @@
  */
 
 import { capability, type CapabilityId } from "./capabilities";
-import type { ChooserCopy, FormatCopy, Line } from "@/lib/chooser/view";
+import type { ChooserCopy, FormatCopy, GoloCopy, Line, TableWords } from "@/lib/chooser/view";
 import type { Answers, FormatId } from "@/lib/chooser/engine";
 import type { FaqReadNext } from "./faq";
 
@@ -30,12 +30,19 @@ function registryLine(id: CapabilityId, startsWith: string): string {
 
 const summary = (id: CapabilityId) => capability(id).summary;
 
-const SOLO_MAX = { players: { max: 4 } } as const;
-const SOLO_OVER = { players: { min: 5 } } as const;
+/**
+ * Which registry entry covers a format, and its status read from there. The
+ * card's verdict follows the status (lib/chooser/view.ts goloVerdict), so a
+ * capability moved to testing stops showing as scored without a copy change.
+ */
+function goloFrom(id: CapabilityId | null, scoredFor?: GoloCopy["scoredFor"]): Omit<GoloCopy, "lines"> {
+  return { capability: id, status: id ? capability(id).status : null, ...(scoredFor ? { scoredFor } : {}) };
+}
 
-const GOLO_YES = "Scored in GoLo";
-const GOLO_NO = "Not scored in GoLo";
-const GOLO_NOT_ONE_GAME = "Not as one game in GoLo";
+/** The registry's game-library limit: without teams, two to four players. */
+const GOLO_SOLO = { min: 2, max: 4 } as const;
+const SOLO_MAX = { players: { max: GOLO_SOLO.max } } as const;
+const SOLO_OVER = { players: { min: GOLO_SOLO.max + 1 } } as const;
 
 /** Lines several formats share, by the handicap answer. */
 const netOrGross: readonly Line[] = [
@@ -45,20 +52,17 @@ const netOrGross: readonly Line[] = [
   },
   {
     text: "Play it net, so handicap strokes are part of the score.",
-    href: "/blog/net-vs-gross-scoring",
-    linkLabel: "Net vs. gross",
+    links: [{ href: "/blog/net-vs-gross-scoring", label: "Net vs. gross" }],
     when: { handicaps: ["apart"] },
   },
   {
     text: "A number for anyone without a handicap, agreed before the round, not after the front nine.",
-    href: "/blog/no-handicap-fair-game",
-    linkLabel: "How to agree one",
+    links: [{ href: "/blog/no-handicap-fair-game", label: "How to agree one" }],
     when: { handicaps: ["none"] },
   },
   {
     text: "Net or gross, settled before anyone tees off.",
-    href: "/blog/net-vs-gross-scoring",
-    linkLabel: "Net vs. gross",
+    links: [{ href: "/blog/net-vs-gross-scoring", label: "Net vs. gross" }],
     when: { handicaps: ["unanswered"] },
   },
 ];
@@ -92,10 +96,7 @@ const bestScore: FormatCopy = {
     scoring: "",
   },
   golo: {
-    verdicts: [
-      { scored: true, label: GOLO_YES, when: SOLO_MAX },
-      { scored: false, label: GOLO_NOT_ONE_GAME, when: SOLO_OVER },
-    ],
+    ...goloFrom("game-library", GOLO_SOLO),
     lines: [
       { text: summary("game-library"), when: SOLO_MAX },
       { text: twoToFour, when: SOLO_OVER },
@@ -130,10 +131,7 @@ const skins: FormatCopy = {
     scoring: "",
   },
   golo: {
-    verdicts: [
-      { scored: true, label: GOLO_YES, when: SOLO_MAX },
-      { scored: false, label: GOLO_NOT_ONE_GAME, when: SOLO_OVER },
-    ],
+    ...goloFrom("game-library", GOLO_SOLO),
     lines: [{ text: summary("live-skins"), when: SOLO_MAX }, { text: twoToFour, when: SOLO_OVER }, ...goloStrokes],
   },
 };
@@ -162,10 +160,12 @@ const nassau: FormatCopy = {
     ...netOrGross,
     {
       text: "Presses: whether a side that’s 2 down can start a new match, and how many. A custom, not a Rule of Golf.",
-      href: "/blog/pressing",
-      linkLabel: "On pressing",
+      links: [
+        { href: "/blog/pressing", label: "On pressing" },
+        { href: "/glossary#press", label: "Press, defined" },
+      ],
     },
-    { text: "What a tied match does: it pushes, and nothing changes hands.", href: "/glossary#push", linkLabel: "Push" },
+    { text: "What a tied match does: it pushes, and nothing changes hands.", links: [{ href: "/glossary#push", label: "Push" }] },
   ],
   reasons: {},
   ruledOut: {
@@ -174,7 +174,7 @@ const nassau: FormatCopy = {
     scoring: "With three or four players, every pair has its own Nassau: three or six pairings at once.",
   },
   golo: {
-    verdicts: [{ scored: true, label: GOLO_YES }],
+    ...goloFrom("game-library", GOLO_SOLO),
     lines: [
       {
         text: registryLine("game-library", "Without teams, Nassau and the Overall Match are played head to head"),
@@ -206,7 +206,7 @@ const bestBall: FormatCopy = {
     scoring: "",
   },
   golo: {
-    verdicts: [{ scored: true, label: GOLO_YES }],
+    ...goloFrom("team-play"),
     lines: [
       { text: summary("team-play") },
       { text: registryLine("handicap-strokes", "Everyone gets their full course handicap") },
@@ -226,8 +226,7 @@ const scramble: FormatCopy = {
     { text: "How the teams are drawn." },
     {
       text: "Team handicaps: the WHS percentages (35% and 15% for two players), gross, or numbers the organizer sets.",
-      href: "/games/scramble",
-      linkLabel: "The percentages",
+      links: [{ href: "/games/scramble", label: "The percentages" }],
     },
     { text: "Any drive rule, such as a minimum number of drives from each player." },
     { text: "Equal teams can’t be made from this many players, so agree how the bigger team is balanced.", when: { unevenTeams: true } },
@@ -250,7 +249,7 @@ const scramble: FormatCopy = {
     scoring: "",
   },
   golo: {
-    verdicts: [{ scored: true, label: GOLO_YES }],
+    ...goloFrom("scramble"),
     lines: [
       { text: summary("scramble") },
       { text: registryLine("scramble", "Team handicaps follow the WHS percentages") },
@@ -291,7 +290,7 @@ const bingoBangoBongo: FormatCopy = {
     scoring: "Three points to follow on every hole, in a strict order of play.",
   },
   golo: {
-    verdicts: [{ scored: true, label: GOLO_YES }],
+    ...goloFrom("game-library", GOLO_SOLO),
     lines: [{ text: registryLine("game-library", "Each Bingo Bango Bongo point has one winner") }],
   },
 };
@@ -318,7 +317,7 @@ const wolf: FormatCopy = {
     scoring: "A partner decision on every tee, and points to follow for all four.",
   },
   golo: {
-    verdicts: [{ scored: true, label: GOLO_YES }],
+    ...goloFrom("game-library"),
     lines: [{ text: registryLine("game-library", "Wolf takes exactly four players") }, ...goloStrokes],
   },
 };
@@ -344,7 +343,7 @@ const nines: FormatCopy = {
     scoring: "Points split on every tied hole, so it needs a running count.",
   },
   golo: {
-    verdicts: [{ scored: false, label: GOLO_NO }],
+    ...goloFrom(null),
     lines: [
       {
         text: `Not one of GoLo’s games, which are ${capability("game-library").label}, and ${capability("closest-to-pin").label}. Keep Nines on paper, or score another game beside it in GoLo.`,
@@ -363,6 +362,12 @@ export const chooserCopy: ChooserCopy = {
     "bingo-bango-bongo": bingoBangoBongo,
     wolf,
     nines,
+  },
+  golo: {
+    scored: "Scored in GoLo",
+    notOneGame: "Not as one game in GoLo",
+    testing: "In testing in GoLo, not yet dependable",
+    notScored: "Not scored in GoLo",
   },
   empty: {
     teamsTooFew: "Team games need at least four players, and Wolf needs exactly four. With fewer, every game is each player on their own.",
@@ -503,20 +508,29 @@ export const chooserHow = {
 
 export const chooserTable = {
   title: "Every format at a glance",
-  lead: "The rules the chooser applies, one row per format. GoLo’s column follows the app’s capability list, and a test checks the two agree.",
+  lead: "The rules the chooser applies, one row per format. Players and “Simple?” are the chooser’s own rules, and GoLo’s column is read from the app’s capability list, as each card’s In GoLo line is.",
   head: ["Format", "Players", "Partners", "Simple?", "Handicap strokes", "In GoLo"],
+  players: { exactly: "Exactly {n}", range: "{min}–{max}" },
+  words: {
+    simple: { always: "Yes", never: "No", only: "With {n} players", upTo: "Up to {n} players" },
+    golo: { yes: "Yes", yesFor: "Yes, {min}–{max} players", testing: "In testing", no: "No" },
+  } satisfies TableWords,
 };
 
-/** Per-format cells for the table, in FORMAT_RULES order. Players come from the rules. */
-export const chooserTableCells: Record<FormatId, { partners: string; simple: string; strokes: string; golo: string }> = {
-  "best-score": { partners: "On your own", simple: "Yes", strokes: "Net or gross", golo: "Yes, 2–4 players" },
-  skins: { partners: "On your own", simple: "Yes", strokes: "Net or gross", golo: "Yes, 2–4 players" },
-  nassau: { partners: "Head to head", simple: "With two players", strokes: "Net or gross", golo: "Yes, 2–4 players; no presses" },
-  "best-ball": { partners: "Two sides of two", simple: "Yes", strokes: "Net or gross", golo: "Yes, as Team Play" },
-  scramble: { partners: "Teams, one ball", simple: "Yes", strokes: "Team handicap", golo: "Yes, up to 12 players" },
-  "bingo-bango-bongo": { partners: "On your own", simple: "No", strokes: "None", golo: "Yes, 2–4 players" },
-  wolf: { partners: "Changes every hole", simple: "No", strokes: "Net or gross", golo: "Yes, exactly 4" },
-  nines: { partners: "On your own", simple: "No", strokes: "Net or gross", golo: "No" },
+/**
+ * Per-format cells for the table, in FORMAT_RULES order. Players, "Simple?"
+ * and "In GoLo" are built from the rules and the registry (lib/chooser/view.ts
+ * simpleCell and goloCell); these two are descriptions.
+ */
+export const chooserTableCells: Record<FormatId, { partners: string; strokes: string }> = {
+  "best-score": { partners: "On your own", strokes: "Net or gross" },
+  skins: { partners: "On your own", strokes: "Net or gross" },
+  nassau: { partners: "Head to head", strokes: "Net or gross" },
+  "best-ball": { partners: "Two sides of two", strokes: "Net or gross" },
+  scramble: { partners: "Teams, one ball", strokes: "Team handicap" },
+  "bingo-bango-bongo": { partners: "On your own", strokes: "None" },
+  wolf: { partners: "Changes every hole", strokes: "Net or gross" },
+  nines: { partners: "On your own", strokes: "Net or gross" },
 };
 
 /**

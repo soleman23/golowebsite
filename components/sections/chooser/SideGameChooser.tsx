@@ -7,28 +7,30 @@
  * props from lib/content/chooser.ts, built on the server, so the capability
  * registry isn't shipped to the browser.
  *
- * The URL is read, not followed. The form is server-rendered with nothing
- * chosen; on mount a shared link's answers are read before paint, and a Link
- * to this page with other answers is picked up by the Suspense'd sync leaf,
- * as FilterUrlSync does. Answering doesn't rewrite the address bar: GA4's
- * enhanced measurement counts every history change as a page view, so a
- * write per answer would add a page view per tap. "Copy link" builds the
- * link from the answers instead. If the reader changes anything while the
- * address bar still holds a link's answers, those are cleared once, so the
- * bar never shows answers the page no longer has. Parameters the chooser
- * doesn't own (utm_source) are kept.
+ * The URL holds the answers, so a result can be shared, reloaded and come
+ * back to with Back. The form is server-rendered with nothing chosen; on
+ * mount a link's answers are read before paint, and a Link to this page with
+ * other answers is picked up by the Suspense'd sync leaf, as FilterUrlSync
+ * does. A change is written with replaceState (no history entry per answer)
+ * once the answers have stood for SETTLE_MS, and at once before a link is
+ * followed or the page is hidden. The wait is for analytics: the web
+ * stream's enhanced measurement counts a history change as a page view, so
+ * writing on every tap would send one per tap (docs/analytics-data-notes.md).
+ * Parameters the chooser doesn't own (utm_source) are kept; a chooser
+ * parameter it couldn't read is dropped from the address bar and reported.
  *
  * Announcements: a change the reader made is announced once its result has
  * stood a moment; arriving from a link isn't, since the page already shows it.
  */
 
 import { Suspense, useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
-import { usePathname, useSearchParams } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { NO_ANSWERS, PLAYER_COUNTS, type Answers } from "@/lib/chooser/engine";
 import {
+  CHOOSER_PATH,
   answersKey,
-  hasChooserParams,
+  chooserQuery,
   parseAnswers,
   sameAnswers,
   serializeAnswers,
@@ -49,7 +51,10 @@ type SideGameChooserProps = {
   ui: Ui;
 };
 
-/** How long an answer set has to stand before chooser_result reports it. */
+/**
+ * How long an answer set has to stand before it's settled: written to the
+ * address bar and reported as chooser_result.
+ */
 const SETTLE_MS = 1500;
 /**
  * How long a result has to stand before it's announced. Arrowing through the
@@ -94,7 +99,6 @@ function ChooserUrlSync({ onUrl }: { onUrl: (search: string) => void }) {
 }
 
 export function SideGameChooser({ copy, questions, questionNames, ui }: SideGameChooserProps) {
-  const pathname = usePathname();
   const [answers, setAnswers] = useState<Answers>(NO_ANSWERS);
   const [dropped, setDropped] = useState<Question[]>([]);
   const [message, setMessage] = useState("");
@@ -104,10 +108,17 @@ export function SideGameChooser({ copy, questions, questionNames, ui }: SideGame
   const [ready, setReady] = useState(false);
   const answersRef = useRef(answers);
   answersRef.current = answers;
-  // Whether the address bar still carries chooser answers from a link.
-  const urlHasAnswers = useRef(false);
-  // The query this component last wrote, so the sync leaf doesn't adopt it.
-  const ownWrite = useRef<string | null>(null);
+  // The chooser part of the last URL adopted (chooserQuery), so a URL change
+  // that leaves it alone (the analytics cleaner) is ignored.
+  const seenQuery = useRef("");
+  // The chooser part of each URL this component wrote and the sync leaf
+  // hasn't seen yet, oldest first. Seeing one retires it and any older.
+  const ownWrites = useRef<string[]>([]);
+  // Answers waiting to be written, and the timer that writes them.
+  const pendingUrl = useRef<Answers | null>(null);
+  const urlTimer = useRef<number | undefined>(undefined);
+  // A link's unreadable parameters, removed from the address bar after mount.
+  const cleanOnMount = useRef<Answers | null>(null);
   // Set by a change the reader made, so the next result is announced.
   const announceNext = useRef(false);
   const announceTimer = useRef<number | undefined>(undefined);
@@ -127,10 +138,22 @@ export function SideGameChooser({ copy, questions, questionNames, ui }: SideGame
   useEffect(() => () => window.clearTimeout(announceTimer.current), []);
 
   const adoptUrl = useCallback((search: string) => {
-    const normalized = new URLSearchParams(search).toString();
-    if (ownWrite.current !== null && normalized === ownWrite.current) return;
-    urlHasAnswers.current = hasChooserParams(search);
+    const query = chooserQuery(search);
+    const own = ownWrites.current.lastIndexOf(query);
+    if (own !== -1) {
+      ownWrites.current.splice(0, own + 1);
+      seenQuery.current = query;
+      return;
+    }
+    ownWrites.current = [];
+    if (query === seenQuery.current) return;
+    seenQuery.current = query;
+    // Another set of answers arrived (a Link, Back): it replaces any change
+    // still waiting to be written.
+    window.clearTimeout(urlTimer.current);
+    pendingUrl.current = null;
     const parsed = parseAnswers(search);
+    if (parsed.dropped.length) cleanOnMount.current = parsed.answers;
     if (sameAnswers(parsed.answers, answersRef.current) && !parsed.dropped.length) return;
     setAnswers(parsed.answers);
     setDropped(parsed.dropped);
@@ -142,14 +165,67 @@ export function SideGameChooser({ copy, questions, questionNames, ui }: SideGame
     setReady(true);
   }, [adoptUrl]);
 
-  /** Once the reader changes something, a link's answers in the address bar are out of date: clear them, once. */
-  const clearStaleUrl = useCallback(() => {
-    if (!urlHasAnswers.current) return;
-    urlHasAnswers.current = false;
-    const query = serializeAnswers(NO_ANSWERS, window.location.search);
-    ownWrite.current = new URLSearchParams(query).toString();
-    window.history.replaceState(null, "", `${pathname}${query}${window.location.hash}`);
-  }, [pathname]);
+  /** Writes the waiting answers into the address bar, if they differ from it. */
+  const flushUrl = useCallback(() => {
+    window.clearTimeout(urlTimer.current);
+    const next = pendingUrl.current;
+    pendingUrl.current = null;
+    // Not after leaving: Back can change the URL before this page unmounts.
+    if (!next || window.location.pathname !== CHOOSER_PATH) return;
+    const search = serializeAnswers(next, window.location.search);
+    if (new URLSearchParams(search).toString() === new URLSearchParams(window.location.search).toString()) return;
+    ownWrites.current.push(chooserQuery(search));
+    // null state, as dropUnusedQueryParams does: Next's patched replaceState
+    // then moves its router to the new URL, and Back returns to it.
+    window.history.replaceState(null, "", `${CHOOSER_PATH}${search}${window.location.hash}`);
+  }, []);
+
+  const writeUrlSoon = useCallback(
+    (next: Answers, delay = SETTLE_MS) => {
+      window.clearTimeout(urlTimer.current);
+      pendingUrl.current = next;
+      urlTimer.current = window.setTimeout(flushUrl, delay);
+    },
+    [flushUrl],
+  );
+
+  // Drop a link's unreadable parameters once Next has patched the history
+  // API: its effect runs after this one, so wait a task (AnalyticsLoader does
+  // the same).
+  useEffect(() => {
+    if (!cleanOnMount.current) return;
+    const next = cleanOnMount.current;
+    cleanOnMount.current = null;
+    writeUrlSoon(next, 0);
+  }, [writeUrlSoon, dropped]);
+
+  // Write a waiting change before anything leaves the page or the tab.
+  useEffect(() => {
+    const onClick = (event: MouseEvent) => {
+      if (event.target instanceof Element && event.target.closest("a[href]")) flushUrl();
+    };
+    const onHidden = () => {
+      if (document.visibilityState === "hidden") flushUrl();
+    };
+    // Back or Forward: the waiting answers belong to the entry being left.
+    const onPopState = () => {
+      window.clearTimeout(urlTimer.current);
+      pendingUrl.current = null;
+    };
+    document.addEventListener("click", onClick, true);
+    document.addEventListener("visibilitychange", onHidden);
+    window.addEventListener("pagehide", flushUrl);
+    window.addEventListener("popstate", onPopState);
+    return () => {
+      document.removeEventListener("click", onClick, true);
+      document.removeEventListener("visibilitychange", onHidden);
+      window.removeEventListener("pagehide", flushUrl);
+      window.removeEventListener("popstate", onPopState);
+      // Unmounting means the page has already changed: write nothing.
+      window.clearTimeout(urlTimer.current);
+      pendingUrl.current = null;
+    };
+  }, [flushUrl]);
 
   // Announce a change the reader made, once its result has stood a moment.
   useEffect(() => {
@@ -187,20 +263,24 @@ export function SideGameChooser({ copy, questions, questionNames, ui }: SideGame
       announceNext.current = true;
       setCopyState("idle");
       setDropped([]);
-      clearStaleUrl();
-      setAnswers((current) => ({ ...current, [question]: value }));
+      const next = { ...answersRef.current, [question]: value };
+      answersRef.current = next;
+      setAnswers(next);
+      writeUrlSoon(next);
     },
-    [clearStaleUrl],
+    [writeUrlSoon],
   );
 
   const reset = useCallback(() => {
     setAnswers(NO_ANSWERS);
     setDropped([]);
     setCopyState("idle");
-    clearStaleUrl();
+    // One deliberate action: written straight away.
+    pendingUrl.current = NO_ANSWERS;
+    flushUrl();
     announce(ui.resetDone);
     formHeading.current?.focus();
-  }, [announce, clearStaleUrl, ui.resetDone]);
+  }, [announce, flushUrl, ui.resetDone]);
 
   const relax = useCallback(
     <Q extends Question>(question: Q, value: Answers[Q]) => {
@@ -213,7 +293,7 @@ export function SideGameChooser({ copy, questions, questionNames, ui }: SideGame
   );
 
   const copyLink = useCallback(async () => {
-    const link = `${window.location.origin}${pathname}${serializeAnswers(answersRef.current)}`;
+    const link = `${window.location.origin}${CHOOSER_PATH}${serializeAnswers(answersRef.current)}`;
     try {
       await navigator.clipboard.writeText(link);
       setCopyState("copied");
@@ -225,7 +305,7 @@ export function SideGameChooser({ copy, questions, questionNames, ui }: SideGame
       setCopyState("failed");
       announce(ui.copyFailed);
     }
-  }, [announce, pathname, ui.copied, ui.copyFailed]);
+  }, [announce, ui.copied, ui.copyFailed]);
 
   const onGuideClick = useCallback((pick: PickView) => {
     track("chooser_guide_click", { format: pick.id, rank: pick.rank });

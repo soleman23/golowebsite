@@ -24,10 +24,16 @@ function parseValue(question: Question, raw: string): Answers[Question] | undefi
   return question === "players" ? Number(raw) : (raw as Answers[Question]);
 }
 
-/** Whether the query string carries any chooser parameter, valid or not. */
-export function hasChooserParams(search: string | URLSearchParams): boolean {
+/**
+ * Only the chooser's own parameters, valid or not, in question order, as a
+ * comparable string. Two URLs with the same chooserQuery say the same thing
+ * to the chooser, whatever else they carry.
+ */
+export function chooserQuery(search: string | URLSearchParams): string {
   const params = typeof search === "string" ? new URLSearchParams(search) : search;
-  return QUESTIONS.some((question) => params.has(question));
+  const own = new URLSearchParams();
+  for (const question of QUESTIONS) for (const value of params.getAll(question)) own.append(question, value);
+  return own.toString();
 }
 
 export type ParsedAnswers = {

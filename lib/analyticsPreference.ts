@@ -241,6 +241,18 @@ export function dropUnusedQueryParams(): void {
       changed = true;
     }
   }
+  // A chooser answer given more than once is read only if every copy agrees
+  // (lib/chooser/url.ts), so keep one copy of an agreed answer and none of a
+  // disputed one: nothing the chooser wouldn't use stays in page_location.
+  if (url.pathname === CHOOSER_PATH) {
+    for (const key of new Set(url.searchParams.keys())) {
+      const values = url.searchParams.getAll(key);
+      if (!isChooserParam(key, values[0]) || values.length < 2) continue;
+      url.searchParams.delete(key);
+      if (values.every((value) => value === values[0])) url.searchParams.set(key, values[0]);
+      changed = true;
+    }
+  }
   // No real route has an @ or a long digit run in its path, so a path
   // segment that looks personal can only be a 404; masking it keeps the 404.
   const segments = url.pathname.split("/");

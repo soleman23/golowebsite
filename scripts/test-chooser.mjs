@@ -12,8 +12,9 @@
  * - conflicting answers, empty results and the changes offered for them;
  * - URL parsing: malformed, unknown, duplicate and foreign parameters, round
  *   trips and reset;
- * - every "In GoLo" line is registry text, and the table's GoLo column agrees
- *   with the registry and the rules;
+ * - every "In GoLo" line is registry text, every verdict follows the
+ *   registry's status, and the table's derived columns agree with the cards;
+ * - the analytics URL cleaner keeps exactly the answers the chooser reads;
  * - every link on a card or the page is a served page or a published
  *   glossary anchor;
  * - the worked example still produces what its prose says.
@@ -59,9 +60,9 @@ const { glossaryLive, publishedGlossaryTerms } = await load("lib/content/glossar
 const { dropUnusedQueryParams, isKeptQueryParam } = await load("lib/analyticsPreference.ts");
 
 const { choose, FORMAT_IDS, FORMAT_RULES, NO_ANSWERS, PLAYER_COUNTS, evenTeams } = engine;
-const { parseAnswers, serializeAnswers, sameAnswers, answersKey, isChooserParam, hasChooserParams, CHOOSER_PATH } = url;
-const { chooserView } = view;
-const { chooserCopy, chooserExample, chooserTableCells, chooserKeepReading, chooserSideGames, chooserTeaser } = content;
+const { parseAnswers, serializeAnswers, sameAnswers, answersKey, isChooserParam, chooserQuery, CHOOSER_PATH } = url;
+const { chooserView, goloVerdict, goloCell, simpleCell } = view;
+const { chooserCopy, chooserExample, chooserTable, chooserTableCells, chooserKeepReading, chooserSideGames, chooserTeaser } = content;
 
 const failures = [];
 let passed = 0;
@@ -85,6 +86,7 @@ const eligible = (partial) => {
 check("every format has one rule", eq([...FORMAT_IDS].sort(), FORMAT_RULES.map((r) => r.id).sort()));
 check("every format has copy", eq([...FORMAT_IDS].sort(), Object.keys(chooserCopy.formats).sort()));
 check("every format has table cells", eq([...FORMAT_IDS].sort(), Object.keys(chooserTableCells).sort()));
+check("cards carry no hand-written GoLo verdicts", Object.values(chooserCopy.formats).every((f) => !("verdicts" in f.golo)));
 check("player counts are 2 to 12", eq([...PLAYER_COUNTS], [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]));
 
 /* ---------------------------------------------------------- players gate */
@@ -294,8 +296,12 @@ check("serialize: reset keeps foreign params only", serializeAnswers(NO_ANSWERS,
   check("round trip: every answer set", bad === 0, `${bad} failed`);
 }
 check("analytics key is closed-set", answersKey({ ...NO_ANSWERS, players: 4, scoring: "simple" }) === "4/-/-/simple/-");
-check("hasChooserParams", hasChooserParams("?players=x") && hasChooserParams("holes=9") && !hasChooserParams("?utm_source=x"));
 check("isChooserParam", isChooserParam("players", "12") && !isChooserParam("players", "13") && !isChooserParam("utm_source", "x"));
+check("chooserQuery: own params only, question order, invalid kept",
+  chooserQuery("?utm_source=x&holes=9&players=99&fbclid=y") === "players=99&holes=9");
+check("chooserQuery: same answers, other params: equal",
+  chooserQuery("?players=4&utm_source=a") === chooserQuery("players=4&gclid=b"));
+check("chooserQuery: nothing", chooserQuery("?utm_source=x") === "" && chooserQuery("") === "");
 
 /* --------------------------------- analytics URL cleaner keeps answers */
 
@@ -330,6 +336,27 @@ check("isChooserParam", isChooserParam("players", "12") && !isChooserParam("play
   check("cleaner drops chooser params on other routes",
     run("https://www.golo.golf/games?players=4&filter=match") === "https://www.golo.golf/games?filter=match");
   check("isKeptQueryParam: route-scoped", isKeptQueryParam("holes", "9", CHOOSER_PATH) && !isKeptQueryParam("holes", "9", "/blog"));
+  // Duplicates: the parser reads an answer given twice only if both agree.
+  const base = `https://www.golo.golf${CHOOSER_PATH}`;
+  check("cleaner keeps one copy of an agreed duplicate",
+    parseAnswers(new URL(run(`${base}?players=4&players=4&holes=9`)).search).answers.players === 4
+      && new URL(run(`${base}?players=4&players=4&holes=9`)).searchParams.getAll("players").length === 1);
+  check("cleaner drops a disputed duplicate, keeps the rest",
+    run(`${base}?players=4&players=5&holes=9`) === `${base}?holes=9`);
+  check("cleaner drops a duplicate with one bad copy",
+    run(`${base}?players=4&players=99&holes=9`) === `${base}?holes=9`);
+  check("cleaner leaves campaign duplicates as before",
+    run(`${base}?utm_source=a&utm_source=b&players=4`) === `${base}?utm_source=a&utm_source=b&players=4`);
+  check("cleaner strips personal-looking and foreign params on the chooser",
+    run(`${base}?players=4&email=a%40b.com&fbclid=xyz`) === `${base}?players=4`);
+  // Whatever the cleaner leaves, the chooser reads the same answers from.
+  let disagree = 0;
+  for (const query of ["players=4&players=4", "players=4&players=5", "partners=solo&partners=SOLO", "holes=9&holes=9&holes=18", "players=12&scoring=simple&scoring=simple"]) {
+    const before = parseAnswers(query).answers;
+    const after = parseAnswers(new URL(run(`${base}?${query}`)).search);
+    if (!sameAnswers(before, after.answers) || after.dropped.length) disagree++;
+  }
+  check("cleaned URL reads as the original did, with nothing left to drop", disagree === 0, `${disagree} differ`);
 }
 
 /* ------------------------------------------------- GoLo lines vs registry */
@@ -361,27 +388,79 @@ const registryText = new Set(
   for (const id of ["game-library", "team-play", "scramble", "overall-match-presses", "nine-hole-rounds", "live-skins", "guests"]) {
     check(`registry: ${id} is live`, cap(id).status === "live");
   }
-  // The table's GoLo column agrees with what the cards say for the same group.
-  const table = { "2–4 players": [2, 4], "exactly 4": [4, 4], "as Team Play": [4, 4], "up to 12 players": [4, 12] };
+  // Every verdict comes from the registry status, never from the copy.
   for (const id of FORMAT_IDS) {
-    const cell = chooserTableCells[id].golo;
-    if (cell === "No") {
-      const v = view.pickView(id, 1, [], { ...NO_ANSWERS, players: 3 }, chooserCopy);
-      check(`table ${id}: "No" matches the card`, v.golo.scored === false);
-      continue;
-    }
-    const key = Object.keys(table).find((k) => cell.includes(k));
-    check(`table ${id}: GoLo cell is a known range`, Boolean(key), cell);
-    if (!key) continue;
-    const [lo, hi] = table[key];
-    for (const players of PLAYER_COUNTS) {
-      const rule = FORMAT_RULES.find((r) => r.id === id);
-      if (players < rule.players.min || players > rule.players.max) continue;
-      const v = view.pickView(id, 1, [], { ...NO_ANSWERS, players }, chooserCopy);
-      const inRange = players >= lo && players <= hi;
-      if (v.golo.scored !== inRange) failures.push(`table ${id}: says "${cell}" but the card at ${players} players says scored=${v.golo.scored}`);
-    }
+    const golo = chooserCopy.formats[id].golo;
+    check(`${id}: GoLo status is the registry's`, golo.capability === null ? golo.status === null : golo.status === cap(golo.capability).status);
   }
+  check("Nines has no GoLo capability", chooserCopy.formats.nines.golo.capability === null);
+  {
+    const games = cap("game-library").label.toLowerCase();
+    for (const id of FORMAT_IDS) {
+      if (chooserCopy.formats[id].golo.capability !== "game-library") continue;
+      const name = chooserCopy.formats[id].name.toLowerCase();
+      check(`${id}: named in the registry's game list`, games.includes(name), `${name} not in "${games}"`);
+    }
+    check("Nines isn't in the registry's game list", !games.includes("nines"));
+  }
+  {
+    // Move a capability's status in a copy of the copy: the verdict follows.
+    const labels = chooserCopy.golo;
+    const best = chooserCopy.formats["best-score"].golo;
+    check("verdict: live, in range, scored", eq(goloVerdict(best, 4, labels), { scored: true, label: labels.scored }));
+    check("verdict: live, out of range, not one game", eq(goloVerdict(best, 5, labels), { scored: false, label: labels.notOneGame }));
+    check("verdict: testing is never scored", eq(goloVerdict({ ...best, status: "testing" }, 4, labels), { scored: false, label: labels.testing }));
+    for (const status of ["planned", "not-offered", null]) {
+      check(`verdict: ${status} is not scored`, eq(goloVerdict({ ...best, status }, 4, labels), { scored: false, label: labels.notScored }));
+    }
+    const rule = FORMAT_RULES.find((r) => r.id === "best-score");
+    check("table: a testing capability says so", goloCell(rule, { ...best, status: "testing" }, chooserTable.words.golo) === chooserTable.words.golo.testing);
+  }
+  // scoredFor ranges are the registry's own numbers.
+  check("registry ranges: solo games are 2 to 4",
+    FORMAT_IDS.every((id) => {
+      const golo = chooserCopy.formats[id].golo;
+      return !golo.scoredFor || (golo.scoredFor.min === 2 && golo.scoredFor.max === 4 && golo.capability === "game-library");
+    }));
+  // The table's derived cells agree with the cards for every group size.
+  for (const rule of FORMAT_RULES) {
+    const golo = chooserCopy.formats[rule.id].golo;
+    const cell = goloCell(rule, golo, chooserTable.words.golo);
+    const scoredAt = [];
+    for (let players = rule.players.min; players <= rule.players.max; players++) {
+      if (view.pickView(rule.id, 1, [], { ...NO_ANSWERS, players }, chooserCopy).golo.scored) scoredAt.push(players);
+    }
+    const expected = !scoredAt.length
+      ? chooserTable.words.golo.no
+      : scoredAt.length === rule.players.max - rule.players.min + 1
+        ? chooserTable.words.golo.yes
+        : chooserTable.words.golo.yesFor.replace("{min}", String(scoredAt[0])).replace("{max}", String(scoredAt.at(-1)));
+    check(`table ${rule.id}: In GoLo matches the cards`, cell === expected, `${cell} vs ${expected}`);
+    // "Simple?" says yes exactly where "keep it simple" keeps the format.
+    const simpleAt = [];
+    for (let players = rule.players.min; players <= rule.players.max; players++) {
+      if (!ask({ players, scoring: "simple" }).ruledOut.some((r) => r.id === rule.id)) simpleAt.push(players);
+    }
+    const s = simpleCell(rule, chooserTable.words.simple);
+    const w = chooserTable.words.simple;
+    const all = simpleAt.length === rule.players.max - rule.players.min + 1;
+    check(`table ${rule.id}: Simple? matches the rule`,
+      all ? s === w.always : !simpleAt.length ? s === w.never : s.includes(String(simpleAt.at(-1))), `${s} vs ${JSON.stringify(simpleAt)}`);
+    const strokes = chooserTableCells[rule.id].strokes;
+    check(`table ${rule.id}: strokes cell agrees with the rule`,
+      (strokes === "None") === Boolean(rule.noStrokes) && (strokes === "Team handicap") === Boolean(rule.setNumbers), strokes);
+  }
+  check("table: expected In GoLo cells",
+    eq(Object.fromEntries(FORMAT_RULES.map((r) => [r.id, goloCell(r, chooserCopy.formats[r.id].golo, chooserTable.words.golo)])), {
+      "best-score": "Yes, 2–4 players",
+      skins: "Yes, 2–4 players",
+      nassau: "Yes",
+      "best-ball": "Yes",
+      scramble: "Yes",
+      "bingo-bango-bongo": "Yes",
+      wolf: "Yes",
+      nines: "No",
+    }));
   check("Nassau GoLo line names the presses limit at 9 holes too",
     view.pickView("nassau", 1, [], { ...NO_ANSWERS, players: 2, holes: "9" }, chooserCopy).golo.lines.some((l) => l.text.startsWith("Over nine holes a Nassau")));
   check("scramble: uneven-teams line at 5, 7, 11 only",
@@ -413,8 +492,8 @@ const registryText = new Set(
   for (const [id, f] of Object.entries(chooserCopy.formats)) {
     hrefs.push([id, f.guide.href]);
     if (f.more) hrefs.push([id, f.more.href]);
-    for (const line of [...f.agree, ...f.summary, ...f.tradeoff, ...Object.values(f.reasons).flat()]) {
-      if (line.href) hrefs.push([id, line.href]);
+    for (const line of [...f.agree, ...f.summary, ...f.tradeoff, ...f.fit, ...Object.values(f.reasons).flat()]) {
+      for (const link of line.links ?? []) hrefs.push([id, link.href]);
     }
   }
   for (const item of [...chooserKeepReading.items, ...chooserSideGames.items]) hrefs.push(["page", item.href]);
@@ -437,6 +516,8 @@ const registryText = new Set(
     }
   }
   check("the chooser route exists", routes.has("/games/chooser"));
+  check("Nassau points to the press post and glossary entry",
+    ["/blog/pressing", "/glossary#press"].every((h) => hrefs.some(([owner, href]) => owner === "nassau" && href === h)));
 }
 
 /* ------------------------------------------------------- worked example */

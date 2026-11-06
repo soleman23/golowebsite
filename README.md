@@ -218,7 +218,8 @@ Keep the policies, this README and the consent copy in lockstep.
 
 Automatic (GA4 enhanced measurement, configured on the web stream):
 `page_view` (initial load and every client-side URL change, including the
-`/games` and `/blog` filter query), `scroll` (90%, once per page),
+`/games` and `/blog` filter query and each settled `/games/chooser` answer
+set), `scroll` (90%, once per page),
 `click` (outbound links), `form_start` / `form_submit` (form id, name,
 destination and field metadata, never values), `file_download`. Site search
 (`view_search_results`) never fires: its query parameters are stripped.

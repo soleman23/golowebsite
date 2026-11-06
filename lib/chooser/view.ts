@@ -15,6 +15,7 @@ import {
   type Answers,
   type ExcludeReason,
   type FormatId,
+  type FormatRule,
   type Handicaps,
   type Holes,
   type Partners,
@@ -32,9 +33,23 @@ export type When = {
   unevenTeams?: true;
 };
 
-export type Line = { text: string; href?: string; linkLabel?: string; when?: When };
+export type LineLink = { href: string; label: string };
 
-export type GoloVerdict = { scored: boolean; label: string; when?: When };
+export type Line = { text: string; links?: readonly LineLink[]; when?: When };
+
+/** A registry status (lib/content/capabilities.ts), resolved on the server. */
+export type GoloStatus = "live" | "testing" | "planned" | "not-offered";
+
+export type GoloCopy = {
+  /** The registry entry that covers the format; null when GoLo has no such game. */
+  capability: string | null;
+  /** That entry's status, copied from the registry when the copy is built. */
+  status: GoloStatus | null;
+  /** Group sizes GoLo scores as this one game, when narrower than the format's own. */
+  scoredFor?: { min: number; max: number };
+  /** Registry summaries and limits, each with the answers it applies under. */
+  lines: readonly Line[];
+};
 
 export type FormatCopy = {
   name: string;
@@ -51,12 +66,15 @@ export type FormatCopy = {
   reasons: Partial<Record<RankReason, readonly Line[]>>;
   /** Why it's ruled out, by rule. */
   ruledOut: Record<ExcludeReason, string>;
-  /** First that applies. */
-  golo: { verdicts: readonly GoloVerdict[]; lines: readonly Line[] };
+  golo: GoloCopy;
 };
+
+/** The "In GoLo" verdicts. Which one shows depends only on the registry status and scoredFor. */
+export type GoloLabels = { scored: string; notOneGame: string; testing: string; notScored: string };
 
 export type ChooserCopy = {
   formats: Record<FormatId, FormatCopy>;
+  golo: GoloLabels;
   /** Shown when nothing fits, keyed by the rule every format failed on, or general. */
   empty: { teamsTooFew: string; general: string };
   relaxations: { partners: Record<Exclude<Partners, "either">, string>; scoring: Record<Exclude<Scoring, "simple">, string> };
@@ -82,6 +100,21 @@ export function firstLine(lines: readonly Line[], answers: Answers): Line | unde
   return lines.find((line) => applies(line.when, answers));
 }
 
+/**
+ * What GoLo does with a format for this many players. Scored only when the
+ * registry says live and the group is a size GoLo scores it at; a testing,
+ * planned or missing entry is never shown as scored.
+ */
+export function goloVerdict(golo: GoloCopy, players: number | null, labels: GoloLabels): { scored: boolean; label: string } {
+  if (golo.status === "live") {
+    const range = golo.scoredFor;
+    const fits = !range || players === null || (players >= range.min && players <= range.max);
+    return fits ? { scored: true, label: labels.scored } : { scored: false, label: labels.notOneGame };
+  }
+  if (golo.status === "testing") return { scored: false, label: labels.testing };
+  return { scored: false, label: labels.notScored };
+}
+
 export type PickView = {
   id: FormatId;
   rank: number;
@@ -97,7 +130,7 @@ export type PickView = {
 
 export function pickView(id: FormatId, rank: number, reasons: readonly RankReason[], answers: Answers, copy: ChooserCopy): PickView {
   const format = copy.formats[id];
-  const verdict = format.golo.verdicts.find((v) => applies(v.when, answers)) ?? format.golo.verdicts[0];
+  const verdict = goloVerdict(format.golo, answers.players, copy.golo);
   return {
     id,
     rank,
@@ -163,4 +196,28 @@ export function chooserView(answers: Answers, copy: ChooserCopy): ChooserView {
     alsoFits: result.alsoFits.map((id) => ({ id, name: copy.formats[id].name, href: copy.formats[id].guide.href })),
     ruledOut,
   };
+}
+
+/* -------------------------------------------------------- the rules table */
+
+/** Words for the table's derived cells. {n}, {min} and {max} are player counts. */
+export type TableWords = {
+  simple: { always: string; never: string; only: string; upTo: string };
+  golo: { yes: string; yesFor: string; testing: string; no: string };
+};
+
+/** "Simple?", from the same rule "keep it simple" applies. */
+export function simpleCell(rule: FormatRule, words: TableWords["simple"]): string {
+  if (rule.simpleUpTo >= rule.players.max) return words.always;
+  if (rule.simpleUpTo < rule.players.min) return words.never;
+  return (rule.simpleUpTo === rule.players.min ? words.only : words.upTo).replace("{n}", String(rule.simpleUpTo));
+}
+
+/** "In GoLo", from the same registry status and sizes the cards' verdict uses. */
+export function goloCell(rule: FormatRule, golo: GoloCopy, words: TableWords["golo"]): string {
+  if (golo.status === "testing") return words.testing;
+  if (golo.status !== "live") return words.no;
+  const range = golo.scoredFor;
+  if (!range || (range.min <= rule.players.min && range.max >= rule.players.max)) return words.yes;
+  return words.yesFor.replace("{min}", String(range.min)).replace("{max}", String(range.max));
 }
