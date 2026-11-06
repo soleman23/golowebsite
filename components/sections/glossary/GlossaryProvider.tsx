@@ -33,7 +33,7 @@ import { usePathname, useRouter } from "next/navigation";
 import { AnnounceContext } from "@/components/ui/announce";
 import { FilterUrlSync, useInitialFilter } from "@/components/ui/FilterUrlSync";
 import { track } from "@/lib/analytics";
-import { createOpenReporter } from "./openReport";
+import { createOpenReporter } from "@/lib/openReport";
 
 type GlossaryState = {
   /** The active category id or "all"; null until the URL has been read. */
