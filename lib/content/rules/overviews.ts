@@ -63,26 +63,26 @@ export const ruleOverviews: RuleOverview[] = [
   // Course areas and procedures
   rule(12, {
     summary:
-      "Rule 12 covers playing from a bunker: when your ball counts as in one, and what you may touch before the stroke. A ball is in the bunker when any part of it touches sand inside the edge; one sitting on grass inside the edge without touching sand is not. Before you play, you can't touch the sand to test it, or with the club just in front of or behind the ball, in a practice swing or on the backswing. That is the general penalty: two strokes in stroke play, loss of the hole in match play. Digging in your feet and moving leaves or a rake are fine. Once the ball is played out, rake away.",
+      "Rule 12 covers playing from a bunker: when your ball is in one, and what you may touch before the stroke. It's in if any part touches sand inside the edge, or rests on something there, like a rake; on grass or soil inside the edge, not touching sand, it isn't. Before playing, you can't touch the sand to test it, with the club just in front of or behind the ball, or in a practice swing or backswing. Each costs the general penalty: two strokes in stroke play, loss of the hole in match play. Digging in your feet or moving a rake is fine. Once your ball is out, or you're taking relief outside, you can rake.",
     commonQuestions: [
       "Is my ball in the bunker if it's on grass inside the edge?",
       "Can my practice swing brush the sand?",
       "Can I move a rake, leaves or a stone before I play from the sand?",
-      "My ball is unplayable in a bunker: what are my options?",
+      "When can I smooth the sand?",
     ],
     relatedGlossaryIds: ["bunker", "sandy"],
-    sources: opened(OPENED_238, ["12", "12.1", "12.2a", "12.2b", "12.3"], ["General Penalty"]),
-    status: "draft",
+    sources: opened(OPENED_238, ["12", "12.1", "12.2a", "12.2b"], ["General Penalty"]),
+    status: "in-review",
   }),
   rule(13, {
     aliases: ["flagstick", "wrong green"],
     summary:
-      "Rule 13 covers the putting green, where several things not allowed elsewhere are fine. You can mark, lift and clean your ball, then replace it on its spot. You can repair ball marks, spike marks and old hole plugs, but not aeration holes, bare patches or natural wear of the hole. Accidentally moving your ball or marker on the green carries no penalty; put it back. Decide before each stroke whether the flagstick stays in or comes out. If your ball hits a flagstick left in the hole, there's no penalty and you play it as it lies. A ball hanging over the lip gets the time to reach the hole plus ten seconds to fall in.",
+      "Rule 13 covers the putting green, where you may do things not allowed elsewhere. You can mark, lift, clean and replace your ball, and repair ball marks, spike marks and old hole plugs, but not aeration holes or natural wear. Accidentally moving your ball or marker there costs nothing; replace it. Decide before each stroke whether the flagstick stays in; a putt that hits it is played as it lies, without penalty. If your ball hangs on the lip, you get time to reach the hole, then ten seconds; if it drops later, it counts but adds a penalty stroke. If your ball is on another hole's green, or one is in your stance or swing, take free relief.",
     commonQuestions: [
       "Can I fix a ball mark or spike mark on my putting line?",
-      "Should I leave the flagstick in or take it out?",
+      "Can I putt with the flagstick in?",
       "How long can I wait for a ball hanging on the lip?",
-      "My ball is on another hole's green: can I putt it from there?",
+      "My ball is on the wrong green: can I putt it from there?",
     ],
     relatedGlossaryIds: ["putt"],
     sources: opened(
@@ -90,12 +90,12 @@ export const ruleOverviews: RuleOverview[] = [
       ["13", "13.1b", "13.1c", "13.1d", "13.1f", "13.2a", "13.2b", "13.3a"],
       ["Wrong Green"],
     ),
-    status: "draft",
+    status: "in-review",
   }),
   rule(14, {
     aliases: ["wrong place"],
     summary:
-      "Rule 14 is the procedure behind most relief: marking and lifting a ball, putting it back, dropping it, and playing from the wrong spot. Before lifting a ball you'll replace, mark the spot just behind or beside it with a ball-marker or a club held on the ground; lifting it unmarked costs one penalty stroke. Drop from knee height so the ball falls straight down; it must land in and stay in the relief area, usually one or two club-lengths from a reference point. If it rolls out twice, place it where the second drop first hit the ground. Mistakes can be fixed without penalty before you play the ball. Playing from a wrong place is the general penalty.",
+      "Rule 14 covers the procedures behind relief: marking, lifting, replacing and dropping a ball, and playing from a wrong place. Mark the spot before lifting a ball you'll replace; skipping that costs a penalty stroke. Drop from knee height, straight down, into the relief area, usually one or two club-lengths from a reference point, where it must stay; if it rolls out twice, place it where the second drop landed. A wrong drop, placement or replacement can be redone free before you play the ball. Playing from a wrong place costs the general penalty, two strokes or loss of the hole in match play; in stroke play, a serious breach must be corrected before the next tee, or you're disqualified.",
     commonQuestions: [
       "Do I have to mark my ball before lifting it?",
       "How do I drop, and what if the ball rolls out of the relief area?",
@@ -107,11 +107,11 @@ export const ruleOverviews: RuleOverview[] = [
       ["14", "14.1a", "14.3b", "14.3c", "14.5a", "14.7a", "14.7b"],
       ["Relief Area", "Club-Length", "General Penalty"],
     ),
-    status: "draft",
+    status: "in-review",
   }),
   rule(15, {
     summary:
-      "Rule 15 covers things you may move out of the way for free: loose impediments, meaning unattached natural objects such as leaves, twigs and stones, and movable obstructions, artificial objects such as rakes, bottles and towels that shift without much effort or damage. You can usually remove either without penalty. The catch is a loose impediment near your ball: away from the putting green and the teeing area, if removing one moves your ball, replace it and add one penalty stroke. If moving an obstruction shifts your ball, there's no penalty; replace it. Sand, loose soil and dew aren't loose impediments. You can also have another player mark and lift a ball that could interfere with your play.",
+      "Rule 15 covers two kinds of things you can usually move out of the way without penalty. Loose impediments are unattached natural objects, such as leaves, twigs and stones. Movable obstructions are artificial objects you can move with reasonable effort and without damage, such as rakes, bottles and towels. Off the putting green and teeing area, if removing a loose impediment moves your ball, replace it and add a penalty stroke; if removing a movable obstruction moves it, just replace it. If your ball sits on a movable obstruction, lift it, remove the object and drop within one club-length of the spot beneath, no nearer the hole; on the green, place it there.",
     commonQuestions: [
       "Can I move a twig or a leaf that's touching my ball?",
       "My ball is resting against a rake: what do I do?",
@@ -120,15 +120,15 @@ export const ruleOverviews: RuleOverview[] = [
     ],
     sources: opened(
       OPENED_238,
-      ["15", "15.1a", "15.1b", "15.2a", "15.3a", "15.3b"],
+      ["15", "15.1a", "15.1b", "15.2a", "15.3b"],
       ["Loose Impediment", "Movable Obstruction"],
     ),
-    status: "draft",
+    status: "in-review",
   }),
   rule(16, {
     aliases: ["plugged ball", "embedded ball", "casual water"],
     summary:
-      "Rule 16 covers free relief from abnormal course conditions (animal holes, ground under repair, temporary water and immovable obstructions such as cart paths), from dangerous animals, and for a ball in the general area that plugs in its own pitch-mark. You need real interference with your ball, stance or swing, or on the green your line; one that only distracts you doesn't count. In the general area, find the nearest point of complete relief, the closest spot no nearer the hole where the condition no longer affects the shot you'd have played, and drop within one club-length of it, no nearer the hole. A ball in a penalty area gets none of this, except from a dangerous animal.",
+      "Rule 16 covers free relief from abnormal course conditions (ground under repair, temporary water, animal holes and immovable obstructions such as paved paths), from dangerous animals, and for a ball in the general area that plugs in its own pitch-mark. A condition has to interfere with your lie, stance or swing, or, on the green, your line; one that only distracts you doesn't count. In the general area, find the nearest point of complete relief: the closest spot, no nearer the hole, free of the condition for the shot you'd have played. Drop within one club-length of it, no nearer the hole and clear of the condition. None of this applies in a penalty area, except dangerous-animal relief.",
     commonQuestions: [
       "My ball is on a cart path: where do I drop?",
       "Does a soggy patch of fairway count as temporary water?",
@@ -137,35 +137,43 @@ export const ruleOverviews: RuleOverview[] = [
     ],
     sources: opened(
       OPENED_238,
-      ["16", "16.1a", "16.1b", "16.1c", "16.1d", "16.2a", "16.2b", "16.3a", "16.3b"],
-      ["Abnormal Course Condition", "Nearest Point of Complete Relief", "Club-Length", "Temporary Water", "Embedded"],
+      ["16", "16.1a", "16.1b", "16.2a", "16.2b", "16.3a", "16.3b"],
+      [
+        "Abnormal Course Condition",
+        "Ground Under Repair",
+        "Obstruction",
+        "Nearest Point of Complete Relief",
+        "Club-Length",
+        "Temporary Water",
+        "Embedded",
+      ],
     ),
-    status: "draft",
+    status: "in-review",
   }),
 
   // Relief and penalties
   rule(17, {
     aliases: ["water hazard"],
     summary:
-      "Rule 17 covers penalty areas: any body of water on the course plus other areas the Committee defines, marked red or yellow (unmarked counts as red). You can play the ball as it lies, grounding the club and moving loose impediments as in the general area. Or, for one penalty stroke, replay from where you last played, or drop back on a line from the hole through where the ball last crossed into the area. Red adds a drop within two club-lengths of that point, no nearer the hole and outside the area. To take relief without finding the ball, it must be known or virtually certain, at least 95 percent likely, that it's in there.",
+      "Rule 17 covers penalty areas: any body of water on the course plus other areas the Committee defines, marked red or yellow (unmarked counts as red). You can play the ball as it lies, grounding the club and moving loose impediments as in the general area. Or, for one penalty stroke, replay from where you last played, or drop outside the area on a line back from the hole through where the ball last crossed into it. Red adds a drop outside it within two club-lengths of that point, no nearer the hole. Without finding the ball, you need it known or virtually certain (at least 95 percent likely) to be in the area; otherwise it's lost, under Rule 18.",
     commonQuestions: [
       "Red stakes or yellow stakes: what's the difference?",
       "Can I ground my club or move leaves in a penalty area?",
-      "Nobody saw it go in the water: can I still drop by the pond?",
+      "Nobody saw my ball go in the water: can I still drop by the pond?",
       "Can I declare my ball unplayable in a penalty area?",
     ],
     relatedGlossaryIds: ["penalty-area"],
     sources: opened(
       OPENED_238,
       ["17", "17.1b", "17.1c", "17.1d", "17.3"],
-      ["Penalty Area", "Known or Virtually Certain"],
+      ["Penalty Area", "Club-Length", "Known or Virtually Certain"],
     ),
-    status: "draft",
+    status: "in-review",
   }),
   rule(18, {
     aliases: ["OB"],
     summary:
-      "Rule 18 covers stroke and distance: one penalty stroke, then replay from where you last played. It's always available, and required when a ball is out of bounds or lost, unless it's known or virtually certain that the ball is in a penalty area or another case Rule 18.2b lists. A ball not found three minutes after the search starts is lost; one is out of bounds only if all of it is past the boundary, usually white stakes or lines. If a shot might be out of bounds, or lost somewhere other than a penalty area, you may hit a provisional ball, but announce it first. Re-tee after an out-of-bounds drive and that shot is your third.",
+      "Rule 18 covers stroke and distance: one penalty stroke, then replay from where you last played. It's always available, and required for a ball out of bounds, or for a lost ball unless Rule 18.2b allows other relief, as when it's known or virtually certain the ball is in a penalty area. A ball is lost if it isn't found within three minutes of you or your caddie starting to look; it's out of bounds only if all of it lies past the boundary's course-side edge, usually white stakes or lines. If your ball might be out of bounds, or lost somewhere other than a penalty area, you may hit a provisional ball, but call it a provisional first.",
     commonQuestions: [
       "How long can I look for my ball?",
       "Is a ball sitting on the white line in or out of bounds?",
@@ -176,13 +184,13 @@ export const ruleOverviews: RuleOverview[] = [
     sources: opened(
       OPENED_238,
       ["18", "18.1", "18.2a", "18.2b", "18.3a", "18.3b", "18.3c"],
-      ["Lost", "Out of Bounds", "Known or Virtually Certain", "Provisional Ball"],
+      ["Stroke and Distance", "Lost", "Out of Bounds", "Known or Virtually Certain", "Provisional Ball"],
     ),
-    status: "draft",
+    status: "in-review",
   }),
   rule(19, {
     summary:
-      "Rule 19 lets you treat your ball as unplayable anywhere on the course except a penalty area, and only you can make that call. Each option costs one penalty stroke: play again from where you made your last stroke; drop on a line back from the hole through the ball's spot, as far back as you like; or drop within two club-lengths of the ball, no nearer the hole. The last two need you to know where the ball is. In a bunker, those two drops have to stay in the bunker, or you can drop back on the line outside it for two penalty strokes in total. For a ball in a penalty area, use Rule 17 instead.",
+      "Rule 19 lets you treat your ball as unplayable anywhere except a penalty area, and only you can make that call. Each option costs one penalty stroke: play again from where you last played; drop on a line back from the hole through the ball's spot, as far back as you like; or drop within two club-lengths of the ball, no nearer the hole, measuring from the ground beneath it if it's up a tree. Only stroke and distance works if you can't find the ball. In a bunker, the two drops stay in the bunker, or you can drop back on the line outside it for two penalty strokes in total.",
     commonQuestions: [
       "My ball is under a bush: what are my options?",
       "Can I declare my ball unplayable in a bunker?",
@@ -190,8 +198,12 @@ export const ruleOverviews: RuleOverview[] = [
       "My ball is stuck in a tree: where do I drop?",
     ],
     relatedGlossaryIds: ["bunker"],
-    sources: opened(OPENED_238, ["19", "19.1", "19.2", "19.2a", "19.2b", "19.2c", "19.3a", "19.3b"]),
-    status: "draft",
+    sources: opened(
+      OPENED_238,
+      ["19", "19.1", "19.2", "19.2a", "19.2b", "19.2c", "19.3a", "19.3b"],
+      ["Club-Length"],
+    ),
+    status: "in-review",
   }),
 
   // Rulings, formats and accessibility
