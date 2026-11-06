@@ -28,13 +28,20 @@ import styles from "./rules.module.css";
  * (Amendment A14). Self-canonical to /rules with or without ?category=.
  * Schema, the sitemap entry and llms.txt come with #243; the photo with
  * #235.
+ *
+ * A function rather than a `metadata` export: a static export is resolved
+ * even when the page calls notFound(), and the 404's payload would carry
+ * this title and canonical before launch.
  */
-export const metadata: Metadata = pageMetadata({
-  path: "/rules",
-  title: "Golf Rules Explained: Penalties, Relief & Questions",
-  description:
-    "Plain answers for a lost ball, out of bounds, penalty areas, cart paths and bunkers, plus all 25 Rules of Golf summarised, with the official text linked.",
-});
+export function generateMetadata(): Metadata {
+  if (!rulesRouteVisible()) return {};
+  return pageMetadata({
+    path: "/rules",
+    title: "Golf Rules Explained: Penalties, Relief & Questions",
+    description:
+      "Plain answers for a lost ball, out of bounds, penalty areas, cart paths and bunkers, plus all 25 Rules of Golf summarised, with the official text linked.",
+  });
+}
 
 /**
  * The Rules Center hub (#234; docs/rules/ux.md). Server-rendered: every
