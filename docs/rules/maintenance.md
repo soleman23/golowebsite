@@ -23,11 +23,25 @@ The workflow can also be run by hand: Actions → Rules sources → Run workflow
 
 ## The tools
 
-- **`npm run check:rules-sources`** (`scripts/check-rules-sources.mjs`). Fetches the R&A rules index, the 25 rule pages, the Definitions, the Model Local Rules page and every R&A URL a record cites. It checks that each page answers 200; each title in `lib/content/rules/official.ts` matches the index and no rule was added; every subrule anchor in `official.ts` is an `id` on its page and no new one has appeared; each anchor a record cites is on its page; each cited Definition's term is on the Definitions page; each cited Model Local Rule code ("E-5", "E-3") is in the Model Local Rules page data. Then it hashes each rule page's text and the Definitions' (what a reader sees plus the prose the page ships in its data, such as Interpretations) and compares them with `lib/content/rules/source-hashes.json`. One line per problem, exit 1 on any. Needs the network, so it isn't in CI.
-  - `-- --update` writes the live hashes to `source-hashes.json` with today's `acceptedOn`. Only after someone has read what changed.
-  - `-- --fixture scripts/fixtures/rules-sources-broken.json` runs against synthetic pages with known faults, offline. It must fail.
-- **`npm run test:rules-sources`** (`scripts/test-rules-sources.mjs`, part of `npm test`). Hermetic: the broken fixture fails with exactly its ten lines, the same pages with the faults fixed pass, and the parsing and copy-distance rules hold.
-- **`npm run check:rules-copy`** (`scripts/check-rules-copy.mjs`). Review-time, not CI. Caches the official text in `.cache/rules-official/` (git-ignored: the R&A's terms allow personal use only) and flags any run of eight or more consecutive words a record's copy shares with it, naming the record, the field and the page. Checks every record whatever its status. `-- --refresh` fetches the text again; `-- --text "<copy>"` checks a sentence before it goes into a record.
+- **`npm run check:rules-sources`** (`scripts/check-rules-sources.mjs`). Fetches the R&A rules index, the 25 rule pages, the Definitions, the Model Local Rules page and every R&A URL a record cites. It checks that:
+  - each page answers 200;
+  - each title in `lib/content/rules/official.ts` matches the index, and no rule was added;
+  - every subrule anchor in `official.ts` is an `id` on its page, and no new one has appeared;
+  - each anchor a record cites is on its page;
+  - each cited Definition's term is a defined term;
+  - each cited Model Local Rule ("E-5", "E-3") is an item in the Model Local Rules page data.
+
+  Then it hashes the text of each rule, the Definitions and each cited Model Local Rule and compares the hashes with `lib/content/rules/source-hashes.json`. The text is read from the data the R&A ships with each page, so it includes Interpretations and the definitions' wording. It's each item's own text: not the neighbouring rules, menus, shared diagrams or list of all 25 rules the page also carries, so an edit to Rule 19 reports Rule 19 only. One line per problem, exit 1 on any. Needs the network, so it isn't in CI.
+  - `-- --update` writes the live hashes to `source-hashes.json` with today's `acceptedOn`. Use it only after someone has read what changed. It refuses while any other problem stands, so a broken or placeholder page can't be accepted as the new text. A PR that starts citing a new Model Local Rule runs it too, after reading that rule.
+  - `-- --fixture scripts/fixtures/rules-sources-broken.json` runs offline against synthetic pages with known faults. It must fail.
+- **`npm run test:rules-sources`** (`scripts/test-rules-sources.mjs`, part of `npm test`, and run by the workflow after each live check). Hermetic:
+  - the broken fixture fails with exactly its ten lines, and the same pages with the faults fixed pass;
+  - a neighbouring rule's edit doesn't move a rule's hash, and a retitled Interpretation does;
+  - `--update` refuses anything but text changes;
+  - the parsing and copy-distance rules hold.
+- **`npm run check:rules-copy`** (`scripts/check-rules-copy.mjs`). Review-time, not CI. Caches the official text in `.cache/rules-official/`, which is git-ignored because the R&A's terms allow personal use only. The cache holds one file per page with one item per line, plus `manifest.json` with each file's sha256. The tool flags any run of eight or more consecutive words a record's copy shares with that text, naming the record, the field and the page. It checks every record whatever its status.
+  - `-- --refresh` fetches the text again and moves the old copy to `.cache/rules-official/previous/`.
+  - `-- --text "<copy>"` checks a sentence before it goes into a record.
 
 ## When the source check fails
 
@@ -41,12 +55,14 @@ The issue lists one line per problem. Work through them in a branch; the issue c
 | `<url>#N_xy: not on the page (cited by …)` | A record cites an anchor that no longer exists | As above, then fix the named records' sources. |
 | `Definitions: "…" not found` | A defined term was renamed or removed | Read the Definitions page; fix the named records' sources and copy. |
 | `Model Local Rules: "E-5" not found` | A Model Local Rule was renumbered or withdrawn | Read Committee Procedures Section 8; fix the named records, including their `localRuleCaveat`. |
-| `<url>: text changed since the accepted hash` | Something on that page's text changed: a clarification, an Interpretation, a typo fix | See below. |
+| `<url>: no rule text in the page data` / `no defined terms in the page data`, `no rule titles found` | The R&A changed how its pages are built, so the check can't read them | Look at the page source and update the parsing in `scripts/rules-sources.mjs`, with a test in `scripts/test-rules-sources.mjs`. Until then the check can't see changes to that page. |
+| `<url>: text changed since the accepted hash` (a rule page or the Definitions), `…/sections/8#E-5: text changed…` (that Model Local Rule) | The item's text changed: a clarification, a new or reworded Interpretation, a typo fix | See below. |
+| `…: no accepted hash` / `…: has an accepted hash but isn't checked any more` | A record started or stopped citing a Model Local Rule, or a rule was added or removed | Read the item, then `--update`. |
 
-**A text change.** The hash says that a page changed, not what changed. To see it:
+**A text change.** The hash says that an item changed, not what changed. To see it:
 
-1. If you have an older copy of the official text in `.cache/rules-official/` (from `check:rules-copy`), copy the folder somewhere outside the repo, run `npm run check:rules-copy -- --refresh`, and diff the two copies of that page's file.
-2. Otherwise read the page and the R&A and USGA clarifications pages for anything dated since `acceptedOn` in `source-hashes.json`.
+1. If `.cache/rules-official/manifest.json` exists and its `sha256` for the page equals the page's hash in `source-hashes.json`, the cached file is the accepted text. Run `npm run check:rules-copy -- --refresh`, then compare the two copies, e.g. `git diff --no-index --word-diff .cache/rules-official/previous/rule-18.txt .cache/rules-official/rule-18.txt`. For a Model Local Rule, compare the `committee-procedures-sections-8.txt` copies and look at that rule's lines.
+2. Otherwise, there's no copy of the accepted text to compare with. Read the page, and the R&A and USGA clarifications pages, for anything dated since `acceptedOn` in `source-hashes.json`.
 3. Decide, for each record that cites the page (search `lib/content/rules/` for the rule number):
    - **No effect on what the record says:** nothing to change in the record.
    - **It changes what the record says:** re-review the record (`editorial-review.md` § Review triggers). If the change makes a published answer wrong, take the record off the page until the fix is approved, rather than leave wrong advice up.
@@ -104,7 +120,7 @@ usga.org answers scripts with 403, so these are opened by hand in a browser.
 | `checkedOn` (each source) | The day someone actually opened that source for that record | Set during drafting, review and rechecks; never copied from another record. |
 | `reviewLog` (record, internal) | Every review stage of every re-review | Entries for `rules`, `product`, `seo`, then `approval` (`editorial-review.md`). |
 | `lib/content/rules/edition.ts` | `clarificationsUpdated` and `clarificationsCheckedOn` at each quarterly review; `id`, `label`, `effectiveFrom` and `supersededOn` only for a new edition (#251) | |
-| `lib/content/rules/source-hashes.json` | After someone has read a reported text change: `check:rules-sources -- --update` | `acceptedOn` is the day of that reading. Hashes only; no rule text is stored. |
+| `lib/content/rules/source-hashes.json` | After someone has read a reported text change, or when a record starts citing a new Model Local Rule: `check:rules-sources -- --update` | `acceptedOn` is the day of that reading. Hashes only; no rule text is stored. |
 | `lib/content/rules/official.ts` | A title or anchor change the check reports | With the `TITLES` list or the anchor digest in `scripts/test-rules.mjs` and the anchor table in `source-map.md`. |
 | `docs/rules/source-map.md` | Any recheck: the "Checked" date, the USGA table's Checked column, the anchor table | |
 | `docs/rules/review-packet.md` | Every re-review | One entry per record, as for new copy. |

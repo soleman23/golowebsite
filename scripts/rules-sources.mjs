@@ -4,8 +4,8 @@
  * pure: pages come in as HTML strings, problems go out as lines, so
  * scripts/test-rules-sources.mjs runs the same checks on synthetic pages.
  *
- * Nothing here stores or prints rule text. Hashes are of the page's text;
- * the copy check's cache is git-ignored and stays on the machine.
+ * Nothing here stores or prints rule text. The hashes are of each page's
+ * own text; the copy check's cache is git-ignored and stays on the machine.
  */
 
 import { createHash } from "node:crypto";
@@ -78,52 +78,102 @@ function bodyMarkup(html) {
     .replace(/<(script|style|noscript|template|svg|header|footer)\b[\s\S]*?<\/\1>/gi, " ");
 }
 
-/** The page's visible text, as one normalised line. What the hashes cover. */
+/** The page's visible text, as one normalised line: the fallback when a page has no data. */
 export function visibleText(html) {
   return squash(decodeEntities(bodyMarkup(html).replace(/<[^>]*>/g, " ")));
 }
 
-/** Every text node of the body, decoded and squashed, for exact-match checks. */
-function textNodes(html) {
-  const nodes = new Set();
-  for (const m of bodyMarkup(html).matchAll(/>([^<]+)</g)) {
-    const text = squash(decodeEntities(m[1]));
-    if (text) nodes.add(text);
+/* ------------------------------------------------------------ page text */
+
+/*
+ * The R&A site is a Next.js app: each page ships the content it renders as
+ * `__NEXT_DATA__` pageProps, including text the markup leaves out (the
+ * Definitions' statements, a rule's Interpretations, the Model Local
+ * Rules). A rule page's data also carries the rules either side of it, its
+ * menus, a pool of diagrams shared with nearby rules and the list of all 25
+ * rules, so the text is read from the page's own item only. Otherwise an
+ * edit to Rule 19 would report Rules 18, 19 and 20 as changed.
+ */
+
+/** pageProps, or null when the page has no Next.js data. */
+export function pageData(html) {
+  const m = /<script id="__NEXT_DATA__"[^>]*>([\s\S]*?)<\/script>/.exec(html);
+  if (!m) return null;
+  try {
+    return JSON.parse(m[1])?.props?.pageProps ?? null;
+  } catch {
+    return null;
   }
-  return nodes;
+}
+
+/** Not the item's own text: neighbours, menus, shared diagrams, links, CMS metadata. */
+const NOT_OWN = new Set([
+  "nextRule", "previousRule", "ruleMenuData", "linkedItems", "availableInternalLinks",
+  "system", "metadata", "url", "urlTag", "headerTheme", "ruleFor",
+]);
+/** Fields whose `value` is text a reader sees. */
+const TEXT_FIELDS = new Set(["number", "title", "description", "purposeStatement", "headerDescription", "term", "definitionText"]);
+
+const plain = (value) => squash(decodeEntities(value.replace(/<[^>]*>/g, " ")));
+
+/** An item's own text, one string per field, in page order. */
+function itemText(node, out = []) {
+  if (Array.isArray(node)) node.forEach((child) => itemText(child, out));
+  else if (node && typeof node === "object") {
+    for (const [key, value] of Object.entries(node)) {
+      if (NOT_OWN.has(key)) continue;
+      if (TEXT_FIELDS.has(key) && typeof value?.value === "string") {
+        const text = plain(value.value);
+        if (text) out.push(text);
+      } else itemText(value, out);
+    }
+  }
+  return out;
 }
 
 /**
- * The prose a Next.js page ships in its data (`__NEXT_DATA__` pageProps)
- * rather than its markup: the Definitions' statements, a rule's
- * Interpretations, the Model Local Rules. Rich-text strings only, tags
- * stripped, each once, in page order.
+ * A rule page's own text (also Committee Procedures Section 8, which has the
+ * same shape): its title, purpose, subrules, sections and Interpretations.
+ * Null when the data isn't there.
  */
-export function dataText(html) {
-  const m = /<script id="__NEXT_DATA__"[^>]*>([\s\S]*?)<\/script>/.exec(html);
-  if (!m) return "";
-  let props;
-  try {
-    props = JSON.parse(m[1])?.props?.pageProps;
-  } catch {
-    return "";
-  }
-  const seen = new Set();
-  const walk = (value) => {
-    if (typeof value === "string") {
-      if (/<[a-z][^>]*>/i.test(value)) {
-        const text = squash(decodeEntities(value.replace(/<[^>]*>/g, " ")));
-        if (text) seen.add(text);
-      }
-    } else if (Array.isArray(value)) value.forEach(walk);
-    else if (value && typeof value === "object") Object.values(value).forEach(walk);
-  };
-  walk(props);
-  return [...seen].join(" ");
+export function ruleText(html) {
+  const rule = pageData(html)?.ruleOfGolf;
+  const text = rule ? itemText(rule) : [];
+  return text.length ? text : null;
 }
 
-/** What the hashes cover and the copy check compares with: the visible text, then the data's prose. */
-export const pageText = (html) => squash(`${visibleText(html)} ${dataText(html)}`);
+/** The Definitions page's terms → each term's text (the term, then its definition). */
+export function definitions(html) {
+  const byLetter = pageData(html)?.rulesSummary?.definitions;
+  const terms = new Map();
+  if (!byLetter || typeof byLetter !== "object") return terms;
+  for (const entries of Object.values(byLetter)) {
+    for (const entry of Array.isArray(entries) ? entries : []) {
+      const term = typeof entry?.term?.value === "string" ? plain(entry.term.value) : "";
+      if (term) terms.set(term, itemText(entry));
+    }
+  }
+  return terms;
+}
+
+/** One Model Local Rule's own text ("E-5"), found by its number, or null. */
+export function localRuleText(html, code) {
+  let found = null;
+  const walk = (node) => {
+    if (found || !node || typeof node !== "object") return;
+    if (Array.isArray(node)) return node.forEach(walk);
+    if (node.number?.value === code && node.description) {
+      found = itemText(node);
+      return;
+    }
+    for (const [key, value] of Object.entries(node)) if (!NOT_OWN.has(key)) walk(value);
+  };
+  walk(pageData(html)?.ruleOfGolf);
+  return found?.length ? found : null;
+}
+
+/** The text a hash covers: one item per line. */
+export const hashText = (lines) => sha256(lines.join("\n"));
 
 export const sha256 = (text) => createHash("sha256").update(text).digest("hex");
 
@@ -205,14 +255,23 @@ export function urlsToFetch(input) {
   return [...new Set(urls)];
 }
 
-/** The pages whose text is hashed: the rule pages and the Definitions. */
-export function hashedUrls(input) {
-  return [...Object.keys(input.rules).map((n) => input.ruleUrl(Number(n))), input.definitionsUrl];
+/**
+ * What gets a hash: each rule page, the Definitions, and each Model Local
+ * Rule a record cites ("<url>#E-5": the code, not a real fragment).
+ */
+export function hashedKeys(input) {
+  const { localRules } = expectedSources(input);
+  return [
+    ...Object.keys(input.rules).map((n) => input.ruleUrl(Number(n))),
+    input.definitionsUrl,
+    ...[...localRules.keys()].map((code) => `${input.localRulesUrl}#${code}`),
+  ];
 }
 
 /**
  * Every problem, one line each, given `pages` (url → { status, html } or
- * { error }). Also returns the live hashes, which --update writes.
+ * { error }). `changed` is the subset that is only text changing, which is
+ * all --update may accept; `hashes` is the live hash of each key.
  */
 export function checkSources(input, pages) {
   const problems = [];
@@ -220,6 +279,7 @@ export function checkSources(input, pages) {
     const page = pages.get(url);
     return page && !page.error && page.status === 200;
   };
+  const live = new Map(); // hash key → the text it covers, one item per line
 
   // Every page answers.
   for (const url of urlsToFetch(input)) {
@@ -231,33 +291,37 @@ export function checkSources(input, pages) {
 
   // Titles: the index against officialRules, both ways.
   if (ok(input.indexUrl)) {
-    const live = indexTitles(pages.get(input.indexUrl).html);
-    if (live.size === 0) {
+    const titles = indexTitles(pages.get(input.indexUrl).html);
+    if (titles.size === 0) {
       problems.push(`${input.indexUrl}: no rule titles found (the page's markup has changed)`);
     } else {
       for (const [n, rule] of Object.entries(input.rules)) {
-        const title = live.get(Number(n));
+        const title = titles.get(Number(n));
         if (title === undefined) problems.push(`Rule ${n}: not on the index`);
         else if (title !== squash(rule.title)) {
           problems.push(`Rule ${n}: title is now "${title}" (official.ts has "${rule.title}")`);
         }
       }
-      for (const [n, title] of live) {
+      for (const [n, title] of titles) {
         if (!input.rules[n]) problems.push(`Rule ${n}: new on the index ("${title}")`);
       }
     }
   }
 
-  // Anchors: each rule page's ids against its subrules, both ways.
+  // Each rule page: its anchors against its subrules, both ways, and its text.
   for (const [n, rule] of Object.entries(input.rules)) {
     const url = input.ruleUrl(Number(n));
     if (!ok(url)) continue;
-    const live = pageSubrules(pages.get(url).html, Number(n));
-    const missing = rule.subrules.filter((s) => !live.has(s)).map((s) => `${n}_${s}`);
-    const added = [...live].filter((s) => !rule.subrules.includes(s)).map((s) => `${n}_${s}`);
+    const html = pages.get(url).html;
+    const ids = pageSubrules(html, Number(n));
+    const missing = rule.subrules.filter((s) => !ids.has(s)).map((s) => `${n}_${s}`);
+    const added = [...ids].filter((s) => !rule.subrules.includes(s)).map((s) => `${n}_${s}`);
     const s = (list) => (list.length > 1 ? "s" : "");
     if (missing.length) problems.push(`Rule ${n}: anchor${s(missing)} ${missing.join(" ")} gone from ${url}`);
     if (added.length) problems.push(`Rule ${n}: new anchor${s(added)} ${added.join(" ")} on ${url}, not in official.ts`);
+    const text = ruleText(html);
+    if (text) live.set(url, text);
+    else problems.push(`${url}: no rule text in the page data (the page's markup has changed)`);
   }
 
   const { cited, terms, localRules } = expectedSources(input);
@@ -273,37 +337,56 @@ export function checkSources(input, pages) {
     }
   }
 
-  // Definitions: each cited term is a text node on the page.
+  // Definitions: each cited term is a defined term.
   if (ok(input.definitionsUrl)) {
-    const nodes = textNodes(pages.get(input.definitionsUrl).html);
-    for (const [term, ids] of terms) {
-      if (!nodes.has(term)) problems.push(`Definitions: "${term}" not found (cited by ${ids.join(", ")})`);
+    const defined = definitions(pages.get(input.definitionsUrl).html);
+    if (defined.size === 0) {
+      problems.push(`${input.definitionsUrl}: no defined terms in the page data (the page's markup has changed)`);
+    } else {
+      live.set(input.definitionsUrl, [...defined.values()].flat());
+      for (const [term, ids] of terms) {
+        if (!defined.has(term)) problems.push(`Definitions: "${term}" not found (cited by ${ids.join(", ")})`);
+      }
     }
   }
 
-  // Model Local Rules: the page renders client-side, so look in its data.
+  // Model Local Rules: each cited code is an item in the page data.
   if (ok(input.localRulesUrl)) {
     const html = pages.get(input.localRulesUrl).html;
     for (const [code, ids] of localRules) {
-      const re = new RegExp(`(?<![A-Za-z0-9-])${code.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}(?![0-9A-Za-z])`);
-      if (!re.test(html)) problems.push(`Model Local Rules: "${code}" not found (cited by ${ids.join(", ")})`);
+      const text = localRuleText(html, code);
+      if (text) live.set(`${input.localRulesUrl}#${code}`, text);
+      else problems.push(`Model Local Rules: "${code}" not found (cited by ${ids.join(", ")})`);
     }
   }
 
-  // Text: each hashed page against the accepted hash.
+  // Text: each item against its accepted hash.
   const hashes = {};
-  for (const url of hashedUrls(input)) {
-    if (!ok(url)) continue;
-    hashes[url] = sha256(pageText(pages.get(url).html));
-    const accepted = input.hashes[url];
-    if (accepted === undefined) problems.push(`${url}: no accepted hash (run with --update after reading the page)`);
-    else if (accepted !== hashes[url]) problems.push(`${url}: text changed since the accepted hash`);
+  const changed = [];
+  const keys = hashedKeys(input);
+  for (const key of keys) {
+    if (!live.has(key)) continue;
+    hashes[key] = hashText(live.get(key));
+    const accepted = input.hashes[key];
+    if (accepted === undefined) changed.push(`${key}: no accepted hash (run with --update after reading the page)`);
+    else if (accepted !== hashes[key]) changed.push(`${key}: text changed since the accepted hash`);
   }
-  for (const url of Object.keys(input.hashes)) {
-    if (!hashedUrls(input).includes(url)) problems.push(`${url}: accepted hash for a page no longer checked (run with --update)`);
+  for (const key of Object.keys(input.hashes)) {
+    if (!keys.includes(key)) changed.push(`${key}: has an accepted hash but isn't checked any more (run with --update)`);
   }
 
-  return { problems, hashes };
+  return { problems: [...problems, ...changed], changed, hashes };
+}
+
+/**
+ * Why --update may not accept these hashes, or null if it may: only text
+ * changes can be accepted, and only with every item read.
+ */
+export function updateRefusal(input, { problems, changed, hashes }) {
+  if (problems.length > changed.length) return "only text changes can be accepted. Fix the other problems first.";
+  const missing = hashedKeys(input).filter((key) => !hashes[key]);
+  if (missing.length) return `${missing.join(", ")} couldn't be read.`;
+  return null;
 }
 
 /* ---------------------------------------------------------- copy distance */
@@ -315,9 +398,9 @@ export const COPY_RUN = 8;
 export const copyWords = (text) =>
   text
     .normalize("NFKD")
-    .replace(/[\u0300-\u036f]/g, "")
+    .replace(/\p{M}/gu, "")
     .toLowerCase()
-    .replace(/['\u2018\u2019\u02bc]/g, "")
+    .replace(/['‘’ʼ]/g, "")
     .split(/[^a-z0-9]+/)
     .filter(Boolean);
 

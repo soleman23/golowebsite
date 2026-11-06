@@ -32,7 +32,9 @@ jobs:
   check:
     name: Official sources
     runs-on: ubuntu-latest
-    timeout-minutes: 10
+    # A page that never answers costs 103 s (three 30 s tries and two
+    # waits); 28 pages four at a time is about 12 minutes at worst.
+    timeout-minutes: 20
     env:
       GH_TOKEN: ${{ github.token }}
       GH_REPO: ${{ github.repository }}
@@ -58,6 +60,13 @@ jobs:
           cat problems.txt
           cat errors.txt >&2
           echo "status=$status" >> "$GITHUB_OUTPUT"
+
+      # The offline tests, so a check that has stopped reporting can't pass
+      # quietly here (ci.yml doesn't run them). After the live check, and the
+      # issue steps run whatever this does.
+      - name: Self-test the check
+        if: ${{ !cancelled() }}
+        run: node --disable-warning=MODULE_TYPELESS_PACKAGE_JSON scripts/test-rules-sources.mjs
 
       # One open issue at a time: a later run comments on it until the owner
       # accepts the change (maintenance.md § When the source check fails).

@@ -16,13 +16,17 @@
  * - every cited anchor is on the page it names;
  * - every cited Definition's term is on the Definitions page;
  * - every cited Model Local Rule code is in the Model Local Rules page data;
- * - the visible text of each rule page and the Definitions hashes to what
- *   lib/content/rules/source-hashes.json accepted.
+ * - the text of each rule, the Definitions and each cited Model Local Rule
+ *   hashes to what lib/content/rules/source-hashes.json accepted. Each hash
+ *   covers that item's own text, read from the page data (Interpretations
+ *   included), not the neighbouring rules or menus the page also carries.
  *
  * One line per problem on stdout and exit 1, or a summary and exit 0.
  *
- *   --update          write the live hashes to source-hashes.json. Only after
- *                     reading what changed (docs/rules/maintenance.md).
+ *   --update          write the live hashes to source-hashes.json, after
+ *                     someone has read what changed (docs/rules/maintenance.md).
+ *                     Refused while any other problem stands, so a broken or
+ *                     placeholder page can't be accepted as the new text.
  *   --fixture <file>  use a fixture's pages and expectations instead of the
  *                     network and lib/content/rules. The committed one,
  *                     scripts/fixtures/rules-sources-broken.json, must fail.
@@ -33,7 +37,7 @@
 import "./register-ts.mjs";
 import { existsSync, readFileSync, writeFileSync } from "node:fs";
 import { fileURLToPath } from "node:url";
-import { checkSources, fetchPages, hashedUrls, urlsToFetch } from "./rules-sources.mjs";
+import { checkSources, fetchPages, updateRefusal, urlsToFetch } from "./rules-sources.mjs";
 
 const rootUrl = new URL("..", import.meta.url);
 const HASHES_FILE = fileURLToPath(new URL("lib/content/rules/source-hashes.json", rootUrl));
@@ -80,13 +84,15 @@ async function fetchAll(urls) {
 /* ----------------------------------------------------------------- check */
 
 const pages = await fetchAll(urlsToFetch(input));
-let { problems, hashes } = checkSources(input, pages);
+const result = checkSources(input, pages);
+let { problems } = result;
+const { hashes } = result;
 
 if (update) {
-  const missing = hashedUrls(input).filter((url) => !hashes[url]);
-  if (missing.length) {
+  const refusal = updateRefusal(input, result);
+  if (refusal) {
     for (const p of problems) console.log(p);
-    console.error(`\nNot updated: ${missing.length} page(s) didn't load.`);
+    console.error(`\nNot updated: ${refusal}`);
     process.exit(1);
   }
   const acceptedOn = new Date().toISOString().slice(0, 10);
@@ -107,5 +113,5 @@ if (problems.length) {
 
 const anchors = Object.values(input.rules).reduce((n, rule) => n + rule.subrules.length, 0);
 console.log(
-  `✔ Rules sources: ${pages.size} R&A pages answer, ${Object.keys(input.rules).length} titles and ${anchors} anchors match, cited definitions and Model Local Rules found, ${Object.keys(hashes).length} page texts match the hashes accepted ${accepted.acceptedOn ?? "today"}`,
+  `✔ Rules sources: ${pages.size} R&A pages answer, ${Object.keys(input.rules).length} titles and ${anchors} anchors match, cited definitions and Model Local Rules found, ${Object.keys(hashes).length} texts (rules, Definitions, cited Model Local Rules) match the hashes accepted ${accepted.acceptedOn ?? "today"}`,
 );

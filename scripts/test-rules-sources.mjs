@@ -11,30 +11,30 @@
  * Exit 1 with one line per failed case.
  */
 
+import "./register-ts.mjs";
 import { spawnSync } from "node:child_process";
 import { readFileSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import {
-  RULES_DEFINITIONS_URL,
-  officialRules,
-  ruleUrl,
-} from "../lib/content/rules/official.ts";
-import {
   COPY_RUN,
   checkSources,
   copyWords,
-  dataText,
   decodeEntities,
-  hashedUrls,
+  definitions,
+  hashText,
+  hashedKeys,
   indexTitles,
+  localRuleText,
   officialRuns,
   pageSubrules,
-  pageText,
-  sha256,
+  ruleText,
   sharedRuns,
+  updateRefusal,
   urlsToFetch,
   visibleText,
 } from "./rules-sources.mjs";
+
+const rules = await import(new URL("../lib/content/rules/index.ts", import.meta.url).href);
 
 const failures = [];
 let passed = 0;
@@ -75,7 +75,7 @@ const EXPECTED = [
   'Definitions: "Casual Water" not found (cited by fixture-situation)',
   'Model Local Rules: "E-3" not found (cited by fixture-situation)',
   "https://www.randa.org/en/rog/the-rules-of-golf/rule-19: text changed since the accepted hash",
-  "https://www.randa.org/en/rog/the-rules-of-golf/rule-20: accepted hash for a page no longer checked (run with --update)",
+  "https://www.randa.org/en/rog/the-rules-of-golf/rule-20: has an accepted hash but isn't checked any more (run with --update)",
 ];
 
 {
@@ -97,8 +97,9 @@ const EXPECTED = [
 }
 
 {
-  const { problems } = checkSources(inputFrom(fixture), pagesFrom(fixture));
-  check("check: the same faults without the CLI", same(problems, EXPECTED), problems.join(" | "));
+  const result = checkSources(inputFrom(fixture), pagesFrom(fixture));
+  check("check: the same faults without the CLI", same(result.problems, EXPECTED), result.problems.join(" | "));
+  check("check: --update refuses while anything but text has changed", updateRefusal(inputFrom(fixture), result) !== null);
 }
 
 /* --------------------------------------------- the same pages, faults fixed */
@@ -108,24 +109,37 @@ const EXPECTED = [
   fixed.rules[18].subrules = ["1", "2", "2a", "3"];
   fixed.rules[19].title = "Unplayable Balls";
   fixed.rules[26] = { title: "Fixture Rule Added After the Snapshot", subrules: [] };
-  fixed.pages[`${R}/rule-26`] = { status: 200, html: "<main>Fixture</main>" };
+  fixed.pages[`${R}/rule-26`] = { status: 200, html: fixed.pages[`${R}/rule-19`].html };
   fixed.pages["https://www.randa.org/en/rog/clarifications"] = { status: 200, html: "<main>Fixture</main>" };
   fixed.records[0].sources = fixed.records[0].sources.filter(
     (s) => s.anchor !== "18_2b" && s.ruleRef !== "Definitions: Casual Water" && s.ruleRef !== "MLR E-3",
   );
   const input = inputFrom(fixed);
   const pages = pagesFrom(fixed);
-  const { hashes } = checkSources(input, pages);
+  const first = checkSources(input, pages);
+  check("check: --update accepts text changes alone", updateRefusal(input, first) === null, updateRefusal(input, first));
+  const { hashes } = first;
   const { problems } = checkSources({ ...input, hashes }, pages);
   check("check: the fixed fixture passes", problems.length === 0, problems.join(" | "));
   check("check: a USGA source isn't fetched", !problems.some((p) => p.includes("usga.org")));
-  check("check: hashes cover the rule pages and the Definitions", same(Object.keys(hashes).sort(), [...hashedUrls(input)].sort()));
+  check(
+    "check: hashes cover the rules, the Definitions and the cited Model Local Rule",
+    same(Object.keys(hashes).sort(), [...hashedKeys(input)].sort()) && `${MLR}#E-5` in hashes,
+  );
 
   const down = new Map(pages);
   down.set(`${R}/rule-18`, { error: "fetch failed (ECONNRESET)" });
   const { problems: downProblems, hashes: downHashes } = checkSources({ ...input, hashes }, down);
   check("check: a page that didn't load is one line", same(downProblems, [`${R}/rule-18: fetch failed (ECONNRESET)`]), downProblems.join(" | "));
-  check("check: and gets no hash, so --update refuses", !(`${R}/rule-18` in downHashes));
+  check("check: and gets no hash, so --update refuses", !(`${R}/rule-18` in downHashes) && updateRefusal(input, checkSources(input, down)) !== null);
+
+  const noData = new Map(pages);
+  noData.set(`${R}/rule-19`, { status: 200, html: '<div id="19_1"></div><div id="19_2"></div>' });
+  check(
+    "check: a rule page without its data says the markup changed",
+    same(checkSources({ ...input, hashes }, noData).problems, [`${R}/rule-19: no rule text in the page data (the page's markup has changed)`]),
+    checkSources({ ...input, hashes }, noData).problems.join(" | "),
+  );
 
   const moved = new Map(pages);
   moved.set(`${R}/rule-19`, { status: 301, html: "" });
@@ -138,11 +152,11 @@ const EXPECTED = [
     checkSources({ ...input, hashes }, noTitles).problems.includes(`${R}: no rule titles found (the page's markup has changed)`),
   );
 
-  const onlyE50 = new Map(pages);
-  onlyE50.set(MLR, { status: 200, html: '<main>Model Local Rule E-50, and E-5a is not it either</main>' });
+  const textOnly = new Map(pages);
+  textOnly.set(MLR, { status: 200, html: "<main>Model Local Rule E-5, mentioned but not an item</main>" });
   check(
-    "check: E-50 doesn't count as E-5",
-    checkSources({ ...input, hashes }, onlyE50).problems.some((p) => p.startsWith('Model Local Rules: "E-5" not found')),
+    "check: E-5 in the page's text but not its data isn't found",
+    checkSources({ ...input, hashes }, textOnly).problems.some((p) => p.startsWith('Model Local Rules: "E-5" not found')),
   );
 }
 
@@ -158,13 +172,64 @@ const EXPECTED = [
     "<footer>Footer</footer></body></html>";
   check("parse: visible text drops head, header, footer, scripts, styles, icons and comments", visibleText(html) === "Rule 9 Ball moved .", visibleText(html));
 
-  const data = (pageProps, extra = {}) =>
-    `<script id="__NEXT_DATA__" type="application/json">${JSON.stringify({ props: { pageProps, siteSetupData: extra } })}</script>`;
-  const withData = `<main>Shown</main>${data({ a: ["<span>Rich one</span>", "plain id"], b: { c: "<p>Rich two</p>", d: "<p>Rich one</p>" } }, { nav: "<a>Menu</a>" })}`;
-  check("parse: data text is pageProps' rich text, once each", dataText(withData) === "Rich one Rich two", dataText(withData));
-  check("parse: page text is both", pageText(withData) === "Shown Rich one Rich two", pageText(withData));
-  check("parse: no data, no data text", dataText("<main>x</main>") === "" && dataText('<script id="__NEXT_DATA__">{oops</script>') === "");
-  check("parse: the hash is of the text", sha256(pageText(withData)) === sha256("Shown Rich one Rich two"));
+  const page = (pageProps) => `<main>Shown</main><script id="__NEXT_DATA__" type="application/json">${JSON.stringify({ props: { pageProps } })}</script>`;
+  const v = (value) => ({ isEmpty: false, value });
+  const rule = (overrides = {}) => ({
+    ruleOfGolf: {
+      number: v("9"),
+      title: v("Fixture"),
+      subRules: [
+        {
+          number: v("9.1"),
+          description: v("<span>Own &amp; text</span>"),
+          sections: [{ interpretations: [{ number: v("9.1/1"), title: v("Plain title"), description: v("<p>Own</p>") }] }],
+          ruleMenuData: { title: v("Menu") },
+          url: { value: "rog/x" },
+        },
+      ],
+      nextRule: { title: v("Neighbour") },
+      previousRule: { title: v("Neighbour") },
+      linkedItems: [{ diagrams: [{ description: v("Shared caption") }] }],
+      system: { lastModified: "today" },
+      ...overrides,
+    },
+    rulesSummary: { rulesOfGolf: [{ description: v("Every rule's purpose") }] },
+  });
+  check(
+    "parse: a rule's own text, Interpretation titles included, one item each",
+    same(ruleText(page(rule())), ["9", "Fixture", "9.1", "Own & text", "9.1/1", "Plain title", "Own"]),
+    JSON.stringify(ruleText(page(rule()))),
+  );
+  const base = hashText(ruleText(page(rule())));
+  const elsewhere = rule({ nextRule: { title: v("Edited") }, linkedItems: [], system: { lastModified: "tomorrow" } });
+  elsewhere.rulesSummary = {};
+  check("parse: neighbours, menus, diagrams, metadata and the rules list don't move the hash", hashText(ruleText(page(elsewhere))) === base);
+  const retitled = rule();
+  retitled.ruleOfGolf.subRules[0].sections[0].interpretations[0].title = v("New title");
+  check("parse: a retitled Interpretation moves the hash", hashText(ruleText(page(retitled))) !== base);
+  check("parse: no data, no rule text", ruleText("<main>x</main>") === null && ruleText('<script id="__NEXT_DATA__">{oops</script>') === null);
+
+  const defs = definitions(
+    page({
+      rulesSummary: {
+        definitions: {
+          A: [{ term: v("Advice"), definitionText: v("<span>One.</span>"), system: { name: "x" } }],
+          R: [{ term: v("Relief Area"), definitionText: v("<span>Two.</span>") }],
+        },
+      },
+    }),
+  );
+  check("parse: definitions by term", same([...defs], [["Advice", ["Advice", "One."]], ["Relief Area", ["Relief Area", "Two."]]]), JSON.stringify([...defs]));
+  check("parse: no definitions data, no terms", definitions(page({})).size === 0);
+
+  const mlr = page({
+    ruleOfGolf: {
+      sections: [{ subSections: [{ number: v("E-50"), title: v("Fifty"), description: v("x") }, { number: v("E-5"), title: v("Five"), description: v("<p>y</p>") }] }],
+      nextRule: { sections: [{ subSections: [{ number: v("F-1"), title: v("Next"), description: v("z") }] }] },
+    },
+  });
+  check("parse: a Model Local Rule by its number", same(localRuleText(mlr, "E-5"), ["E-5", "Five", "y"]), JSON.stringify(localRuleText(mlr, "E-5")));
+  check("parse: E-5 isn't E-50, and the next page's items aren't this one's", localRuleText(mlr, "E-3") === null && localRuleText(mlr, "F-1") === null);
 
   const ids = pageSubrules('<div id="9_1"></div><div id="9_2b"></div><div id="19_1"></div><a href="#9_3">x</a><div data-id="9_4"></div>', 9);
   check("parse: anchors are this rule's ids only", same([...ids], ["1", "2b"]), [...ids].join(" "));
@@ -214,8 +279,18 @@ const EXPECTED = [
 
 {
   const accepted = JSON.parse(readFileSync(new URL("../lib/content/rules/source-hashes.json", import.meta.url), "utf8"));
-  const urls = [...Object.keys(officialRules).map((n) => ruleUrl(Number(n))), RULES_DEFINITIONS_URL];
-  check("hashes: one per rule in official.ts and the Definitions", same(Object.keys(accepted.pages).sort(), urls.sort()));
+  // Model Local Rule keys follow the records' citations; a new one shows up
+  // in the live check as "no accepted hash", so it isn't pinned here.
+  const pages = [...Object.keys(rules.officialRules).map((n) => rules.ruleUrl(Number(n))), rules.RULES_DEFINITIONS_URL];
+  check(
+    "hashes: one for every rule in official.ts and the Definitions",
+    pages.every((url) => url in accepted.pages),
+    "run npm run check:rules-sources -- --update after reading the pages",
+  );
+  check(
+    "hashes: nothing else but cited Model Local Rules",
+    Object.keys(accepted.pages).every((key) => pages.includes(key) || key.startsWith(`${rules.MODEL_LOCAL_RULES_URL}#`)),
+  );
   check("hashes: each a sha256", Object.values(accepted.pages).every((h) => /^[0-9a-f]{64}$/.test(h)));
   check("hashes: an accepted date", /^\d{4}-\d{2}-\d{2}$/.test(accepted.acceptedOn ?? ""));
 }

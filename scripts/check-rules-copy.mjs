@@ -7,13 +7,16 @@
  * machine and is never committed.
  *
  *   npm run check:rules-copy                    fetch the cache if it's missing
- *   npm run check:rules-copy -- --refresh       fetch it again
+ *   npm run check:rules-copy -- --refresh       fetch it again, keeping the old copy
  *   npm run check:rules-copy -- --text "<copy>" check a sentence before it's in a record
  *
- * The cache (.cache/rules-official/) holds the text of the 25 rule pages,
- * the Definitions, the Model Local Rules and any other R&A page a record
- * cites: what a reader sees plus the prose the page ships in its data, such
- * as Interpretations (scripts/rules-sources.mjs pageText).
+ * The cache (.cache/rules-official/) holds the own text of the 25 rules, the
+ * Definitions, the Model Local Rules and any other R&A page a record cites,
+ * one item per line, Interpretations included (scripts/rules-sources.mjs).
+ * manifest.json gives each file's sha256, the same hash source-hashes.json
+ * accepts for a rule or the Definitions. --refresh moves the old copy to
+ * previous/, so a reported text change can be diffed
+ * (docs/rules/maintenance.md § When the source check fails).
  *
  * Every copy field of every record is checked, whatever its status: ids,
  * sources, dates and the review log aren't copy. Words are compared
@@ -24,12 +27,22 @@
  */
 
 import "./register-ts.mjs";
-import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
+import { existsSync, mkdirSync, readFileSync, renameSync, rmSync, writeFileSync } from "node:fs";
 import { fileURLToPath } from "node:url";
-import { COPY_RUN, fetchPages, officialRuns, pageText, sharedRuns } from "./rules-sources.mjs";
+import {
+  COPY_RUN,
+  definitions,
+  fetchPages,
+  hashText,
+  officialRuns,
+  ruleText,
+  sharedRuns,
+  visibleText,
+} from "./rules-sources.mjs";
 
 const CACHE_DIR = fileURLToPath(new URL("../.cache/rules-official/", import.meta.url));
 const MANIFEST = `${CACHE_DIR}manifest.json`;
+const PREVIOUS_DIR = `${CACHE_DIR}previous/`;
 /** Fields that aren't copy. */
 const NOT_COPY = new Set([
   "id", "slug", "number", "primaryRule", "sources", "status", "edition",
@@ -69,14 +82,20 @@ function officialUrls() {
   return [...new Set(urls)];
 }
 
+/** A page's own text, one item per line. */
+function officialText(url, html) {
+  if (url === rules.RULES_DEFINITIONS_URL) return [...definitions(html).values()].flat();
+  return ruleText(html) ?? [visibleText(html)];
+}
+
 async function loadCache() {
   const urls = officialUrls();
   const manifest = existsSync(MANIFEST) ? JSON.parse(readFileSync(MANIFEST, "utf8")) : null;
-  const cached = manifest && urls.every((url) => manifest.pages[url]);
+  const cached = manifest && urls.every((url) => manifest.pages[url]?.file);
   if (!refresh && cached) {
     const age = (Date.now() - Date.parse(manifest.fetchedOn)) / 86400000;
     if (age > 31) console.error(`Official text cached ${manifest.fetchedOn}; --refresh to fetch it again.`);
-    return urls.map((url) => ({ url, name: pageName(url), text: readFileSync(`${CACHE_DIR}${manifest.pages[url]}`, "utf8") }));
+    return urls.map((url) => ({ url, name: pageName(url), text: readFileSync(`${CACHE_DIR}${manifest.pages[url].file}`, "utf8") }));
   }
 
   console.error(`Fetching ${urls.length} R&A pages into .cache/rules-official/ (git-ignored)…`);
@@ -87,14 +106,22 @@ async function loadCache() {
     console.error("Cache not written; nothing checked.");
     process.exit(2);
   }
+  if (manifest) {
+    rmSync(PREVIOUS_DIR, { recursive: true, force: true });
+    mkdirSync(PREVIOUS_DIR, { recursive: true });
+    for (const { file } of Object.values(manifest.pages)) {
+      if (existsSync(`${CACHE_DIR}${file}`)) renameSync(`${CACHE_DIR}${file}`, `${PREVIOUS_DIR}${file}`);
+    }
+    renameSync(MANIFEST, `${PREVIOUS_DIR}manifest.json`);
+  }
   mkdirSync(CACHE_DIR, { recursive: true });
   const files = {};
   const out = urls.map((url) => {
     const name = pageName(url);
-    const text = pageText(pages.get(url).html);
-    files[url] = `${name}.txt`;
-    writeFileSync(`${CACHE_DIR}${name}.txt`, `${text}\n`);
-    return { url, name, text };
+    const lines = officialText(url, pages.get(url).html);
+    files[url] = { file: `${name}.txt`, sha256: hashText(lines) };
+    writeFileSync(`${CACHE_DIR}${name}.txt`, `${lines.join("\n")}\n`);
+    return { url, name, text: lines.join("\n") };
   });
   writeFileSync(MANIFEST, `${JSON.stringify({ fetchedOn: new Date().toISOString().slice(0, 10), pages: files }, null, 2)}\n`);
   return out;
