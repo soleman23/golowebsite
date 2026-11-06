@@ -110,7 +110,7 @@ export const ruleOverviews: RuleOverview[] = [
   // Playing the round
   rule(5, {
     summary:
-      "Rule 5 covers the round as a whole: starting on time, practicing, keeping pace and stopping play. Up to five minutes late but ready to play, or up to five minutes early, is the general penalty on the first hole; beyond that is disqualification. By default you can't practice on the course before a stroke-play round that day, apart from putting or chipping near the first tee; before a match you can. You can't hit practice shots during a hole, though between holes you may putt or chip near the green just finished or the next tee. The Committee can change these practice limits by Local Rule. You may stop play for lightning, but must report it to the Committee.",
+      "Rule 5 covers starting on time, practicing, keeping pace and stopping play. Up to five minutes late but ready to play, or up to five minutes early, is the general penalty on the first hole; beyond that is disqualification. By default you can't practice on the course before a stroke-play round that day, except putting or chipping near the first tee; before a match you can. You can't hit practice shots during a hole, though between holes you may putt or chip near the green just finished or the next tee, but not from a bunker. The Committee can change these limits by Local Rule. You may stop for lightning, but must report it to the Committee.",
     commonQuestions: [
       "Can I hit a few putts on the green after we finish a hole?",
       "What happens if I'm late to the first tee?",
@@ -164,7 +164,7 @@ export const ruleOverviews: RuleOverview[] = [
   }),
   rule(9, {
     summary:
-      "Rule 9 covers playing the ball as it lies, and a ball at rest that moves. What moved it decides the outcome; anything but natural forces counts only when that's known or virtually certain, at least 95 percent likely. Wind or water: no penalty; play it where it stopped, unless it had been replaced on the green, or a dropped or replaced ball rolled into another area or out of bounds; then replace it. You or your caddie: one penalty stroke and replace it, unless you moved it by accident on the green or while searching. Your opponent in match play: the same, with the penalty theirs. Anything else, such as another player in stroke play: no penalty, replace it.",
+      "Rule 9 covers playing the ball as it lies, and a ball at rest that moves. The cause decides the outcome; anything but natural forces counts only when that's known or virtually certain, at least 95 percent likely. Wind or water: no penalty; play it where it stopped, unless it had been replaced on the green, or a dropped, placed or replaced ball rolled into another area or out of bounds; then replace it. You or your caddie: one penalty stroke and replace it, unless you moved it by accident on the green or while searching. Your opponent in match play: the same, with the penalty theirs. Anything else, such as another player in stroke play: no penalty, replace it.",
     commonQuestions: [
       "The wind moved my ball after it stopped: do I replace it?",
       "I nudged my ball at address: what's the penalty?",
@@ -181,7 +181,7 @@ export const ruleOverviews: RuleOverview[] = [
   rule(10, {
     aliases: ["advice"],
     summary:
-      "Rule 10 covers making a stroke and the help you may get. Strike the ball fairly with the clubhead, and don't anchor the club against your body. During a round you can't ask anyone but your caddie for advice, or give it to anyone else playing in your competition, such as the others in your group; partner formats are the exception. Advice is anything meant to influence your club, your stroke or how you play. Distances, wind direction, where the bunkers and penalty areas are, and the Rules are public information, not advice. Nobody but your caddie may help you line up, and once you begin your stance, not even them. Any of these costs the general penalty.",
+      "Rule 10 covers making a stroke and the help you may get. Strike the ball fairly with the clubhead, and don't anchor the club against your body. During a round you can't ask anyone but your caddie for advice, or give it to anyone else in your competition, such as your group; partners are the exception. Advice is anything meant to influence your club, your stroke or how you play; distances, wind direction and the Rules aren't advice. Only your caddie may help with your line, and not from behind the ball once you begin your stance; others may point out a landmark or, off the green, stand as a target and move away. Any breach costs the general penalty.",
     commonQuestions: [
       "Can I ask someone in my group what club they just hit?",
       "Is telling someone the yardage to the flag advice?",
@@ -197,7 +197,7 @@ export const ruleOverviews: RuleOverview[] = [
   }),
   rule(11, {
     summary:
-      "Rule 11 covers a ball in motion that hits a person, an animal or an object. When it's accidental there's usually no penalty, and you play the ball as it lies. Two exceptions come up on the green. In stroke play, if your putt hits another ball at rest on the green and both were on the green before you played, you take two penalty strokes. And a putt that accidentally hits a person other than you or whoever is tending the flagstick, an animal or a movable obstruction must be replayed. Deliberately stopping or deflecting a ball in motion, or removing loose impediments or changing the ground to affect where it stops, costs the general penalty.",
+      "Rule 11 covers a ball in motion that hits a person, an animal or an object. When it's accidental there's usually no penalty, and you play the ball as it lies. In stroke play, if your putt hits another ball at rest on the green and both were on the green before you played, you take two penalty strokes. A putt that accidentally hits another person (not whoever is tending the flagstick), an animal larger than an insect, or a movable obstruction such as a dropped glove must be replayed; a ball-marker doesn't count. Deliberately stopping or deflecting a ball in motion, or removing loose impediments or changing the ground to affect where it stops, costs the general penalty.",
     commonQuestions: [
       "My shot hit my own golf bag: is that a penalty?",
       "My putt hit another ball on the green: what happens?",
