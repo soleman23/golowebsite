@@ -1,0 +1,106 @@
+{
+  "//": "Synthetic R&A pages with known faults, for scripts/test-rules-sources.mjs and `npm run check:rules-sources -- --fixture scripts/fixtures/rules-sources-broken.json`. It must fail with exactly the lines the test expects. No Rules of Golf text: titles only, as navigation references, and placeholder prose. Regenerate the hashes if you edit a page (the test prints the live ones).",
+  "rules": {
+    "18": {
+      "title": "Stroke-and-Distance Relief, Ball Lost or Out of Bounds, Provisional Ball",
+      "subrules": [
+        "1",
+        "2",
+        "2a",
+        "2b"
+      ]
+    },
+    "19": {
+      "title": "Unplayable Ball",
+      "subrules": [
+        "1",
+        "2"
+      ]
+    }
+  },
+  "records": [
+    {
+      "id": "fixture-situation",
+      "sources": [
+        {
+          "authority": "RANDA",
+          "document": "rules",
+          "ruleRef": "18.2b",
+          "url": "https://www.randa.org/en/rog/the-rules-of-golf/rule-18",
+          "anchor": "18_2b"
+        },
+        {
+          "authority": "RANDA",
+          "document": "rules",
+          "ruleRef": "18.2a",
+          "url": "https://www.randa.org/en/rog/the-rules-of-golf/rule-18",
+          "anchor": "18_2a"
+        },
+        {
+          "authority": "RANDA",
+          "document": "definitions",
+          "ruleRef": "Definitions: Lost",
+          "url": "https://www.randa.org/en/rog/definitions"
+        },
+        {
+          "authority": "RANDA",
+          "document": "definitions",
+          "ruleRef": "Definitions: Casual Water",
+          "url": "https://www.randa.org/en/rog/definitions"
+        },
+        {
+          "authority": "RANDA",
+          "document": "local-rule",
+          "ruleRef": "MLR E-5",
+          "url": "https://www.randa.org/en/rog/committee-procedures/sections/8"
+        },
+        {
+          "authority": "RANDA",
+          "document": "local-rule",
+          "ruleRef": "MLR E-3",
+          "url": "https://www.randa.org/en/rog/committee-procedures/sections/8"
+        },
+        {
+          "authority": "RANDA",
+          "document": "clarifications",
+          "ruleRef": "Clarifications",
+          "url": "https://www.randa.org/en/rog/clarifications"
+        },
+        {
+          "authority": "USGA",
+          "document": "handicapping",
+          "ruleRef": "RoH 3.3",
+          "url": "https://www.usga.org/handicapping/roh/"
+        }
+      ]
+    }
+  ],
+  "hashes": {
+    "https://www.randa.org/en/rog/the-rules-of-golf/rule-18": "5aa0ec5c03bb0d7df7bdf9b7453c3165a3047bdb4ab70991203e47f56cd6d4d1",
+    "https://www.randa.org/en/rog/the-rules-of-golf/rule-19": "4bd6c964833d79af7f444b16482f971c693c476705144647bedff9c792450e50",
+    "https://www.randa.org/en/rog/definitions": "bf3a85b67c81532693837b4fedab0ab175e93b69cafb62ada5e53f8607d67d5c",
+    "https://www.randa.org/en/rog/the-rules-of-golf/rule-20": "5d62b64684de7f30093920908ba87eba867b859b40c1106d861c56b2dcac2d40"
+  },
+  "pages": {
+    "https://www.randa.org/en/rog/the-rules-of-golf": {
+      "status": 200,
+      "html": "<!DOCTYPE html><html><head><title>Fixture</title></head><body><header><a href=\"/rog/the-rules-of-golf/rule-1\">Header link</a></header><main><a href=\"/rog/the-rules-of-golf/rule-18\">Stroke-and-Distance Relief, Ball Lost or Out of Bounds, Provisional Ball<div>›</div></a><a href=\"/rog/the-rules-of-golf/rule-18\">Read more</a><a href=\"/rog/the-rules-of-golf/rule-19\">Unplayable Balls<div>›</div></a><a href=\"/rog/the-rules-of-golf/rule-26\">Fixture Rule Added After the Snapshot</a></main><footer>Footer text</footer><script id=\"__NEXT_DATA__\" type=\"application/json\">{\"props\":{\"pageProps\":{}}}</script></body></html>"
+    },
+    "https://www.randa.org/en/rog/the-rules-of-golf/rule-18": {
+      "status": 200,
+      "html": "<!DOCTYPE html><html><head><title>Fixture</title></head><body><header><a href=\"/rog/the-rules-of-golf/rule-1\">Header link</a></header><main><div id=\"18_1\"><h3>Fixture subrule one</h3></div><div id=\"18_2\"><h3>Fixture subrule two</h3></div><div id=\"18_2a\"><p>Placeholder text, not rule text.</p></div><div id=\"18_3\"><p>An anchor the snapshot lacks.</p></div><a href=\"#17_1\">A link to another rule's anchor is not an anchor of this page.</a></main><footer>Footer text</footer><script id=\"__NEXT_DATA__\" type=\"application/json\">{\"props\":{\"pageProps\":{\"rule\":{\"body\":\"<span>Placeholder prose shipped in the page data, standing in for an Interpretation.</span>\"}}}}</script></body></html>"
+    },
+    "https://www.randa.org/en/rog/the-rules-of-golf/rule-19": {
+      "status": 200,
+      "html": "<!DOCTYPE html><html><head><title>Fixture</title></head><body><header><a href=\"/rog/the-rules-of-golf/rule-1\">Header link</a></header><main><div id=\"19_1\"><p>Fixture text as published.</p></div><div id=\"19_2\"><p>Fixture text.</p></div></main><footer>Footer text</footer><script id=\"__NEXT_DATA__\" type=\"application/json\">{\"props\":{\"pageProps\":{}}}</script></body></html>"
+    },
+    "https://www.randa.org/en/rog/definitions": {
+      "status": 200,
+      "html": "<!DOCTYPE html><html><head><title>Fixture</title></head><body><header><a href=\"/rog/the-rules-of-golf/rule-1\">Header link</a></header><main><div id=\"lost\"><div class=\"title\">Lost</div><div>Placeholder definition.</div></div><div><div class=\"title\">Relief Area</div></div></main><footer>Footer text</footer><script id=\"__NEXT_DATA__\" type=\"application/json\">{\"props\":{\"pageProps\":{}}}</script></body></html>"
+    },
+    "https://www.randa.org/en/rog/committee-procedures/sections/8": {
+      "status": 200,
+      "html": "<!DOCTYPE html><html><head><title>Fixture</title></head><body><header><a href=\"/rog/the-rules-of-golf/rule-1\">Header link</a></header><main><div>Section 8</div></main><footer>Footer text</footer><script id=\"__NEXT_DATA__\" type=\"application/json\">{\"props\":{\"pageProps\":{\"section\":{\"links\":[\"<a href=\\\"\\\">Model Local Rule E-5</a>\",\"<a href=\\\"\\\">Model Local Rule E-50</a>\"]}}}}</script></body></html>"
+    }
+  }
+}
