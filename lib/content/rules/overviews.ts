@@ -120,7 +120,7 @@ export const ruleOverviews: RuleOverview[] = [
   rule(6, {
     aliases: ["wrong ball"],
     summary:
-      "Rule 6 covers playing a hole: teeing off, the ball you use and the order of play. Tee off inside the teeing area, two club-lengths deep behind the front of the tee markers. From outside it, stroke play costs two penalty strokes and a replay; match play has no penalty, but your opponent may make you replay. Hole out with the ball you started with unless it's lost or out of bounds or a Rule lets you change it, as when taking relief; a swap otherwise costs a stroke. Playing a wrong ball, one that isn't your ball in play, costs the general penalty; in stroke play, return to your own before the next tee or you're disqualified.",
+      "Rule 6 covers playing a hole: teeing off, the ball you use and the order of play. Tee off inside the teeing area, two club-lengths deep behind the front of the tee markers. Outside it, stroke play costs two penalty strokes and a replay; match play has no penalty, but your opponent may make you replay. Hole out with the ball you started with unless it's lost or out of bounds or a Rule lets you change it, as when taking relief; a swap otherwise costs a stroke. Playing a wrong ball, one that isn't your ball in play or your provisional, costs the general penalty; in stroke play, return to your own before the next tee or be disqualified.",
     commonQuestions: [
       "I teed up in front of the markers: what's the penalty?",
       "Can I switch to a new ball in the middle of a hole?",
@@ -161,7 +161,7 @@ export const ruleOverviews: RuleOverview[] = [
   }),
   rule(9, {
     summary:
-      "Rule 9 covers playing the ball as it lies, and a ball at rest that moves. The cause decides the outcome; anything but natural forces counts only when that's known or virtually certain, at least 95 percent likely. Wind or water: no penalty; play it where it stopped, unless it had been replaced on the green, or a dropped, placed or replaced ball rolled into another area or out of bounds; then replace it. You or your caddie: one penalty stroke and replace it, unless you moved it by accident on the green or while searching. Your opponent in match play: the same, with the penalty theirs. Anything else, such as another player in stroke play: no penalty, replace it.",
+      "Rule 9 covers playing the ball as it lies, and a resting ball that moves. The cause decides; anything but natural forces counts only when that's known or virtually certain, at least 95 percent likely. Wind or water: no penalty; play it where it stopped, unless it was replaced on the green, or a dropped, placed or replaced ball rolled into another area or out of bounds; then replace it. You or your caddie: one penalty stroke and replace it, unless you moved it by accident on the green, while searching or while applying a Rule. Your opponent in match play: the same, with the penalty theirs. Anything else, such as another player in stroke play: no penalty, replace it.",
     commonQuestions: [
       "The wind moved my ball after it stopped: do I replace it?",
       "I nudged my ball at address: what's the penalty?",
@@ -194,7 +194,7 @@ export const ruleOverviews: RuleOverview[] = [
   }),
   rule(11, {
     summary:
-      "Rule 11 covers a ball in motion that hits a person, an animal or an object. When it's accidental there's usually no penalty, and you play the ball as it lies. In stroke play, if your putt hits another ball at rest on the green and both were on the green before you played, you take two penalty strokes. A putt that accidentally hits another person (not whoever is tending the flagstick), an animal larger than an insect, or a movable obstruction such as a dropped glove must be replayed; a ball-marker doesn't count. Deliberately stopping or deflecting a ball in motion, or removing loose impediments or changing the ground to affect where it stops, costs the general penalty.",
+      "Rule 11 covers a ball in motion that hits a person, an animal or an object. When it's accidental there's usually no penalty, and you play the ball as it lies. In stroke play, if your putt hits another ball at rest on the green and both were on the green before you played, you take two penalty strokes. A putt that accidentally hits, on the green, another person (not whoever is tending the flagstick), an animal larger than an insect, or a movable obstruction must be replayed; a ball-marker doesn't count. Deliberately stopping or deflecting a ball in motion, or removing loose impediments or changing the ground to affect where it stops, costs the general penalty.",
     commonQuestions: [
       "My shot hit my own golf bag: is that a penalty?",
       "My putt hit another ball on the green: what happens?",
