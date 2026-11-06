@@ -17,6 +17,9 @@ type Written = Partial<Omit<RuleOverview, "id" | "number" | "edition">>;
 /** #238 (Rules 12–19): the day its rule pages and Definitions were opened. */
 const OPENED_238 = "2026-11-06";
 
+/** #237 (Rules 1–11): as OPENED_238. */
+const OPENED_237 = "2026-11-06";
+
 /** Rule pages and Definitions a record rests on, each opened on `on`. */
 function opened(on: string, refs: string[], terms: string[] = []): RulesSource[] {
   return [
@@ -45,20 +48,158 @@ export const ruleOverviews: RuleOverview[] = [
   // Foundations and equipment
   rule(1, {
     aliases: ["mulligan", "breakfast ball"],
+    summary:
+      "Rule 1 sets the ground rules: play the course as you find it, play the ball as it lies, and play in the spirit of the game, with integrity, consideration for others and care for the course. You apply your own penalties, which come in three levels: one stroke; the general penalty, two strokes in stroke play or loss of the hole in match play; and disqualification. Players who knowingly agree to ignore a Rule or penalty are all disqualified once any of them has started the round, whether or not they act on it. The Rules have no mulligan or breakfast ball: hitting again from the same spot is stroke and distance under Rule 18, with a penalty stroke.",
+    commonQuestions: [
+      "Is a mulligan or a breakfast ball ever allowed under the Rules?",
+      "Do I have to call a penalty on myself?",
+      "What happens if our group agrees to skip a Rule?",
+      "What's the difference between a one-stroke penalty and the general penalty?",
+    ],
     relatedGlossaryIds: ["mulligan", "breakfast-ball"],
+    sources: opened(OPENED_237, ["1", "1.1", "1.2a", "1.3b", "1.3c", "18.1"], ["General Penalty"]),
+    status: "draft",
   }),
-  rule(2, { relatedGlossaryIds: ["teeing-area", "fairway", "rough", "bunker", "penalty-area"] }),
-  rule(3, { relatedGlossaryIds: ["match-play", "stroke-play", "gimme", "net-score", "handicap-stroke"] }),
-  rule(4, { aliases: ["14 clubs", "club limit"], relatedGlossaryIds: ["driver", "putter"] }),
+  rule(2, {
+    summary:
+      "Rule 2 names the five areas of the course, because where your ball lies decides which Rules apply. They are the general area (fairway, rough, trees and everything not in the other four), the teeing area you start the hole from, penalty areas, bunkers, and the putting green on the hole you're playing. Other holes' tees and greens are part of the general area. A ball touching the general area and a specific area counts as in the specific one; between two specific areas, penalty area comes before bunker, and bunker before putting green. Loose impediments, movable obstructions and abnormal course conditions can give free relief; boundary and integral objects give none.",
+    commonQuestions: [
+      "My ball is half on the grass and half in the bunker: which area is it in?",
+      "Is another hole's green part of the general area?",
+      "Which objects give free relief, and which don't?",
+    ],
+    relatedGlossaryIds: ["teeing-area", "fairway", "rough", "bunker", "penalty-area"],
+    sources: opened(OPENED_237, ["2", "2.1", "2.2a", "2.2b", "2.2c", "2.3"], ["General Area"]),
+    status: "draft",
+  }),
+  rule(3, {
+    summary:
+      "Rule 3 covers the three choices behind every competition: match play or stroke play, individual or partners, and gross or net scores. In match play you win, lose or tie holes, and you may concede a stroke, a hole or the whole match; a concession can't be declined or withdrawn. In regular stroke play every stroke counts and you must hole out on every hole, so there are no gimmes. You and your marker certify your scorecard: a hole score higher than you made stands; a lower one disqualifies you, unless the gap is a penalty you didn't know about. In a handicap match, strokes fall hole by hole by the stroke index.",
+    commonQuestions: [
+      "Can we give each other gimmes in stroke play?",
+      "Can I take back a putt I've conceded?",
+      "What if I sign for the wrong score on a hole?",
+      "Where do handicap strokes fall in a match?",
+    ],
+    relatedGlossaryIds: ["match-play", "stroke-play", "gimme", "net-score", "handicap-stroke"],
+    sources: opened(OPENED_237, ["3", "3.1a", "3.1b", "3.1c", "3.2a", "3.2b", "3.2c", "3.3b", "3.3c"]),
+    status: "draft",
+  }),
+  rule(4, {
+    aliases: ["14 clubs", "club limit"],
+    summary:
+      "Rule 4 covers the clubs, balls and other equipment you may use. You may start with no more than 14 clubs. Carry more and, in stroke play, it's two penalty strokes for each hole with the breach, up to four; in match play, a hole comes off your match score per hole, up to two. Take an extra club out of play once you notice. You can't borrow a club from anyone playing on the course. Clubs and balls must conform, and a stroke with a club you deliberately adjusted during the round is disqualification. A rangefinder for distance is allowed unless the Committee has a Local Rule against it; measuring slope or wind at the course is not.",
+    commonQuestions: [
+      "I found a 15th club in my bag: what now?",
+      "Can I use a rangefinder with a slope setting?",
+      "Can I borrow a club from someone in my group?",
+      "My club broke during the round: can I replace it?",
+    ],
+    relatedGlossaryIds: ["driver", "putter"],
+    sources: opened(OPENED_237, ["4", "4.1a", "4.1b", "4.1c", "4.3a"]),
+    status: "draft",
+  }),
 
   // Playing the round
-  rule(5),
-  rule(6, { aliases: ["wrong ball"], relatedGlossaryIds: ["teeing-area"] }),
-  rule(7),
-  rule(8),
-  rule(9),
-  rule(10, { aliases: ["advice"] }),
-  rule(11),
+  rule(5, {
+    summary:
+      "Rule 5 covers the round as a whole: starting on time, practising, keeping pace and stopping play. Arrive ready but up to five minutes late and you get the general penalty on the first hole; later than that is disqualification. Before a stroke-play round you can't practise on the course that day; before a match you can. While playing a hole you can't hit practice shots, though between holes you may putt or chip near the green just finished or the next tee. The recommended pace is 40 seconds or less a stroke. You may stop play if you reasonably think lightning is a danger, but must report it to the Committee.",
+    commonQuestions: [
+      "Can I hit a few putts on the green after we finish a hole?",
+      "What happens if I'm late to the first tee?",
+      "Can I practise on the course before a stroke-play round?",
+      "Can I stop playing when there's lightning?",
+    ],
+    sources: opened(OPENED_237, ["5", "5.1", "5.2a", "5.2b", "5.3a", "5.5a", "5.5b", "5.6b", "5.7a"]),
+    status: "draft",
+  }),
+  rule(6, {
+    aliases: ["wrong ball"],
+    summary:
+      "Rule 6 covers playing a hole: teeing off, the ball you use and the order of play. Tee off inside the teeing area, a box two club-lengths deep behind the front of the tee-markers. From outside it, stroke play costs two penalty strokes and a replay from inside; match play has no penalty, but your opponent may make you replay. Hole out with your tee shot's ball unless it's lost or out of bounds or you substitute another. Playing a wrong ball (any ball not yours in play) is the general penalty; in stroke play you then return to your own. In match play an opponent can cancel a shot played out of turn; stroke play encourages ready golf.",
+    commonQuestions: [
+      "I teed up in front of the markers: what's the penalty?",
+      "Can I switch to a new ball in the middle of a hole?",
+      "I played someone else's ball by mistake: what now?",
+      "Who has the honour on the next tee?",
+    ],
+    relatedGlossaryIds: ["teeing-area"],
+    sources: opened(
+      OPENED_237,
+      ["6", "6.1b", "6.2b", "6.3a", "6.3b", "6.3c", "6.4a", "6.4b"],
+      ["Teeing Area", "Wrong Ball"],
+    ),
+    status: "draft",
+  }),
+  rule(7, {
+    summary:
+      "Rule 7 covers searching for your ball and identifying it. You may search fairly: move long grass and bushes, even sand and water, so long as you don't go beyond a reasonable search and improve your next shot. If anyone accidentally moves your ball while looking for it, there's no penalty; put it back, re-creating the lie if it was covered in sand. To check whether a ball is yours, mark its spot and lift it, cleaning it only enough to identify it. A ball counts as yours if someone saw it come to rest, if it carries your mark, or if it matches yours in an area where yours should be and no identical ball is nearby.",
+    commonQuestions: [
+      "How long can I search for my ball?",
+      "I stepped on my ball while looking for it: is that a penalty?",
+      "Can I pick up a ball to see if it's mine?",
+      "Two balls of the same brand are in the rough: which is mine?",
+    ],
+    sources: opened(OPENED_237, ["7", "7.1a", "7.1b", "7.2", "7.3", "7.4"], ["Lost"]),
+    status: "draft",
+  }),
+  rule(8, {
+    summary:
+      "Rule 8 is play the course as you find it: you can't improve the conditions for your next stroke, meaning your lie, the area of your stance and swing, your line of play and the area where you'll drop. Bending or breaking branches, pressing down the ground behind your ball, replacing a divot in a divot hole on your line, or removing dew or frost are the general penalty if they improve those conditions. You may still ground the club lightly, take a fair stance and make your swing, even if it breaks something. If you moved or bent a branch, putting it back before you play avoids the penalty; once it's broken, it doesn't.",
+    commonQuestions: [
+      "Can I press down the grass behind my ball?",
+      "I broke a branch on my backswing: is that a penalty?",
+      "Can I fill a divot hole on my line before I play?",
+      "I bent a branch out of the way: can I undo it?",
+    ],
+    sources: opened(OPENED_237, ["8", "8.1a", "8.1b", "8.1c"]),
+    status: "draft",
+  }),
+  rule(9, {
+    summary:
+      "Rule 9 covers playing the ball as it lies and what happens when a ball at rest moves. A ball has moved only if it's known or virtually certain that it did, and what moved it decides the outcome. Wind or water: no penalty, play it from where it stopped. You or your caddie: one penalty stroke and replace it, unless an exception applies, such as an accidental touch on the putting green or while searching. Your opponent in match play: they take one penalty stroke and you replace it. Anything else, including another player in stroke play, another ball or an animal: no penalty, replace it.",
+    commonQuestions: [
+      "The wind moved my ball after it stopped: do I replace it?",
+      "I nudged my ball at address: what's the penalty?",
+      "Another ball knocked mine: where do I play from?",
+      "My opponent moved my ball in match play: what happens?",
+    ],
+    sources: opened(
+      OPENED_237,
+      ["9", "9.1a", "9.2a", "9.2b", "9.3", "9.4a", "9.4b", "9.5a", "9.5b", "9.6"],
+      ["Known or Virtually Certain", "Outside Influence"],
+    ),
+    status: "draft",
+  }),
+  rule(10, {
+    aliases: ["advice"],
+    summary:
+      "Rule 10 covers making a stroke and the help you may get. Strike the ball fairly with the clubhead, and don't anchor the club against your body. During a round you can't ask anyone but your caddie for advice, or give it to anyone playing in your competition; partner formats let partners help each other. Advice is anything meant to influence your club, your stroke or how you play a hole. Distances, wind direction, where the bunkers and penalty areas are, and the Rules themselves are public information, not advice. You can't lay a club down to aim by, and once you take your stance your caddie can't stand behind you on your line. Each is the general penalty.",
+    commonQuestions: [
+      "Can I ask someone in my group what club they just hit?",
+      "Is telling someone the yardage to the flag advice?",
+      "Can I lay a club on the ground to check my alignment?",
+      "Can my caddie line me up from behind?",
+    ],
+    sources: opened(
+      OPENED_237,
+      ["10", "10.1a", "10.1b", "10.2a", "10.2b", "10.3a"],
+      ["Advice"],
+    ),
+    status: "draft",
+  }),
+  rule(11, {
+    summary:
+      "Rule 11 covers a ball in motion that hits a person, an animal or an object. When it happens by accident there's no penalty to anyone, and you usually play the ball as it lies, wherever it ends up. Two exceptions come up on the green. In stroke play, if your putt hits another ball at rest on the green and both were on the green before you played, you take two penalty strokes. And a putt that accidentally hits another person, an animal or a movable obstruction such as a dropped glove is replayed. Deliberately stopping or deflecting any ball in motion, or moving things to change where it might stop, is the general penalty.",
+    commonQuestions: [
+      "My shot hit my own golf bag: is that a penalty?",
+      "My putt hit another ball on the green: what happens?",
+      "My putt hit someone standing near the hole: do I replay it?",
+      "Can I stop a ball that's rolling toward the water?",
+    ],
+    sources: opened(OPENED_237, ["11", "11.1a", "11.1b", "11.2b", "11.3"]),
+    status: "draft",
+  }),
 
   // Course areas and procedures
   rule(12, {
