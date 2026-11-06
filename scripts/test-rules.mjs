@@ -371,6 +371,19 @@ const CTX = { servedPaths: SERVED, glossarySlugs, today: TODAY };
   fails("the 2028 cut-over", { ctx: { ...CTX, today: "2028-01-01" } }, /stopped being current on 2028-01-01/);
   fails("a citation not written canonically", { scenarios: withScenario(2, { sources: [{ ...rogSource("18-2B"), checkedOn: TODAY }, ...allScenarios[2].sources] }) }, /out-of-bounds: source 18-2B should be written 18\.2b/);
   fails("a rule page on the wrong host", { scenarios: withScenario(4, { sources: [{ ...rogSource("19.1"), authority: "USGA", url: "https://www.usga.org/anything/rule-19", checkedOn: TODAY }] }) }, /source 19\.1 should be the R&A's Rule 19 page/);
+  check(
+    "integrity: the USGA's clarifications page is a USGA source",
+    !validateRules(
+      withOverview(1, { sources: [...allOverviews[0].sources, { authority: "USGA", document: "clarifications", ruleRef: "Clarifications", url: "https://www.usga.org/rules-hub/clarifications-of-the-rules-of-golf.html", checkedOn: TODAY }] }),
+      allScenarios,
+      CTX,
+    ).some((p) => p.startsWith("rule-1:")),
+  );
+  fails(
+    "a clarifications page with the other body's authority",
+    { overviews: withOverview(1, { sources: [...allOverviews[0].sources, { authority: "RANDA", document: "clarifications", ruleRef: "Clarifications", url: "https://www.usga.org/rules-hub/clarifications-of-the-rules-of-golf.html", checkedOn: TODAY }] }) },
+    /rule-1: source Clarifications is on the USGA's site, so its authority should be USGA/,
+  );
   fails("a Model Local Rule at the wrong URL", { scenarios: withScenario(2, { sources: [...allScenarios[2].sources.filter((s) => s.document !== "local-rule"), { ...localRuleSource("E-5"), url: "https://www.randa.org/en/rog/clarifications", checkedOn: TODAY }] }) }, /source MLR E-5 should point to https:\/\/www\.randa\.org\/en\/rog\/committee-procedures\/sections\/8/);
   fails("an overview citing a Model Local Rule", { overviews: withOverview(18, { sources: [...allOverviews[17].sources, { ...localRuleSource("E-5"), checkedOn: TODAY }] }) }, /rule-18: an overview can't cite a Model Local Rule/);
   fails("a situation citing only a whole rule", { scenarios: withScenario(4, { sources: [{ ...rogSource("19"), checkedOn: TODAY }] }) }, /unplayable-ball: cites no subrule of its primary Rule 19/);

@@ -58,21 +58,26 @@ const STAGES = ["rules", "product", "seo", "approval"] as const;
 const MARKUP = /<\s*[a-z/!]|&[a-z#][a-z0-9]*;/i;
 /** House voice (CLAUDE.md): no emoji, no exclamation marks. */
 const EMOJI = /\p{Extended_Pictographic}/u;
-/** Where each kind of source lives (docs/rules/source-map.md). Rule pages are checked by number. */
-const SOURCE_HOMES: Record<Exclude<RulesSource["document"], "rules">, { authority: RulesSource["authority"]; url: (u: string) => boolean; where: string }> = {
-  definitions: { authority: "RANDA", url: (u) => u === RULES_DEFINITIONS_URL, where: RULES_DEFINITIONS_URL },
-  "local-rule": { authority: "RANDA", url: (u) => u === MODEL_LOCAL_RULES_URL, where: MODEL_LOCAL_RULES_URL },
-  clarifications: {
-    authority: "RANDA",
-    url: (u) => u === RULES_CLARIFICATIONS_URL || u === USGA_CLARIFICATIONS_URL,
-    where: `${RULES_CLARIFICATIONS_URL} or ${USGA_CLARIFICATIONS_URL}`,
-  },
-  handicapping: {
-    authority: "USGA",
-    url: (u) => u.startsWith("https://www.usga.org/handicapping/roh/Content/rules/"),
-    where: "a page under https://www.usga.org/handicapping/roh/Content/rules/",
-  },
+/**
+ * Where each kind of source lives, and whose page it is (docs/rules/source-map.md).
+ * A document may have more than one home; the authority must match the one used.
+ * Rule pages are checked by number.
+ */
+type SourceHome = { authority: RulesSource["authority"]; matches: (url: string) => boolean; where: string };
+const ROH_PAGES = "https://www.usga.org/handicapping/roh/Content/rules/";
+const SOURCE_HOMES: Record<Exclude<RulesSource["document"], "rules">, readonly SourceHome[]> = {
+  definitions: [{ authority: "RANDA", matches: (u) => u === RULES_DEFINITIONS_URL, where: RULES_DEFINITIONS_URL }],
+  "local-rule": [{ authority: "RANDA", matches: (u) => u === MODEL_LOCAL_RULES_URL, where: MODEL_LOCAL_RULES_URL }],
+  clarifications: [
+    { authority: "RANDA", matches: (u) => u === RULES_CLARIFICATIONS_URL, where: RULES_CLARIFICATIONS_URL },
+    { authority: "USGA", matches: (u) => u === USGA_CLARIFICATIONS_URL, where: USGA_CLARIFICATIONS_URL },
+  ],
+  handicapping: [
+    { authority: "USGA", matches: (u) => u.startsWith(ROH_PAGES), where: `a page under ${ROH_PAGES}` },
+  ],
 };
+
+const authorityName = (a: RulesSource["authority"]) => (a === "USGA" ? "USGA" : "R&A");
 
 function realDate(value: string): boolean {
   if (!ISO_DATE.test(value)) return false;
@@ -134,9 +139,12 @@ function sourceProblems(s: RulesSource, today: string): string[] {
     }
   } else {
     if (s.anchor) out.push(`${name} has an anchor; only rule pages have stable ones`);
-    const home = SOURCE_HOMES[s.document];
-    if (s.authority !== home.authority || !home.url(s.url)) {
-      out.push(`${name} should point to ${home.where} (${home.authority === "USGA" ? "USGA" : "R&A"})`);
+    const homes = SOURCE_HOMES[s.document];
+    const home = homes.find((h) => h.matches(s.url));
+    if (!home) {
+      out.push(`${name} should point to ${homes.map((h) => `${h.where} (${authorityName(h.authority)})`).join(" or ")}`);
+    } else if (s.authority !== home.authority) {
+      out.push(`${name} is on the ${authorityName(home.authority)}'s site, so its authority should be ${home.authority}`);
     }
   }
   if (s.checkedOn !== undefined) {
