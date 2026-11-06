@@ -118,6 +118,7 @@ export default function RulesPage() {
       copy={{
         searchCleared: rulesControlsCopy.searchCleared,
         filterCleared: rulesControlsCopy.filterCleared,
+        bothCleared: rulesControlsCopy.bothCleared,
         showing: rulesControlsCopy.showing,
       }}
     >
@@ -159,7 +160,6 @@ export default function RulesPage() {
             copy={{
               chipsLabel: rulesControlsCopy.chipsLabel,
               clear: rulesControlsCopy.clear,
-              resultsLabel: rulesControlsCopy.resultsLabel,
               situations: rulesControlsCopy.situations,
               rules: rulesControlsCopy.rules,
               showAll: rulesControlsCopy.showAll,

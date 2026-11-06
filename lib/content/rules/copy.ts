@@ -130,7 +130,6 @@ export const rulesControlsCopy = {
   chipsLabel: "Filter by topic",
   allChip: "All",
   clear: "Clear",
-  resultsLabel: "Search results",
   situations: "Situations",
   rules: "Rules",
   /** A group shows eight results until this is pressed. */
@@ -158,6 +157,7 @@ export const rulesControlsCopy = {
   /** Hash reveal (ux.md § Flows and states). {name} is the entry's heading. */
   searchCleared: "Search cleared to show {name}",
   filterCleared: "Topic filter cleared to show {name}",
+  bothCleared: "Search and topic filter cleared to show {name}",
   showing: "Showing {name}",
 };
 

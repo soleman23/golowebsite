@@ -15,9 +15,14 @@
 import { useEffect, useMemo, useState } from "react";
 import { ChipFilter, type ChipItem } from "@/components/ui/ChipFilter";
 import { FilterStatus } from "@/components/ui/FilterStatus";
-import { prepareRulesSearch, searchRules, type RulesMatch } from "@/lib/content/rules/search";
+import {
+  normalizeRulesText,
+  prepareRulesSearch,
+  searchRules,
+  type RulesMatch,
+} from "@/lib/content/rules/search";
 import type { RulesCategoryId, RulesSearchEntry } from "@/lib/content/rules/types";
-import { useRules } from "./RulesProvider";
+import { RULES_SEARCH_ID, useRules } from "./RulesProvider";
 import styles from "./RulesControls.module.css";
 
 type Nouns = Record<"result" | "situation" | "rule" | "entry", readonly [string, string]>;
@@ -26,7 +31,6 @@ type Nouns = Record<"result" | "situation" | "rule" | "entry", readonly [string,
 export type RulesControlsCopy = {
   chipsLabel: string;
   clear: string;
-  resultsLabel: string;
   situations: string;
   rules: string;
   showAll: string;
@@ -69,7 +73,8 @@ export function RulesControls({ chips, counts, topicLabels, entries, copy }: Rul
   const { active, choose, query, clear, reveal } = useRules();
   const index = useMemo(() => prepareRulesSearch(entries), [entries]);
   const topic = (active ?? "all") as RulesCategoryId | "all";
-  const searching = query.trim() !== "";
+  // As searchRules: a query of punctuation alone searches nothing.
+  const searching = normalizeRulesText(query) !== "";
   const results = useMemo(
     () => (searching ? searchRules(index, query, topic) : []),
     [index, query, topic, searching],
@@ -117,11 +122,11 @@ export function RulesControls({ chips, counts, topicLabels, entries, copy }: Rul
       rules ? count(rules, copy.nouns.rule) : "",
     ].filter(Boolean);
     const text = results.length
-      ? `${count(results.length, copy.nouns.result)}${inTopic}: ${kinds.join(", ")}`
-      : `${copy.noMatchShort}${inTopic}`;
+      ? `${fuzzy ? `${copy.closest}: ` : ""}${count(results.length, copy.nouns.result)}${inTopic}: ${kinds.join(", ")}`
+      : `${copy.noMatchShort}${inTopic}.${elsewhere ? ` ${copy.elsewhere.replace("{n}", count(elsewhere, copy.nouns.result))}` : ""}`;
     const timer = setTimeout(() => setAnnounced(text), ANNOUNCE_AFTER_MS);
     return () => clearTimeout(timer);
-  }, [searching, results.length, groups, inTopic, copy]);
+  }, [searching, results.length, groups, inTopic, fuzzy, elsewhere, copy]);
 
   // Spoken on a topic change, from the same lines the page shows.
   const filterMessages = counts;
@@ -164,7 +169,11 @@ export function RulesControls({ chips, counts, topicLabels, entries, copy }: Rul
                   <h2 id={`rules-results-${g.id}`} className={styles.groupTitle}>
                     {g.title}
                   </h2>
-                  <ol className={styles.list} aria-labelledby={`rules-results-${g.id}`}>
+                  <ol
+                    id={`rules-results-${g.id}-list`}
+                    className={styles.list}
+                    aria-labelledby={`rules-results-${g.id}`}
+                  >
                     {(expanded[g.id] ? g.items : g.items.slice(0, GROUP_LIMIT)).map((m) => (
                       <Result key={m.entry.id} match={m} copy={copy} reveal={reveal} />
                     ))}
@@ -173,7 +182,18 @@ export function RulesControls({ chips, counts, topicLabels, entries, copy }: Rul
                     <button
                       type="button"
                       className={styles.button}
-                      onClick={() => setExpanded((e) => ({ ...e, [g.id]: true }))}
+                      onClick={() => {
+                        setExpanded((e) => ({ ...e, [g.id]: true }));
+                        // The button goes once pressed; focus the first result
+                        // it revealed, so Tab carries on from there.
+                        setTimeout(() =>
+                          document
+                            .querySelector<HTMLElement>(
+                              `#rules-results-${g.id}-list > li:nth-child(${GROUP_LIMIT + 1}) a`,
+                            )
+                            ?.focus(),
+                        );
+                      }}
                     >
                       {copy.showAll.replace("{n}", String(g.items.length))}
                     </button>
@@ -187,7 +207,7 @@ export function RulesControls({ chips, counts, topicLabels, entries, copy }: Rul
         {searching && !results.length ? (
           <div className={styles.empty}>
             <p className={styles.emptyLine}>
-              {copy.noMatch.replace("{query}", query.trim())}
+              {copy.noMatch.replace("{query}", () => query.trim())}
               {elsewhere
                 ? ` ${copy.elsewhere.replace("{n}", count(elsewhere, copy.nouns.result))}`
                 : null}
@@ -195,7 +215,15 @@ export function RulesControls({ chips, counts, topicLabels, entries, copy }: Rul
             <p className={styles.hint}>{copy.noMatchHint}</p>
             <div className={styles.actions}>
               {elsewhere ? (
-                <button type="button" className={styles.button} onClick={() => choose("all")}>
+                <button
+                  type="button"
+                  className={styles.button}
+                  onClick={() => {
+                    choose("all");
+                    // This block goes as results arrive; the field is where to go next.
+                    document.getElementById(RULES_SEARCH_ID)?.focus();
+                  }}
+                >
                   {copy.searchAll}
                 </button>
               ) : null}
@@ -232,7 +260,9 @@ function Result({ match: { entry, alias }, copy, reveal }: ResultProps) {
         href={`#${entry.anchor}`}
         className={styles.resultName}
         onClick={(e) => {
-          // Same hash twice fires no hashchange; reveal directly.
+          // Same hash twice fires no hashchange; reveal directly. A modified
+          // click (new tab, new window) is the browser's.
+          if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
           if (window.location.hash === `#${entry.anchor}`) {
             e.preventDefault();
             reveal(entry.anchor, true);

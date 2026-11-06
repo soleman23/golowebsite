@@ -10,9 +10,10 @@
  * has one polite region for one-off messages.
  *
  * Also owns deep links (ux.md § Flows and states): a #fragment on load or on
- * a hash change always ends up visible. An active search is cleared and a
- * topic filter resets to All, each announced, and the entry's heading takes
- * focus, smoothly unless the reader prefers reduced motion.
+ * a hash change always ends up visible. An active search is cleared, and a
+ * topic filter that hides the target resets to All (one that shows it
+ * stays, as on the glossary), announced in one message; the entry's heading
+ * takes focus, smoothly unless the reader prefers reduced motion.
  *
  * Topic filtering itself is CSS keyed off <html data-filter> (FilterBoot
  * paints it before hydration). Search hides the lists through
@@ -35,6 +36,7 @@ import {
 import { usePathname, useRouter } from "next/navigation";
 import { AnnounceContext } from "@/components/ui/announce";
 import { FilterUrlSync, useInitialFilter } from "@/components/ui/FilterUrlSync";
+import { normalizeRulesText } from "@/lib/content/rules/search";
 
 type RulesState = {
   /** The active topic id or "all"; null until the URL has been read. */
@@ -63,6 +65,7 @@ export function useRules(): RulesState {
 export type RulesRevealCopy = {
   searchCleared: string;
   filterCleared: string;
+  bothCleared: string;
   showing: string;
 };
 
@@ -78,14 +81,16 @@ export const RULES_SEARCH_ID = "rules-search";
 
 /**
  * Run once `target` is laid out. A reset needs a render, and on a cold load
- * FilterUrlSync can re-apply the old ?category= for a frame or two before
- * the replaced URL reaches it, so wait for the element rather than a fixed
- * number of frames (about half a second at most).
+ * FilterUrlSync can re-apply the old ?category= until the replaced URL
+ * reaches it, so wait for the element rather than a fixed number of frames.
+ * After about half a second it hands over to `giveUp`; the provider then
+ * retries when the topic next changes (a slow connection).
  */
-function whenShown(target: HTMLElement, run: () => void, frames = 30) {
+function whenShown(target: HTMLElement, run: () => void, giveUp: () => void, frames = 30) {
   requestAnimationFrame(() => {
-    if (target.offsetParent !== null || frames <= 0) run();
-    else whenShown(target, run, frames - 1);
+    if (target.offsetParent !== null) run();
+    else if (frames <= 0) giveUp();
+    else whenShown(target, run, giveUp, frames - 1);
   });
 }
 
@@ -118,6 +123,28 @@ function resolveTarget(id: string): Target | null {
   return { target, focus, entry, hideable: Boolean(target.closest(`[${RULES_LISTS_ATTR}]`)) };
 }
 
+/** What to call a target when announcing it: its heading, never its whole text. */
+function targetName(target: HTMLElement, focus: HTMLElement | null, id: string): string {
+  const labelledBy = target.getAttribute("aria-labelledby");
+  const label = focus ?? (labelledBy ? document.getElementById(labelledBy) : null);
+  return label?.textContent?.trim() || target.getAttribute("aria-label") || id;
+}
+
+/**
+ * Whether the topic `active` hides `target`, by the same rules as the CSS
+ * in app/rules/rules.module.css: the quick cards and number grid go under
+ * any topic, anything with a data-category shows only under its own, and a
+ * section shows only under a topic in its data-cats.
+ */
+function hiddenByTopic(target: HTMLElement, active: string): boolean {
+  if (active === "all") return false;
+  if (target.closest("#quick-situations, #rules-numbers")) return true;
+  const own = target.closest<HTMLElement>("[data-category]")?.dataset.category;
+  if (own) return own !== active;
+  const cats = target.closest<HTMLElement>("[data-cats]")?.dataset.cats?.split(" ");
+  return cats ? !cats.includes(active) : false;
+}
+
 export function RulesProvider({ ids, copy, children }: ProviderProps) {
   const router = useRouter();
   const pathname = usePathname();
@@ -127,6 +154,8 @@ export function RulesProvider({ ids, copy, children }: ProviderProps) {
   // Read by reveal(), which runs from listeners outside React's render.
   const activeRef = useRef<string | null>(null);
   const queryRef = useRef("");
+  // A reveal still waiting for its target to show (see whenShown).
+  const pending = useRef<{ target: HTMLElement; show: () => void } | null>(null);
 
   const select = useCallback((id: string) => {
     activeRef.current = id;
@@ -169,34 +198,59 @@ export function RulesProvider({ ids, copy, children }: ProviderProps) {
       const resolved = resolveTarget(id);
       if (!resolved) return;
       const { target, focus, entry, hideable } = resolved;
-      const name = (focus ?? target).textContent?.trim() || id;
-      let note = "";
-      // Search hides every list and a filter hides other topics: both give
-      // way to the fragment (ux.md: the hash wins). The sources and related
-      // sections are never hidden, so a jump there resets nothing.
-      if (hideable && queryRef.current) {
-        setQuery("");
-        note = copy.searchCleared.replace("{name}", name);
-      }
-      if (hideable && activeRef.current && activeRef.current !== "all") {
+      const name = targetName(target, focus, id);
+      // Search hides every list, and a topic hides the others' entries: each
+      // gives way to the fragment (ux.md: the hash wins). The sources and
+      // related sections are never hidden, so a jump there resets nothing.
+      const clearSearch = hideable && queryRef.current !== "";
+      const clearTopic = hideable && hiddenByTopic(target, activeRef.current ?? "all");
+      if (clearSearch) setQuery("");
+      if (clearTopic) {
         select("all");
-        // replace: the reset isn't a step the reader took.
-        router.replace(`${pathname}#${id}`, { scroll: false });
-        note ||= copy.filterCleared.replace("{name}", name);
+        // replace: the reset isn't a step the reader took. Any other
+        // parameter stays.
+        const params = new URLSearchParams(window.location.search);
+        params.delete("category");
+        const search = params.toString();
+        router.replace(`${pathname}${search ? `?${search}` : ""}#${id}`, { scroll: false });
       }
-      if (note) announce(note);
-      else if (announceOpen && entry) announce(copy.showing.replace("{name}", name));
+      // One message: two at once in two regions, and a reader may hear one.
+      const note = clearSearch && clearTopic
+        ? copy.bothCleared
+        : clearSearch
+          ? copy.searchCleared
+          : clearTopic
+            ? copy.filterCleared
+            : announceOpen && entry
+              ? copy.showing
+              : "";
+      if (note) announce(note.replace("{name}", () => name));
       const smooth = !matchMedia("(prefers-reduced-motion: reduce)").matches;
+      const show = () => {
+        pending.current = null;
+        target.scrollIntoView({ block: "start", behavior: smooth ? "smooth" : "auto" });
+        focus?.focus({ preventScroll: true });
+      };
+      pending.current = null;
       // A frame first, so a reset made just now has rendered.
       requestAnimationFrame(() =>
-        whenShown(target, () => {
-          target.scrollIntoView({ block: "start", behavior: smooth ? "smooth" : "auto" });
-          focus?.focus({ preventScroll: true });
+        whenShown(target, show, () => {
+          pending.current = { target, show };
         }),
       );
     },
     [announce, copy, pathname, router, select, setQuery],
   );
+
+  // A reveal that timed out while FilterUrlSync held the old topic: run it
+  // once the topic changes and the target is laid out.
+  useEffect(() => {
+    const waiting = pending.current;
+    if (!waiting) return;
+    requestAnimationFrame(() => {
+      if (pending.current === waiting && waiting.target.offsetParent !== null) waiting.show();
+    });
+  }, [active]);
 
   // Deep links: the hash on arrival (once), then every hash change.
   const arrived = useRef(false);
@@ -220,10 +274,12 @@ export function RulesProvider({ ids, copy, children }: ProviderProps) {
     return () => window.removeEventListener("hashchange", fromHash);
   }, [reveal]);
 
-  // While searching, the ranked results replace the lists (ux.md D5).
+  // While searching, the ranked results replace the lists (ux.md D5). A
+  // query of punctuation alone ("#" on the way to "#18") searches nothing,
+  // so the lists stay.
   useEffect(() => {
     const root = document.documentElement;
-    if (query.trim()) root.dataset.rulesSearch = "";
+    if (normalizeRulesText(query)) root.dataset.rulesSearch = "";
     else delete root.dataset.rulesSearch;
   }, [query]);
   useEffect(
