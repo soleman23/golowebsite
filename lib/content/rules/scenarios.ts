@@ -18,6 +18,52 @@ import type { RulesScenario } from "./types";
 /** The day batch 1 (#240) opened each of its sources. */
 const P0_CHECKED = "2026-11-06";
 
+/**
+ * Batch 1's review record (#240, PR #256). Every stage happened on November 6,
+ * 2026:
+ *
+ * - rules, product and seo were done by two independent reviewer agents that
+ *   opened the sources themselves (editorial-review.md § Stages). Their
+ *   findings and resolutions are in docs/rules/review-packet-situations.md.
+ * - approval is the owner's, given in chat on November 6, 2026, on that
+ *   packet. It accepts the one off-record source (Committee Procedures 2C,
+ *   for red-vs-yellow-penalty-areas) the packet flags.
+ *
+ * Internal: stripped by every public selector.
+ */
+const P0_REVIEWED_ON = "2026-11-06";
+const P0_APPROVED: Pick<RulesScenario, "status" | "reviewedOn" | "reviewedBy" | "reviewLog"> = {
+  status: "approved",
+  reviewedOn: P0_REVIEWED_ON,
+  reviewedBy: "owner",
+  reviewLog: [
+    {
+      stage: "rules",
+      by: "agent",
+      on: P0_REVIEWED_ON,
+      note: "Reviewer A: every sentence, penalty, stroke count and caveat against the R&A text and Definitions; findings fixed (review-packet-situations.md).",
+    },
+    {
+      stage: "product",
+      by: "agent",
+      on: P0_REVIEWED_ON,
+      note: "Reviewer B: voice, NEVER_WORDS, no GoLo claim, Model Local Rule wording; copy distance 0 runs of 8+ words.",
+    },
+    {
+      stage: "seo",
+      by: "agent",
+      on: P0_REVIEWED_ON,
+      note: "Reviewer B: fragments per canonical-map.md; glossary and content links published; aliases.",
+    },
+    {
+      stage: "approval",
+      by: "owner",
+      on: P0_REVIEWED_ON,
+      note: "Batch 1 approved in chat on 2026-11-06 (#240, PR #256).",
+    },
+  ],
+};
+
 /** Rules of Handicapping 3.3, for the conceded-putt posting caveat. */
 const ROH_3_3 =
   "https://www.usga.org/handicapping/roh/Content/rules/3%203%20WhenHoleStartedbutPlayerDoesNotHoleOut.htm";
@@ -72,7 +118,7 @@ export const rulesScenarios: RulesScenario[] = [
       "On the 7th your drive goes into thick trees on the right and nobody sees where it stops. Three minutes after you start looking it still hasn't turned up, so you go back to the tee, count a penalty stroke and hit your third shot.",
     localRuleCaveat:
       "If the Committee has adopted Model Local Rule E-5, you have one more option instead of going back: for two penalty strokes, drop in the general area between where the ball was estimated to finish and the nearest point of fairway, no nearer the hole. It's meant for general play, not professional or elite amateur events, and a group agreeing to play it isn't the Committee adopting it. It can't be used once you've played a provisional for that ball (only for the provisional itself), or for a ball that's known or virtually certain to have finished in a penalty area.",
-    status: "in-review",
+    ...P0_APPROVED,
   }),
   situation({
     id: "provisional-ball",
@@ -101,7 +147,7 @@ export const rulesScenarios: RulesScenario[] = [
       "Once the provisional is your ball in play, it's under stroke and distance: you count the stroke with the original, one penalty stroke and every stroke with the provisional (Rule 18.3c; Definitions: Stroke and Distance).",
     example:
       "On the 12th your 3-wood fades toward the white stakes on the right. Before leaving the tee you say you're hitting a provisional and put it in the fairway. The first ball isn't found in three minutes, so the provisional is in play and your next shot is your fourth.",
-    status: "in-review",
+    ...P0_APPROVED,
   }),
   situation({
     id: "out-of-bounds",
@@ -134,7 +180,7 @@ export const rulesScenarios: RulesScenario[] = [
       "On the 3rd your drive finishes a yard past the white stakes on the left. You tee up again, and your second drive is your third stroke. If the Committee has adopted Model Local Rule E-5, you could instead drop near the fairway for two penalty strokes and play your fourth.",
     localRuleCaveat:
       "Model Local Rule E-5 is something a Committee may adopt for general play, meaning casual rounds and a club's own competitions. It isn't in force unless adopted, a group agreeing to play it isn't the Committee adopting it, and the R&A says it doesn't suit professional or elite amateur events. It can't be used for a ball after you've played a provisional for it (only for the provisional itself), or for a ball that's known or virtually certain to have finished in a penalty area.",
-    status: "in-review",
+    ...P0_APPROVED,
   }),
   situation({
     id: "red-vs-yellow-penalty-areas",
@@ -167,7 +213,7 @@ export const rulesScenarios: RulesScenario[] = [
     example:
       "On the 14th your second shot, a 7-iron, clears a pond marked with red stakes, lands on the bank beyond it and spins back into the water. It last crossed the edge on the green side, so a lateral drop goes within two club-lengths of that point, no nearer the hole, and you play your fourth from there.",
     relatedGlossaryIds: ["penalty-area"],
-    status: "in-review",
+    ...P0_APPROVED,
   }),
   situation({
     id: "unplayable-ball",
@@ -196,7 +242,7 @@ export const rulesScenarios: RulesScenario[] = [
     example:
       "On the 9th your wedge finishes in the sand under the steep front lip of a greenside bunker. A lateral drop in the bunker costs one penalty stroke; going back on the line outside the bunker costs two.",
     relatedGlossaryIds: ["bunker", "rough"],
-    status: "in-review",
+    ...P0_APPROVED,
   }),
   situation({
     id: "bunker-sand",
@@ -221,7 +267,7 @@ export const rulesScenarios: RulesScenario[] = [
     example:
       "On the 5th your ball is in a fairway bunker. Setting the rake down and digging your feet in before you play is fine; a practice swing that brushes the sand costs two strokes in stroke play.",
     relatedGlossaryIds: ["bunker"],
-    status: "in-review",
+    ...P0_APPROVED,
   }),
   situation({
     id: "cart-path",
@@ -254,7 +300,7 @@ export const rulesScenarios: RulesScenario[] = [
       "None for taking relief. Playing from outside the relief area is playing from a wrong place: the general penalty, two strokes in stroke play or loss of the hole in match play (Rule 16.1).",
     example:
       "On the 11th your drive stops on the cart path right of the fairway. You find the nearest spot off the path, no nearer the hole, where ball, stance and swing are all clear, measure one club-length from it with your longest club other than the putter, usually the driver, and drop from knee height inside that area.",
-    status: "in-review",
+    ...P0_APPROVED,
   }),
 
   // P1 (#241)

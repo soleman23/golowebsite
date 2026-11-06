@@ -214,4 +214,4 @@ Checks both reviewers passed: no GoLo claims; `NEVER_WORDS` clean (every "stakes
 
 ### Approval, batch 1
 
-Pending the owner's approval in chat.
+**Approved by the owner in chat on November 6, 2026** ("Approve batch 1"), on this packet as written. The approval covers all seven records and accepts the off-record Committee Procedures 2C source for `red-vs-yellow-penalty-areas`. The records are `approved` with `reviewedOn: 2026-11-06`, `reviewedBy: "owner"` and a review log of rules, product and seo by "agent" and approval by "owner" (`P0_APPROVED` in `scenarios.ts`). Not published: `rulesLive` is false and only #247 publishes.
