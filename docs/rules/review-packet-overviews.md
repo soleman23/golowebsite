@@ -325,11 +325,11 @@ Foundations and equipment (1–4) and playing the round (5–11). Sources opened
 
 Agent B found 1 error, also fixed: Rule 9 shared a 12-word run with 9.2a once "it's" is read as "it is".
 
-Codex then reviewed the pull request and raised four P2 points, all fixed: no between-hole practice from a bunker (Rule 5), a placed ball moved by wind into another area is put back too (Rule 9), others may still give some aiming help (Rule 10), and a putt that hits a ball-marker isn't replayed (Rule 11). Its second review raised three more, also fixed: accidental movement while applying a Rule is free (Rule 9), a provisional isn't a wrong ball (Rule 6), and the replay applies only to what a putt hits on the green (Rule 11).
+Codex then reviewed the pull request and raised four P2 points, all fixed: no between-hole practice from a bunker (Rule 5), a placed ball moved by wind into another area is put back too (Rule 9), others may still give some aiming help (Rule 10), and a putt that hits a ball-marker isn't replayed (Rule 11). Its second review raised three more, also fixed: accidental movement while applying a Rule is free (Rule 9), a provisional isn't a wrong ball (Rule 6), and the replay applies only to what a putt hits on the green (Rule 11). A third review raised three more, also fixed: a disturbed sand lie is re-created even if the ball didn't move (Rule 7), the accident exception covers specific actions, not every Rule (Rule 9), and stopping an opponent's dead ball to concede is allowed in match play (Rule 11).
 
 The two rules #237 singles out now say plainly what is a Committee matter. Rule 4 names the one Committee matter in the default Rule, a Local Rule banning distance devices, and says who the Committee is. Rule 10 says the advice limits cover the others in your group.
 
-Each summary is 117–120 words. The longest run shared with the official text is 7 words. `npm run lint:content` passes, and all 68 subrule anchors and 10 Definitions citations resolve against the pages fetched that day. Copy uses US spelling, as the rest of the site does; rule titles stay as the R&A writes them.
+Each summary is 117–120 words. The longest run shared with the official text is 7 words. `npm run lint:content` passes, and all 69 subrule anchors and 10 Definitions citations resolve against the pages fetched that day. Copy uses US spelling, as the rest of the site does; rule titles stay as the R&A writes them.
 
 **For the owner to decide:**
 
@@ -548,7 +548,7 @@ Each summary is 117–120 words. The longest run shared with the official text i
 
 ### Rule 7 · Ball Search: Finding and Identifying Ball
 
-**Summary (120 words):** Rule 7 covers finding and identifying your ball. You have three minutes from when you or your caddie start looking; after that, it's lost. You may move long grass, bushes, sand and water while searching; it's a penalty only if that goes beyond a reasonable search and improves your next shot. If anyone accidentally moves your ball while looking, there's no penalty; put it back, re-creating the lie if it was covered in sand. To check a ball, mark its spot and lift it, cleaning only enough to identify it. It's yours if someone saw your ball come to rest, if it carries your mark, or if it matches yours where yours should be and no identical ball is nearby.
+**Summary (120 words):** Rule 7 covers finding and identifying your ball. You have three minutes from when you or your caddie start looking, then it's lost. You may move long grass, bushes, sand and water while searching; it's a penalty only if that goes beyond a reasonable search and improves your next shot. If anyone accidentally moves your ball while looking, there's no penalty; put it back. If searching disturbed sand on it, re-create the lie before you play. To check a ball, mark and lift it, cleaning only enough to identify it. It's yours if someone saw your ball come to rest, if it carries your mark, or if it matches yours where yours should be and no identical ball is nearby.
 
 **Look here when:** How long can I search for my ball? · I stepped on my ball while looking for it: is that a penalty? · Can I pick up a ball to see if it's mine? · Two balls of the same brand are in the rough: which is mine?
 
@@ -557,11 +557,12 @@ Each summary is 117–120 words. The longest run shared with the official text i
 | # | Sentence | Rests on |
 |---:|---|---|
 | 1 | Rule 7 covers finding and identifying your ball. | [Rule 7](https://www.randa.org/en/rog/the-rules-of-golf/rule-7) |
-| 2 | You have three minutes from when you or your caddie start looking; after that, it's lost. | Definitions: Lost |
+| 2 | You have three minutes from when you or your caddie start looking, then it's lost. | Definitions: Lost |
 | 3 | You may move long grass, bushes, sand and water while searching; it's a penalty only if that goes beyond a reasonable search and improves your next shot. | [7.1a](https://www.randa.org/en/rog/the-rules-of-golf/rule-7#7_1a) |
-| 4 | If anyone accidentally moves your ball while looking, there's no penalty; put it back, re-creating the lie if it was covered in sand. | [7.4](https://www.randa.org/en/rog/the-rules-of-golf/rule-7#7_4), [7.1b](https://www.randa.org/en/rog/the-rules-of-golf/rule-7#7_1b) |
-| 5 | To check a ball, mark its spot and lift it, cleaning only enough to identify it. | [7.3](https://www.randa.org/en/rog/the-rules-of-golf/rule-7#7_3) |
-| 6 | It's yours if someone saw your ball come to rest, if it carries your mark, or if it matches yours where yours should be and no identical ball is nearby. | [7.2](https://www.randa.org/en/rog/the-rules-of-golf/rule-7#7_2) |
+| 4 | If anyone accidentally moves your ball while looking, there's no penalty; put it back. | [7.4](https://www.randa.org/en/rog/the-rules-of-golf/rule-7#7_4) |
+| 5 | If searching disturbed sand on it, re-create the lie before you play. | [7.1b](https://www.randa.org/en/rog/the-rules-of-golf/rule-7#7_1b) |
+| 6 | To check a ball, mark and lift it, cleaning only enough to identify it. | [7.3](https://www.randa.org/en/rog/the-rules-of-golf/rule-7#7_3) |
+| 7 | It's yours if someone saw your ball come to rest, if it carries your mark, or if it matches yours where yours should be and no identical ball is nearby. | [7.2](https://www.randa.org/en/rog/the-rules-of-golf/rule-7#7_2) |
 | Q1 | How long can I search for my ball? | Definitions: Lost |
 | Q2 | I stepped on my ball while looking for it: is that a penalty? | [7.4](https://www.randa.org/en/rog/the-rules-of-golf/rule-7#7_4) |
 | Q3 | Can I pick up a ball to see if it's mine? | [7.3](https://www.randa.org/en/rog/the-rules-of-golf/rule-7#7_3) |
@@ -569,11 +570,12 @@ Each summary is 117–120 words. The longest run shared with the official text i
 
 **Review findings and resolution:**
 
-- *Rules accuracy (agent A), gap:* Q1 (how long to search) wasn't answered; Definitions: Lost was cited but unused. **Resolution:** Fixed: "You have three minutes from when you or your caddie start looking; after that, it's lost."
+- *Rules accuracy (agent A), gap:* Q1 (how long to search) wasn't answered; Definitions: Lost was cited but unused. **Resolution:** Fixed: "You have three minutes from when you or your caddie start looking, then it's lost."
 - *Rules accuracy (agent A), gap:* "If someone saw it come to rest" is looser than 7.2: it must be seen in circumstances where it's known to be your ball. **Resolution:** Fixed: "if someone saw your ball come to rest".
 - *Rules accuracy (agent A), gap:* Q4 (two identical balls): if you can't tell which is yours, neither is identified. **Resolution:** The summary's "no identical ball is nearby" condition carries it; no words left for the consequence.
 - *Rules accuracy (agent A), nit:* Lifting without need, not marking, or over-cleaning is one stroke (7.3); kicking the ball before the search starts is one stroke (7.4). **Resolution:** Not added, for length.
 - *Site rules (agent B), should-fix:* "So long as you don't go beyond a reasonable search and improve your next shot" read as two separate bans. **Resolution:** Fixed: "it's a penalty only if that goes beyond a reasonable search and improves your next shot."
+- *Codex, on the pull request, P2:* Third review: sand moved in a search must be put back to re-create the lie even if the ball didn't move (7.1b). **Resolution:** Fixed: a separate sentence, "If searching disturbed sand on it, re-create the lie before you play."
 
 **Copy distance:** longest run shared with the R&A text is 5 words ("come to rest if it"); no run of 8 or more.
 
@@ -612,7 +614,7 @@ Each summary is 117–120 words. The longest run shared with the official text i
 
 ### Rule 9 · Ball Played as It Lies; Ball at Rest Lifted or Moved
 
-**Summary (120 words):** Rule 9 covers playing the ball as it lies, and a resting ball that moves. The cause decides; anything but natural forces counts only when that's known or virtually certain, at least 95 percent likely. Wind or water: no penalty; play it where it stopped, unless it was replaced on the green, or a dropped, placed or replaced ball rolled into another area or out of bounds; then replace it. You or your caddie: one penalty stroke and replace it, unless you moved it by accident on the green, while searching or while applying a Rule. Your opponent in match play: the same, with the penalty theirs. Anything else, such as another player in stroke play: no penalty, replace it.
+**Summary (119 words):** Rule 9 covers playing the ball as it lies, and a resting ball that moves. The cause decides; anything but natural forces counts only when that's known or virtually certain. Wind or water: no penalty; play it where it stopped, unless it was replaced on the green, or a dropped, placed or replaced ball rolled into another area or out of bounds; then replace it. You or your caddie: one penalty stroke and replace it, unless it moved by accident on the green, in a search, or while marking it, removing a movable obstruction or taking relief. An opponent in match play: the same, penalty theirs. Anything else, such as another player in stroke play: no penalty, replace it.
 
 **Look here when:** The wind moved my ball after it stopped: do I replace it? · I nudged my ball at address: what's the penalty? · Another ball knocked mine: where do I play from? · My opponent moved my ball in match play: what happens?
 
@@ -621,10 +623,10 @@ Each summary is 117–120 words. The longest run shared with the official text i
 | # | Sentence | Rests on |
 |---:|---|---|
 | 1 | Rule 9 covers playing the ball as it lies, and a resting ball that moves. | [9.1a](https://www.randa.org/en/rog/the-rules-of-golf/rule-9#9_1a) |
-| 2 | The cause decides; anything but natural forces counts only when that's known or virtually certain, at least 95 percent likely. | [9.2a](https://www.randa.org/en/rog/the-rules-of-golf/rule-9#9_2a), [9.2b](https://www.randa.org/en/rog/the-rules-of-golf/rule-9#9_2b), Definitions: Known or Virtually Certain |
+| 2 | The cause decides; anything but natural forces counts only when that's known or virtually certain. | [9.2a](https://www.randa.org/en/rog/the-rules-of-golf/rule-9#9_2a), [9.2b](https://www.randa.org/en/rog/the-rules-of-golf/rule-9#9_2b), Definitions: Known or Virtually Certain |
 | 3 | Wind or water: no penalty; play it where it stopped, unless it was replaced on the green, or a dropped, placed or replaced ball rolled into another area or out of bounds; then replace it. | [9.3](https://www.randa.org/en/rog/the-rules-of-golf/rule-9#9_3) |
-| 4 | You or your caddie: one penalty stroke and replace it, unless you moved it by accident on the green, while searching or while applying a Rule. | [9.4a](https://www.randa.org/en/rog/the-rules-of-golf/rule-9#9_4a), [9.4b](https://www.randa.org/en/rog/the-rules-of-golf/rule-9#9_4b) |
-| 5 | Your opponent in match play: the same, with the penalty theirs. | [9.5a](https://www.randa.org/en/rog/the-rules-of-golf/rule-9#9_5a), [9.5b](https://www.randa.org/en/rog/the-rules-of-golf/rule-9#9_5b) |
+| 4 | You or your caddie: one penalty stroke and replace it, unless it moved by accident on the green, in a search, or while marking it, removing a movable obstruction or taking relief. | [9.4a](https://www.randa.org/en/rog/the-rules-of-golf/rule-9#9_4a), [9.4b](https://www.randa.org/en/rog/the-rules-of-golf/rule-9#9_4b) |
+| 5 | An opponent in match play: the same, penalty theirs. | [9.5a](https://www.randa.org/en/rog/the-rules-of-golf/rule-9#9_5a), [9.5b](https://www.randa.org/en/rog/the-rules-of-golf/rule-9#9_5b) |
 | 6 | Anything else, such as another player in stroke play: no penalty, replace it. | [9.6](https://www.randa.org/en/rog/the-rules-of-golf/rule-9#9_6), Definitions: Outside Influence |
 | Q1 | The wind moved my ball after it stopped: do I replace it? | [9.3](https://www.randa.org/en/rog/the-rules-of-golf/rule-9#9_3) |
 | Q2 | I nudged my ball at address: what's the penalty? | [9.4b](https://www.randa.org/en/rog/the-rules-of-golf/rule-9#9_4b) |
@@ -634,14 +636,15 @@ Each summary is 117–120 words. The longest run shared with the official text i
 **Review findings and resolution:**
 
 - *Rules accuracy (agent A), error:* "Wind or water: play it from where it stopped" was wrong for a ball already lifted and replaced on the green, and for a dropped, placed or replaced ball that rolls into another area or out of bounds (9.3 Exceptions 1 and 2). **Resolution:** Fixed: "unless it was replaced on the green, or a dropped, placed or replaced ball rolled into another area or out of bounds; then replace it."
-- *Rules accuracy (agent A), gap:* The opponent sentence read as absolute; the opponent has the same accident exceptions (9.5b). **Resolution:** Fixed: "Your opponent in match play: the same, with the penalty theirs."
+- *Rules accuracy (agent A), gap:* The opponent sentence read as absolute; the opponent has the same accident exceptions (9.5b). **Resolution:** Fixed: "An opponent in match play: the same, penalty theirs."
 - *Rules accuracy (agent A), gap:* A partner isn't an outside influence (Definitions: Outside Influence; 22.2, 23.5b). **Resolution:** Fixed: "Anything else, such as another player in stroke play" no longer reads as covering everyone.
 - *Rules accuracy (agent A), gap:* Missing the fallback: if a person or outside influence isn't known or virtually certain to be the cause, it's natural forces (9.2b(2)). **Resolution:** Fixed: "anything but natural forces counts only when that's known or virtually certain".
-- *Rules accuracy (agent A), nit:* The exceptions concern accidentally moving the ball, not touching it. **Resolution:** Fixed: "unless you moved it by accident on the green, while searching or while applying a Rule".
+- *Rules accuracy (agent A), nit:* The exceptions concern accidentally moving the ball, not touching it. **Resolution:** Fixed: "unless it moved by accident on the green, in a search, or while marking it, removing a movable obstruction or taking relief" (narrowed after Codex's third review, below).
 - *Site rules (agent B), error:* Copy distance: "A ball has moved only if it's known or virtually certain that it did" shares a 12-word run with 9.2a once "it's" is read as "it is". **Resolution:** Fixed: the sentence was rewritten; the longest run left is 6 words. The drafter's checker now expands contractions, and every overview was rerun.
-- *Site rules (agent B), should-fix:* "Known or virtually certain" wasn't explained. **Resolution:** Fixed: "at least 95 percent likely".
+- *Site rules (agent B), should-fix:* "Known or virtually certain" wasn't explained. **Resolution:** Fixed at first with "at least 95 percent likely"; that clause was later cut to fit Codex's third-review fix. Rules 17 and 18 explain the 95 percent; Definitions: Known or Virtually Certain is linked here.
 - *Codex, on the pull request, P2:* 9.3 Exception 2 covers a placed ball too, such as one placed after two drops that won't stay in the relief area. **Resolution:** Fixed: "a dropped, placed or replaced ball".
-- *Codex, on the pull request, P2:* Second review: accidental movement while applying a Rule, such as removing a movable obstruction, marking or taking relief, is also free (9.4b Exception 4). **Resolution:** Fixed: "unless you moved it by accident on the green, while searching or while applying a Rule."
+- *Codex, on the pull request, P2:* Second review: accidental movement while applying a Rule, such as removing a movable obstruction, marking or taking relief, is also free (9.4b Exception 4). **Resolution:** Fixed, then narrowed after the third review: "or while marking it, removing a movable obstruction or taking relief".
+- *Codex, on the pull request, P2:* Third review: "while applying a Rule" was too broad; removing a loose impediment that moves the ball still costs a stroke (15.1b), and 9.4b Exception 4 lists specific actions. **Resolution:** Fixed: "while marking it, removing a movable obstruction or taking relief", which matches Rule 15's overview.
 
 **Copy distance:** longest run shared with the R&A text is 6 words ("playing the ball as it lies"); no run of 8 or more.
 
@@ -685,19 +688,19 @@ Each summary is 117–120 words. The longest run shared with the official text i
 
 ### Rule 11 · Ball in Motion Accidentally Hits Person, Animal or Object; Deliberate Actions to Affect Ball in Motion
 
-**Summary (117 words):** Rule 11 covers a ball in motion that hits a person, an animal or an object. When it's accidental there's usually no penalty, and you play the ball as it lies. In stroke play, if your putt hits another ball at rest on the green and both were on the green before you played, you take two penalty strokes. A putt that accidentally hits, on the green, another person (not whoever is tending the flagstick), an animal larger than an insect, or a movable obstruction must be replayed; a ball-marker doesn't count. Deliberately stopping or deflecting a ball in motion, or removing loose impediments or changing the ground to affect where it stops, costs the general penalty.
+**Summary (120 words):** Rule 11 covers a ball in motion that hits a person, an animal or an object. Accidental hits usually carry no penalty; play the ball as it lies. In stroke play, a putt that hits another ball at rest, with both on the green beforehand, costs two penalty strokes. A putt that accidentally hits, on the green, another person (not the flagstick attendant), an animal larger than an insect, or a movable obstruction must be replayed; a ball-marker doesn't count. Deliberately stopping or deflecting a moving ball, or removing loose impediments or altering the ground to affect where it stops, costs the general penalty; in match play you may stop an opponent's ball that can't go in, as a concession.
 
 **Look here when:** My shot hit my own golf bag: is that a penalty? · My putt hit another ball on the green: what happens? · My putt hit someone standing near the hole: do I replay it? · Can I stop a ball that's rolling toward the water?
 
-**Glossary:** none · **Aliases:** none · **Sources:** 11, 11.1a, 11.1b, 11.2b, 11.3, 13.2b
+**Glossary:** none · **Aliases:** none · **Sources:** 11, 11.1a, 11.1b, 11.2a, 11.2b, 11.3, 13.2b
 
 | # | Sentence | Rests on |
 |---:|---|---|
 | 1 | Rule 11 covers a ball in motion that hits a person, an animal or an object. | [Rule 11](https://www.randa.org/en/rog/the-rules-of-golf/rule-11) |
-| 2 | When it's accidental there's usually no penalty, and you play the ball as it lies. | [11.1a](https://www.randa.org/en/rog/the-rules-of-golf/rule-11#11_1a), [11.1b](https://www.randa.org/en/rog/the-rules-of-golf/rule-11#11_1b) |
-| 3 | In stroke play, if your putt hits another ball at rest on the green and both were on the green before you played, you take two penalty strokes. | [11.1a](https://www.randa.org/en/rog/the-rules-of-golf/rule-11#11_1a) |
-| 4 | A putt that accidentally hits, on the green, another person (not whoever is tending the flagstick), an animal larger than an insect, or a movable obstruction must be replayed; a ball-marker doesn't count. | [11.1b](https://www.randa.org/en/rog/the-rules-of-golf/rule-11#11_1b), [13.2b](https://www.randa.org/en/rog/the-rules-of-golf/rule-13#13_2b) |
-| 5 | Deliberately stopping or deflecting a ball in motion, or removing loose impediments or changing the ground to affect where it stops, costs the general penalty. | [11.2b](https://www.randa.org/en/rog/the-rules-of-golf/rule-11#11_2b), [11.3](https://www.randa.org/en/rog/the-rules-of-golf/rule-11#11_3) |
+| 2 | Accidental hits usually carry no penalty; play the ball as it lies. | [11.1a](https://www.randa.org/en/rog/the-rules-of-golf/rule-11#11_1a), [11.1b](https://www.randa.org/en/rog/the-rules-of-golf/rule-11#11_1b) |
+| 3 | In stroke play, a putt that hits another ball at rest, with both on the green beforehand, costs two penalty strokes. | [11.1a](https://www.randa.org/en/rog/the-rules-of-golf/rule-11#11_1a) |
+| 4 | A putt that accidentally hits, on the green, another person (not the flagstick attendant), an animal larger than an insect, or a movable obstruction must be replayed; a ball-marker doesn't count. | [11.1b](https://www.randa.org/en/rog/the-rules-of-golf/rule-11#11_1b), [13.2b](https://www.randa.org/en/rog/the-rules-of-golf/rule-13#13_2b) |
+| 5 | Deliberately stopping or deflecting a moving ball, or removing loose impediments or altering the ground to affect where it stops, costs the general penalty; in match play you may stop an opponent's ball that can't go in, as a concession. | [11.2a](https://www.randa.org/en/rog/the-rules-of-golf/rule-11#11_2a), [11.2b](https://www.randa.org/en/rog/the-rules-of-golf/rule-11#11_2b), [11.3](https://www.randa.org/en/rog/the-rules-of-golf/rule-11#11_3) |
 | Q1 | My shot hit my own golf bag: is that a penalty? | [11.1a](https://www.randa.org/en/rog/the-rules-of-golf/rule-11#11_1a), [11.1b](https://www.randa.org/en/rog/the-rules-of-golf/rule-11#11_1b) |
 | Q2 | My putt hit another ball on the green: what happens? | [11.1a](https://www.randa.org/en/rog/the-rules-of-golf/rule-11#11_1a) |
 | Q3 | My putt hit someone standing near the hole: do I replay it? | [11.1b](https://www.randa.org/en/rog/the-rules-of-golf/rule-11#11_1b), [13.2b](https://www.randa.org/en/rog/the-rules-of-golf/rule-13#13_2b) |
@@ -705,14 +708,15 @@ Each summary is 117–120 words. The longest run shared with the official text i
 
 **Review findings and resolution:**
 
-- *Rules accuracy (agent A), error:* "A putt that accidentally hits another person ... is replayed" missed that a person tending the flagstick is excluded: then it's no penalty and play it as it lies (11.1b(2), 13.2b). **Resolution:** Fixed: "another person (not whoever is tending the flagstick)"; 13.2b added.
+- *Rules accuracy (agent A), error:* "A putt that accidentally hits another person ... is replayed" missed that a person tending the flagstick is excluded: then it's no penalty and play it as it lies (11.1b(2), 13.2b). **Resolution:** Fixed: "another person (not the flagstick attendant)"; 13.2b added.
 - *Rules accuracy (agent A), error:* "Moving things to change where it might stop" was too broad: 11.3 bans changing the ground and removing loose impediments or movable obstructions, but allows moving equipment, a removed flagstick and balls at rest on the green. **Resolution:** Fixed: "removing loose impediments or changing the ground to affect where it stops".
 - *Rules accuracy (agent A), nit:* "A putt" should be any stroke from the green; insects don't count as animals here; the replay is required. **Resolution:** Fixed: "must be replayed". "Putt" kept as the plain word for a stroke on the green.
 - *Rules accuracy (agent A), nit:* In match play there's no penalty for hitting a ball on the green. **Resolution:** The sentence already opens "In stroke play".
-- *Site rules (agent B), should-fix:* "There's no penalty to anyone" was contradicted two sentences later. **Resolution:** Fixed: "there's usually no penalty".
+- *Site rules (agent B), should-fix:* "There's no penalty to anyone" was contradicted two sentences later. **Resolution:** Fixed: "Accidental hits usually carry no penalty".
 - *Site rules (agent B), nit:* Writing "putting green" in the ball-on-green sentence would make a 9-word run. **Resolution:** Kept as "green".
-- *Codex, on the pull request, P2:* The replay applies only to qualifying objects and animals: not a ball-marker, the club used, a ball at rest or the flagstick, and not insects (11.1b(2)). **Resolution:** Fixed: "another person (not whoever is tending the flagstick), an animal larger than an insect, or a movable obstruction must be replayed; a ball-marker doesn't count." A ball at rest is the sentence before; the flagstick is Rule 13.
+- *Codex, on the pull request, P2:* The replay applies only to qualifying objects and animals: not a ball-marker, the club used, a ball at rest or the flagstick, and not insects (11.1b(2)). **Resolution:** Fixed: "another person (not the flagstick attendant), an animal larger than an insect, or a movable obstruction must be replayed; a ball-marker doesn't count." A ball at rest is the sentence before; the flagstick is Rule 13.
 - *Codex, on the pull request, P2:* Second review: the replay applies only when the qualifying person, animal or obstruction is hit on the putting green (11.1b(2)); off the green the ball is played as it lies. **Resolution:** Fixed: "A putt that accidentally hits, on the green, another person ..."; the dropped-glove example was cut to fit.
+- *Codex, on the pull request, P2:* Third review: in match play, stopping an opponent's ball that has no reasonable chance of being holed, to concede the next stroke, isn't penalised (11.2a Exception). **Resolution:** Fixed: "in match play you may stop an opponent's ball that can't go in, as a concession." The ball-on-green sentence was tightened to fit.
 
 **Copy distance:** longest run shared with the R&A text is 7 words ("play the ball as it lies in"); no run of 8 or more.
 
