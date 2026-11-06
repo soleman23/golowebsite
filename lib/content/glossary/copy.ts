@@ -137,6 +137,9 @@ export const glossaryControlsCopy = {
   copy: "Copy link",
   copied: "Copied",
   copyFailed: "Copy failed",
+  /** Announced; {name} is the term (docs/glossary/ux.md). */
+  copiedMessage: "Link to {name} copied",
+  failedMessage: "Couldn't copy. The term name {name} is a link you can copy instead.",
 };
 
 /** "1 term", "4 terms". */
