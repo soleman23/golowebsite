@@ -1,0 +1,174 @@
+.card {
+  padding: clamp(18px, 3vw, 26px);
+  border-radius: var(--radius-card);
+  background: var(--glass-surface);
+  border: 1px solid var(--card-border);
+}
+
+.head {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 14px;
+  align-items: start;
+}
+
+/* Oversized numeral, the mockups' habit. */
+.rank {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border-radius: var(--radius-tile);
+  background: var(--accent);
+  color: var(--accent-ink);
+  font-size: 24px;
+  font-weight: 800;
+  line-height: 1;
+}
+
+.name {
+  margin: 0;
+  font-size: clamp(20px, 2.4vw, 24px);
+  font-weight: 800;
+  line-height: 1.15;
+  color: var(--text-primary);
+}
+
+.summary {
+  margin: 6px 0 0;
+  font-size: 15px;
+  line-height: 1.5;
+  color: var(--text-secondary);
+}
+
+.body {
+  display: grid;
+  gap: 16px;
+  margin-top: 18px;
+  padding-top: 18px;
+  border-top: 1px solid var(--hairline);
+}
+
+/* Two columns once the card is wide enough to hold them. */
+@media (min-width: 760px) {
+  .body {
+    grid-template-columns: 1fr 1fr;
+    gap: 18px 28px;
+  }
+}
+
+.block {
+  min-width: 0;
+}
+
+.label {
+  margin: 0 0 6px;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 1.2px;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+.text,
+.list {
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.55;
+  color: var(--text-secondary);
+}
+
+.list {
+  padding-left: 18px;
+  display: grid;
+  gap: 4px;
+}
+
+.note {
+  margin: 8px 0 0;
+  font-size: 12px;
+  line-height: 1.45;
+  color: var(--text-muted);
+}
+
+.inlineLink {
+  color: var(--accent);
+  font-weight: 700;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+/* GoLo's line sits apart from the golf advice: its own tint and border. */
+.golo {
+  padding: 12px 14px;
+  border-radius: var(--radius-tile);
+  background: var(--glass-raised);
+  border: 1px solid var(--hairline);
+}
+
+.verdictYes,
+.verdictNo {
+  display: inline-block;
+  margin: 0 0 6px;
+  padding: 3px 10px;
+  border-radius: var(--radius-pill);
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.verdictYes {
+  background: var(--accent-16);
+  border: 1px solid var(--accent-border);
+  color: var(--accent);
+}
+
+.verdictNo {
+  background: var(--glass-chrome);
+  border: 1px solid var(--card-border);
+  color: var(--text-primary);
+}
+
+.goloLine {
+  margin: 4px 0 0;
+  font-size: 13px;
+  line-height: 1.5;
+  color: var(--text-secondary);
+}
+
+.links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px 14px;
+  margin-top: 18px;
+}
+
+.guide,
+.more {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  padding: 0 18px;
+  border-radius: var(--radius-pill);
+  font-size: 14px;
+  font-weight: 800;
+}
+
+.guide {
+  background: var(--accent);
+  color: var(--accent-ink);
+}
+
+.more {
+  border: 1px solid var(--card-border);
+  color: var(--text-primary);
+}
+
+.more:hover {
+  border-color: var(--accent-border);
+}
+
+/* The ring would vanish into the lime fill; offset it clear of the pill. */
+.guide:focus-visible {
+  outline-offset: 3px;
+}

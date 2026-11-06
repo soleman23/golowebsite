@@ -90,6 +90,13 @@ jobs:
         if: '!cancelled()'
         run: npm run test:glossary
 
+      # Side-game chooser: eligibility and ranking, empty results, URL
+      # parsing, GoLo lines against the registry, links and the worked
+      # example (scripts/test-chooser.mjs). Hermetic.
+      - name: Chooser tests
+        if: '!cancelled()'
+        run: npm run test:chooser
+
       - name: Rules tests
         if: '!cancelled()'
         run: npm run test:rules

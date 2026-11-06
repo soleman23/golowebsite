@@ -218,7 +218,8 @@ Keep the policies, this README and the consent copy in lockstep.
 
 Automatic (GA4 enhanced measurement, configured on the web stream):
 `page_view` (initial load and every client-side URL change, including the
-`/games` and `/blog` filter query), `scroll` (90%, once per page),
+`/games` and `/blog` filter query and each settled `/games/chooser` answer
+set), `scroll` (90%, once per page),
 `click` (outbound links), `form_start` / `form_submit` (form id, name,
 destination and field metadata, never values), `file_download`. Site search
 (`view_search_results`) never fires: its query parameters are stripped.
@@ -236,6 +237,8 @@ Sent by the site:
 | `faq_open` | `page`, `question_id` | An FAQ answer was opened |
 | `game_filter` / `blog_filter` | `filter` / `category` | A filter chip was selected |
 | `share_click` | `post`, `channel` | A blog share control was used |
+| `chooser_result` | `group`, `result_count`, `top_pick` | A side-game chooser answer set stood for 1.5 s (docs/analytics-data-notes.md) |
+| `chooser_guide_click` | `format`, `rank` | A chooser pick's guide link was followed |
 | `scroll_depth` | `percent_scrolled` (25, 50, 75, 90) | Each mark, once per page view |
 | `link_click` | `link_url` (path + hash), `link_text`, `location` (nav, footer, main) | An internal link was clicked |
 | `contact_click` | `method` (email, phone), `location` | A `mailto:` / `tel:` link was clicked; the address is never sent |

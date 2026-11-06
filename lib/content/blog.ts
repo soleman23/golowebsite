@@ -967,7 +967,7 @@ export const posts: Post[] = [
           id: "next-week",
           title: "When the fourth comes back",
           paragraphs: [
-            "Next week the foursome is back, and Wolf is available again. Until then, pick one game, say the amount and the scoring basis out loud, and play. <a href=\"/blog/golf-games-for-2-players\">Games for two</a> covers the regular twosome, and the <a href=\"/games\">game guides</a> have the rules for each format.",
+            "Next week the foursome is back, and Wolf is available again. Until then, pick one game, say the amount and the scoring basis out loud, and play. <a href=\"/blog/golf-games-for-2-players\">Games for two</a> covers the regular twosome, and the <a href=\"/games\">game guides</a> have the rules for each format. For another group size, <a href=\"/games/chooser\">the side-game chooser</a> narrows it down in five questions.",
             "When you’ve chosen, <a href=\"/how-it-works\">see one round from setup to settle-up</a> or <a href=\"/#get\">get GoLo for the next one</a>.",
           ],
           blocks: [
