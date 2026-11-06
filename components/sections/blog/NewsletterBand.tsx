@@ -24,6 +24,9 @@ type Status = "idle" | "submitting" | "success" | "error";
 export function NewsletterBand({ page = "blog" }: { page?: string }) {
   const [email, setEmail] = useState("");
   const [error, setError] = useState("");
+  // Set from the response: true while the Reach sync is on, when a sign-up
+  // only counts once its confirmation email is clicked.
+  const [confirmByEmail, setConfirmByEmail] = useState(false);
   const [status, setStatus] = useState<Status>("idle");
 
   const uid = useId();
@@ -62,6 +65,7 @@ export function NewsletterBand({ page = "blog" }: { page?: string }) {
       const data = (await res.json().catch(() => ({}))) as {
         error?: string;
         fieldErrors?: { email?: string };
+        confirmByEmail?: boolean;
       };
 
       if (!res.ok) {
@@ -76,6 +80,7 @@ export function NewsletterBand({ page = "blog" }: { page?: string }) {
         return;
       }
 
+      setConfirmByEmail(data.confirmByEmail === true);
       setStatus("success");
       track("newsletter_signup", { page });
     } catch {
@@ -107,7 +112,9 @@ export function NewsletterBand({ page = "blog" }: { page?: string }) {
               <span className={styles.doneMark} aria-hidden="true">
                 ✓
               </span>
-              You&rsquo;re on the list. We&rsquo;ll email when the next one&rsquo;s up.
+              {confirmByEmail
+                ? "Almost there. If this address is new to us, we\u2019ll ask our email service to send it a link to confirm."
+                : "You\u2019re on the list. We\u2019ll email when the next one\u2019s up."}
             </p>
           ) : (
             <form className={styles.form} onSubmit={handleSubmit} noValidate>

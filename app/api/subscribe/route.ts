@@ -2,6 +2,8 @@
  * POST /api/subscribe
  * Adds an email to the newsletter list. Mirrors /api/contact: zod-validated,
  * field-level errors on 400, notification failures logged rather than surfaced.
+ * The sign-up itself is lib/subscribe.ts; this wires in the guard, Prisma,
+ * Resend and Reach.
  *
  * A repeat signup returns the same success as a new one (the unique index
  * turns its create into a no-op).
@@ -13,14 +15,22 @@
  * and size checks counts against its client's limit, dropped ones included;
  * only a sign-up that passes validation counts against the global ceiling.
  * Blocks are logged as a reason code only, never the address, IP or key.
+ *
+ * Hostinger Reach (#121): off unless REACH_SYNC_ENABLED=true (lib/reach.ts).
+ * When on, a new sign-up from the newsletter band is queued, and the
+ * scheduled retry job (every 15 minutes) sends it to Reach, so the visitor
+ * never waits on Reach or sees it fail.
  */
 
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/db";
-import { subscribeSchema } from "@/lib/validation";
 import { assertDatabaseConfigured } from "@/lib/env";
 import { sendNewsletterNotification } from "@/lib/email";
+import { getReachClient } from "@/lib/reach";
+import { prismaSubscribeStore } from "@/lib/reachStore";
 import { siteConfig } from "@/lib/siteConfig";
+import { handleSubscribe } from "@/lib/subscribe";
+import { reachOnlyFromEnv } from "@/lib/reachSync";
 import {
   MAX_BODY_BYTES,
   clientKey,
@@ -101,88 +111,24 @@ export async function POST(request: Request) {
     return NextResponse.json({ ok: true });
   }
 
-  const parsed = subscribeSchema.safeParse(payload);
-  if (!parsed.success) {
-    const fieldErrors: Record<string, string> = {};
-    for (const issue of parsed.error.issues) {
-      const key = issue.path[0];
-      if (typeof key === "string" && !fieldErrors[key]) {
-        fieldErrors[key] = issue.message;
-      }
-    }
-    return NextResponse.json(
-      { error: "Please fix the highlighted fields.", fieldErrors },
-      { status: 400 },
-    );
-  }
+  const client = getReachClient();
+  const { status, body: result, headers } = await handleSubscribe(payload, {
+    store: prismaSubscribeStore(prisma, assertDatabaseConfigured, {
+      syncEnabled: client !== null,
+    }),
+    notify: sendNewsletterNotification,
+    // Sign-ups only queue; the scheduled retry job is the one sender.
+    reach: client,
+    reachOnly: reachOnlyFromEnv(process.env),
+    // Only a sign-up that saves a new address counts against the global
+    // ceiling (handleSubscribe gives a repeat's or a failed save's slot
+    // back), so junk can't close it for everybody.
+    admit: () => {
+      const charged = limiter.charge();
+      if (!charged.ok) console.warn(`[subscribe] blocked: rate_limit_${charged.scope}`);
+      return charged;
+    },
+  });
 
-  const {
-    email,
-    source = "blog",
-    landingPath,
-    referrerHost,
-    landingSource,
-    landingMedium,
-    landingCampaign,
-    landingContent,
-    // Not `hp_note`: the honeypot is never stored, and the create below names
-    // its columns one by one rather than spreading parsed.data.
-  } = parsed.data;
-
-  // Only a sign-up that saves a new address counts against the global
-  // ceiling (a repeat or a failed save gives its slot back below), so junk
-  // can't close it for everybody.
-  const charged = limiter.charge();
-  if (!charged.ok) return tooMany(charged);
-
-  let alreadyOnList = false;
-
-  try {
-    assertDatabaseConfigured();
-    // A plain create, with the unique index deciding: whether this request
-    // added the address is then atomic, so two overlapping sign-ups for one
-    // address can't both count as new (one notification, one global slot).
-    // A repeat leaves the original createdAt, source and landing alone.
-    try {
-      await prisma.newsletterLead.create({
-        data: {
-          email,
-          source,
-          landingPath,
-          referrerHost,
-          landingSource,
-          landingMedium,
-          landingCampaign,
-          landingContent,
-        },
-        select: { id: true },
-      });
-    } catch (err) {
-      if ((err as { code?: string })?.code !== "P2002") throw err;
-      alreadyOnList = true;
-    }
-  } catch (err) {
-    // Nothing was saved, so it doesn't count against the global ceiling.
-    charged.release();
-    // The error code only: a Prisma error can echo the query, address included.
-    console.error("[subscribe] failed to save lead:", (err as { code?: string })?.code ?? "unknown");
-    return NextResponse.json(
-      { error: "We couldn't sign you up right now. Please try again." },
-      { status: 500 },
-    );
-  }
-
-  // A repeat saved nothing new: give its global slot back.
-  if (alreadyOnList) charged.release();
-
-  // Only announce genuinely new signups — a repeat shouldn't page anybody.
-  if (!alreadyOnList) {
-    try {
-      await sendNewsletterNotification(email, source);
-    } catch (err) {
-      console.error("[subscribe] saved, but notification email failed:", err);
-    }
-  }
-
-  return NextResponse.json({ ok: true });
+  return NextResponse.json(result, { status, headers });
 }
