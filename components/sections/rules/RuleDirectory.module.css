@@ -1,0 +1,21 @@
+.group {
+  padding-top: clamp(20px, 3vw, 28px);
+}
+
+.group + .group {
+  margin-top: clamp(16px, 2vw, 24px);
+  border-top: 1px solid var(--card-border);
+}
+
+.title {
+  margin: 0 0 6px;
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 1.8px;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+}
+
+.title:focus-visible {
+  border-radius: 6px;
+}
