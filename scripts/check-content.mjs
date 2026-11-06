@@ -71,6 +71,7 @@ import {
   stripComments,
 } from "./content-claims.mjs";
 import { glossaryHrefProblem } from "./glossary-checks.mjs";
+import { rulesHrefProblem } from "./rules-checks.mjs";
 
 const rootUrl = new URL("..", import.meta.url);
 const root = fileURLToPath(rootUrl);
@@ -113,6 +114,19 @@ const {
   validateGlossary,
 } = await import(
   new URL("../lib/content/glossary/index.ts", import.meta.url).href
+);
+/** The Rules Center's records, its launch switch and its checks (#233). */
+const {
+  RULES_PAGE_IDS,
+  publishedRules,
+  ruleOverviews,
+  rulesLive,
+  rulesRecordIds,
+  rulesScenarios,
+  rulesWarnings,
+  validateRules,
+} = await import(
+  new URL("../lib/content/rules/index.ts", import.meta.url).href
 );
 /** The guides the route, the sitemap and llms.txt serve. */
 const { gameDetails, gameDetailSlugsWithContent: guideSlugs } = await import(
@@ -158,6 +172,15 @@ const EDUCATION = new Set([
 ]);
 
 /**
+ * The Rules Center's records explain the Rules of Golf; the hub's own copy
+ * is checked in full, as the glossary's is.
+ */
+const RULES_RECORD_FILES = [
+  "lib/content/rules/overviews.ts",
+  "lib/content/rules/scenarios.ts",
+];
+
+/**
  * Glossary term records are education too: defining an automatic press or a
  * 90% allowance as golf is fine, saying GoLo does one is not. Their
  * `goloNote` fields get the full check (content-claims.mjs PRODUCT_FIELDS).
@@ -167,7 +190,8 @@ const EDUCATION = new Set([
 const isEducation = (file) =>
   EDUCATION.has(file) ||
   file === "lib/content/glossary/terms.ts" ||
-  file.startsWith("lib/content/glossary/terms/");
+  file.startsWith("lib/content/glossary/terms/") ||
+  RULES_RECORD_FILES.includes(file);
 
 
 const problems = [];
@@ -346,6 +370,12 @@ const glossaryLinks = {
   publishedSlugs: new Set(publishedGlossaryTerms().map((t) => t.slug)),
 };
 
+const publishedRulesHub = publishedRules();
+const rulesLinks = {
+  live: rulesLive,
+  fragments: new Set([...rulesRecordIds(publishedRulesHub), ...RULES_PAGE_IDS]),
+};
+
 for (const file of files) {
   const text = stripComments(read(file), file);
   for (const m of text.matchAll(HREF)) {
@@ -354,6 +384,11 @@ for (const file of files) {
     const glossaryProblem = glossaryHrefProblem(href, file, glossaryLinks);
     if (glossaryProblem) {
       report(file, lineAt(text, m.index), glossaryProblem);
+      continue;
+    }
+    const rulesProblem = rulesHrefProblem(href, file, rulesLinks);
+    if (rulesProblem) {
+      report(file, lineAt(text, m.index), rulesProblem);
       continue;
     }
     const target = href.split(/[?#]/)[0].replace(/\/$/, "") || "/";
@@ -411,9 +446,15 @@ for (const file of files) {
       ]);
     }
   }
+  if (rulesLive) {
+    for (const record of [...publishedRulesHub.overviews, ...publishedRulesHub.scenarios]) {
+      add("/rules", [...linksIn(record), ...record.relatedContentPaths]);
+    }
+  }
   for (const file of files) {
     if (file === "lib/content/blog.ts" || file === "lib/content/gameDetail.ts") continue;
     if (file === "lib/content/glossary/terms.ts" || file.startsWith("lib/content/glossary/terms/")) continue;
+    if (RULES_RECORD_FILES.includes(file)) continue;
     if (file === "lib/content/nav.ts" || file.startsWith("components/layout/")) continue;
     const text = stripComments(read(file), file);
     add(
@@ -482,6 +523,39 @@ for (const file of files) {
     const [file, line] = lineOf(problem.split(/[:,]/)[0]);
     report(file, line, `glossary ${problem}`);
   }
+}
+
+/* ------------------------------------------------------------------ rules */
+
+/**
+ * Rules Center records (#233): one overview per rule, citations that exist
+ * on the R&A's pages, Model Local Rule and handicapping caveats, unique
+ * fragments, published glossary links, dates and the review record. Each
+ * problem names its record and points at its line. A stale clarifications
+ * check only warns.
+ */
+const rulesWarningsFound = [];
+{
+  const lineOf = (id) => {
+    for (const file of RULES_RECORD_FILES) {
+      const raw = read(file);
+      const number = /^rule-(\d+)$/.exec(id)?.[1];
+      const at = number ? raw.search(new RegExp(`\\brule\\(${number}\\b`)) : raw.indexOf(`id: "${id}"`);
+      if (at !== -1) return [file, lineAt(raw, at)];
+    }
+    return [RULES_RECORD_FILES[0], 1];
+  };
+  const today = new Date().toISOString().slice(0, 10);
+  const problemsFound = validateRules(ruleOverviews, rulesScenarios, {
+    servedPaths: pages,
+    glossarySlugs: glossaryLinks.publishedSlugs,
+    today,
+  });
+  for (const problem of problemsFound) {
+    const [file, line] = lineOf(problem.split(/[:,]/)[0]);
+    report(file, line, `rules ${problem}`);
+  }
+  rulesWarningsFound.push(...rulesWarnings(today));
 }
 
 /* ----------------------------------------------------------- report lists */
@@ -603,6 +677,8 @@ for (const file of files) {
 
 /* ----------------------------------------------------------------- result */
 
+for (const w of rulesWarningsFound) console.warn(`  warning: ${w}`);
+
 if (problems.length) {
   console.error("Content check failed:\n");
   for (const p of problems) console.error(`  ${p}`);
@@ -613,5 +689,5 @@ if (problems.length) {
 }
 
 console.log(
-  `✔ Content: no claims for ${notLive.length} non-live capabilities, no overclaims for ${overclaimed.length}, ${pages.size} link targets resolve, no orphaned posts, ${glossaryTerms.length} glossary records valid (${glossaryLinks.publishedSlugs.size} published${glossaryLive ? "" : ", not live"}), report lists match ${publishedPosts.length} posts and ${guideSlugs.length} guides${runSheet ? ` (run sheet until ${checkedUntil})` : ""}`,
+  `✔ Content: no claims for ${notLive.length} non-live capabilities, no overclaims for ${overclaimed.length}, ${pages.size} link targets resolve, no orphaned posts, ${glossaryTerms.length} glossary records valid (${glossaryLinks.publishedSlugs.size} published${glossaryLive ? "" : ", not live"}), ${ruleOverviews.length + rulesScenarios.length} rules records valid (${publishedRulesHub.overviews.length + publishedRulesHub.scenarios.length} published${rulesLive ? "" : ", not live"}), report lists match ${publishedPosts.length} posts and ${guideSlugs.length} guides${runSheet ? ` (run sheet until ${checkedUntil})` : ""}`,
 );

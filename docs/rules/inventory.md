@@ -119,7 +119,7 @@ These point a query at a rule overview, not a situation (#233 §Search):
 | plugged ball, embedded ball | `rule-16` | Embedded ball is Rule 16.3; no MVP situation |
 | water hazard | `rule-17` | Renamed penalty area in 2019 |
 | casual water | `rule-16` | Now temporary water |
-| breakfast ball, mulligan | `rule-1`, `rule-18` | House-rule context only; the answer says the Rules have no such thing |
+| breakfast ball, mulligan | `rule-1` | House-rule context only; the answer says the Rules have no such thing. On one record only, so the alias isn't ambiguous; Rule 18 links the glossary's `mulligan` instead |
 | 14 clubs, club limit | `rule-4` | Rule 4.1b |
 | advice | `rule-10` | Rule 10.2 |
 | flagstick | `rule-13` | Rule 13.2 |
