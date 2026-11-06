@@ -78,6 +78,7 @@ Scripts get 403 from usga.org; a browser loads every page below.
 | Rules of Golf text | https://www.usga.org/rules/rules-and-clarifications/rules-and-clarifications.html | 2026-11-06 | Hash-routed (`#section=rules&…`); no deep link is promised |
 | Additional Clarifications | https://www.usga.org/rules-hub/clarifications-of-the-rules-of-golf.html | 2026-11-06 | "Updated October 2, 2026"; no new clarifications in October 2026; next update early January 2027 |
 | Rules of Handicapping 3.3 | https://www.usga.org/handicapping/roh/Content/rules/3%203%20WhenHoleStartedbutPlayerDoesNotHoleOut.htm | 2026-11-06 | For `conceded-putt`'s handicap caveat only |
+| Rules of Handicapping, Definitions | https://www.usga.org/handicapping/roh/Content/rules/Definitions.htm | 2026-11-06 | The hub's Official sources link (#234). The reader has no index (`/handicapping/roh/` is a 404); this is its first page and links every chapter |
 
 ## Citations by situation
 
