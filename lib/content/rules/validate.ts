@@ -20,7 +20,17 @@
 import { RULES_PAGE_IDS, rulesCategoryForRule } from "./categories";
 import { CLARIFICATIONS_STALE_AFTER_DAYS, rulesEdition } from "./edition";
 import type { RulesEdition } from "./edition";
-import { RULE_NUMBERS, knownRuleRef, parseRuleRef } from "./official";
+import {
+  MODEL_LOCAL_RULES_URL,
+  RULES_CLARIFICATIONS_URL,
+  RULES_DEFINITIONS_URL,
+  RULE_NUMBERS,
+  USGA_CLARIFICATIONS_URL,
+  knownRuleRef,
+  officialRules,
+  parseRuleRef,
+  ruleUrl,
+} from "./official";
 import { normalizeRulesText } from "./search";
 import type { RuleOverview, RulesScenario, RulesSource } from "./types";
 
@@ -48,7 +58,21 @@ const STAGES = ["rules", "product", "seo", "approval"] as const;
 const MARKUP = /<\s*[a-z/!]|&[a-z#][a-z0-9]*;/i;
 /** House voice (CLAUDE.md): no emoji, no exclamation marks. */
 const EMOJI = /\p{Extended_Pictographic}/u;
-const OFFICIAL_HOSTS = new Set(["www.randa.org", "www.usga.org"]);
+/** Where each kind of source lives (docs/rules/source-map.md). Rule pages are checked by number. */
+const SOURCE_HOMES: Record<Exclude<RulesSource["document"], "rules">, { authority: RulesSource["authority"]; url: (u: string) => boolean; where: string }> = {
+  definitions: { authority: "RANDA", url: (u) => u === RULES_DEFINITIONS_URL, where: RULES_DEFINITIONS_URL },
+  "local-rule": { authority: "RANDA", url: (u) => u === MODEL_LOCAL_RULES_URL, where: MODEL_LOCAL_RULES_URL },
+  clarifications: {
+    authority: "RANDA",
+    url: (u) => u === RULES_CLARIFICATIONS_URL || u === USGA_CLARIFICATIONS_URL,
+    where: `${RULES_CLARIFICATIONS_URL} or ${USGA_CLARIFICATIONS_URL}`,
+  },
+  handicapping: {
+    authority: "USGA",
+    url: (u) => u.startsWith("https://www.usga.org/handicapping/roh/Content/rules/"),
+    where: "a page under https://www.usga.org/handicapping/roh/Content/rules/",
+  },
+};
 
 function realDate(value: string): boolean {
   if (!ISO_DATE.test(value)) return false;
@@ -87,30 +111,33 @@ function copyFields(r: AnyRecord): [string, string][] {
 function sourceProblems(s: RulesSource, today: string): string[] {
   const out: string[] = [];
   const name = `source ${s.ruleRef}`;
-  let host = "";
   try {
     const url = new URL(s.url);
-    host = url.host;
     if (url.protocol !== "https:") out.push(`${name} needs an https URL`);
     if (url.hash) out.push(`${name} URL carries a fragment; put it in anchor`);
   } catch {
     out.push(`${name} URL "${s.url}" isn't a URL`);
   }
-  if (host && !OFFICIAL_HOSTS.has(host)) out.push(`${name} isn't on randa.org or usga.org`);
   if (s.document === "rules") {
     const parsed = parseRuleRef(s.ruleRef);
     if (!parsed || !knownRuleRef(parsed)) {
       out.push(`${name} isn't a rule or subrule the R&A publishes`);
     } else {
+      // One spelling, so search, the duplicate check and the page agree.
+      const canonical = parsed.subrule ? `${parsed.rule}.${parsed.subrule}` : String(parsed.rule);
+      if (s.ruleRef !== canonical) out.push(`${name} should be written ${canonical}`);
       const expected = parsed.subrule ? `${parsed.rule}_${parsed.subrule}` : undefined;
       if (s.anchor !== expected) out.push(`${name} anchor should be ${expected ?? "none"}`);
-      if (!s.url.endsWith(`/rule-${parsed.rule}`)) out.push(`${name} URL isn't the Rule ${parsed.rule} page`);
+      if (s.authority !== "RANDA" || s.url !== ruleUrl(parsed.rule)) {
+        out.push(`${name} should be the R&A's Rule ${parsed.rule} page, ${ruleUrl(parsed.rule)}`);
+      }
     }
-  } else if (s.anchor) {
-    out.push(`${name} has an anchor; only rule pages have stable ones`);
-  }
-  if (s.document === "handicapping" && s.authority !== "USGA") {
-    out.push(`${name} is the Rules of Handicapping; cite the USGA's page`);
+  } else {
+    if (s.anchor) out.push(`${name} has an anchor; only rule pages have stable ones`);
+    const home = SOURCE_HOMES[s.document];
+    if (s.authority !== home.authority || !home.url(s.url)) {
+      out.push(`${name} should point to ${home.where} (${home.authority === "USGA" ? "USGA" : "R&A"})`);
+    }
   }
   if (s.checkedOn !== undefined) {
     if (!realDate(s.checkedOn)) out.push(`${name} checkedOn isn't a YYYY-MM-DD date`);
@@ -169,6 +196,10 @@ export function validateRules(
 
   // Names and aliases: what search matches on.
   const names = new Map<string, string>();
+  for (const r of overviews) {
+    const title = officialRules[r.number]?.title;
+    if (title) names.set(normalizeRulesText(title), r.id);
+  }
   for (const s of scenarios) {
     const name = normalizeRulesText(s.question);
     if (!name) say(s, "empty question");
@@ -189,7 +220,10 @@ export function validateRules(
       if (own.has(norm)) say(r, `alias "${alias}" is listed twice`);
       own.add(norm);
       const nameOwner = names.get(norm);
-      if (nameOwner && nameOwner !== r.id) say(r, `alias "${alias}" is the question of ${nameOwner}`);
+      if (nameOwner && nameOwner !== r.id) say(r, `alias "${alias}" is the title or question of ${nameOwner}`);
+      if (parseRuleRef(norm.replace(/^(?:rules? ?|r ?)/, ""))) {
+        say(r, `alias "${alias}" reads as a rule reference, which search never matches as text`);
+      }
       aliasOwners.set(norm, [...(aliasOwners.get(norm) ?? []), r]);
     }
   }
@@ -212,8 +246,13 @@ export function validateRules(
       if (!rulesCategoryForRule(r.primaryRule)) say(r, `primary rule ${r.primaryRule} isn't 1–25`);
       const cited = r.sources.filter((s) => s.document === "rules");
       if (!cited.length) say(r, "cites no rule");
-      else if (!cited.some((s) => Number.parseInt(s.ruleRef, 10) === r.primaryRule)) {
-        say(r, `cites nothing from its primary Rule ${r.primaryRule}`);
+      else if (
+        !cited.some((s) => {
+          const parsed = parseRuleRef(s.ruleRef);
+          return parsed?.rule === r.primaryRule && parsed.subrule !== undefined;
+        })
+      ) {
+        say(r, `cites no subrule of its primary Rule ${r.primaryRule} (e.g. ${r.primaryRule}.1)`);
       }
     }
 
@@ -248,11 +287,16 @@ export function validateRules(
     }
     const localRule = r.sources.some((s) => s.document === "local-rule");
     const handicapping = r.sources.some((s) => s.document === "handicapping");
-    if (written(r)) {
-      if (localRule && !(isScenario(r) && r.localRuleCaveat?.trim())) {
+    if (!isScenario(r)) {
+      // An overview has nowhere to put the caveat (canonical-map.md rules 5 and 6).
+      if (localRule || handicapping) {
+        say(r, "an overview can't cite a Model Local Rule or the Rules of Handicapping; cite it from a situation, which carries the caveat");
+      }
+    } else if (written(r)) {
+      if (localRule && !r.localRuleCaveat?.trim()) {
         say(r, "cites a Model Local Rule without a localRuleCaveat (in force only where a Committee adopts it)");
       }
-      if (handicapping && !(isScenario(r) && r.handicapCaveat?.trim())) {
+      if (handicapping && !r.handicapCaveat?.trim()) {
         say(r, "cites the Rules of Handicapping without a handicapCaveat");
       }
     }
@@ -306,7 +350,10 @@ export function validateRules(
       }
     }
     if (r.status === "published" && !r.publishedOn) say(r, "published without publishedOn");
-    if (!reviewed && r.publishedOn) say(r, `publishedOn set on a ${r.status} record`);
+    // An archived record keeps the date it was published.
+    if (!reviewed && r.status !== "archived" && r.publishedOn) {
+      say(r, `publishedOn set while the record is ${r.status}`);
+    }
   }
 
   // The edition itself

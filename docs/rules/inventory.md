@@ -116,6 +116,7 @@ These point a query at a rule overview, not a situation (#233 §Search):
 
 | Query | Goes to | Why |
 |---|---|---|
+| OB | `rule-18` (and `out-of-bounds`) | A situation may share an alias with its primary rule |
 | plugged ball, embedded ball | `rule-16` | Embedded ball is Rule 16.3; no MVP situation |
 | water hazard | `rule-17` | Renamed penalty area in 2019 |
 | casual water | `rule-16` | Now temporary water |

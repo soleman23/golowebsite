@@ -71,7 +71,7 @@ import {
   stripComments,
 } from "./content-claims.mjs";
 import { glossaryHrefProblem } from "./glossary-checks.mjs";
-import { rulesHrefProblem } from "./rules-checks.mjs";
+import { isRulesOwned, rulesHrefProblem } from "./rules-checks.mjs";
 
 const rootUrl = new URL("..", import.meta.url);
 const root = fileURLToPath(rootUrl);
@@ -455,6 +455,8 @@ for (const file of files) {
     if (file === "lib/content/blog.ts" || file === "lib/content/gameDetail.ts") continue;
     if (file === "lib/content/glossary/terms.ts" || file.startsWith("lib/content/glossary/terms/")) continue;
     if (RULES_RECORD_FILES.includes(file)) continue;
+    // An unlaunched hub's links don't reach anyone yet.
+    if (!rulesLive && isRulesOwned(file)) continue;
     if (file === "lib/content/nav.ts" || file.startsWith("components/layout/")) continue;
     const text = stripComments(read(file), file);
     add(

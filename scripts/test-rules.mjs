@@ -18,6 +18,7 @@
  * Exit 1 with one line per failed case.
  */
 
+import { createHash } from "node:crypto";
 import { existsSync } from "node:fs";
 import { registerHooks } from "node:module";
 import { fileURLToPath } from "node:url";
@@ -146,9 +147,24 @@ const CTX = { servedPaths: SERVED, glossarySlugs, today: TODAY };
   );
   check("search: '18-2b' = '18.2b'", same(top("18-2b"), top("18.2b")));
   check("search: '18.2' covers 18.2a and 18.2b", top("18.2").includes("lost-ball"), top("18.2").join(","));
-  check("search: '1' is Rule 1, not 18 or 13", top("1")[0] === "rule-1" && !top("1").includes("rule-18"), top("1").join(","));
+  check("search: '1' is Rule 1 and nothing else", same(top("1"), ["rule-1"]), top("1").join(","));
+  for (const form of ["#18", "18?", "Rule 18.", "rules 18", "rule no 18", "rule18", "r18", "R 18"]) {
+    check(`search: '${form}' reads as Rule 18`, same(top(form), top("18")), top(form).join(","));
+  }
+  check("search: 'Rule 18.2b.' = '18.2b'", same(top("Rule 18.2b."), top("18.2b")));
+  check(
+    "search: 'rules' isn't a near miss for every overview",
+    top("rules").filter((id) => id.startsWith("rule-")).length <= 2,
+    top("rules").join(","),
+  );
   check("search: '26' isn't a rule and matches nothing", top("26").length === 0, top("26").join(","));
   check("search: 'OB' finds out of bounds first", top("OB")[0] === "out-of-bounds", top("OB").join(","));
+  check(
+    "search: 'OB' finds Rule 18, not Obstructions or Object",
+    top("OB").includes("rule-18") && !top("OB").some((id) => ["rule-11", "rule-15", "rule-16", "cart-path"].includes(id)),
+    top("OB").join(","),
+  );
+  check("search: 'all' doesn't match inside 'ball'", !top("all").includes("lost-ball") && !top("all").includes("rule-9"), top("all").join(","));
   check("search: 'white stakes' finds out of bounds", top("white stakes")[0] === "out-of-bounds", top("white stakes").join(","));
   check(
     "search: 'water hazard' finds the situation, then Rule 17",
@@ -187,15 +203,58 @@ const CTX = { servedPaths: SERVED, glossarySlugs, today: TODAY };
     })(),
   );
   check("search: match types", rulesMatchType(searchRules(index, "18")) === "exact" && rulesMatchType(searchRules(index, "OB")) === "alias" && rulesMatchType([]) === "none");
+  check(
+    "search: a reference is 'exact' even when its rule is filtered out",
+    rulesMatchType(searchRules(index, "9", "relief")) === "exact" && searchRules(index, "9", "relief")[0]?.entry.id === "lost-ball",
+    searchRules(index, "9", "relief").map((m) => m.entry.id).join(","),
+  );
   check("search: buckets", same([0, 1, 2, 5, 6].map(rulesResultBucket), ["0", "1", "2-5", "2-5", "6+"]));
-  check("search: entries carry no internals", rulesSearchEntries(fullHub).every((e) => !("sources" in e) && !("status" in e) && !("reviewLog" in e)));
+  const ENTRY_KEYS = ["aliases", "anchor", "category", "extra", "id", "kind", "rule", "ruleRefs", "snippet", "title"];
+  check(
+    "search: entries carry only the search fields",
+    rulesSearchEntries(selectRules(allOverviews, allScenarios, "review")).every((e) => same(Object.keys(e).sort(), ENTRY_KEYS)),
+  );
 }
 
 /* -------------------------------------------------------- official links */
 
 {
+  // The R&A index on November 6, 2026 (docs/rules/inventory.md). #245 compares it with the live pages.
+  const TITLES = [
+    "The Game, Player Conduct and the Rules",
+    "The Course",
+    "The Competition",
+    "The Player’s Equipment",
+    "Playing the Round",
+    "Playing a Hole",
+    "Ball Search: Finding and Identifying Ball",
+    "Course Played as It Is Found",
+    "Ball Played as It Lies; Ball at Rest Lifted or Moved",
+    "Preparing for and Making a Stroke; Advice and Help; Caddies",
+    "Ball in Motion Accidentally Hits Person, Animal or Object; Deliberate Actions to Affect Ball in Motion",
+    "Bunkers",
+    "Putting Greens",
+    "Procedures for Ball: Marking, Lifting and Cleaning; Replacing on Spot; Dropping in Relief Area; Playing from Wrong Place",
+    "Relief from Loose Impediments and Movable Obstructions (Including Ball or Ball-Marker Helping or Interfering with Play)",
+    "Relief from Abnormal Course Conditions (Including Immovable Obstructions), Dangerous Animal Condition, Embedded Ball",
+    "Penalty Areas",
+    "Stroke-and-Distance Relief, Ball Lost or Out of Bounds, Provisional Ball",
+    "Unplayable Ball",
+    "Resolving Rules Issues During Round; Rulings by Referee and Committee",
+    "Other Forms of Individual Stroke Play and Match Play",
+    "Foursomes (Also Known as Alternate Shot)",
+    "Four-Ball",
+    "Team Competitions",
+    "Modifications for Players with Disabilities",
+  ];
   check("official: 25 rules", Object.keys(officialRules).length === 25);
-  check("official: Rule 22 title is the R&A label", officialRules[22].title === "Foursomes (Also Known as Alternate Shot)");
+  const wrongTitles = TITLES.map((title, i) => [i + 1, title]).filter(([n, title]) => officialRules[n]?.title !== title);
+  check("official: every title is the R&A label", wrongTitles.length === 0, wrongTitles.map(([n]) => `Rule ${n}`).join(", "));
+  const subrules = Object.entries(officialRules).map(([n, r]) => [Number(n), r.subrules]);
+  check(
+    "official: subrule anchors are the November 6 snapshot (336 anchors)",
+    createHash("sha256").update(JSON.stringify(subrules)).digest("hex") === "5035d31c4554048f28955aada1451ceaefe789e3d5a1e9331f05853f396299ee",
+  );
   check("official: parse '18.2b'", same(parseRuleRef("18.2b"), { rule: 18, subrule: "2b" }));
   check("official: '182' isn't 18.2", parseRuleRef("182") === null);
   check("official: link for 18.2b", ruleRefUrl("18.2b") === "https://www.randa.org/en/rog/the-rules-of-golf/rule-18#18_2b");
@@ -283,11 +342,11 @@ const CTX = { servedPaths: SERVED, glossarySlugs, today: TODAY };
   fails("an unknown subrule", { scenarios: withScenario(0, { sources: [...allScenarios[0].sources, { ...rogSource("18.9"), checkedOn: TODAY }] }) }, /lost-ball: source 18.9 isn't a rule or subrule/);
   fails("a wrong anchor", { scenarios: withScenario(1, { sources: [{ ...rogSource("18.3a"), anchor: "18-3a", checkedOn: TODAY }] }) }, /provisional-ball: source 18.3a anchor should be 18_3a/);
   fails("a fragment in the URL", { scenarios: withScenario(1, { sources: [{ ...rogSource("18.3a"), url: "https://www.randa.org/en/rog/the-rules-of-golf/rule-18#18_3a", checkedOn: TODAY }] }) }, /carries a fragment/);
-  fails("a non-official host", { scenarios: withScenario(1, { sources: [...allScenarios[1].sources, { ...definitionSource("Lost"), url: "https://example.com/rules", checkedOn: TODAY }] }) }, /isn't on randa\.org or usga\.org/);
-  fails("no citation of the primary rule", { scenarios: withScenario(4, { sources: [{ ...rogSource("17.1d"), checkedOn: TODAY }] }) }, /unplayable-ball: cites nothing from its primary Rule 19/);
+  fails("a non-official host", { scenarios: withScenario(1, { sources: [...allScenarios[1].sources, { ...definitionSource("Lost"), url: "https://example.com/rules", checkedOn: TODAY }] }) }, /source Definitions: Lost should point to https:\/\/www\.randa\.org\/en\/rog\/definitions/);
+  fails("no citation of the primary rule", { scenarios: withScenario(4, { sources: [{ ...rogSource("17.1d"), checkedOn: TODAY }] }) }, /unplayable-ball: cites no subrule of its primary Rule 19/);
   fails("a Model Local Rule without its caveat", { scenarios: withScenario(2, { localRuleCaveat: undefined }) }, /out-of-bounds: cites a Model Local Rule without a localRuleCaveat/);
   fails("handicapping without its caveat", { scenarios: withScenario(11, { handicapCaveat: "" }) }, /conceded-putt: cites the Rules of Handicapping without a handicapCaveat/);
-  fails("handicapping cited from the R&A", { scenarios: withScenario(11, { sources: [{ ...rogSource("3.2b"), checkedOn: TODAY }, { ...handicapSource("3.3", "https://www.usga.org/x"), authority: "RANDA", checkedOn: TODAY }] }) }, /cite the USGA's page/);
+  fails("handicapping cited from the R&A", { scenarios: withScenario(11, { sources: [{ ...rogSource("3.2b"), checkedOn: TODAY }, { ...handicapSource("3.3", "https://www.usga.org/x"), authority: "RANDA", checkedOn: TODAY }] }) }, /source RoH 3\.3 should point to a page under https:\/\/www\.usga\.org\/handicapping/);
   fails("an unpublished glossary term", { scenarios: withScenario(3, { relatedGlossaryIds: ["provisional-ball"] }) }, /red-vs-yellow-penalty-areas: related glossary term "provisional-ball" isn't published/);
   fails("an unserved related path", { overviews: withOverview(3, { relatedContentPaths: ["/blog/not-a-post"] }) }, /rule-3: related path \/blog\/not-a-post isn't a served page/);
   fails("a related path into the hub itself", { overviews: withOverview(3, { relatedContentPaths: ["/rules"] }) }, /link the record instead/);
@@ -296,7 +355,7 @@ const CTX = { servedPaths: SERVED, glossarySlugs, today: TODAY };
   fails("a duplicate slug", { scenarios: withScenario(1, { slug: "lost-ball" }) }, /fragment "lost-ball" is already used by lost-ball/);
   fails("a duplicate question", { scenarios: withScenario(1, { question: "Lost ball: what happens next?" }) }, /question duplicates lost-ball/);
   fails("an alias on two unrelated records", { scenarios: withScenario(5, { aliases: ["OB"] }) }, /alias "ob" resolves to more than one record/);
-  fails("an alias that is another record's question", { overviews: withOverview(9, { aliases: ["My ball moved after it stopped"] }) }, /is the question of ball-moved/);
+  fails("an alias that is another record's question", { overviews: withOverview(9, { aliases: ["My ball moved after it stopped"] }) }, /is the title or question of ball-moved/);
   fails("an exclamation mark", { scenarios: withScenario(0, { answer: "Go back to the tee!" }) }, /lost-ball: answer has an exclamation mark/);
   fails("markup in copy", { overviews: withOverview(12, { summary: "Read <b>this</b>." }) }, /rule-12: summary contains markup/);
   fails("a written situation without conditions", { scenarios: withScenario(6, { conditions: [] }) }, /cart-path: published without "Before you decide" conditions/);
@@ -307,13 +366,29 @@ const CTX = { servedPaths: SERVED, glossarySlugs, today: TODAY };
   fails("a future check date", { overviews: withOverview(2, { sources: [{ ...rogSource("2"), checkedOn: "2027-01-01" }] }) }, /checkedOn is in the future/);
   fails("a missing review stage", { overviews: withOverview(2, { reviewLog: REVIEW_LOG.slice(1) }) }, /without a review log entry for rules/);
   fails("published before approval", { overviews: withOverview(2, { publishedOn: "2026-11-01" }) }, /publishedOn is before the first approval/);
-  fails("publishedOn on a draft", { scenarios: withScenario(0, { status: "draft" }) }, /publishedOn set on a draft record/);
+  fails("publishedOn on a draft", { scenarios: withScenario(0, { status: "draft" }) }, /publishedOn set while the record is draft/);
   fails("the wrong edition", { overviews: withOverview(2, { edition: "2019" }) }, /rule-2: edition 2019 isn't the 2023 Rules of Golf/);
   fails("the 2028 cut-over", { ctx: { ...CTX, today: "2028-01-01" } }, /stopped being current on 2028-01-01/);
+  fails("a citation not written canonically", { scenarios: withScenario(2, { sources: [{ ...rogSource("18-2B"), checkedOn: TODAY }, ...allScenarios[2].sources] }) }, /out-of-bounds: source 18-2B should be written 18\.2b/);
+  fails("a rule page on the wrong host", { scenarios: withScenario(4, { sources: [{ ...rogSource("19.1"), authority: "USGA", url: "https://www.usga.org/anything/rule-19", checkedOn: TODAY }] }) }, /source 19\.1 should be the R&A's Rule 19 page/);
+  fails("a Model Local Rule at the wrong URL", { scenarios: withScenario(2, { sources: [...allScenarios[2].sources.filter((s) => s.document !== "local-rule"), { ...localRuleSource("E-5"), url: "https://www.randa.org/en/rog/clarifications", checkedOn: TODAY }] }) }, /source MLR E-5 should point to https:\/\/www\.randa\.org\/en\/rog\/committee-procedures\/sections\/8/);
+  fails("an overview citing a Model Local Rule", { overviews: withOverview(18, { sources: [...allOverviews[17].sources, { ...localRuleSource("E-5"), checkedOn: TODAY }] }) }, /rule-18: an overview can't cite a Model Local Rule/);
+  fails("a situation citing only a whole rule", { scenarios: withScenario(4, { sources: [{ ...rogSource("19"), checkedOn: TODAY }] }) }, /unplayable-ball: cites no subrule of its primary Rule 19/);
+  fails("an alias that is a rule's title", { scenarios: withScenario(5, { aliases: ["Bunkers"] }) }, /bunker-sand: alias "Bunkers" is the title or question of rule-12/);
+  fails("an alias shaped like a rule reference", { overviews: withOverview(4, { aliases: ["14"] }) }, /rule-4: alias "14" reads as a rule reference/);
+  check(
+    "integrity: an archived record may keep its publishedOn",
+    !validateRules(allOverviews, withScenario(0, { status: "archived" }), CTX).some((p) => p.startsWith("lost-ball:")),
+    validateRules(allOverviews, withScenario(0, { status: "archived" }), CTX).join(" | "),
+  );
 
   check(
     "integrity: a planned record may have no copy, caveats or check dates",
-    validateRules(ruleOverviews, rulesScenarios, CTX).length === 0,
+    (() => {
+      const planned = { ...rulesScenarios[2], status: "planned", answer: "", conditions: [], localRuleCaveat: undefined };
+      const plannedRule = { ...ruleOverviews[17], status: "planned", summary: "", commonQuestions: [] };
+      return validateRules(ruleOverviews.map((r) => (r.number === 18 ? plannedRule : r)), [planned], CTX).length === 0;
+    })(),
   );
   check(
     "integrity: a situation and its primary rule may share an alias",
@@ -340,10 +415,15 @@ const CTX = { servedPaths: SERVED, glossarySlugs, today: TODAY };
 /* ------------------------------------------------------------------ links */
 
 {
-  const off = { live: false, fragments: new Set(["lost-ball", "rule-18", ...RULES_PAGE_IDS]) };
-  const on = { ...off, live: true };
+  // As check-content builds them: published records (none while planned) plus the hub's section ids.
+  const off = { live: false, fragments: new Set(RULES_PAGE_IDS) };
+  const on = { live: true, fragments: new Set(["lost-ball", "rule-18", ...RULES_PAGE_IDS]) };
   check("links: /rules from the blog while off fails", Boolean(rulesHrefProblem("/rules", "lib/content/blog.ts", off)));
-  check("links: /rules from the hub's own files while off passes", rulesHrefProblem("/rules#lost-ball", "components/sections/rules/X.tsx", off) === null);
+  check("links: a section link from the hub's own files while off passes", rulesHrefProblem("/rules#official-sources", "components/sections/rules/X.tsx", off) === null);
+  check(
+    "links: an unpublished record's fragment fails even from the hub's own files",
+    /isn't a published rule/.test(rulesHrefProblem("/rules#lost-ball", "components/sections/rules/X.tsx", off) ?? ""),
+  );
   check("links: a published fragment passes once live", rulesHrefProblem("/rules#rule-18", "lib/content/blog.ts", on) === null);
   check("links: a section id passes", rulesHrefProblem("/rules#official-sources", "lib/content/blog.ts", on) === null);
   check("links: an unknown fragment fails", /isn't a published rule/.test(rulesHrefProblem("/rules#rule-99", "lib/content/blog.ts", on) ?? ""));

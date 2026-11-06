@@ -54,7 +54,7 @@ export const ruleOverviews: RuleOverview[] = [
 
   // Relief and penalties
   rule(17, { aliases: ["water hazard"], relatedGlossaryIds: ["penalty-area"] }),
-  rule(18, { relatedGlossaryIds: ["mulligan"] }),
+  rule(18, { aliases: ["OB"], relatedGlossaryIds: ["mulligan"] }),
   rule(19, { relatedGlossaryIds: ["bunker"] }),
 
   // Rulings, formats and accessibility

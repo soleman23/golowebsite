@@ -9,8 +9,10 @@
  *   1 a situation citing that rule or subrule, or an exact alias ·
  *     (a reference matches by reference only, never as text)
  *   2 title or question prefix ·
- *   3 partial title or question, or alias prefix ·
+ *   3 a later word of the title or question starts with the query, or an
+ *     alias does ("ob" finds "out of bounds", not "obstructions") ·
  *   4 every word of the query starts a word somewhere in the entry ·
+ *     (a word under three letters must be a whole word) ·
  *   5 a near miss: each word within one edit of a word in the entry's
  *     title, question or aliases (words of five letters or more).
  * An entry takes its best tier; ties put situations first, then rule order.
@@ -34,6 +36,8 @@ export type RulesMatch = {
   tier: RulesMatchTier;
   /** The alias that matched, as written, when the match came through one. */
   alias?: string;
+  /** The query was a rule reference and this entry is that rule or cites it. */
+  reference?: true;
 };
 
 /** Words that carry no meaning in a question ("can I touch the sand"). */
@@ -42,6 +46,13 @@ const STOP_WORDS = new Set(
 );
 /** Words shorter than this must match exactly; a typo in "ob" is a different word. */
 const FUZZY_MIN = 5;
+/** Shorter words match whole words only: "ob" is out of bounds, not "obstruction". */
+const PREFIX_MIN = 3;
+
+/** Whether `text` has `w` as a word, or as the start of one when `w` is long enough. */
+function hasWord(text: string, w: string): boolean {
+  return w.length < PREFIX_MIN ? ` ${text} `.includes(` ${w} `) : ` ${text}`.includes(` ${w}`);
+}
 
 type Prepared = {
   entry: RulesSearchEntry;
@@ -55,8 +66,6 @@ type Prepared = {
 
 export type PreparedRulesSearch = readonly Prepared[];
 
-const tokens = (text: string) => normalizeRulesText(text).split(" ").filter(Boolean);
-
 /** Normalise the index once; search runs against the result on every query. */
 export function prepareRulesSearch(entries: readonly RulesSearchEntry[]): PreparedRulesSearch {
   return entries.map((entry) => {
@@ -67,8 +76,10 @@ export function prepareRulesSearch(entries: readonly RulesSearchEntry[]): Prepar
     const words = ` ${normalizeRulesText(
       [entry.title, ...entry.aliases, entry.snippet, entry.extra].join(" "),
     )} `;
+    // From `name`, so a rule's "Rule N · " prefix doesn't make every overview
+    // a near miss for "rules".
     const vocabulary = [
-      ...new Set([...tokens(entry.title), ...entry.aliases.flatMap(tokens)]),
+      ...new Set([...name.split(" "), ...aliases.flatMap((a) => a.norm.split(" "))]),
     ].filter((w) => w.length >= FUZZY_MIN - 1);
     return { entry, name, aliases, words, vocabulary };
   });
@@ -98,7 +109,7 @@ const singular = (w: string) => (w.length > FUZZY_MIN && w.endsWith("s") ? w.sli
 function nearMiss(p: Prepared, words: readonly string[]): boolean {
   if (!words.some((w) => w.length >= FUZZY_MIN)) return false;
   return words.every((w) => {
-    if (w.length < FUZZY_MIN) return p.words.includes(` ${w}`);
+    if (w.length < FUZZY_MIN) return hasWord(p.words, w);
     return p.vocabulary.some((v) => withinOneEdit(w, v) || withinOneEdit(w, singular(v)));
   });
 }
@@ -110,13 +121,13 @@ function bestMatch(
   ref: { rule: number; subrule?: string } | null,
 ): Omit<RulesMatch, "entry"> | null {
   if (ref) {
-    if (p.entry.kind === "rule" && p.entry.rule === ref.rule) return { tier: 0 };
+    if (p.entry.kind === "rule" && p.entry.rule === ref.rule) return { tier: 0, reference: true };
     // "18" finds every 18.x citation; "18.2" finds 18.2a and 18.2b.
     const cited = `${ref.rule}.${ref.subrule ?? ""}`;
     const cites = p.entry.ruleRefs.some((r) =>
       ref.subrule ? r.startsWith(cited) : Number.parseInt(r, 10) === ref.rule,
     );
-    if (cites) return { tier: 1 };
+    if (cites) return { tier: 1, reference: true };
     // A reference is a reference: "1" isn't a word-start of "12" or "14 clubs".
     return null;
   }
@@ -124,17 +135,22 @@ function bestMatch(
   const exactAlias = p.aliases.find((a) => a.norm === q);
   if (exactAlias) return { tier: 1, alias: exactAlias.raw };
   if (p.name.startsWith(q)) return { tier: 2 };
-  if (p.name.includes(q)) return { tier: 3 };
-  const prefixAlias = p.aliases.find((a) => a.norm.startsWith(q));
+  if (hasWord(p.name, q)) return { tier: 3 };
+  const prefixAlias = p.aliases.find((a) =>
+    q.length < PREFIX_MIN ? hasWord(a.norm, q) : a.norm.startsWith(q),
+  );
   if (prefixAlias) return { tier: 3, alias: prefixAlias.raw };
-  if (words.length && words.every((w) => p.words.includes(` ${w}`))) return { tier: 4 };
+  if (words.length && words.every((w) => hasWord(p.words, w))) return { tier: 4 };
   if (nearMiss(p, words)) return { tier: 5 };
   return null;
 }
 
-/** A query that is a rule reference: "18", "rule 18", "r18", "Rule 18.2b". */
-function asRuleRef(query: string): { rule: number; subrule?: string } | null {
-  const bare = query.trim().replace(/^(?:rule|r)\s*/i, "");
+/**
+ * A normalised query that is a rule reference: "18", "rule 18", "r18",
+ * "rule18", "rules 18", "rule no 18", "18 2b" (from "Rule 18.2b", "#18", "18?").
+ */
+function asRuleRef(q: string): { rule: number; subrule?: string } | null {
+  const bare = q.replace(/^(?:rules? ?(?:no |number )?|r ?)/, "");
   const parsed = parseRuleRef(bare);
   return parsed && knownRuleRef({ rule: parsed.rule }) ? parsed : null;
 }
@@ -153,7 +169,7 @@ export function searchRules(
   const all = q.split(" ");
   const meaningful = all.filter((w) => !STOP_WORDS.has(w));
   const words = meaningful.length ? meaningful : all;
-  const ref = asRuleRef(query);
+  const ref = asRuleRef(q);
   const matches: RulesMatch[] = [];
   for (const p of index) {
     if (category !== "all" && p.entry.category !== category) continue;
@@ -174,7 +190,7 @@ export function rulesMatchType(
 ): "exact" | "alias" | "partial" | "fuzzy" | "none" {
   const best = matches[0];
   if (!best) return "none";
-  if (best.tier === 0) return "exact";
+  if (best.tier === 0 || best.reference) return "exact";
   if (best.alias) return "alias";
   if (best.tier === 5) return "fuzzy";
   return "partial";
