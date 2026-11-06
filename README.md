@@ -266,7 +266,11 @@ for ads personalization; verified after a reload; #119). The tag sends
 data-sharing: all four settings turned off on October 20 ("Google products &
 services", "Modeling contributions & business insights", "Technical support"
 and "Recommendations for your business"). The Privacy Policy describes exactly
-this. 20 event-scoped custom dimensions are registered for the params above.
+this. 24 event-scoped custom dimensions are registered for the params above:
+the 20 from October 19, 2026, and the glossary's `result_bucket`,
+`match_type`, `term_id` and `destination_type` ("Glossary result count",
+"Glossary match type", "Glossary term", "Glossary destination"), registered
+November 5, 2026. GA4 doesn't backfill, so their splits start that day.
 
 Custom metrics: "Web vital time" (`metric_ms`, Time → Milliseconds) and "CLS
 score" (`cls_score`, Standard), created October 19, 2026. The earlier
