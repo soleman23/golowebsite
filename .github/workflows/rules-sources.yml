@@ -1,0 +1,117 @@
+name: Rules sources
+
+# The Rules Center's watch on its official sources (#245,
+# docs/rules/maintenance.md). Monthly, and by hand from the Actions tab:
+#
+# - runs scripts/check-rules-sources.mjs against the live R&A pages and, on
+#   any problem or change, opens an issue for the owner (or comments on the
+#   one already open);
+# - in January, April, July and October, also opens the quarterly
+#   clarifications review with the checklist from maintenance.md.
+#
+# It never edits a file or publishes anything: a person reads the change and
+# decides. Not part of CI (ci.yml), because it needs the network and the R&A
+# editing a page must not block a pull request. The USGA's pages answer
+# scripts with 403, so they're on the quarterly checklist instead.
+
+on:
+  schedule:
+    # 06:17 UTC on the 8th: after the early-month clarifications update.
+    - cron: "17 6 8 * *"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  issues: write
+
+concurrency:
+  group: rules-sources
+  cancel-in-progress: false
+
+jobs:
+  check:
+    name: Official sources
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    env:
+      GH_TOKEN: ${{ github.token }}
+      GH_REPO: ${{ github.repository }}
+      RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+      DOC_URL: ${{ github.server_url }}/${{ github.repository }}/blob/main/docs/rules/maintenance.md
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+
+      # No `npm ci`: the check imports lib/content/rules/*.ts with Node's own
+      # type stripping and needs no packages.
+      - name: Check the R&A pages
+        id: check
+        run: |
+          set +e
+          node --disable-warning=MODULE_TYPELESS_PACKAGE_JSON scripts/check-rules-sources.mjs > problems.txt 2> errors.txt
+          status=$?
+          set -e
+          cat problems.txt
+          cat errors.txt >&2
+          echo "status=$status" >> "$GITHUB_OUTPUT"
+
+      # One open issue at a time: a later run comments on it until the owner
+      # accepts the change (maintenance.md § When the source check fails).
+      - name: Open or update the problems issue
+        if: ${{ !cancelled() && steps.check.outcome == 'success' && steps.check.outputs.status != '0' }}
+        env:
+          TITLE: "Rules sources check: problems found"
+        run: |
+          {
+            echo "The [source check]($RUN_URL) found problems with the official pages the Rules Center cites:"
+            echo
+            echo '```'
+            if [ -s problems.txt ]; then cat problems.txt; else cat errors.txt; fi
+            echo '```'
+            echo
+            echo "Each line is a broken link, a moved anchor, a missing term or a page whose text changed. Nothing on the site changes until someone has read the change: see [maintenance.md § When the source check fails]($DOC_URL#when-the-source-check-fails)."
+          } > body.md
+          number=$(gh issue list --state open --label rules-center --label owner-review --limit 200 \
+            --json number,title --jq '[.[] | select(.title == env.TITLE)][0].number // empty')
+          if [ -n "$number" ]; then
+            gh issue comment "$number" --body-file body.md
+          else
+            gh issue create --title "$TITLE" --label rules-center --label owner-review --body-file body.md
+          fi
+
+      # The checklist is the block between the quarterly-review markers in
+      # maintenance.md, so the doc and the issue can't drift. One issue per
+      # quarter, open or closed.
+      - name: Open the quarterly clarifications review
+        if: ${{ !cancelled() }}
+        run: |
+          case "$(date -u +%m)" in
+            01|04|07|10) ;;
+            *) echo "Not a review month."; exit 0 ;;
+          esac
+          export TITLE="Quarterly clarifications review: $(date -u '+%B %Y')"
+          number=$(gh issue list --state all --label rules-center --limit 500 \
+            --json number,title --jq '[.[] | select(.title == env.TITLE)][0].number // empty')
+          if [ -n "$number" ]; then
+            echo "Already filed: #$number"
+            exit 0
+          fi
+          checklist=$(sed -n '/<!-- quarterly-review:start -->/,/<!-- quarterly-review:end -->/p' docs/rules/maintenance.md | sed '1d;$d')
+          if [ -z "$checklist" ]; then
+            echo "::error::No quarterly-review block in docs/rules/maintenance.md"
+            exit 1
+          fi
+          {
+            echo "This quarter's review of the official clarifications, opened by the [monthly source check]($RUN_URL). The steps are in [maintenance.md § Quarterly review]($DOC_URL#quarterly-review)."
+            echo
+            echo "$checklist"
+          } > quarterly.md
+          gh issue create --title "$TITLE" --label rules-center --label owner-review --body-file quarterly.md
+
+      - name: Fail the run if the check did
+        if: ${{ !cancelled() && steps.check.outcome == 'success' && steps.check.outputs.status != '0' }}
+        run: exit 1
