@@ -2,11 +2,12 @@
  * The frame every situation and rule overview shares (docs/rules/ux.md
  * § Entry anatomy): an <article> with the record's fragment as its id, a
  * heading that links to itself and takes focus on a deep link, the copy-link
- * button, the entry's own text, and then its official links, related links
- * and review date.
+ * button, the entry's own text, then its official links, related links and
+ * review date, and last an optional footer (an overview's previous/next).
  *
- * From 1100px the last three move to a side column beside the 68ch text.
- * They stay after it in the DOM, so reading and tab order don't change.
+ * From 1100px the links and date move to a side column beside the 68ch
+ * text, and the footer sits under the text. The DOM order stays the same,
+ * so reading and tab order don't change.
  *
  * Server-rendered; the copy-link button is the only client leaf. The data-*
  * attributes are the hooks search, filtering (#236) and analytics (#244)
@@ -62,6 +63,7 @@ type RulesEntryProps = {
   related: EntryRelatedLink[];
   reviewedOn?: string;
   children: React.ReactNode;
+  footer?: React.ReactNode;
 };
 
 const copyLabels = { copy: copy.copy, copied: copy.copied, failed: copy.copyFailed };
@@ -106,6 +108,7 @@ export function RulesEntry({
   related,
   reviewedOn,
   children,
+  footer,
 }: RulesEntryProps) {
   const Heading = level === 3 ? "h3" : "h4";
   const kindData =
@@ -186,6 +189,8 @@ export function RulesEntry({
           </p>
         ) : null}
       </div>
+
+      {footer ? <div className={styles.footer}>{footer}</div> : null}
     </article>
   );
 }

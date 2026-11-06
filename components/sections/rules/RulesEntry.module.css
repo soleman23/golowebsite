@@ -13,15 +13,34 @@
   padding-top: 8px;
 }
 
+/* The side column spans every row under the head, and the last row is the
+   one that grows, so a long list of links never pushes the footer away
+   from the text. */
 @media (min-width: 1100px) {
   .entry {
     grid-template-columns: minmax(0, 68ch) 260px;
+    grid-template-rows: auto auto auto 1fr;
     justify-content: start;
     align-items: start;
   }
 
   .head {
     grid-column: 1 / -1;
+  }
+
+  .main {
+    grid-column: 1;
+    grid-row: 2;
+  }
+
+  .footer {
+    grid-column: 1;
+    grid-row: 3;
+  }
+
+  .side {
+    grid-column: 2;
+    grid-row: 2 / -1;
   }
 }
 
@@ -131,6 +150,10 @@
 
 .note {
   color: var(--text-muted);
+}
+
+.footer {
+  margin-top: 4px;
 }
 
 .reviewed {

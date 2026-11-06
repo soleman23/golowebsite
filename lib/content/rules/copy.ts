@@ -152,8 +152,9 @@ export function rulesOnSite(name: string, site: string): string {
 export const rulesPathLink = glossaryPathLink;
 
 /**
- * The Rules of Handicapping's definitions page, the nearest the USGA has to
- * an index (usga.org/handicapping/roh/ itself is a 404).
+ * The Rules of Handicapping's Definitions page. The USGA's reader has no
+ * index (usga.org/handicapping/roh/ is a 404); this is its first page and
+ * carries the navigation to every chapter (checked November 6, 2026).
  */
 const ROH_URL = "https://www.usga.org/handicapping/roh/Content/rules/Definitions.htm";
 

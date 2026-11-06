@@ -74,6 +74,18 @@ export function RuleOverview({ rule: r, scenarios, glossary, previous, next }: R
       official={official}
       related={related}
       reviewedOn={r.reviewedOn}
+      footer={
+        previous && next ? (
+          <nav className={styles.pager} aria-label={label}>
+            <a href={`#${previous.id}`} className={styles.step}>
+              <span aria-hidden="true">←</span> {rulesRuleLabel(previous.number)}
+            </a>
+            <a href={`#${next.id}`} className={styles.step}>
+              {rulesRuleLabel(next.number)} <span aria-hidden="true">→</span>
+            </a>
+          </nav>
+        ) : null
+      }
     >
       {r.summary ? <p>{r.summary}</p> : null}
 
@@ -105,17 +117,6 @@ export function RuleOverview({ rule: r, scenarios, glossary, previous, next }: R
             </span>
           ))}
         </p>
-      ) : null}
-
-      {previous && next ? (
-        <nav className={styles.pager} aria-label={label}>
-          <a href={`#${previous.id}`} className={styles.step} rel="prev">
-            <span aria-hidden="true">←</span> {rulesRuleLabel(previous.number)}
-          </a>
-          <a href={`#${next.id}`} className={styles.step} rel="next">
-            {rulesRuleLabel(next.number)} <span aria-hidden="true">→</span>
-          </a>
-        </nav>
       ) : null}
     </RulesEntry>
   );
