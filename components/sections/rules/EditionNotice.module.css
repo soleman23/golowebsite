@@ -38,3 +38,10 @@
   font-size: 13.5px;
   color: var(--text-muted);
 }
+
+/* While a query is active the results need the first screen (#236), so the
+   notice steps aside until the search is cleared. Never without JavaScript:
+   RulesProvider sets the attribute. */
+html[data-rules-search] .notice {
+  display: none;
+}
