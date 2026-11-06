@@ -225,3 +225,167 @@ Checks both reviewers passed: no GoLo claims; `NEVER_WORDS` clean (every "stakes
 **Approved by the owner in chat on November 6, 2026** ("Approve batch 1"), on this packet as written. The approval covers all seven records and accepts the off-record Committee Procedures 2C source for `red-vs-yellow-penalty-areas`. The records are `approved` with `reviewedOn: 2026-11-06`, `reviewedBy: "owner"` and a review log of rules, product and seo by "agent" and approval by "owner" (`P0_APPROVED` in `scenarios.ts`). Not published: `rulesLive` is false and only #247 publishes.
 
 **Post-approval changes:** Codex findings C1 and C2 (above) changed three options after the approval. Copy distance is still 0 runs of eight or more words. **The owner confirmed both fixes as part of the batch 1 approval in chat on November 6, 2026** ("Confirm fixes").
+
+## Batch 2 (#241): the five P1 situations
+
+**Drafted, reviewed and moved to `in-review`:** November 6, 2026. Every source below was opened that day (`checkedOn: 2026-11-06`). Rules of Handicapping 3.3 was read in the browser pane; usga.org blocks scripts, so Reviewers A and B checked that one source against the drafter's capture of the page, and say so.
+
+**Copy distance, batch 2:** 0 runs of eight or more words shared with the official text. Two checks agree:
+- My corpus: Rules 3, 9, 13, 14 and 16 (rule text plus embedded Interpretations), the Definitions, Committee Procedures Sections 2 and 8, and the Rules of Handicapping 3.3 capture.
+- `npm run check:rules-copy` (#245, merged during this batch): 220 copy fields in all 37 records against 27 R&A pages.
+
+Reviewer B's own script also found 0 runs of eight or more, and 9 seven-word runs, all on defined terms or citations. `npm run check:rules-sources` confirms every anchor this batch added (`9_1b`, `16_1f`).
+
+**Glossary check (`conceded-putt` against the published `gimme` note):** they **agree**, and the glossary record was not touched. The note says:
+- an opponent can concede your next stroke in match play (3.2b);
+- you hole out on every hole in regular stroke play (3.3c);
+- for handicap posting, a ball left within five feet on the green counts as one more stroke (RoH 3.3).
+
+Each matches the fetched text. The note is narrower than this record: it leaves out the net double bogey cap, the "valid reason" condition and the rows beyond five feet. Those are omissions, not contradictions. Both reviewers reached the same result independently.
+
+### temporary-water
+
+Sources: 16.1a, 16.1b, 16.1c, 16.1d, 16.1e, 16.1f; Definitions: Abnormal Course Condition, Temporary Water, Ground Under Repair, Known or Virtually Certain, Nearest Point of Complete Relief, Point of Maximum Available Relief, No Play Zone.
+
+| Field | Sentence (start) | Source |
+|---|---|---|
+| answer | Ball touches or lies in temporary water or GUR, or it interferes with stance or swing: free relief except in a penalty area | 16.1a(1), (2); Definitions: Abnormal Course Condition |
+| answer | General area: one club-length from the nearest point of complete relief, no nearer the hole; bunker and green differ | 16.1b; 16.1c; 16.1d |
+| conditions[0] | Temporary water visible before or after the stance without pressing hard; wet or muddy ground, dew, frost don't count; not in a penalty area | Definitions: Temporary Water |
+| conditions[1] | GUR is what the Committee defines, normally by marking the edge; unmarked: maintenance holes (not aeration), material piled for removal | Definitions: Ground Under Repair |
+| conditions[2] | Ball on the green: a condition on the line of play counts, on or off the green; distraction never counts | 16.1a(1) |
+| conditions[3] | No relief in a penalty area, when clearly unreasonable, or when interference comes only from an unreasonable choice | 16.1a(2), (3) |
+| conditions[4] | Not found: known or virtually certain (conclusive or 95 percent) it's in the condition; crossing point is the ball's spot; otherwise lost, stroke and distance | 16.1e; Definitions: Known or Virtually Certain |
+| options[0] | As it lies, unless a no play zone holds the ball or interferes with stance or swing | 16.1f; Definitions: No Play Zone |
+| options[1] | General area: nearest point of complete relief explained; one club-length, no nearer the hole, general area | 16.1b; Definitions: Nearest Point of Complete Relief |
+| options[2] | Bunker: free relief in the bunker (nearest point of complete relief, or least interference); or one stroke back on the line outside | 16.1c; Definitions: Point of Maximum Available Relief |
+| options[3] | Putting green: place at the nearest point of complete relief or least interference, on the green or in the general area | 16.1d |
+| penalty | Relief free except one stroke outside a bunker; wrong place is the general penalty | 16.1c(2); 16.1 (penalty statement) |
+| example | 2nd: puddle on the fairway; nearest clear spot; one club-length | 16.1b |
+
+### ball-moved
+
+Sources: 9.1b, 9.2, 9.3, 9.4, 9.5, 9.6; Definitions: Moved, Known or Virtually Certain, Natural Forces, Outside Influence.
+
+| Field | Sentence (start) | Source |
+|---|---|---|
+| answer | Wind, water or gravity: play from the new spot, no penalty | 9.3; Definitions: Natural Forces |
+| answer | You, caddie, opponent or anything else: replace; one stroke when you or your caddie caused it, unless an exception | 9.4a, 9.4b; 9.5a; 9.6 |
+| conditions[0] | Moved means left its spot and stopped elsewhere, visible to the naked eye; a wobble isn't; must be known or virtually certain; otherwise play as it lies | Definitions: Moved; 9.2a; Definitions: Known or Virtually Certain |
+| conditions[1] | You, an opponent or an outside influence is the cause only if known or virtually certain; otherwise natural forces | 9.2b(2) |
+| conditions[2] | Accidental movement often no penalty: searching or identifying, on the green, marking, lifting, replacing, measuring, taking relief | 9.4b Exceptions 2–4 |
+| conditions[3] | Moves after the backswing starts and you finish the stroke: play it where it ends up; penalty and exceptions still apply if you caused it | 9.1b; 9.4a; 9.4b |
+| conditions[4] | Natural forces move a dropped, placed or replaced ball to another area of the course or out of bounds: it goes back; on the green after lift and replace, it goes back whatever moved it | 9.3 Exceptions 1 and 2 |
+| options[0] | Natural forces: no penalty, new spot | 9.3 |
+| options[1] | You, your caddie, or a partner in a team format: replace, one stroke unless an exception | 9.2b(1) (Rules 22.2, 23.5); 9.4 |
+| options[2] | Opponent in match play: replace, opponent one stroke unless an exception | 9.5 |
+| options[3] | Anything else, including another player in stroke play who isn't your partner: replace, no penalty | 9.6; Definitions: Outside Influence |
+| penalty | One stroke (9.4b); played without replacing: general penalty only | 9.4b; 9.4 (penalty note) |
+| example | 4th: club grounded, a gust moves the ball; not known or virtually certain the club did it, so natural forces | 9.2b(2); 9.3 |
+| matchVsStrokeCaveat | Match play: opponent's ball movement replaced, one stroke; stroke play: another player is an outside influence | 9.5; 9.6 |
+
+### mark-lift-clean
+
+Sources: 14.1a, 14.1b, 14.1c, 14.2, 13.1b, 9.4; MLR E-3.
+
+| Field | Sentence (start) | Source |
+|---|---|---|
+| answer | On the putting green: mark, lift, clean, replace any time | 13.1b |
+| answer | Elsewhere only when a Rule lets you; why you lifted decides cleaning | 14.1c; 9.4b |
+| answer | Lift, clean and place is E-3, only if adopted | MLR E-3 |
+| conditions[0] | Mark before lifting a ball to be replaced, with a ball-marker or a club, right behind or beside; no mark needed for relief | 14.1a |
+| conditions[1] | Only you or someone you authorize each time; caddie without asking on the green or when relief is clear | 14.1b |
+| conditions[2] | Cleaning off the green: not for cut or crack, interference, or relief check without relief; to identify, only as needed | 14.1c |
+| conditions[3] | You or whoever lifted it replaces it by hand on the original spot; remove the ball-marker | 14.2b; 14.2c; 14.1a |
+| penalty | One stroke: no mark, marker left down, cleaning not allowed, replaced by someone not allowed | 14.1a; 14.1c; 14.2b(1) |
+| penalty | Lifting with no Rule: one stroke; played without replacing: general penalty instead | 9.4b; 9.4 (penalty note); 14.2 |
+| example | 6th: marker behind, lift, wipe, replace, pick up the marker | 13.1b; 14.1a |
+| localRuleCaveat | E-3 only if adopted; ball touching general area mown to fairway height or less, or an area the Committee names; placed once, within the Committee's distance, no nearer the hole, in the general area | MLR E-3 (Local Rule text) |
+| localRuleCaveat | A group agreeing to it isn't the Committee adopting it | MLR E-3 ("may adopt"); canonical-map.md rule 4 |
+
+### repairing-the-green
+
+Sources: 13.1c; Definitions: Putting Green.
+
+| Field | Sentence (start) | Source |
+|---|---|---|
+| answer | Repair damage during the round, ball on or off the green, with hand, foot, repair tool, tee or club; restoring, without delay | 13.1c(2) |
+| answer | Natural flaws and normal maintenance aren't damage | 13.1c |
+| conditions[0] | Damage: harm by a person or outside influence, with the listed examples | 13.1c |
+| conditions[1] | Not damage: aeration holes, vertical mowing grooves, rain or irrigation, weeds, bare or uneven patches, natural wear of the hole | 13.1c |
+| conditions[2] | Beyond restoring (a channel to the hole): general penalty | 13.1c (breach of 8.1a) |
+| conditions[3] | Sand and loose soil may be removed | 13.1c(1) |
+| conditions[4] | Only the green of the hole being played; other greens are wrong greens in the general area | Definitions: Putting Green |
+| penalty | Reasonable repair free; beyond restoring or a disallowed object: general penalty | 13.1c |
+| example | 8th: spike mark tapped down; thin grass and aeration hole rim left | 13.1c |
+
+### conceded-putt
+
+Sources: 3.2b, 3.3c; RoH 3.3.
+
+| Field | Sentence (start) | Source |
+|---|---|---|
+| answer | Match play: the opponent can concede the next stroke; the score includes it | 3.2b(1) |
+| answer | Stroke play: hole out on every hole | 3.3c |
+| answer | A casual gimme is the group's agreement, not a Rule | 3.3c (no concessions in stroke play); canonical-map.md rule 4 |
+| conditions[0] | Match play only; any time before the stroke; by words or a clear gesture | 3.2b(1), (2) |
+| conditions[1] | Final: can't be declined or withdrawn | 3.2b(2) |
+| conditions[2] | Lifted on a reasonable misunderstanding: no penalty, replace | 3.2b(2) |
+| conditions[3] | Stroke play: correct before the next tee or before returning the scorecard; Stableford, maximum score, par/bogey differ | 3.3c |
+| penalty | Not holing out and not correcting it: disqualification | 3.3c |
+| example | 18th: a putt for three, conceded, scores four; stroke play taps in | 3.2b(1) |
+| matchVsStrokeCaveat | Match play concedes stroke, hole or match; stroke play holes out | 3.2b(1); 3.3c |
+| handicapCaveat | Separate rulebook; valid reason (hole conceded in match play is an example); most likely score or net double bogey if lower; within five feet one stroke; five feet to 20 yards two or three | RoH 3.3 |
+
+### Findings and resolutions, batch 2
+
+Reviewer A (rules): 3 majors, 14 minors, plus 1 optional note; no penalty, stroke-count or example errors. Reviewer B (product, seo): 4 majors and 17 minors, no blockers. All five records were judged accurate after fixes.
+
+| # | Record · field | Finding | Resolution |
+|---|---|---|---|
+| A1 (major) | ball-moved · conditions[3] | Backswing rule is 9.1b; the 9.4b exceptions still apply (no penalty on the green) | Fixed; `9.1b` added |
+| A2 (major) | ball-moved · conditions[4] | Any natural force, not just wind or water; the trigger is another *area* of the course | Fixed |
+| A3 (major) | ball-moved · options[3], matchVsStrokeCaveat | A partner in Four-Ball or Foursomes isn't an outside influence | Fixed in options[1], [3] and the caveat |
+| A4 | ball-moved · conditions[2] | Read as a complete list of 9.4b exceptions | Fixed: "for example", identifying and measuring added |
+| A5 | ball-moved · sources | Natural Forces, Outside Influence, Known or Virtually Certain, 9.1b not cited | Added |
+| A6 | temporary-water · conditions[2] | The test is the ball on the green; the condition can be on or off it | Fixed |
+| A7 | temporary-water · conditions[3] | Second 16.1a(3) denial missing | Added |
+| A8 | temporary-water · conditions[4] | What happens when the standard isn't met | Added: lost, stroke and distance |
+| A9 | temporary-water · options[0] | No play zone also forces relief for stance or swing; the Committee defines it | Fixed |
+| A10 | temporary-water · penalty | Wrong place covers more than outside the relief area | Fixed |
+| A11 | temporary-water · sources | Four Definitions not cited | Added |
+| A12 | mark-lift-clean · conditions[2] | Identify by brand or number too, not only your mark | Fixed |
+| A13 | mark-lift-clean · penalty | Not replacing: general penalty only; 14.2b one-stroke penalties missing | Fixed |
+| A14 | mark-lift-clean · caveat | E-3 can name a specific area | Added. The "lift and clean" alias stays (inventory); E-2 isn't cited |
+| A15 | repairing-the-green · conditions[0] | "Anything a person caused" contradicted the aeration exclusion | Fixed |
+| A16 | conceded-putt · handicapCaveat | "Can add more" understates the RoH table | Fixed: "from five feet to 20 yards, two or three" |
+| A17 | conceded-putt · handicapCaveat | RoH 3.3 names a hole conceded in match play, not a conceded stroke | Fixed |
+| A, optional | conceded-putt · answer | Rule 1.3b(1), agreeing to waive a Rule | Not added: not in `source-map.md` for this situation |
+| B1 (major) | ball-moved · conditions[2] | "penalised" | Sentence rewritten (A4); no "penalised" left |
+| B2 (major) | mark-lift-clean · conditions[1] | "authorise" | "authorize" |
+| B3 (major) | ball-moved · conditions[0] | Known or virtually certain unexplained | Explained |
+| B4 (major) | ball-moved · penalty | General penalty unexplained; "instead" twice | Fixed |
+| B5 | ball-moved · question | No question mark | Declined: `scripts/test-rules.mjs` pins "My ball moved after it stopped" (see How this batch was checked) |
+| B6 | ball-moved · example | "ball moved at address" alias had no matching copy | New example: club set down behind the ball |
+| B7 | ball-moved · matchVsStrokeCaveat | Who replaces; "usually" | Fixed |
+| B8 | mark-lift-clean · conditions[2] | Dangling modifier; "your mark" | Fixed |
+| B9 | mark-lift-clean · caveat | Group agreement line | Added, as the E-5 caveats |
+| B10 | mark-lift-clean · conditions[3] | "by" twice | Fixed |
+| B11 | temporary-water · penalty | "is a wrong place" | Fixed |
+| B12 | temporary-water · options[1] | Nearest point of complete relief unexplained | Explained |
+| B13 | temporary-water · conditions[2] | First sentence repeated the answer | Dropped |
+| B14 | temporary-water · conditions[1] | Where to look for GUR; "white circle" alias | Fixed to "a painted line or markers on the ground" (the Definition). No color: the white line is a Committee Procedures example, not in this record's sources |
+| B15 | repairing-the-green · conditions[4] | "It's" unclear | Fixed |
+| B16 | repairing-the-green · conditions[2], penalty | "is a breach", "is the general penalty" | "costs the general penalty" |
+| B17 | repairing-the-green · answer | Bare patches don't grow | Fixed |
+| B18 | conceded-putt · example | "your third shot, a putt" | Fixed |
+| B19 | conceded-putt · handicapCaveat | "5 feet" vs "five feet" | "five feet" |
+| B20 | conceded-putt · links | `net-double-bogey` is published | Added |
+| B21 (info) | conceded-putt · handicapCaveat | Goes further than the glossary's posting note; no mismatch | Kept: editorial-review.md requires the caveat; trimming is the owner's call |
+| B, seo | aliases | "free relief" goes first to cart-path; "white line" only to out-of-bounds | Left: both are deliberate owners (cart-path owns free relief, the boundary owns white lines); a later pass can mark them ambiguous |
+
+Checks both reviewers passed: no GoLo claims; `NEVER_WORDS` clean; E-3 conditional; the Rules of Handicapping only in the caveat, called a separate rulebook; glossary slugs `putt`, `gimme`, `match-play`, `stroke-play`, `net-double-bogey` published; `/blog/gimmes` served; fragments match `canonical-map.md`; aliases as `inventory.md`, with "casual water" shared only with Rule 16, its primary rule; answers two or three sentences, four or five conditions; `npm run lint:content` passes.
+
+### Approval, batch 2
+
+Pending the owner's approval in chat.

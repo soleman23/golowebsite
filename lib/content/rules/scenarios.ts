@@ -320,28 +320,30 @@ export const rulesScenarios: RulesScenario[] = [
       rog("16.1a", P1_CHECKED), rog("16.1b", P1_CHECKED), rog("16.1c", P1_CHECKED), rog("16.1d", P1_CHECKED),
       rog("16.1e", P1_CHECKED), rog("16.1f", P1_CHECKED),
       def("Abnormal Course Condition", P1_CHECKED), def("Temporary Water", P1_CHECKED),
-      def("Ground Under Repair", P1_CHECKED),
+      def("Ground Under Repair", P1_CHECKED), def("Known or Virtually Certain", P1_CHECKED),
+      def("Nearest Point of Complete Relief", P1_CHECKED), def("Point of Maximum Available Relief", P1_CHECKED),
+      def("No Play Zone", P1_CHECKED),
     ],
     answer:
       "Yes, when it really gets in the way: if your ball touches or lies in temporary water or ground under repair, or the condition is where you'd stand or swing, relief is free anywhere except a penalty area. In the general area you drop within one club-length of the nearest point of complete relief, no nearer the hole; a bunker and the putting green have their own procedures.",
     conditions: [
       "Temporary water has to be visible on the surface before or after you take your stance, without pressing down hard with your feet. Wet, soft or muddy ground isn't enough, dew and frost don't count, and water in a penalty area isn't temporary water.",
-      "Ground under repair is whatever the Committee defines as such, normally by marking its edge. A few things count even unmarked: holes the maintenance staff made, other than aeration holes, and cuttings or other material piled up to be taken away.",
-      "Interference means the ball touches or is in the condition, or the condition is in the way of your stance or swing. On the putting green it also counts when the condition is on your line of play. One that's merely close enough to distract you doesn't count anywhere.",
-      "There's no free relief for a ball in a penalty area, or when the shot is clearly unreasonable anyway, such as a ball you couldn't play out of a bush.",
-      "If the ball isn't found, it has to be known or virtually certain, meaning conclusive evidence or at least 95 percent likely, that it's in the condition. Then the point where it last crossed into the condition counts as the ball's spot for finding the nearest point of complete relief.",
+      "Ground under repair is whatever the Committee defines as such, normally by marking its edge with a painted line or markers on the ground. A few things count even unmarked: holes the maintenance staff made, other than aeration holes, and cuttings or other material piled up to be taken away.",
+      "When your ball is on the putting green, a condition on your line of play also counts, whether it's on the green or off it. One that's merely close enough to distract you doesn't count anywhere.",
+      "There's no free relief for a ball in a penalty area, when the shot is clearly unreasonable anyway, such as a ball you couldn't play out of a bush, or when the only interference comes from choosing a clearly unreasonable club, stance, swing or direction.",
+      "If the ball isn't found, it has to be known or virtually certain, meaning conclusive evidence or at least 95 percent likely, that it's in the condition. Then the point where it last crossed into the condition counts as the ball's spot for finding the nearest point of complete relief. If it isn't, the ball is lost: stroke and distance (Rule 16.1e).",
     ],
     options: [
-      "Play it as it lies: relief is optional, unless the Committee has marked the area as a no play zone, where you have to take relief (Rule 16.1f).",
-      "General area: drop within one club-length of the nearest point of complete relief, no nearer the hole and in the general area (Rule 16.1b).",
+      "Play it as it lies: relief is optional, unless the Committee has defined the area as a no play zone and your ball is in it or it gets in the way of your stance or swing; then you have to take relief (Rule 16.1f).",
+      "General area: find the nearest point of complete relief, the closest spot no nearer the hole where the condition no longer affects your ball, stance or swing, and drop within one club-length of it, no nearer the hole and in the general area (Rule 16.1b).",
       "Bunker: free relief that keeps the ball in the bunker, using a nearest point of complete relief inside it, or the spot of least interference if nowhere there is fully clear; or, for one penalty stroke, drop outside the bunker, behind the ball on a line running back from the hole (Rule 16.1c).",
       "Putting green: place the ball, for free, at the nearest point of complete relief, or the spot of least interference if there isn't one, on the green or in the general area (Rule 16.1d).",
     ],
     penalty:
-      "No penalty for relief, except the one penalty stroke for going back on the line outside a bunker (Rule 16.1c). Playing from outside the relief area is a wrong place: the general penalty, two strokes in stroke play or loss of the hole in match play (Rule 16.1).",
+      "No penalty for relief, except the one penalty stroke for going back on the line outside a bunker (Rule 16.1c). Playing from a wrong place, such as outside the relief area or from a no play zone, costs the general penalty: two strokes in stroke play or loss of the hole in match play (Rule 16.1).",
     example:
       "On the 2nd your drive finishes in a puddle on the fairway after overnight rain. You find the nearest spot, no nearer the hole, where ball, stance and swing are all clear of the water, and drop within one club-length of it.",
-    status: "draft",
+    status: "in-review",
   }),
   situation({
     id: "ball-moved",
@@ -349,31 +351,33 @@ export const rulesScenarios: RulesScenario[] = [
     aliases: ["ball moved", "ball moved at address", "wind moved my ball", "accidentally moved my ball"],
     primaryRule: 9,
     sources: [
-      rog("9.2", P1_CHECKED), rog("9.3", P1_CHECKED), rog("9.4", P1_CHECKED), rog("9.5", P1_CHECKED),
-      rog("9.6", P1_CHECKED), def("Moved", P1_CHECKED),
+      rog("9.1b", P1_CHECKED), rog("9.2", P1_CHECKED), rog("9.3", P1_CHECKED), rog("9.4", P1_CHECKED),
+      rog("9.5", P1_CHECKED), rog("9.6", P1_CHECKED), def("Moved", P1_CHECKED),
+      def("Known or Virtually Certain", P1_CHECKED), def("Natural Forces", P1_CHECKED),
+      def("Outside Influence", P1_CHECKED),
     ],
     answer:
       "It depends on what moved it. If wind, water or gravity did, play it from where it stopped, with no penalty. If you, your caddie, an opponent or anything else did, it goes back on its original spot, and you get one penalty stroke when you or your caddie caused it, unless an exception covers what you were doing.",
     conditions: [
-      "A ball has moved only if it left its spot and came to rest somewhere else, visibly to the naked eye; a wobble that settles back isn't a move. It counts as moved only if that's known or virtually certain. If it only might have moved, play it as it lies.",
+      "A ball has moved only if it left its spot and came to rest somewhere else, visibly to the naked eye; a wobble that settles back isn't a move. It counts as moved only if that's known or virtually certain, meaning conclusive evidence or at least 95 percent likely. If it only might have moved, play it as it lies.",
       "You, an opponent or an outside influence caused it only if that's known or virtually certain. Otherwise the Rules treat it as natural forces, such as wind, water or gravity.",
-      "You aren't penalised for moving it by accident while searching for it, anywhere on the putting green, or while marking, lifting, replacing it or taking relief under a Rule.",
-      "If it starts moving after you've begun your backswing and you go on to make the stroke, it isn't replaced, though the penalty still applies if you caused it (Rule 9.4).",
-      "If wind or water moves a ball you've dropped, placed or replaced into a different part of the course or out of bounds, it goes back. On the green, a ball you've already lifted and replaced goes back whatever moved it.",
+      "Moving it by accident often carries no penalty: for example while searching for or identifying it, anywhere on the putting green, or while marking, lifting, replacing, measuring or taking relief under a Rule.",
+      "If it starts moving after you've begun your backswing and you finish the stroke, you play it from wherever it ends up, whatever moved it. If you caused the movement, the one-stroke penalty and its exceptions still apply (Rules 9.1b and 9.4).",
+      "If natural forces move a ball you've dropped, placed or replaced into a different area of the course, say from the general area into a bunker or penalty area, or out of bounds, it goes back. On the green, a ball you've already lifted and replaced goes back whatever moved it.",
     ],
     options: [
       "Natural forces, such as wind, water or gravity: no penalty, play it from its new spot (Rule 9.3).",
-      "You or your caddie: replace it, with one penalty stroke unless an exception applies (Rule 9.4).",
+      "You or your caddie, or in a team format your partner or their caddie: replace it, with one penalty stroke unless an exception applies (Rules 9.2 and 9.4).",
       "Your opponent or their caddie, in match play: replace it; the opponent gets one penalty stroke unless an exception applies (Rule 9.5).",
-      "Anyone or anything else, including another player in stroke play, an animal or another ball: replace it, no penalty (Rule 9.6).",
+      "Anyone or anything else, such as an animal, another ball or another player in stroke play who isn't your partner: replace it, no penalty (Rule 9.6).",
     ],
     penalty:
-      "One penalty stroke when you or your caddie lift, deliberately touch or move your ball outside the exceptions (Rule 9.4). If you then play it from where it ended up instead of replacing it, that's the general penalty instead (Rule 9.4).",
+      "One penalty stroke when you or your caddie lift it, deliberately touch it or cause it to move, unless one of the exceptions above applies (Rule 9.4). If you play it from where it ended up rather than putting it back, the penalty becomes the general penalty: two strokes in stroke play, loss of the hole in match play (Rule 9.4).",
     example:
-      "On the 4th your ball sits on a bank in the rough, and before you've touched anything a gust rolls it a foot down the slope. That's natural forces: no penalty, and you play it from where it stopped.",
+      "On the 4th you set your 7-iron down behind your ball on a slope in the rough and a gust rolls it a foot. Unless it's known or virtually certain your club caused it, that's natural forces: no penalty, and you play it from where it stopped.",
     matchVsStrokeCaveat:
-      "Match play: an opponent who moves your ball has to have it replaced and usually gets one penalty stroke (Rule 9.5). Stroke play: another player is an outside influence, so the ball is replaced with no penalty (Rule 9.6).",
-    status: "draft",
+      "Match play: if your opponent or their caddie moves your ball, it's replaced and they get one penalty stroke unless an exception applies (Rule 9.5). Stroke play: another player who isn't your partner is an outside influence, so the ball is replaced with no penalty (Rule 9.6).",
+    status: "in-review",
   }),
   situation({
     id: "mark-lift-clean",
@@ -392,17 +396,17 @@ export const rulesScenarios: RulesScenario[] = [
       "On the putting green, whenever you like: mark it, lift it, clean it and put it back on the same spot. Everywhere else you lift it only when a Rule lets you, such as to identify it, to take relief or because it's in another player's way, and why you lifted it decides whether you can clean it. Lift, clean and place in the fairway is Model Local Rule E-3, in force only if the Committee has adopted it.",
     conditions: [
       "Before lifting a ball that has to go back on the same spot, mark it with a ball-marker or a club held on the ground right behind or beside it. Lifting to take relief needs no mark.",
-      "Only you can lift it, or someone you authorise each time. Your caddie can lift it without asking on the putting green, or when it's clear you're about to take relief.",
-      "Off the green you can clean it unless you lifted it to check for a cut or crack, because it was in someone's way, or to see whether relief applies and then didn't take it. Lifted to identify it, you clean only enough to see your mark.",
-      "It goes back by hand, set down on its original spot, by you or whoever lifted it. Take the ball-marker away before you play.",
+      "Only you can lift it, or someone you authorize each time. Your caddie can lift it without asking on the putting green, or when it's clear you're about to take relief.",
+      "Off the green you can clean it unless you lifted it to check for a cut or crack, because it was in someone's way, or to see whether relief applies and then didn't take it. If you lifted it to identify it, clean only as much as you need to tell it's yours.",
+      "You, or whoever lifted it, set it back down by hand on its original spot. Take the ball-marker away before you play.",
     ],
     penalty:
-      "One penalty stroke for lifting without marking when a mark was needed, for leaving the ball-marker down when you play, or for cleaning when cleaning isn't allowed (Rules 14.1a and 14.1c). Lifting your ball when no Rule allows it is also one penalty stroke, and the ball goes back (Rule 9.4).",
+      "One penalty stroke for lifting without marking when a mark was needed, leaving the ball-marker down when you play, cleaning when cleaning isn't allowed, or playing a ball put back by someone who wasn't allowed to (Rules 14.1 and 14.2). Lifting it when no Rule allows it is also one penalty stroke (Rule 9.4). Play it without putting it back on its spot and it's the general penalty instead: two strokes in stroke play, loss of the hole in match play (Rules 9.4 and 14.2).",
     example:
       "On the 6th your ball reaches the green with mud on it. Put a marker right behind it, lift it, wipe it, set it back on the same spot and pick the marker up before you putt.",
     localRuleCaveat:
-      "Preferred lies, also called lift, clean and place or winter rules, is Model Local Rule E-3, and it applies only if the Committee has adopted it. Then a ball touching grass in the general area that's mown to fairway height or shorter can be placed once within the distance the Committee sets, such as one club-length or the length of a scorecard, no nearer the hole and still in the general area.",
-    status: "draft",
+      "Preferred lies, also called lift, clean and place or winter rules, is Model Local Rule E-3, and it applies only if the Committee has adopted it. Then a ball touching grass in the general area that's mown to fairway height or shorter, or in an area the Committee names, can be placed once within the distance the Committee sets, such as one club-length or the length of a scorecard, no nearer the hole and still in the general area. A group that agrees to play it isn't the Committee adopting it; that's a house agreement.",
+    status: "in-review",
   }),
   situation({
     id: "repairing-the-green",
@@ -411,20 +415,20 @@ export const rulesScenarios: RulesScenario[] = [
     primaryRule: 13,
     sources: [rog("13.1c", P1_CHECKED), def("Putting Green", P1_CHECKED)],
     answer:
-      "Yes. During the round you can repair damage on the putting green, whether your ball is on the green or not, with your hand, foot, a ball-mark repair tool, a tee or a club, as long as you're restoring the green and not holding up play. Imperfections that grow naturally and the marks of normal maintenance aren't damage, so those stay as they are.",
+      "Yes. During the round you can repair damage on the putting green, whether your ball is on the green or not, with your hand, foot, a ball-mark repair tool, a tee or a club, as long as you're restoring the green and not holding up play. Natural flaws, such as weeds or bare patches, and the marks of normal maintenance, such as aeration holes, aren't damage, so those stay as they are.",
     conditions: [
-      "Damage is anything a person or an outside influence caused: ball marks, spike and shoe marks, scrapes from equipment or the flagstick, old hole plugs, seams of cut turf, animal tracks, and stones, acorns or tees pressed into the surface.",
+      "Damage means harm done by a person or an outside influence, such as ball marks, spike and shoe marks, scrapes from equipment or the flagstick, old hole plugs, seams of cut turf, animal tracks, and stones, acorns or tees pressed into the surface.",
       "Not damage: aeration holes, grooves from vertical mowing, marks left by rain or irrigation, weeds, bare or uneven patches, and natural wear around the hole.",
-      "The repair has to be reasonable. Going further than restoring the surface, such as smoothing a channel to the hole, is a breach.",
+      "The repair has to be reasonable. Going further than restoring the surface, such as smoothing a channel to the hole, costs the general penalty.",
       "You can also brush sand and loose soil off the putting green.",
-      "It's the green of the hole you're playing. Any other green is a wrong green, part of the general area.",
+      "This covers only the green of the hole you're playing. Any other green is a wrong green, which counts as part of the general area.",
     ],
     penalty:
-      "None for a reasonable repair. Improving the green beyond restoring it, or using something that isn't normal equipment for the job, is the general penalty: two strokes in stroke play, loss of the hole in match play (Rule 13.1c).",
+      "None for a reasonable repair. Improving the green beyond restoring it, or using something that isn't normal equipment for the job, costs the general penalty: two strokes in stroke play, loss of the hole in match play (Rule 13.1c).",
     example:
       "On the 8th there's a spike mark on your line four feet short of the hole. You can tap it down with your putter before you putt, but not a thin patch of grass or the rim of an aeration hole.",
     relatedGlossaryIds: ["putt"],
-    status: "draft",
+    status: "in-review",
   }),
   situation({
     id: "conceded-putt",
@@ -443,13 +447,13 @@ export const rulesScenarios: RulesScenario[] = [
     penalty:
       "In stroke play, failing to hole out and not correcting it in time is disqualification (Rule 3.3c).",
     example:
-      "In a match on the 18th, your third shot, a putt, stops a foot short and your opponent says that's good. You pick up and score four. In a stroke-play round you'd tap it in.",
+      "In a match on the 18th, your 20-foot putt for a three stops a foot short and your opponent says that's good. You pick up and score four. In a stroke-play round you'd tap it in.",
     matchVsStrokeCaveat:
       "Match play: an opponent can concede your next stroke, a hole or the whole match (Rule 3.2b). Stroke play: no concessions, and every hole is holed out (Rule 3.3c).",
     handicapCaveat:
-      "Posting a score for handicap follows a separate rulebook. Under Rules of Handicapping 3.3, a hole you didn't finish for a valid reason, such as a conceded putt, is recorded as your most likely score, or as net double bogey if that's lower. A ball on the green within 5 feet adds one stroke; a longer putt can add more.",
-    relatedGlossaryIds: ["gimme", "match-play", "stroke-play"],
+      "Posting a score for handicap follows a separate rulebook. Under Rules of Handicapping 3.3, when you start a hole but don't hole out for a valid reason (its examples include a hole conceded in match play), you record your most likely score, or net double bogey if that's lower. On the green within five feet that's one more stroke; from five feet to 20 yards, two or three.",
+    relatedGlossaryIds: ["gimme", "match-play", "stroke-play", "net-double-bogey"],
     relatedContentPaths: ["/blog/gimmes"],
-    status: "draft",
+    status: "in-review",
   }),
 ];
