@@ -202,7 +202,14 @@ export function RulesProvider({ ids, copy, children }: ProviderProps) {
   const arrived = useRef(false);
   useEffect(() => {
     const fromHash = () => {
-      const id = decodeURIComponent(window.location.hash.slice(1));
+      // A malformed escape (#%) names nothing on the page; ignore it rather
+      // than let the URIError take the hub down.
+      let id = "";
+      try {
+        id = decodeURIComponent(window.location.hash.slice(1));
+      } catch {
+        return;
+      }
       if (id) reveal(id);
     };
     if (!arrived.current) {

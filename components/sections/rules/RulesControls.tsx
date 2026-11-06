@@ -46,7 +46,11 @@ export type RulesControlsCopy = {
 type RulesControlsProps = {
   /** "all" first, then the topics. */
   chips: ChipItem[];
-  /** The count line for each chip id: "37 entries", "8 entries in Relief and penalties". */
+  /**
+   * The count line for every accepted topic, chip or not: "37 entries",
+   * "8 entries in Relief and penalties", "0 entries in Foundations and
+   * equipment" for a ?category= with nothing on the page.
+   */
   counts: Record<string, string>;
   /** Each topic's full name: "Relief and penalties". */
   topicLabels: Record<string, string>;
@@ -119,10 +123,8 @@ export function RulesControls({ chips, counts, topicLabels, entries, copy }: Rul
     return () => clearTimeout(timer);
   }, [searching, results.length, groups, inTopic, copy]);
 
-  const filterMessages = useMemo(
-    () => Object.fromEntries(chips.map((c) => [c.id, counts[c.id]])),
-    [chips, counts],
-  );
+  // Spoken on a topic change, from the same lines the page shows.
+  const filterMessages = counts;
 
   return (
     <div id="rules-controls" className={styles.controls} data-requires-js="">
@@ -135,9 +137,9 @@ export function RulesControls({ chips, counts, topicLabels, entries, copy }: Rul
       />
       <div className={styles.bar}>
         <span className={styles.count}>
-          {chips.map((c) => (
-            <span key={c.id} data-for={c.id} hidden={c.id !== "all"}>
-              {counts[c.id]}
+          {Object.entries(counts).map(([id, line]) => (
+            <span key={id} data-for={id} hidden={id !== "all"}>
+              {line}
             </span>
           ))}
         </span>
