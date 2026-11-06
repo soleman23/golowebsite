@@ -197,9 +197,6 @@ export function RulesControls({ chips, counts, topicLabels, entries, copy }: Rul
                   {copy.searchAll}
                 </button>
               ) : null}
-              <button type="button" className={styles.button} onClick={clear}>
-                {copy.clear}
-              </button>
               <a href={copy.rulesIndex.href} className={styles.link} data-rules-official="rules">
                 {copy.rulesIndex.label}
               </a>
