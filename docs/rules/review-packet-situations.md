@@ -88,7 +88,7 @@ Sources: 18.2a, 18.2b; Definitions: Out of Bounds, Boundary Object; MLR E-5.
 
 ### red-vs-yellow-penalty-areas
 
-Sources: 17.1a, 17.1b, 17.1c, 17.1d; Definitions: Penalty Area. Off-record: Committee Procedures 2C (see the open question above).
+Sources: 17.1a, 17.1b, 17.1c, 17.1d, 17.1e; Definitions: Penalty Area. Off-record: Committee Procedures 2C (see the open question above).
 
 | Field | Sentence (start) | Source |
 |---|---|---|
@@ -102,9 +102,10 @@ Sources: 17.1a, 17.1b, 17.1c, 17.1d; Definitions: Penalty Area. Off-record: Comm
 | conditions[3] | Unmarked color counts as red | Definitions: Penalty Area |
 | conditions[3] | The color that matters is where the ball last crossed | 17.1d(3); Committee Procedures 2C (part red, part yellow) |
 | options[0] | Play as it lies, no penalty, general-area Rules apply | 17.1b |
+| options[0] | Not allowed when the ball lies in a no play zone or one interferes with stance or swing; relief required | 17.1b Exception; 17.1e |
 | options[1] | Stroke and distance, one stroke | 17.1d(1) |
 | options[2] | Back on the line: outside the area, as far back as you like, one club-length from where it lands, same area of the course, no nearer than the crossing point | 17.1d(2); Definitions: Relief Area |
-| options[3] | Lateral, red only: two club-lengths, no nearer the hole, outside that penalty area | 17.1d(3) |
+| options[3] | Lateral, red only: two club-lengths, no nearer the hole, outside that penalty area; same area of the course it first lands in when the space spans more than one | 17.1d(3) |
 | penalty | One stroke for any relief option; as it lies is free | 17.1d; 17.1b |
 | example | 14th: last crossed on the green side; lateral drop there; fourth stroke | 17.1d(3) (2 strokes + 1 penalty) |
 
@@ -121,7 +122,7 @@ Sources: 19.1, 19.2, 19.3a, 19.3b.
 | conditions[1] | Back on the line and lateral need the ball's spot; stroke and distance doesn't | 19.2 |
 | conditions[2] | Ball in a tree: measure from the spot on the ground beneath it | 19.2c |
 | conditions[3] | In a bunker the one-stroke drops come to rest in the bunker | 19.3a |
-| options[0]–[2] | Stroke and distance; back on the line with its relief-area limits; lateral two club-lengths, no nearer the hole | 19.2a, 19.2b, 19.2c |
+| options[0]–[2] | Stroke and distance; back on the line with its relief-area limits; lateral two club-lengths, no nearer the hole, same area of the course it first lands in when the space spans more than one | 19.2a, 19.2b, 19.2c |
 | options[3] | Bunker only: two strokes, back on the line outside | 19.3b |
 | penalty | One stroke, or two in total outside a bunker | 19.2; 19.3a; 19.3b |
 | example | 9th: in the sand under the lip; lateral in the bunker one stroke, back on the line outside two | 19.3a; 19.3b; Definitions: Bunker (the lip isn't part of it) |
@@ -210,8 +211,17 @@ Reviewer A (rules): 21 findings, none blockers, four majors. Reviewer B (product
 | B20 | unplayable-ball · links | Published glossary slug `rough` | Added |
 | B, to A | bunker-sand · conditions[1]; cart-path "paved"; lost-ball 18.1 | Waste-area wording; paved vs artificial surface; searching isn't required | Waste areas reworded to the Definition; answer now says "artificial surface"; 18.1 added (A2) |
 
+Codex (PR #256, review of 5c1f0d8), after the owner's approval:
+
+| # | Record · field | Finding | Resolution |
+|---|---|---|---|
+| C1 (P2) | red-vs-yellow · options[3]; unplayable-ball · options[2] | Lateral relief also requires the ball to finish in the area of the course it first touched, when the relief area spans more than one (17.1d(3), 19.2c) | Fixed in both |
+| C2 (P2) | red-vs-yellow · options[0] | A ball in a no play zone, or one interfering with stance or swing, can't be played as it lies (17.1b Exception, 17.1e) | Fixed; `17.1e` added to sources (anchor in `source-map.md`) |
+
 Checks both reviewers passed: no GoLo claims; `NEVER_WORDS` clean (every "stakes" follows white, red or yellow); E-5 conditional everywhere; fragments match `canonical-map.md`; glossary slugs `penalty-area`, `bunker`, `rough` published; no related content paths (no served page owns these intents); answers one to three sentences; two to five conditions; examples use hole numbers and clubs, no money; `npm run lint:content` passes.
 
 ### Approval, batch 1
 
 **Approved by the owner in chat on November 6, 2026** ("Approve batch 1"), on this packet as written. The approval covers all seven records and accepts the off-record Committee Procedures 2C source for `red-vs-yellow-penalty-areas`. The records are `approved` with `reviewedOn: 2026-11-06`, `reviewedBy: "owner"` and a review log of rules, product and seo by "agent" and approval by "owner" (`P0_APPROVED` in `scenarios.ts`). Not published: `rulesLive` is false and only #247 publishes.
+
+**Post-approval changes:** Codex findings C1 and C2 (above) changed three options after the approval. Copy distance is still 0 runs of eight or more words. Pending the owner's confirmation in chat.

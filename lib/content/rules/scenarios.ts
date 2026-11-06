@@ -192,7 +192,7 @@ export const rulesScenarios: RulesScenario[] = [
     primaryRule: 17,
     sources: [
       rog("17.1a", P0_CHECKED), rog("17.1b", P0_CHECKED), rog("17.1c", P0_CHECKED), rog("17.1d", P0_CHECKED),
-      def("Penalty Area", P0_CHECKED),
+      rog("17.1e", P0_CHECKED), def("Penalty Area", P0_CHECKED),
     ],
     answer:
       "In either color you can play it as it lies for free, or take relief outside the area for one penalty stroke. Yellow gives you two ways to do that: stroke and distance, or back on the line. Red adds a third: a drop within two club-lengths of the spot where your ball last crossed the edge, no nearer the hole.",
@@ -203,10 +203,10 @@ export const rulesScenarios: RulesScenario[] = [
       "The color is the Committee's choice: it doesn't have to use yellow at all and can mark every penalty area red. An area whose color hasn't been marked or indicated counts as red, and the color that matters is the one where your ball last crossed the edge.",
     ],
     options: [
-      "Play it as it lies, red or yellow: no penalty, and the same Rules apply as anywhere in the general area (Rule 17.1b).",
+      "Play it as it lies, red or yellow: no penalty, and the same Rules apply as anywhere in the general area (Rule 17.1b). Not allowed when your ball lies in a no play zone, or one gets in the way of your stance or swing: then you have to take relief (Rule 17.1e).",
       "Stroke and distance, red or yellow: one penalty stroke, play again from where you made your last stroke (Rule 17.1d).",
       "Back on the line, red or yellow: one penalty stroke, drop outside the penalty area on a line from the hole through the crossing point, as far back as you like. The ball has to finish within one club-length of where it first lands, in that same area of the course, and no nearer the hole than the crossing point (Rule 17.1d).",
-      "Lateral relief, red only: one penalty stroke, drop within two club-lengths of the crossing point, no nearer the hole and outside that penalty area (Rule 17.1d).",
+      "Lateral relief, red only: one penalty stroke, drop within two club-lengths of the crossing point, no nearer the hole and outside that penalty area. If that space covers more than one area of the course, the ball has to finish in the area it first lands in (Rule 17.1d).",
     ],
     penalty:
       "One penalty stroke for any relief option (Rule 17.1d). Playing the ball as it lies is free (Rule 17.1b).",
@@ -234,7 +234,7 @@ export const rulesScenarios: RulesScenario[] = [
     options: [
       "Stroke and distance: one penalty stroke, play again from where you made your last stroke (Rule 19.2).",
       "Back on the line: one penalty stroke, drop anywhere behind the ball on a line that runs from the hole through it, as far back as you like. The ball has to finish within one club-length of where it first lands, in that same area of the course, and no nearer the hole than the ball's original spot (Rule 19.2).",
-      "Lateral: one penalty stroke, drop within two club-lengths of the ball, no nearer the hole (Rule 19.2).",
+      "Lateral: one penalty stroke, drop within two club-lengths of the ball, no nearer the hole. If that space covers more than one area of the course, the ball has to finish in the area it first lands in (Rule 19.2).",
       "Bunker only: two penalty strokes in total, drop back on the line outside the bunker (Rule 19.3b).",
     ],
     penalty:
