@@ -6,8 +6,10 @@ import {
   rulesDirectoryCopy,
   rulesFinalCta,
   rulesHero,
+  rulesBreadcrumb,
   rulesReviewCopy,
   rulesRouteVisible,
+  rulesSelection,
   rulesSituationsCopy,
 } from "@/lib/content";
 import { pageMetadata } from "@/lib/pageMetadata";
@@ -39,7 +41,7 @@ export function generateMetadata(): Metadata {
     path: "/rules",
     title: "Golf Rules Explained: Penalties, Relief & Questions",
     description:
-      "Plain answers for a lost ball, out of bounds, penalty areas, cart paths and bunkers, plus all 25 Rules of Golf summarised, with the official text linked.",
+      "Plain answers for a lost ball, out of bounds, penalty areas, cart paths and bunkers, plus all 25 Rules of Golf summarized, with the official text linked.",
   });
 }
 
@@ -59,6 +61,8 @@ export default function RulesPage() {
   if (!rulesRouteVisible()) notFound();
 
   const { overviews, scenarios } = hubRules();
+  // The banner is local review's alone: production never says "approved".
+  const localReview = rulesSelection() === "review";
   const review = [...overviews, ...scenarios].some((r) => r.unpublished);
   const empty = !overviews.length && !scenarios.length;
 
@@ -80,11 +84,11 @@ export default function RulesPage() {
 
       <PageHero
         {...rulesHero}
-        breadcrumbs={[{ label: "Home", href: "/" }, { label: "Golf rules" }]}
+        breadcrumbs={[{ label: "Home", href: "/" }, { label: rulesBreadcrumb }]}
       />
 
       <div className={styles.page}>
-        {review || empty ? (
+        {localReview && (review || empty) ? (
           <p className={styles.reviewBanner} role="note">
             {empty ? rulesReviewCopy.empty : rulesReviewCopy.banner}
           </p>
@@ -109,7 +113,7 @@ export default function RulesPage() {
         {overviews.length ? (
           <section id="all-rules" className={styles.section} aria-labelledby="all-rules-heading">
             <h2 id="all-rules-heading" className={styles.sectionTitle}>
-              {rulesDirectoryCopy.title}
+              {rulesDirectoryCopy.title(overviews.length)}
             </h2>
             <p className={styles.intro}>{rulesDirectoryCopy.intro}</p>
             <RuleNumberGrid overviews={overviews} />

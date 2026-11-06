@@ -11,8 +11,8 @@
  *
  * Server-rendered; the copy-link button is the only client leaf. The data-*
  * attributes are the hooks search, filtering (#236) and analytics (#244)
- * read: data-category on every entry, data-rules-official and
- * data-rules-related on its links.
+ * read: data-category on every entry, data-rules-official (with
+ * data-official-rule) and data-rules-related on its links.
  */
 
 import Link from "next/link";
@@ -66,7 +66,13 @@ type RulesEntryProps = {
   footer?: React.ReactNode;
 };
 
-const copyLabels = { copy: copy.copy, copied: copy.copied, failed: copy.copyFailed };
+const copyLabels = {
+  copy: copy.copy,
+  copied: copy.copied,
+  failed: copy.copyFailed,
+  copiedMessage: copy.copiedMessage,
+  failedMessage: copy.failedMessage,
+};
 
 /** A published glossary term, as a related link needs it. */
 export type GlossaryLinkTarget = { slug: string; term: string };
@@ -145,7 +151,7 @@ export function RulesEntry({
                     href={link.href}
                     className={styles.link}
                     data-rules-official={link.document}
-                    data-rule-number={link.rule}
+                    data-official-rule={link.rule}
                   >
                     {link.text}
                   </a>

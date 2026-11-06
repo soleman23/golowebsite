@@ -17,7 +17,7 @@ import styles from "./EditionNotice.module.css";
 export function EditionNotice() {
   const { label, supersededOn, clarificationsCheckedOn } = rulesEdition;
   return (
-    <aside className={styles.notice} aria-label={copy.label}>
+    <div className={styles.notice}>
       <p className={styles.edition}>
         {copy.basedOn.replace("{edition}", label)} {copy.nextEdition}{" "}
         <time dateTime={supersededOn}>{formatDate(supersededOn)}</time>. {copy.checked}{" "}
@@ -34,6 +34,6 @@ export function EditionNotice() {
         </a>
       </p>
       <p className={styles.independent}>{copy.independent}</p>
-    </aside>
+    </div>
   );
 }

@@ -31,14 +31,16 @@ export const rulesHero = {
   lead: "Plain answers to what happens next when your ball is lost, out of bounds, in a penalty area or up against a cart path, with the official rule linked beside each one.",
 };
 
+export const rulesBreadcrumb = "Golf rules";
+
 /** Under the hero (ux.md D6). Dates are filled in from ./edition. */
 export const rulesEditionCopy = {
-  label: "Edition and sources",
   /** {edition} is the edition's label. */
   basedOn: "Based on the {edition}, written jointly by The R&A and the USGA.",
-  nextEdition: "The next edition takes effect on",
+  /** The R&A says "published on 1 January 2028" (source-map.md). */
+  nextEdition: "The next edition is due on",
   checked: "Clarifications checked",
-  officialText: "Official text:",
+  officialText: "Official sources:",
   randa: "The Rules of Golf on randa.org",
   usga: "The rules hub on usga.org",
   independent:
@@ -66,7 +68,7 @@ export const rulesQuickSituations = {
 export const rulesSituationsCopy = {
   title: "Common situations",
   intro:
-    "What the Rules say happens next. Each answer starts with what has to be true for it to hold, and links the rule it comes from.",
+    "What the Rules say happens next. Each answer lists what has to be true for it to hold, and links the rule it comes from.",
   conditions: "Before you decide",
   options: "Your options",
   penalty: "Penalty",
@@ -77,7 +79,8 @@ export const rulesSituationsCopy = {
 };
 
 export const rulesDirectoryCopy = {
-  title: "All 25 rules",
+  /** While fewer than 25 overviews are on the page, the heading says so. */
+  title: (shown: number) => (shown === 25 ? "All 25 rules" : `${shown} of the 25 rules`),
   intro:
     "What each rule covers and when to look it up, grouped by part of the game. The full text of each is on randa.org.",
   numbersLabel: "Rules 1 to 25",
@@ -100,8 +103,10 @@ export const rulesEntryCopy = {
   official: "Official text",
   related: "Related",
   reviewed: "Reviewed",
-  /** After a Model Local Rule's link. */
-  ifAdopted: "if the Committee adopted it",
+  /** After a Model Local Rule's link (canonical-map.md rule 5). */
+  ifAdopted: "if the Committee has adopted it",
+  /** After a Rules of Handicapping link (canonical-map.md rule 6). */
+  separateRulebook: "a separate rulebook",
   /** A glossary link's suffix: "Penalty area (glossary)". */
   glossary: "glossary",
   /** Shown on an approved record in local review (`next dev`) only. */
@@ -109,6 +114,9 @@ export const rulesEntryCopy = {
   copy: "Copy link",
   copied: "Copied",
   copyFailed: "Copy failed",
+  /** Announced; {name} is the heading. */
+  copiedMessage: "Link to {name} copied",
+  failedMessage: "Couldn't copy. The heading is itself a link you can copy instead.",
 };
 
 /** Local review only (`next dev`). */
@@ -177,7 +185,7 @@ export const rulesOfficialSources: {
 } = {
   title: "Official sources",
   intro:
-    "The R&A and the USGA write the Rules of Golf together, and the R&A pages are the ones linked from each answer. These are the full documents.",
+    "The R&A and the USGA write the Rules of Golf together. Each answer links The R&A's pages for the rules it cites; these are the documents behind them, with the USGA's own pages beside them.",
   items: [
     {
       label: "The Rules of Golf",
@@ -198,7 +206,7 @@ export const rulesOfficialSources: {
       site: "randa.org",
       href: RULES_CLARIFICATIONS_URL,
       document: "clarifications",
-      note: "Official clarifications of the current edition, added each quarter.",
+      note: "Official clarifications of the current edition. Updates are quarterly, and not every quarter brings a new one.",
     },
     {
       label: "Committee Procedures, Section 8: Model Local Rules",
@@ -226,11 +234,11 @@ export const rulesOfficialSources: {
       site: "usga.org",
       href: ROH_URL,
       document: "handicapping",
-      note: "A separate rulebook. It decides what score you post, not how you play, and this page cites it only for posting notes.",
+      note: "A separate rulebook. It covers handicaps and which scores you post, not how the game is played. This page cites it only in handicap-posting notes.",
     },
   ],
   localRules:
-    "A Committee's Local Rules can change any answer here. If the scorecard or the notice board says something different, the Local Rule applies.",
+    "A Committee's Local Rules can change some of these answers. If the scorecard or notice board has a Local Rule that covers your situation, it applies.",
   independent:
     "These explanations are GoLo's own, not the official text. Neither The R&A nor the USGA has reviewed or endorsed them.",
   report: {
@@ -277,5 +285,5 @@ export const rulesRelated = {
 
 /** The closing band. The store buttons and fine print are FinalCTA's. */
 export const rulesFinalCta = {
-  title: "Know the ruling. Let GoLo keep the score.",
+  title: "Know the rule. Let GoLo keep the score.",
 };

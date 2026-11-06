@@ -111,6 +111,8 @@ export default function GlossaryPage() {
     copy: glossaryControlsCopy.copy,
     copied: glossaryControlsCopy.copied,
     failed: glossaryControlsCopy.copyFailed,
+    copiedMessage: glossaryControlsCopy.copiedMessage,
+    failedMessage: glossaryControlsCopy.failedMessage,
   };
 
   return (

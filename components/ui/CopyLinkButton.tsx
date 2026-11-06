@@ -19,7 +19,14 @@ type CopyLinkButtonProps = {
   url: string;
   /** The entry's name, for the accessible name and the announcements. */
   name: string;
-  labels: { copy: string; copied: string; failed: string };
+  /** Button text, and the announcements, where {name} is the entry's name. */
+  labels: {
+    copy: string;
+    copied: string;
+    failed: string;
+    copiedMessage: string;
+    failedMessage: string;
+  };
   /**
    * share_click params besides `channel` ({ term_id } on the glossary).
    * Without them the copy isn't reported.
@@ -44,7 +51,12 @@ export function CopyLinkButton({ url, name, labels, share }: CopyLinkButtonProps
 
   useEffect(() => {
     if (state === "idle") return;
-    const timer = setTimeout(() => setState("idle"), 2000);
+    const timer = setTimeout(() => {
+      setState("idle");
+      // The button's own region empties with it, so an old confirmation
+      // isn't met later when reading the page.
+      setMessage("");
+    }, 2000);
     return () => clearTimeout(timer);
   }, [state]);
 
@@ -52,12 +64,12 @@ export function CopyLinkButton({ url, name, labels, share }: CopyLinkButtonProps
     try {
       await navigator.clipboard.writeText(url);
       setState("copied");
-      announce(`Link to ${name} copied`);
+      announce(labels.copiedMessage.replace("{name}", name));
       // The blog's share event, so every share lands in one report (#165).
       if (share) track("share_click", { channel: "copy", ...share });
     } catch {
       setState("failed");
-      announce(`Couldn't copy. ${name} is itself a link you can copy instead.`);
+      announce(labels.failedMessage.replace("{name}", name));
     }
   }
 

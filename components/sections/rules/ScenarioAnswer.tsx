@@ -39,7 +39,11 @@ export function ScenarioAnswer({ scenario: s, rules, glossary }: ScenarioAnswerP
   const official: EntryOfficialLink[] = s.links.map((link) => ({
     href: link.href,
     text: rulesLinkText(link),
-    note: link.localRule ? rulesEntryCopy.ifAdopted : undefined,
+    note: link.localRule
+      ? rulesEntryCopy.ifAdopted
+      : link.document === "handicapping"
+        ? rulesEntryCopy.separateRulebook
+        : undefined,
     document: link.document,
     rule: link.document === "rules" ? Number.parseInt(link.ruleRef, 10) : s.primaryRule,
   }));

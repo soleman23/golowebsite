@@ -66,7 +66,11 @@ export function RuleOverview({ rule: r, scenarios, glossary, previous, next }: R
       level={4}
       heading={
         <>
-          <span className={styles.number}>{label}</span> {r.title}
+          {/* Stacked visually; the colon keeps "Rule 18: Stroke-and-…" one
+              phrase for a screen reader. */}
+          <span className={styles.number}>{label}</span>
+          <span className="sr-only">: </span>
+          {r.title}
         </>
       }
       name={`${label}: ${r.title}`}
