@@ -18,7 +18,7 @@ Each rule's entry has the copy as it stands, every summary sentence and common q
 
 Course areas and procedures (12–16) and relief and penalties (17–19), the most-read rules. Sources opened November 6, 2026; both reviewer agents ran the same day.
 
-**Result.** Agent A found 2 errors: Rule 14 said any mistake could be fixed free before playing the ball, and Rule 18 started the lost-ball clock when "the search starts" rather than when you or your caddie start looking. Agent B found 1 error: Rule 18 shared a 9-word run with 18.2b once "it's" is read as "it is". All three are fixed, along with the gaps and should-fix items below. Each summary is 112–120 words with four questions. The drafter's checker now spells out contractions too, and every overview was rerun through it: the longest run left in this batch is 7 words. `npm run lint:content` passes. Agent B checked every link on the draft; after the fixes, the final 43 subrule anchors and 23 Definitions citations were rechecked against the fetched pages, and all resolve.
+**Result.** Agent A found 2 errors: Rule 14 said any mistake could be fixed free before playing the ball, and Rule 18 started the lost-ball clock when "the search starts" rather than when you or your caddie start looking. Agent B found 1 error: Rule 18 shared a 9-word run with 18.2b once "it's" is read as "it is". All three are fixed, along with the gaps and should-fix items below. Codex then reviewed the pull request and raised four P2 points, all fixed: sand that has washed away still counts as bunker (Rule 12), the last hole's correction deadline is returning the card (Rule 14), a drop from a movable obstruction stays in the same area of the course (Rule 15), and a plugged ball's drop is measured from the spot just behind it (Rule 16). Each summary is 112–120 words with four questions. The drafter's checker now spells out contractions too, and every overview was rerun through it: the longest run left in this batch is 7 words. `npm run lint:content` passes. Agent B checked every link on the draft; after the fixes, the final 43 subrule anchors and 22 Definitions citations were rechecked against the fetched pages, and all resolve.
 
 **For the owner to decide:**
 
@@ -28,7 +28,7 @@ Course areas and procedures (12–16) and relief and penalties (17–19), the mo
 
 ### Rule 12 · Bunkers
 
-**Summary (119 words):** Rule 12 covers playing from a bunker: when your ball is in one, and what you may touch before the stroke. It's in if any part touches sand inside the edge, or rests on something there, like a rake; on grass or soil inside the edge, not touching sand, it isn't. Before playing, you can't touch the sand to test it, with the club just in front of or behind the ball, or in a practice swing or backswing. Each costs the general penalty: two strokes in stroke play, loss of the hole in match play. Digging in your feet or moving a rake is fine. Once your ball is out, or you're taking relief outside, you can rake.
+**Summary (120 words):** Rule 12 covers when your ball is in a bunker and what you may touch there. It's in if any part touches sand inside the edge, sits where sand has washed or blown away, or rests on something there, like a rake; on grass inside the edge, not touching sand, it isn't. Before playing, you can't touch the sand to test it, with the club just in front of or behind the ball, or in a practice swing or backswing. Each costs the general penalty: two strokes in stroke play, loss of the hole in match play. Digging in your feet or moving a rake is fine. Once your ball is out, or you're taking relief outside, you can rake.
 
 **Look here when:** Is my ball in the bunker if it's on grass inside the edge? · Can my practice swing brush the sand? · Can I move a rake, leaves or a stone before I play from the sand? · When can I smooth the sand?
 
@@ -36,8 +36,8 @@ Course areas and procedures (12–16) and relief and penalties (17–19), the mo
 
 | # | Sentence | Rests on |
 |---:|---|---|
-| 1 | Rule 12 covers playing from a bunker: when your ball is in one, and what you may touch before the stroke. | [Rule 12](https://www.randa.org/en/rog/the-rules-of-golf/rule-12) |
-| 2 | It's in if any part touches sand inside the edge, or rests on something there, like a rake; on grass or soil inside the edge, not touching sand, it isn't. | [12.1](https://www.randa.org/en/rog/the-rules-of-golf/rule-12#12_1) |
+| 1 | Rule 12 covers when your ball is in a bunker and what you may touch there. | [Rule 12](https://www.randa.org/en/rog/the-rules-of-golf/rule-12) |
+| 2 | It's in if any part touches sand inside the edge, sits where sand has washed or blown away, or rests on something there, like a rake; on grass inside the edge, not touching sand, it isn't. | [12.1](https://www.randa.org/en/rog/the-rules-of-golf/rule-12#12_1) |
 | 3 | Before playing, you can't touch the sand to test it, with the club just in front of or behind the ball, or in a practice swing or backswing. | [12.2b](https://www.randa.org/en/rog/the-rules-of-golf/rule-12#12_2b) |
 | 4 | Each costs the general penalty: two strokes in stroke play, loss of the hole in match play. | [12.2b](https://www.randa.org/en/rog/the-rules-of-golf/rule-12#12_2b), Definitions: General Penalty |
 | 5 | Digging in your feet or moving a rake is fine. | [12.2a](https://www.randa.org/en/rog/the-rules-of-golf/rule-12#12_2a), [12.2b](https://www.randa.org/en/rog/the-rules-of-golf/rule-12#12_2b) |
@@ -49,15 +49,16 @@ Course areas and procedures (12–16) and relief and penalties (17–19), the mo
 
 **Review findings and resolution:**
 
-- *Rules accuracy (agent A), gap:* The in-bunker sentence left out a ball resting on something lying on the sand (a rake, leaves, a puddle), so a group could treat it as outside the bunker and ground the club (12.1). **Resolution:** Fixed: the sentence now counts a ball resting on something lying in the bunker, such as a rake, and says a ball on grass or soil inside the edge that touches no sand isn't in.
+- *Rules accuracy (agent A), gap:* The in-bunker sentence left out a ball resting on something lying on the sand (a rake, leaves, a puddle), so a group could treat it as outside the bunker and ground the club (12.1). **Resolution:** Fixed: the sentence now counts a ball resting on something in the bunker, such as a rake, and says a ball on grass inside the edge that touches no sand isn't in.
 - *Rules accuracy (agent A), gap:* 12.3 is cited, but nothing in the summary covers relief in a bunker, and Q4 (unplayable in a bunker) isn't answered here. **Resolution:** Fixed together with agent B's finding on the same question: Q4 is now "When can I smooth the sand?", which this summary answers, and 12.3 is no longer cited. Rule 19's overview covers unplayable relief in a bunker.
 - *Rules accuracy (agent A), nit:* Moving a leaf or stone that then moves the ball costs a stroke (15.1b); touching sand in an allowed way can still be the general penalty if it improves the lie (12.2b(2), 8.1a). **Resolution:** Changed the example to digging in your feet or moving a rake, both free whatever happens to the ball. The leaf-and-ball case is in Rule 15's overview.
 - *Rules accuracy (agent A), nit:* Raking is also free once you are taking, or intend to take, relief outside the bunker (12.2b(3)). **Resolution:** Fixed: "Once your ball is out, or you're taking relief outside, you can rake."
 - *Site rules (agent B), should-fix:* In the list of banned touches, the last item had no "or", so "in a practice swing or on the backswing" read as part of the club-near-the-ball case; and "That is the general penalty" could be read as the last item only. **Resolution:** Fixed: "you can't touch the sand to test it, with the club just in front of or behind the ball, or in a practice swing or backswing. Each costs the general penalty..."
 - *Site rules (agent B), should-fix:* Q4 (unplayable in a bunker) belongs to Rule 19 and duplicated Rule 19's Q2. **Resolution:** Fixed: Q4 is now "When can I smooth the sand?"; 12.3 dropped.
 - *Site rules (agent B), nit:* "rake away" was breezy one sentence after a penalty. **Resolution:** Fixed: "you can rake."
+- *Codex, on the pull request, P2:* "On grass or soil inside the edge, not touching sand, it isn't" misclassifies a ball on ground where the sand has washed or blown away, which 12.1 counts as in the bunker. **Resolution:** Fixed: "It's in if any part touches sand inside the edge, sits where sand has washed or blown away, or rests on something there"; "soil" dropped from the not-in case.
 
-**Copy distance:** longest run shared with the R&A text is 6 words ("of the hole in match play"); no run of 8 or more.
+**Copy distance:** longest run shared with the R&A text is 6 words ("ball is in a bunker and"); no run of 8 or more.
 
 **Owner approval:** pending.
 
@@ -99,19 +100,19 @@ Course areas and procedures (12–16) and relief and penalties (17–19), the mo
 
 ### Rule 14 · Procedures for Ball: Marking, Lifting and Cleaning; Replacing on Spot; Dropping in Relief Area; Playing from Wrong Place
 
-**Summary (120 words):** Rule 14 covers the procedures behind relief: marking, lifting, replacing and dropping a ball, and playing from a wrong place. Mark the spot before lifting a ball you'll replace; skipping that costs a penalty stroke. Drop from knee height, straight down, into the relief area, usually one or two club-lengths from a reference point, where it must stay; if it rolls out twice, place it where the second drop landed. A wrong drop, placement or replacement can be redone free before you play the ball. Playing from a wrong place costs the general penalty, two strokes or loss of the hole in match play; in stroke play, a serious breach must be corrected before the next tee, or you're disqualified.
+**Summary (116 words):** Rule 14 covers marking, lifting, replacing and dropping a ball, and playing from a wrong place. Mark the spot before lifting a ball you'll replace; skipping that costs a penalty stroke. Drop from knee height, straight down, into the relief area, where the ball must stay; if it rolls out twice, place it where the second drop landed. A wrong drop, placement or replacement can be redone free before you play. Playing from a wrong place costs the general penalty, two strokes or loss of the hole in match play; in stroke play, a serious breach must be corrected before the next tee, or on the last hole before you return your card, or you're disqualified.
 
 **Look here when:** Do I have to mark my ball before lifting it? · How do I drop, and what if the ball rolls out of the relief area? · I dropped in the wrong spot: can I pick it up and drop again? · I played from the wrong place in stroke play: what now?
 
-**Glossary:** none · **Aliases:** `wrong place` · **Sources:** 14, 14.1a, 14.3b, 14.3c, 14.5a, 14.7a, 14.7b, Definitions: Relief Area, Definitions: Club-Length, Definitions: General Penalty
+**Glossary:** none · **Aliases:** `wrong place` · **Sources:** 14, 14.1a, 14.3b, 14.3c, 14.5a, 14.7a, 14.7b, Definitions: Relief Area, Definitions: General Penalty
 
 | # | Sentence | Rests on |
 |---:|---|---|
-| 1 | Rule 14 covers the procedures behind relief: marking, lifting, replacing and dropping a ball, and playing from a wrong place. | [Rule 14](https://www.randa.org/en/rog/the-rules-of-golf/rule-14) |
+| 1 | Rule 14 covers marking, lifting, replacing and dropping a ball, and playing from a wrong place. | [Rule 14](https://www.randa.org/en/rog/the-rules-of-golf/rule-14) |
 | 2 | Mark the spot before lifting a ball you'll replace; skipping that costs a penalty stroke. | [14.1a](https://www.randa.org/en/rog/the-rules-of-golf/rule-14#14_1a) |
-| 3 | Drop from knee height, straight down, into the relief area, usually one or two club-lengths from a reference point, where it must stay; if it rolls out twice, place it where the second drop landed. | [14.3b](https://www.randa.org/en/rog/the-rules-of-golf/rule-14#14_3b), [14.3c](https://www.randa.org/en/rog/the-rules-of-golf/rule-14#14_3c), Definitions: Relief Area, Definitions: Club-Length |
-| 4 | A wrong drop, placement or replacement can be redone free before you play the ball. | [14.5a](https://www.randa.org/en/rog/the-rules-of-golf/rule-14#14_5a) |
-| 5 | Playing from a wrong place costs the general penalty, two strokes or loss of the hole in match play; in stroke play, a serious breach must be corrected before the next tee, or you're disqualified. | [14.7a](https://www.randa.org/en/rog/the-rules-of-golf/rule-14#14_7a), [14.7b](https://www.randa.org/en/rog/the-rules-of-golf/rule-14#14_7b), Definitions: General Penalty |
+| 3 | Drop from knee height, straight down, into the relief area, where the ball must stay; if it rolls out twice, place it where the second drop landed. | [14.3b](https://www.randa.org/en/rog/the-rules-of-golf/rule-14#14_3b), [14.3c](https://www.randa.org/en/rog/the-rules-of-golf/rule-14#14_3c), Definitions: Relief Area |
+| 4 | A wrong drop, placement or replacement can be redone free before you play. | [14.5a](https://www.randa.org/en/rog/the-rules-of-golf/rule-14#14_5a) |
+| 5 | Playing from a wrong place costs the general penalty, two strokes or loss of the hole in match play; in stroke play, a serious breach must be corrected before the next tee, or on the last hole before you return your card, or you're disqualified. | [14.7a](https://www.randa.org/en/rog/the-rules-of-golf/rule-14#14_7a), [14.7b](https://www.randa.org/en/rog/the-rules-of-golf/rule-14#14_7b), Definitions: General Penalty |
 | Q1 | Do I have to mark my ball before lifting it? | [14.1a](https://www.randa.org/en/rog/the-rules-of-golf/rule-14#14_1a) |
 | Q2 | How do I drop, and what if the ball rolls out of the relief area? | [14.3b](https://www.randa.org/en/rog/the-rules-of-golf/rule-14#14_3b), [14.3c](https://www.randa.org/en/rog/the-rules-of-golf/rule-14#14_3c) |
 | Q3 | I dropped in the wrong spot: can I pick it up and drop again? | [14.5a](https://www.randa.org/en/rog/the-rules-of-golf/rule-14#14_5a) |
@@ -120,21 +121,22 @@ Course areas and procedures (12–16) and relief and penalties (17–19), the mo
 **Review findings and resolution:**
 
 - *Rules accuracy (agent A), error:* "Mistakes can be fixed without penalty before you play the ball" was broader than 14.5a, which covers only a wrong substitution or a ball dropped, placed or replaced the wrong way, in the wrong place or under the wrong Rule; penalties already incurred stand (14.1a, 14.1c, 14.5c). **Resolution:** Fixed: "A wrong drop, placement or replacement can be redone free before you play the ball."
-- *Rules accuracy (agent A), gap:* The wrong-place sentence left out the stroke-play serious-breach rule that Q4 asks about (14.7b). **Resolution:** Fixed: "in stroke play, a serious breach must be corrected before the next tee, or you're disqualified." The general penalty itself is defined in Rules 1 and 12 and linked here as Definitions: General Penalty.
+- *Rules accuracy (agent A), gap:* The wrong-place sentence left out the stroke-play serious-breach rule that Q4 asks about (14.7b). **Resolution:** Fixed: "in stroke play, a serious breach must be corrected before the next tee, or on the last hole before you return your card, or you're disqualified." The general penalty is spelled out in the same sentence.
 - *Rules accuracy (agent A), nit:* A ball dropped the wrong way but played from inside the relief area is one stroke, not the wrong-place penalty (14.3b(4)). **Resolution:** Not added, for length.
 - *Rules accuracy (agent A), nit:* The first sentence said "wrong spot"; use the defined "wrong place". **Resolution:** Fixed.
 - *Rules accuracy (agent A), nit:* Only the player may drop, and the ball must not touch the player or their equipment first (14.3b(1)-(2)). **Resolution:** Not added, for length.
 - *Site rules (agent B), should-fix:* "Playing from a wrong place is the general penalty": the act isn't the penalty, the general penalty wasn't explained on this card, and the first sentence said "wrong spot". **Resolution:** Fixed: "costs the general penalty, two strokes or loss of the hole in match play", and "wrong place" in both sentences.
 - *Site rules (agent B), nit:* "Mistakes can be fixed" was vague. **Resolution:** Fixed with agent A's error: names a wrong drop, placement or replacement.
-- *Site rules (agent B), nit:* "Club-lengths" isn't explained here, or in Rules 16, 17 and 19. **Resolution:** Not added to the copy, for length; each of those records now cites Definitions: Club-Length, which the page links.
+- *Site rules (agent B), nit:* "Club-lengths" isn't explained here, or in Rules 16, 17 and 19. **Resolution:** Not added to the copy, for length. Rules 16, 17 and 19 cite Definitions: Club-Length; Rule 14 no longer gives a size (cut to fit Codex's last-hole deadline below).
+- *Codex, on the pull request, P2:* "Before the next tee" doesn't cover the last hole, where the deadline is returning the scorecard (14.7b(1)). **Resolution:** Fixed: "or on the last hole before you return your card". The relief-area size was cut to fit.
 
-**Copy distance:** longest run shared with the R&A text is 6 words ("one or two club lengths from"); no run of 8 or more.
+**Copy distance:** longest run shared with the R&A text is 6 words ("relief area where the ball must"); no run of 8 or more.
 
 **Owner approval:** pending.
 
 ### Rule 15 · Relief from Loose Impediments and Movable Obstructions (Including Ball or Ball-Marker Helping or Interfering with Play)
 
-**Summary (113 words):** Rule 15 covers two kinds of things you can usually move out of the way without penalty. Loose impediments are unattached natural objects, such as leaves, twigs and stones. Movable obstructions are artificial objects you can move with reasonable effort and without damage, such as rakes, bottles and towels. Off the putting green and teeing area, if removing a loose impediment moves your ball, replace it and add a penalty stroke; if removing a movable obstruction moves it, just replace it. If your ball sits on a movable obstruction, lift it, remove the object and drop within one club-length of the spot beneath, no nearer the hole; on the green, place it there.
+**Summary (120 words):** Rule 15 covers two kinds of things you can usually move out of the way without penalty. Loose impediments are unattached natural objects, such as leaves, twigs and stones. Movable obstructions are artificial objects you can move with reasonable effort and without damage, such as rakes, bottles and towels. Off the putting green and teeing area, if removing a loose impediment moves your ball, replace it and add a penalty stroke; if removing a movable obstruction moves it, just replace it. If your ball sits on a movable obstruction, lift it, remove the object and drop within one club-length of the spot beneath, no nearer the hole, without leaving that area of the course; on the green, place it there.
 
 **Look here when:** Can I move a twig or a leaf that's touching my ball? · My ball is resting against a rake: what do I do? · My ball stopped on a towel or a headcover: how do I take relief? · Another ball is near my line: can I ask for it to be marked and lifted?
 
@@ -146,7 +148,7 @@ Course areas and procedures (12–16) and relief and penalties (17–19), the mo
 | 2 | Loose impediments are unattached natural objects, such as leaves, twigs and stones. | Definitions: Loose Impediment |
 | 3 | Movable obstructions are artificial objects you can move with reasonable effort and without damage, such as rakes, bottles and towels. | Definitions: Movable Obstruction |
 | 4 | Off the putting green and teeing area, if removing a loose impediment moves your ball, replace it and add a penalty stroke; if removing a movable obstruction moves it, just replace it. | [15.1b](https://www.randa.org/en/rog/the-rules-of-golf/rule-15#15_1b), [15.2a](https://www.randa.org/en/rog/the-rules-of-golf/rule-15#15_2a) |
-| 5 | If your ball sits on a movable obstruction, lift it, remove the object and drop within one club-length of the spot beneath, no nearer the hole; on the green, place it there. | [15.2a](https://www.randa.org/en/rog/the-rules-of-golf/rule-15#15_2a) |
+| 5 | If your ball sits on a movable obstruction, lift it, remove the object and drop within one club-length of the spot beneath, no nearer the hole, without leaving that area of the course; on the green, place it there. | [15.2a](https://www.randa.org/en/rog/the-rules-of-golf/rule-15#15_2a) |
 | Q1 | Can I move a twig or a leaf that's touching my ball? | [15.1a](https://www.randa.org/en/rog/the-rules-of-golf/rule-15#15_1a), [15.1b](https://www.randa.org/en/rog/the-rules-of-golf/rule-15#15_1b) |
 | Q2 | My ball is resting against a rake: what do I do? | [15.2a](https://www.randa.org/en/rog/the-rules-of-golf/rule-15#15_2a) |
 | Q3 | My ball stopped on a towel or a headcover: how do I take relief? | [15.2a](https://www.randa.org/en/rog/the-rules-of-golf/rule-15#15_2a) |
@@ -162,6 +164,7 @@ Course areas and procedures (12–16) and relief and penalties (17–19), the mo
 - *Site rules (agent B), should-fix:* A 41-word first sentence with a definition inside a list read as four things; "for free" was then repeated as "usually ... without penalty". **Resolution:** Fixed: split into a scope sentence and one sentence each for loose impediments and movable obstructions, with agent A's tighter wording of the Definition.
 - *Site rules (agent B), nit:* "The catch is" was a chatty lead-in to a penalty. **Resolution:** Fixed: the sentence now starts "Off the putting green and teeing area".
 - *Site rules (agent B), nit:* "An obstruction" should be "a movable obstruction". **Resolution:** Fixed.
+- *Codex, on the pull request, P2:* The drop from a movable obstruction must stay in the same area of the course (15.2a(2)); without that, a drop beside a bunker or penalty area could be from a wrong place. **Resolution:** Fixed: "no nearer the hole, without leaving that area of the course". ("In the same area of the course" would have been an 11-word run.)
 
 **Copy distance:** longest run shared with the R&A text is 5 words ("move out of the way"); no run of 8 or more.
 
@@ -169,7 +172,7 @@ Course areas and procedures (12–16) and relief and penalties (17–19), the mo
 
 ### Rule 16 · Relief from Abnormal Course Conditions (Including Immovable Obstructions), Dangerous Animal Condition, Embedded Ball
 
-**Summary (118 words):** Rule 16 covers free relief from abnormal course conditions (ground under repair, temporary water, animal holes and immovable obstructions such as paved paths), from dangerous animals, and for a ball in the general area that plugs in its own pitch-mark. A condition has to interfere with your lie, stance or swing, or, on the green, your line; one that only distracts you doesn't count. In the general area, find the nearest point of complete relief: the closest spot, no nearer the hole, free of the condition for the shot you'd have played. Drop within one club-length of it, no nearer the hole and clear of the condition. None of this applies in a penalty area, except dangerous-animal relief.
+**Summary (120 words):** Rule 16 covers free relief from abnormal course conditions (ground under repair, temporary water, animal holes and immovable obstructions like paved paths), from dangerous animals, and for a ball in the general area that plugs in its own pitch-mark. A condition must interfere with your lie, stance or swing, or, on the green, your line. In the general area, find the nearest point of complete relief, the closest spot, no nearer the hole, clear of it for the shot you'd have played, and drop within one club-length, no nearer the hole and clear of it. For a plugged ball, the club-length is measured from the spot just behind it. None of this applies in a penalty area, except dangerous-animal relief.
 
 **Look here when:** My ball is on a cart path: where do I drop? · Does a soggy patch of fairway count as temporary water? · My ball plugged in the rough: do I get a free drop? · Can I move my ball away from a snake or a swarm of bees?
 
@@ -177,10 +180,10 @@ Course areas and procedures (12–16) and relief and penalties (17–19), the mo
 
 | # | Sentence | Rests on |
 |---:|---|---|
-| 1 | Rule 16 covers free relief from abnormal course conditions (ground under repair, temporary water, animal holes and immovable obstructions such as paved paths), from dangerous animals, and for a ball in the general area that plugs in its own pitch-mark. | [16.1a](https://www.randa.org/en/rog/the-rules-of-golf/rule-16#16_1a), [16.2a](https://www.randa.org/en/rog/the-rules-of-golf/rule-16#16_2a), [16.3a](https://www.randa.org/en/rog/the-rules-of-golf/rule-16#16_3a), Definitions: Abnormal Course Condition, Definitions: Ground Under Repair, Definitions: Obstruction, Definitions: Embedded |
-| 2 | A condition has to interfere with your lie, stance or swing, or, on the green, your line; one that only distracts you doesn't count. | [16.1a](https://www.randa.org/en/rog/the-rules-of-golf/rule-16#16_1a) |
-| 3 | In the general area, find the nearest point of complete relief: the closest spot, no nearer the hole, free of the condition for the shot you'd have played. | [16.1b](https://www.randa.org/en/rog/the-rules-of-golf/rule-16#16_1b), Definitions: Nearest Point of Complete Relief |
-| 4 | Drop within one club-length of it, no nearer the hole and clear of the condition. | [16.1b](https://www.randa.org/en/rog/the-rules-of-golf/rule-16#16_1b), Definitions: Club-Length |
+| 1 | Rule 16 covers free relief from abnormal course conditions (ground under repair, temporary water, animal holes and immovable obstructions like paved paths), from dangerous animals, and for a ball in the general area that plugs in its own pitch-mark. | [16.1a](https://www.randa.org/en/rog/the-rules-of-golf/rule-16#16_1a), [16.2a](https://www.randa.org/en/rog/the-rules-of-golf/rule-16#16_2a), [16.3a](https://www.randa.org/en/rog/the-rules-of-golf/rule-16#16_3a), Definitions: Abnormal Course Condition, Definitions: Ground Under Repair, Definitions: Obstruction, Definitions: Embedded |
+| 2 | A condition must interfere with your lie, stance or swing, or, on the green, your line. | [16.1a](https://www.randa.org/en/rog/the-rules-of-golf/rule-16#16_1a) |
+| 3 | In the general area, find the nearest point of complete relief, the closest spot, no nearer the hole, clear of it for the shot you'd have played, and drop within one club-length, no nearer the hole and clear of it. | [16.1b](https://www.randa.org/en/rog/the-rules-of-golf/rule-16#16_1b), Definitions: Nearest Point of Complete Relief, Definitions: Club-Length |
+| 4 | For a plugged ball, the club-length is measured from the spot just behind it. | [16.3b](https://www.randa.org/en/rog/the-rules-of-golf/rule-16#16_3b) |
 | 5 | None of this applies in a penalty area, except dangerous-animal relief. | [16.1a](https://www.randa.org/en/rog/the-rules-of-golf/rule-16#16_1a), [16.2b](https://www.randa.org/en/rog/the-rules-of-golf/rule-16#16_2b), [16.3a](https://www.randa.org/en/rog/the-rules-of-golf/rule-16#16_3a) |
 | Q1 | My ball is on a cart path: where do I drop? | [16.1b](https://www.randa.org/en/rog/the-rules-of-golf/rule-16#16_1b) |
 | Q2 | Does a soggy patch of fairway count as temporary water? | [16.1a](https://www.randa.org/en/rog/the-rules-of-golf/rule-16#16_1a), Definitions: Temporary Water |
@@ -190,16 +193,17 @@ Course areas and procedures (12–16) and relief and penalties (17–19), the mo
 **Review findings and resolution:**
 
 - *Rules accuracy (agent A), gap:* Ground under repair is what the Committee defines, plus a few unmarked cases; casual groups treat any bare patch as ground under repair (Definitions: Ground Under Repair). **Resolution:** Partly fixed: Definitions: Ground Under Repair is now a source, so the page links it. No words added; the summary is at 120. Flagged for the owner.
-- *Rules accuracy (agent A), gap:* The relief area must also be in the general area and give complete relief; dropping within a club-length with the stance still on the path is a wrong place (16.1b). **Resolution:** Fixed: "drop within one club-length of it, no nearer the hole and clear of the condition." "In the general area" opens the sentence.
-- *Rules accuracy (agent A), nit:* "Where the condition no longer affects the shot" could be read to include line of play in the general area (Definitions: Nearest Point of Complete Relief). **Resolution:** Fixed: "free of the condition for the shot you'd have played", after a sentence that defines interference as lie, stance or swing (line only on the green).
+- *Rules accuracy (agent A), gap:* The relief area must also be in the general area and give complete relief; dropping within a club-length with the stance still on the path is a wrong place (16.1b). **Resolution:** Fixed: "drop within one club-length, no nearer the hole and clear of it", in a sentence that opens "In the general area".
+- *Rules accuracy (agent A), nit:* "Where the condition no longer affects the shot" could be read to include line of play in the general area (Definitions: Nearest Point of Complete Relief). **Resolution:** Fixed: "clear of it for the shot you'd have played", after a sentence that defines interference as lie, stance or swing (line only on the green).
 - *Rules accuracy (agent A), gap:* Q2 (soggy fairway) isn't answered in the summary (Definitions: Temporary Water). **Resolution:** Kept as a pointer, with Definitions: Temporary Water linked. Same position as Rule 12's Q4.
 - *Rules accuracy (agent A), nit:* Only artificially surfaced paths are obstructions (Definitions: Obstruction). **Resolution:** Fixed: "paved paths", with Definitions: Obstruction added as a source.
 - *Rules accuracy (agent A), nit:* No relief for a ball embedded in sand in an area not cut to fairway height; the Committee may limit embedded relief to fairway height. **Resolution:** Not added. The summary states the default; it names no Model Local Rule.
-- *Rules accuracy (agent A), nit:* The interference sentence followed a list that includes dangerous animals and plugged balls, but describes only abnormal course conditions. **Resolution:** Fixed: it now opens "A condition has to interfere...".
+- *Rules accuracy (agent A), nit:* The interference sentence followed a list that includes dangerous animals and plugged balls, but describes only abnormal course conditions. **Resolution:** Fixed: it now opens "A condition must interfere...".
 - *Rules accuracy (agent A), nit:* 16.1c, 16.1d supported no sentence. **Resolution:** Fixed: both removed.
-- *Site rules (agent B), should-fix:* "One" had no clear antecedent, and the phrase about the green needed commas. **Resolution:** Fixed: "A condition has to interfere with your lie, stance or swing, or, on the green, your line".
+- *Site rules (agent B), should-fix:* "One" had no clear antecedent, and the phrase about the green needed commas. **Resolution:** Fixed: "A condition must interfere with your lie, stance or swing, or, on the green, your line"; the distraction clause was later cut for length.
 - *Site rules (agent B), nit:* "General area" isn't explained; "embedded" isn't used though cited; the alias "casual water" has nothing on the card. **Resolution:** Not added, for length (118 words). The Definitions links cover embedded and general area; the alias is for search only, as inventory.md intends.
-- *Site rules (agent B), nit:* The nearest-point sentence was 44 words with "no nearer the hole" twice. **Resolution:** Split into two sentences. "No nearer the hole" stays in both: one limits the reference point, the other the drop.
+- *Site rules (agent B), nit:* The nearest-point sentence was 44 words with "no nearer the hole" twice. **Resolution:** Rejoined into one sentence after Codex's embedded-ball finding: the two "no nearer the hole" limits stay, one on the reference point and one on the drop.
+- *Codex, on the pull request, P2:* The nearest-point procedure was written as if it applied to a plugged ball too; 16.3b measures from the spot right behind the embedded ball. **Resolution:** Fixed: "For a plugged ball, the club-length is measured from the spot just behind it." To fit, the distraction clause was cut and two sentences were joined.
 
 **Copy distance:** longest run shared with the R&A text is 7 words ("for a ball in the general area"); no run of 8 or more.
 
