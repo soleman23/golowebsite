@@ -224,4 +224,4 @@ Checks both reviewers passed: no GoLo claims; `NEVER_WORDS` clean (every "stakes
 
 **Approved by the owner in chat on November 6, 2026** ("Approve batch 1"), on this packet as written. The approval covers all seven records and accepts the off-record Committee Procedures 2C source for `red-vs-yellow-penalty-areas`. The records are `approved` with `reviewedOn: 2026-11-06`, `reviewedBy: "owner"` and a review log of rules, product and seo by "agent" and approval by "owner" (`P0_APPROVED` in `scenarios.ts`). Not published: `rulesLive` is false and only #247 publishes.
 
-**Post-approval changes:** Codex findings C1 and C2 (above) changed three options after the approval. Copy distance is still 0 runs of eight or more words. Pending the owner's confirmation in chat.
+**Post-approval changes:** Codex findings C1 and C2 (above) changed three options after the approval. Copy distance is still 0 runs of eight or more words. **The owner confirmed both fixes as part of the batch 1 approval in chat on November 6, 2026** ("Confirm fixes").

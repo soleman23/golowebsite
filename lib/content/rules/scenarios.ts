@@ -27,7 +27,8 @@ const P0_CHECKED = "2026-11-06";
  *   findings and resolutions are in docs/rules/review-packet-situations.md.
  * - approval is the owner's, given in chat on November 6, 2026, on that
  *   packet. It accepts the one off-record source (Committee Procedures 2C,
- *   for red-vs-yellow-penalty-areas) the packet flags.
+ *   for red-vs-yellow-penalty-areas) the packet flags, and the owner
+ *   confirmed the two Codex fixes made after it.
  *
  * Internal: stripped by every public selector.
  */
@@ -59,7 +60,7 @@ const P0_APPROVED: Pick<RulesScenario, "status" | "reviewedOn" | "reviewedBy" | 
       stage: "approval",
       by: "owner",
       on: P0_REVIEWED_ON,
-      note: "Batch 1 approved in chat on 2026-11-06 (#240, PR #256).",
+      note: "Batch 1 approved in chat on 2026-11-06, and the two Codex fixes confirmed the same day (#240, PR #256).",
     },
   ],
 };
