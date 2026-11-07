@@ -412,7 +412,7 @@ export const ruleOverviews: RuleOverview[] = [
       "Does an answer we agreed in our match stand if it was wrong?",
     ],
     sources: opened(OPENED_239, ["20", "20.1a", "20.1b", "20.1c", "20.2a", "20.2b"]),
-    status: "in-review",
+    ...ownerApproved,
   }),
   rule(21, {
     summary:
@@ -428,7 +428,7 @@ export const ruleOverviews: RuleOverview[] = [
       OPENED_239,
       ["21", "21.1a", "21.1b", "21.1c", "21.2a", "21.2b", "21.2c", "21.3a", "21.3b", "21.3c", "21.4a", "21.5"],
     ),
-    status: "in-review",
+    ...ownerApproved,
   }),
   rule(22, {
     summary:
@@ -441,7 +441,7 @@ export const ruleOverviews: RuleOverview[] = [
     ],
     relatedGlossaryIds: ["foursomes"],
     sources: opened(OPENED_239, ["22", "22.1", "22.2", "22.3", "22.5", "22.6"]),
-    status: "in-review",
+    ...ownerApproved,
   }),
   rule(23, {
     summary:
@@ -454,7 +454,7 @@ export const ruleOverviews: RuleOverview[] = [
     ],
     relatedGlossaryIds: ["four-ball", "best-score"],
     sources: opened(OPENED_239, ["23", "23.1", "23.2a", "23.2b", "23.5a", "23.5b", "23.6", "23.7", "23.9a"]),
-    status: "in-review",
+    ...ownerApproved,
   }),
   rule(24, {
     summary:
@@ -465,7 +465,7 @@ export const ruleOverviews: RuleOverview[] = [
       "How is the team score worked out?",
     ],
     sources: opened(OPENED_239, ["24", "24.1", "24.2", "24.3", "24.4a", "24.4b", "24.4c"]),
-    status: "in-review",
+    ...ownerApproved,
   }),
   rule(25, {
     summary:
@@ -476,6 +476,6 @@ export const ruleOverviews: RuleOverview[] = [
       "How does relief work for a player who uses a wheelchair?",
     ],
     sources: opened(OPENED_239, ["25", "25.1", "25.2a", "25.3b", "25.4m", "4.3b"]),
-    status: "in-review",
+    ...ownerApproved,
   }),
 ];

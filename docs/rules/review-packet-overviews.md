@@ -726,13 +726,13 @@ Each summary is 117–120 words. The longest run shared with the official text i
 
 Rulings, formats and accessibility. Sources opened November 6, 2026; both reviewer agents ran the same day.
 
-**Result.** Agent A found 2 errors, both fixed. Rule 20 offered the two-ball option without saying it is stroke play only. Rule 22's "playing out of order" read as playing out of turn, which carries no penalty, when the breach is the wrong partner playing. Agent B found no errors. The gaps and should-fix items are fixed or answered below. Each summary is 115–120 words. The longest run shared with the official text is 7 words. `npm run lint:content` and `npm test` pass, and all 40 subrule anchors resolve against the pages fetched that day.
+**Result.** Agent A found 2 errors, both fixed. Rule 20 offered the two-ball option without saying it is stroke play only. Rule 22's "playing out of order" read as playing out of turn, which carries no penalty, when the breach is the wrong partner playing. Agent B found no errors, and Codex reviewed the pull request with no findings. The gaps and should-fix items are fixed or answered below. Each summary is 115–120 words. The longest run shared with the official text is 7 words. `npm run lint:content` and `npm test` pass, and all 40 subrule anchors resolve against the pages fetched that day.
 
 - **Rule 21** says scrambles have no Rule of their own, and points to 21.5, which says the Rules can be adapted to them. It doesn't suggest the Rules define a scramble.
 - **Rules 22 and 23** link the glossary's `foursomes` and `four-ball` terms and describe each format in one clause, consistent with those entries. Rule 23 also links `best-score`: that entry still separates Best Score from best ball and Four-Ball, so the condition `inventory.md` sets for the link is met.
 - **Rule 25** is plain and person-first, with no humour. It names eligibility and the R&A's broader reading of each category.
 
-**For the owner to decide:** the related reading for Rules 21 and 23 is deferred, as for Rule 3 (#237, item 3). Nothing else in this batch needs a call.
+**Owner calls** (approved on November 6, 2026, with the drafter's positions as written): the related reading for Rules 21 and 23 is deferred, as for Rule 3 (#237, item 3). Nothing else in this batch needs a call.
 ### Rule 20 · Resolving Rules Issues During Round; Rulings by Referee and Committee
 
 **Summary (119 words):** Rule 20 covers Rules questions mid-round and rulings by referees and the Committee. If no referee or Committee member is available in reasonable time, decide and play on. In match play the players can agree how to settle a question, and that answer stands even if it was wrong, unless they agreed to ignore a Rule or penalty they knew applied; either player can instead ask for a ruling, before either tees off on the next hole. In stroke play you can't settle a question by agreement; if you're unsure of the procedure, decide before your next stroke to finish the hole with two balls, choose which should count, and report it to the Committee before returning your scorecard.
@@ -765,7 +765,7 @@ Rulings, formats and accessibility. Sources opened November 6, 2026; both review
 
 **Copy distance:** longest run shared with the R&A text is 6 words ("to ignore a rule or penalty"); no run of 8 or more.
 
-**Owner approval:** pending.
+**Owner approval:** approved in chat on November 6, 2026 ("Approve all three").
 
 ### Rule 21 · Other Forms of Individual Stroke Play and Match Play
 
@@ -800,7 +800,7 @@ Rulings, formats and accessibility. Sources opened November 6, 2026; both review
 
 **Copy distance:** longest run shared with the R&A text is 7 words ("in three ball match play each player"); no run of 8 or more.
 
-**Owner approval:** pending.
+**Owner approval:** approved in chat on November 6, 2026 ("Approve all three").
 
 ### Rule 22 · Foursomes (Also Known as Alternate Shot)
 
@@ -834,7 +834,7 @@ Rulings, formats and accessibility. Sources opened November 6, 2026; both review
 
 **Copy distance:** longest run shared with the R&A text is 6 words ("in match play or stroke play"); no run of 8 or more.
 
-**Owner approval:** pending.
+**Owner approval:** approved in chat on November 6, 2026 ("Approve all three").
 
 ### Rule 23 · Four-Ball
 
@@ -867,7 +867,7 @@ Rulings, formats and accessibility. Sources opened November 6, 2026; both review
 
 **Copy distance:** longest run shared with the R&A text is 6 words ("in match play or stroke play"); no run of 8 or more.
 
-**Owner approval:** pending.
+**Owner approval:** approved in chat on November 6, 2026 ("Approve all three").
 
 ### Rule 24 · Team Competitions
 
@@ -897,7 +897,7 @@ Rulings, formats and accessibility. Sources opened November 6, 2026; both review
 
 **Copy distance:** longest run shared with the R&A text is 5 words ("rule 24 covers team competitions"); no run of 8 or more.
 
-**Owner approval:** pending.
+**Owner approval:** approved in chat on November 6, 2026 ("Approve all three").
 
 ### Rule 25 · Modifications for Players with Disabilities
 
@@ -930,4 +930,4 @@ Rulings, formats and accessibility. Sources opened November 6, 2026; both review
 
 **Copy distance:** longest run shared with the R&A text is 7 words ("a player who is blind may have"); no run of 8 or more.
 
-**Owner approval:** pending.
+**Owner approval:** approved in chat on November 6, 2026 ("Approve all three").
