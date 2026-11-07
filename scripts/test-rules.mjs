@@ -569,6 +569,70 @@ const CTX = { servedPaths: SERVED, glossarySlugs, today: TODAY };
   check("public face: none while rulesLive is false", rules.rulesLive || rules.rulesHasPublished() === false);
 }
 
+/* ------------------------------------------------- analytics params (#244) */
+
+{
+  const ra = await import(new URL("../lib/rulesAnalytics.ts", import.meta.url).href);
+  const {
+    rulesCategoryParam,
+    rulesCtaDestination,
+    rulesOfficialParams,
+    rulesRelatedParams,
+    rulesRuleNumber,
+    rulesScenarioId,
+  } = ra;
+  const ORIGIN = "https://www.golo.golf";
+
+  check("analytics: rule numbers 1–25 only", same(["1", "18", "25", "07", "0", "26", "18.2", "1e1", "", undefined].map(rulesRuleNumber), ["1", "18", "25", "7", null, null, null, null, null, null]));
+  check("analytics: topics and all, nothing else", same(["all", "relief", "course-areas", "Relief", "rules", ""].map(rulesCategoryParam), ["all", "relief", "course-areas", null, null, null]));
+  check("analytics: situation ids are slugs", same(["lost-ball", "Lost ball", "a@b.co", "lost-ball-", ""].map(rulesScenarioId), ["lost-ball", null, null, null, null]));
+  check("analytics: an entry's official link names its rule", same(rulesOfficialParams("rules", "18"), { rule_number: "18", document_type: "rules" }));
+  check("analytics: a page-level official link is rule 'none'", same(rulesOfficialParams("definitions", undefined), { rule_number: "none", document_type: "definitions" }));
+  check("analytics: an unknown document type sends nothing", rulesOfficialParams("blog", "18") === null && rulesOfficialParams(undefined, "18") === null);
+  check("analytics: related ids are slugs or site paths", same(
+    [["rule", "rule-18"], ["situation", "lost-ball"], ["glossary", "penalty-area"], ["guide", "/games/skins"], ["page", "/glossary"]].map(([t, id]) => rulesRelatedParams(t, id)?.content_id ?? null),
+    ["rule-18", "lost-ball", "penalty-area", "/games/skins", "/glossary"],
+  ));
+  check("analytics: no query string, URL, address or long id as content_id", [
+    ["page", "/contact?topic=bug"], ["post", "https://example.com/x"], ["page", "/a b"], ["glossary", "me@example.com"], ["page", `/${"a".repeat(100)}`], ["page", "/"], ["other", "/games"],
+  ].every(([t, id]) => rulesRelatedParams(t, id) === null));
+  check("analytics: CTA destinations", same(
+    [
+      "https://play.google.com/store/apps/details?id=golf.golo.app",
+      "https://apps.apple.com/us/app/golo/id1",
+      "/how-it-works",
+      `${ORIGIN}/games`,
+      "https://example.com/",
+      "http://play.google.com/store",
+      "javascript:alert(1)",
+    ].map((href) => rulesCtaDestination(href, ORIGIN)),
+    ["google_play", "app_store", "page", "page", null, null, null],
+  ));
+
+  // Every id the hub renders passes its parser, so no click goes unreported.
+  // RulesEntry's pathType (a .tsx file this script can't import).
+  const pathType = (p) => (p.startsWith("/games/") ? "guide" : p.startsWith("/blog/") ? "post" : "page");
+  const rejected = [];
+  for (const item of rules.rulesOfficialSources.items) {
+    if (!rulesOfficialParams(item.document, undefined)) rejected.push(`official ${item.document}`);
+  }
+  for (const r of [...allOverviews, ...allScenarios]) {
+    for (const s of r.sources) if (!rulesOfficialParams(s.document, String(r.number ?? r.primaryRule))) rejected.push(`source ${r.id} ${s.document}`);
+    for (const path of r.relatedContentPaths) if (!rulesRelatedParams(pathType(path), path)) rejected.push(`path ${r.id} ${path}`);
+    for (const slug of r.relatedGlossaryIds) if (!rulesRelatedParams("glossary", slug)) rejected.push(`glossary ${r.id} ${slug}`);
+  }
+  for (const s of allScenarios) if (!rulesScenarioId(s.id) || !rulesRelatedParams("situation", s.id)) rejected.push(`situation ${s.id}`);
+  for (const r of allOverviews) {
+    if (!rulesRelatedParams("rule", r.id)) rejected.push(`rule ${r.id}`);
+    if (!rulesRuleNumber(String(r.number))) rejected.push(`rule number ${r.number}`);
+  }
+  for (const item of rules.rulesRelated.items) {
+    const type = item.href === "/glossary" ? "glossary" : pathType(item.href);
+    if (!rulesRelatedParams(type, item.href)) rejected.push(`related ${item.href}`);
+  }
+  check("analytics: every id the hub renders is accepted", rejected.length === 0, rejected.join("; "));
+}
+
 /* ----------------------------------------------------------------- result */
 
 if (failures.length) {
@@ -577,4 +641,4 @@ if (failures.length) {
   console.error(`\n${failures.length} failed, ${passed} passed.`);
   process.exit(1);
 }
-console.log(`✔ Rules: ${passed} cases passed (search, official links, publication boundary, selection, integrity, warnings, links, related reading, closing band, schema).`);
+console.log(`✔ Rules: ${passed} cases passed (search, official links, publication boundary, selection, integrity, warnings, links, related reading, closing band, schema, analytics).`);

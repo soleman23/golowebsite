@@ -37,7 +37,9 @@ declare global {
  * - newsletter_signup  a newsletter address was accepted
  * - newsletter_error   a newsletter signup failed (validation or server)
  * - share_click        a share control on a blog post, or a glossary term's
- *                      copy-link button (channel "copy", term_id), was clicked
+ *                      copy-link button (channel "copy", term_id), or a Rules
+ *                      Center entry's (channel "copy", and scenario_id or
+ *                      rule_number as below), was clicked
  * - cta_click          a hero or closing CTA button was clicked
  *
  * The glossary (/glossary, #165). Params come from closed sets only: a
@@ -51,6 +53,45 @@ declare global {
  *                      term_id, category
  * - glossary_cta_click a term's guide, post or product link was followed:
  *                      term_id, destination_type (guide / post / page)
+ *
+ * The Rules Center (/rules, #244; docs/rules/ux.md § Analytics hooks). The
+ * same rules: closed sets only, checked by lib/rulesAnalytics.ts before
+ * track() sends them, and never the search text. Opens are once per entry
+ * per page load (lib/openReport.ts).
+ * - rules_search       a search settled (600 ms after typing stops), once per
+ *                      changed topic and normalised query:
+ *                      result_bucket  0 / 1 / 2-5 / 6+
+ *                      match_type     exact (a title, question or rule
+ *                                     reference) / alias / partial / fuzzy
+ *                                     (typo tolerance) / none (no results)
+ *                      category       all, or the topic id searched within
+ * - rules_filter       the reader chose a topic (a chip, Clear, "Search all"):
+ *                      category       all, or a topic id (foundations /
+ *                                     playing / course-areas / relief /
+ *                                     formats)
+ * - rules_rule_open    a rule overview was shown:
+ *                      rule_number    "1" to "25"
+ *                      source         browse (quick cards, number grid,
+ *                                     previous/next, Back), search (a
+ *                                     result), related (a link in another
+ *                                     entry), deep_link (the fragment on
+ *                                     arrival)
+ * - rules_scenario_open a situation was shown:
+ *                      scenario_id    the situation's id ("lost-ball")
+ *                      source         as rules_rule_open
+ * - rules_official_click an official-source link was followed:
+ *                      rule_number    "1" to "25" for an entry's link, "none"
+ *                                     for a page-level one
+ *                      document_type  rules / definitions / clarifications /
+ *                                     local-rule / handicapping
+ * - rules_related_click a related link was followed:
+ *                      destination_type rule / situation / glossary / guide /
+ *                                     post / page
+ *                      content_id     rule-N, a situation id, a glossary slug,
+ *                                     or a site path ("/games/skins")
+ * - rules_cta_click    a link in the closing CTA band was followed:
+ *                      placement      final_cta
+ *                      destination_type google_play / app_store / page
  *
  * Sent by components/analytics/SessionTracking.tsx for every page:
  * - scroll_depth       the reader passed 25, 50, 75 or 90% of a page
@@ -77,6 +118,13 @@ export type AnalyticsEvent =
   | "glossary_filter"
   | "glossary_term_open"
   | "glossary_cta_click"
+  | "rules_search"
+  | "rules_filter"
+  | "rules_rule_open"
+  | "rules_scenario_open"
+  | "rules_official_click"
+  | "rules_related_click"
+  | "rules_cta_click"
   | "scroll_depth"
   | "link_click"
   | "contact_click"
