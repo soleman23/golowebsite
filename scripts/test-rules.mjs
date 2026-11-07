@@ -435,7 +435,7 @@ const CTX = { servedPaths: SERVED, glossarySlugs, today: TODAY };
   check("warnings: a recent clarifications check is quiet", rulesWarnings(TODAY).length === 0);
   check(
     "warnings: one older than 100 days warns",
-    rulesWarnings("2027-02-15", rulesEdition).some((w) => w.includes("last checked 2026-11-06")),
+    rulesWarnings("2027-02-20", rulesEdition).some((w) => w.includes(`last checked ${rulesEdition.clarificationsCheckedOn}`)),
   );
 }
 

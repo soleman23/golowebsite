@@ -38,14 +38,17 @@ export const finalCtaFine = siteConfig.iosLive
  * siteConfig.iosLive, the App Store slot says "coming soon" and isn't a link.
  */
 export const storeButtonsCopy = {
+  // Each label is the button's visible text, word for word (WCAG 2.5.3,
+  // axe label-content-name-mismatch), so a voice-control user can say what
+  // they see.
   appStore: {
     top: "Download on the",
     main: "App Store",
     // claim-ok: rendered only once siteConfig.iosLive is set
-    label: "Download GoLo on the App Store",
+    label: "Download on the App Store",
   },
   appStoreSoon: { top: "Coming soon to the", main: "App Store" },
-  googlePlay: { top: "Get it on", main: "Google Play", label: "Get GoLo on Google Play" },
+  googlePlay: { top: "Get it on", main: "Google Play", label: "Get it on Google Play" },
 };
 
 /**
