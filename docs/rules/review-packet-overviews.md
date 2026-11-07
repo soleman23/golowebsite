@@ -325,7 +325,7 @@ Foundations and equipment (1–4) and playing the round (5–11). Sources opened
 
 Agent B found 1 error, also fixed: Rule 9 shared a 12-word run with 9.2a once "it's" is read as "it is".
 
-Codex then reviewed the pull request and raised four P2 points, all fixed: no between-hole practice from a bunker (Rule 5), a placed ball moved by wind into another area is put back too (Rule 9), others may still give some aiming help (Rule 10), and a putt that hits a ball-marker isn't replayed (Rule 11). Its second review raised three more, also fixed: accidental movement while applying a Rule is free (Rule 9), a provisional isn't a wrong ball (Rule 6), and the replay applies only to what a putt hits on the green (Rule 11). A third review raised three more, also fixed: a disturbed sand lie is re-created even if the ball didn't move (Rule 7), the accident exception covers specific actions, not every Rule (Rule 9), and stopping an opponent's dead ball to concede is allowed in match play (Rule 11). After your approval, a fourth review found one more, fixed and put to you before merging: you lift a ball to identify it only when you can't identify it as it lies (Rule 7).
+Codex then reviewed the pull request and raised four P2 points, all fixed: no between-hole practice from a bunker (Rule 5), a placed ball moved by wind into another area is put back too (Rule 9), others may still give some aiming help (Rule 10), and a putt that hits a ball-marker isn't replayed (Rule 11). Its second review raised three more, also fixed: accidental movement while applying a Rule is free (Rule 9), a provisional isn't a wrong ball (Rule 6), and the replay applies only to what a putt hits on the green (Rule 11). A third review raised three more, also fixed: a disturbed sand lie is re-created even if the ball didn't move (Rule 7), the accident exception covers specific actions, not every Rule (Rule 9), and stopping an opponent's dead ball to concede is allowed in match play (Rule 11). After your approval, two more reviews found one point each, both fixed: you lift a ball to identify it only when you can't identify it as it lies (Rule 7, put to you and OK'd before merging), and practice areas are open before a stroke-play round (Rule 5).
 
 The two rules #237 singles out now say plainly what is a Committee matter. Rule 4 names the one Committee matter in the default Rule, a Local Rule banning distance devices, and says who the Committee is. Rule 10 says the advice limits cover the others in your group.
 
@@ -478,7 +478,7 @@ Each summary is 117–120 words. The longest run shared with the official text i
 
 ### Rule 5 · Playing the Round
 
-**Summary (117 words):** Rule 5 covers starting on time, practicing, keeping pace and stopping play. Up to five minutes late but ready to play, or up to five minutes early, is the general penalty on the first hole; beyond that is disqualification. By default you can't practice on the course before a stroke-play round that day, except putting or chipping near the first tee; before a match you can. You can't hit practice shots during a hole, though between holes you may putt or chip near the green just finished or the next tee, but not from a bunker. The Committee can change these limits by Local Rule. You may stop for lightning, but must report it to the Committee.
+**Summary (120 words):** Rule 5 covers starting on time, practicing, keeping pace and stopping play. Up to five minutes late but ready to play, or up to five minutes early, is the general penalty on the first hole; beyond that is disqualification. By default you can't practice on the course before a stroke-play round that day, except on a practice area or by putting or chipping near the first tee; before a match you can. You can't hit practice shots during a hole, though between holes you may putt or chip near the green just finished or the next tee, not from a bunker. The Committee can change these limits by Local Rule. You may stop for lightning, but must tell the Committee.
 
 **Look here when:** Can I hit a few putts on the green after we finish a hole? · What happens if I'm late to the first tee? · Can I practice on the course before a stroke-play round? · Can I stop playing when there's lightning?
 
@@ -488,10 +488,10 @@ Each summary is 117–120 words. The longest run shared with the official text i
 |---:|---|---|
 | 1 | Rule 5 covers starting on time, practicing, keeping pace and stopping play. | [Rule 5](https://www.randa.org/en/rog/the-rules-of-golf/rule-5), [5.6b](https://www.randa.org/en/rog/the-rules-of-golf/rule-5#5_6b) |
 | 2 | Up to five minutes late but ready to play, or up to five minutes early, is the general penalty on the first hole; beyond that is disqualification. | [5.3a](https://www.randa.org/en/rog/the-rules-of-golf/rule-5#5_3a) |
-| 3 | By default you can't practice on the course before a stroke-play round that day, except putting or chipping near the first tee; before a match you can. | [5.2a](https://www.randa.org/en/rog/the-rules-of-golf/rule-5#5_2a), [5.2b](https://www.randa.org/en/rog/the-rules-of-golf/rule-5#5_2b) |
-| 4 | You can't hit practice shots during a hole, though between holes you may putt or chip near the green just finished or the next tee, but not from a bunker. | [5.5a](https://www.randa.org/en/rog/the-rules-of-golf/rule-5#5_5a), [5.5b](https://www.randa.org/en/rog/the-rules-of-golf/rule-5#5_5b) |
+| 3 | By default you can't practice on the course before a stroke-play round that day, except on a practice area or by putting or chipping near the first tee; before a match you can. | [5.2a](https://www.randa.org/en/rog/the-rules-of-golf/rule-5#5_2a), [5.2b](https://www.randa.org/en/rog/the-rules-of-golf/rule-5#5_2b) |
+| 4 | You can't hit practice shots during a hole, though between holes you may putt or chip near the green just finished or the next tee, not from a bunker. | [5.5a](https://www.randa.org/en/rog/the-rules-of-golf/rule-5#5_5a), [5.5b](https://www.randa.org/en/rog/the-rules-of-golf/rule-5#5_5b) |
 | 5 | The Committee can change these limits by Local Rule. | [5.2b](https://www.randa.org/en/rog/the-rules-of-golf/rule-5#5_2b), [5.5b](https://www.randa.org/en/rog/the-rules-of-golf/rule-5#5_5b) |
-| 6 | You may stop for lightning, but must report it to the Committee. | [5.7a](https://www.randa.org/en/rog/the-rules-of-golf/rule-5#5_7a) |
+| 6 | You may stop for lightning, but must tell the Committee. | [5.7a](https://www.randa.org/en/rog/the-rules-of-golf/rule-5#5_7a) |
 | Q1 | Can I hit a few putts on the green after we finish a hole? | [5.5b](https://www.randa.org/en/rog/the-rules-of-golf/rule-5#5_5b) |
 | Q2 | What happens if I'm late to the first tee? | [5.3a](https://www.randa.org/en/rog/the-rules-of-golf/rule-5#5_3a) |
 | Q3 | Can I practice on the course before a stroke-play round? | [5.2b](https://www.randa.org/en/rog/the-rules-of-golf/rule-5#5_2b) |
@@ -499,13 +499,14 @@ Each summary is 117–120 words. The longest run shared with the official text i
 
 **Review findings and resolution:**
 
-- *Rules accuracy (agent A), gap:* No practice before a stroke-play round was stated as absolute; 5.2b allows putting or chipping near the first tee, and the Committee can change the default either way (Model Local Rule I-1, named in 5.2b). **Resolution:** Fixed: "By default ... except putting or chipping near the first tee" and "The Committee can change these limits by Local Rule." No Model Local Rule is named or implied to be in force.
+- *Rules accuracy (agent A), gap:* No practice before a stroke-play round was stated as absolute; 5.2b allows putting or chipping near the first tee, and the Committee can change the default either way (Model Local Rule I-1, named in 5.2b). **Resolution:** Fixed: "By default ... except on a practice area or by putting or chipping near the first tee" and "The Committee can change these limits by Local Rule." No Model Local Rule is named or implied to be in force.
 - *Rules accuracy (agent A), gap:* Practising on the green just finished can be banned by Local Rule (I-2, named in 5.5b). **Resolution:** Covered by the same Committee sentence.
 - *Rules accuracy (agent A), nit:* Starting up to five minutes early is also the general penalty (5.3a Exception 2). **Resolution:** Fixed.
 - *Rules accuracy (agent A), nit:* The 40 seconds is only a recommendation; the Committee's pace policy may set real limits. **Resolution:** The 40-second sentence was cut for length.
 - *Rules accuracy (agent A), nit:* 5.1 supported nothing. **Resolution:** Fixed: removed.
 - *Site rules (agent B), nit:* "Arrive ready but up to five minutes late" was awkward; "practise" is British spelling. **Resolution:** Fixed: "Up to five minutes late but ready to play, ..."; US "practice" throughout the copy (the R&A titles stay verbatim).
-- *Codex, on the pull request, P2:* Between-hole putting or chipping may not be from a bunker (5.5b), even without a Local Rule. **Resolution:** Fixed: "but not from a bunker". The first sentence was shortened to fit.
+- *Codex, on the pull request, P2:* Between-hole putting or chipping may not be from a bunker (5.5b), even without a Local Rule. **Resolution:** Fixed: "not from a bunker". The first sentence was shortened to fit.
+- *Codex, on the pull request, P2:* Fifth review, after the owner's approval: 5.2b also allows practice on any practice area before a stroke-play round, not just putting or chipping near the first tee. **Resolution:** Fixed after approval: "except on a practice area or by putting or chipping near the first tee". Two small cuts keep the summary at 120 words.
 
 **Copy distance:** longest run shared with the R&A text is 5 words ("the general penalty on the"); no run of 8 or more.
 
@@ -576,7 +577,7 @@ Each summary is 117–120 words. The longest run shared with the official text i
 - *Rules accuracy (agent A), nit:* Lifting without need, not marking, or over-cleaning is one stroke (7.3); kicking the ball before the search starts is one stroke (7.4). **Resolution:** Not added, for length.
 - *Site rules (agent B), should-fix:* "So long as you don't go beyond a reasonable search and improve your next shot" read as two separate bans. **Resolution:** Fixed: "it's a penalty only if that goes beyond a reasonable search and improves your next shot."
 - *Codex, on the pull request, P2:* Third review: sand moved in a search must be put back to re-create the lie even if the ball didn't move (7.1b). **Resolution:** Fixed: a separate sentence, "If searching disturbed sand on it, re-create the lie before playing."
-- *Codex, on the pull request, P2:* Fourth review, after the owner's approval: lifting to identify is allowed only when the ball can't be identified as it lies; an unneeded lift is one penalty stroke (7.3). **Resolution:** Fixed after approval: "If you can't identify a ball as it lies, mark and lift it, cleaning only enough to tell." Two small cuts keep the summary at 120 words. Put to the owner before merging.
+- *Codex, on the pull request, P2:* Fourth review, after the owner's approval: lifting to identify is allowed only when the ball can't be identified as it lies; an unneeded lift is one penalty stroke (7.3). **Resolution:** Fixed after approval: "If you can't identify a ball as it lies, mark and lift it, cleaning only enough to tell." Two small cuts keep the summary at 120 words. The owner OK'd it in chat before the merge.
 
 **Copy distance:** longest run shared with the R&A text is 5 words ("ball to see if it"); no run of 8 or more.
 
