@@ -108,7 +108,7 @@ usga.org answers scripts with 403, so these are opened by hand in a browser.
    - **An error, or a fair point about clarity:** open an issue labelled `rules-center` and `owner-review`, titled "Correction: <record id>". Name the record, the field and the claimed problem. The reader's name and email stay in the inbox, never in the issue or the repo.
    - **A wrong published answer:** as above, and take the record off the page until the fix is approved.
 3. **Fix and re-review.** Draft the fix, run `npm run check:rules-copy`, then the full review in `editorial-review.md`: both reviewer agents, then the owner's approval. A fix an agent drafted gets no shortcut.
-4. **Record it.** Update the record's dates as in the table below, add the `reviewLog` entries and add the review-packet entry (`docs/rules/review-packet.md`).
+4. **Record it.** Update the record's dates as in the table below, add the `reviewLog` entries and add the entry to the record's review packet (`docs/rules/review-packet-overviews.md` or `docs/rules/review-packet-situations.md`).
 5. **Reply** to the reader once the fix is live, and close the issue with the PR.
 
 ## What changes where
@@ -123,7 +123,7 @@ usga.org answers scripts with 403, so these are opened by hand in a browser.
 | `lib/content/rules/source-hashes.json` | After someone has read a reported text change, or when a record starts citing a new Model Local Rule: `check:rules-sources -- --update` | `acceptedOn` is the day of that reading. Hashes only; no rule text is stored. |
 | `lib/content/rules/official.ts` | A title or anchor change the check reports | With the `TITLES` list or the anchor digest in `scripts/test-rules.mjs` and the anchor table in `source-map.md`. |
 | `docs/rules/source-map.md` | Any recheck: the "Checked" date, the USGA table's Checked column, the anchor table | |
-| `docs/rules/review-packet.md` | Every re-review | One entry per record, as for new copy. |
+| `docs/rules/review-packet-overviews.md`, `docs/rules/review-packet-situations.md` | Every re-review | One entry per record, as for new copy. |
 
 ## 2028 readiness checklist
 
