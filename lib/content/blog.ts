@@ -204,7 +204,7 @@ export const posts: Post[] = [
           title: "What the Rules actually allow",
           paragraphs: [
             "In match play, a <a href=\"/glossary#gimme\">gimme</a> is a concession, and the Rules of Golf allow it. Under <a href=\"https://www.randa.org/en/rog/the-rules-of-golf/rule-3\">Rule 3.2b</a>, a player may concede the opponent’s next stroke, a hole or the whole match. A conceded stroke counts as holed, the ball can be picked up, and the concession is final: it can’t be declined or taken back.",
-            "In regular stroke play, there is no such thing. Rule 3.3c says a player must hole out on every hole, and in a real competition a player who doesn’t, and doesn’t correct it before teeing off on the next hole, is disqualified. (Stableford is scored differently and doesn’t disqualify.) A gimme in stroke play isn’t a rule. It’s a house agreement, and it only binds the people who agreed to it.",
+            "In regular stroke play, there is no such thing. Rule 3.3c says a player <a href=\"/rules#conceded-putt\">must hole out on every hole</a>, and in a real competition a player who doesn’t, and doesn’t correct it before teeing off on the next hole, is disqualified. (Stableford is scored differently and doesn’t disqualify.) A gimme in stroke play isn’t a rule. It’s a house agreement, and it only binds the people who agreed to it.",
           ],
           blocks: [
             {
@@ -540,7 +540,7 @@ export const posts: Post[] = [
             "With exactly four players, turn on Teams on the Games step. GoLo splits you into Team A and Team B, and you can move players between them. The scorer enters every player’s score on every hole, and GoLo counts each team’s lower gross and lower net. Skins, the Nassau, Best Score and the Overall Match play team against team; Wolf is off. In a Stableford round you choose whether a team scores its better player’s points or both players’ points added together.",
           ],
           blocks: [
-            { kind: "callout", title: "When a partner picks up", html: "The Rules let a side count one partner’s score when the other picks up. GoLo counts a team’s hole only once both partners have a score, and a blank becomes par when the scorer moves on, which can hand the team a par nobody made. So when a partner picks up, enter a score for them that can’t count: one that can’t beat their partner’s, net or gross, or in a Combined Stableford round, one worth no points, a net double bogey or worse." },
+            { kind: "callout", title: "When a partner picks up", html: "The Rules let a side <a href=\"/rules#rule-23\">count one partner’s score when the other picks up</a>. GoLo counts a team’s hole only once both partners have a score, and a blank becomes par when the scorer moves on, which can hand the team a par nobody made. So when a partner picks up, enter a score for them that can’t count: one that can’t beat their partner’s, net or gross, or in a Combined Stableford round, one worth no points, a net double bogey or worse." },
             { kind: "p", html: "One name to keep apart: GoLo’s Best Score game isn’t best ball, which is a way of scoring a hole. Best Score is played on totals: everyone puts in the same entry, and the best total for the round takes it, or the top two or three split it. Without teams it compares each player’s card. In Team Play it compares the two teams’ totals, so pay first place only: with two teams, a top-two split hands everyone their entry back." },
           ],
         },
@@ -1528,7 +1528,7 @@ export const posts: Post[] = [
           title: "Two formats, two questions",
           paragraphs: [
             "In match play you play against an opponent, one hole at a time. Fewer strokes wins the hole; the same number halves it. The match ends as soon as one side is ahead by more holes than are left to play. That is <a href=\"https://www.randa.org/en/rog/the-rules-of-golf/rule-3\">Rule 3.2 of the Rules of Golf</a>.",
-            "In stroke play, every stroke on every hole counts, penalty strokes included, and the lowest total wins. In a real stroke-play competition you hole out on every hole, however it is going. That is Rule 3.3. A 9 is a 9, and it stays on the card all afternoon.",
+            "In stroke play, every stroke on every hole counts, penalty strokes included, and the lowest total wins. In a real stroke-play competition <a href=\"/rules#rule-3\">you hole out on every hole</a>, however it is going. That is Rule 3.3. A 9 is a 9, and it stays on the card all afternoon.",
           ],
           blocks: [
             {
