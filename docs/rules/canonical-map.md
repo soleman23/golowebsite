@@ -36,6 +36,116 @@ Which URL owns which question, so the Rules Center doesn't compete with the glos
 | `/blog/closest-to-the-pin-rules` | none | A side-game convention post, not a Rules of Golf question. No link from `/rules`. |
 | `/games/*` | none | Game guides own their own "rules". `/rules` links to `/games` only from Rules 3 and 21 ("games your group plays on top of the Rules"). |
 
+## Link map (#242)
+
+Every link into `/rules` that the launch adds, and the links out of it that #242 added. Prepared November 7, 2026 against `main` at 7cbb101.
+
+### Where the links are
+
+- **On `main` (merged with #242).** None of this changes production while `rulesLive` is false:
+  - the related reading for Rules 3, 21 and 23;
+  - the closing band's lead and the `rules-rulings` registry entry;
+  - the glossary's link text for `/rules#…` paths (`glossaryPathLink`);
+  - the content check for `/rules` paths in glossary records (`glossaryRulesPathProblems` in `scripts/rules-checks.mjs`). Before it, a bare `/rules` in a record's `relatedContentPaths` passed while the flag was off, because `/rules` is a route.
+- **On branch `launch/242-rules-inbound-links` (not merged).** The footer link, the glossary record edits, the post links and the guide link. `lint:content` rejects each of them while the flag is off. The #247 launch PR merges the branch in the same change that flips `rulesLive` and moves the records to `published`. § Launch check records how the branch was verified.
+
+Every fragment below is an id in § Fragment registry. Each one resolves only once its record is published, and `lint:content` checks that on the launch branch.
+
+### Inbound: footer
+
+| Source | Link | Target | Why |
+|---|---|---|---|
+| `lib/content/nav.ts` `footerLinks.games`, after "Golf glossary" | Golf rules | `/rules` | Amendment A9: the site-wide entry point, beside the glossary. No header link (§13.4). |
+
+### Inbound: glossary records
+
+Each path is added to the record's `relatedContentPaths`, after the paths it already has. It renders in the entry's link list as "See what Rule N covers" or "Read “<question>”". These are published records, so each edit adds an `seo` stage and the owner's `approval` to the record's review log, as #226 did, and moves `reviewedOn` to the approval date. A link isn't a substantive change, so `updatedOn` doesn't move. Every target already links back to the term through its `relatedGlossaryIds`.
+
+| Record | Target | Why |
+|---|---|---|
+| `/glossary#penalty-area` | `/rules#red-vs-yellow-penalty-areas` | The record says red marks allow more relief than yellow; the situation lists the options for each. |
+| `/glossary#bunker` | `/rules#bunker-sand` | The record's example is the club touching the sand; the situation says which touches cost a penalty. |
+| `/glossary#teeing-area` | `/rules#rule-6` | The record cites Rule 6.1b's penalty for playing from outside it. |
+| `/glossary#gimme` | `/rules#conceded-putt` | The same question from the Rules side: a concession in match play, holing out in stroke play. |
+| `/glossary#match-play` | `/rules#rule-3` | The record cites Rule 3.2. |
+| `/glossary#stroke-play` | `/rules#rule-3` | The record cites Rule 3.3. |
+| `/glossary#four-ball` | `/rules#rule-23` | The record cites Rule 23. |
+| `/glossary#foursomes` | `/rules#rule-22` | The record cites Rule 22. |
+| `/glossary#stableford` | `/rules#rule-21` | The record cites Rule 21.1. |
+| `/glossary#mulligan` | `/rules#rule-1` | The record says a mulligan isn't allowed under the Rules; Rule 1's overview says what hitting again does under Rule 18. |
+
+Considered and left out:
+
+| Record | Why not |
+|---|---|
+| `breakfast-ball` | A mulligan by another name, and its rule content is the handicap-posting note. It reaches Rule 1 through `mulligan`. |
+| `fairway`, `rough` | Each already says it's general area with no special rules. Rule 2 adds nothing for that reader. |
+| `scramble` | The Rules have no scramble Rule. A link to Rule 21 would suggest they define one (`inventory.md`, notes on Rule 21). |
+| `best-score` | A side game decided on the round's result, not a Rules format. |
+| `sandy` | A side-game point. |
+| `putt`, `driver`, `putter` | Definitions of a shot or a club, with no Rules question. |
+| `net-score`, `handicap-stroke` | Handicapping, a separate rulebook (rule 6 above). |
+
+### Inbound: posts
+
+Each link wraps words already in the post, so no copy changes and `updated` doesn't move. Each post's Rule numbers keep their randa.org links; the new link is on the plain-language phrase next to them.
+
+| Post | Where | Linked words | Target | Why |
+|---|---|---|---|---|
+| `/blog/gimmes` | "What the Rules actually allow", second paragraph | "must hole out on every hole" | `/rules#conceded-putt` | The situation gives both formats and Rule 3.3c's penalty. § Overlaps already links it back to the post. |
+| `/blog/match-play-vs-stroke-play` | "Two formats, two questions", stroke-play paragraph | "you hole out on every hole" | `/rules#rule-3` | The post owns which format to play; Rule 3's overview owns what each requires (§ Overlaps). |
+| `/blog/best-ball-vs-scramble` | "Best ball in GoLo is Team Play", the picking-up paragraph | "count one partner’s score when the other picks up" | `/rules#rule-23` | Rule 23.2a is the Rule behind that sentence, and Rule 23's overview says it. The overview links back. |
+
+Considered and left out:
+
+| Post | Why not |
+|---|---|
+| `net-vs-gross-scoring` | Its only Rules sentence already links Rule 3 on randa.org, and a second link would need new copy. |
+| `closest-to-the-pin-rules` | A side-game convention, not a Rules of Golf question (§ Overlaps). |
+| `first-tee-checklist` | Its conceded-putt sentence is about a house agreement across games. `gimmes` covers it. |
+| The other "Game rules & how-to" posts (`nine-hole-games`, `golf-games-for-3-players`, `golf-games-for-2-players`, `five-dollar-birdie`, `skins-vs-nassau`, `nassau`, `skins-carryover`, `wolf`, `bingo-bango-bongo`) | Formats and money. None asks a Rules of Golf question; "match play" there is the glossary's to define. `nine-hole-games` cites the Rules of Handicapping only. |
+| The handicaps posts | The Rules of Handicapping, a separate rulebook (rule 6). |
+
+### Inbound: game guides
+
+| Guide | Where | Link | Target | Why |
+|---|---|---|---|---|
+| `/games/overall-match` | FAQ `overall-match-8`, "What if the match or a press finishes level?" | WHAT RULE 3 COVERS → | `/rules#rule-3` | The answer cites Rule 3.2a(4) on a tied match. |
+
+No other guide cites a Rule of Golf. Each one owns its game's house rules (rule 3 above).
+
+### Outbound: related reading added by #242
+
+These are Rules Center records, merged with #242. They're live when the records are published.
+
+| Record | Path | Why |
+|---|---|---|
+| `rule-3` | `/blog/match-play-vs-stroke-play` | The post owns the comparison (§ Overlaps). |
+| `rule-3` | `/games` | The games a group plays on top of the Rules (§ Overlaps). |
+| `rule-21` | `/games` | As Rule 3. |
+| `rule-23` | `/blog/best-ball-vs-scramble` | The post owns the comparison (§ Overlaps). |
+
+Already in place before #242: `conceded-putt` → `/blog/gimmes`, and the hub's Related block (`/glossary`, `/games`, `/blog/gimmes`, `/blog/match-play-vs-stroke-play`).
+
+### The closing band
+
+`rulesFinalCta` in `lib/content/rules/copy.ts`. Its lead reads: "GoLo keeps the score and settles the side games. It doesn't make rulings: the drop and the penalty are yours to get right, and GoLo counts the strokes you enter."
+
+The capability registry backs every claim in it:
+
+- `hole-scoring`, `game-library` and `settle-up` are live.
+- `rules-rulings` is not-offered. Its `claimPhrases` ("makes rulings", "applies the Rules", "rules engine" and others) fail any sentence that has GoLo making rulings or applying the Rules, wherever the claim guard reads.
+- The lead passes the claim guard with no `claim-ok`.
+- `test-rules` fails if `rules-rulings` goes live while the lead still denies it.
+
+### Analytics
+
+A glossary entry's `/rules` link reports `glossary_cta_click` with `destination_type: "page"`, the closed set's fallback for a path that isn't a guide or a post. #244 owns that union and decides whether the Rules Center needs a value of its own.
+
+### Launch check
+
+Pending.
+
 ## Missing glossary terms (candidates for #168)
 
 The spec assumed these glossary anchors (A13). None exists. Until #168 ships one, the `/rules` situation owns the term as well as its consequences, and nothing links to the missing glossary anchor.

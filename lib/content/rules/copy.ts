@@ -334,7 +334,17 @@ export const rulesRelated = {
   ],
 };
 
-/** The closing band. The store buttons and fine print are FinalCTA's. */
+/**
+ * The closing band (#242). The store buttons and fine print are FinalCTA's.
+ *
+ * Every claim here is one the capability registry backs: hole-scoring,
+ * game-library and settle-up are live. rules-rulings is not-offered, and its
+ * claimPhrases fail any sentence on this page that has GoLo making rulings
+ * or applying the Rules, so the lead says plainly that it does neither.
+ * scripts/test-rules.mjs fails if rules-rulings ever goes live while this
+ * still denies it.
+ */
 export const rulesFinalCta = {
   title: "Know the rule. Let GoLo keep the score.",
+  lead: "GoLo keeps the score and settles the side games. It doesn't make rulings: the drop and the penalty are yours to get right, and GoLo counts the strokes you enter.",
 };
