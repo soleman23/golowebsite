@@ -88,7 +88,11 @@ Metric definitions (spec §10). Report each with its date range and its source. 
 - **Reported inaccuracies**: corrections opened under `docs/rules/maintenance.md` § Correction procedure ("Correction: <record id>" issues), as a count. No reader names or addresses.
 - **Verified acquisition**: only from store or app attribution where it exists. Never inferred from clicks.
 
-GA4 reports a param only once it's registered as an event-scoped custom dimension, and doesn't backfill. Of the Rules params, `result_bucket`, `match_type`, `category`, `destination_type`, `placement` and `channel` are registered; `rule_number`, `source`, `scenario_id`, `document_type` and `content_id` aren't (read-only check, 2026-11-07, 24 of 50 registered). Until they are, any split by them is "not available before <registration date>". Registering them is the owner's step; the list is in `docs/seo-reports/rules-checkpoints.md` § GA4 custom definitions.
+GA4 reports a param only once it's registered as an event-scoped custom dimension, and doesn't backfill. Every Rules param is registered:
+- `result_bucket`, `match_type`, `category`, `destination_type`, `placement` and `channel` were already there, under their earlier names.
+- `rule_number` (Rule number), `source` (Opened from), `scenario_id` (Rules situation), `document_type` (Official document) and `content_id` (Related content) were registered on 2026-11-07 with the owner's yes. That made 29 of 50.
+
+Rules splits are "not available before 2026-11-07". The full table is in `docs/seo-reports/rules-checkpoints.md` § GA4 custom definitions.
 
 ## Test traffic
 
