@@ -8,6 +8,8 @@
 
 import { findPost } from "../blog";
 import { isGameSlug, rosterGame } from "../games";
+// The records, not the rules index: ../rules/copy imports this file.
+import { rulesScenarios } from "../rules/scenarios";
 import type { CtaIntent, NoteKind } from "./types";
 
 /** The DefinedTermSet's name (#163). Title and description are in the page's
@@ -82,7 +84,8 @@ export const glossaryRelatedGuides = {
 
 /**
  * Link text for a guide, post or page a term points to: descriptive, never
- * "read more". A post's title up to its colon keeps it short.
+ * "read more". A post's title up to its colon keeps it short. A Rules
+ * Center fragment (#242) names the rule, or the situation's question.
  */
 export function glossaryPathLink(path: string): string {
   const game = /^\/games\/([a-z0-9-]+)$/.exec(path)?.[1];
@@ -90,6 +93,11 @@ export function glossaryPathLink(path: string): string {
   const slug = /^\/blog\/([a-z0-9-]+)$/.exec(path)?.[1];
   const post = slug ? findPost(slug) : undefined;
   if (post) return `Read “${post.title.split(":")[0].trim()}”`;
+  const fragment = /^\/rules#([a-z0-9-]+)$/.exec(path)?.[1];
+  const rule = fragment ? /^rule-(\d+)$/.exec(fragment)?.[1] : undefined;
+  if (rule) return `See what Rule ${rule} covers`;
+  const situation = fragment ? rulesScenarios.find((s) => s.slug === fragment) : undefined;
+  if (situation) return `Read “${situation.question}”`;
   return PAGE_LINKS[path] ?? `Open ${path}`;
 }
 

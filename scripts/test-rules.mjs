@@ -13,7 +13,8 @@
  *   in any public selection, and no internal field in a public record;
  * - integrity: each malformed record fails with a line naming it;
  * - the edition cut-over and the stale-clarifications warning;
- * - the /rules link and fragment rules.
+ * - the /rules link and fragment rules, glossary related paths included;
+ * - Rules 3, 21 and 23's related reading and the closing band's claim (#242).
  *
  * Exit 1 with one line per failed case.
  */
@@ -45,7 +46,9 @@ registerHooks({
 
 const rules = await import(new URL("../lib/content/rules/index.ts", import.meta.url).href);
 const glossary = await import(new URL("../lib/content/glossary/index.ts", import.meta.url).href);
-const { rulesHrefProblem } = await import("./rules-checks.mjs");
+const { glossaryRulesPathProblems, rulesHrefProblem } = await import("./rules-checks.mjs");
+const { capabilities, capability } = await import(new URL("../lib/content/capabilities.ts", import.meta.url).href);
+const { claimProblems } = await import("./content-claims.mjs");
 
 const {
   RULES_PAGE_IDS,
@@ -84,7 +87,8 @@ const same = (a, b) => JSON.stringify(a) === JSON.stringify(b);
 
 /* --------------------------------------------------------------- fixtures */
 
-const TODAY = "2026-11-06";
+// The day #242 added related reading, so its review log entry isn't in the future.
+const TODAY = "2026-11-07";
 const REVIEW_LOG = [
   { stage: "rules", by: "agent", on: "2026-11-01" },
   { stage: "product", by: "agent", on: "2026-11-01" },
@@ -126,7 +130,16 @@ const index = prepareRulesSearch(rulesSearchEntries(fullHub));
 const top = (query, category) => searchRules(index, query, category).map((m) => m.entry.id);
 
 const glossarySlugs = new Set(glossary.publishedGlossaryTerms().map((t) => t.slug));
-const SERVED = new Set(["/glossary", "/games/nassau", "/blog/gimmes", "/faq"]);
+/** Every related path a shipped record names (#242 added the posts and /games), plus a few more. */
+const SERVED = new Set([
+  "/glossary",
+  "/games",
+  "/games/nassau",
+  "/blog/gimmes",
+  "/blog/match-play-vs-stroke-play",
+  "/blog/best-ball-vs-scramble",
+  "/faq",
+]);
 const CTX = { servedPaths: SERVED, glossarySlugs, today: TODAY };
 
 /* ----------------------------------------------------------------- search */
@@ -398,8 +411,9 @@ const CTX = { servedPaths: SERVED, glossarySlugs, today: TODAY };
   check(
     "integrity: a planned record may have no copy, caveats or check dates",
     (() => {
-      const planned = { ...rulesScenarios[2], status: "planned", answer: "", conditions: [], localRuleCaveat: undefined };
-      const plannedRule = { ...ruleOverviews[17], status: "planned", summary: "", commonQuestions: [] };
+      // publishedOn goes too, so the case still holds once #247 publishes the records.
+      const planned = { ...rulesScenarios[2], status: "planned", publishedOn: undefined, answer: "", conditions: [], localRuleCaveat: undefined };
+      const plannedRule = { ...ruleOverviews[17], status: "planned", publishedOn: undefined, summary: "", commonQuestions: [] };
       return validateRules(ruleOverviews.map((r) => (r.number === 18 ? plannedRule : r)), [planned], CTX).length === 0;
     })(),
   );
@@ -442,6 +456,83 @@ const CTX = { servedPaths: SERVED, glossarySlugs, today: TODAY };
   check("links: an unknown fragment fails", /isn't a published rule/.test(rulesHrefProblem("/rules#rule-99", "lib/content/blog.ts", on) ?? ""));
   check("links: a query string is still /rules", Boolean(rulesHrefProblem("/rules?category=relief", "lib/content/blog.ts", off)));
   check("links: other paths are left alone", rulesHrefProblem("/rulesbook", "lib/content/blog.ts", off) === null);
+
+  // Glossary records' related paths aren't hrefs; the same rules apply (#242).
+  const term = (id, relatedContentPaths, canonical = { kind: "hub", anchor: id }) => ({ id, relatedContentPaths, canonical });
+  const problemsFor = (terms, links) => glossaryRulesPathProblems(terms, links).map((p) => `${p.id} ${p.path}`);
+  check(
+    "links: a glossary record's /rules path fails while off",
+    same(problemsFor([term("penalty-area", ["/rules#rule-17"])], off), ["penalty-area /rules#rule-17"]),
+  );
+  check("links: so does a bare /rules, which is a route either way", problemsFor([term("bunker", ["/rules"])], off).length === 1);
+  check(
+    "links: and a /rules canonical",
+    problemsFor([term("gimme", [], { kind: "existing", path: "/rules#conceded-putt" })], off).length === 1,
+  );
+  check("links: other related paths are the served-page check's", problemsFor([term("gimme", ["/blog/gimmes", "/games"])], off).length === 0);
+  check("links: a published fragment passes once live", problemsFor([term("mulligan", ["/blog/gimmes", "/rules#rule-18"])], on).length === 0);
+  check(
+    "links: an unpublished fragment fails once live",
+    /isn't a published rule/.test(glossaryRulesPathProblems([term("stableford", ["/rules#rule-21"])], on)[0]?.problem ?? ""),
+  );
+  // As check-content builds the context: true before launch (no /rules paths) and after it.
+  const shippedLinks = { live: rulesLive, fragments: new Set([...rulesRecordIds(publishedRules()), ...RULES_PAGE_IDS]) };
+  const shippedGlossary = glossaryRulesPathProblems(glossary.glossaryTerms, shippedLinks);
+  check("links: the shipped glossary's /rules paths pass", shippedGlossary.length === 0, shippedGlossary.map((p) => p.problem).join(" | "));
+
+  // Their link text (lib/content/glossary/copy.ts).
+  check("links: a rule fragment names the rule", glossary.glossaryPathLink("/rules#rule-17") === "See what Rule 17 covers");
+  check(
+    "links: a situation fragment quotes its question",
+    glossary.glossaryPathLink("/rules#conceded-putt") === "Read “Does a conceded putt count?”",
+    glossary.glossaryPathLink("/rules#conceded-putt"),
+  );
+}
+
+/* ------------------------------------------------------- related reading */
+
+{
+  // The overview batches left these to #242 (docs/rules/canonical-map.md § Link map).
+  const paths = (n) => ruleOverviews.find((r) => r.number === n)?.relatedContentPaths ?? [];
+  check("related: Rule 3 links the match-play post and the games", same(paths(3), ["/blog/match-play-vs-stroke-play", "/games"]), paths(3).join(","));
+  check("related: Rule 21 links the games", same(paths(21), ["/games"]), paths(21).join(","));
+  check("related: Rule 23 links the best ball post", same(paths(23), ["/blog/best-ball-vs-scramble"]), paths(23).join(","));
+  check(
+    "related: only Rules 3 and 21 link /games (canonical-map.md § Overlaps)",
+    same(ruleOverviews.filter((r) => r.relatedContentPaths.includes("/games")).map((r) => r.number), [3, 21]),
+  );
+  check(
+    "related: approval still the latest stage on each",
+    [3, 21, 23].every((n) => {
+      const r = ruleOverviews.find((o) => o.number === n);
+      return r.reviewedOn === r.reviewLog.filter((e) => e.stage === "approval").at(-1).on;
+    }),
+  );
+}
+
+/* ----------------------------------------------------- closing band (#242) */
+
+{
+  const notLive = capabilities.filter((c) => c.status !== "live" && c.claimPhrases?.length);
+  const overclaimed = capabilities.filter((c) => c.overclaims?.length);
+  const guard = (source, file = "lib/content/rules/copy.ts", education = false) =>
+    claimProblems(file, source, { notLive, overclaimed, education }).map((p) => p.message);
+  const { rulesFinalCta } = rules;
+
+  check("cta: rules-rulings isn't live, so the lead's denial is still true", capability("rules-rulings").status !== "live");
+  check("cta: the lead says GoLo doesn't make rulings", /doesn't make rulings/.test(rulesFinalCta.lead));
+  const lead = guard(`export const x = { lead: ${JSON.stringify(rulesFinalCta.lead)} };`);
+  check("cta: the lead passes the claim guard", lead.length === 0, lead.join(" | "));
+  const claims = [
+    "GoLo makes rulings on every drop.",
+    "Let the app apply the Rules for you.",
+    "GoLo's rules engine settles it.",
+  ].map((text) => guard(`const x = ${JSON.stringify(text)};`));
+  check("cta: a ruling claimed for GoLo fails", claims.every((m) => m.some((p) => p.includes("rules-rulings"))), JSON.stringify(claims));
+  const title = guard('const x = "Resolving Rules Issues During Round; Rulings by Referee and Committee";', "lib/content/rules/official.ts");
+  check("cta: a rule title that names rulings passes", title.length === 0, title.join(" | "));
+  const golf = guard('const x = "A referee makes rulings for the Committee.";', "lib/content/rules/overviews.ts", true);
+  check("cta: golf copy about referees' rulings passes in a record", golf.length === 0, golf.join(" | "));
 }
 
 /* -------------------------------------------------------- schema (#243) */
@@ -486,4 +577,4 @@ if (failures.length) {
   console.error(`\n${failures.length} failed, ${passed} passed.`);
   process.exit(1);
 }
-console.log(`✔ Rules: ${passed} cases passed (search, official links, publication boundary, selection, integrity, warnings, links, schema).`);
+console.log(`✔ Rules: ${passed} cases passed (search, official links, publication boundary, selection, integrity, warnings, links, related reading, closing band, schema).`);
