@@ -187,7 +187,7 @@ export const ruleOverviews: RuleOverview[] = [
   }),
   rule(7, {
     summary:
-      "Rule 7 covers finding and identifying your ball. You have three minutes from when you or your caddie start looking, then it's lost. You may move grass, bushes, sand and water while searching; it's a penalty only if that goes beyond a reasonable search and improves your next shot. If anyone accidentally moves your ball while looking, there's no penalty; put it back. If searching disturbed sand on it, re-create the lie before playing. If you can't identify a ball as it lies, mark and lift it, cleaning only enough to tell. It's yours if someone saw your ball come to rest, it carries your mark, or it matches yours where yours should be and no identical ball is nearby.",
+      "Rule 7 covers finding and identifying your ball. You have three minutes from when you or your caddie start looking, then it's lost. You may move grass, bushes, sand and water while searching; it's a penalty only if that goes beyond a reasonable search and improves your next shot. If anyone accidentally moves your ball while looking, there's no penalty; put it back. If searching disturbed sand on it, re-create the lie before playing. If you can't identify a ball as it lies, mark and lift it, cleaning only enough to tell. It's yours if someone saw your ball come to rest, or if it carries your mark or matches yours where yours should be, with no identical ball nearby.",
     commonQuestions: [
       "How long can I search for my ball?",
       "I stepped on my ball while looking for it: is that a penalty?",
@@ -211,7 +211,7 @@ export const ruleOverviews: RuleOverview[] = [
   }),
   rule(9, {
     summary:
-      "Rule 9 covers playing the ball as it lies, and a resting ball that moves. The cause decides; anything but natural forces counts only when that's known or virtually certain. Wind or water: no penalty; play it where it stopped, unless it was replaced on the green, or a dropped, placed or replaced ball rolled into another area or out of bounds; then replace it. You or your caddie: one penalty stroke and replace it, unless it moved by accident on the green, in a search, or while marking it, removing a movable obstruction or taking relief. An opponent in match play: the same, penalty theirs. Anything else, such as another player in stroke play: no penalty, replace it.",
+      "Rule 9 covers a resting ball that's lifted or moved before you play. Any cause but natural forces must be known or virtually certain. Wind or water: no penalty; play it where it stopped, unless it was replaced on the green or, after a drop, placement or replacement, rolled into another area or out of bounds; then replace it. You or your caddie: a penalty stroke and replace it, unless it moved by accident on the green, in a search, or while marking it, removing a movable obstruction or taking relief. An opponent in match play: the same, penalty theirs, except a lift to concede or on request. Anything else, even another player in stroke play: no penalty; replace it.",
     commonQuestions: [
       "The wind moved my ball after it stopped: do I replace it?",
       "I nudged my ball at address: what's the penalty?",
