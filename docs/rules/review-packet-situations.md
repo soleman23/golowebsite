@@ -396,6 +396,6 @@ Checks both reviewers passed: no GoLo claims; `NEVER_WORDS` clean; E-3 condition
 
 **Approved by the owner in chat on November 6, 2026** ("Approve batch 2"), on this packet as written. The records are `approved` with `reviewedOn: 2026-11-06`, `reviewedBy: "owner"` and a review log of rules, product and seo by "agent" and approval by "owner" (`P1_APPROVED` in `scenarios.ts`). With both batches approved, all 12 situations are `approved`. Not published: `rulesLive` is false and only #247 publishes.
 
-**Post-approval change:** Codex finding C3 (above) added one sentence to `temporary-water` options[1]. Copy distance is still 0 runs of eight or more words (`npm run check:rules-copy`). Pending the owner's confirmation in chat.
+**Post-approval change:** Codex finding C3 (above) added one sentence to `temporary-water` options[1]. Copy distance is still 0 runs of eight or more words (`npm run check:rules-copy`). **The owner confirmed the fix as part of the batch 2 approval in chat on November 6, 2026** ("Confirm fix").
 
 **Seen in `next dev`** (the hub, #255, renders approved records marked "Not published"): all 12 situations render with their "Before you decide" lists, caveats and official links; no horizontal overflow at 320, 760, 1100 or 1440 px; no console errors; no review-log, `reviewedBy` or `checkedOn` text in the page. Focus styling is the hub's components', unchanged here.

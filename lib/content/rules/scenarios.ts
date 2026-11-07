@@ -105,7 +105,7 @@ const P1_APPROVED: Pick<RulesScenario, "status" | "reviewedOn" | "reviewedBy" | 
       stage: "approval",
       by: "owner",
       on: P1_REVIEWED_ON,
-      note: "Batch 2 approved in chat on 2026-11-06 (#241, PR #261).",
+      note: "Batch 2 approved in chat on 2026-11-06, and the Codex fix confirmed the same day (#241, PR #261).",
     },
   ],
 };
