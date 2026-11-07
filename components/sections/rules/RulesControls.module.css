@@ -1,0 +1,183 @@
+/* Inside the page's content column, under the edition notice. Hidden
+   without JavaScript (data-requires-js). */
+.controls {
+  margin: 0 0 clamp(28px, 4vw, 40px);
+}
+
+.chips {
+  margin-bottom: 12px;
+}
+
+.bar {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  min-height: 44px;
+}
+
+.count {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text-muted);
+}
+
+/* While searching, the result line counts instead. */
+html[data-rules-search] .count {
+  display: none;
+}
+
+.button {
+  min-height: 44px;
+  padding: 0 16px;
+  border-radius: var(--radius-pill);
+  border: 1px solid var(--card-border);
+  background: transparent;
+  color: var(--text-primary);
+  font: inherit;
+  font-size: 13px;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.button:hover {
+  border-color: var(--accent-border);
+}
+
+.results {
+  margin-top: 18px;
+}
+
+.resultLine {
+  margin: 0 0 14px;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text-secondary);
+}
+
+.group + .group {
+  margin-top: 26px;
+}
+
+.groupTitle {
+  margin: 0 0 12px;
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 1.6px;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+}
+
+.list {
+  list-style: none;
+  margin: 0 0 12px;
+  padding: 0;
+  display: grid;
+  gap: 10px;
+}
+
+.result {
+  padding: 16px 18px;
+  border-radius: var(--radius-tile);
+  background: var(--glass-surface);
+  border: 1px solid var(--card-border);
+}
+
+.resultName {
+  margin-right: 10px;
+  font-size: 18px;
+  font-weight: 800;
+  line-height: 1.3;
+  color: var(--text-primary);
+}
+
+.resultName:hover {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.alias {
+  font-size: 12.5px;
+  font-weight: 800;
+  color: var(--text-secondary);
+}
+
+.snippet {
+  margin: 6px 0 0;
+  max-width: 68ch;
+  font-size: 15px;
+  font-weight: 500;
+  line-height: 1.6;
+  color: var(--text-secondary);
+}
+
+.refs {
+  margin: 6px 0 0;
+  font-size: 12.5px;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  color: var(--text-muted);
+}
+
+.emptyLine {
+  margin: 0 0 6px;
+  font-size: 15.5px;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.hint {
+  margin: 0 0 12px;
+  font-size: 14.5px;
+  color: var(--text-secondary);
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px 16px;
+}
+
+.link {
+  font-size: 13.5px;
+  font-weight: 800;
+  color: var(--accent);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+/* ---- Filtering ----------------------------------------------------------
+   As the glossary's: every count variant and every chip ships, and these
+   rules choose from <html data-filter>, which FilterBoot sets during parse,
+   so /rules?category=… paints right before any JS runs. One line per topic;
+   the ids are rulesCategories in lib/content/rules/categories.ts, and
+   `npm run lint` fails if one is missing (scripts/check-filter-css.mjs).
+   The entries themselves are filtered in app/rules/rules.module.css. */
+html[data-filter="foundations"] .count > [data-for="all"],
+html[data-filter="playing"] .count > [data-for="all"],
+html[data-filter="course-areas"] .count > [data-for="all"],
+html[data-filter="relief"] .count > [data-for="all"],
+html[data-filter="formats"] .count > [data-for="all"] {
+  display: none;
+}
+
+html[data-filter="foundations"] .count > [data-for="foundations"],
+html[data-filter="playing"] .count > [data-for="playing"],
+html[data-filter="course-areas"] .count > [data-for="course-areas"],
+html[data-filter="relief"] .count > [data-for="relief"],
+html[data-filter="formats"] .count > [data-for="formats"] {
+  display: inline;
+}
+
+/* The lit chip before hydration; ChipFilter's .active takes over after. */
+html:not([data-filter]) .chips [data-chip="all"],
+html[data-filter="all"] .chips [data-chip="all"],
+html[data-filter="foundations"] .chips [data-chip="foundations"],
+html[data-filter="playing"] .chips [data-chip="playing"],
+html[data-filter="course-areas"] .chips [data-chip="course-areas"],
+html[data-filter="relief"] .chips [data-chip="relief"],
+html[data-filter="formats"] .chips [data-chip="formats"] {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: var(--accent-ink);
+}

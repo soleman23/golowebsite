@@ -33,3 +33,31 @@
   line-height: 1.6;
   color: var(--text-secondary);
 }
+
+/* ---- Search and topics (ux.md D4, D5) ----------------------------------
+   While a query is active the ranked results under the controls replace
+   the lists; clearing the search brings them back. RulesProvider sets
+   <html data-rules-search>; it's never present without JavaScript. */
+html[data-rules-search] .lists {
+  display: none;
+}
+
+/* A topic hides every entry, card and group from another topic, and a
+   section left with nothing in it. <html data-filter> comes from
+   FilterBoot, so /rules?category=… paints filtered before any JS runs. One
+   line per topic; the ids are rulesCategories in
+   lib/content/rules/categories.ts, and `npm run lint` fails if one is
+   missing (scripts/check-filter-css.mjs). The quick cards and the number
+   grid hide under any topic, in their own stylesheets. */
+html[data-filter="foundations"] .lists [data-category]:not([data-category="foundations"]),
+html[data-filter="playing"] .lists [data-category]:not([data-category="playing"]),
+html[data-filter="course-areas"] .lists [data-category]:not([data-category="course-areas"]),
+html[data-filter="relief"] .lists [data-category]:not([data-category="relief"]),
+html[data-filter="formats"] .lists [data-category]:not([data-category="formats"]),
+html[data-filter="foundations"] .section:not([data-cats~="foundations"]),
+html[data-filter="playing"] .section:not([data-cats~="playing"]),
+html[data-filter="course-areas"] .section:not([data-cats~="course-areas"]),
+html[data-filter="relief"] .section:not([data-cats~="relief"]),
+html[data-filter="formats"] .section:not([data-cats~="formats"]) {
+  display: none;
+}
