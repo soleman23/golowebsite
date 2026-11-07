@@ -23,7 +23,7 @@ If the file doesn't exist on the run date, copy `TEMPLATE.md` to it and add a st
 
 ## Before launch (#247)
 
-Two things only the launch can start. Without them, L+28 has nothing to compare against and GA4 has no splits.
+Two things the launch depends on. Without the first, L+28 has nothing to compare against; without the second, GA4 has no Rules splits.
 
 1. **The prelaunch baseline.** On or after L, export Search Console for the 28 days **L-28 – L-1**, property-wide, to `~/gsc/rules-baseline/`, and run:
 
@@ -33,7 +33,7 @@ Two things only the launch can start. Without them, L+28 has nothing to compare 
 
    Paste the property total and the **Rules of Golf** row below, under Baseline. Before L, no page on the site answers a rules query, so this row is what the site drew without the Rules Center.
 
-2. **GA4 custom definitions.** The five below must be registered before L+7, or every split by them is "not available before <registration date>". GA4 doesn't backfill. Record the date they were registered.
+2. **GA4 custom definitions.** Done: the five Rules dimensions were registered on 2026-11-07, before launch (§ GA4 custom definitions). At L, confirm they're still listed.
 
 ### Baseline
 
@@ -43,19 +43,31 @@ Two things only the launch can start. Without them, L+28 has nothing to compare 
 
 The "Rules of Golf" group was added to `scripts/gsc-groups.mjs` with #244. It sits after every other named group, so it takes only queries that were Unassigned before it existed. Every other group's numbers are unchanged. A report filed earlier counts those queries under Unassigned.
 
-## GA4 custom definitions (owner step)
+## GA4 custom definitions
 
-Admin → Custom definitions → Create custom dimension, scope **Event**, for each row. Display names can't contain hyphens. Checked read-only on 2026-11-07: 24 of 50 event-scoped dimensions are registered, and these five would make 29. The side-game chooser's five (#224) are still unregistered; with them it's 34.
+**Registered 2026-11-07**, with the owner's yes in chat. All five are Event scope, and the property is at 29 of 50 event-scoped dimensions. Rules splits are "not available before 2026-11-07". GA4 doesn't backfill, but `/rules` sends nothing until launch, so every Rules event GA4 ever receives can be split.
 
-| Dimension name | Event parameter | Description |
+The owner chose these display names (GA4 doesn't allow hyphens in them):
+
+| Display name | Event parameter | Values |
 |---|---|---|
-| Rules rule number | `rule_number` | Rule 1 to 25 opened, shared or linked to the official text; none for a page-level link |
-| Rules open source | `source` | How a rule or situation was reached: browse, search, related or deep_link |
-| Rules situation | `scenario_id` | Id of the situation opened or shared, such as lost-ball |
-| Rules official document | `document_type` | Official document linked: rules, definitions, clarifications, local-rule or handicapping |
-| Rules related content | `content_id` | Rule, situation, glossary term or page a related link went to |
+| Rule number | `rule_number` | `1`–`25`; `none` for a page-level official link |
+| Opened from | `source` | `browse`, `search`, `related`, `deep_link` |
+| Rules situation | `scenario_id` | the 12 situation ids, such as `lost-ball` |
+| Official document | `document_type` | `rules`, `definitions`, `clarifications`, `local-rule`, `handicapping` |
+| Related content | `content_id` | `rule-N`, a situation id, a glossary slug, or a site path |
 
-Already registered, and shared with the Rules events: `result_bucket` (Glossary result count), `match_type` (Glossary match type; Rules searches add the value `fuzzy`), `category` (Blog category; Rules topics too), `destination_type` (Glossary destination; Rules related and CTA links too), `placement` (Placement) and `channel` (Share channel). Their display names and descriptions predate the Rules Center. Editing them is optional and also the owner's: the data doesn't change.
+**Shared dimensions.** These were already registered and keep their names; the owner declined renaming them:
+- `result_bucket` (Glossary result count).
+- `match_type` (Glossary match type). Rules searches add the value `fuzzy`.
+- `category` (Blog category). It carries the Rules topics too.
+- `destination_type` (Glossary destination). It carries the Rules related and CTA links too.
+- `placement` (Placement).
+- `channel` (Share channel).
+
+Read each by its parameter, not its display name.
+
+The side-game chooser's five (#224) are still unregistered.
 
 `source` isn't on GA4's reserved parameter list (checked 2026-11-07). If GA4 refuses it anyway, say so on #248 rather than renaming the param in code: a rename changes every report.
 
@@ -158,11 +170,11 @@ Official links: the latest run of the monthly `rules-sources` workflow (`docs/ru
 | Internal links and fragments | nothing printed | |
 | Official links | source check green; USGA links open | |
 | Inbound links (link map) | all present | |
-| GA4 custom definitions for the five Rules params | registered, with dates | |
+| GA4 custom definitions for the five Rules params | registered 2026-11-07 | |
 | Each Rules event seen in GA4 at least once | yes | |
 | First impression date for `/rules` | | |
 
-Then the actions, as issue links: anything broken, a dimension still unregistered (for the owner), and anything not on Google.
+Then the actions, as issue links: anything broken, a dimension missing from the list (for the owner), and anything not on Google.
 
 ## Launch + 28 days
 
