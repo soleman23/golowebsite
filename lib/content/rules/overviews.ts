@@ -9,6 +9,7 @@
  * result for each batch.
  */
 
+import type { ReviewEntry } from "../glossary/types";
 import { definitionSource, rogSource } from "./sources";
 import type { RuleOverview, RulesSource } from "./types";
 
@@ -22,6 +23,52 @@ const OPENED_237 = "2026-11-06";
 
 /** #239 (Rules 20–25): as OPENED_238. */
 const OPENED_239 = "2026-11-06";
+
+/**
+ * The review record of every approved overview (docs/rules/editorial-review.md
+ * § Stages). Two independent reviewer agents ran the rules, product and seo
+ * stages on the day each batch was drafted, and Codex's findings on each pull
+ * request were fixed as well; docs/rules/review-packet-overviews.md has the
+ * evidence. The approval is the owner's, given in chat. Internal: stripped by
+ * every public selector.
+ */
+const AGENTS_REVIEWED_ON = "2026-11-06";
+const OWNER_APPROVED_ON = "2026-11-06";
+
+const REVIEW_LOG: ReviewEntry[] = [
+  {
+    stage: "rules",
+    by: "agent",
+    on: AGENTS_REVIEWED_ON,
+    note: "Every sentence and question checked against the R&A rule pages and Definitions opened that day (review-packet-overviews.md).",
+  },
+  {
+    stage: "product",
+    by: "agent",
+    on: AGENTS_REVIEWED_ON,
+    note: "House voice, NEVER_WORDS, claim guard and copy distance: no run of eight words shared with the official text.",
+  },
+  {
+    stage: "seo",
+    by: "agent",
+    on: AGENTS_REVIEWED_ON,
+    note: "Fragment ids, glossary slugs, aliases and every source anchor resolve; lint:content passes.",
+  },
+  {
+    stage: "approval",
+    by: "owner",
+    on: OWNER_APPROVED_ON,
+    note: "Approved in chat (\"Approve all three\": #237, #238, #239).",
+  },
+];
+
+/** An overview the owner has approved; only the launch PR (#247) publishes it. */
+const ownerApproved: Written = {
+  status: "approved",
+  reviewedBy: "owner",
+  reviewedOn: OWNER_APPROVED_ON,
+  reviewLog: REVIEW_LOG,
+};
 
 /** Rule pages and Definitions a record rests on, each opened on `on`. */
 function opened(on: string, refs: string[], terms: string[] = []): RulesSource[] {
@@ -61,7 +108,7 @@ export const ruleOverviews: RuleOverview[] = [
     ],
     relatedGlossaryIds: ["mulligan", "breakfast-ball"],
     sources: opened(OPENED_237, ["1", "1.1", "1.2a", "1.3b", "1.3c", "18.1"], ["General Penalty"]),
-    status: "in-review",
+    ...ownerApproved,
   }),
   rule(2, {
     summary:
@@ -77,7 +124,7 @@ export const ruleOverviews: RuleOverview[] = [
       ["2", "2.2a", "2.2b", "2.2c", "2.3", "13.1f"],
       ["General Area", "Wrong Green"],
     ),
-    status: "in-review",
+    ...ownerApproved,
   }),
   rule(3, {
     summary:
@@ -90,7 +137,7 @@ export const ruleOverviews: RuleOverview[] = [
     ],
     relatedGlossaryIds: ["match-play", "stroke-play", "gimme", "net-score", "handicap-stroke"],
     sources: opened(OPENED_237, ["3", "3.1a", "3.1b", "3.1c", "3.2a", "3.2b", "3.2c", "3.3b", "3.3c"]),
-    status: "in-review",
+    ...ownerApproved,
   }),
   rule(4, {
     aliases: ["14 clubs", "club limit"],
@@ -104,7 +151,7 @@ export const ruleOverviews: RuleOverview[] = [
     ],
     relatedGlossaryIds: ["driver", "putter"],
     sources: opened(OPENED_237, ["4", "4.1a", "4.1b", "4.1c", "4.2a", "4.3a", "22.5", "23.7"], ["Committee"]),
-    status: "in-review",
+    ...ownerApproved,
   }),
 
   // Playing the round
@@ -118,7 +165,7 @@ export const ruleOverviews: RuleOverview[] = [
       "Can I stop playing when there's lightning?",
     ],
     sources: opened(OPENED_237, ["5", "5.2a", "5.2b", "5.3a", "5.5a", "5.5b", "5.6b", "5.7a"]),
-    status: "in-review",
+    ...ownerApproved,
   }),
   rule(6, {
     aliases: ["wrong ball"],
@@ -136,7 +183,7 @@ export const ruleOverviews: RuleOverview[] = [
       ["6", "6.1b", "6.2b", "6.3a", "6.3b", "6.3c", "6.4a", "6.4b"],
       ["Teeing Area", "Wrong Ball"],
     ),
-    status: "in-review",
+    ...ownerApproved,
   }),
   rule(7, {
     summary:
@@ -148,7 +195,7 @@ export const ruleOverviews: RuleOverview[] = [
       "Two balls of the same brand are in the rough: which is mine?",
     ],
     sources: opened(OPENED_237, ["7", "7.1a", "7.1b", "7.2", "7.3", "7.4"], ["Lost"]),
-    status: "in-review",
+    ...ownerApproved,
   }),
   rule(8, {
     summary:
@@ -160,7 +207,7 @@ export const ruleOverviews: RuleOverview[] = [
       "I bent a branch out of the way: can I undo it?",
     ],
     sources: opened(OPENED_237, ["8", "8.1", "8.1a", "8.1b", "8.1c"]),
-    status: "in-review",
+    ...ownerApproved,
   }),
   rule(9, {
     summary:
@@ -176,7 +223,7 @@ export const ruleOverviews: RuleOverview[] = [
       ["9", "9.1a", "9.2a", "9.2b", "9.3", "9.4a", "9.4b", "9.5a", "9.5b", "9.6"],
       ["Known or Virtually Certain", "Outside Influence"],
     ),
-    status: "in-review",
+    ...ownerApproved,
   }),
   rule(10, {
     aliases: ["advice"],
@@ -193,7 +240,7 @@ export const ruleOverviews: RuleOverview[] = [
       ["10", "10.1a", "10.1b", "10.2a", "10.2b", "22.2", "23.5a"],
       ["Advice"],
     ),
-    status: "in-review",
+    ...ownerApproved,
   }),
   rule(11, {
     summary:
@@ -205,7 +252,7 @@ export const ruleOverviews: RuleOverview[] = [
       "Can I stop a ball that's rolling toward the water?",
     ],
     sources: opened(OPENED_237, ["11", "11.1a", "11.1b", "11.2a", "11.2b", "11.3", "13.2b"]),
-    status: "in-review",
+    ...ownerApproved,
   }),
 
   // Course areas and procedures
@@ -220,7 +267,7 @@ export const ruleOverviews: RuleOverview[] = [
     ],
     relatedGlossaryIds: ["bunker", "sandy"],
     sources: opened(OPENED_238, ["12", "12.1", "12.2a", "12.2b"], ["General Penalty"]),
-    status: "in-review",
+    ...ownerApproved,
   }),
   rule(13, {
     aliases: ["flagstick", "wrong green"],
@@ -238,7 +285,7 @@ export const ruleOverviews: RuleOverview[] = [
       ["13", "13.1b", "13.1c", "13.1d", "13.1f", "13.2a", "13.2b", "13.3a"],
       ["Wrong Green"],
     ),
-    status: "in-review",
+    ...ownerApproved,
   }),
   rule(14, {
     aliases: ["wrong place"],
@@ -255,7 +302,7 @@ export const ruleOverviews: RuleOverview[] = [
       ["14", "14.1a", "14.3b", "14.3c", "14.5a", "14.7a", "14.7b"],
       ["Relief Area", "General Penalty"],
     ),
-    status: "in-review",
+    ...ownerApproved,
   }),
   rule(15, {
     summary:
@@ -271,7 +318,7 @@ export const ruleOverviews: RuleOverview[] = [
       ["15", "15.1a", "15.1b", "15.2a", "15.3b"],
       ["Loose Impediment", "Movable Obstruction"],
     ),
-    status: "in-review",
+    ...ownerApproved,
   }),
   rule(16, {
     aliases: ["plugged ball", "embedded ball", "casual water"],
@@ -296,7 +343,7 @@ export const ruleOverviews: RuleOverview[] = [
         "Embedded",
       ],
     ),
-    status: "in-review",
+    ...ownerApproved,
   }),
 
   // Relief and penalties
@@ -316,7 +363,7 @@ export const ruleOverviews: RuleOverview[] = [
       ["17", "17.1b", "17.1c", "17.1d", "17.3"],
       ["Penalty Area", "Club-Length", "Known or Virtually Certain"],
     ),
-    status: "in-review",
+    ...ownerApproved,
   }),
   rule(18, {
     aliases: ["OB"],
@@ -334,7 +381,7 @@ export const ruleOverviews: RuleOverview[] = [
       ["18", "18.1", "18.2a", "18.2b", "18.3a", "18.3b", "18.3c"],
       ["Stroke and Distance", "Lost", "Out of Bounds", "Known or Virtually Certain", "Provisional Ball"],
     ),
-    status: "in-review",
+    ...ownerApproved,
   }),
   rule(19, {
     summary:
@@ -351,7 +398,7 @@ export const ruleOverviews: RuleOverview[] = [
       ["19", "19.1", "19.2", "19.2a", "19.2b", "19.2c", "19.3a", "19.3b"],
       ["Club-Length"],
     ),
-    status: "in-review",
+    ...ownerApproved,
   }),
 
   // Rulings, formats and accessibility
