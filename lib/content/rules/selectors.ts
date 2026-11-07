@@ -171,6 +171,14 @@ export function hubRules(): RulesHub {
   return selectRules(ruleOverviews, rulesScenarios, rulesSelection());
 }
 
+/**
+ * Whether the Rules Center has a public face: live, with at least one
+ * published record. The sitemap and llms.txt list /rules only then (#243).
+ */
+export function rulesHasPublished(hub: RulesHub = publishedRules()): boolean {
+  return rulesLive && hub.overviews.length + hub.scenarios.length > 0;
+}
+
 /** Every fragment a published or shown record answers to on /rules. */
 export function rulesRecordIds(hub: RulesHub): Set<string> {
   return new Set([...hub.overviews.map((r) => r.id), ...hub.scenarios.map((s) => s.slug)]);

@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import {
   hubRules,
   publishedGlossaryTerms,
+  publishedRules,
   rulesCategories,
   rulesCategoryIds,
   rulesControlsCopy,
@@ -10,6 +11,9 @@ import {
   rulesDirectoryCopy,
   rulesFinalCta,
   rulesHero,
+  rulesHasPublished,
+  rulesLastModified,
+  rulesSchemaName,
   rulesBreadcrumb,
   rulesReviewCopy,
   rulesRouteVisible,
@@ -19,6 +23,8 @@ import {
   type RulesCategoryId,
 } from "@/lib/content";
 import { pageMetadata } from "@/lib/pageMetadata";
+import { organizationSummary, rulesCollectionNode, websiteNode } from "@/lib/schema";
+import { JsonLd } from "@/components/ui/JsonLd";
 import { FilterBoot } from "@/components/ui/FilterBoot";
 import { PageHero } from "@/components/ui/PageHero";
 import { FinalCTA } from "@/components/sections/FinalCTA";
@@ -37,9 +43,9 @@ import styles from "./rules.module.css";
 
 /**
  * Spec §9's title, trimmed so it fits with the template's " · GoLo"
- * (Amendment A14). Self-canonical to /rules with or without ?category=.
- * Schema, the sitemap entry and llms.txt come with #243; the photo with
- * #235.
+ * (Amendment A14). Self-canonical to /rules with or without ?category=, so
+ * a topic view is never a page of its own (#243). The share card comes with
+ * the photo (#235).
  *
  * A function rather than a `metadata` export: a static export is resolved
  * even when the page calls notFound(), and the 404's payload would carry
@@ -111,6 +117,24 @@ export default function RulesPage() {
   const topicLabels = Object.fromEntries(rulesCategories.map((c) => [c.id, c.label]));
   const topicsOf = (items: readonly { category: RulesCategoryId }[]) =>
     [...new Set(items.map((i) => i.category))].join(" ");
+
+  // Structured data describes published records only, never the local-review
+  // selection, and only once the Rules Center is live (#243).
+  const published = publishedRules();
+  const jsonLd = rulesHasPublished(published)
+    ? {
+        "@context": "https://schema.org",
+        "@graph": [
+          rulesCollectionNode(published, {
+            name: rulesSchemaName,
+            description: String(generateMetadata().description),
+            dateModified: rulesLastModified(published),
+          }),
+          organizationSummary(),
+          websiteNode(),
+        ],
+      }
+    : null;
 
   return (
     <RulesProvider
@@ -222,6 +246,8 @@ export default function RulesPage() {
       </div>
 
       <FinalCTA page="rules" {...rulesFinalCta} />
+
+      {jsonLd ? <JsonLd data={jsonLd} /> : null}
     </RulesProvider>
   );
 }

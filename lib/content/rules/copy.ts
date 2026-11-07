@@ -24,6 +24,10 @@ import {
 } from "./official";
 import type { PublicRulesLink, RulesDocument } from "./types";
 
+/** The CollectionPage's name (#243): the H1. Title and description are in
+ * the page's pageMetadata call, where the content check reads them. */
+export const rulesSchemaName = "Golf Rules Explained";
+
 /** The H1 is spec §9's; the title tag is in the page's pageMetadata call. */
 export const rulesHero = {
   kicker: "RULES OF GOLF",
