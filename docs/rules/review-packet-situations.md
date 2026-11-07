@@ -399,6 +399,6 @@ Checks both reviewers passed: no GoLo claims; `NEVER_WORDS` clean; E-3 condition
 
 **Post-approval change:** Codex finding C3 (above) added one sentence to `temporary-water` options[1]. Copy distance is still 0 runs of eight or more words (`npm run check:rules-copy`). **The owner confirmed the fix as part of the batch 2 approval in chat on November 6, 2026** ("Confirm fix").
 
-**Second post-approval change:** Codex finding C4 (above) changed `mark-lift-clean`'s answer, conditions[2] and penalty. Pending the owner's confirmation in chat.
+**Second post-approval change:** Codex finding C4 (above) changed `mark-lift-clean`'s answer, conditions[2] and penalty. The owner told me in chat on November 6, 2026 to verify the finding and fix it if real. I checked it against the fetched Rule 15.3b(2) text, which allows lifting only when the other player requires it and gives one penalty stroke otherwise, off the green. The finding is real, and the fix is the one above.
 
 **Seen in `next dev`** (the hub, #255, renders approved records marked "Not published"): all 12 situations render with their "Before you decide" lists, caveats and official links; no horizontal overflow at 320, 760, 1100 or 1440 px; no console errors; no review-log, `reviewedBy` or `checkedOn` text in the page. Focus styling is the hub's components', unchanged here.
