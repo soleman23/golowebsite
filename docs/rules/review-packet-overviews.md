@@ -311,3 +311,417 @@ Course areas and procedures (12–16) and relief and penalties (17–19), the mo
 
 **Owner approval:** approved in chat on November 6, 2026 ("Approve all three").
 
+## #237 · Rules 1–11
+
+Foundations and equipment (1–4) and playing the round (5–11). Sources opened November 6, 2026; both reviewer agents ran the same day.
+
+**Result.** Agent A found 5 errors, all fixed:
+
+- Rule 6 read as if you could swap balls mid-hole for free.
+- Rule 8 gave a practice swing the same protection as the stroke.
+- Rule 9 missed the two cases where a ball moved by wind is put back.
+- Rule 11 said a putt that hits the person tending the flagstick is replayed.
+- Rule 11 banned moving anything while a ball is in motion, which is broader than 11.3.
+
+Agent B found 1 error, also fixed: Rule 9 shared a 12-word run with 9.2a once "it's" is read as "it is".
+
+Codex then reviewed the pull request and raised four P2 points, all fixed: no between-hole practice from a bunker (Rule 5), a placed ball moved by wind into another area is put back too (Rule 9), others may still give some aiming help (Rule 10), and a putt that hits a ball-marker isn't replayed (Rule 11). Its second review raised three more, also fixed: accidental movement while applying a Rule is free (Rule 9), a provisional isn't a wrong ball (Rule 6), and the replay applies only to what a putt hits on the green (Rule 11). A third review raised three more, also fixed: a disturbed sand lie is re-created even if the ball didn't move (Rule 7), the accident exception covers specific actions, not every Rule (Rule 9), and stopping an opponent's dead ball to concede is allowed in match play (Rule 11). After your approval, three more reviews found narrower points, all fixed: you lift a ball to identify it only when you can't identify it as it lies (Rule 7, put to you and OK'd before merging); practice areas are open before a stroke-play round (Rule 5); a mark doesn't identify a ball when an identical marked ball is nearby (Rule 7); and an opponent who lifts your ball to concede or at your request isn't penalised (Rule 9).
+
+The two rules #237 singles out now say plainly what is a Committee matter. Rule 4 names the one Committee matter in the default Rule, a Local Rule banning distance devices, and says who the Committee is. Rule 10 says the advice limits cover the others in your group.
+
+Each summary is 117–120 words. The longest run shared with the official text is 7 words. `npm run lint:content` passes, and all 69 subrule anchors and 10 Definitions citations resolve against the pages fetched that day. Copy uses US spelling, as the rest of the site does; rule titles stay as the R&A writes them.
+
+**Owner calls** (approved on November 6, 2026, with the drafter's positions as written):
+
+1. **Rule 1 and house rules.** The card says players who agree to ignore a Rule they know applies are disqualified, and that mulligans and breakfast balls are house rules, not Rules. Both statements are what the Rules and `canonical-map.md` rule 4 say. The card doesn't spell out what follows: a group that plays breakfast balls by agreement isn't playing under the Rules. Agent B asked that you see the two sentences side by side. Confirm the tone, or ask for the second sentence to go first.
+2. **Questions as pointers.** As in #238, three questions are mapped to their subrules but not answered on the card: Rule 4 Q4 (broken club), Rule 6 Q4 (who tees off first) and Rule 10 Q3 (club on the ground to aim).
+3. **Related reading.** `canonical-map.md` says Rule 3's overview should link `/blog/match-play-vs-stroke-play` and `/games`, Rule 21's `/games`, and Rule 23's `/blog/best-ball-vs-scramble`. The records leave `relatedContentPaths` empty for now. `scripts/test-rules.mjs` runs the shipped records against a fixture that serves only four paths, and that test is outside this task's files. #242 (discovery) can add the links and the fixture paths together.
+
+### Rule 1 · The Game, Player Conduct and the Rules
+
+**Summary (119 words):** Rule 1 sets out the principles: play the course as you find it, play the ball as it lies, and play in the spirit of the game, with integrity, consideration for others and care for the course. You apply your own penalties, at three main levels: one stroke, the general penalty (two strokes in stroke play, loss of the hole in match play) and disqualification. Players who agree to ignore a Rule or penalty they know applies are disqualified once any of them has started the round. Mulligans and breakfast balls are house rules, not Rules: hitting again puts a new ball in play under Rule 18, with a penalty stroke, and the first ball is out of play.
+
+**Look here when:** Is a mulligan or a breakfast ball ever allowed under the Rules? · Do I have to call a penalty on myself? · What happens if our group agrees to skip a Rule? · What's the difference between a one-stroke penalty and the general penalty?
+
+**Glossary:** `mulligan`, `breakfast-ball` · **Aliases:** `mulligan`, `breakfast ball` · **Sources:** 1, 1.1, 1.2a, 1.3b, 1.3c, 18.1, Definitions: General Penalty
+
+| # | Sentence | Rests on |
+|---:|---|---|
+| 1 | Rule 1 sets out the principles: play the course as you find it, play the ball as it lies, and play in the spirit of the game, with integrity, consideration for others and care for the course. | [1.1](https://www.randa.org/en/rog/the-rules-of-golf/rule-1#1_1), [1.2a](https://www.randa.org/en/rog/the-rules-of-golf/rule-1#1_2a) |
+| 2 | You apply your own penalties, at three main levels: one stroke, the general penalty (two strokes in stroke play, loss of the hole in match play) and disqualification. | [1.3b](https://www.randa.org/en/rog/the-rules-of-golf/rule-1#1_3b), [1.3c](https://www.randa.org/en/rog/the-rules-of-golf/rule-1#1_3c), Definitions: General Penalty |
+| 3 | Players who agree to ignore a Rule or penalty they know applies are disqualified once any of them has started the round. | [1.3b](https://www.randa.org/en/rog/the-rules-of-golf/rule-1#1_3b) |
+| 4 | Mulligans and breakfast balls are house rules, not Rules: hitting again puts a new ball in play under Rule 18, with a penalty stroke, and the first ball is out of play. | [18.1](https://www.randa.org/en/rog/the-rules-of-golf/rule-18#18_1) |
+| Q1 | Is a mulligan or a breakfast ball ever allowed under the Rules? | [18.1](https://www.randa.org/en/rog/the-rules-of-golf/rule-18#18_1) |
+| Q2 | Do I have to call a penalty on myself? | [1.3b](https://www.randa.org/en/rog/the-rules-of-golf/rule-1#1_3b) |
+| Q3 | What happens if our group agrees to skip a Rule? | [1.3b](https://www.randa.org/en/rog/the-rules-of-golf/rule-1#1_3b) |
+| Q4 | What's the difference between a one-stroke penalty and the general penalty? | [1.3c](https://www.randa.org/en/rog/the-rules-of-golf/rule-1#1_3c), Definitions: General Penalty |
+
+**Review findings and resolution:**
+
+- *Rules accuracy (agent A), gap:* "Hitting again is stroke and distance" didn't say the first ball is then out of play even if found; only an announced provisional keeps it alive (18.1, 18.3). **Resolution:** Fixed: "hitting again puts a new ball in play under Rule 18, with a penalty stroke, and the first ball is out of play." The provisional is in Rule 18's overview.
+- *Rules accuracy (agent A), nit:* "Knowingly agree to ignore a Rule": the test is that they know the Rule or penalty applies (1.3b(1)). **Resolution:** Fixed: "agree to ignore a Rule or penalty they know applies".
+- *Rules accuracy (agent A), nit:* 1.3c(2) says three main levels. **Resolution:** Fixed: "three main levels".
+- *Rules accuracy (agent A), nit:* "From the same spot" is loose (14.6). **Resolution:** Wording removed in the rewrite.
+- *Site rules (agent B), should-fix:* The disqualification sentence followed by the mulligan sentence told a group that plays breakfast balls it is "all disqualified", and the record never called these house rules (canonical-map.md rule 4). **Resolution:** Fixed: "Mulligans and breakfast balls are house rules, not Rules". The disqualification sentence states only what 1.3b(1) says. Flagged for the owner below.
+- *Site rules (agent B), nit:* "Sets the ground rules" is mild wordplay and could be read as Local Rules; it is also the search snippet. **Resolution:** Fixed: "Rule 1 sets out the principles".
+- *Site rules (agent B), nit:* The penalty list was dense. **Resolution:** Fixed: "the general penalty (two strokes in stroke play, loss of the hole in match play)".
+
+**Copy distance:** longest run shared with the R&A text is 7 words ("play the course as you find it"); no run of 8 or more.
+
+**Owner approval:** approved in chat on November 6, 2026 ("Approve all three").
+
+### Rule 2 · The Course
+
+**Summary (119 words):** Rule 2 names the five areas of the course, because where your ball lies changes what you may do: the general area (fairway, rough, trees and everything else) and four specific areas: the teeing area you start from, penalty areas, bunkers, and the putting green on the hole you're playing. Every other tee and green is general area, though you must take free relief from a wrong green. A ball partly in a specific area counts as in it; one in two counts as in the penalty area over a bunker, and bunker over green. You can move loose impediments and movable obstructions without penalty, and abnormal course conditions can give free relief; boundary and integral objects give none.
+
+**Look here when:** My ball is half on the grass and half in the bunker: which area is it in? · Is another hole's green part of the general area? · Which objects and conditions give free relief?
+
+**Glossary:** `teeing-area`, `fairway`, `rough`, `bunker`, `penalty-area` · **Aliases:** none · **Sources:** 2, 2.2a, 2.2b, 2.2c, 2.3, 13.1f, Definitions: General Area, Definitions: Wrong Green
+
+| # | Sentence | Rests on |
+|---:|---|---|
+| 1 | Rule 2 names the five areas of the course, because where your ball lies changes what you may do: the general area (fairway, rough, trees and everything else) and four specific areas: the teeing area you start from, penalty areas, bunkers, and the putting green on the hole you're playing. | [2.2a](https://www.randa.org/en/rog/the-rules-of-golf/rule-2#2_2a), [2.2b](https://www.randa.org/en/rog/the-rules-of-golf/rule-2#2_2b), [2.2c](https://www.randa.org/en/rog/the-rules-of-golf/rule-2#2_2c) |
+| 2 | Every other tee and green is general area, though you must take free relief from a wrong green. | Definitions: General Area, [13.1f](https://www.randa.org/en/rog/the-rules-of-golf/rule-13#13_1f), Definitions: Wrong Green |
+| 3 | A ball partly in a specific area counts as in it; one in two counts as in the penalty area over a bunker, and bunker over green. | [2.2c](https://www.randa.org/en/rog/the-rules-of-golf/rule-2#2_2c) |
+| 4 | You can move loose impediments and movable obstructions without penalty, and abnormal course conditions can give free relief; boundary and integral objects give none. | [2.3](https://www.randa.org/en/rog/the-rules-of-golf/rule-2#2_3) |
+| Q1 | My ball is half on the grass and half in the bunker: which area is it in? | [2.2c](https://www.randa.org/en/rog/the-rules-of-golf/rule-2#2_2c) |
+| Q2 | Is another hole's green part of the general area? | Definitions: General Area, Definitions: Wrong Green |
+| Q3 | Which objects and conditions give free relief? | [2.3](https://www.randa.org/en/rog/the-rules-of-golf/rule-2#2_3) |
+
+**Review findings and resolution:**
+
+- *Rules accuracy (agent A), gap:* Other holes' greens are general area, but a ball on a wrong green must take free relief (13.1f). **Resolution:** Fixed: "though you must take free relief from a wrong green"; 13.1f and Definitions: Wrong Green added.
+- *Rules accuracy (agent A), nit:* Every other teeing location, including other tees on the same hole, and practice greens are general area. **Resolution:** Fixed: "Every other tee and green is general area".
+- *Rules accuracy (agent A), nit:* In a bunker the ball must touch sand (12.1); in a penalty area overhanging counts (17.1a). **Resolution:** Not added, for length; "partly in a specific area" defers to each area's own test, which Rules 12 and 17 state.
+- *Rules accuracy (agent A), nit:* 2.1 supported nothing. **Resolution:** Fixed: removed.
+- *Site rules (agent B), should-fix:* "Specific area" was used without being introduced. **Resolution:** Fixed: "the general area (...) and four specific areas: ...".
+- *Site rules (agent B), should-fix:* "Penalty area comes before bunker" could be read as order on the hole. **Resolution:** Fixed: "one in two counts as in the penalty area over a bunker, and bunker over green."
+- *Site rules (agent B), should-fix:* "Loose impediments ... can give free relief" invited a free drop away from a leaf. **Resolution:** Fixed: "You can move loose impediments and movable obstructions without penalty, and abnormal course conditions can give free relief".
+- *Site rules (agent B), nit:* Q3 should say objects and conditions. **Resolution:** Fixed: "Which objects and conditions give free relief?"
+
+**Copy distance:** longest run shared with the R&A text is 5 words ("five areas of the course"); no run of 8 or more.
+
+**Owner approval:** approved in chat on November 6, 2026 ("Approve all three").
+
+### Rule 3 · The Competition
+
+**Summary (119 words):** Rule 3 covers the three choices behind every competition: match play or stroke play, individual or partners, and gross or net scores. In match play you win, lose or tie holes, and you may concede your opponent's next stroke, a hole or the whole match; a concession can't be declined or withdrawn. In stroke play you must hole out on every hole, with no gimmes; finish an unfinished hole before the next tee or you're disqualified. You and your marker certify the scorecard: a hole score too high stands; one too low disqualifies you, unless it's short only by a penalty you had no reason to suspect. In a handicap match, the stroke index decides which holes get strokes.
+
+**Look here when:** Can we give each other gimmes in stroke play? · Can I take back a putt I've conceded? · What if I sign for the wrong score on a hole? · Where do handicap strokes fall in a match?
+
+**Glossary:** `match-play`, `stroke-play`, `gimme`, `net-score`, `handicap-stroke` · **Aliases:** none · **Sources:** 3, 3.1a, 3.1b, 3.1c, 3.2a, 3.2b, 3.2c, 3.3b, 3.3c
+
+| # | Sentence | Rests on |
+|---:|---|---|
+| 1 | Rule 3 covers the three choices behind every competition: match play or stroke play, individual or partners, and gross or net scores. | [3.1a](https://www.randa.org/en/rog/the-rules-of-golf/rule-3#3_1a), [3.1b](https://www.randa.org/en/rog/the-rules-of-golf/rule-3#3_1b), [3.1c](https://www.randa.org/en/rog/the-rules-of-golf/rule-3#3_1c) |
+| 2 | In match play you win, lose or tie holes, and you may concede your opponent's next stroke, a hole or the whole match; a concession can't be declined or withdrawn. | [3.2a](https://www.randa.org/en/rog/the-rules-of-golf/rule-3#3_2a), [3.2b](https://www.randa.org/en/rog/the-rules-of-golf/rule-3#3_2b) |
+| 3 | In stroke play you must hole out on every hole, with no gimmes; finish an unfinished hole before the next tee or you're disqualified. | [3.3c](https://www.randa.org/en/rog/the-rules-of-golf/rule-3#3_3c) |
+| 4 | You and your marker certify the scorecard: a hole score too high stands; one too low disqualifies you, unless it's short only by a penalty you had no reason to suspect. | [3.3b](https://www.randa.org/en/rog/the-rules-of-golf/rule-3#3_3b) |
+| 5 | In a handicap match, the stroke index decides which holes get strokes. | [3.2c](https://www.randa.org/en/rog/the-rules-of-golf/rule-3#3_2c) |
+| Q1 | Can we give each other gimmes in stroke play? | [3.2b](https://www.randa.org/en/rog/the-rules-of-golf/rule-3#3_2b), [3.3c](https://www.randa.org/en/rog/the-rules-of-golf/rule-3#3_3c) |
+| Q2 | Can I take back a putt I've conceded? | [3.2b](https://www.randa.org/en/rog/the-rules-of-golf/rule-3#3_2b) |
+| Q3 | What if I sign for the wrong score on a hole? | [3.3b](https://www.randa.org/en/rog/the-rules-of-golf/rule-3#3_3b) |
+| Q4 | Where do handicap strokes fall in a match? | [3.2c](https://www.randa.org/en/rog/the-rules-of-golf/rule-3#3_2c) |
+
+**Review findings and resolution:**
+
+- *Rules accuracy (agent A), gap:* The unknown-penalty exception is narrower than "a penalty you didn't know about": not for disqualification, not if you were told or unsure and didn't raise it (3.3b(3)); and the sentence is stroke play only. **Resolution:** Fixed: "unless it's short only by a penalty you had no reason to suspect", in the stroke-play part of the summary.
+- *Rules accuracy (agent A), gap:* No consequence for failing to hole out (3.3c). **Resolution:** Fixed: "finish an unfinished hole before the next tee or you're disqualified."
+- *Rules accuracy (agent A), nit:* A blanket "inside the leather is good" isn't a valid concession. **Resolution:** Not added, for length; the conceded-putt situation (#241) covers it.
+- *Rules accuracy (agent A), nit:* "Every stroke counts" ignores strokes that don't count (6.1b, 6.3c). **Resolution:** Fixed: the phrase was cut.
+- *Site rules (agent B), should-fix:* The scorecard sentence didn't say it was stroke play. **Resolution:** Fixed: it now follows the "In stroke play" sentence directly.
+- *Site rules (agent B), should-fix:* "Strokes fall hole by hole by the stroke index" was awkward. **Resolution:** Fixed: "In a handicap match, the stroke index decides which holes get strokes."
+- *Site rules (agent B), nit:* "Concede a stroke" could be read as admitting a stroke. **Resolution:** Fixed: "concede your opponent's next stroke, a hole or the whole match" ("whole" kept: without it the phrase is an 8-word run).
+- *Site rules (agent B), nit:* canonical-map.md pairs Rule 3 with /blog/match-play-vs-stroke-play and lets it link /games. **Resolution:** Deferred, flagged for the owner below: added, then taken out, because scripts/test-rules.mjs runs the shipped records against a fixture that serves only four paths, and that test file is outside this batch's files.
+
+**Copy distance:** longest run shared with the R&A text is 7 words ("opponent's next stroke a hole or the"); no run of 8 or more.
+
+**Owner approval:** approved in chat on November 6, 2026 ("Approve all three").
+
+### Rule 4 · The Player’s Equipment
+
+**Summary (120 words):** Rule 4 covers the clubs, balls and other equipment you may use. Start with no more than 14 clubs. Carry more and it's two penalty strokes per hole with the breach, up to four, in stroke play; in match play, a hole off the match score for each, up to two. Declare any extra club out of play before your next stroke. You can't borrow a club from anyone playing on the course, though partners may share 14. Clubs and balls must conform; hitting a club you adjusted mid-round, without resetting it, is disqualification. A rangefinder for distance is allowed unless the Committee, whoever runs the competition or course, bans it by Local Rule; measuring slope or wind is not.
+
+**Look here when:** I found a 15th club in my bag: what now? · Can I use a rangefinder with a slope setting? · Can I borrow a club from someone in my group? · My club broke during the round: can I replace it?
+
+**Glossary:** `driver`, `putter` · **Aliases:** `14 clubs`, `club limit` · **Sources:** 4, 4.1a, 4.1b, 4.1c, 4.2a, 4.3a, 22.5, 23.7, Definitions: Committee
+
+| # | Sentence | Rests on |
+|---:|---|---|
+| 1 | Rule 4 covers the clubs, balls and other equipment you may use. | [Rule 4](https://www.randa.org/en/rog/the-rules-of-golf/rule-4) |
+| 2 | Start with no more than 14 clubs. | [4.1b](https://www.randa.org/en/rog/the-rules-of-golf/rule-4#4_1b) |
+| 3 | Carry more and it's two penalty strokes per hole with the breach, up to four, in stroke play; in match play, a hole off the match score for each, up to two. | [4.1b](https://www.randa.org/en/rog/the-rules-of-golf/rule-4#4_1b) |
+| 4 | Declare any extra club out of play before your next stroke. | [4.1c](https://www.randa.org/en/rog/the-rules-of-golf/rule-4#4_1c) |
+| 5 | You can't borrow a club from anyone playing on the course, though partners may share 14. | [4.1b](https://www.randa.org/en/rog/the-rules-of-golf/rule-4#4_1b), [22.5](https://www.randa.org/en/rog/the-rules-of-golf/rule-22#22_5), [23.7](https://www.randa.org/en/rog/the-rules-of-golf/rule-23#23_7) |
+| 6 | Clubs and balls must conform; hitting a club you adjusted mid-round, without resetting it, is disqualification. | [4.1a](https://www.randa.org/en/rog/the-rules-of-golf/rule-4#4_1a), [4.2a](https://www.randa.org/en/rog/the-rules-of-golf/rule-4#4_2a) |
+| 7 | A rangefinder for distance is allowed unless the Committee, whoever runs the competition or course, bans it by Local Rule; measuring slope or wind is not. | [4.3a](https://www.randa.org/en/rog/the-rules-of-golf/rule-4#4_3a), Definitions: Committee |
+| Q1 | I found a 15th club in my bag: what now? | [4.1b](https://www.randa.org/en/rog/the-rules-of-golf/rule-4#4_1b), [4.1c](https://www.randa.org/en/rog/the-rules-of-golf/rule-4#4_1c) |
+| Q2 | Can I use a rangefinder with a slope setting? | [4.3a](https://www.randa.org/en/rog/the-rules-of-golf/rule-4#4_3a) |
+| Q3 | Can I borrow a club from someone in my group? | [4.1b](https://www.randa.org/en/rog/the-rules-of-golf/rule-4#4_1b) |
+| Q4 | My club broke during the round: can I replace it? | [4.1a](https://www.randa.org/en/rog/the-rules-of-golf/rule-4#4_1a) |
+
+**Review findings and resolution:**
+
+- *Rules accuracy (agent A), gap:* The extra club must be declared out of play before your next stroke, by a declaration or clear act (4.1c(1)). **Resolution:** Fixed: "Declare any extra club out of play before your next stroke."
+- *Rules accuracy (agent A), gap:* Partners in Foursomes and Four-Ball may share clubs if they carry 14 or fewer between them (22.5, 23.7). **Resolution:** Fixed: "though partners may share 14"; 22.5 and 23.7 added.
+- *Rules accuracy (agent A), gap:* The ball half of "clubs and balls must conform" is 4.2a, not cited. **Resolution:** Fixed: 4.2a added.
+- *Rules accuracy (agent A), gap:* Q4 (broken club) gets no answer; 4.1a(2) is cited. **Resolution:** Kept as a pointer to 4.1a(2), for length. Flagged for the owner below.
+- *Rules accuracy (agent A), nit:* No penalty if an adjusted setting is put back before the club is used (4.1a(3) Exception). **Resolution:** Fixed: "a club you adjusted mid-round, without resetting it".
+- *Rules accuracy (agent A), nit:* A slope-capable rangefinder is fine with slope off (4.3). **Resolution:** The copy bans measuring slope, not carrying the device; left as is.
+- *Site rules (agent B), should-fix:* "A hole comes off your match score per hole" was muddled. **Resolution:** Fixed: "in match play, a hole off the match score for each, up to two."
+- *Site rules (agent B), nit:* "At the course" suggested measuring elsewhere is fine. **Resolution:** Fixed: removed.
+- *Site rules (agent B), should-fix:* #237 asks Rules 4 and 10 to say plainly what is a Committee matter; "Committee" was never explained. **Resolution:** Fixed: "the Committee, whoever runs the competition or course", with Definitions: Committee added. The rangefinder is the only Committee matter in the default Rule 4.
+
+**Copy distance:** longest run shared with the R&A text is 5 words ("clubs balls and other equipment"); no run of 8 or more.
+
+**Owner approval:** approved in chat on November 6, 2026 ("Approve all three").
+
+### Rule 5 · Playing the Round
+
+**Summary (120 words):** Rule 5 covers starting on time, practicing, keeping pace and stopping play. Up to five minutes late but ready to play, or up to five minutes early, is the general penalty on the first hole; beyond that is disqualification. By default you can't practice on the course before a stroke-play round that day, except on a practice area or by putting or chipping near the first tee; before a match you can. You can't hit practice shots during a hole, though between holes you may putt or chip near the green just finished or the next tee, not from a bunker. The Committee can change these limits by Local Rule. You may stop for lightning, but must tell the Committee.
+
+**Look here when:** Can I hit a few putts on the green after we finish a hole? · What happens if I'm late to the first tee? · Can I practice on the course before a stroke-play round? · Can I stop playing when there's lightning?
+
+**Glossary:** none · **Aliases:** none · **Sources:** 5, 5.2a, 5.2b, 5.3a, 5.5a, 5.5b, 5.6b, 5.7a
+
+| # | Sentence | Rests on |
+|---:|---|---|
+| 1 | Rule 5 covers starting on time, practicing, keeping pace and stopping play. | [Rule 5](https://www.randa.org/en/rog/the-rules-of-golf/rule-5), [5.6b](https://www.randa.org/en/rog/the-rules-of-golf/rule-5#5_6b) |
+| 2 | Up to five minutes late but ready to play, or up to five minutes early, is the general penalty on the first hole; beyond that is disqualification. | [5.3a](https://www.randa.org/en/rog/the-rules-of-golf/rule-5#5_3a) |
+| 3 | By default you can't practice on the course before a stroke-play round that day, except on a practice area or by putting or chipping near the first tee; before a match you can. | [5.2a](https://www.randa.org/en/rog/the-rules-of-golf/rule-5#5_2a), [5.2b](https://www.randa.org/en/rog/the-rules-of-golf/rule-5#5_2b) |
+| 4 | You can't hit practice shots during a hole, though between holes you may putt or chip near the green just finished or the next tee, not from a bunker. | [5.5a](https://www.randa.org/en/rog/the-rules-of-golf/rule-5#5_5a), [5.5b](https://www.randa.org/en/rog/the-rules-of-golf/rule-5#5_5b) |
+| 5 | The Committee can change these limits by Local Rule. | [5.2b](https://www.randa.org/en/rog/the-rules-of-golf/rule-5#5_2b), [5.5b](https://www.randa.org/en/rog/the-rules-of-golf/rule-5#5_5b) |
+| 6 | You may stop for lightning, but must tell the Committee. | [5.7a](https://www.randa.org/en/rog/the-rules-of-golf/rule-5#5_7a) |
+| Q1 | Can I hit a few putts on the green after we finish a hole? | [5.5b](https://www.randa.org/en/rog/the-rules-of-golf/rule-5#5_5b) |
+| Q2 | What happens if I'm late to the first tee? | [5.3a](https://www.randa.org/en/rog/the-rules-of-golf/rule-5#5_3a) |
+| Q3 | Can I practice on the course before a stroke-play round? | [5.2b](https://www.randa.org/en/rog/the-rules-of-golf/rule-5#5_2b) |
+| Q4 | Can I stop playing when there's lightning? | [5.7a](https://www.randa.org/en/rog/the-rules-of-golf/rule-5#5_7a) |
+
+**Review findings and resolution:**
+
+- *Rules accuracy (agent A), gap:* No practice before a stroke-play round was stated as absolute; 5.2b allows putting or chipping near the first tee, and the Committee can change the default either way (Model Local Rule I-1, named in 5.2b). **Resolution:** Fixed: "By default ... except on a practice area or by putting or chipping near the first tee" and "The Committee can change these limits by Local Rule." No Model Local Rule is named or implied to be in force.
+- *Rules accuracy (agent A), gap:* Practising on the green just finished can be banned by Local Rule (I-2, named in 5.5b). **Resolution:** Covered by the same Committee sentence.
+- *Rules accuracy (agent A), nit:* Starting up to five minutes early is also the general penalty (5.3a Exception 2). **Resolution:** Fixed.
+- *Rules accuracy (agent A), nit:* The 40 seconds is only a recommendation; the Committee's pace policy may set real limits. **Resolution:** The 40-second sentence was cut for length.
+- *Rules accuracy (agent A), nit:* 5.1 supported nothing. **Resolution:** Fixed: removed.
+- *Site rules (agent B), nit:* "Arrive ready but up to five minutes late" was awkward; "practise" is British spelling. **Resolution:** Fixed: "Up to five minutes late but ready to play, ..."; US "practice" throughout the copy (the R&A titles stay verbatim).
+- *Codex, on the pull request, P2:* Between-hole putting or chipping may not be from a bunker (5.5b), even without a Local Rule. **Resolution:** Fixed: "not from a bunker". The first sentence was shortened to fit.
+- *Codex, on the pull request, P2:* Fifth review, after the owner's approval: 5.2b also allows practice on any practice area before a stroke-play round, not just putting or chipping near the first tee. **Resolution:** Fixed after approval: "except on a practice area or by putting or chipping near the first tee". Two small cuts keep the summary at 120 words.
+
+**Copy distance:** longest run shared with the R&A text is 5 words ("the general penalty on the"); no run of 8 or more.
+
+**Owner approval:** approved in chat on November 6, 2026 ("Approve all three").
+
+### Rule 6 · Playing a Hole
+
+**Summary (120 words):** Rule 6 covers playing a hole: teeing off, the ball you use and the order of play. Tee off inside the teeing area, two club-lengths deep behind the front of the tee markers. Outside it, stroke play costs two penalty strokes and a replay; match play has no penalty, but your opponent may make you replay. Hole out with the ball you started with unless it's lost or out of bounds or a Rule lets you change it, as when taking relief; a swap otherwise costs a stroke. Playing a wrong ball, one that isn't your ball in play or your provisional, costs the general penalty; in stroke play, return to your own before the next tee or be disqualified.
+
+**Look here when:** I teed up in front of the markers: what's the penalty? · Can I switch to a new ball in the middle of a hole? · I played someone else's ball by mistake: what now? · Who tees off first on the next hole?
+
+**Glossary:** `teeing-area` · **Aliases:** `wrong ball` · **Sources:** 6, 6.1b, 6.2b, 6.3a, 6.3b, 6.3c, 6.4a, 6.4b, Definitions: Teeing Area, Definitions: Wrong Ball
+
+| # | Sentence | Rests on |
+|---:|---|---|
+| 1 | Rule 6 covers playing a hole: teeing off, the ball you use and the order of play. | [Rule 6](https://www.randa.org/en/rog/the-rules-of-golf/rule-6), [6.4a](https://www.randa.org/en/rog/the-rules-of-golf/rule-6#6_4a), [6.4b](https://www.randa.org/en/rog/the-rules-of-golf/rule-6#6_4b) |
+| 2 | Tee off inside the teeing area, two club-lengths deep behind the front of the tee markers. | [6.2b](https://www.randa.org/en/rog/the-rules-of-golf/rule-6#6_2b), Definitions: Teeing Area |
+| 3 | Outside it, stroke play costs two penalty strokes and a replay; match play has no penalty, but your opponent may make you replay. | [6.1b](https://www.randa.org/en/rog/the-rules-of-golf/rule-6#6_1b) |
+| 4 | Hole out with the ball you started with unless it's lost or out of bounds or a Rule lets you change it, as when taking relief; a swap otherwise costs a stroke. | [6.3a](https://www.randa.org/en/rog/the-rules-of-golf/rule-6#6_3a), [6.3b](https://www.randa.org/en/rog/the-rules-of-golf/rule-6#6_3b) |
+| 5 | Playing a wrong ball, one that isn't your ball in play or your provisional, costs the general penalty; in stroke play, return to your own before the next tee or be disqualified. | [6.3c](https://www.randa.org/en/rog/the-rules-of-golf/rule-6#6_3c), Definitions: Wrong Ball |
+| Q1 | I teed up in front of the markers: what's the penalty? | [6.1b](https://www.randa.org/en/rog/the-rules-of-golf/rule-6#6_1b) |
+| Q2 | Can I switch to a new ball in the middle of a hole? | [6.3b](https://www.randa.org/en/rog/the-rules-of-golf/rule-6#6_3b) |
+| Q3 | I played someone else's ball by mistake: what now? | [6.3c](https://www.randa.org/en/rog/the-rules-of-golf/rule-6#6_3c) |
+| Q4 | Who tees off first on the next hole? | [6.4a](https://www.randa.org/en/rog/the-rules-of-golf/rule-6#6_4a), [6.4b](https://www.randa.org/en/rog/the-rules-of-golf/rule-6#6_4b) |
+
+**Review findings and resolution:**
+
+- *Rules accuracy (agent A), error:* "Unless ... you substitute another" read as if swapping balls were a free option; substitution is allowed only when a Rule allows it, otherwise one penalty stroke (6.3b). **Resolution:** Fixed: "unless it's lost or out of bounds or a Rule lets you change it, as when taking relief; a swap otherwise costs a stroke."
+- *Rules accuracy (agent A), gap:* In stroke play the wrong-ball strokes don't count and failing to correct before the next tee is disqualification (6.1b(2), 6.3c(1)). **Resolution:** Fixed for the wrong ball: "in stroke play, return to your own before the next tee or be disqualified." The teeing-area sentence says "a replay"; the disqualification detail is left to 6.1b, for length.
+- *Rules accuracy (agent A), gap:* Q4 (honour) gets no answer. **Resolution:** Kept as a pointer to 6.4a and 6.4b; the out-of-turn sentence was cut for length. Flagged for the owner below.
+- *Rules accuracy (agent A), nit:* A provisional or a second ball under 14.7b isn't a wrong ball. **Resolution:** Fixed: "a wrong ball, one that isn't your ball in play or your provisional" (narrowed again after Codex's finding below).
+- *Rules accuracy (agent A), nit:* Feet may be outside the teeing area (6.2b(1)). **Resolution:** Not added, for length.
+- *Site rules (agent B), should-fix:* Same substitution point as agent A; "(any ball not yours in play)" parsed two ways. **Resolution:** Fixed with agent A's error.
+- *Site rules (agent B), nit:* "Honour" is British; "tee-markers" doesn't match the glossary's "tee markers". **Resolution:** Fixed: Q4 is now "Who tees off first on the next hole?"; "tee markers".
+- *Codex, on the pull request, P2:* Second review: "one that isn't your ball in play" would make a properly announced provisional a wrong ball (6.3d, 18.3c(1); Definitions: Wrong Ball). **Resolution:** Fixed: "one that isn't your ball in play or your provisional". A second ball under 14.7b or 20.1c is left to the Definition, for length.
+
+**Copy distance:** longest run shared with the R&A text is 6 words ("is lost or out of bounds"); no run of 8 or more.
+
+**Owner approval:** approved in chat on November 6, 2026 ("Approve all three").
+
+### Rule 7 · Ball Search: Finding and Identifying Ball
+
+**Summary (120 words):** Rule 7 covers finding and identifying your ball. You have three minutes from when you or your caddie start looking, then it's lost. You may move grass, bushes, sand and water while searching; it's a penalty only if that goes beyond a reasonable search and improves your next shot. If anyone accidentally moves your ball while looking, there's no penalty; put it back. If searching disturbed sand on it, re-create the lie before playing. If you can't identify a ball as it lies, mark and lift it, cleaning only enough to tell. It's yours if someone saw your ball come to rest, or if it carries your mark or matches yours where yours should be, with no identical ball nearby.
+
+**Look here when:** How long can I search for my ball? · I stepped on my ball while looking for it: is that a penalty? · Can I pick up a ball to see if it's mine? · Two balls of the same brand are in the rough: which is mine?
+
+**Glossary:** none · **Aliases:** none · **Sources:** 7, 7.1a, 7.1b, 7.2, 7.3, 7.4, Definitions: Lost
+
+| # | Sentence | Rests on |
+|---:|---|---|
+| 1 | Rule 7 covers finding and identifying your ball. | [Rule 7](https://www.randa.org/en/rog/the-rules-of-golf/rule-7) |
+| 2 | You have three minutes from when you or your caddie start looking, then it's lost. | Definitions: Lost |
+| 3 | You may move grass, bushes, sand and water while searching; it's a penalty only if that goes beyond a reasonable search and improves your next shot. | [7.1a](https://www.randa.org/en/rog/the-rules-of-golf/rule-7#7_1a) |
+| 4 | If anyone accidentally moves your ball while looking, there's no penalty; put it back. | [7.4](https://www.randa.org/en/rog/the-rules-of-golf/rule-7#7_4) |
+| 5 | If searching disturbed sand on it, re-create the lie before playing. | [7.1b](https://www.randa.org/en/rog/the-rules-of-golf/rule-7#7_1b) |
+| 6 | If you can't identify a ball as it lies, mark and lift it, cleaning only enough to tell. | [7.3](https://www.randa.org/en/rog/the-rules-of-golf/rule-7#7_3) |
+| 7 | It's yours if someone saw your ball come to rest, or if it carries your mark or matches yours where yours should be, with no identical ball nearby. | [7.2](https://www.randa.org/en/rog/the-rules-of-golf/rule-7#7_2) |
+| Q1 | How long can I search for my ball? | Definitions: Lost |
+| Q2 | I stepped on my ball while looking for it: is that a penalty? | [7.4](https://www.randa.org/en/rog/the-rules-of-golf/rule-7#7_4) |
+| Q3 | Can I pick up a ball to see if it's mine? | [7.3](https://www.randa.org/en/rog/the-rules-of-golf/rule-7#7_3) |
+| Q4 | Two balls of the same brand are in the rough: which is mine? | [7.2](https://www.randa.org/en/rog/the-rules-of-golf/rule-7#7_2) |
+
+**Review findings and resolution:**
+
+- *Rules accuracy (agent A), gap:* Q1 (how long to search) wasn't answered; Definitions: Lost was cited but unused. **Resolution:** Fixed: "You have three minutes from when you or your caddie start looking, then it's lost."
+- *Rules accuracy (agent A), gap:* "If someone saw it come to rest" is looser than 7.2: it must be seen in circumstances where it's known to be your ball. **Resolution:** Fixed: "if someone saw your ball come to rest" (the list was restructured again for Codex's sixth review, below).
+- *Rules accuracy (agent A), gap:* Q4 (two identical balls): if you can't tell which is yours, neither is identified. **Resolution:** The summary's "no identical ball is nearby" condition carries it; no words left for the consequence.
+- *Rules accuracy (agent A), nit:* Lifting without need, not marking, or over-cleaning is one stroke (7.3); kicking the ball before the search starts is one stroke (7.4). **Resolution:** Not added, for length.
+- *Site rules (agent B), should-fix:* "So long as you don't go beyond a reasonable search and improve your next shot" read as two separate bans. **Resolution:** Fixed: "it's a penalty only if that goes beyond a reasonable search and improves your next shot."
+- *Codex, on the pull request, P2:* Third review: sand moved in a search must be put back to re-create the lie even if the ball didn't move (7.1b). **Resolution:** Fixed: a separate sentence, "If searching disturbed sand on it, re-create the lie before playing."
+- *Codex, on the pull request, P2:* Fourth review, after the owner's approval: lifting to identify is allowed only when the ball can't be identified as it lies; an unneeded lift is one penalty stroke (7.3). **Resolution:** Fixed after approval: "If you can't identify a ball as it lies, mark and lift it, cleaning only enough to tell." Two small cuts keep the summary at 120 words. The owner OK'd it in chat before the merge.
+- *Codex, on the pull request, P2:* Sixth review, after approval: a matching mark doesn't identify the ball either when an identical ball with the same mark is nearby (7.2). **Resolution:** Fixed after approval: "or if it carries your mark or matches yours where yours should be, with no identical ball nearby", so the condition covers both.
+
+**Copy distance:** longest run shared with the R&A text is 5 words ("ball to see if it"); no run of 8 or more.
+
+**Owner approval:** approved in chat on November 6, 2026 ("Approve all three").
+
+### Rule 8 · Course Played as It Is Found
+
+**Summary (119 words):** Rule 8 covers playing the course as you find it: you can't improve the conditions for your next stroke, meaning your lie, your stance and swing, your line of play and where you'll drop. Bending or breaking branches, pressing down the ground behind your ball, replacing a divot in a divot hole on your line, or removing dew or frost costs the general penalty if it improves those conditions. You may still ground the club lightly, take a fair stance and make your stroke, even if the swing breaks a branch; a practice swing gets no such pass. If you moved or bent a branch, putting it back before you play avoids the penalty; once it's broken, it doesn't.
+
+**Look here when:** Can I press down the grass behind my ball? · I broke a branch on my backswing: is that a penalty? · Can I replace a divot in a divot hole on my line? · I bent a branch out of the way: can I undo it?
+
+**Glossary:** none · **Aliases:** none · **Sources:** 8, 8.1, 8.1a, 8.1b, 8.1c
+
+| # | Sentence | Rests on |
+|---:|---|---|
+| 1 | Rule 8 covers playing the course as you find it: you can't improve the conditions for your next stroke, meaning your lie, your stance and swing, your line of play and where you'll drop. | [8.1](https://www.randa.org/en/rog/the-rules-of-golf/rule-8#8_1) |
+| 2 | Bending or breaking branches, pressing down the ground behind your ball, replacing a divot in a divot hole on your line, or removing dew or frost costs the general penalty if it improves those conditions. | [8.1a](https://www.randa.org/en/rog/the-rules-of-golf/rule-8#8_1a) |
+| 3 | You may still ground the club lightly, take a fair stance and make your stroke, even if the swing breaks a branch; a practice swing gets no such pass. | [8.1b](https://www.randa.org/en/rog/the-rules-of-golf/rule-8#8_1b) |
+| 4 | If you moved or bent a branch, putting it back before you play avoids the penalty; once it's broken, it doesn't. | [8.1c](https://www.randa.org/en/rog/the-rules-of-golf/rule-8#8_1c) |
+| Q1 | Can I press down the grass behind my ball? | [8.1a](https://www.randa.org/en/rog/the-rules-of-golf/rule-8#8_1a) |
+| Q2 | I broke a branch on my backswing: is that a penalty? | [8.1b](https://www.randa.org/en/rog/the-rules-of-golf/rule-8#8_1b) |
+| Q3 | Can I replace a divot in a divot hole on my line? | [8.1a](https://www.randa.org/en/rog/the-rules-of-golf/rule-8#8_1a) |
+| Q4 | I bent a branch out of the way: can I undo it? | [8.1c](https://www.randa.org/en/rog/the-rules-of-golf/rule-8#8_1c) |
+
+**Review findings and resolution:**
+
+- *Rules accuracy (agent A), error:* "Make your swing, even if it breaks something" was too broad: only the stroke, or a backswing for a stroke then made, is protected; a practice swing that improves conditions is the general penalty (8.1b(7), 8.1a). **Resolution:** Fixed: "make your stroke, even if the swing breaks a branch; a practice swing gets no such pass."
+- *Rules accuracy (agent A), nit:* A fair stance must be the least intrusive (8.1b(6)); no grounding in a bunker; the teeing area allows more (8.1b(8)); pressing down or replacing a divot can't be undone (8.1c); removing loose impediments is allowed. **Resolution:** Not added, for length. Bunkers are in Rule 12's overview.
+- *Rules accuracy (agent A), nit:* Add the 8.1 anchor for the list of conditions. **Resolution:** Fixed.
+- *Site rules (agent B), should-fix:* "Rule 8 is play the course as you find it" was ungrammatical, and it is the search snippet. **Resolution:** Fixed: "Rule 8 covers playing the course as you find it".
+- *Site rules (agent B), nit:* Q3 didn't match the summary's wording. **Resolution:** Fixed: "Can I replace a divot in a divot hole on my line?"
+
+**Copy distance:** longest run shared with the R&A text is 7 words ("replacing a divot in a divot hole"); no run of 8 or more.
+
+**Owner approval:** approved in chat on November 6, 2026 ("Approve all three").
+
+### Rule 9 · Ball Played as It Lies; Ball at Rest Lifted or Moved
+
+**Summary (120 words):** Rule 9 covers a resting ball that's lifted or moved before you play. Any cause but natural forces must be known or virtually certain. Wind or water: no penalty; play it where it stopped, unless it was replaced on the green or, after a drop, placement or replacement, rolled into another area or out of bounds; then replace it. You or your caddie: a penalty stroke and replace it, unless it moved by accident on the green, in a search, or while marking it, removing a movable obstruction or taking relief. An opponent in match play: the same, penalty theirs, except a lift to concede or on request. Anything else, even another player in stroke play: no penalty; replace it.
+
+**Look here when:** The wind moved my ball after it stopped: do I replace it? · I nudged my ball at address: what's the penalty? · Another ball knocked mine: where do I play from? · My opponent moved my ball in match play: what happens?
+
+**Glossary:** none · **Aliases:** none · **Sources:** 9, 9.1a, 9.2a, 9.2b, 9.3, 9.4a, 9.4b, 9.5a, 9.5b, 9.6, Definitions: Known or Virtually Certain, Definitions: Outside Influence
+
+| # | Sentence | Rests on |
+|---:|---|---|
+| 1 | Rule 9 covers a resting ball that's lifted or moved before you play. | [9.1a](https://www.randa.org/en/rog/the-rules-of-golf/rule-9#9_1a), [9.4a](https://www.randa.org/en/rog/the-rules-of-golf/rule-9#9_4a) |
+| 2 | Any cause but natural forces must be known or virtually certain. | [9.2a](https://www.randa.org/en/rog/the-rules-of-golf/rule-9#9_2a), [9.2b](https://www.randa.org/en/rog/the-rules-of-golf/rule-9#9_2b), Definitions: Known or Virtually Certain |
+| 3 | Wind or water: no penalty; play it where it stopped, unless it was replaced on the green or, after a drop, placement or replacement, rolled into another area or out of bounds; then replace it. | [9.3](https://www.randa.org/en/rog/the-rules-of-golf/rule-9#9_3) |
+| 4 | You or your caddie: a penalty stroke and replace it, unless it moved by accident on the green, in a search, or while marking it, removing a movable obstruction or taking relief. | [9.4a](https://www.randa.org/en/rog/the-rules-of-golf/rule-9#9_4a), [9.4b](https://www.randa.org/en/rog/the-rules-of-golf/rule-9#9_4b) |
+| 5 | An opponent in match play: the same, penalty theirs, except a lift to concede or on request. | [9.5a](https://www.randa.org/en/rog/the-rules-of-golf/rule-9#9_5a), [9.5b](https://www.randa.org/en/rog/the-rules-of-golf/rule-9#9_5b) |
+| 6 | Anything else, even another player in stroke play: no penalty; replace it. | [9.6](https://www.randa.org/en/rog/the-rules-of-golf/rule-9#9_6), Definitions: Outside Influence |
+| Q1 | The wind moved my ball after it stopped: do I replace it? | [9.3](https://www.randa.org/en/rog/the-rules-of-golf/rule-9#9_3) |
+| Q2 | I nudged my ball at address: what's the penalty? | [9.4b](https://www.randa.org/en/rog/the-rules-of-golf/rule-9#9_4b) |
+| Q3 | Another ball knocked mine: where do I play from? | [9.6](https://www.randa.org/en/rog/the-rules-of-golf/rule-9#9_6) |
+| Q4 | My opponent moved my ball in match play: what happens? | [9.5a](https://www.randa.org/en/rog/the-rules-of-golf/rule-9#9_5a), [9.5b](https://www.randa.org/en/rog/the-rules-of-golf/rule-9#9_5b) |
+
+**Review findings and resolution:**
+
+- *Rules accuracy (agent A), error:* "Wind or water: play it from where it stopped" was wrong for a ball already lifted and replaced on the green, and for a dropped, placed or replaced ball that rolls into another area or out of bounds (9.3 Exceptions 1 and 2). **Resolution:** Fixed: "unless it was replaced on the green or, after a drop, placement or replacement, rolled into another area or out of bounds; then replace it."
+- *Rules accuracy (agent A), gap:* The opponent sentence read as absolute; the opponent has the same accident exceptions (9.5b). **Resolution:** Fixed: "An opponent in match play: the same, penalty theirs", later extended for Codex's sixth review (below).
+- *Rules accuracy (agent A), gap:* A partner isn't an outside influence (Definitions: Outside Influence; 22.2, 23.5b). **Resolution:** Fixed: "Anything else, even another player in stroke play" no longer reads as covering everyone.
+- *Rules accuracy (agent A), gap:* Missing the fallback: if a person or outside influence isn't known or virtually certain to be the cause, it's natural forces (9.2b(2)). **Resolution:** Fixed: "Any cause but natural forces must be known or virtually certain."
+- *Rules accuracy (agent A), nit:* The exceptions concern accidentally moving the ball, not touching it. **Resolution:** Fixed: "unless it moved by accident on the green, in a search, or while marking it, removing a movable obstruction or taking relief" (narrowed after Codex's third review, below).
+- *Site rules (agent B), error:* Copy distance: "A ball has moved only if it's known or virtually certain that it did" shares a 12-word run with 9.2a once "it's" is read as "it is". **Resolution:** Fixed: the sentence was rewritten. The drafter's checker now expands contractions, and every overview was rerun.
+- *Site rules (agent B), should-fix:* "Known or virtually certain" wasn't explained. **Resolution:** Fixed at first with "at least 95 percent likely"; that clause was later cut to fit Codex's third-review fix. Rules 17 and 18 explain the 95 percent; Definitions: Known or Virtually Certain is linked here.
+- *Codex, on the pull request, P2:* 9.3 Exception 2 covers a placed ball too, such as one placed after two drops that won't stay in the relief area. **Resolution:** Fixed: "a dropped, placed or replaced ball".
+- *Codex, on the pull request, P2:* Second review: accidental movement while applying a Rule, such as removing a movable obstruction, marking or taking relief, is also free (9.4b Exception 4). **Resolution:** Fixed, then narrowed after the third review: "or while marking it, removing a movable obstruction or taking relief".
+- *Codex, on the pull request, P2:* Third review: "while applying a Rule" was too broad; removing a loose impediment that moves the ball still costs a stroke (15.1b), and 9.4b Exception 4 lists specific actions. **Resolution:** Fixed: "while marking it, removing a movable obstruction or taking relief", which matches Rule 15's overview.
+- *Codex, on the pull request, P2:* Sixth review, after approval: an opponent who lifts your ball to concede, or at your request, takes no penalty, and a conceded ball isn't replaced (9.5a, 9.5b Exception 1). **Resolution:** Fixed after approval: "An opponent in match play: the same, penalty theirs, except a lift to concede or on request." The sentence on the cause and the first sentence were shortened to fit.
+
+**Copy distance:** longest run shared with the R&A text is 5 words ("is lifted or moved before"); no run of 8 or more.
+
+**Owner approval:** approved in chat on November 6, 2026 ("Approve all three").
+
+### Rule 10 · Preparing for and Making a Stroke; Advice and Help; Caddies
+
+**Summary (120 words):** Rule 10 covers making a stroke and the help you may get. Strike the ball fairly with the clubhead, and don't anchor the club against your body. During a round you can't ask anyone but your caddie for advice, or give it to anyone else in your competition, such as your group; partners are the exception. Advice is anything meant to influence your club, your stroke or how you play; distances, wind direction and the Rules aren't advice. Only your caddie may help with your line, and not from behind the ball once you begin your stance; others may point out a landmark or, off the green, stand as a target and move away. Any breach costs the general penalty.
+
+**Look here when:** Can I ask someone in my group what club they just hit? · Is telling someone the yardage to the flag advice? · Can I lay a club on the ground to check my alignment? · Can my caddie line me up from behind?
+
+**Glossary:** none · **Aliases:** `advice` · **Sources:** 10, 10.1a, 10.1b, 10.2a, 10.2b, 22.2, 23.5a, Definitions: Advice
+
+| # | Sentence | Rests on |
+|---:|---|---|
+| 1 | Rule 10 covers making a stroke and the help you may get. | [Rule 10](https://www.randa.org/en/rog/the-rules-of-golf/rule-10) |
+| 2 | Strike the ball fairly with the clubhead, and don't anchor the club against your body. | [10.1a](https://www.randa.org/en/rog/the-rules-of-golf/rule-10#10_1a), [10.1b](https://www.randa.org/en/rog/the-rules-of-golf/rule-10#10_1b) |
+| 3 | During a round you can't ask anyone but your caddie for advice, or give it to anyone else in your competition, such as your group; partners are the exception. | [10.2a](https://www.randa.org/en/rog/the-rules-of-golf/rule-10#10_2a), [22.2](https://www.randa.org/en/rog/the-rules-of-golf/rule-22#22_2), [23.5a](https://www.randa.org/en/rog/the-rules-of-golf/rule-23#23_5a) |
+| 4 | Advice is anything meant to influence your club, your stroke or how you play; distances, wind direction and the Rules aren't advice. | Definitions: Advice |
+| 5 | Only your caddie may help with your line, and not from behind the ball once you begin your stance; others may point out a landmark or, off the green, stand as a target and move away. | [10.2b](https://www.randa.org/en/rog/the-rules-of-golf/rule-10#10_2b) |
+| 6 | Any breach costs the general penalty. | [10.1a](https://www.randa.org/en/rog/the-rules-of-golf/rule-10#10_1a), [10.2a](https://www.randa.org/en/rog/the-rules-of-golf/rule-10#10_2a), [10.2b](https://www.randa.org/en/rog/the-rules-of-golf/rule-10#10_2b) |
+| Q1 | Can I ask someone in my group what club they just hit? | [10.2a](https://www.randa.org/en/rog/the-rules-of-golf/rule-10#10_2a), Definitions: Advice |
+| Q2 | Is telling someone the yardage to the flag advice? | Definitions: Advice |
+| Q3 | Can I lay a club on the ground to check my alignment? | [10.2b](https://www.randa.org/en/rog/the-rules-of-golf/rule-10#10_2b) |
+| Q4 | Can my caddie line me up from behind? | [10.2b](https://www.randa.org/en/rog/the-rules-of-golf/rule-10#10_2b) |
+
+**Review findings and resolution:**
+
+- *Rules accuracy (agent A), gap:* Only the caddie was restricted; casual groups need 10.2b(2): nobody but your caddie may help with your line. **Resolution:** Fixed, then narrowed after Codex's finding below: "Only your caddie may help with your line, and not from behind the ball once you begin your stance".
+- *Rules accuracy (agent A), nit:* The caddie restriction starts when you begin taking your stance; "behind you" should be behind the ball on your line. **Resolution:** Fixed with the sentence above.
+- *Rules accuracy (agent A), nit:* Picking up the aiming club before hitting doesn't cancel the penalty. **Resolution:** The club-on-the-ground sentence was cut for length; Q3 points to 10.2b.
+- *Rules accuracy (agent A), nit:* Partners may give advice and caddie-type help; cite 22 and 23. **Resolution:** Fixed: "partners are the exception", with 22.2 and 23.5a cited.
+- *Rules accuracy (agent A), nit:* 10.3a supported nothing. **Resolution:** Fixed: removed.
+- *Site rules (agent B), should-fix:* "Each is the general penalty" read as covering only the last two clauses. **Resolution:** Fixed: "Any breach costs the general penalty."
+- *Site rules (agent B), should-fix:* #237 asks what applies in a casual round; "anyone playing in your competition" is unclear to a casual group. **Resolution:** Fixed: "anyone else in your competition, such as your group".
+- *Codex, on the pull request, P2:* "Nobody but your caddie may help you line up, and once you begin your stance, not even them" penalised allowed help: anyone may point out public directional information, and off the green stand as a target and move away (10.2b(2)); the caddie restriction is about standing behind the ball (10.2b(4)). **Resolution:** Fixed: "Only your caddie may help with your line, and not from behind the ball once you begin your stance; others may point out a landmark or, off the green, stand as a target and move away." The list of public information was shortened to fit.
+
+**Copy distance:** longest run shared with the R&A text is 5 words ("a club on the ground"); no run of 8 or more.
+
+**Owner approval:** approved in chat on November 6, 2026 ("Approve all three").
+
+### Rule 11 · Ball in Motion Accidentally Hits Person, Animal or Object; Deliberate Actions to Affect Ball in Motion
+
+**Summary (120 words):** Rule 11 covers a ball in motion that hits a person, an animal or an object. Accidental hits usually carry no penalty; play the ball as it lies. In stroke play, a putt that hits another ball at rest, with both on the green beforehand, costs two penalty strokes. A putt that accidentally hits, on the green, another person (not the flagstick attendant), an animal larger than an insect, or a movable obstruction must be replayed; a ball-marker doesn't count. Deliberately stopping or deflecting a moving ball, or removing loose impediments or altering the ground to affect where it stops, costs the general penalty; in match play you may stop an opponent's ball that can't go in, as a concession.
+
+**Look here when:** My shot hit my own golf bag: is that a penalty? · My putt hit another ball on the green: what happens? · My putt hit someone standing near the hole: do I replay it? · Can I stop a ball that's rolling toward the water?
+
+**Glossary:** none · **Aliases:** none · **Sources:** 11, 11.1a, 11.1b, 11.2a, 11.2b, 11.3, 13.2b
+
+| # | Sentence | Rests on |
+|---:|---|---|
+| 1 | Rule 11 covers a ball in motion that hits a person, an animal or an object. | [Rule 11](https://www.randa.org/en/rog/the-rules-of-golf/rule-11) |
+| 2 | Accidental hits usually carry no penalty; play the ball as it lies. | [11.1a](https://www.randa.org/en/rog/the-rules-of-golf/rule-11#11_1a), [11.1b](https://www.randa.org/en/rog/the-rules-of-golf/rule-11#11_1b) |
+| 3 | In stroke play, a putt that hits another ball at rest, with both on the green beforehand, costs two penalty strokes. | [11.1a](https://www.randa.org/en/rog/the-rules-of-golf/rule-11#11_1a) |
+| 4 | A putt that accidentally hits, on the green, another person (not the flagstick attendant), an animal larger than an insect, or a movable obstruction must be replayed; a ball-marker doesn't count. | [11.1b](https://www.randa.org/en/rog/the-rules-of-golf/rule-11#11_1b), [13.2b](https://www.randa.org/en/rog/the-rules-of-golf/rule-13#13_2b) |
+| 5 | Deliberately stopping or deflecting a moving ball, or removing loose impediments or altering the ground to affect where it stops, costs the general penalty; in match play you may stop an opponent's ball that can't go in, as a concession. | [11.2a](https://www.randa.org/en/rog/the-rules-of-golf/rule-11#11_2a), [11.2b](https://www.randa.org/en/rog/the-rules-of-golf/rule-11#11_2b), [11.3](https://www.randa.org/en/rog/the-rules-of-golf/rule-11#11_3) |
+| Q1 | My shot hit my own golf bag: is that a penalty? | [11.1a](https://www.randa.org/en/rog/the-rules-of-golf/rule-11#11_1a), [11.1b](https://www.randa.org/en/rog/the-rules-of-golf/rule-11#11_1b) |
+| Q2 | My putt hit another ball on the green: what happens? | [11.1a](https://www.randa.org/en/rog/the-rules-of-golf/rule-11#11_1a) |
+| Q3 | My putt hit someone standing near the hole: do I replay it? | [11.1b](https://www.randa.org/en/rog/the-rules-of-golf/rule-11#11_1b), [13.2b](https://www.randa.org/en/rog/the-rules-of-golf/rule-13#13_2b) |
+| Q4 | Can I stop a ball that's rolling toward the water? | [11.2b](https://www.randa.org/en/rog/the-rules-of-golf/rule-11#11_2b) |
+
+**Review findings and resolution:**
+
+- *Rules accuracy (agent A), error:* "A putt that accidentally hits another person ... is replayed" missed that a person tending the flagstick is excluded: then it's no penalty and play it as it lies (11.1b(2), 13.2b). **Resolution:** Fixed: "another person (not the flagstick attendant)"; 13.2b added.
+- *Rules accuracy (agent A), error:* "Moving things to change where it might stop" was too broad: 11.3 bans changing the ground and removing loose impediments or movable obstructions, but allows moving equipment, a removed flagstick and balls at rest on the green. **Resolution:** Fixed: "removing loose impediments or changing the ground to affect where it stops".
+- *Rules accuracy (agent A), nit:* "A putt" should be any stroke from the green; insects don't count as animals here; the replay is required. **Resolution:** Fixed: "must be replayed". "Putt" kept as the plain word for a stroke on the green.
+- *Rules accuracy (agent A), nit:* In match play there's no penalty for hitting a ball on the green. **Resolution:** The sentence already opens "In stroke play".
+- *Site rules (agent B), should-fix:* "There's no penalty to anyone" was contradicted two sentences later. **Resolution:** Fixed: "Accidental hits usually carry no penalty".
+- *Site rules (agent B), nit:* Writing "putting green" in the ball-on-green sentence would make a 9-word run. **Resolution:** Kept as "green".
+- *Codex, on the pull request, P2:* The replay applies only to qualifying objects and animals: not a ball-marker, the club used, a ball at rest or the flagstick, and not insects (11.1b(2)). **Resolution:** Fixed: "another person (not the flagstick attendant), an animal larger than an insect, or a movable obstruction must be replayed; a ball-marker doesn't count." A ball at rest is the sentence before; the flagstick is Rule 13.
+- *Codex, on the pull request, P2:* Second review: the replay applies only when the qualifying person, animal or obstruction is hit on the putting green (11.1b(2)); off the green the ball is played as it lies. **Resolution:** Fixed: "A putt that accidentally hits, on the green, another person ..."; the dropped-glove example was cut to fit.
+- *Codex, on the pull request, P2:* Third review: in match play, stopping an opponent's ball that has no reasonable chance of being holed, to concede the next stroke, isn't penalised (11.2a Exception). **Resolution:** Fixed: "in match play you may stop an opponent's ball that can't go in, as a concession." The ball-on-green sentence was tightened to fit.
+
+**Copy distance:** longest run shared with the R&A text is 7 words ("play the ball as it lies in"); no run of 8 or more.
+
+**Owner approval:** approved in chat on November 6, 2026 ("Approve all three").
