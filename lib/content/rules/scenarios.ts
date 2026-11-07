@@ -13,6 +13,7 @@ import {
   localRuleSource,
   rogSource as rog,
 } from "./sources";
+import { RULES_LAUNCHED_ON } from "./launch";
 import type { RulesScenario } from "./types";
 
 /** The day batch 1 (#240) opened each of its sources. */
@@ -33,8 +34,9 @@ const P0_CHECKED = "2026-11-06";
  * Internal: stripped by every public selector.
  */
 const P0_REVIEWED_ON = "2026-11-06";
-const P0_APPROVED: Pick<RulesScenario, "status" | "reviewedOn" | "reviewedBy" | "reviewLog"> = {
-  status: "approved",
+const P0_APPROVED: Pick<RulesScenario, "status" | "publishedOn" | "reviewedOn" | "reviewedBy" | "reviewLog"> = {
+  status: "published",
+  publishedOn: RULES_LAUNCHED_ON,
   reviewedOn: P0_REVIEWED_ON,
   reviewedBy: "owner",
   reviewLog: [
@@ -78,8 +80,9 @@ const P1_CHECKED = "2026-11-06";
  * Internal: stripped by every public selector.
  */
 const P1_REVIEWED_ON = "2026-11-06";
-const P1_APPROVED: Pick<RulesScenario, "status" | "reviewedOn" | "reviewedBy" | "reviewLog"> = {
-  status: "approved",
+const P1_APPROVED: Pick<RulesScenario, "status" | "publishedOn" | "reviewedOn" | "reviewedBy" | "reviewLog"> = {
+  status: "published",
+  publishedOn: RULES_LAUNCHED_ON,
   reviewedOn: P1_REVIEWED_ON,
   reviewedBy: "owner",
   reviewLog: [

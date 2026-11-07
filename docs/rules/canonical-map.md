@@ -47,7 +47,7 @@ Every link into `/rules` that the launch adds, and the links out of it that #242
   - the closing band's lead and the `rules-rulings` registry entry;
   - the glossary's link text for `/rules#…` paths (`glossaryPathLink`);
   - the content check for `/rules` paths in glossary records (`glossaryRulesPathProblems` in `scripts/rules-checks.mjs`). Before it, a bare `/rules` in a record's `relatedContentPaths` passed while the flag was off, because `/rules` is a route.
-- **On branch `launch/242-rules-inbound-links` (not merged; rebased onto `main` after #242's PR merges).** The footer link, the glossary record edits, the post links and the guide link. `lint:content` rejects each of them while the flag is off. The #247 launch PR merges the branch in the same change that flips `rulesLive` and moves the records to `published`. § Launch check records how the branch was verified.
+- **In the launch PR (#247), from branch `launch/242-rules-inbound-links`.** The footer link, the glossary record edits, the post links and the guide link. `lint:content` rejected each of them while the flag was off, so they ship in the same change that flips `rulesLive` and moves the records to `published`. § Launch check records how the branch was verified.
 
 Every fragment below is an id in § Fragment registry. Each one resolves only once its record is published, and `lint:content` checks that on the launch branch.
 
@@ -161,7 +161,7 @@ The capability registry backs every claim in it:
 
 ### Analytics
 
-A glossary entry's `/rules` link reports `glossary_cta_click` with `destination_type: "page"`, the closed set's fallback for a path that isn't a guide or a post. #244 owns that union and decides whether the Rules Center needs a value of its own.
+A glossary entry's `/rules#…` link reports `glossary_cta_click` with `destination_type: "rules"`. The launch PR (#247) added the value: before it, the link fell back to `page`, which also counts the product links. `destination_type` is already a registered GA4 dimension, so the new value needs no admin change.
 
 ### Launch check
 
@@ -173,11 +173,13 @@ Run on November 7, 2026 in a scratch worktree: the launch branch on top of #242'
 - Tab reaches each kind of new link (footer, glossary entry, post, guide FAQ) with the lime focus ring.
 - With the flag still off, the branch fails `lint:content` on all 15 links and `test-rules` on the shipped-glossary case. It can't merge before the flip.
 
-On top of the branch, #247 has to:
+On top of the branch, #247:
 
-- flip the flag;
-- publish the records;
-- rewrite the two `test-rules` cases that state the pre-launch state: "launch: the flag is off until #247" and "boundary: the shipped records are all planned, so nothing is public".
+- flips the flag;
+- publishes the records, each with `publishedOn` set to `RULES_LAUNCHED_ON` in `lib/content/rules/launch.ts`;
+- rewrites the two `test-rules` cases that stated the pre-launch state, as "launch: the flag is on (#247)" and "boundary: the shipped records are all published (#247)".
+
+`docs/rules/launch-packet.md` has the QA run on the launch build.
 
 ## Missing glossary terms (candidates for #168)
 

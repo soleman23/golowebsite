@@ -295,8 +295,8 @@ const CTX = { servedPaths: SERVED, glossarySlugs, today: TODAY };
   );
   check("boundary: no internal field in a public record", leaks.length === 0, leaks.join(", "));
   check(
-    "boundary: the shipped records are all planned, so nothing is public",
-    publishedRules().overviews.length === 0 && publishedRules().scenarios.length === 0,
+    "boundary: the shipped records are all published (#247)",
+    publishedRules().overviews.length === 25 && publishedRules().scenarios.length === 12,
   );
   check(
     "boundary: an overview lists only shown situations",
@@ -329,7 +329,7 @@ const CTX = { servedPaths: SERVED, glossarySlugs, today: TODAY };
   process.env.NODE_ENV = "development";
   check("selection: next dev uses review", rulesSelection() === "review" && rulesRouteVisible());
   process.env.NODE_ENV = env;
-  check("launch: the flag is off until #247", rulesLive === false);
+  check("launch: the flag is on (#247)", rulesLive === true);
 }
 
 /* -------------------------------------------------------------- integrity */
