@@ -47,7 +47,7 @@ Every link into `/rules` that the launch adds, and the links out of it that #242
   - the closing band's lead and the `rules-rulings` registry entry;
   - the glossary's link text for `/rules#…` paths (`glossaryPathLink`);
   - the content check for `/rules` paths in glossary records (`glossaryRulesPathProblems` in `scripts/rules-checks.mjs`). Before it, a bare `/rules` in a record's `relatedContentPaths` passed while the flag was off, because `/rules` is a route.
-- **On branch `launch/242-rules-inbound-links` (not merged).** The footer link, the glossary record edits, the post links and the guide link. `lint:content` rejects each of them while the flag is off. The #247 launch PR merges the branch in the same change that flips `rulesLive` and moves the records to `published`. § Launch check records how the branch was verified.
+- **On branch `launch/242-rules-inbound-links` (not merged; rebased onto `main` after #242's PR merges).** The footer link, the glossary record edits, the post links and the guide link. `lint:content` rejects each of them while the flag is off. The #247 launch PR merges the branch in the same change that flips `rulesLive` and moves the records to `published`. § Launch check records how the branch was verified.
 
 Every fragment below is an id in § Fragment registry. Each one resolves only once its record is published, and `lint:content` checks that on the launch branch.
 
@@ -59,7 +59,7 @@ Every fragment below is an id in § Fragment registry. Each one resolves only on
 
 ### Inbound: glossary records
 
-Each path is added to the record's `relatedContentPaths`, after the paths it already has. It renders in the entry's link list as "See what Rule N covers" or "Read “<question>”". These are published records, so each edit adds an `seo` stage and the owner's `approval` to the record's review log, as #226 did, and moves `reviewedOn` to the approval date. A link isn't a substantive change, so `updatedOn` doesn't move. Every target already links back to the term through its `relatedGlossaryIds`.
+Each path is added to the record's `relatedContentPaths`, after the paths it already has. It renders in the entry's link list as "See what Rule N covers" or "Read “<question>”". The owner approved this list in chat on November 7, 2026. These are published records, so each edit adds an `seo` stage and the owner's `approval` to the record's review log, as #226 did, and moves `reviewedOn` to the approval date (`rulesLinkReview` in `lib/content/glossary/review.ts`, on the launch branch). A link isn't a substantive change, so `updatedOn` doesn't move. Every target already links back to the term through its `relatedGlossaryIds`.
 
 | Record | Target | Why |
 |---|---|---|
@@ -144,7 +144,19 @@ A glossary entry's `/rules` link reports `glossary_cta_click` with `destination_
 
 ### Launch check
 
-Pending.
+Run on November 7, 2026 in a scratch worktree: the launch branch on top of #242's commits, with `rulesLive` flipped and all 25 overviews and 12 situations set to `published` with a `publishedOn`, as #247 will do.
+
+- `npm run lint`, `npm run typecheck`, `npm run build` and `npm test` pass. lint:content reports 37 rules records valid, 37 published.
+- The built HTML has every link in this map with the text above, and every target id is on `/rules`.
+- No horizontal scroll on `/`, `/glossary`, `/rules`, the three posts or the guide, at 320, 760, 1100 and 1440px.
+- Tab reaches each kind of new link (footer, glossary entry, post, guide FAQ) with the lime focus ring.
+- With the flag still off, the branch fails `lint:content` on all 15 links and `test-rules` on the shipped-glossary case. It can't merge before the flip.
+
+On top of the branch, #247 has to:
+
+- flip the flag;
+- publish the records;
+- rewrite the two `test-rules` cases that state the pre-launch state: "launch: the flag is off until #247" and "boundary: the shipped records are all planned, so nothing is public".
 
 ## Missing glossary terms (candidates for #168)
 
