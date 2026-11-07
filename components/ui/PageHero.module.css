@@ -104,6 +104,15 @@
 .hero[data-photo="rules"] .scrim {
   --copy-span: 660px;
 }
+/* The ball sits 82% down the frame. From about 1300px the hero is wider than
+   the photo's 21:9 and crops it top and bottom; centred, that put the ball
+   under the bottom fade at 1920px. Desktop frames only: the phone frame keeps
+   its bottom alignment. */
+@media (min-width: 768px) {
+  .hero[data-photo="rules"] .photo {
+    object-position: right 80%;
+  }
+}
 
 .inner {
   position: relative;
