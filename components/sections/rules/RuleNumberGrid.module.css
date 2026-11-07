@@ -39,3 +39,9 @@ a.number:hover {
   background: transparent;
   border-color: var(--hairline);
 }
+
+/* Under a topic filter the shortcuts would point at hidden entries, so they
+   go too (docs/rules/ux.md D4). */
+html[data-filter]:not([data-filter="all"]) .nav {
+  display: none;
+}

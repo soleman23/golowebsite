@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * The /games, /blog and /glossary filters are CSS keyed off <html data-filter>, and CSS
+ * The /games, /blog, /glossary and /rules filters are CSS keyed off <html data-filter>, and CSS
  * can't compare an ancestor's attribute with a descendant's — so each filter
  * id needs its own lines in the grid's stylesheet. That list is a manual copy
  * of ids that live in lib/content, and it has already drifted once (the "gear"
@@ -71,6 +71,22 @@ const glossaryIds = checked(
   (glossaryBlock.match(/\{/g) ?? []).length,
 );
 
+// rulesCategories' entries hold `rules: [1, 4]`, so the array runs to its
+// `] as const` rather than to the first "]".
+const rulesPath = "lib/content/rules/categories.ts";
+const rulesBlock = (() => {
+  const source = read(rulesPath);
+  const at = source.indexOf("export const rulesCategories");
+  const end = source.indexOf("] as const", at);
+  if (at === -1 || end === -1) throw new Error(`${rulesPath}: can't find rulesCategories`);
+  return source.slice(at, end);
+})();
+const rulesIds = checked(
+  rulesPath,
+  [...rulesBlock.matchAll(/\bid:\s*["']([^"']+)["']/g)].map((m) => m[1]),
+  (rulesBlock.match(/\{ id:/g) ?? []).length,
+);
+
 const chip = (id) => `html[data-filter="${id}"] .chips [data-chip="${id}"]`;
 const shows = (part, id) => [
   `html[data-filter="${id}"] .${part} > [data-for="${id}"]`,
@@ -119,6 +135,22 @@ const pages = [
     chips: false,
     rules: (id) => [`html[data-filter="${id}"] .list a:not([data-cats~="${id}"])`],
   },
+  {
+    css: "components/sections/rules/RulesControls.module.css",
+    ids: rulesIds,
+    rules: (id) => [...shows("count", id), chip(id)],
+  },
+  // The Rules Center's entries, cards and sections filter in the page's
+  // stylesheet, which has no chips.
+  {
+    css: "app/rules/rules.module.css",
+    ids: rulesIds,
+    chips: false,
+    rules: (id) => [
+      `html[data-filter="${id}"] .lists [data-category]:not([data-category="${id}"])`,
+      `html[data-filter="${id}"] .section:not([data-cats~="${id}"])`,
+    ],
+  },
 ];
 
 const problems = [];
@@ -150,5 +182,5 @@ if (problems.length) {
   process.exit(1);
 }
 console.log(
-  `✔ Filter CSS covers ${gameIds.length} game filters, ${blogIds.length} blog topics and ${glossaryIds.length} glossary categories`,
+  `✔ Filter CSS covers ${gameIds.length} game filters, ${blogIds.length} blog topics, ${glossaryIds.length} glossary categories and ${rulesIds.length} rules topics`,
 );
