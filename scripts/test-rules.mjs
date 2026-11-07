@@ -475,7 +475,10 @@ const CTX = { servedPaths: SERVED, glossarySlugs, today: TODAY };
     "links: an unpublished fragment fails once live",
     /isn't a published rule/.test(glossaryRulesPathProblems([term("stableford", ["/rules#rule-21"])], on)[0]?.problem ?? ""),
   );
-  check("links: the shipped glossary has no /rules path before launch", glossaryRulesPathProblems(glossary.glossaryTerms, off).length === 0);
+  // As check-content builds the context: true before launch (no /rules paths) and after it.
+  const shippedLinks = { live: rulesLive, fragments: new Set([...rulesRecordIds(publishedRules()), ...RULES_PAGE_IDS]) };
+  const shippedGlossary = glossaryRulesPathProblems(glossary.glossaryTerms, shippedLinks);
+  check("links: the shipped glossary's /rules paths pass", shippedGlossary.length === 0, shippedGlossary.map((p) => p.problem).join(" | "));
 
   // Their link text (lib/content/glossary/copy.ts).
   check("links: a rule fragment names the rule", glossary.glossaryPathLink("/rules#rule-17") === "See what Rule 17 covers");
