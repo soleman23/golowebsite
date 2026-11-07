@@ -9,6 +9,7 @@
  * result for each batch.
  */
 
+import type { ReviewEntry } from "../glossary/types";
 import { definitionSource, rogSource } from "./sources";
 import type { RuleOverview, RulesSource } from "./types";
 
@@ -16,6 +17,52 @@ type Written = Partial<Omit<RuleOverview, "id" | "number" | "edition">>;
 
 /** #238 (Rules 12–19): the day its rule pages and Definitions were opened. */
 const OPENED_238 = "2026-11-06";
+
+/**
+ * The review record of every approved overview (docs/rules/editorial-review.md
+ * § Stages). Two independent reviewer agents ran the rules, product and seo
+ * stages on the day each batch was drafted, and Codex's findings on each pull
+ * request were fixed as well; docs/rules/review-packet-overviews.md has the
+ * evidence. The approval is the owner's, given in chat. Internal: stripped by
+ * every public selector.
+ */
+const AGENTS_REVIEWED_ON = "2026-11-06";
+const OWNER_APPROVED_ON = "2026-11-06";
+
+const REVIEW_LOG: ReviewEntry[] = [
+  {
+    stage: "rules",
+    by: "agent",
+    on: AGENTS_REVIEWED_ON,
+    note: "Every sentence and question checked against the R&A rule pages and Definitions opened that day (review-packet-overviews.md).",
+  },
+  {
+    stage: "product",
+    by: "agent",
+    on: AGENTS_REVIEWED_ON,
+    note: "House voice, NEVER_WORDS, claim guard and copy distance: no run of eight words shared with the official text.",
+  },
+  {
+    stage: "seo",
+    by: "agent",
+    on: AGENTS_REVIEWED_ON,
+    note: "Fragment ids, glossary slugs, aliases and every source anchor resolve; lint:content passes.",
+  },
+  {
+    stage: "approval",
+    by: "owner",
+    on: OWNER_APPROVED_ON,
+    note: "Approved in chat (\"Approve all three\": #237, #238, #239).",
+  },
+];
+
+/** An overview the owner has approved; only the launch PR (#247) publishes it. */
+const ownerApproved: Written = {
+  status: "approved",
+  reviewedBy: "owner",
+  reviewedOn: OWNER_APPROVED_ON,
+  reviewLog: REVIEW_LOG,
+};
 
 /** Rule pages and Definitions a record rests on, each opened on `on`. */
 function opened(on: string, refs: string[], terms: string[] = []): RulesSource[] {
@@ -72,7 +119,7 @@ export const ruleOverviews: RuleOverview[] = [
     ],
     relatedGlossaryIds: ["bunker", "sandy"],
     sources: opened(OPENED_238, ["12", "12.1", "12.2a", "12.2b"], ["General Penalty"]),
-    status: "in-review",
+    ...ownerApproved,
   }),
   rule(13, {
     aliases: ["flagstick", "wrong green"],
@@ -90,7 +137,7 @@ export const ruleOverviews: RuleOverview[] = [
       ["13", "13.1b", "13.1c", "13.1d", "13.1f", "13.2a", "13.2b", "13.3a"],
       ["Wrong Green"],
     ),
-    status: "in-review",
+    ...ownerApproved,
   }),
   rule(14, {
     aliases: ["wrong place"],
@@ -107,7 +154,7 @@ export const ruleOverviews: RuleOverview[] = [
       ["14", "14.1a", "14.3b", "14.3c", "14.5a", "14.7a", "14.7b"],
       ["Relief Area", "General Penalty"],
     ),
-    status: "in-review",
+    ...ownerApproved,
   }),
   rule(15, {
     summary:
@@ -123,7 +170,7 @@ export const ruleOverviews: RuleOverview[] = [
       ["15", "15.1a", "15.1b", "15.2a", "15.3b"],
       ["Loose Impediment", "Movable Obstruction"],
     ),
-    status: "in-review",
+    ...ownerApproved,
   }),
   rule(16, {
     aliases: ["plugged ball", "embedded ball", "casual water"],
@@ -148,7 +195,7 @@ export const ruleOverviews: RuleOverview[] = [
         "Embedded",
       ],
     ),
-    status: "in-review",
+    ...ownerApproved,
   }),
 
   // Relief and penalties
@@ -168,7 +215,7 @@ export const ruleOverviews: RuleOverview[] = [
       ["17", "17.1b", "17.1c", "17.1d", "17.3"],
       ["Penalty Area", "Club-Length", "Known or Virtually Certain"],
     ),
-    status: "in-review",
+    ...ownerApproved,
   }),
   rule(18, {
     aliases: ["OB"],
@@ -186,7 +233,7 @@ export const ruleOverviews: RuleOverview[] = [
       ["18", "18.1", "18.2a", "18.2b", "18.3a", "18.3b", "18.3c"],
       ["Stroke and Distance", "Lost", "Out of Bounds", "Known or Virtually Certain", "Provisional Ball"],
     ),
-    status: "in-review",
+    ...ownerApproved,
   }),
   rule(19, {
     summary:
@@ -203,7 +250,7 @@ export const ruleOverviews: RuleOverview[] = [
       ["19", "19.1", "19.2", "19.2a", "19.2b", "19.2c", "19.3a", "19.3b"],
       ["Club-Length"],
     ),
-    status: "in-review",
+    ...ownerApproved,
   }),
 
   // Rulings, formats and accessibility
