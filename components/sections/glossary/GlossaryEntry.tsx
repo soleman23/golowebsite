@@ -26,10 +26,11 @@ type GlossaryEntryProps = {
   actions?: React.ReactNode;
 };
 
-/** The closed destination_type set for glossary_cta_click (#165). */
-function destinationType(path: string): "guide" | "post" | "page" {
+/** The closed destination_type set for glossary_cta_click (#165; rules, #247). */
+function destinationType(path: string): "guide" | "post" | "rules" | "page" {
   if (path.startsWith("/games/")) return "guide";
   if (path.startsWith("/blog/")) return "post";
+  if (path.startsWith("/rules")) return "rules";
   return "page";
 }
 

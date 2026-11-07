@@ -70,7 +70,7 @@ The issue lists one line per problem. Work through them in a branch; the issue c
 
 ## Quarterly review
 
-The governing bodies publish clarifications quarterly. The USGA's page read "Updated October 2, 2026" on November 6, 2026, with the next update due in early January 2027. The monthly run on the 8th of January, April, July and October opens an issue with the checklist below. The workflow copies the block between the `quarterly-review` markers into the issue, so edit the checklist here and nowhere else.
+The governing bodies publish clarifications quarterly. The USGA's page read "Updated October 2, 2026" on November 6, 2026, and again on launch day, November 7, with the next update due in early January 2027. The monthly run on the 8th of January, April, July and October opens an issue with the checklist below. The workflow copies the block between the `quarterly-review` markers into the issue, so edit the checklist here and nowhere else.
 
 <!-- quarterly-review:start -->
 ### Clarifications

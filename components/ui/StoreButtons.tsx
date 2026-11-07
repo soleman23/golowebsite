@@ -104,7 +104,7 @@ export function StoreButtons({
     >
       <AppleGlyph size={size === "lg" ? 25 : 24} />
       <span className={styles.label}>
-        <span className={styles.labelTop}>{copy.appStore.top}</span>
+        <span className={styles.labelTop}>{copy.appStore.top}</span>{" "}
         <span className={styles.labelMain}>{copy.appStore.main}</span>
       </span>
     </a>
@@ -127,7 +127,7 @@ export function StoreButtons({
         >
           <GooglePlayGlyph size={size === "lg" ? 23 : 22} />
           <span className={styles.label}>
-            <span className={styles.labelTop}>{copy.googlePlay.top}</span>
+            <span className={styles.labelTop}>{copy.googlePlay.top}</span>{" "}
             <span className={styles.labelMain}>{copy.googlePlay.main}</span>
           </span>
         </a>
@@ -135,7 +135,7 @@ export function StoreButtons({
           <div className={`${buttonClass} ${styles.soon}`}>
             <AppleGlyph size={size === "lg" ? 25 : 24} />
             <span className={styles.label}>
-              <span className={styles.labelTop}>{copy.appStoreSoon.top}</span>
+              <span className={styles.labelTop}>{copy.appStoreSoon.top}</span>{" "}
               <span className={styles.labelMain}>{copy.appStoreSoon.main}</span>
             </span>
           </div>

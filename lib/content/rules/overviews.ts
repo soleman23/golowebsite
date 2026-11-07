@@ -10,6 +10,7 @@
  */
 
 import type { ReviewEntry } from "../glossary/types";
+import { RULES_LAUNCHED_ON } from "./launch";
 import { definitionSource, rogSource } from "./sources";
 import type { RuleOverview, RulesSource } from "./types";
 
@@ -62,9 +63,10 @@ const REVIEW_LOG: ReviewEntry[] = [
   },
 ];
 
-/** An overview the owner has approved; only the launch PR (#247) publishes it. */
+/** An overview the owner approved, published by the launch PR (#247). */
 const ownerApproved: Written = {
-  status: "approved",
+  status: "published",
+  publishedOn: RULES_LAUNCHED_ON,
   reviewedBy: "owner",
   reviewedOn: OWNER_APPROVED_ON,
   reviewLog: REVIEW_LOG,
