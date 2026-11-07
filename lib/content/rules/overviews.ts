@@ -157,7 +157,7 @@ export const ruleOverviews: RuleOverview[] = [
   // Playing the round
   rule(5, {
     summary:
-      "Rule 5 covers starting on time, practicing, keeping pace and stopping play. Up to five minutes late but ready to play, or up to five minutes early, is the general penalty on the first hole; beyond that is disqualification. By default you can't practice on the course before a stroke-play round that day, except putting or chipping near the first tee; before a match you can. You can't hit practice shots during a hole, though between holes you may putt or chip near the green just finished or the next tee, but not from a bunker. The Committee can change these limits by Local Rule. You may stop for lightning, but must report it to the Committee.",
+      "Rule 5 covers starting on time, practicing, keeping pace and stopping play. Up to five minutes late but ready to play, or up to five minutes early, is the general penalty on the first hole; beyond that is disqualification. By default you can't practice on the course before a stroke-play round that day, except on a practice area or by putting or chipping near the first tee; before a match you can. You can't hit practice shots during a hole, though between holes you may putt or chip near the green just finished or the next tee, not from a bunker. The Committee can change these limits by Local Rule. You may stop for lightning, but must tell the Committee.",
     commonQuestions: [
       "Can I hit a few putts on the green after we finish a hole?",
       "What happens if I'm late to the first tee?",
