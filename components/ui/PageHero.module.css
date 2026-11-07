@@ -99,6 +99,11 @@
 .hero[data-photo="glossary"] .title {
   max-width: 640px;
 }
+/* Measured 2026-11-07 at 768–1920px: the lead and the search field reach
+   634px at most (the lead at 1024px). */
+.hero[data-photo="rules"] .scrim {
+  --copy-span: 660px;
+}
 
 .inner {
   position: relative;
