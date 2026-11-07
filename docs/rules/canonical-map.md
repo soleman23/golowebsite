@@ -59,20 +59,41 @@ Every fragment below is an id in § Fragment registry. Each one resolves only on
 
 ### Inbound: glossary records
 
-Each path is added to the record's `relatedContentPaths`, after the paths it already has. It renders in the entry's link list as "See what Rule N covers" or "Read “<question>”". The owner approved this list in chat on November 7, 2026. These are published records, so each edit adds an `seo` stage and the owner's `approval` to the record's review log, as #226 did, and moves `reviewedOn` to the approval date (`rulesLinkReview` in `lib/content/glossary/review.ts`, on the launch branch). A link isn't a substantive change, so `updatedOn` doesn't move. Every target already links back to the term through its `relatedGlossaryIds`.
+The owner approved these ten links in chat on November 7, 2026. They're on the launch branch, in `lib/content/glossary/terms/*.ts`, with the helper `rulesLinkReview` in `lib/content/glossary/review.ts`.
 
-| Record | Target | Why |
-|---|---|---|
-| `/glossary#penalty-area` | `/rules#red-vs-yellow-penalty-areas` | The record says red marks allow more relief than yellow; the situation lists the options for each. |
-| `/glossary#bunker` | `/rules#bunker-sand` | The record's example is the club touching the sand; the situation says which touches cost a penalty. |
-| `/glossary#teeing-area` | `/rules#rule-6` | The record cites Rule 6.1b's penalty for playing from outside it. |
-| `/glossary#gimme` | `/rules#conceded-putt` | The same question from the Rules side: a concession in match play, holing out in stroke play. |
-| `/glossary#match-play` | `/rules#rule-3` | The record cites Rule 3.2. |
-| `/glossary#stroke-play` | `/rules#rule-3` | The record cites Rule 3.3. |
-| `/glossary#four-ball` | `/rules#rule-23` | The record cites Rule 23. |
-| `/glossary#foursomes` | `/rules#rule-22` | The record cites Rule 22. |
-| `/glossary#stableford` | `/rules#rule-21` | The record cites Rule 21.1. |
-| `/glossary#mulligan` | `/rules#rule-1` | The record says a mulligan isn't allowed under the Rules; Rule 1's overview says what hitting again does under Rule 18. |
+Each edit does three things, and nothing else:
+
+1. Appends one path to the record's `relatedContentPaths`, after the paths it already has. The entry's link list shows it as "See what Rule N covers" for an overview, or "Read “<question>”" for a situation (`glossaryPathLink`).
+2. Appends one review-log entry, identical on every record except for the path:
+
+   ```ts
+   {
+     stage: "seo",
+     by: "agent",
+     on: "2026-11-07",
+     note: "Related link <path> added for the Rules Center launch (#242), approved by the owner in chat on 2026-11-07. A link isn't a copy change, so reviewedOn and updatedOn stay.",
+   }
+   ```
+
+3. Leaves everything else alone:
+   - `reviewedOn` stays `2026-10-29`. The validator requires it to equal the latest `approval` entry, so the owner's yes is in the `seo` entry's note, not in an `approval` entry of its own.
+   - `updatedOn` doesn't move, since a link isn't a substantive change.
+   - The term, definition, explanation, example, rule note and GoLo note are unchanged.
+
+Each target is the most specific record for the term: a situation where one answers the term's own example, otherwise the rule the record cites. Every target already links back to the term through its `relatedGlossaryIds`.
+
+| Record | `relatedContentPaths` now | Adds | Target on `/rules` | Why | `updatedOn` moves | Copy changes |
+|---|---|---|---|---|---|---|
+| `penalty-area` | `[]` | `/rules#red-vs-yellow-penalty-areas` | Situation "Red or yellow penalty area: what are my options?" | The record says red marks allow more relief than yellow; the situation lists the options for each. | No | None |
+| `bunker` | `[]` | `/rules#bunker-sand` | Situation "Can I touch the sand in a bunker?" | The record's example is the club resting on the sand; the situation says which touches cost a penalty. | No | None |
+| `teeing-area` | `[]` | `/rules#rule-6` | Overview "Rule 6: Playing a Hole" | The record cites Rule 6.1b's penalty for playing from outside it. No situation covers it. | No | None |
+| `gimme` | `["/blog/gimmes"]` | `/rules#conceded-putt` | Situation "Does a conceded putt count?" | The same question from the Rules side: a concession in match play, holing out in stroke play. | No | None |
+| `match-play` | `["/games/nassau"]` | `/rules#rule-3` | Overview "Rule 3: The Competition" | The record cites Rule 3.2, which is in Rule 3. No situation is about the format. | No | None |
+| `stroke-play` | `[]` | `/rules#rule-3` | Overview "Rule 3: The Competition" | The record cites Rule 3.3. | No | None |
+| `four-ball` | `["/games/wolf", "/blog/best-ball-vs-scramble"]` | `/rules#rule-23` | Overview "Rule 23: Four-Ball" | The record cites Rule 23. | No | None |
+| `foursomes` | `[]` | `/rules#rule-22` | Overview "Rule 22: Foursomes (Also Known as Alternate Shot)" | The record cites Rule 22. | No | None |
+| `stableford` | `[]` | `/rules#rule-21` | Overview "Rule 21: Other Forms of Individual Stroke Play and Match Play" | The record cites Rule 21.1. | No | None |
+| `mulligan` | `[]` | `/rules#rule-1` | Overview "Rule 1: The Game, Player Conduct and the Rules" | The record says a mulligan isn't allowed under the Rules; Rule 1's overview says what hitting again does under Rule 18. | No | None |
 
 Considered and left out:
 
