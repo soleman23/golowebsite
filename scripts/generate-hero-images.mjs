@@ -31,7 +31,7 @@ const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const SRC = join(ROOT, "tmp/hero-src");
 const OUT = join(ROOT, "public/images/heroes");
 
-const ALL_PAGES = ["faq", "blog", "games", "features", "how-it-works", "contact", "glossary"];
+const ALL_PAGES = ["faq", "blog", "games", "features", "how-it-works", "contact", "glossary", "rules"];
 const requested = process.argv.slice(2);
 const unknown = requested.filter((p) => !ALL_PAGES.includes(p));
 if (unknown.length) throw new Error(`unknown page: ${unknown.join(", ")} (pages: ${ALL_PAGES.join(", ")})`);
@@ -46,7 +46,9 @@ const START = { avif: 55, webp: 75 };
 // limit but lab LCP is. The glossary phone frame at AVIF q55 was 45.9 KB at
 // 768w and held /glossary's mobile Lighthouse LCP at about 2.65 s; q40 is
 // 24.9 KB (/faq's is 23.5 KB) with no visible loss under the scrim (#171).
-const START_FOR = { "glossary-mobile": { avif: 40 } };
+// /rules' phone frame at q55 was 28.1 KB and put lab LCP at a 2.50 s median
+// (#235); q40 brings it in line with the glossary's.
+const START_FOR = { "glossary-mobile": { avif: 40 }, "rules-mobile": { avif: 40 } };
 const FLOOR = { avif: 35, webp: 50 };
 const OG = { width: 1200, height: 630, quality: 82, budget: 300 * 1024 };
 

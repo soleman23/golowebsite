@@ -14,6 +14,7 @@ import {
   rulesHasPublished,
   rulesLastModified,
   rulesSchemaName,
+  heroOgImage,
   rulesBreadcrumb,
   rulesReviewCopy,
   rulesRouteVisible,
@@ -44,8 +45,8 @@ import styles from "./rules.module.css";
 /**
  * Spec §9's title, trimmed so it fits with the template's " · GoLo"
  * (Amendment A14). Self-canonical to /rules with or without ?category=, so
- * a topic view is never a page of its own (#243). The share card comes with
- * the photo (#235).
+ * a topic view is never a page of its own (#243). The share card is the
+ * hero photo's (#235).
  *
  * A function rather than a `metadata` export: a static export is resolved
  * even when the page calls notFound(), and the 404's payload would carry
@@ -58,6 +59,7 @@ export function generateMetadata(): Metadata {
     title: "Golf Rules Explained: Penalties, Relief & Questions",
     description:
       "Plain answers for a lost ball, out of bounds, penalty areas, cart paths and bunkers, plus all 25 Rules of Golf summarized, with the official text linked.",
+    image: heroOgImage("rules"),
   });
 }
 
@@ -155,6 +157,7 @@ export default function RulesPage() {
 
       <PageHero
         {...rulesHero}
+        photo="rules"
         breadcrumbs={[{ label: "Home", href: "/" }, { label: rulesBreadcrumb }]}
         search={
           empty ? undefined : (
