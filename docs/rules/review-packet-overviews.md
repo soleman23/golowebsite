@@ -325,7 +325,7 @@ Foundations and equipment (1–4) and playing the round (5–11). Sources opened
 
 Agent B found 1 error, also fixed: Rule 9 shared a 12-word run with 9.2a once "it's" is read as "it is".
 
-Codex then reviewed the pull request and raised four P2 points, all fixed: no between-hole practice from a bunker (Rule 5), a placed ball moved by wind into another area is put back too (Rule 9), others may still give some aiming help (Rule 10), and a putt that hits a ball-marker isn't replayed (Rule 11). Its second review raised three more, also fixed: accidental movement while applying a Rule is free (Rule 9), a provisional isn't a wrong ball (Rule 6), and the replay applies only to what a putt hits on the green (Rule 11). A third review raised three more, also fixed: a disturbed sand lie is re-created even if the ball didn't move (Rule 7), the accident exception covers specific actions, not every Rule (Rule 9), and stopping an opponent's dead ball to concede is allowed in match play (Rule 11).
+Codex then reviewed the pull request and raised four P2 points, all fixed: no between-hole practice from a bunker (Rule 5), a placed ball moved by wind into another area is put back too (Rule 9), others may still give some aiming help (Rule 10), and a putt that hits a ball-marker isn't replayed (Rule 11). Its second review raised three more, also fixed: accidental movement while applying a Rule is free (Rule 9), a provisional isn't a wrong ball (Rule 6), and the replay applies only to what a putt hits on the green (Rule 11). A third review raised three more, also fixed: a disturbed sand lie is re-created even if the ball didn't move (Rule 7), the accident exception covers specific actions, not every Rule (Rule 9), and stopping an opponent's dead ball to concede is allowed in match play (Rule 11). After your approval, a fourth review found one more, fixed and put to you before merging: you lift a ball to identify it only when you can't identify it as it lies (Rule 7).
 
 The two rules #237 singles out now say plainly what is a Committee matter. Rule 4 names the one Committee matter in the default Rule, a Local Rule banning distance devices, and says who the Committee is. Rule 10 says the advice limits cover the others in your group.
 
@@ -548,7 +548,7 @@ Each summary is 117–120 words. The longest run shared with the official text i
 
 ### Rule 7 · Ball Search: Finding and Identifying Ball
 
-**Summary (120 words):** Rule 7 covers finding and identifying your ball. You have three minutes from when you or your caddie start looking, then it's lost. You may move long grass, bushes, sand and water while searching; it's a penalty only if that goes beyond a reasonable search and improves your next shot. If anyone accidentally moves your ball while looking, there's no penalty; put it back. If searching disturbed sand on it, re-create the lie before you play. To check a ball, mark and lift it, cleaning only enough to identify it. It's yours if someone saw your ball come to rest, if it carries your mark, or if it matches yours where yours should be and no identical ball is nearby.
+**Summary (120 words):** Rule 7 covers finding and identifying your ball. You have three minutes from when you or your caddie start looking, then it's lost. You may move grass, bushes, sand and water while searching; it's a penalty only if that goes beyond a reasonable search and improves your next shot. If anyone accidentally moves your ball while looking, there's no penalty; put it back. If searching disturbed sand on it, re-create the lie before playing. If you can't identify a ball as it lies, mark and lift it, cleaning only enough to tell. It's yours if someone saw your ball come to rest, it carries your mark, or it matches yours where yours should be and no identical ball is nearby.
 
 **Look here when:** How long can I search for my ball? · I stepped on my ball while looking for it: is that a penalty? · Can I pick up a ball to see if it's mine? · Two balls of the same brand are in the rough: which is mine?
 
@@ -558,11 +558,11 @@ Each summary is 117–120 words. The longest run shared with the official text i
 |---:|---|---|
 | 1 | Rule 7 covers finding and identifying your ball. | [Rule 7](https://www.randa.org/en/rog/the-rules-of-golf/rule-7) |
 | 2 | You have three minutes from when you or your caddie start looking, then it's lost. | Definitions: Lost |
-| 3 | You may move long grass, bushes, sand and water while searching; it's a penalty only if that goes beyond a reasonable search and improves your next shot. | [7.1a](https://www.randa.org/en/rog/the-rules-of-golf/rule-7#7_1a) |
+| 3 | You may move grass, bushes, sand and water while searching; it's a penalty only if that goes beyond a reasonable search and improves your next shot. | [7.1a](https://www.randa.org/en/rog/the-rules-of-golf/rule-7#7_1a) |
 | 4 | If anyone accidentally moves your ball while looking, there's no penalty; put it back. | [7.4](https://www.randa.org/en/rog/the-rules-of-golf/rule-7#7_4) |
-| 5 | If searching disturbed sand on it, re-create the lie before you play. | [7.1b](https://www.randa.org/en/rog/the-rules-of-golf/rule-7#7_1b) |
-| 6 | To check a ball, mark and lift it, cleaning only enough to identify it. | [7.3](https://www.randa.org/en/rog/the-rules-of-golf/rule-7#7_3) |
-| 7 | It's yours if someone saw your ball come to rest, if it carries your mark, or if it matches yours where yours should be and no identical ball is nearby. | [7.2](https://www.randa.org/en/rog/the-rules-of-golf/rule-7#7_2) |
+| 5 | If searching disturbed sand on it, re-create the lie before playing. | [7.1b](https://www.randa.org/en/rog/the-rules-of-golf/rule-7#7_1b) |
+| 6 | If you can't identify a ball as it lies, mark and lift it, cleaning only enough to tell. | [7.3](https://www.randa.org/en/rog/the-rules-of-golf/rule-7#7_3) |
+| 7 | It's yours if someone saw your ball come to rest, it carries your mark, or it matches yours where yours should be and no identical ball is nearby. | [7.2](https://www.randa.org/en/rog/the-rules-of-golf/rule-7#7_2) |
 | Q1 | How long can I search for my ball? | Definitions: Lost |
 | Q2 | I stepped on my ball while looking for it: is that a penalty? | [7.4](https://www.randa.org/en/rog/the-rules-of-golf/rule-7#7_4) |
 | Q3 | Can I pick up a ball to see if it's mine? | [7.3](https://www.randa.org/en/rog/the-rules-of-golf/rule-7#7_3) |
@@ -575,9 +575,10 @@ Each summary is 117–120 words. The longest run shared with the official text i
 - *Rules accuracy (agent A), gap:* Q4 (two identical balls): if you can't tell which is yours, neither is identified. **Resolution:** The summary's "no identical ball is nearby" condition carries it; no words left for the consequence.
 - *Rules accuracy (agent A), nit:* Lifting without need, not marking, or over-cleaning is one stroke (7.3); kicking the ball before the search starts is one stroke (7.4). **Resolution:** Not added, for length.
 - *Site rules (agent B), should-fix:* "So long as you don't go beyond a reasonable search and improve your next shot" read as two separate bans. **Resolution:** Fixed: "it's a penalty only if that goes beyond a reasonable search and improves your next shot."
-- *Codex, on the pull request, P2:* Third review: sand moved in a search must be put back to re-create the lie even if the ball didn't move (7.1b). **Resolution:** Fixed: a separate sentence, "If searching disturbed sand on it, re-create the lie before you play."
+- *Codex, on the pull request, P2:* Third review: sand moved in a search must be put back to re-create the lie even if the ball didn't move (7.1b). **Resolution:** Fixed: a separate sentence, "If searching disturbed sand on it, re-create the lie before playing."
+- *Codex, on the pull request, P2:* Fourth review, after the owner's approval: lifting to identify is allowed only when the ball can't be identified as it lies; an unneeded lift is one penalty stroke (7.3). **Resolution:** Fixed after approval: "If you can't identify a ball as it lies, mark and lift it, cleaning only enough to tell." Two small cuts keep the summary at 120 words. Put to the owner before merging.
 
-**Copy distance:** longest run shared with the R&A text is 5 words ("come to rest if it"); no run of 8 or more.
+**Copy distance:** longest run shared with the R&A text is 5 words ("ball to see if it"); no run of 8 or more.
 
 **Owner approval:** approved in chat on November 6, 2026 ("Approve all three").
 
