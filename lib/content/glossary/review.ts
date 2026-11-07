@@ -60,3 +60,21 @@ export const mvpReviewLogNone: ReviewEntry[] = [
   seo,
   approval,
 ];
+
+/**
+ * The /rules links added for the Rules Center launch (#242,
+ * docs/rules/canonical-map.md § Link map), which the owner approved in chat
+ * on November 7, 2026. A link isn't a copy change: reviewedOn stays the
+ * latest approval (validate.ts holds it to that) and updatedOn doesn't move,
+ * so the owner's yes is recorded in this entry's note.
+ */
+export const RULES_LINKS_ADDED_ON = "2026-11-07";
+
+export function rulesLinkReview(path: string): ReviewEntry {
+  return {
+    stage: "seo",
+    by: "agent",
+    on: RULES_LINKS_ADDED_ON,
+    note: `Related link ${path} added for the Rules Center launch (#242), approved by the owner in chat on 2026-11-07. A link isn't a copy change, so reviewedOn and updatedOn stay.`,
+  };
+}
