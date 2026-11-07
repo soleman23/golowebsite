@@ -12,7 +12,9 @@
  * Server-rendered; the copy-link button is the only client leaf. The data-*
  * attributes are the hooks search, filtering (#236) and analytics (#244)
  * read: data-category on every entry, data-rules-official (with
- * data-official-rule) and data-rules-related on its links.
+ * data-official-rule) and data-rules-related (with data-content-id) on its
+ * links. The copy button reports share_click with the entry's scenario_id or
+ * rule_number.
  */
 
 import Link from "next/link";
@@ -135,6 +137,11 @@ export function RulesEntry({
           url={`${siteConfig.url}${rulesAnchorHref(anchor)}`}
           name={name}
           labels={copyLabels}
+          share={
+            "scenario" in kind
+              ? { scenario_id: kind.scenario }
+              : { rule_number: String(kind.rule) }
+          }
         />
       </div>
 
