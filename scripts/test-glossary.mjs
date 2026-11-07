@@ -466,7 +466,7 @@ const boundary = statuses.map((status) =>
 
 {
   const { createOpenReporter } = await import(
-    new URL("../components/sections/glossary/openReport.ts", import.meta.url).href
+    new URL("../lib/openReport.ts", import.meta.url).href
   );
   /** A task queue standing in for setTimeout(…, 0); tasks run in order. */
   function harness(allowedAtStart) {

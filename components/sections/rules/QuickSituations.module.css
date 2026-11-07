@@ -1,0 +1,78 @@
+.nav {
+  margin: 0 0 clamp(36px, 5vw, 56px);
+}
+
+.title {
+  margin: 0 0 12px;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 1.6px;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+}
+
+/* Two columns at 320px, three from 600px, four from 1000px (ux.md
+   wireframes). */
+.grid {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+}
+
+@media (min-width: 600px) {
+  .grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 1000px) {
+  .grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 2px;
+  height: 100%;
+  min-height: 64px;
+  padding: 12px 14px;
+  border-radius: var(--radius-tile);
+  background: var(--glass-surface);
+  border: 1px solid var(--card-border);
+  transition: border-color 0.14s ease;
+}
+
+.card:hover {
+  border-color: var(--accent-border);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .card {
+    transition: none;
+  }
+}
+
+.label {
+  font-size: 15.5px;
+  font-weight: 800;
+  line-height: 1.25;
+  color: var(--text-primary);
+}
+
+.rule {
+  font-size: 12.5px;
+  font-weight: 700;
+  color: var(--text-secondary);
+}
+
+/* Under a topic filter the shortcuts would point at hidden entries, so they
+   go too (docs/rules/ux.md D4). */
+html[data-filter]:not([data-filter="all"]) .nav {
+  display: none;
+}

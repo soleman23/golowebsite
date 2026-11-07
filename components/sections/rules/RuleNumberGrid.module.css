@@ -1,0 +1,47 @@
+.nav {
+  margin: 0 0 clamp(28px, 4vw, 40px);
+}
+
+/* At most 13 a row and never under 44px a cell: 5 a row at 320px, two rows
+   of 13 and 12 from about 720px. auto-fill, so it never scrolls sideways
+   (ux.md § Overflow rules). The 0.1px keeps an engine that rounds track
+   sizes up from fitting only 12. */
+.grid {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  max-width: 900px;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(max(44px, calc((100% - 72px) / 13 - 0.1px)), 1fr));
+  gap: 6px;
+}
+
+.number {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 44px;
+  border-radius: 10px;
+  font-size: 16px;
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+  color: var(--text-primary);
+  background: var(--glass-surface);
+  border: 1px solid var(--card-border);
+}
+
+a.number:hover {
+  border-color: var(--accent-border);
+}
+
+.empty {
+  color: var(--text-muted);
+  background: transparent;
+  border-color: var(--hairline);
+}
+
+/* Under a topic filter the shortcuts would point at hidden entries, so they
+   go too (docs/rules/ux.md D4). */
+html[data-filter]:not([data-filter="all"]) .nav {
+  display: none;
+}

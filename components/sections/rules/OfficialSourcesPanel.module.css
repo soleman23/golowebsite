@@ -1,0 +1,67 @@
+.section {
+  margin-top: clamp(48px, 6vw, 72px);
+  padding: clamp(22px, 3vw, 32px);
+  border-radius: var(--radius-card);
+  background: var(--glass-surface);
+  border: 1px solid var(--card-border);
+}
+
+.title {
+  margin: 0 0 10px;
+  font-size: clamp(22px, 2.6vw, 26px);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  color: var(--text-primary);
+}
+
+.intro,
+.caveat,
+.report {
+  margin: 0 0 12px;
+  max-width: 68ch;
+  font-size: 15px;
+  line-height: 1.6;
+  color: var(--text-secondary);
+}
+
+/* One column, two from 760px; each source is its link over a short note. */
+.list {
+  list-style: none;
+  margin: 18px 0 22px;
+  padding: 0;
+  display: grid;
+  gap: 14px 32px;
+}
+
+@media (min-width: 760px) {
+  .list {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+.item {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.link {
+  font-weight: 800;
+  color: var(--accent);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  overflow-wrap: anywhere;
+}
+
+.note {
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--text-secondary);
+}
+
+.report {
+  margin-bottom: 0;
+  font-weight: 700;
+  color: var(--text-primary);
+}
