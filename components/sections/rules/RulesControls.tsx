@@ -12,15 +12,18 @@
  * before hydration, as the glossary does.
  */
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { ChipFilter, type ChipItem } from "@/components/ui/ChipFilter";
 import { FilterStatus } from "@/components/ui/FilterStatus";
 import {
   normalizeRulesText,
   prepareRulesSearch,
+  rulesMatchType,
+  rulesResultBucket,
   searchRules,
   type RulesMatch,
 } from "@/lib/content/rules/search";
+import { trackRules } from "@/lib/rulesAnalytics";
 import type { RulesCategoryId, RulesSearchEntry } from "@/lib/content/rules/types";
 import { RULES_SEARCH_ID, useRules } from "./RulesProvider";
 import styles from "./RulesControls.module.css";
@@ -106,8 +109,6 @@ export function RulesControls({ chips, counts, topicLabels, entries, copy }: Rul
   const resultLine = fuzzy ? copy.closest : `${count(results.length, copy.nouns.result)}${inTopic}`;
 
   // The count, said once typing settles: "4 results: 2 situations, 2 rules".
-  // #244 reports rules_search here too (category, rulesResultBucket,
-  // rulesMatchType), once per changed topic and query, never the query.
   const [announced, setAnnounced] = useState("");
   useEffect(() => {
     if (!searching) {
@@ -127,6 +128,29 @@ export function RulesControls({ chips, counts, topicLabels, entries, copy }: Rul
     const timer = setTimeout(() => setAnnounced(text), ANNOUNCE_AFTER_MS);
     return () => clearTimeout(timer);
   }, [searching, results.length, groups, inTopic, fuzzy, elsewhere, copy]);
+
+  // rules_search, on the same settle as the announcement and once per
+  // changed topic and normalised query (#244). The event has the topic, a
+  // result bucket and the match type; the last reported pair stays in this
+  // ref only to skip a repeat, and never leaves the page.
+  const reported = useRef("");
+  useEffect(() => {
+    if (!searching) {
+      reported.current = "";
+      return;
+    }
+    const settled = `${topic}|${normalizeRulesText(query)}`;
+    if (settled === reported.current) return;
+    const timer = setTimeout(() => {
+      reported.current = settled;
+      trackRules("rules_search", {
+        category: topic,
+        result_bucket: rulesResultBucket(results.length),
+        match_type: rulesMatchType(results),
+      });
+    }, ANNOUNCE_AFTER_MS);
+    return () => clearTimeout(timer);
+  }, [searching, topic, query, results]);
 
   // Spoken on a topic change, from the same lines the page shows.
   const filterMessages = counts;

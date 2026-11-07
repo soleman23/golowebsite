@@ -19,8 +19,12 @@
  * paints it before hydration). Search hides the lists through
  * <html data-rules-search>, set here while a query is active.
  *
- * Analytics are #244's: rules_filter belongs in choose(), and the rule and
- * situation opens in reveal() through lib/openReport.
+ * Analytics (#244, lib/rulesAnalytics.ts): rules_filter from choose();
+ * rules_rule_open and rules_scenario_open from reveal(), once per entry per
+ * page load through lib/openReport, with the source of the in-page link that
+ * led there; and one click listener for the official, related and CTA links,
+ * which are server-rendered and carry their ids as data-* attributes.
+ * rules_search is RulesControls'. None of them carries the search text.
  */
 
 import {
@@ -37,6 +41,17 @@ import { usePathname, useRouter } from "next/navigation";
 import { AnnounceContext } from "@/components/ui/announce";
 import { FilterUrlSync, useInitialFilter } from "@/components/ui/FilterUrlSync";
 import { normalizeRulesText } from "@/lib/content/rules/search";
+import { createOpenReporter } from "@/lib/openReport";
+import {
+  rulesCategoryParam,
+  rulesCtaDestination,
+  rulesOfficialParams,
+  rulesRelatedParams,
+  rulesRuleNumber,
+  rulesScenarioId,
+  trackRules,
+  type RulesOpenSource,
+} from "@/lib/rulesAnalytics";
 
 type RulesState = {
   /** The active topic id or "all"; null until the URL has been read. */
@@ -78,6 +93,39 @@ type ProviderProps = {
 
 /** The field's id: RULES_PAGE_IDS reserves it. */
 export const RULES_SEARCH_ID = "rules-search";
+
+/** What an open reports: the record, and how the reader got there. */
+type RulesOpen =
+  | { kind: "rule"; rule: `${number}`; source: RulesOpenSource }
+  | { kind: "scenario"; scenario: string; source: RulesOpenSource };
+
+/**
+ * An in-page link's click, kept until the hash change it causes reaches
+ * reveal(). A click that changes nothing (the same fragment, a new tab)
+ * leaves it behind, so it counts only for its own target and only briefly.
+ */
+type PendingOpen = { id: string; source: RulesOpenSource; at: number };
+const PENDING_OPEN_MS = 1000;
+
+/** The results list's id (RulesControls renders it). */
+const RULES_RESULTS_ID = "rules-results";
+/** FinalCTA's section id: the closing band, the hub's one CTA placement. */
+const FINAL_CTA_ID = "get";
+
+/** Where an in-page link sits decides the source of the open it leads to. */
+function openSource(link: Element): RulesOpenSource {
+  if (link.closest(`#${RULES_RESULTS_ID}`)) return "search";
+  if (link.hasAttribute("data-rules-related")) return "related";
+  return "browse";
+}
+
+function decodeFragment(hash: string): string | null {
+  try {
+    return decodeURIComponent(hash);
+  } catch {
+    return null;
+  }
+}
 
 /**
  * Run once `target` is laid out. A reset needs a render, and on a cold load
@@ -156,6 +204,16 @@ export function RulesProvider({ ids, copy, children }: ProviderProps) {
   const queryRef = useRef("");
   // A reveal still waiting for its target to show (see whenShown).
   const pending = useRef<{ target: HTMLElement; show: () => void } | null>(null);
+  const pendingOpen = useRef<PendingOpen | null>(null);
+  const [opens] = useState(() =>
+    createOpenReporter<RulesOpen>(
+      (_id, open) =>
+        open.kind === "rule"
+          ? trackRules("rules_rule_open", { rule_number: open.rule, source: open.source })
+          : trackRules("rules_scenario_open", { scenario_id: open.scenario, source: open.source }),
+      () => window.__goloAnalyticsAllowed === true,
+    ),
+  );
 
   const select = useCallback((id: string) => {
     activeRef.current = id;
@@ -171,6 +229,10 @@ export function RulesProvider({ ids, copy, children }: ProviderProps) {
       const href = id === "all" ? pathname : `${pathname}?category=${id}`;
       // push, not replace: back and forward walk through topics.
       router.push(href, { scroll: false });
+      // The reader's choice only: a chip, Clear, "Search all". Not the
+      // initial read of ?category= and not a deep link resetting it.
+      const category = rulesCategoryParam(id);
+      if (category) trackRules("rules_filter", { category });
     },
     [pathname, router, select],
   );
@@ -194,11 +256,29 @@ export function RulesProvider({ ids, copy, children }: ProviderProps) {
   }, [choose, setQuery]);
 
   const reveal = useCallback(
-    (id: string, announceOpen = false) => {
+    (id: string, announceOpen = false, arrival = false) => {
+      const via = pendingOpen.current;
+      pendingOpen.current = null;
       const resolved = resolveTarget(id);
       if (!resolved) return;
       const { target, focus, entry, hideable } = resolved;
       const name = targetName(target, focus, id);
+      if (entry) {
+        // Arrival waits for the saved choice to apply (lib/openReport).
+        const source: RulesOpenSource = arrival
+          ? "deep_link"
+          : via && via.id === id && performance.now() - via.at < PENDING_OPEN_MS
+            ? via.source
+            : "browse";
+        const rule = rulesRuleNumber(target.dataset.ruleNumber);
+        const scenario = rulesScenarioId(target.dataset.scenarioId);
+        const open: RulesOpen | null = rule
+          ? { kind: "rule", rule, source }
+          : scenario
+            ? { kind: "scenario", scenario, source }
+            : null;
+        if (open) (arrival ? opens.arrive : opens.open)(id, open);
+      }
       // Search hides every list, and a topic hides the others' entries: each
       // gives way to the fragment (ux.md: the hash wins). The sources and
       // related sections are never hidden, so a jump there resets nothing.
@@ -239,7 +319,7 @@ export function RulesProvider({ ids, copy, children }: ProviderProps) {
         }),
       );
     },
-    [announce, copy, pathname, router, select, setQuery],
+    [announce, copy, opens, pathname, router, select, setQuery],
   );
 
   // A reveal that timed out while FilterUrlSync held the old topic: run it
@@ -255,24 +335,52 @@ export function RulesProvider({ ids, copy, children }: ProviderProps) {
   // Deep links: the hash on arrival (once), then every hash change.
   const arrived = useRef(false);
   useEffect(() => {
-    const fromHash = () => {
+    const fromHash = (arrival = false) => {
       // A malformed escape (#%) names nothing on the page; ignore it rather
       // than let the URIError take the hub down.
-      let id = "";
-      try {
-        id = decodeURIComponent(window.location.hash.slice(1));
-      } catch {
-        return;
-      }
-      if (id) reveal(id);
+      const id = decodeFragment(window.location.hash.slice(1));
+      if (id) reveal(id, false, arrival);
     };
+    const onHashChange = () => fromHash();
     if (!arrived.current) {
       arrived.current = true;
-      fromHash();
+      fromHash(true);
     }
-    window.addEventListener("hashchange", fromHash);
-    return () => window.removeEventListener("hashchange", fromHash);
+    window.addEventListener("hashchange", onHashChange);
+    return () => window.removeEventListener("hashchange", onHashChange);
   }, [reveal]);
+
+  // The hub's links, from one listener (capture, so it runs before any
+  // handler that navigates). An in-page jump notes its source for the open
+  // it leads to; an official, related or CTA link reports its own event.
+  useEffect(() => {
+    const onClick = (event: MouseEvent) => {
+      const link = (event.target as Element | null)?.closest?.<HTMLAnchorElement>("a[href]");
+      if (!link) return;
+      const href = link.getAttribute("href") ?? "";
+      const modified = event.metaKey || event.ctrlKey || event.shiftKey || event.altKey;
+      if (href.startsWith("#") && event.button === 0 && !modified) {
+        const id = decodeFragment(href.slice(1));
+        if (id) pendingOpen.current = { id, source: openSource(link), at: performance.now() };
+      }
+      if (link.hasAttribute("data-rules-official")) {
+        const params = rulesOfficialParams(link.dataset.rulesOfficial, link.dataset.officialRule);
+        if (params) trackRules("rules_official_click", params);
+      }
+      if (link.hasAttribute("data-rules-related")) {
+        const params = rulesRelatedParams(link.dataset.rulesRelated, link.dataset.contentId);
+        if (params) trackRules("rules_related_click", params);
+      }
+      if (link.closest(`#${FINAL_CTA_ID}`)) {
+        const destination = rulesCtaDestination(link.href, window.location.origin);
+        if (destination) {
+          trackRules("rules_cta_click", { placement: "final_cta", destination_type: destination });
+        }
+      }
+    };
+    document.addEventListener("click", onClick, { capture: true });
+    return () => document.removeEventListener("click", onClick, { capture: true });
+  }, []);
 
   // While searching, the ranked results replace the lists (ux.md D5). A
   // query of punctuation alone ("#" on the way to "#18") searches nothing,

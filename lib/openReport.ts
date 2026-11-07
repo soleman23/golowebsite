@@ -14,24 +14,28 @@
  * <main> in the layout), so a report sent at once would be dropped.
  */
 
-export type OpenReporter = {
-  open: (id: string, category: string) => void;
-  arrive: (id: string, category: string) => void;
+/**
+ * `detail` travels with the open to `send`: the glossary's category, the
+ * Rules Center's record and source. Only the first open of an id is sent.
+ */
+export type OpenReporter<T = string> = {
+  open: (id: string, detail: T) => void;
+  arrive: (id: string, detail: T) => void;
 };
 
-export function createOpenReporter(
-  send: (id: string, category: string) => void,
+export function createOpenReporter<T = string>(
+  send: (id: string, detail: T) => void,
   allowed: () => boolean,
   nextTask: (run: () => void) => void = (run) => setTimeout(run, 0),
-): OpenReporter {
+): OpenReporter<T> {
   const reported = new Set<string>();
-  const open = (id: string, category: string) => {
+  const open = (id: string, detail: T) => {
     if (reported.has(id) || !allowed()) return;
     reported.add(id);
-    send(id, category);
+    send(id, detail);
   };
   return {
     open,
-    arrive: (id, category) => nextTask(() => nextTask(() => open(id, category))),
+    arrive: (id, detail) => nextTask(() => nextTask(() => open(id, detail))),
   };
 }
