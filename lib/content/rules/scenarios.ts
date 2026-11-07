@@ -431,19 +431,19 @@ export const rulesScenarios: RulesScenario[] = [
     primaryRule: 14,
     sources: [
       rog("14.1a", P1_CHECKED), rog("14.1b", P1_CHECKED), rog("14.1c", P1_CHECKED), rog("14.2", P1_CHECKED),
-      rog("13.1b", P1_CHECKED), rog("9.4", P1_CHECKED),
+      rog("13.1b", P1_CHECKED), rog("9.4", P1_CHECKED), rog("15.3b", P1_CHECKED),
       localRuleSource("E-3", P1_CHECKED),
     ],
     answer:
-      "On the putting green, whenever you like: mark it, lift it, clean it and put it back on the same spot. Everywhere else you lift it only when a Rule lets you, such as to identify it, to take relief or because it's in another player's way, and why you lifted it decides whether you can clean it. Lift, clean and place in the fairway is Model Local Rule E-3, in force only if the Committee has adopted it.",
+      "On the putting green, whenever you like: mark it, lift it, clean it and put it back on the same spot. Everywhere else you lift it only when a Rule lets you, such as to identify it, to take relief or because another player has asked you to lift it out of their way, and why you lifted it decides whether you can clean it. Lift, clean and place in the fairway is Model Local Rule E-3, in force only if the Committee has adopted it.",
     conditions: [
       "Before lifting a ball that has to go back on the same spot, mark it with a ball-marker or a club held on the ground right behind or beside it. Lifting to take relief needs no mark.",
       "Only you can lift it, or someone you authorize each time. Your caddie can lift it without asking on the putting green, or when it's clear you're about to take relief.",
-      "Off the green you can clean it unless you lifted it to check for a cut or crack, because it was in someone's way, or to see whether relief applies and then didn't take it. If you lifted it to identify it, clean only as much as you need to tell it's yours.",
+      "Off the green you can clean it unless you lifted it to check for a cut or crack, because another player asked you to move it out of their way, or to see whether relief applies and then didn't take it. If you lifted it to identify it, clean only as much as you need to tell it's yours.",
       "You, or whoever lifted it, set it back down by hand on its original spot. Take the ball-marker away before you play.",
     ],
     penalty:
-      "One penalty stroke for lifting without marking when a mark was needed, leaving the ball-marker down when you play, cleaning when cleaning isn't allowed, or playing a ball put back by someone who wasn't allowed to (Rules 14.1 and 14.2). Lifting it when no Rule allows it is also one penalty stroke (Rule 9.4). Play it without putting it back on its spot and it's the general penalty instead: two strokes in stroke play, loss of the hole in match play (Rules 9.4 and 14.2).",
+      "One penalty stroke for lifting without marking when a mark was needed, leaving the ball-marker down when you play, cleaning when cleaning isn't allowed, or playing a ball put back by someone who wasn't allowed to (Rules 14.1 and 14.2). Lifting it when no Rule allows it, including lifting it off the green because you think it's in someone's way when they haven't asked, is also one penalty stroke (Rules 9.4 and 15.3b). Play it without putting it back on its spot and it's the general penalty instead: two strokes in stroke play, loss of the hole in match play (Rules 9.4 and 14.2).",
     example:
       "On the 6th your ball reaches the green with mud on it. Put a marker right behind it, lift it, wipe it, set it back on the same spot and pick the marker up before you putt.",
     localRuleCaveat:

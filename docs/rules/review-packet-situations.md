@@ -286,19 +286,19 @@ Sources: 9.1b, 9.2, 9.3, 9.4, 9.5, 9.6; Definitions: Moved, Known or Virtually C
 
 ### mark-lift-clean
 
-Sources: 14.1a, 14.1b, 14.1c, 14.2, 13.1b, 9.4; MLR E-3.
+Sources: 14.1a, 14.1b, 14.1c, 14.2, 13.1b, 9.4, 15.3b; MLR E-3.
 
 | Field | Sentence (start) | Source |
 |---|---|---|
 | answer | On the putting green: mark, lift, clean, replace any time | 13.1b |
-| answer | Elsewhere only when a Rule lets you; why you lifted decides cleaning | 14.1c; 9.4b |
+| answer | Elsewhere only when a Rule lets you, such as at another player's request; why you lifted decides cleaning | 14.1c; 9.4b; 15.3b(2) |
 | answer | Lift, clean and place is E-3, only if adopted | MLR E-3 |
 | conditions[0] | Mark before lifting a ball to be replaced, with a ball-marker or a club, right behind or beside; no mark needed for relief | 14.1a |
 | conditions[1] | Only you or someone you authorize each time; caddie without asking on the green or when relief is clear | 14.1b |
 | conditions[2] | Cleaning off the green: not for cut or crack, interference, or relief check without relief; to identify, only as needed | 14.1c |
 | conditions[3] | You or whoever lifted it replaces it by hand on the original spot; remove the ball-marker | 14.2b; 14.2c; 14.1a |
 | penalty | One stroke: no mark, marker left down, cleaning not allowed, replaced by someone not allowed | 14.1a; 14.1c; 14.2b(1) |
-| penalty | Lifting with no Rule: one stroke; played without replacing: general penalty instead | 9.4b; 9.4 (penalty note); 14.2 |
+| penalty | Lifting with no Rule, including an unrequested lift off the green for interference: one stroke; played without replacing: general penalty instead | 9.4b; 15.3b(2); 9.4 (penalty note); 14.2 |
 | example | 6th: marker behind, lift, wipe, replace, pick up the marker | 13.1b; 14.1a |
 | localRuleCaveat | E-3 only if adopted; ball touching general area mown to fairway height or less, or an area the Committee names; placed once, within the Committee's distance, no nearer the hole, in the general area | MLR E-3 (Local Rule text) |
 | localRuleCaveat | A group agreeing to it isn't the Committee adopting it | MLR E-3 ("may adopt"); canonical-map.md rule 4 |
@@ -389,6 +389,7 @@ Codex (PR #261, review of ac9fcce), after the owner's approval:
 | # | Record · field | Finding | Resolution |
 |---|---|---|---|
 | C3 (P2) | temporary-water · options[1] | 16.1b requires complete relief where the dropped ball comes to rest, not only at the reference point | Fixed, as cart-path's condition already says |
+| C4 (P2, review of 2db047b) | mark-lift-clean · answer | Off the green, an interfering ball is lifted only when another player requires it; lifting on your own belief is one penalty stroke (15.3b) | Fixed in the answer, conditions[2] and the penalty; `15.3b` added (anchor in `source-map.md`) |
 
 Checks both reviewers passed: no GoLo claims; `NEVER_WORDS` clean; E-3 conditional; the Rules of Handicapping only in the caveat, called a separate rulebook; glossary slugs `putt`, `gimme`, `match-play`, `stroke-play`, `net-double-bogey` published; `/blog/gimmes` served; fragments match `canonical-map.md`; aliases as `inventory.md`, with "casual water" shared only with Rule 16, its primary rule; answers two or three sentences, four or five conditions; `npm run lint:content` passes.
 
@@ -397,5 +398,7 @@ Checks both reviewers passed: no GoLo claims; `NEVER_WORDS` clean; E-3 condition
 **Approved by the owner in chat on November 6, 2026** ("Approve batch 2"), on this packet as written. The records are `approved` with `reviewedOn: 2026-11-06`, `reviewedBy: "owner"` and a review log of rules, product and seo by "agent" and approval by "owner" (`P1_APPROVED` in `scenarios.ts`). With both batches approved, all 12 situations are `approved`. Not published: `rulesLive` is false and only #247 publishes.
 
 **Post-approval change:** Codex finding C3 (above) added one sentence to `temporary-water` options[1]. Copy distance is still 0 runs of eight or more words (`npm run check:rules-copy`). **The owner confirmed the fix as part of the batch 2 approval in chat on November 6, 2026** ("Confirm fix").
+
+**Second post-approval change:** Codex finding C4 (above) changed `mark-lift-clean`'s answer, conditions[2] and penalty. Pending the owner's confirmation in chat.
 
 **Seen in `next dev`** (the hub, #255, renders approved records marked "Not published"): all 12 situations render with their "Before you decide" lists, caveats and official links; no horizontal overflow at 320, 760, 1100 or 1440 px; no console errors; no review-log, `reviewedBy` or `checkedOn` text in the page. Focus styling is the hub's components', unchanged here.
