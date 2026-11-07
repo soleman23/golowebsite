@@ -9,6 +9,9 @@ import {
   publishedGlossaryTerms,
   legalDocs,
   publishedPosts,
+  publishedRules,
+  rulesHasPublished,
+  rulesLastModified,
 } from "@/lib/content";
 
 /**
@@ -76,6 +79,9 @@ export default function sitemap(): MetadataRoute.Sitemap {
     // term anchors and ?category= views aren't pages (spec §7.3). Its date is
     // the latest real publishedOn/updatedOn, omitted if there isn't one.
     ...glossarySitemapEntries(),
+    // The Rules Center hub, on the same terms (#243): live, with published
+    // records, and only the hub. Fragments and ?category= views aren't pages.
+    ...rulesSitemapEntries(),
     // Driven off the data, so publishing a post is a one-line change in
     // lib/content/blog.ts and never an edit here.
     ...publishedPosts.map((post) => ({
@@ -115,6 +121,20 @@ export default function sitemap(): MetadataRoute.Sitemap {
         changeFrequency: "yearly" as const,
         priority: 0.3,
       })),
+  ];
+}
+
+function rulesSitemapEntries(): MetadataRoute.Sitemap {
+  const hub = publishedRules();
+  if (!rulesHasPublished(hub)) return [];
+  const lastModified = rulesLastModified(hub);
+  return [
+    {
+      url: `${siteConfig.url}/rules`,
+      ...(lastModified ? { lastModified: new Date(lastModified) } : {}),
+      changeFrequency: "monthly",
+      priority: 0.8,
+    },
   ];
 }
 
