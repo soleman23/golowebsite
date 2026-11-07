@@ -187,7 +187,7 @@ export const ruleOverviews: RuleOverview[] = [
   }),
   rule(7, {
     summary:
-      "Rule 7 covers finding and identifying your ball. You have three minutes from when you or your caddie start looking, then it's lost. You may move long grass, bushes, sand and water while searching; it's a penalty only if that goes beyond a reasonable search and improves your next shot. If anyone accidentally moves your ball while looking, there's no penalty; put it back. If searching disturbed sand on it, re-create the lie before you play. To check a ball, mark and lift it, cleaning only enough to identify it. It's yours if someone saw your ball come to rest, if it carries your mark, or if it matches yours where yours should be and no identical ball is nearby.",
+      "Rule 7 covers finding and identifying your ball. You have three minutes from when you or your caddie start looking, then it's lost. You may move grass, bushes, sand and water while searching; it's a penalty only if that goes beyond a reasonable search and improves your next shot. If anyone accidentally moves your ball while looking, there's no penalty; put it back. If searching disturbed sand on it, re-create the lie before playing. If you can't identify a ball as it lies, mark and lift it, cleaning only enough to tell. It's yours if someone saw your ball come to rest, it carries your mark, or it matches yours where yours should be and no identical ball is nearby.",
     commonQuestions: [
       "How long can I search for my ball?",
       "I stepped on my ball while looking for it: is that a penalty?",

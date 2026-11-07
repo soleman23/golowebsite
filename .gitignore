@@ -56,3 +56,7 @@ Thumbs.db
 
 # local scratch (hero source PNGs etc.)
 /tmp/
+
+# official Rules of Golf text cached by scripts/check-rules-copy.mjs. The
+# R&A's terms allow personal use only, so it's never committed.
+/.cache/rules-official/

@@ -32,7 +32,7 @@ import { GlossaryDirectory } from "@/components/sections/glossary/GlossaryDirect
 import { GlossaryProvider } from "@/components/sections/glossary/GlossaryProvider";
 import { GlossarySearchField } from "@/components/sections/glossary/GlossarySearchField";
 import { GlossaryControls } from "@/components/sections/glossary/GlossaryControls";
-import { CopyLinkButton } from "@/components/sections/glossary/CopyLinkButton";
+import { CopyLinkButton } from "@/components/ui/CopyLinkButton";
 import styles from "./glossary.module.css";
 
 /**
@@ -111,6 +111,8 @@ export default function GlossaryPage() {
     copy: glossaryControlsCopy.copy,
     copied: glossaryControlsCopy.copied,
     failed: glossaryControlsCopy.copyFailed,
+    copiedMessage: glossaryControlsCopy.copiedMessage,
+    failedMessage: glossaryControlsCopy.failedMessage,
   };
 
   return (
@@ -179,9 +181,9 @@ export default function GlossaryPage() {
               actions={(t) => (
                 <CopyLinkButton
                   url={`${siteConfig.url}/glossary#${t.slug}`}
-                  termId={t.id}
-                  term={t.term}
+                  name={t.term}
                   labels={copyLabels}
+                  share={{ term_id: t.id }}
                 />
               )}
             />
