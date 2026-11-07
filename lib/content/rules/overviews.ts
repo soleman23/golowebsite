@@ -70,6 +70,29 @@ const ownerApproved: Written = {
   reviewLog: REVIEW_LOG,
 };
 
+/**
+ * Related reading the overview batches left to #242 (docs/rules/canonical-map.md
+ * § Link map). A link doesn't change what the record says, so the owner's
+ * approval stands; the seo stage records the check. Spread after
+ * `ownerApproved`, which would otherwise replace the review log.
+ */
+const RELATED_ADDED_ON = "2026-11-07";
+
+function relatedReading(paths: string[]): Written {
+  return {
+    relatedContentPaths: paths,
+    reviewLog: [
+      ...REVIEW_LOG,
+      {
+        stage: "seo",
+        by: "agent",
+        on: RELATED_ADDED_ON,
+        note: `Related reading added (#242): ${paths.join(", ")}. Each is a served page (lint:content) and listed in canonical-map.md § Link map.`,
+      },
+    ],
+  };
+}
+
 /** Rule pages and Definitions a record rests on, each opened on `on`. */
 function opened(on: string, refs: string[], terms: string[] = []): RulesSource[] {
   return [
@@ -138,6 +161,8 @@ export const ruleOverviews: RuleOverview[] = [
     relatedGlossaryIds: ["match-play", "stroke-play", "gimme", "net-score", "handicap-stroke"],
     sources: opened(OPENED_237, ["3", "3.1a", "3.1b", "3.1c", "3.2a", "3.2b", "3.2c", "3.3b", "3.3c"]),
     ...ownerApproved,
+    // The post owns "which should we play"; the games sit on top of the Rules.
+    ...relatedReading(["/blog/match-play-vs-stroke-play", "/games"]),
   }),
   rule(4, {
     aliases: ["14 clubs", "club limit"],
@@ -429,6 +454,8 @@ export const ruleOverviews: RuleOverview[] = [
       ["21", "21.1a", "21.1b", "21.1c", "21.2a", "21.2b", "21.2c", "21.3a", "21.3b", "21.3c", "21.4a", "21.5"],
     ),
     ...ownerApproved,
+    // Other forms of play: the game guides, each with its own house rules.
+    ...relatedReading(["/games"]),
   }),
   rule(22, {
     summary:
@@ -455,6 +482,8 @@ export const ruleOverviews: RuleOverview[] = [
     relatedGlossaryIds: ["four-ball", "best-score"],
     sources: opened(OPENED_239, ["23", "23.1", "23.2a", "23.2b", "23.5a", "23.5b", "23.6", "23.7", "23.9a"]),
     ...ownerApproved,
+    // The post owns the best ball and scramble comparison.
+    ...relatedReading(["/blog/best-ball-vs-scramble"]),
   }),
   rule(24, {
     summary:
