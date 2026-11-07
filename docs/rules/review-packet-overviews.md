@@ -20,7 +20,7 @@ Course areas and procedures (12–16) and relief and penalties (17–19), the mo
 
 **Result.** Agent A found 2 errors: Rule 14 said any mistake could be fixed free before playing the ball, and Rule 18 started the lost-ball clock when "the search starts" rather than when you or your caddie start looking. Agent B found 1 error: Rule 18 shared a 9-word run with 18.2b once "it's" is read as "it is". All three are fixed, along with the gaps and should-fix items below. Codex then reviewed the pull request and raised four P2 points, all fixed: sand that has washed away still counts as bunker (Rule 12), the last hole's correction deadline is returning the card (Rule 14), a drop from a movable obstruction stays in the same area of the course (Rule 15), and a plugged ball's drop is measured from the spot just behind it (Rule 16). Each summary is 112–120 words with four questions. The drafter's checker now spells out contractions too, and every overview was rerun through it: the longest run left in this batch is 7 words. `npm run lint:content` passes. Agent B checked every link on the draft; after the fixes, the final 43 subrule anchors and 22 Definitions citations were rechecked against the fetched pages, and all resolve.
 
-**For the owner to decide:**
+**Owner calls** (approved on November 6, 2026, with the drafter's positions as written):
 
 1. **Questions as pointers.** A "Look here when" question tells a reader this is the rule to look in; the drafter didn't try to answer every one inside 120 words. Agent A flagged those without an answer in the summary. Still unanswered here: Rule 15 Q4 (another ball on your line), Rule 16 Q2 (soggy fairway), Rule 17 Q4 (unplayable in a penalty area, answered in Rule 19's overview) and Rule 18 Q4 (original found after a provisional). Each is mapped to its subrule below. Say if you'd rather every question be answered on the card; that means swapping questions, since every summary is at or near 120 words.
 2. **Ground under repair** (Rule 16). Agent A asked for a line saying it's mostly what the Committee marks, since casual groups treat any bare patch as ground under repair. There is no room left; the Definition is now linked instead.
@@ -60,7 +60,7 @@ Course areas and procedures (12–16) and relief and penalties (17–19), the mo
 
 **Copy distance:** longest run shared with the R&A text is 6 words ("ball is in a bunker and"); no run of 8 or more.
 
-**Owner approval:** pending.
+**Owner approval:** approved in chat on November 6, 2026 ("Approve all three").
 
 ### Rule 13 · Putting Greens
 
@@ -96,7 +96,7 @@ Course areas and procedures (12–16) and relief and penalties (17–19), the mo
 
 **Copy distance:** longest run shared with the R&A text is 5 words ("mark lift clean and replace"); no run of 8 or more.
 
-**Owner approval:** pending.
+**Owner approval:** approved in chat on November 6, 2026 ("Approve all three").
 
 ### Rule 14 · Procedures for Ball: Marking, Lifting and Cleaning; Replacing on Spot; Dropping in Relief Area; Playing from Wrong Place
 
@@ -132,7 +132,7 @@ Course areas and procedures (12–16) and relief and penalties (17–19), the mo
 
 **Copy distance:** longest run shared with the R&A text is 6 words ("relief area where the ball must"); no run of 8 or more.
 
-**Owner approval:** pending.
+**Owner approval:** approved in chat on November 6, 2026 ("Approve all three").
 
 ### Rule 15 · Relief from Loose Impediments and Movable Obstructions (Including Ball or Ball-Marker Helping or Interfering with Play)
 
@@ -168,7 +168,7 @@ Course areas and procedures (12–16) and relief and penalties (17–19), the mo
 
 **Copy distance:** longest run shared with the R&A text is 5 words ("move out of the way"); no run of 8 or more.
 
-**Owner approval:** pending.
+**Owner approval:** approved in chat on November 6, 2026 ("Approve all three").
 
 ### Rule 16 · Relief from Abnormal Course Conditions (Including Immovable Obstructions), Dangerous Animal Condition, Embedded Ball
 
@@ -207,7 +207,7 @@ Course areas and procedures (12–16) and relief and penalties (17–19), the mo
 
 **Copy distance:** longest run shared with the R&A text is 7 words ("for a ball in the general area"); no run of 8 or more.
 
-**Owner approval:** pending.
+**Owner approval:** approved in chat on November 6, 2026 ("Approve all three").
 
 ### Rule 17 · Penalty Areas
 
@@ -242,7 +242,7 @@ Course areas and procedures (12–16) and relief and penalties (17–19), the mo
 
 **Copy distance:** longest run shared with the R&A text is 7 words ("any body of water on the course"); no run of 8 or more.
 
-**Owner approval:** pending.
+**Owner approval:** approved in chat on November 6, 2026 ("Approve all three").
 
 ### Rule 18 · Stroke-and-Distance Relief, Ball Lost or Out of Bounds, Provisional Ball
 
@@ -278,7 +278,7 @@ Course areas and procedures (12–16) and relief and penalties (17–19), the mo
 
 **Copy distance:** longest run shared with the R&A text is 7 words ("when it is known or virtually certain"); no run of 8 or more.
 
-**Owner approval:** pending.
+**Owner approval:** approved in chat on November 6, 2026 ("Approve all three").
 
 ### Rule 19 · Unplayable Ball
 
@@ -309,7 +309,7 @@ Course areas and procedures (12–16) and relief and penalties (17–19), the mo
 
 **Copy distance:** longest run shared with the R&A text is 6 words ("within two club lengths of the"); no run of 8 or more.
 
-**Owner approval:** pending.
+**Owner approval:** approved in chat on November 6, 2026 ("Approve all three").
 
 ## #237 · Rules 1–11
 
