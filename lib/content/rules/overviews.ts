@@ -21,6 +21,9 @@ const OPENED_238 = "2026-11-06";
 /** #237 (Rules 1–11): as OPENED_238. */
 const OPENED_237 = "2026-11-06";
 
+/** #239 (Rules 20–25): as OPENED_238. */
+const OPENED_239 = "2026-11-06";
+
 /**
  * The review record of every approved overview (docs/rules/editorial-review.md
  * § Stages). Two independent reviewer agents ran the rules, product and seo
@@ -399,10 +402,80 @@ export const ruleOverviews: RuleOverview[] = [
   }),
 
   // Rulings, formats and accessibility
-  rule(20),
-  rule(21, { relatedGlossaryIds: ["stableford", "scramble"] }),
-  rule(22, { relatedGlossaryIds: ["foursomes"] }),
-  rule(23, { relatedGlossaryIds: ["four-ball"] }),
-  rule(24),
-  rule(25),
+  rule(20, {
+    summary:
+      "Rule 20 covers Rules questions mid-round and rulings by referees and the Committee. If no referee or Committee member is available in reasonable time, decide and play on. In match play the players can agree how to settle a question, and that answer stands even if it was wrong, unless they agreed to ignore a Rule or penalty they knew applied; either player can instead ask for a ruling, before either tees off on the next hole. In stroke play you can't settle a question by agreement; if you're unsure of the procedure, decide before your next stroke to finish the hole with two balls, choose which should count, and report it to the Committee before returning your scorecard.",
+    commonQuestions: [
+      "We disagree about a Rules question in our match: how do we settle it?",
+      "I'm not sure how to take relief in stroke play: what can I do?",
+      "Can our group settle a Rules question by agreement in stroke play?",
+      "Does an answer we agreed in our match stand if it was wrong?",
+    ],
+    sources: opened(OPENED_239, ["20", "20.1a", "20.1b", "20.1c", "20.2a", "20.2b"]),
+    ...ownerApproved,
+  }),
+  rule(21, {
+    summary:
+      "Rule 21 covers four other individual formats. Stableford awards points on each hole against a fixed score, par unless the Committee sets another, and most points wins. Maximum Score caps each hole at a number the Committee sets, such as twice par or net double bogey. Par/Bogey plays each hole as a match against a fixed score. In Three-Ball Match Play, each player plays the other two in separate matches. In the three stroke-play forms you can pick up once your result on a hole can't get worse, and some mistakes that disqualify in regular stroke play only cost that hole's result. Scrambles have no Rule of their own; Rule 21.5 says the Rules can be adapted to them.",
+    commonQuestions: [
+      "How does Stableford scoring work?",
+      "In Stableford or Maximum Score, can I pick up partway through a hole?",
+      "What counts as the maximum score on a hole?",
+      "Does a scramble have its own Rule?",
+    ],
+    relatedGlossaryIds: ["stableford", "scramble"],
+    sources: opened(
+      OPENED_239,
+      ["21", "21.1a", "21.1b", "21.1c", "21.2a", "21.2b", "21.2c", "21.3a", "21.3b", "21.3c", "21.4a", "21.5"],
+    ),
+    ...ownerApproved,
+  }),
+  rule(22, {
+    summary:
+      "Rule 22 covers Foursomes, the alternate-shot format, in match play or stroke play. The side counts as one player under Rules 1–20. Partners alternate who tees off from hole to hole, then alternate strokes until the ball is holed; penalty strokes don't change whose turn it is. If the wrong partner plays, the side gets the general penalty, and in stroke play must put it right before teeing off on the next hole or be disqualified. Either partner may mark, lift, drop or place the side's ball. Partners may share clubs if they have 14 or fewer between them, and neither may stand on the line behind the ball during the other's stroke to learn about the next shot.",
+    commonQuestions: [
+      "Who tees off on each hole in Foursomes?",
+      "What happens if the wrong partner plays?",
+      "Can partners share one set of clubs?",
+      "Can my partner drop the ball for me?",
+    ],
+    relatedGlossaryIds: ["foursomes"],
+    sources: opened(OPENED_239, ["22", "22.1", "22.2", "22.3", "22.5", "22.6"]),
+    ...ownerApproved,
+  }),
+  rule(23, {
+    summary:
+      "Rule 23 covers Four-Ball: partners each play their own ball and the side counts the lower score on each hole, in match play or stroke play. Once one partner has holed out, the other doesn't have to. In stroke play the card must show which partner made each of the side's scores, or the side is disqualified. Partners may play in the order they choose, share clubs if they have 14 or fewer between them, and mark, lift, drop or place each other's ball, though the ball's owner takes any penalty that results. A penalty stroke or loss of hole usually stays with the partner who incurred it, with exceptions, such as a breach that helps the other partner.",
+    commonQuestions: [
+      "If my partner has holed out, do I have to finish?",
+      "Can we choose which of us putts first?",
+      "Does my penalty count against my partner?",
+      "How do we fill in the scorecard in stroke play?",
+    ],
+    relatedGlossaryIds: ["four-ball", "best-score"],
+    sources: opened(OPENED_239, ["23", "23.1", "23.2a", "23.2b", "23.5a", "23.5b", "23.6", "23.7", "23.9a"]),
+    ...ownerApproved,
+  }),
+  rule(24, {
+    summary:
+      "Rule 24 covers team competitions, where players or sides combine their results into a team score. The Committee sets the terms: the form of play, how the team score is worked out, and whether and how ties are broken. A team may name a captain to pick who plays, in what order and with whom. Teammates can't ask each other for advice or give it unless they're partners, whether or not they're in the same group; that's the general penalty. A team may have one named advice giver, who can be the captain, only if the Committee adopts a Local Rule allowing it, and one who is also playing can't advise during their own round.",
+    commonQuestions: [
+      "Can I give advice to a teammate in another group?",
+      "Can our captain give us advice during the round?",
+      "How is the team score worked out?",
+    ],
+    sources: opened(OPENED_239, ["24", "24.1", "24.2", "24.3", "24.4a", "24.4b", "24.4c"]),
+    ...ownerApproved,
+  }),
+  rule(25, {
+    summary:
+      "Rule 25 makes specific modifications so eligible players with certain disabilities can play fairly with anyone. It covers four categories: players who are blind (including some with low vision), players who are amputees (including limb deficiency), players with an intellectual disability, and players who use a wheelchair, crutches or another assistive mobility device. A player who is blind may have an aide help with stance and aim. A player who is an amputee and can't swing most clubs without anchoring may anchor. A player using a wheelchair or other wheeled mobility device measures lateral relief from a red penalty area or an unplayable ball with four club-lengths instead of two. Other disabilities aren't covered; for medical equipment, see Rule 4.3b.",
+    commonQuestions: [
+      "Who can use the modifications in Rule 25?",
+      "Can a player who is blind get help lining up?",
+      "How does relief work for a player who uses a wheelchair?",
+    ],
+    sources: opened(OPENED_239, ["25", "25.1", "25.2a", "25.3b", "25.4m", "4.3b"]),
+    ...ownerApproved,
+  }),
 ];
