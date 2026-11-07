@@ -699,6 +699,34 @@ export const capabilities = [
       "record the distance",
     ],
   },
+  {
+    id: "rules-rulings",
+    label: "Rules of Golf rulings",
+    status: "not-offered",
+    summary:
+      "Deciding a Rules of Golf question: which Rule applies, what relief there is, what the penalty is. GoLo counts the strokes the scorer enters, penalty strokes included, and decides none of it.",
+    // The owner, in chat on 2026-11-07 (#242), for the /rules closing band
+    // (lib/content/rules/copy.ts rulesFinalCta). Spec §1 and RULES-015 keep a
+    // ruling engine out of the site's plans as well.
+    verified: { by: "owner", date: "2026-11-07" },
+    // Rule titles name rulings by referees and Committees ("Rulings by
+    // Referee and Committee"), so a bare "ruling" isn't a claim. These catch
+    // GoLo presented as the one making or applying them.
+    claimPhrases: [
+      "make ruling",
+      "makes ruling",
+      "making ruling",
+      "give ruling",
+      "gives ruling",
+      "ruling engine",
+      "rules engine",
+      "apply the rules",
+      "applies the rules",
+      "applying the rules",
+      "enforce the rules",
+      "enforces the rules",
+    ],
+  },
 ] as const satisfies readonly Capability[];
 
 export type CapabilityId = (typeof capabilities)[number]["id"];

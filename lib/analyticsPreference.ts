@@ -44,9 +44,10 @@ const CAMPAIGN_PARAMS = new Set([
 const ROUTE_PARAMS: Record<string, string[]> = {
   filter: ["/games"],
   topic: ["/blog", "/contact"],
-  // The glossary's category filter (owner decision on #153). The search text
-  // never goes in the URL, so there's nothing else to keep there.
-  category: ["/glossary"],
+  // The glossary's and the Rules Center's category filters (owner decision
+  // on #153; #236). Neither puts its search text in the URL, so there's
+  // nothing else to keep there.
+  category: ["/glossary", "/rules"],
 };
 /** A filter, topic or category id: lower-case slug. */
 const SLUG = /^[a-z0-9-]{1,40}$/;

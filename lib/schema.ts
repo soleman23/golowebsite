@@ -124,3 +124,51 @@ export function glossaryTermSetNode(
     })),
   };
 }
+
+/** The Rules Center hub's CollectionPage (#243). */
+export const RULES_COLLECTION_ID = `${siteConfig.url}/rules#collection`;
+
+type RulesSchemaHub = {
+  scenarios: readonly { slug: string; question: string }[];
+  overviews: readonly { id: string; number: number; title: string }[];
+};
+
+/**
+ * The /rules hub as a CollectionPage whose ItemList is its situations, then
+ * its rules, each by its fragment, in the order the page shows them
+ * (docs/rules/product-spec.md Amendment A8). Published records only; the
+ * caller passes publishedRules(). No FAQPage, ratings or authority claims:
+ * the page explains the Rules, it doesn't rule. The BreadcrumbList comes
+ * from the hero's Breadcrumbs, as on every page.
+ */
+export function rulesCollectionNode(
+  hub: RulesSchemaHub,
+  copy: { name: string; description: string; dateModified?: string },
+) {
+  const page = `${siteConfig.url}/rules`;
+  const items = [
+    ...hub.scenarios.map((s) => ({ name: s.question, url: `${page}#${s.slug}` })),
+    ...hub.overviews.map((r) => ({ name: `Rule ${r.number}: ${r.title}`, url: `${page}#${r.id}` })),
+  ];
+  return {
+    "@type": "CollectionPage",
+    "@id": RULES_COLLECTION_ID,
+    name: copy.name,
+    description: copy.description,
+    url: page,
+    inLanguage: "en",
+    isPartOf: websiteRef,
+    publisher: organizationRef,
+    ...(copy.dateModified ? { dateModified: copy.dateModified } : {}),
+    mainEntity: {
+      "@type": "ItemList",
+      numberOfItems: items.length,
+      itemListElement: items.map((item, i) => ({
+        "@type": "ListItem",
+        position: i + 1,
+        name: item.name,
+        url: item.url,
+      })),
+    },
+  };
+}

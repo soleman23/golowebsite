@@ -36,6 +36,8 @@
  *    a file in public/. Until the glossary is live (lib/content/glossary/
  *    launch.ts) nothing outside its own files may link to /glossary, and a
  *    /glossary#fragment must name a published term (scripts/glossary-checks.mjs).
+ *    The Rules Center's /rules works the same way (scripts/rules-checks.mjs),
+ *    and covers glossary records' related paths as well as hrefs.
  * 4. Report lists. Every published post and game guide must be in the lead
  *    report's landing-path allow-list (docs/seo-reports/leads.sql). It may
  *    keep a retired slug, since leads from before the page went still carry
@@ -71,7 +73,12 @@ import {
   stripComments,
 } from "./content-claims.mjs";
 import { glossaryHrefProblem } from "./glossary-checks.mjs";
-import { isRulesOwned, rulesHrefProblem } from "./rules-checks.mjs";
+import {
+  glossaryRulesPathProblems,
+  isRulesOwned,
+  isRulesPath,
+  rulesHrefProblem,
+} from "./rules-checks.mjs";
 
 const rootUrl = new URL("..", import.meta.url);
 const root = fileURLToPath(rootUrl);
@@ -516,9 +523,22 @@ for (const file of files) {
     }
     return [termFiles[0] ?? "lib/content/glossary/terms.ts", 1];
   };
+  // A /rules path in a record answers to the Rules Center's launch and
+  // fragment rules (#242), not to the served-page list, where /rules is a
+  // route whether or not it's live.
+  for (const { id, problem } of glossaryRulesPathProblems(glossaryTerms, rulesLinks)) {
+    const [file, line] = lineOf(id);
+    report(file, line, `glossary ${id}: related ${problem}`);
+  }
+  const glossaryServed = new Set([
+    ...pages,
+    ...glossaryTerms
+      .flatMap((t) => [...t.relatedContentPaths, ...(t.canonical.kind === "existing" ? [t.canonical.path] : [])])
+      .filter(isRulesPath),
+  ]);
   const problemsFound = validateGlossary(glossaryTerms, {
     capabilities,
-    servedPaths: pages,
+    servedPaths: glossaryServed,
     today: new Date().toISOString().slice(0, 10),
   });
   for (const problem of problemsFound) {

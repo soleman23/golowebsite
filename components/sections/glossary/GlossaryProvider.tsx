@@ -175,7 +175,14 @@ export function GlossaryProvider({ ids, children }: ProviderProps) {
   const arrived = useRef(false);
   useEffect(() => {
     const fromHash = (arrival = false) => {
-      const id = decodeURIComponent(window.location.hash.slice(1));
+      // A malformed escape (#%) names nothing on the page; ignore it rather
+      // than let the URIError take the hub down.
+      let id = "";
+      try {
+        id = decodeURIComponent(window.location.hash.slice(1));
+      } catch {
+        return;
+      }
       if (id) reveal(id, false, arrival);
     };
     const onHashChange = () => fromHash();

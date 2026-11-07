@@ -11,6 +11,7 @@ import {
   postDescription,
   publishedGlossaryTerms,
   publishedPosts,
+  rulesHasPublished,
 } from "@/lib/content";
 import { siteConfig } from "@/lib/siteConfig";
 
@@ -84,6 +85,15 @@ export function GET() {
           `## ${llmsCopy.sections.glossary}`,
           "",
           `- [Golf Glossary](${absolute("/glossary")}): ${llmsCopy.glossary}`,
+          "",
+        ]
+      : []),
+    // The same for the Rules Center (#243): live, with published records.
+    ...(rulesHasPublished()
+      ? [
+          `## ${llmsCopy.sections.rules}`,
+          "",
+          `- [${llmsCopy.rulesTitle}](${absolute("/rules")}): ${llmsCopy.rules}`,
           "",
         ]
       : []),

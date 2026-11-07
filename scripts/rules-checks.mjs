@@ -36,3 +36,27 @@ export function rulesHrefProblem(href, file, { live, fragments }) {
   }
   return null;
 }
+
+/** Whether a path is the hub, with or without a query or fragment. */
+export const isRulesPath = (href) => href.split(/[?#]/)[0].replace(/\/$/, "") === "/rules";
+
+/**
+ * Glossary records reach /rules through `relatedContentPaths` (and could
+ * through an existing canonical), which aren't hrefs, so the href scan never
+ * reads them (#242). The same rules apply: one { id, path, problem } per
+ * /rules path that breaks them. The records are never the hub's own files.
+ */
+export function glossaryRulesPathProblems(terms, links) {
+  const out = [];
+  for (const t of terms) {
+    const paths = [
+      ...t.relatedContentPaths,
+      ...(t.canonical?.kind === "existing" ? [t.canonical.path] : []),
+    ];
+    for (const path of paths.filter(isRulesPath)) {
+      const problem = rulesHrefProblem(path, "lib/content/glossary/terms/", links);
+      if (problem) out.push({ id: t.id, path, problem });
+    }
+  }
+  return out;
+}

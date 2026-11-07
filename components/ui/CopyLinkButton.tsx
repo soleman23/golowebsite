@@ -28,8 +28,9 @@ type CopyLinkButtonProps = {
     failedMessage: string;
   };
   /**
-   * share_click params besides `channel` ({ term_id } on the glossary).
-   * Without them the copy isn't reported.
+   * share_click params besides `channel`: { term_id } on the glossary,
+   * { scenario_id } or { rule_number } on /rules. Without them the copy
+   * isn't reported.
    */
   share?: Record<string, string>;
 };

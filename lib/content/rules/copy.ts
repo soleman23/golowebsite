@@ -24,6 +24,10 @@ import {
 } from "./official";
 import type { PublicRulesLink, RulesDocument } from "./types";
 
+/** The CollectionPage's name (#243): the H1. Title and description are in
+ * the page's pageMetadata call, where the content check reads them. */
+export const rulesSchemaName = "Golf Rules Explained";
+
 /** The H1 is spec §9's; the title tag is in the page's pageMetadata call. */
 export const rulesHero = {
   kicker: "RULES OF GOLF",
@@ -118,6 +122,53 @@ export const rulesEntryCopy = {
   copiedMessage: "Link to {name} copied",
   failedMessage: "Couldn't copy. The heading is itself a link you can copy instead.",
 };
+
+/**
+ * Search and topic filters (ux.md D4, D5, § Flows and states). The client
+ * leaves get these as plain strings; {n}, {query} and {topic} are filled in
+ * there.
+ */
+export const rulesControlsCopy = {
+  searchLabel: "What happened to your ball?",
+  searchPlaceholder: "Lost ball, white stakes, Rule 18.2…",
+  chipsLabel: "Filter by topic",
+  allChip: "All",
+  clear: "Clear",
+  situations: "Situations",
+  rules: "Rules",
+  /** A group shows eight results until this is pressed. */
+  showAll: "Show all {n}",
+  /** The result line when only near misses matched ("casul water"). */
+  closest: "Closest matches",
+  also: "also",
+  /** Under a situation result: the rules it cites, the first three. */
+  refs: "Rule {refs}",
+  /** Singular and plural, for counts: "1 situation", "2 rules". */
+  nouns: {
+    result: ["result", "results"],
+    situation: ["situation", "situations"],
+    rule: ["rule", "rules"],
+    entry: ["entry", "entries"],
+  } satisfies Record<string, [string, string]>,
+  inTopic: "in {topic}",
+  noMatch: "No match for “{query}”.",
+  noMatchShort: "No match",
+  /** Never a made-up answer: a way back in instead. */
+  noMatchHint: "Try a rule number, such as 18 or 18.2b, or pick a topic.",
+  elsewhere: "{n} in other topics.",
+  searchAll: "Search all topics",
+  rulesIndex: { label: "Browse the Rules of Golf on randa.org", href: RULES_INDEX_URL },
+  /** Hash reveal (ux.md § Flows and states). {name} is the entry's heading. */
+  searchCleared: "Search cleared to show {name}",
+  filterCleared: "Topic filter cleared to show {name}",
+  bothCleared: "Search and topic filter cleared to show {name}",
+  showing: "Showing {name}",
+};
+
+/** "1 entry", "37 entries": a count with the right form of its noun. */
+export function rulesCount(n: number, [one, many]: readonly [string, string]): string {
+  return `${n} ${n === 1 ? one : many}`;
+}
 
 /** Local review only (`next dev`). */
 export const rulesReviewCopy = {
@@ -283,7 +334,17 @@ export const rulesRelated = {
   ],
 };
 
-/** The closing band. The store buttons and fine print are FinalCTA's. */
+/**
+ * The closing band (#242). The store buttons and fine print are FinalCTA's.
+ *
+ * Every claim here is one the capability registry backs: hole-scoring,
+ * game-library and settle-up are live. rules-rulings is not-offered, and its
+ * claimPhrases fail any sentence on this page that has GoLo making rulings
+ * or applying the Rules, so the lead says plainly that it does neither.
+ * scripts/test-rules.mjs fails if rules-rulings ever goes live while this
+ * still denies it.
+ */
 export const rulesFinalCta = {
   title: "Know the rule. Let GoLo keep the score.",
+  lead: "GoLo keeps the score and settles the side games. It doesn't make rulings: the drop and the penalty are yours to get right, and GoLo counts the strokes you enter.",
 };

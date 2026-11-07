@@ -99,6 +99,20 @@
 .hero[data-photo="glossary"] .title {
   max-width: 640px;
 }
+/* Measured 2026-11-07 at 768–1920px: the lead and the search field reach
+   634px at most (the lead at 1024px). */
+.hero[data-photo="rules"] .scrim {
+  --copy-span: 660px;
+}
+/* The ball sits 82% down the frame. From about 1300px the hero is wider than
+   the photo's 21:9 and crops it top and bottom; centred, that put the ball
+   under the bottom fade at 1920px. Desktop frames only: the phone frame keeps
+   its bottom alignment. */
+@media (min-width: 768px) {
+  .hero[data-photo="rules"] .photo {
+    object-position: right 80%;
+  }
+}
 
 .inner {
   position: relative;

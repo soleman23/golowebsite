@@ -94,7 +94,7 @@ Each source carries `checkedOn` only if it was opened that day. Validation is in
 
 ## Review packet
 
-`docs/rules/review-packet.md` (created with the first content batch): one section per record, with each factual sentence mapped to its subrule anchor, the reviewer agents' findings and how each was resolved, the copy-distance result, and the owner's approval line with its date.
+Two packets, one per record type: `docs/rules/review-packet-overviews.md` and `docs/rules/review-packet-situations.md`. Each has one section per record, with each factual sentence mapped to its subrule anchor, the reviewer agents' findings and how each was resolved, the copy-distance result, and the owner's approval line with its date.
 
 ## Review triggers
 
