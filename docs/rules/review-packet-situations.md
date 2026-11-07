@@ -257,7 +257,7 @@ Sources: 16.1a, 16.1b, 16.1c, 16.1d, 16.1e, 16.1f; Definitions: Abnormal Course 
 | conditions[3] | No relief in a penalty area, when clearly unreasonable, or when interference comes only from an unreasonable choice | 16.1a(2), (3) |
 | conditions[4] | Not found: known or virtually certain (conclusive or 95 percent) it's in the condition; crossing point is the ball's spot; otherwise lost, stroke and distance | 16.1e; Definitions: Known or Virtually Certain |
 | options[0] | As it lies, unless a no play zone holds the ball or interferes with stance or swing | 16.1f; Definitions: No Play Zone |
-| options[1] | General area: nearest point of complete relief explained; one club-length, no nearer the hole, general area | 16.1b; Definitions: Nearest Point of Complete Relief |
+| options[1] | General area: nearest point of complete relief explained; one club-length, no nearer the hole, general area; complete relief where the ball comes to rest | 16.1b; Definitions: Nearest Point of Complete Relief |
 | options[2] | Bunker: free relief in the bunker (nearest point of complete relief, or least interference); or one stroke back on the line outside | 16.1c; Definitions: Point of Maximum Available Relief |
 | options[3] | Putting green: place at the nearest point of complete relief or least interference, on the green or in the general area | 16.1d |
 | penalty | Relief free except one stroke outside a bunker; wrong place is the general penalty | 16.1c(2); 16.1 (penalty statement) |
@@ -384,8 +384,18 @@ Reviewer A (rules): 3 majors, 14 minors, plus 1 optional note; no penalty, strok
 | B21 (info) | conceded-putt · handicapCaveat | Goes further than the glossary's posting note; no mismatch | Kept: editorial-review.md requires the caveat; trimming is the owner's call |
 | B, seo | aliases | "free relief" goes first to cart-path; "white line" only to out-of-bounds | Left: both are deliberate owners (cart-path owns free relief, the boundary owns white lines); a later pass can mark them ambiguous |
 
+Codex (PR #261, review of ac9fcce), after the owner's approval:
+
+| # | Record · field | Finding | Resolution |
+|---|---|---|---|
+| C3 (P2) | temporary-water · options[1] | 16.1b requires complete relief where the dropped ball comes to rest, not only at the reference point | Fixed, as cart-path's condition already says |
+
 Checks both reviewers passed: no GoLo claims; `NEVER_WORDS` clean; E-3 conditional; the Rules of Handicapping only in the caveat, called a separate rulebook; glossary slugs `putt`, `gimme`, `match-play`, `stroke-play`, `net-double-bogey` published; `/blog/gimmes` served; fragments match `canonical-map.md`; aliases as `inventory.md`, with "casual water" shared only with Rule 16, its primary rule; answers two or three sentences, four or five conditions; `npm run lint:content` passes.
 
 ### Approval, batch 2
 
 **Approved by the owner in chat on November 6, 2026** ("Approve batch 2"), on this packet as written. The records are `approved` with `reviewedOn: 2026-11-06`, `reviewedBy: "owner"` and a review log of rules, product and seo by "agent" and approval by "owner" (`P1_APPROVED` in `scenarios.ts`). With both batches approved, all 12 situations are `approved`. Not published: `rulesLive` is false and only #247 publishes.
+
+**Post-approval change:** Codex finding C3 (above) added one sentence to `temporary-water` options[1]. Copy distance is still 0 runs of eight or more words (`npm run check:rules-copy`). Pending the owner's confirmation in chat.
+
+**Seen in `next dev`** (the hub, #255, renders approved records marked "Not published"): all 12 situations render with their "Before you decide" lists, caveats and official links; no horizontal overflow at 320, 760, 1100 or 1440 px; no console errors; no review-log, `reviewedBy` or `checkedOn` text in the page. Focus styling is the hub's components', unchanged here.

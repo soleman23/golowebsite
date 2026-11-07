@@ -377,7 +377,7 @@ export const rulesScenarios: RulesScenario[] = [
     ],
     options: [
       "Play it as it lies: relief is optional, unless the Committee has defined the area as a no play zone and your ball is in it or it gets in the way of your stance or swing; then you have to take relief (Rule 16.1f).",
-      "General area: find the nearest point of complete relief, the closest spot no nearer the hole where the condition no longer affects your ball, stance or swing, and drop within one club-length of it, no nearer the hole and in the general area (Rule 16.1b).",
+      "General area: find the nearest point of complete relief, the closest spot no nearer the hole where the condition no longer affects your ball, stance or swing, and drop within one club-length of it, no nearer the hole and in the general area. Where the ball comes to rest, your ball, stance and swing must be completely clear of the condition (Rule 16.1b).",
       "Bunker: free relief that keeps the ball in the bunker, using a nearest point of complete relief inside it, or the spot of least interference if nowhere there is fully clear; or, for one penalty stroke, drop outside the bunker, behind the ball on a line running back from the hole (Rule 16.1c).",
       "Putting green: place the ball, for free, at the nearest point of complete relief, or the spot of least interference if there isn't one, on the green or in the general area (Rule 16.1d).",
     ],
