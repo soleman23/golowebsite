@@ -267,13 +267,13 @@ Dark page and glass surfaces from existing tokens (`--glass-surface`, `--card-bo
 
 ## Analytics hooks
 
-For #244. Params from closed sets only; the query text never leaves the page.
+Shipped in #244 (`lib/rulesAnalytics.ts`; definitions in `docs/analytics-data-notes.md`). Params from closed sets only; the query text never leaves the page.
 
 | Event | Fires when | Params |
 |---|---|---|
 | `rules_search` | Debounced query settles, de-duplicated per `category|normalisedQuery` | `result_bucket`, `match_type`, `category` |
 | `rules_filter` | A chip is chosen | `category` |
-| `rules_rule_open` | A `#rule-N` reveal (once per rule per load) | `rule_number`, `source`: browse, search or related |
+| `rules_rule_open` | A `#rule-N` reveal (once per rule per load) | `rule_number`, `source`: browse, search, related, or deep_link for the fragment on arrival (#244) |
 | `rules_scenario_open` | A situation reveal (once per load) | `scenario_id`, `source` |
 | `rules_official_click` | Click on `a[data-rules-official]` | `rule_number`, `document_type` |
 | `rules_related_click` | Click on `a[data-rules-related]` | `destination_type`, `content_id` |

@@ -98,6 +98,16 @@ export const QUERY_GROUPS = [
       /\b(glossary|terms?|terminology|slang|lingo|jargon|meaning|means|mean|definitions?|defined?)\b/.test(q) ||
       /^(what('?s| is| are| does)|define)\b/.test(q),
   },
+  {
+    // Rules of Golf questions (the Rules Center, #244; its checkpoints, #248,
+    // read this group). Last of the named groups, so it only takes queries
+    // that were Unassigned before it existed: every earlier group, and every
+    // earlier report, still compares. "what is a provisional ball" stays a
+    // definition; "provisional ball rule" is here.
+    name: "Rules of Golf",
+    test: (q) =>
+      /\b(rules? of golf|golf rules?|rules? in golf|rule \d{1,2}(\.\d{1,2}[a-z]?)?|usga rules?|r ?& ?a rules?|penalty (strokes?|areas?)|red stakes?|yellow stakes?|white stakes?|out of bounds|ob|lost ball|provisional( ball)?|unplayable( lie| ball)?|free drop|drop zone|(free |cart path )?relief|embedded ball|plugged ball|ground under repair|gur|cart path|casual water|temporary water|loose impediments?|obstructions?|stroke and distance|(one|two|1|2)[ -]stroke penalty|ball moved|lift,? clean and place|preferred lies|winter rules|repair(ing)? (ball marks?|spike marks?|the green)|conceded putts?|max(imum)? (14|fourteen) clubs)\b/.test(q),
+  },
   { name: "Unassigned", test: () => true },
 ];
 
