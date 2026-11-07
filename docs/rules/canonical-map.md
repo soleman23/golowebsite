@@ -94,7 +94,7 @@ Each link wraps words already in the post, so no copy changes and `updated` does
 |---|---|---|---|---|
 | `/blog/gimmes` | "What the Rules actually allow", second paragraph | "must hole out on every hole" | `/rules#conceded-putt` | The situation gives both formats and Rule 3.3c's penalty. § Overlaps already links it back to the post. |
 | `/blog/match-play-vs-stroke-play` | "Two formats, two questions", stroke-play paragraph | "you hole out on every hole" | `/rules#rule-3` | The post owns which format to play; Rule 3's overview owns what each requires (§ Overlaps). |
-| `/blog/best-ball-vs-scramble` | "Best ball in GoLo is Team Play", the picking-up paragraph | "count one partner’s score when the other picks up" | `/rules#rule-23` | Rule 23.2a is the Rule behind that sentence, and Rule 23's overview says it. The overview links back. |
+| `/blog/best-ball-vs-scramble` | "Best ball in GoLo is Team Play", callout "When a partner picks up" | "count one partner’s score when the other picks up" | `/rules#rule-23` | Rule 23.2a is the Rule behind that sentence, and Rule 23's overview says it. The overview links back. |
 
 Considered and left out:
 

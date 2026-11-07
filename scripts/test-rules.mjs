@@ -411,8 +411,9 @@ const CTX = { servedPaths: SERVED, glossarySlugs, today: TODAY };
   check(
     "integrity: a planned record may have no copy, caveats or check dates",
     (() => {
-      const planned = { ...rulesScenarios[2], status: "planned", answer: "", conditions: [], localRuleCaveat: undefined };
-      const plannedRule = { ...ruleOverviews[17], status: "planned", summary: "", commonQuestions: [] };
+      // publishedOn goes too, so the case still holds once #247 publishes the records.
+      const planned = { ...rulesScenarios[2], status: "planned", publishedOn: undefined, answer: "", conditions: [], localRuleCaveat: undefined };
+      const plannedRule = { ...ruleOverviews[17], status: "planned", publishedOn: undefined, summary: "", commonQuestions: [] };
       return validateRules(ruleOverviews.map((r) => (r.number === 18 ? plannedRule : r)), [planned], CTX).length === 0;
     })(),
   );
