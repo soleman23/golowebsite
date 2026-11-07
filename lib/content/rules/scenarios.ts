@@ -68,6 +68,48 @@ const P0_APPROVED: Pick<RulesScenario, "status" | "reviewedOn" | "reviewedBy" | 
 /** The day batch 2 (#241) opened each of its sources. */
 const P1_CHECKED = "2026-11-06";
 
+/**
+ * Batch 2's review record (#241, PR #261), as batch 1's: rules, product and
+ * seo by two independent reviewer agents on November 6, 2026, findings and
+ * resolutions in docs/rules/review-packet-situations.md, and the owner's
+ * approval in chat the same day. Rules of Handicapping 3.3 was checked
+ * against a browser capture of the page (usga.org blocks scripts).
+ *
+ * Internal: stripped by every public selector.
+ */
+const P1_REVIEWED_ON = "2026-11-06";
+const P1_APPROVED: Pick<RulesScenario, "status" | "reviewedOn" | "reviewedBy" | "reviewLog"> = {
+  status: "approved",
+  reviewedOn: P1_REVIEWED_ON,
+  reviewedBy: "owner",
+  reviewLog: [
+    {
+      stage: "rules",
+      by: "agent",
+      on: P1_REVIEWED_ON,
+      note: "Reviewer A: every sentence, penalty, stroke count and caveat against the R&A text, Definitions and RoH 3.3; findings fixed (review-packet-situations.md).",
+    },
+    {
+      stage: "product",
+      by: "agent",
+      on: P1_REVIEWED_ON,
+      note: "Reviewer B: voice, NEVER_WORDS, no GoLo claim, E-3 and handicapping wording; copy distance 0 runs of 8+ words (check:rules-copy agrees).",
+    },
+    {
+      stage: "seo",
+      by: "agent",
+      on: P1_REVIEWED_ON,
+      note: "Reviewer B: fragments per canonical-map.md; glossary and content links published; aliases.",
+    },
+    {
+      stage: "approval",
+      by: "owner",
+      on: P1_REVIEWED_ON,
+      note: "Batch 2 approved in chat on 2026-11-06 (#241, PR #261).",
+    },
+  ],
+};
+
 /** Rules of Handicapping 3.3, for the conceded-putt posting caveat. */
 const ROH_3_3 =
   "https://www.usga.org/handicapping/roh/Content/rules/3%203%20WhenHoleStartedbutPlayerDoesNotHoleOut.htm";
@@ -343,7 +385,7 @@ export const rulesScenarios: RulesScenario[] = [
       "No penalty for relief, except the one penalty stroke for going back on the line outside a bunker (Rule 16.1c). Playing from a wrong place, such as outside the relief area or from a no play zone, costs the general penalty: two strokes in stroke play or loss of the hole in match play (Rule 16.1).",
     example:
       "On the 2nd your drive finishes in a puddle on the fairway after overnight rain. You find the nearest spot, no nearer the hole, where ball, stance and swing are all clear of the water, and drop within one club-length of it.",
-    status: "in-review",
+    ...P1_APPROVED,
   }),
   situation({
     id: "ball-moved",
@@ -377,7 +419,7 @@ export const rulesScenarios: RulesScenario[] = [
       "On the 4th you set your 7-iron down behind your ball on a slope in the rough and a gust rolls it a foot. Unless it's known or virtually certain your club caused it, that's natural forces: no penalty, and you play it from where it stopped.",
     matchVsStrokeCaveat:
       "Match play: if your opponent or their caddie moves your ball, it's replaced and they get one penalty stroke unless an exception applies (Rule 9.5). Stroke play: another player who isn't your partner is an outside influence, so the ball is replaced with no penalty (Rule 9.6).",
-    status: "in-review",
+    ...P1_APPROVED,
   }),
   situation({
     id: "mark-lift-clean",
@@ -406,7 +448,7 @@ export const rulesScenarios: RulesScenario[] = [
       "On the 6th your ball reaches the green with mud on it. Put a marker right behind it, lift it, wipe it, set it back on the same spot and pick the marker up before you putt.",
     localRuleCaveat:
       "Preferred lies, also called lift, clean and place or winter rules, is Model Local Rule E-3, and it applies only if the Committee has adopted it. Then a ball touching grass in the general area that's mown to fairway height or shorter, or in an area the Committee names, can be placed once within the distance the Committee sets, such as one club-length or the length of a scorecard, no nearer the hole and still in the general area. A group that agrees to play it isn't the Committee adopting it; that's a house agreement.",
-    status: "in-review",
+    ...P1_APPROVED,
   }),
   situation({
     id: "repairing-the-green",
@@ -428,7 +470,7 @@ export const rulesScenarios: RulesScenario[] = [
     example:
       "On the 8th there's a spike mark on your line four feet short of the hole. You can tap it down with your putter before you putt, but not a thin patch of grass or the rim of an aeration hole.",
     relatedGlossaryIds: ["putt"],
-    status: "in-review",
+    ...P1_APPROVED,
   }),
   situation({
     id: "conceded-putt",
@@ -454,6 +496,6 @@ export const rulesScenarios: RulesScenario[] = [
       "Posting a score for handicap follows a separate rulebook. Under Rules of Handicapping 3.3, when you start a hole but don't hole out for a valid reason (its examples include a hole conceded in match play), you record your most likely score, or net double bogey if that's lower. On the green within five feet that's one more stroke; from five feet to 20 yards, two or three.",
     relatedGlossaryIds: ["gimme", "match-play", "stroke-play", "net-double-bogey"],
     relatedContentPaths: ["/blog/gimmes"],
-    status: "in-review",
+    ...P1_APPROVED,
   }),
 ];

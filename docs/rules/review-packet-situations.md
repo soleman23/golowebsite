@@ -388,4 +388,4 @@ Checks both reviewers passed: no GoLo claims; `NEVER_WORDS` clean; E-3 condition
 
 ### Approval, batch 2
 
-Pending the owner's approval in chat.
+**Approved by the owner in chat on November 6, 2026** ("Approve batch 2"), on this packet as written. The records are `approved` with `reviewedOn: 2026-11-06`, `reviewedBy: "owner"` and a review log of rules, product and seo by "agent" and approval by "owner" (`P1_APPROVED` in `scenarios.ts`). With both batches approved, all 12 situations are `approved`. Not published: `rulesLive` is false and only #247 publishes.
