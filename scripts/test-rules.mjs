@@ -444,6 +444,40 @@ const CTX = { servedPaths: SERVED, glossarySlugs, today: TODAY };
   check("links: other paths are left alone", rulesHrefProblem("/rulesbook", "lib/content/blog.ts", off) === null);
 }
 
+/* -------------------------------------------------------- schema (#243) */
+
+{
+  const { rulesCollectionNode } = await import(new URL("../lib/schema.ts", import.meta.url).href);
+  const hub = {
+    scenarios: [{ slug: "lost-ball", question: "Lost ball: what happens next?" }],
+    overviews: [
+      { id: "rule-17", number: 17, title: "Penalty Areas" },
+      { id: "rule-18", number: 18, title: "Stroke-and-Distance Relief" },
+    ],
+  };
+  const node = rulesCollectionNode(hub, { name: "Golf Rules Explained", description: "d" });
+  const items = node.mainEntity.itemListElement;
+  check("schema: a CollectionPage of an ItemList", node["@type"] === "CollectionPage" && node.mainEntity["@type"] === "ItemList");
+  check("schema: situations first, then rules, in page order", same(items.map((i) => i.url.split("#")[1]), ["lost-ball", "rule-17", "rule-18"]), JSON.stringify(items));
+  check("schema: positions count from 1", same(items.map((i) => i.position), [1, 2, 3]));
+  check("schema: numberOfItems matches the list", node.mainEntity.numberOfItems === 3);
+  check("schema: every item is a fragment on /rules", items.every((i) => /^https:\/\/[^/]+\/rules#[a-z0-9-]+$/.test(i.url)), JSON.stringify(items.map((i) => i.url)));
+  check("schema: a rule reads \"Rule N: title\"", items[2].name === "Rule 18: Stroke-and-Distance Relief");
+  check("schema: no dateModified without a real date", !("dateModified" in node));
+  check("schema: dateModified when there is one", rulesCollectionNode(hub, { name: "n", description: "d", dateModified: "2026-12-01" }).dateModified === "2026-12-01");
+  const json = JSON.stringify(node);
+  check("schema: no FAQPage, ratings or reviews", !/FAQPage|aggregateRating|"review"|Question/.test(json), json);
+  check("schema: nothing internal (review records, check dates)", !/reviewedBy|reviewLog|checkedOn|status/.test(json), json);
+}
+
+/* ------------------------------------------- sitemap and llms.txt (#243) */
+
+{
+  const empty = { overviews: [], scenarios: [] };
+  check("public face: none with nothing published", rules.rulesHasPublished(empty) === false);
+  check("public face: none while rulesLive is false", rules.rulesLive || rules.rulesHasPublished() === false);
+}
+
 /* ----------------------------------------------------------------- result */
 
 if (failures.length) {
@@ -452,4 +486,4 @@ if (failures.length) {
   console.error(`\n${failures.length} failed, ${passed} passed.`);
   process.exit(1);
 }
-console.log(`✔ Rules: ${passed} cases passed (search, official links, publication boundary, selection, integrity, warnings, links).`);
+console.log(`✔ Rules: ${passed} cases passed (search, official links, publication boundary, selection, integrity, warnings, links, schema).`);
