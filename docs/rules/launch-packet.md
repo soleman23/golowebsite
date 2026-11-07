@@ -2,7 +2,9 @@
 
 Prepared on November 7, 2026 for launch PR #269 (branch `launch/242-rules-inbound-links`). It's modelled on `docs/glossary/launch-packet.md`. The numbers below are what was measured, on the date shown. The evidence files are listed at the end.
 
-**State:** QA run on the launch build. The owner moved the VoiceOver check (RL-QA-14) to after deploy on 2026-11-07. Waiting on the owner's go.
+**Released 2026-11-07, 11:04 PST.** The owner said "Go" in chat at 11:03 PST, recorded in #247 before the merge. #269 merged as `f27675b` at 11:04:03 PST, and `/rules` first returned 200 on www.golo.golf at 11:05:53 PST. The live results are in § Live results.
+
+**State:** Live since 2026-11-07. The live checks pass, and the Search Console steps are done. Still open: the owner's VoiceOver check (RL-QA-14), which the owner moved to after deploy.
 
 ## Go/no-go
 
@@ -16,10 +18,10 @@ Prepared on November 7, 2026 for launch PR #269 (branch `launch/242-rules-inboun
 | Performance | `/rules` lab LCP median 2,490 ms (target ≤ 2.5 s), CLS 0, score 97. `/glossary`, `/blog/gimmes` and `/` measure the same before and after (RL-QA-19) | — |
 | GA4 | The five Rules dimensions (Rule number, Opened from, Rules situation, Official document, Related content) were registered on 2026-11-07, and a read-only check the same day found all five still listed (29 of 50) | — |
 | Screen reader | **Moved to after deploy by the owner's choice** on 2026-11-07 ("Do it after deploy"), as with the glossary's GL-QA-13. Before the go, the automated evidence: axe 0 violations (RL-QA-12), the accessibility tree (RL-QA-13) and the Tab walk (RL-QA-09–11) | owner, after deploy |
-| Launch PR | CI green and Codex's 👍 at the head SHA. Both are quoted with that SHA in #247 beside the owner's go; writing the SHA in this file would change it. Earlier heads: CI green at cfab867, and Codex reviewed e7ab3bc with no findings | — |
-| Owner go | — | merge, plus the Search Console steps |
+| Launch PR | Head `5c9493a`: CI `lint · typecheck · build` success, and Codex's review completed with no findings (`codex-review-state` at 5c9493a6f8, plus a 👍). Quoted in #247 with the owner's go | — |
+| Owner go | **"Go"**, in chat on 2026-11-07 at 11:03 PST. One request covered the merge, URL Inspection plus Request indexing, the sitemap resubmission, the Rich Results Test, the #248 dates and this follow-up record | given |
 
-**Outcome:** pending.
+**Outcome: go.** Merged the same Pacific day as `RULES_LAUNCHED_ON`, so `publishedOn` 2026-11-07 stands.
 
 ## QA results (the launch build, 2026-11-07)
 
@@ -127,6 +129,45 @@ This supplements the owner's check and doesn't replace it.
   - Official links read "Rule 18.2a on randa.org" or "Definition of “Lost” on randa.org".
   - Previous/next links read "Rule 17" and "Rule 19"; the arrows are `aria-hidden`.
 - **Hero:** hidden, as RL-QA-25 says.
+
+## Live results (2026-11-07)
+
+Checked on `https://www.golo.golf`, from about 11:06 PST, against `main` at `f27675b`. The apex 308s, so every fetch followed redirects. The headless runs aborted every request to another host, and the consent run answered GA's requests locally, so nothing reached GA4.
+
+| Check | Result | Evidence |
+|---|---|---|
+| Deploy | First 200 at 11:05:53 PST, 1 min 50 s after the merge. LiteSpeed serves the page | live/live-checks.txt |
+| Status and redirects | `/rules` 200, 608,768 bytes. `https://golo.golf/rules` returns 308 → `https://www.golo.golf/rules`. `/rules/lost-ball` returns 404 | live/live-checks.txt |
+| Sitemap | One `/rules` entry, lastmod 2026-11-07, with no fragment or `?category=` URLs; 48 `<loc>`s in all | live/live-checks.txt, ~/gsc/sitemap-2026-11-07.xml |
+| `llms.txt` | A "Rules of Golf" section with one entry for `/rules` | live/live-checks.txt |
+| Schema and metadata | JSON-LD: BreadcrumbList, then CollectionPage (37 items, `dateModified` 2026-11-07), Organization, WebSite. Title "Golf Rules Explained: Penalties, Relief & Questions · GoLo", self-canonical, no robots meta. 37 articles, and no review records or check dates in the HTML | live/live-checks.txt |
+| Footer and inbound links | Footer "Golf rules" on `/`, `/glossary`, the three posts and `/games/overall-match`. 10 `/rules#…` links on `/glossary`, and 1 each in the three posts and the guide FAQ. Every fragment resolves to an id on the live `/rules` | live/live-checks.txt |
+| Hero bytes | The served image matches the build's SHA-256 at 390×844@3x (`rules-mobile-1080.avif`), 600×900@1x (`-768`), 768×1024@2x and 1920×1080@1x (`rules-desktop-1920.avif`), and 1440×900@2x (`-2560`). No purge was needed | live/live-checks.txt |
+| Consent | The #244 harness, denied and granted, against the live site. Denied: 0 Google requests, no `gtag`, no `_ga` cookies. Granted: the same 20 Rules events, the same deep-link and outbound events, and the same 16 event names as on the launch build, with closed-set params only. No typed query text in any request | live/consent-live.json |
+| Tab walk | `/rules` at 320×800, 760×1000, 1100×900 and 1440×900: 574, 574, 579 and 579 stops. All draw the lime ring; none is clipped or under the nav. One stop more than the launch build: production has the Terms of Service footer link, set by its environment, which the local build didn't have | tabwalk-live/live-rules.json |
+| Lighthouse | Live `/rules`, 5 runs, default mobile throttling: median LCP **2,188 ms** (2,151–2,787), CLS 0, TBT 14 ms, score 98. The LCP element is the hero (`rules-mobile-768.avif`, 14 KB). Live lab data, not field Core Web Vitals | live/lighthouse-live.txt |
+| Official links | `check:rules-sources` green and every randa.org page fetched on 2026-11-07 (RL-QA-20, RL-QA-22). The 4 usga.org pages were opened in a browser the same day | official-links.txt |
+
+### Search Console (the owner's Chrome, `sc-domain:golo.golf`)
+
+| Step | Result (2026-11-07, PST) |
+|---|---|
+| URL Inspection, `https://www.golo.golf/rules` | "URL is not on Google: URL is unknown to Google", with no referring sitemap. Expected for a page live for 2 minutes |
+| Test live URL | 11:08: "URL is available to Google", "Page can be indexed", Breadcrumbs 1 valid item |
+| Request indexing | About 11:09: "Indexing requested. URL was added to a priority crawl queue." Clicked by coordinates from a fresh screenshot |
+| Sitemap | `https://www.golo.golf/sitemap.xml` resubmitted: "Sitemap submitted successfully". The row now reads Submitted Nov 7, 2026 and Last read Nov 5, 2026, with 47 pages discovered at that read. L+7 checks for a read after L |
+| Rich Results Test, `/rules` | Crawled successfully at 11:09:47 AM: "1 valid item detected", Breadcrumbs. CollectionPage isn't a Google rich-result type |
+| Prelaunch baseline (L-28 – L-1, Oct 10 – Nov 6) | **Provisional.** Saved to `~/gsc/rules-baseline/` (Web, no other filters). Totals: 6 clicks, 684 impressions, CTR 0.9%, position 28.6. Rules of Golf group: 0 queries, 0 impressions. Search Console still marked Nov 5 and Nov 6 "Data is still being collected", so re-export the same window once they're complete, before L+28 (`docs/seo-reports/rules-checkpoints.md` § Baseline) |
+
+### Still open after the release
+
+- **RL-QA-14:** the owner's VoiceOver check on the live page, using the script below. The reply is recorded in RL-QA-14 as given.
+- **#248:**
+  - L+7 on 2026-11-14;
+  - L+28 on 2026-12-05;
+  - L+56 on 2027-01-02;
+  - L+90 on 2027-02-05.
+- **The baseline:** re-export it, as above.
 
 ## VoiceOver script (RL-QA-14)
 
@@ -288,6 +329,8 @@ Press **Cmd + F5** to turn VoiceOver off.
 
 ## Release steps (after the owner's go)
 
+Done on 2026-11-07, except step 6. Step 1 wasn't needed, because the merge was on the launch date.
+
 1. If the merge won't happen on 2026-11-07 (Pacific), change `RULES_LAUNCHED_ON` in `lib/content/rules/launch.ts` to the merge date. That one constant sets every record's `publishedOn` and the sitemap's lastmod. Also move `TODAY` in `scripts/test-rules.mjs` if the validator rejects the new date as being in the future. Rerun `npm run lint:content` and `npm test`, push, wait for CI, and get Codex's 👍 at the new head.
 2. Mark the PR ready, then merge it with a merge commit: `gh pr merge 269 --merge --match-head-commit <sha>`, without `--delete-branch`. Hostinger deploys `main` in about 2 minutes. LiteSpeed serves `public/` with `max-age=0`, so there's no purge.
 3. Run the live checks on `https://www.golo.golf` (the apex 308s, so use `curl -L`):
@@ -312,7 +355,7 @@ Press **Cmd + F5** to turn VoiceOver off.
 
 ## Rollback
 
-Revert the launch merge commit, `git revert -m 1 <merge sha>`, then open a PR and merge it; Hostinger redeploys in about 2 minutes.
+Revert the launch merge commit, `git revert -m 1 f27675b`, then open a PR and merge it; Hostinger redeploys in about 2 minutes.
 
 Setting `rulesLive = false` on its own isn't enough. It 404s `/rules` and takes it out of the sitemap, `llms.txt`, the footer and the schema, but all 15 inbound links (the footer, 10 glossary records, 3 posts and the guide FAQ) then fail `lint:content`. The revert removes the whole launch at once.
 
@@ -335,5 +378,10 @@ All in this session's scratchpad (`evidence/`), not committed:
 - `tabwalk/`
 - `lighthouse.txt`
 - `shots/`
+- After the release:
+  - `live/live-checks.txt`, `live/consent-live.json`, `live/lighthouse-live.txt`
+  - `tabwalk-live/`
+  - the Search Console baseline in `~/gsc/rules-baseline/`, with its groups in `~/gsc/rules-baseline-groups.md`
+  - the live sitemap in `~/gsc/sitemap-2026-11-07.xml`
 
 The scripts are in `qa/` beside them, and the consent harness is in `consent/`.
