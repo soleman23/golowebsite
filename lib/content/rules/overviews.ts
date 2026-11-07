@@ -105,7 +105,7 @@ export const ruleOverviews: RuleOverview[] = [
     ],
     relatedGlossaryIds: ["mulligan", "breakfast-ball"],
     sources: opened(OPENED_237, ["1", "1.1", "1.2a", "1.3b", "1.3c", "18.1"], ["General Penalty"]),
-    status: "in-review",
+    ...ownerApproved,
   }),
   rule(2, {
     summary:
@@ -121,7 +121,7 @@ export const ruleOverviews: RuleOverview[] = [
       ["2", "2.2a", "2.2b", "2.2c", "2.3", "13.1f"],
       ["General Area", "Wrong Green"],
     ),
-    status: "in-review",
+    ...ownerApproved,
   }),
   rule(3, {
     summary:
@@ -134,7 +134,7 @@ export const ruleOverviews: RuleOverview[] = [
     ],
     relatedGlossaryIds: ["match-play", "stroke-play", "gimme", "net-score", "handicap-stroke"],
     sources: opened(OPENED_237, ["3", "3.1a", "3.1b", "3.1c", "3.2a", "3.2b", "3.2c", "3.3b", "3.3c"]),
-    status: "in-review",
+    ...ownerApproved,
   }),
   rule(4, {
     aliases: ["14 clubs", "club limit"],
@@ -148,7 +148,7 @@ export const ruleOverviews: RuleOverview[] = [
     ],
     relatedGlossaryIds: ["driver", "putter"],
     sources: opened(OPENED_237, ["4", "4.1a", "4.1b", "4.1c", "4.2a", "4.3a", "22.5", "23.7"], ["Committee"]),
-    status: "in-review",
+    ...ownerApproved,
   }),
 
   // Playing the round
@@ -162,7 +162,7 @@ export const ruleOverviews: RuleOverview[] = [
       "Can I stop playing when there's lightning?",
     ],
     sources: opened(OPENED_237, ["5", "5.2a", "5.2b", "5.3a", "5.5a", "5.5b", "5.6b", "5.7a"]),
-    status: "in-review",
+    ...ownerApproved,
   }),
   rule(6, {
     aliases: ["wrong ball"],
@@ -180,7 +180,7 @@ export const ruleOverviews: RuleOverview[] = [
       ["6", "6.1b", "6.2b", "6.3a", "6.3b", "6.3c", "6.4a", "6.4b"],
       ["Teeing Area", "Wrong Ball"],
     ),
-    status: "in-review",
+    ...ownerApproved,
   }),
   rule(7, {
     summary:
@@ -192,7 +192,7 @@ export const ruleOverviews: RuleOverview[] = [
       "Two balls of the same brand are in the rough: which is mine?",
     ],
     sources: opened(OPENED_237, ["7", "7.1a", "7.1b", "7.2", "7.3", "7.4"], ["Lost"]),
-    status: "in-review",
+    ...ownerApproved,
   }),
   rule(8, {
     summary:
@@ -204,7 +204,7 @@ export const ruleOverviews: RuleOverview[] = [
       "I bent a branch out of the way: can I undo it?",
     ],
     sources: opened(OPENED_237, ["8", "8.1", "8.1a", "8.1b", "8.1c"]),
-    status: "in-review",
+    ...ownerApproved,
   }),
   rule(9, {
     summary:
@@ -220,7 +220,7 @@ export const ruleOverviews: RuleOverview[] = [
       ["9", "9.1a", "9.2a", "9.2b", "9.3", "9.4a", "9.4b", "9.5a", "9.5b", "9.6"],
       ["Known or Virtually Certain", "Outside Influence"],
     ),
-    status: "in-review",
+    ...ownerApproved,
   }),
   rule(10, {
     aliases: ["advice"],
@@ -237,7 +237,7 @@ export const ruleOverviews: RuleOverview[] = [
       ["10", "10.1a", "10.1b", "10.2a", "10.2b", "22.2", "23.5a"],
       ["Advice"],
     ),
-    status: "in-review",
+    ...ownerApproved,
   }),
   rule(11, {
     summary:
@@ -249,7 +249,7 @@ export const ruleOverviews: RuleOverview[] = [
       "Can I stop a ball that's rolling toward the water?",
     ],
     sources: opened(OPENED_237, ["11", "11.1a", "11.1b", "11.2a", "11.2b", "11.3", "13.2b"]),
-    status: "in-review",
+    ...ownerApproved,
   }),
 
   // Course areas and procedures

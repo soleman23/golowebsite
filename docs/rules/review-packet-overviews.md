@@ -331,7 +331,7 @@ The two rules #237 singles out now say plainly what is a Committee matter. Rule 
 
 Each summary is 117–120 words. The longest run shared with the official text is 7 words. `npm run lint:content` passes, and all 69 subrule anchors and 10 Definitions citations resolve against the pages fetched that day. Copy uses US spelling, as the rest of the site does; rule titles stay as the R&A writes them.
 
-**For the owner to decide:**
+**Owner calls** (approved on November 6, 2026, with the drafter's positions as written):
 
 1. **Rule 1 and house rules.** The card says players who agree to ignore a Rule they know applies are disqualified, and that mulligans and breakfast balls are house rules, not Rules. Both statements are what the Rules and `canonical-map.md` rule 4 say. The card doesn't spell out what follows: a group that plays breakfast balls by agreement isn't playing under the Rules. Agent B asked that you see the two sentences side by side. Confirm the tone, or ask for the second sentence to go first.
 2. **Questions as pointers.** As in #238, three questions are mapped to their subrules but not answered on the card: Rule 4 Q4 (broken club), Rule 6 Q4 (who tees off first) and Rule 10 Q3 (club on the ground to aim).
@@ -368,7 +368,7 @@ Each summary is 117–120 words. The longest run shared with the official text i
 
 **Copy distance:** longest run shared with the R&A text is 7 words ("play the course as you find it"); no run of 8 or more.
 
-**Owner approval:** pending.
+**Owner approval:** approved in chat on November 6, 2026 ("Approve all three").
 
 ### Rule 2 · The Course
 
@@ -401,7 +401,7 @@ Each summary is 117–120 words. The longest run shared with the official text i
 
 **Copy distance:** longest run shared with the R&A text is 5 words ("five areas of the course"); no run of 8 or more.
 
-**Owner approval:** pending.
+**Owner approval:** approved in chat on November 6, 2026 ("Approve all three").
 
 ### Rule 3 · The Competition
 
@@ -436,7 +436,7 @@ Each summary is 117–120 words. The longest run shared with the official text i
 
 **Copy distance:** longest run shared with the R&A text is 7 words ("opponent's next stroke a hole or the"); no run of 8 or more.
 
-**Owner approval:** pending.
+**Owner approval:** approved in chat on November 6, 2026 ("Approve all three").
 
 ### Rule 4 · The Player’s Equipment
 
@@ -474,7 +474,7 @@ Each summary is 117–120 words. The longest run shared with the official text i
 
 **Copy distance:** longest run shared with the R&A text is 5 words ("clubs balls and other equipment"); no run of 8 or more.
 
-**Owner approval:** pending.
+**Owner approval:** approved in chat on November 6, 2026 ("Approve all three").
 
 ### Rule 5 · Playing the Round
 
@@ -509,7 +509,7 @@ Each summary is 117–120 words. The longest run shared with the official text i
 
 **Copy distance:** longest run shared with the R&A text is 5 words ("the general penalty on the"); no run of 8 or more.
 
-**Owner approval:** pending.
+**Owner approval:** approved in chat on November 6, 2026 ("Approve all three").
 
 ### Rule 6 · Playing a Hole
 
@@ -544,7 +544,7 @@ Each summary is 117–120 words. The longest run shared with the official text i
 
 **Copy distance:** longest run shared with the R&A text is 6 words ("is lost or out of bounds"); no run of 8 or more.
 
-**Owner approval:** pending.
+**Owner approval:** approved in chat on November 6, 2026 ("Approve all three").
 
 ### Rule 7 · Ball Search: Finding and Identifying Ball
 
@@ -579,7 +579,7 @@ Each summary is 117–120 words. The longest run shared with the official text i
 
 **Copy distance:** longest run shared with the R&A text is 5 words ("come to rest if it"); no run of 8 or more.
 
-**Owner approval:** pending.
+**Owner approval:** approved in chat on November 6, 2026 ("Approve all three").
 
 ### Rule 8 · Course Played as It Is Found
 
@@ -610,7 +610,7 @@ Each summary is 117–120 words. The longest run shared with the official text i
 
 **Copy distance:** longest run shared with the R&A text is 7 words ("replacing a divot in a divot hole"); no run of 8 or more.
 
-**Owner approval:** pending.
+**Owner approval:** approved in chat on November 6, 2026 ("Approve all three").
 
 ### Rule 9 · Ball Played as It Lies; Ball at Rest Lifted or Moved
 
@@ -648,7 +648,7 @@ Each summary is 117–120 words. The longest run shared with the official text i
 
 **Copy distance:** longest run shared with the R&A text is 6 words ("playing the ball as it lies"); no run of 8 or more.
 
-**Owner approval:** pending.
+**Owner approval:** approved in chat on November 6, 2026 ("Approve all three").
 
 ### Rule 10 · Preparing for and Making a Stroke; Advice and Help; Caddies
 
@@ -684,7 +684,7 @@ Each summary is 117–120 words. The longest run shared with the official text i
 
 **Copy distance:** longest run shared with the R&A text is 5 words ("a club on the ground"); no run of 8 or more.
 
-**Owner approval:** pending.
+**Owner approval:** approved in chat on November 6, 2026 ("Approve all three").
 
 ### Rule 11 · Ball in Motion Accidentally Hits Person, Animal or Object; Deliberate Actions to Affect Ball in Motion
 
@@ -720,4 +720,4 @@ Each summary is 117–120 words. The longest run shared with the official text i
 
 **Copy distance:** longest run shared with the R&A text is 7 words ("play the ball as it lies in"); no run of 8 or more.
 
-**Owner approval:** pending.
+**Owner approval:** approved in chat on November 6, 2026 ("Approve all three").
