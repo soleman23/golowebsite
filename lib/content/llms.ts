@@ -22,7 +22,12 @@ export const llmsCopy = {
     guides: "Game guides",
     articles: "Articles",
     glossary: "Glossary",
+    rules: "Rules of Golf",
   },
   glossary:
     "Golf terms, scoring, handicaps, side games and slang, defined. Each term has an anchor on the hub page.",
+  /** The Rules Center's line, once it's live with published records (#243). */
+  rulesTitle: "Golf Rules Explained",
+  rules:
+    "Plain answers to common Rules of Golf situations, from a lost ball to a cart path, and what each of the 25 Rules covers, with the official text linked on randa.org. Each answer and rule has an anchor on the hub page. Independent of The R&A and the USGA.",
 };

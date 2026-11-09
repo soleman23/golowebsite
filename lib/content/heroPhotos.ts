@@ -1,6 +1,6 @@
 /**
- * Photos behind the /faq, /blog, /games, /features, /how-it-works, /contact
- * and /glossary heroes.
+ * Photos behind the /faq, /blog, /games, /features, /how-it-works, /contact,
+ * /glossary and /rules heroes.
  * The files are built by scripts/generate-hero-images.mjs into
  * /public/images/heroes; this is what the pages need to know about them.
  *
@@ -16,7 +16,8 @@ export type HeroPhotoKey =
   | "features"
   | "how-it-works"
   | "contact"
-  | "glossary";
+  | "glossary"
+  | "rules";
 
 export type HeroPhoto = {
   /**
@@ -57,6 +58,10 @@ export const heroPhotos: Record<HeroPhotoKey, HeroPhoto> = {
   glossary: {
     mobileSubject: 0.46,
     ogAlt: "A golfer follows through on a drive from an elevated tee at sunset, with pines, a pond and a green below.",
+  },
+  rules: {
+    mobileSubject: 0.46,
+    ogAlt: "A line of white out-of-bounds stakes beside a fairway at dusk, with a golf ball in the rough at the foot of the nearest one.",
   },
 };
 

@@ -17,7 +17,12 @@
  * definition and the guide link, and doesn't restate the guide's rules.
  */
 
-import { MVP_REVIEWED_ON, mvpReviewLogApp, mvpReviewLogNone } from "../review";
+import {
+  MVP_REVIEWED_ON,
+  mvpReviewLogApp,
+  mvpReviewLogNone,
+  rulesLinkReview,
+} from "../review";
 import type { GlossaryTerm } from "../types";
 
 export const formatsTerms: GlossaryTerm[] = [
@@ -327,7 +332,7 @@ export const formatsTerms: GlossaryTerm[] = [
       text: "The Rules of Golf define Four-Ball and cover it in Rule 23.",
     },
     relatedTermIds: ["best-score", "foursomes", "match-play", "scramble"],
-    relatedContentPaths: ["/games/wolf", "/blog/best-ball-vs-scramble"],
+    relatedContentPaths: ["/games/wolf", "/blog/best-ball-vs-scramble", "/rules#rule-23"],
     canonical: { kind: "hub", anchor: "four-ball" },
     capabilityIds: [],
     ctaIntent: "games",
@@ -368,7 +373,7 @@ export const formatsTerms: GlossaryTerm[] = [
     ],
     status: "published",
     reviewedBy: "owner",
-    reviewLog: mvpReviewLogNone,
+    reviewLog: [...mvpReviewLogNone, rulesLinkReview("/rules#rule-23")],
     reviewedOn: MVP_REVIEWED_ON,
     publishedOn: "2026-10-29",
   },
@@ -391,7 +396,7 @@ export const formatsTerms: GlossaryTerm[] = [
       text: "The Rules of Golf define Foursomes and cover it in Rule 22.",
     },
     relatedTermIds: ["four-ball", "scramble", "match-play"],
-    relatedContentPaths: [],
+    relatedContentPaths: ["/rules#rule-22"],
     canonical: { kind: "hub", anchor: "foursomes" },
     capabilityIds: [],
     ctaIntent: "games",
@@ -419,7 +424,7 @@ export const formatsTerms: GlossaryTerm[] = [
     ],
     status: "published",
     reviewedBy: "owner",
-    reviewLog: mvpReviewLogNone,
+    reviewLog: [...mvpReviewLogNone, rulesLinkReview("/rules#rule-22")],
     reviewedOn: MVP_REVIEWED_ON,
     publishedOn: "2026-10-29",
   },
@@ -440,7 +445,7 @@ export const formatsTerms: GlossaryTerm[] = [
       text: "Rule 3.2 of the Rules of Golf covers match play: how a hole and the match are won (3.2a) and conceding a stroke, a hole or the match (3.2b).",
     },
     relatedTermIds: ["nassau", "four-ball", "foursomes"],
-    relatedContentPaths: ["/games/nassau"],
+    relatedContentPaths: ["/games/nassau", "/rules#rule-3"],
     canonical: { kind: "hub", anchor: "match-play" },
     capabilityIds: [],
     ctaIntent: "games",
@@ -461,7 +466,7 @@ export const formatsTerms: GlossaryTerm[] = [
     ],
     status: "published",
     reviewedBy: "owner",
-    reviewLog: mvpReviewLogNone,
+    reviewLog: [...mvpReviewLogNone, rulesLinkReview("/rules#rule-3")],
     reviewedOn: MVP_REVIEWED_ON,
     publishedOn: "2026-10-29",
   },
@@ -482,7 +487,7 @@ export const formatsTerms: GlossaryTerm[] = [
       text: "Rule 21.1 of the Rules of Golf sets out Stableford and its standard points.",
     },
     relatedTermIds: ["match-play"],
-    relatedContentPaths: [],
+    relatedContentPaths: ["/rules#rule-21"],
     canonical: { kind: "hub", anchor: "stableford" },
     capabilityIds: [],
     ctaIntent: "games",
@@ -503,7 +508,7 @@ export const formatsTerms: GlossaryTerm[] = [
     ],
     status: "published",
     reviewedBy: "owner",
-    reviewLog: mvpReviewLogNone,
+    reviewLog: [...mvpReviewLogNone, rulesLinkReview("/rules#rule-21")],
     reviewedOn: MVP_REVIEWED_ON,
     publishedOn: "2026-10-29",
   },

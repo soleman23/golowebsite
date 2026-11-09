@@ -14,7 +14,11 @@
  * practices the Rules don't allow say so. Equipment: definitions, no brands.
  */
 
-import { MVP_REVIEWED_ON, mvpReviewLogNone } from "../review";
+import {
+  MVP_REVIEWED_ON,
+  mvpReviewLogNone,
+  rulesLinkReview,
+} from "../review";
 import type { GlossaryTerm } from "../types";
 
 export const courseEquipmentSlangTerms: GlossaryTerm[] = [
@@ -38,7 +42,7 @@ export const courseEquipmentSlangTerms: GlossaryTerm[] = [
       text: "The Rules of Golf define the teeing area. Rule 6.1b sets the penalty for playing from outside it, and Rule 6.2 covers playing from it.",
     },
     relatedTermIds: ["drive", "fairway"],
-    relatedContentPaths: [],
+    relatedContentPaths: ["/rules#rule-6"],
     canonical: { kind: "hub", anchor: "teeing-area" },
     capabilityIds: [],
     sources: [
@@ -72,7 +76,7 @@ export const courseEquipmentSlangTerms: GlossaryTerm[] = [
     ],
     status: "published",
     reviewedBy: "owner",
-    reviewLog: mvpReviewLogNone,
+    reviewLog: [...mvpReviewLogNone, rulesLinkReview("/rules#rule-6")],
     reviewedOn: MVP_REVIEWED_ON,
     publishedOn: "2026-10-29",
   },
@@ -183,7 +187,7 @@ export const courseEquipmentSlangTerms: GlossaryTerm[] = [
       text: "The Rules of Golf define a bunker, and Rule 12 covers playing from one, including when the club may touch the sand.",
     },
     relatedTermIds: ["sandy", "penalty-area"],
-    relatedContentPaths: [],
+    relatedContentPaths: ["/rules#bunker-sand"],
     canonical: { kind: "hub", anchor: "bunker" },
     capabilityIds: [],
     sources: [
@@ -216,7 +220,7 @@ export const courseEquipmentSlangTerms: GlossaryTerm[] = [
     ],
     status: "published",
     reviewedBy: "owner",
-    reviewLog: mvpReviewLogNone,
+    reviewLog: [...mvpReviewLogNone, rulesLinkReview("/rules#bunker-sand")],
     reviewedOn: MVP_REVIEWED_ON,
     publishedOn: "2026-10-29",
   },
@@ -239,7 +243,7 @@ export const courseEquipmentSlangTerms: GlossaryTerm[] = [
       text: "The Rules of Golf define a penalty area, and Rule 17 sets out the relief options.",
     },
     relatedTermIds: ["bunker"],
-    relatedContentPaths: [],
+    relatedContentPaths: ["/rules#red-vs-yellow-penalty-areas"],
     canonical: { kind: "hub", anchor: "penalty-area" },
     capabilityIds: [],
     sources: [
@@ -267,7 +271,7 @@ export const courseEquipmentSlangTerms: GlossaryTerm[] = [
     ],
     status: "published",
     reviewedBy: "owner",
-    reviewLog: mvpReviewLogNone,
+    reviewLog: [...mvpReviewLogNone, rulesLinkReview("/rules#red-vs-yellow-penalty-areas")],
     reviewedOn: MVP_REVIEWED_ON,
     publishedOn: "2026-10-29",
   },
@@ -371,7 +375,7 @@ export const courseEquipmentSlangTerms: GlossaryTerm[] = [
       text: "A mulligan ignores the Rules of Golf. Under Rule 2.1b of the Rules of Handicapping, a round where a player deliberately ignores a Rule generally isn't acceptable for posting.",
     },
     relatedTermIds: ["breakfast-ball"],
-    relatedContentPaths: [],
+    relatedContentPaths: ["/rules#rule-1"],
     canonical: { kind: "hub", anchor: "mulligan" },
     capabilityIds: [],
     sources: [
@@ -397,7 +401,7 @@ export const courseEquipmentSlangTerms: GlossaryTerm[] = [
     ],
     status: "published",
     reviewedBy: "owner",
-    reviewLog: mvpReviewLogNone,
+    reviewLog: [...mvpReviewLogNone, rulesLinkReview("/rules#rule-1")],
     reviewedOn: MVP_REVIEWED_ON,
     publishedOn: "2026-10-29",
   },
@@ -418,7 +422,7 @@ export const courseEquipmentSlangTerms: GlossaryTerm[] = [
       text: "In match play an opponent can concede your next stroke (Rule 3.2b). In regular stroke play you must hole out on every hole (Rule 3.3c). For handicap posting, a ball left within five feet on the green counts as one more stroke (Rules of Handicapping 3.3).",
     },
     relatedTermIds: ["putt", "match-play"],
-    relatedContentPaths: ["/blog/gimmes"],
+    relatedContentPaths: ["/blog/gimmes", "/rules#conceded-putt"],
     canonical: { kind: "hub", anchor: "gimme" },
     capabilityIds: [],
     sources: [
@@ -451,7 +455,7 @@ export const courseEquipmentSlangTerms: GlossaryTerm[] = [
     ],
     status: "published",
     reviewedBy: "owner",
-    reviewLog: mvpReviewLogNone,
+    reviewLog: [...mvpReviewLogNone, rulesLinkReview("/rules#conceded-putt")],
     reviewedOn: MVP_REVIEWED_ON,
     publishedOn: "2026-10-29",
   },

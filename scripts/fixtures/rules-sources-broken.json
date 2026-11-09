@@ -1,0 +1,107 @@
+{
+  "//": "Synthetic R&A pages with known faults, for scripts/test-rules-sources.mjs and `npm run check:rules-sources -- --fixture scripts/fixtures/rules-sources-broken.json`. It must fail with exactly the lines the test expects. No Rules of Golf text: two rule titles, as navigation references, and placeholder prose in the R&A's page-data shape.",
+  "rules": {
+    "18": {
+      "title": "Stroke-and-Distance Relief, Ball Lost or Out of Bounds, Provisional Ball",
+      "subrules": [
+        "1",
+        "2",
+        "2a",
+        "2b"
+      ]
+    },
+    "19": {
+      "title": "Unplayable Ball",
+      "subrules": [
+        "1",
+        "2"
+      ]
+    }
+  },
+  "records": [
+    {
+      "id": "fixture-situation",
+      "sources": [
+        {
+          "authority": "RANDA",
+          "document": "rules",
+          "ruleRef": "18.2b",
+          "url": "https://www.randa.org/en/rog/the-rules-of-golf/rule-18",
+          "anchor": "18_2b"
+        },
+        {
+          "authority": "RANDA",
+          "document": "rules",
+          "ruleRef": "18.2a",
+          "url": "https://www.randa.org/en/rog/the-rules-of-golf/rule-18",
+          "anchor": "18_2a"
+        },
+        {
+          "authority": "RANDA",
+          "document": "definitions",
+          "ruleRef": "Definitions: Lost",
+          "url": "https://www.randa.org/en/rog/definitions"
+        },
+        {
+          "authority": "RANDA",
+          "document": "definitions",
+          "ruleRef": "Definitions: Casual Water",
+          "url": "https://www.randa.org/en/rog/definitions"
+        },
+        {
+          "authority": "RANDA",
+          "document": "local-rule",
+          "ruleRef": "MLR E-5",
+          "url": "https://www.randa.org/en/rog/committee-procedures/sections/8"
+        },
+        {
+          "authority": "RANDA",
+          "document": "local-rule",
+          "ruleRef": "MLR E-3",
+          "url": "https://www.randa.org/en/rog/committee-procedures/sections/8"
+        },
+        {
+          "authority": "RANDA",
+          "document": "clarifications",
+          "ruleRef": "Clarifications",
+          "url": "https://www.randa.org/en/rog/clarifications"
+        },
+        {
+          "authority": "USGA",
+          "document": "handicapping",
+          "ruleRef": "RoH 3.3",
+          "url": "https://www.usga.org/handicapping/roh/"
+        }
+      ]
+    }
+  ],
+  "hashes": {
+    "https://www.randa.org/en/rog/the-rules-of-golf/rule-18": "76506dc1bc8e1e6cd72cc8f007ac383a7314ca4c99941702c1bde18165b77149",
+    "https://www.randa.org/en/rog/the-rules-of-golf/rule-19": "a22e5a781b65ceb2083d722699ea1827c6bcd2b637dd1c2c4c43530e9ef72e8a",
+    "https://www.randa.org/en/rog/definitions": "a426876db25451d64a1f9246566d9fbb0183dcba560b6594235b43d95c34d161",
+    "https://www.randa.org/en/rog/committee-procedures/sections/8#E-5": "f4f0ec47b2631c9e29310761331fa56d845779f00a2cd1d05b98cee75de1d108",
+    "https://www.randa.org/en/rog/the-rules-of-golf/rule-20": "5d62b64684de7f30093920908ba87eba867b859b40c1106d861c56b2dcac2d40"
+  },
+  "pages": {
+    "https://www.randa.org/en/rog/the-rules-of-golf": {
+      "status": 200,
+      "html": "<!DOCTYPE html><html><head><title>Fixture</title></head><body><header><a href=\"/rog/the-rules-of-golf/rule-1\">Header link</a></header><main><a href=\"/rog/the-rules-of-golf/rule-18\">Stroke-and-Distance Relief, Ball Lost or Out of Bounds, Provisional Ball<div>›</div></a><a href=\"/rog/the-rules-of-golf/rule-18\">Read more</a><a href=\"/rog/the-rules-of-golf/rule-19\">Unplayable Balls<div>›</div></a><a href=\"/rog/the-rules-of-golf/rule-26\">Fixture Rule Added After the Snapshot</a></main><footer>Footer text</footer><script id=\"__NEXT_DATA__\" type=\"application/json\">{\"props\":{\"pageProps\":{}}}</script></body></html>"
+    },
+    "https://www.randa.org/en/rog/the-rules-of-golf/rule-18": {
+      "status": 200,
+      "html": "<!DOCTYPE html><html><head><title>Fixture</title></head><body><header><a href=\"/rog/the-rules-of-golf/rule-1\">Header link</a></header><main><div id=\"18_1\"></div><div id=\"18_2\"></div><div id=\"18_2a\"></div><div id=\"18_3\"></div><a href=\"#17_1\">x</a></main><footer>Footer text</footer><script id=\"__NEXT_DATA__\" type=\"application/json\">{\"props\":{\"pageProps\":{\"ruleOfGolf\":{\"number\":{\"isEmpty\":false,\"value\":\"18\",\"numberAsInt\":18},\"title\":{\"isEmpty\":false,\"value\":\"Fixture rule 18\"},\"purposeStatement\":{\"isEmpty\":false,\"value\":\"<span class=\\\"rich-text-span\\\">Placeholder purpose, as published.</span>\"},\"subRules\":[{\"number\":{\"isEmpty\":false,\"value\":\"18.1\"},\"title\":{\"isEmpty\":false,\"value\":\"Fixture subrule\"},\"description\":{\"isEmpty\":false,\"value\":\"<span class=\\\"rich-text-span\\\">Placeholder text, not rule text.</span>\"},\"sections\":[{\"interpretations\":[{\"number\":{\"isEmpty\":false,\"value\":\"18.1/1\"},\"title\":{\"isEmpty\":false,\"value\":\"Fixture Interpretation\"},\"description\":{\"isEmpty\":false,\"value\":\"<p>Placeholder.</p>\"}}]}],\"ruleMenuData\":{\"title\":{\"isEmpty\":false,\"value\":\"Menu copy, not hashed\"}},\"url\":{\"slug\":\"rule-18\",\"value\":\"rog/the-rules-of-golf/rule-18\"}}],\"nextRule\":{\"title\":{\"isEmpty\":false,\"value\":\"The next rule's text, not hashed\"}},\"linkedItems\":[{\"diagrams\":[{\"description\":{\"isEmpty\":false,\"value\":\"A shared diagram caption, not hashed\"}}]}],\"system\":{\"lastModified\":\"Thu Nov 24 2022 20:26:18 GMT+0000\"}},\"rulesSummary\":{\"rulesOfGolf\":[{\"description\":{\"isEmpty\":false,\"value\":\"Every rule's purpose, not hashed\"}}]}}}}</script></body></html>"
+    },
+    "https://www.randa.org/en/rog/the-rules-of-golf/rule-19": {
+      "status": 200,
+      "html": "<!DOCTYPE html><html><head><title>Fixture</title></head><body><header><a href=\"/rog/the-rules-of-golf/rule-1\">Header link</a></header><main><div id=\"19_1\"></div><div id=\"19_2\"></div></main><footer>Footer text</footer><script id=\"__NEXT_DATA__\" type=\"application/json\">{\"props\":{\"pageProps\":{\"ruleOfGolf\":{\"number\":{\"isEmpty\":false,\"value\":\"19\",\"numberAsInt\":19},\"title\":{\"isEmpty\":false,\"value\":\"Fixture rule 19\"},\"purposeStatement\":{\"isEmpty\":false,\"value\":\"<span class=\\\"rich-text-span\\\">Placeholder purpose, as published.</span>\"},\"subRules\":[{\"number\":{\"isEmpty\":false,\"value\":\"19.1\"},\"title\":{\"isEmpty\":false,\"value\":\"Fixture subrule\"},\"description\":{\"isEmpty\":false,\"value\":\"<span class=\\\"rich-text-span\\\">Placeholder text, not rule text.</span>\"},\"sections\":[{\"interpretations\":[{\"number\":{\"isEmpty\":false,\"value\":\"19.1/1\"},\"title\":{\"isEmpty\":false,\"value\":\"Fixture Interpretation\"},\"description\":{\"isEmpty\":false,\"value\":\"<p>Placeholder.</p>\"}}]}],\"ruleMenuData\":{\"title\":{\"isEmpty\":false,\"value\":\"Menu copy, not hashed\"}},\"url\":{\"slug\":\"rule-19\",\"value\":\"rog/the-rules-of-golf/rule-19\"}}],\"nextRule\":{\"title\":{\"isEmpty\":false,\"value\":\"The next rule's text, not hashed\"}},\"linkedItems\":[{\"diagrams\":[{\"description\":{\"isEmpty\":false,\"value\":\"A shared diagram caption, not hashed\"}}]}],\"system\":{\"lastModified\":\"Thu Nov 24 2022 20:26:18 GMT+0000\"}},\"rulesSummary\":{\"rulesOfGolf\":[{\"description\":{\"isEmpty\":false,\"value\":\"Every rule's purpose, not hashed\"}}]}}}}</script></body></html>"
+    },
+    "https://www.randa.org/en/rog/definitions": {
+      "status": 200,
+      "html": "<!DOCTYPE html><html><head><title>Fixture</title></head><body><header><a href=\"/rog/the-rules-of-golf/rule-1\">Header link</a></header><main><div>Lost</div></main><footer>Footer text</footer><script id=\"__NEXT_DATA__\" type=\"application/json\">{\"props\":{\"pageProps\":{\"rulesSummary\":{\"definitions\":{\"L\":[{\"term\":{\"isEmpty\":false,\"value\":\"Lost\"},\"definitionText\":{\"isEmpty\":false,\"value\":\"<span>Placeholder definition.</span>\"}}],\"R\":[{\"term\":{\"isEmpty\":false,\"value\":\"Relief Area\"},\"definitionText\":{\"isEmpty\":false,\"value\":\"<span>Placeholder.</span>\"},\"system\":{\"name\":\"x\"}}]}}}}}</script></body></html>"
+    },
+    "https://www.randa.org/en/rog/committee-procedures/sections/8": {
+      "status": 200,
+      "html": "<!DOCTYPE html><html><head><title>Fixture</title></head><body><header><a href=\"/rog/the-rules-of-golf/rule-1\">Header link</a></header><main><div>Section 8</div></main><footer>Footer text</footer><script id=\"__NEXT_DATA__\" type=\"application/json\">{\"props\":{\"pageProps\":{\"ruleOfGolf\":{\"number\":{\"isEmpty\":false,\"value\":\"8\"},\"sections\":[{\"number\":{\"isEmpty\":false,\"value\":\"E\"},\"subSections\":[{\"number\":{\"isEmpty\":false,\"value\":\"E-5\"},\"title\":{\"isEmpty\":false,\"value\":\"Fixture local rule\"},\"description\":{\"isEmpty\":false,\"value\":\"<p>Placeholder.</p>\"}},{\"number\":{\"isEmpty\":false,\"value\":\"E-50\"},\"title\":{\"isEmpty\":false,\"value\":\"Not E-5\"},\"description\":{\"isEmpty\":false,\"value\":\"<p>Placeholder.</p>\"}}]}]}}}}</script></body></html>"
+    }
+  }
+}

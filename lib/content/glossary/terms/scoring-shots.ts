@@ -12,7 +12,11 @@
  * shown; net examples match the handicaps batch (Course Handicap 14).
  */
 
-import { MVP_REVIEWED_ON, mvpReviewLogNone } from "../review";
+import {
+  MVP_REVIEWED_ON,
+  mvpReviewLogNone,
+  rulesLinkReview,
+} from "../review";
 import type { GlossaryTerm } from "../types";
 
 export const scoringShotsTerms: GlossaryTerm[] = [
@@ -298,7 +302,7 @@ export const scoringShotsTerms: GlossaryTerm[] = [
       text: "Rule 3.3 of the Rules of Golf covers stroke play.",
     },
     relatedTermIds: ["match-play", "gross-score", "stableford"],
-    relatedContentPaths: [],
+    relatedContentPaths: ["/rules#rule-3"],
     canonical: { kind: "hub", anchor: "stroke-play" },
     capabilityIds: [],
     sources: [
@@ -318,7 +322,7 @@ export const scoringShotsTerms: GlossaryTerm[] = [
     ],
     status: "published",
     reviewedBy: "owner",
-    reviewLog: mvpReviewLogNone,
+    reviewLog: [...mvpReviewLogNone, rulesLinkReview("/rules#rule-3")],
     reviewedOn: MVP_REVIEWED_ON,
     publishedOn: "2026-10-29",
   },

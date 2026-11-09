@@ -6,6 +6,8 @@
  * history or analytics). The hero's search field, the controls and the
  * copy-link buttons sit in different parts of the page, so the state lives
  * here and the server-rendered directory is passed through as children.
+ * The copy-link buttons (components/ui) reach `announce` through
+ * AnnounceContext.
  *
  * Also owns deep links (docs/glossary/ux.md D6): a #slug on load or on a
  * hash change always ends up visible. An active search is cleared and a
@@ -28,9 +30,10 @@ import {
   useState,
 } from "react";
 import { usePathname, useRouter } from "next/navigation";
+import { AnnounceContext } from "@/components/ui/announce";
 import { FilterUrlSync, useInitialFilter } from "@/components/ui/FilterUrlSync";
 import { track } from "@/lib/analytics";
-import { createOpenReporter } from "./openReport";
+import { createOpenReporter } from "@/lib/openReport";
 
 type GlossaryState = {
   /** The active category id or "all"; null until the URL has been read. */
@@ -172,7 +175,14 @@ export function GlossaryProvider({ ids, children }: ProviderProps) {
   const arrived = useRef(false);
   useEffect(() => {
     const fromHash = (arrival = false) => {
-      const id = decodeURIComponent(window.location.hash.slice(1));
+      // A malformed escape (#%) names nothing on the page; ignore it rather
+      // than let the URIError take the hub down.
+      let id = "";
+      try {
+        id = decodeURIComponent(window.location.hash.slice(1));
+      } catch {
+        return;
+      }
       if (id) reveal(id, false, arrival);
     };
     const onHashChange = () => fromHash();
@@ -225,7 +235,7 @@ export function GlossaryProvider({ ids, children }: ProviderProps) {
       <span className="sr-only" role="status">
         {message}
       </span>
-      {children}
+      <AnnounceContext.Provider value={announce}>{children}</AnnounceContext.Provider>
     </GlossaryContext.Provider>
   );
 }

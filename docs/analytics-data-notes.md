@@ -29,7 +29,7 @@ Added with the glossary hub; nothing fires until the glossary is live (`lib/cont
 | `glossary_search` | Once per settled search: 600 ms after typing stops, and only if the normalised query or category changed since the last one reported. A 10-character query typed straight through sends one event. | `category` (`all` or a category id), `result_bucket` (`0`, `1`, `2-5`, `6+`), `match_type` (`exact`, `alias`, `partial`, `none`) |
 | `glossary_filter` | The reader chose a category: a chip, Clear, or "Search all terms". Not the initial read of `?category=` and not a deep link resetting it. | `category` |
 | `glossary_term_open` | A term was opened: a search result, a related-term link, or arrival on `/glossary#<slug>`. Once per term per page load. Nothing expands on the hub (docs/glossary/ux.md D5), so this replaces the spec's "definition expanded". | `term_id`, `category` |
-| `glossary_cta_click` | A term's guide, post or product link was followed (product links, by `ctaIntent`, go to `/games`, `/features` or `/how-it-works` and report `page`). | `term_id`, `destination_type` (`guide`, `post`, `page`) |
+| `glossary_cta_click` | A term's guide, post, Rules Center or product link was followed (product links, by `ctaIntent`, go to `/games`, `/features` or `/how-it-works` and report `page`; a `/rules#…` link reports `rules`, from #247). | `term_id`, `destination_type` (`guide`, `post`, `rules`, `page`) |
 | `share_click` | Reused for the copy-link button, so every share sits in one report. A blog share has `post`; a glossary share has `term_id`. | `channel` (`copy`), `term_id` |
 
 Unchanged and reused: `store_button_click` and `cta_click` (with `page: "glossary"`) for the CTA band, `link_click` for internal links (a term anchor reports as `/glossary#press`, the term name as its text), `newsletter_signup` (the hub has no newsletter band while #121 is on hold). `docs/seo-reports/leads.sql` counts `/glossary` as a landing path; a category view lands as `/glossary` because `landingPath` never keeps the query string.
@@ -44,6 +44,55 @@ Metric definitions (spec §9.4). Report each with its date range and its source,
 - **Zero-result rate**: `glossary_search` with `result_bucket` `0`, divided by all `glossary_search`.
 - **Newsletter signup rate**: not measured on the hub while the band is on hold.
 - **Verified acquisition**: only from store or app attribution where it exists. Never inferred from clicks.
+
+## Rules Center events and reporting definitions (#244)
+
+Added with the Rules Center (`/rules`). Nothing fires until it's live (`lib/content/rules/launch.ts`) and a visitor has opted in. Every call goes through `track()` by way of `lib/rulesAnalytics.ts`, which types each event's params and checks the values the hub's `data-*` attributes carry against closed sets: a bucket, a match type, a topic id, a rule number from 1 to 25, a record id, glossary slug or site path, a document type, a CTA destination. A value outside its set sends nothing. **The search text is never sent**: not as a param, not in a URL (it never enters the URL), not in the console. The consent harness of 2026-11-07 checked that in every captured request (#244, recorded on #246).
+
+| Event | Fires | Params |
+|---|---|---|
+| `rules_search` | Once per settled search: 600 ms after typing stops, and only if the normalised query or the topic changed since the last one reported. | `category` (`all` or a topic id), `result_bucket` (`0`, `1`, `2-5`, `6+`), `match_type` (`exact`, `alias`, `partial`, `fuzzy`, `none`) |
+| `rules_filter` | The reader chose a topic: a chip, Clear, or "Search all". Not the initial read of `?category=` and not a deep link resetting it. | `category` (`all`, `foundations`, `playing`, `course-areas`, `relief`, `formats`) |
+| `rules_rule_open` | A rule overview was shown. Once per rule per page load; the first open's source is the one reported. Nothing expands on the hub (docs/rules/ux.md D2), so "open" means the page moved to it. | `rule_number` (`1`–`25`), `source` |
+| `rules_scenario_open` | A situation was shown, on the same terms. | `scenario_id` (`lost-ball`, `cart-path`, …), `source` |
+| `rules_official_click` | A link to The R&A's or the USGA's pages was followed: an entry's source link, the edition notice, the sources panel or the no-results block. | `rule_number` (`1`–`25` for an entry's link, `none` for a page-level one), `document_type` (`rules`, `definitions`, `clarifications`, `local-rule`, `handicapping`) |
+| `rules_related_click` | A related link was followed: inside an entry or in the Related section. | `destination_type` (`rule`, `situation`, `glossary`, `guide`, `post`, `page`), `content_id` (`rule-18`, a situation id, a glossary slug, or a path such as `/games/skins`) |
+| `rules_cta_click` | A link in the closing band (`FinalCTA`, `#get`) was followed. | `placement` (`final_cta`), `destination_type` (`google_play`, `app_store`, `page`) |
+| `share_click` | An entry's copy-link button copied its URL. | `channel` (`copy`), and `scenario_id` or `rule_number` |
+
+`source` on the two open events:
+
+- `browse`: the page's own navigation (quick cards, the number grid, previous/next, a heading's self-link) or Back and Forward between fragments.
+- `search`: a search result.
+- `related`: a related link inside another entry, which also sends `rules_related_click`.
+- `deep_link`: the fragment the page was loaded with, from a shared link or a link on another page or site. Spec §10 lists the first three; without this one, arrivals would be counted as `browse`. As on the glossary, an arrival before any analytics choice isn't replayed after Allow.
+
+Unchanged and reused: `store_button_click` (`placement: "final_cta"`) for the band's store buttons, so one store click sends both it and `rules_cta_click`; count one or the other, never the sum. `link_click` for internal links (an in-page jump reports as `/rules#lost-ball`). GA's own `click` for outbound links (the official sources' `link_domain`). `?category=` stays in `page_location` (`ROUTE_PARAMS` in `lib/analyticsPreference.ts`). `docs/seo-reports/leads.sql` counts `/rules` as a landing path; a topic view lands as `/rules`, since `landingPath` drops the query string.
+
+Metric definitions (spec §10). Report each with its date range and its source. Search Console and GA4 are never combined into one rate: Search Console has the property's totals, GA4 a sample of visitors who chose analytics.
+
+- **Non-brand organic clicks**: Search Console clicks to `/rules` from queries outside the Branded group (`scripts/gsc-groups.mjs`). The 37 entries are fragments of one URL in Release A, so Search Console can't split them by situation or rule; standalone pages are #249's question.
+- **Rules queries**: Search Console's "Rules of Golf" query group, property-wide and on `/rules`.
+- **Rules landing visits**: GA4 sessions whose landing page is `/rules`. A consented sample.
+- **Qualified app-download clicks**: `store_button_click` events on `/rules` (page path `/rules`). Rate: consented sessions with one, divided by consented sessions with a `/rules` page view. A store click is not an install.
+- **Rules-to-product CTR**: consented sessions on `/rules` with a `rules_cta_click` or `store_button_click`, divided by consented sessions on `/rules`.
+- **Search success**: of the `rules_search` events whose `result_bucket` isn't `0`, the share followed by a `rules_rule_open` or `rules_scenario_open` with `source: search` before the next `rules_search` in the same session. Computed from event order within a session (`ga_session_id`, then `event_timestamp` in the BigQuery export, or a path exploration in GA4); no search text is sent or needed. An entry already opened earlier in the same page load sends no second open, so this undercounts slightly; it can't pass 100%, and a zero-result search never counts as a success.
+- **No-result rate**: `rules_search` with `result_bucket` `0`, divided by all `rules_search`; also split by `category`. `match_type` is `none` exactly when there are no results (`rulesMatchType` in `lib/content/rules/search.ts`), so the two counts must be equal. If they differ, an event or a dimension is wrong.
+- **Typo rescues**: `rules_search` with `match_type` `fuzzy`, divided by all `rules_search` with results.
+- **Common situation and rule opens**: `rules_scenario_open` by `scenario_id` and by `source`; `rules_rule_open` by `rule_number`.
+- **Source-link clicks**: `rules_official_click` by `document_type`, and by `rule_number` for entry links.
+- **Related click-through**: `rules_related_click` by `destination_type` and `content_id`.
+- **Page speed**: `web_vitals` events on `/rules` by `metric_name` and `metric_rating` (GA4 sample), against the Lighthouse baseline in #246's launch packet. Not a field p75.
+- **Indexed URLs**: URL Inspection on `/rules`; in Release A the indexation rate is 0 of 1 or 1 of 1.
+- **Referring domains**: Search Console → Links → Top linked pages, the `/rules` row's linking sites.
+- **Reported inaccuracies**: corrections opened under `docs/rules/maintenance.md` § Correction procedure ("Correction: <record id>" issues), as a count. No reader names or addresses.
+- **Verified acquisition**: only from store or app attribution where it exists. Never inferred from clicks.
+
+GA4 reports a param only once it's registered as an event-scoped custom dimension, and doesn't backfill. Every Rules param is registered:
+- `result_bucket`, `match_type`, `category`, `destination_type`, `placement` and `channel` were already there, under their earlier names.
+- `rule_number` (Rule number), `source` (Opened from), `scenario_id` (Rules situation), `document_type` (Official document) and `content_id` (Related content) were registered on 2026-11-07 with the owner's yes. That made 29 of 50.
+
+Rules splits are "not available before 2026-11-07". The full table is in `docs/seo-reports/rules-checkpoints.md` § GA4 custom definitions.
 
 ## Test traffic
 
