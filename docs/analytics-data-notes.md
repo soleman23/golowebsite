@@ -29,7 +29,7 @@ Added with the glossary hub; nothing fires until the glossary is live (`lib/cont
 | `glossary_search` | Once per settled search: 600 ms after typing stops, and only if the normalised query or category changed since the last one reported. A 10-character query typed straight through sends one event. | `category` (`all` or a category id), `result_bucket` (`0`, `1`, `2-5`, `6+`), `match_type` (`exact`, `alias`, `partial`, `none`) |
 | `glossary_filter` | The reader chose a category: a chip, Clear, or "Search all terms". Not the initial read of `?category=` and not a deep link resetting it. | `category` |
 | `glossary_term_open` | A term was opened: a search result, a related-term link, or arrival on `/glossary#<slug>`. Once per term per page load. Nothing expands on the hub (docs/glossary/ux.md D5), so this replaces the spec's "definition expanded". | `term_id`, `category` |
-| `glossary_cta_click` | A term's guide, post or product link was followed (product links, by `ctaIntent`, go to `/games`, `/features` or `/how-it-works` and report `page`). | `term_id`, `destination_type` (`guide`, `post`, `page`) |
+| `glossary_cta_click` | A term's guide, post, Rules Center or product link was followed (product links, by `ctaIntent`, go to `/games`, `/features` or `/how-it-works` and report `page`; a `/rules#…` link reports `rules`, from #247). | `term_id`, `destination_type` (`guide`, `post`, `rules`, `page`) |
 | `share_click` | Reused for the copy-link button, so every share sits in one report. A blog share has `post`; a glossary share has `term_id`. | `channel` (`copy`), `term_id` |
 
 Unchanged and reused: `store_button_click` and `cta_click` (with `page: "glossary"`) for the CTA band, `link_click` for internal links (a term anchor reports as `/glossary#press`, the term name as its text), `newsletter_signup` (the hub has no newsletter band while #121 is on hold). `docs/seo-reports/leads.sql` counts `/glossary` as a landing path; a category view lands as `/glossary` because `landingPath` never keeps the query string.
@@ -112,7 +112,11 @@ Metric definitions (spec §10). Report each with its date range and its source. 
 - **Reported inaccuracies**: corrections opened under `docs/rules/maintenance.md` § Correction procedure ("Correction: <record id>" issues), as a count. No reader names or addresses.
 - **Verified acquisition**: only from store or app attribution where it exists. Never inferred from clicks.
 
-GA4 reports a param only once it's registered as an event-scoped custom dimension, and doesn't backfill. Of the Rules params, `result_bucket`, `match_type`, `category`, `destination_type`, `placement` and `channel` are registered; `rule_number`, `source`, `scenario_id`, `document_type` and `content_id` aren't (read-only check, 2026-11-07, 24 of 50 registered). Until they are, any split by them is "not available before <registration date>". Registering them is the owner's step; the list is in `docs/seo-reports/rules-checkpoints.md` § GA4 custom definitions.
+GA4 reports a param only once it's registered as an event-scoped custom dimension, and doesn't backfill. Every Rules param is registered:
+- `result_bucket`, `match_type`, `category`, `destination_type`, `placement` and `channel` were already there, under their earlier names.
+- `rule_number` (Rule number), `source` (Opened from), `scenario_id` (Rules situation), `document_type` (Official document) and `content_id` (Related content) were registered on 2026-11-07 with the owner's yes. That made 29 of 50.
+
+Rules splits are "not available before 2026-11-07". The full table is in `docs/seo-reports/rules-checkpoints.md` § GA4 custom definitions.
 
 ## Test traffic
 

@@ -11,4 +11,11 @@
  *
  * Typed `boolean` so a `false` literal doesn't narrow the checks that read it.
  */
-export const rulesLive: boolean = false;
+export const rulesLive: boolean = true;
+
+/**
+ * The day the launch PR (#247) merged. Every record published at launch
+ * carries it as `publishedOn`, so it is also the sitemap's first lastmod for
+ * /rules. If the merge slips to another day, change it here before merging.
+ */
+export const RULES_LAUNCHED_ON = "2026-11-07";

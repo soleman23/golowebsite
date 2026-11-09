@@ -27,7 +27,8 @@ export const rulesEdition: RulesEdition = {
   effectiveFrom: "2023-01-01",
   supersededOn: "2028-01-01",
   clarificationsUpdated: "2026-10-02",
-  clarificationsCheckedOn: "2026-11-06",
+  // Re-read on launch day (#247): still "Updated October 2, 2026".
+  clarificationsCheckedOn: "2026-11-07",
 };
 
 /** Quarterly updates, so a check older than this has missed one. */

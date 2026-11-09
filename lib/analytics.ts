@@ -52,8 +52,9 @@ declare global {
  * - glossary_term_open a term was opened: a search result, a related-term
  *                      link or a deep link, once per term per page load:
  *                      term_id, category
- * - glossary_cta_click a term's guide, post or product link was followed:
- *                      term_id, destination_type (guide / post / page)
+ * - glossary_cta_click a term's guide, post, Rules Center or product link was
+ *                      followed: term_id, destination_type (guide / post /
+ *                      rules / page)
  *
  * The side-game chooser (/games/chooser, #224). Closed sets only: radio
  * values and a player count, never free text.
