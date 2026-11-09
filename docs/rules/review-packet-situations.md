@@ -222,7 +222,7 @@ Checks both reviewers passed: no GoLo claims; `NEVER_WORDS` clean (every "stakes
 
 ### Approval, batch 1
 
-**Approved by the owner in chat on November 6, 2026** ("Approve batch 1"), on this packet as written. The approval covers all seven records and accepts the off-record Committee Procedures 2C source for `red-vs-yellow-penalty-areas`. The records are `approved` with `reviewedOn: 2026-11-06`, `reviewedBy: "owner"` and a review log of rules, product and seo by "agent" and approval by "owner" (`P0_APPROVED` in `scenarios.ts`). Not published: `rulesLive` is false and only #247 publishes.
+**Approved by the owner in chat on November 6, 2026** ("Approve batch 1"), on this packet as written. The approval covers all seven records and accepts the off-record Committee Procedures 2C source for `red-vs-yellow-penalty-areas`. The records are `approved` with `reviewedOn: 2026-11-06`, `reviewedBy: "owner"` and a review log of rules, product and seo by "agent" and approval by "owner" (`P0_APPROVED` in `scenarios.ts`). Not published at approval: `rulesLive` was false and only #247 published. (Published 2026-11-07 by #269, `f27675b`.)
 
 **Post-approval changes:** Codex findings C1 and C2 (above) changed three options after the approval. Copy distance is still 0 runs of eight or more words. **The owner confirmed both fixes as part of the batch 1 approval in chat on November 6, 2026** ("Confirm fixes").
 
@@ -395,7 +395,7 @@ Checks both reviewers passed: no GoLo claims; `NEVER_WORDS` clean; E-3 condition
 
 ### Approval, batch 2
 
-**Approved by the owner in chat on November 6, 2026** ("Approve batch 2"), on this packet as written. The records are `approved` with `reviewedOn: 2026-11-06`, `reviewedBy: "owner"` and a review log of rules, product and seo by "agent" and approval by "owner" (`P1_APPROVED` in `scenarios.ts`). With both batches approved, all 12 situations are `approved`. Not published: `rulesLive` is false and only #247 publishes.
+**Approved by the owner in chat on November 6, 2026** ("Approve batch 2"), on this packet as written. The records are `approved` with `reviewedOn: 2026-11-06`, `reviewedBy: "owner"` and a review log of rules, product and seo by "agent" and approval by "owner" (`P1_APPROVED` in `scenarios.ts`). With both batches approved, all 12 situations are `approved`. Not published at approval: `rulesLive` was false and only #247 published. (Published 2026-11-07 by #269, `f27675b`.)
 
 **Post-approval change:** Codex finding C3 (above) added one sentence to `temporary-water` options[1]. Copy distance is still 0 runs of eight or more words (`npm run check:rules-copy`). **The owner confirmed the fix as part of the batch 2 approval in chat on November 6, 2026** ("Confirm fix").
 

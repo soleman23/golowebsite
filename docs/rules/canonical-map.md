@@ -42,12 +42,12 @@ Every link into `/rules` that the launch adds, and the links out of it that #242
 
 ### Where the links are
 
-- **On `main` (merged with #242).** None of this changes production while `rulesLive` is false:
+- **On `main` (merged with #242).** None of this changed production while `rulesLive` was false (it went true with #269 on 2026-11-07):
   - the related reading for Rules 3, 21 and 23;
   - the closing band's lead and the `rules-rulings` registry entry;
   - the glossary's link text for `/rules#…` paths (`glossaryPathLink`);
   - the content check for `/rules` paths in glossary records (`glossaryRulesPathProblems` in `scripts/rules-checks.mjs`). Before it, a bare `/rules` in a record's `relatedContentPaths` passed while the flag was off, because `/rules` is a route.
-- **In the launch PR (#247), from branch `launch/242-rules-inbound-links`.** The footer link, the glossary record edits, the post links and the guide link. `lint:content` rejected each of them while the flag was off, so they ship in the same change that flips `rulesLive` and moves the records to `published`. § Launch check records how the branch was verified.
+- **In the launch PR (#247), from branch `launch/242-rules-inbound-links`; merged as #269, `f27675b`, on 2026-11-07.** The footer link, the glossary record edits, the post links and the guide link. `lint:content` rejected each of them while the flag was off, so they ship in the same change that flips `rulesLive` and moves the records to `published`. § Launch check records how the branch was verified.
 
 Every fragment below is an id in § Fragment registry. Each one resolves only once its record is published, and `lint:content` checks that on the launch branch.
 

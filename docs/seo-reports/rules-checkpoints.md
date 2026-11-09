@@ -2,16 +2,16 @@
 
 The four post-launch readings of `/rules`, with the same definitions each time (spec §10). This file holds the procedure, the date windows, the prelaunch baseline and the status. The results go in the monthly reports; this file records where. The metrics are defined once, in `docs/analytics-data-notes.md` § Rules Center events and reporting definitions (#244). Where this file is silent, `glossary-checkpoints.md` applies.
 
-**Launch date L: not set.** #247 sets it: the Pacific day the launch PR merged and `/rules` first returned 200 on www.golo.golf. Record the merge time and the first 200 here, as `glossary-checkpoints.md` does, then fill in the table.
+**Launch date L: 2026-11-07.** The launch PR #269 merged as `f27675b` at 11:04:03 PST on November 7, 2026, after the owner's go in chat at 11:03 PST (#247). `/rules` first returned 200 on www.golo.golf at 11:05:53 PST. `docs/rules/launch-packet.md` § Live results has the checks.
 
-**Status on 2026-11-07:** the Rules Center isn't live (`rulesLive = false`). No checkpoint is due, and no results exist.
+**Status on 2026-11-07:** live since 11:05 PST. No checkpoint is due yet. Indexing was requested at about 11:09 PST, and the sitemap was resubmitted the same day.
 
 | Checkpoint | Run on | Window (Pacific days) | Filed in | Status |
 |---|---|---|---|---|
-| Launch + 7 days | L+7 | L – L+6 (7 days) | the report for L+7's month | not scheduled |
-| Launch + 28 days | L+28 | L – L+27 (28 days) | the report for L+28's month | not scheduled |
-| Launch + 56 days | L+56 | L – L+55 (56 days) | the report for L+56's month | not scheduled |
-| Launch + 90 days | L+90 | L – L+89 (90 days) | the report for L+90's month | not scheduled |
+| Launch + 7 days | 2026-11-14 | 2026-11-07 – 2026-11-13 (7 days) | `2026-12.md` | scheduled |
+| Launch + 28 days | 2026-12-05 | 2026-11-07 – 2026-12-04 (28 days) | `2027-01.md` | scheduled |
+| Launch + 56 days | 2027-01-02 | 2026-11-07 – 2027-01-01 (56 days) | `2027-02.md` | scheduled |
+| Launch + 90 days | 2027-02-05 | 2026-11-07 – 2027-02-04 (90 days) | `2027-03.md` | scheduled |
 
 Each date comes from `date -j -v+Nd -f %F <L> +%F`: N is 7, 28, 56 or 90 for the run date, and one less for the window's last day. Day 1 of every window is L, so it holds only part of a day of the live page. A late run keeps its window and records the day it actually ran. When a checkpoint is filed, change its status to "filed in `<file>` (#<PR>)".
 
@@ -25,7 +25,7 @@ If the file doesn't exist on the run date, copy `TEMPLATE.md` to it and add a st
 
 Two things the launch depends on. Without the first, L+28 has nothing to compare against; without the second, GA4 has no Rules splits.
 
-1. **The prelaunch baseline.** On or after L, export Search Console for the 28 days **L-28 – L-1**, property-wide, to `~/gsc/rules-baseline/`, and run:
+1. **The prelaunch baseline.** Exported provisionally on 2026-11-07 (§ Baseline). On or after L, export Search Console for the 28 days **L-28 – L-1**, property-wide, to `~/gsc/rules-baseline/`, and run:
 
    ```bash
    node scripts/gsc-groups.mjs ~/gsc/rules-baseline
@@ -33,13 +33,17 @@ Two things the launch depends on. Without the first, L+28 has nothing to compare
 
    Paste the property total and the **Rules of Golf** row below, under Baseline. Before L, no page on the site answers a rules query, so this row is what the site drew without the Rules Center.
 
-2. **GA4 custom definitions.** Done: the five Rules dimensions were registered on 2026-11-07, before launch (§ GA4 custom definitions). At L, confirm they're still listed.
+2. **GA4 custom definitions.** Done: the five Rules dimensions were registered on 2026-11-07, before launch (§ GA4 custom definitions). Confirmed at L: a read-only check of Admin → Custom definitions on 2026-11-07 listed all five, 29 of 50.
 
 ### Baseline
 
 | Window | Property clicks | Property impressions | Rules of Golf queries | Impressions | Clicks | Position |
 |---|---:|---:|---:|---:|---:|---:|
-| L-28 – L-1 | | | | | | |
+| L-28 – L-1 (2026-10-10 – 2026-11-06), complete days confirmed 2026-11-09 | 6 | 684 | 0 | 0 | 0 | – |
+
+**Provisional, exported 2026-11-07** (Web, no other filters; property CTR 0.9%, position 28.6) to `~/gsc/rules-baseline/`. On the export day, Search Console still marked Nov 5 and Nov 6 "Data is still being collected". Re-export the same window into the same folder once both are complete, at the latest with the L+7 run, rerun `gsc-groups.mjs`, and replace this row. L+28 compares against the complete export.
+
+**Re-read 2026-11-09, 11:40 PST** (agent, the owner's Chrome, read-only; Performance → Search results, Web, 2026-10-10 – 2026-11-06, no other filters). Nov 5 and Nov 6 no longer carry the marker, and their rows read the same as in the export (0 clicks and 42 impressions; 0 and 39). Property totals unchanged: 6 clicks, 684 impressions, CTR 0.9%, position 28.6. The Queries tab at 500 rows listed 107 queries (the export had 105); run through `queryGroup` in `scripts/gsc-groups.mjs` at 0a8394b, none falls in Rules of Golf, so that row stays 0. The row above stands as the complete baseline. Not yet done: a fresh CSV export of the complete days to `~/gsc/rules-baseline/` (the folder still holds the 2026-11-07 export, whose totals match). Do it with the L+7 run on 2026-11-14 so L+28 compares file to file. Before launch, the Rules of Golf group had no queries: no page on the site answered a rules query.
 
 The "Rules of Golf" group was added to `scripts/gsc-groups.mjs` with #244. It sits after every other named group, so it takes only queries that were Unassigned before it existed. Every other group's numbers are unchanged. A report filed earlier counts those queries under Unassigned.
 
@@ -157,7 +161,7 @@ Official links: the latest run of the monthly `rules-sources` workflow (`docs/ru
 
 ## Launch + 7 days
 
-**Status: not scheduled.** Window L – L+6. Reads: C, F, D (events firing and custom definitions only), B (first impression only).
+**Status: scheduled.** Window L – L+6. Reads: C, F, D (events firing and custom definitions only), B (first impression only).
 
 | Check | Expected | Result (date checked) |
 |---|---|---|
@@ -178,7 +182,7 @@ Then the actions, as issue links: anything broken, a dimension missing from the 
 
 ## Launch + 28 days
 
-**Status: not scheduled.** Window L – L+27, the same length as the baseline. Reads: A, B, C, D, E.
+**Status: scheduled.** Window L – L+27, the same length as the baseline. Reads: A, B, C, D, E.
 
 | Table | Source |
 |---|---|
@@ -191,7 +195,7 @@ Then the actions, as issue links: anything broken, a dimension missing from the 
 
 ## Launch + 56 days
 
-**Status: not scheduled.** Window L – L+55. Reads: A, B, C, D, E.
+**Status: scheduled.** Window L – L+55. Reads: A, B, C, D, E.
 
 - **Ranking movement:** run B twice, for L – L+27 and L+28 – L+55 (28 days each), and pass the first as `--baseline` to the second. Compare `/rules`' position and the Rules of Golf row.
 - **Which situations and rules draw queries:** from B's queries, list the ones that ask about one situation or rule and map each to its record id by hand (`lost-ball`, `rule-18`). From D, `rules_scenario_open` by `scenario_id` and `rules_rule_open` by `rule_number`, each by `source`.
@@ -200,7 +204,7 @@ Then the actions, as issue links: anything broken, a dimension missing from the 
 
 ## Launch + 90 days
 
-**Status: not scheduled.** Window L – L+89. Reads: A, B, C, D, E. Also run B for the latest 28 days, L+62 – L+89, against L – L+27.
+**Status: scheduled.** Window L – L+89. Reads: A, B, C, D, E. Also run B for the latest 28 days, L+62 – L+89, against L – L+27.
 
 The section ends with a written decision for the Rules Center: **expand, improve, consolidate or stop.** The agent drafts the evidence and the options; the decision is the owner's, recorded with the date the owner gave it. Then list the issues it opens or closes, including what it means for #249 (standalone situation pages) and #250 (a guided finder, gated on #249 and on the search behaviour and no-result evidence here).
 
