@@ -17,7 +17,7 @@ CI runs on PRs to `main` and pushes to `main`. `main` auto-deploys to Hostinger,
 
 **Live since 2026-11-07.** The launch PR #269 merged as `f27675b` at 11:04:03 PST on the owner's "Go" (11:03 PST, recorded in #247), and `/rules` first returned 200 on www.golo.golf at 11:05:53 PST. `rulesLive` is `true` and `RULES_LAUNCHED_ON` is `"2026-11-07"` (`lib/content/rules/launch.ts`); all 25 overviews and all 12 situations are `published` with `publishedOn` 2026-11-07. The live checks and the Search Console steps are in `launch-packet.md` § Live results; the checkpoint dates are in `docs/seo-reports/rules-checkpoints.md`.
 
-**Not done:** the owner's VoiceOver check, RL-QA-14, which the owner moved to after deploy. Until it's recorded, #246 stays open, and so do #230 and M9.
+**M9 is done.** Every M9 issue is closed. On 2026-11-09 the owner waived the VoiceOver check, RL-QA-14: "We don't need to run the voice over". It's recorded as an owner-approved exception, not a pass, in `launch-packet.md` (#271), on #246 and on #230. No one has made a human screen-reader pass on `/rules`. The automated checks stand in its place: axe (RL-QA-12), the accessibility tree (RL-QA-13) and the Tab walk (RL-QA-09–11).
 
 ### Before launch (as recorded on November 7, 2026)
 
@@ -45,12 +45,12 @@ CI runs on PRs to `main` and pushes to `main`. `main` auto-deploys to Hostinger,
 
 `npm test` runs 135 rules cases and 40 rules-sources cases.
 
-**Open in M9 (November 9, 2026):**
+**M9 closed out (November 9, 2026):**
 
-- **#246 QA matrix**: 24 of 25 RL-QA rows pass on the launch build. RL-QA-14, the owner's VoiceOver check on the live page, is outstanding (`launch-packet.md` § VoiceOver script). Close #246 only once the owner's reply is recorded in RL-QA-14 as given.
-- **#230 epic**: open until #246 closes. #242, #244 and #247 are closed.
+- **#246 QA matrix**: closed 2026-11-09 (20:49 UTC). 24 of 25 RL-QA rows pass on the launch build. RL-QA-14 was waived by the owner and is recorded as an exception, not a pass. Its script stays in `launch-packet.md` § VoiceOver script in case anyone runs a screen-reader check later.
+- **#230 epic**: every M9 box is ticked. It stays open for the M10 items below.
 
-Closed on November 7, 2026: #242 (18:01 UTC), #244 (18:11 UTC) and #247 (closed by the #269 merge, 19:04 UTC).
+Closed on November 7, 2026: #242 (18:01 UTC), #244 (18:11 UTC) and #247 (closed by the #269 merge, 19:04 UTC). #269's body said "Closes #247 once…", and GitHub closed #247 at the merge, before its post-launch record. Keep closing keywords out of a PR whose issue still needs records after the merge.
 
 **M10:**
 
@@ -100,6 +100,6 @@ Before launch, M9 also held #242 discovery and #244 analytics, run in parallel s
 
 ## Owner actions outstanding (November 9, 2026)
 
-- **#246.** Run the VoiceOver check (RL-QA-14) on https://www.golo.golf/rules with the script in `launch-packet.md` § VoiceOver script, and reply with pass or fail for steps 1–12 plus the macOS, Safari and VoiceOver versions.
+None for M9. The next scheduled work is the #248 L+7 checkpoint on 2026-11-14.
 
-Done on November 7, 2026: the glossary record edits for #242 ("Approve all 10"), the five Rules GA4 dimensions for #244 (29 of 50), the launch go for #247 ("Go", 11:03 PST), and the Search Console inspection, indexing request and sitemap resubmission after deploy.
+Done on November 7, 2026: the glossary record edits for #242 ("Approve all 10"), the five Rules GA4 dimensions for #244 (29 of 50), the launch go for #247 ("Go", 11:03 PST), and the Search Console inspection, indexing request and sitemap resubmission after deploy. Decided on November 9, 2026: the VoiceOver check (RL-QA-14) is waived.
