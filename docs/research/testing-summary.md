@@ -78,3 +78,41 @@ Each of these is in the draft, and there's no record behind it:
 - How testers used, ignored or reacted to any feature.
 - Anything built or decided before 2026-06-18, or outside the three sources above.
 - The reasons behind several decisions: moving bet detail to the leaderboard, and dropping GPS. The positioning on `/features` ("your watch or laser already does that") is today's stance, not a recorded reason.
+
+## Re-check and republication, 2026-11-09 (M4)
+
+Both M4 posts were hidden on 2026-10-30 (7b2065b) and republished on 2026-11-09 on the owner's authorization, after an agent re-checked them against soleman23/golo, read-only: commits, issues, PRs, and `main` at `398a08b2` (2026-11-05, GoLo 1.2.2, Android build 34). This was a source check, not owner confirmation, and nothing in it is a record of real rounds.
+
+**`/blog/what-we-got-wrong`, a build note.** Every dated fix still holds. Corrected:
+- The presses fix was found and merged on September 25, Pacific (issue #285 opened 2026-09-26 UTC; PR #291 merged 2026-09-25 20:30 PT). The post had said September 26.
+- Money to the cent landed on October 6 (settle-up screens, 71ed3db3) and October 7 (scoring, PR #442). The post had said October 7.
+- The re-agree list now names the format, teams, net or gross and the holes, and says the Closest to Pin and Longest Drive marks don't count (src/lib/termsSummary.js).
+- The press lock now names the round's shape: Scramble or Team Play, the teams, net or gross, and the holes (9faf5e76).
+- "One scorer" now says "or one per team in a scramble" (src/lib/teamScorers.js).
+- Removed: "reading the code during a review". The original find isn't in commit text.
+- Added a section on where the note comes from and what it can't say.
+
+**`/blog/settle-up-screen`, now titled "How GoLo settles up".**
+- The method is from src/engines/payouts.js `calculateSettlementCents`: whole cents; both lists sorted once, largest first, ties by player id; walked without re-sorting.
+- Both worked examples were run through the app's own `calculateSettlements` and match:
+  - +47, +18, −9, −21, −35 gives four settle-ups.
+  - +4, +3, −2, −2, −3 gives four where three would do.
+- Removed as unsupported:
+  - "It took several versions";
+  - the "What we tried" sequence (ledger, matrix, net per player) and its tester reactions;
+  - the unattributed pull quote;
+  - "twelve debts";
+  - "in ninety seconds";
+  - the claim that the decision not to move money was "product before legal".
+- Corrected:
+  - Tapping a player switches whose view you see; it doesn't open their games. Each game's card shows every player's result, and a tap opens the game's lines.
+  - Marking paid has two layers: a Mark settled toggle on the phone showing it, and payment requests between accounts (sent, confirmed or disputed).
+  - The share card is live (golo #954, 2026-10-26).
+  - A saved Venmo handle is shown to whoever owes, on the payments screen. The registry's `payment-handle` summary and the FAQ money answer said "shown to the group at settle-up", and both are corrected.
+
+**The testing study is still blocked.** M4 asks for a testing study built from a testing log. No first-party record of test rounds exists in this repo or in the app repo:
+- `docs/TESTFLIGHT.md` is a template.
+- The external beta (golo #92) and go/no-go (#57, #58) issues are still open.
+- The settlement and regression documents are scripted browser runs, not golf.
+
+`/blog/what-we-got-wrong` is a qualitative build note from code history. It doesn't count as that study. The study needs the private per-round log described in `testing-claims.md` (one CSV row per real round, kept outside the repo, summarised with `scripts/testing-summary.mjs`).
