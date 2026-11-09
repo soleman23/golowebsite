@@ -59,7 +59,17 @@ Added with `/games/chooser`. As with every event, nothing is sent until a visito
 
 Unchanged and reused: `cta_click` and `store_button_click` with `page: "chooser"` for the closing band, and `link_click` for every internal link. `leads.sql` counts `/games/chooser` as a landing path. `scripts/gsc-groups.mjs` puts it in its own **Tools** page group, so it never inflates the guide totals.
 
-**Custom definitions.** `group`, `result_count`, `top_pick`, `format` and `rank` are new parameters. GA4 reports them only once they're registered as event-scoped custom dimensions (README § Analytics), and it doesn't backfill. Registering them is a property change for the owner to approve. Until then, report the event counts and say the breakdowns are "not available before <registration date>".
+**Custom definitions.** Registered on 2026-11-09 at about 13:20 PST (21:20 UTC), on the owner's authorization for this task, in property "GoLo Golf" (Admin → Custom definitions). All five are Event scope; none existed before, so nothing was reused or duplicated. That made 34 of 50.
+
+| Display name | Parameter | Sent as |
+|---|---|---|
+| Chooser group | `group` | text, e.g. `4/either/-/-/-` |
+| Chooser result count | `result_count` | number, `0`–`3` |
+| Chooser top pick | `top_pick` | text, a format id or `none` |
+| Chooser format | `format` | text, a format id |
+| Chooser rank | `rank` | number, `1`–`3` |
+
+The payloads were read the same day from hits a production build sent to a local stand-in for GA (none reached Google): `chooser_result` carried `ep.group`, `epn.result_count` and `ep.top_pick`, and `chooser_guide_click` carried `ep.format` and `epn.rank`. GA4 doesn't backfill, so every split by these five is "not available before 2026-11-09". The chooser went live at 12:55 PST that day, so only its first 25 minutes of events, if any, can't be split. Configuration is checked; collection and processed reporting are separate: Realtime showed no `chooser_*` event at 13:22 PST, and processed reports lag 24 to 48 hours. Confirm the first split in the November report before quoting any.
 
 What each one is for:
 
