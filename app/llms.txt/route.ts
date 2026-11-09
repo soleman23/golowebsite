@@ -1,6 +1,8 @@
 import {
   aboutContent,
   capabilitiesWithStatus,
+  chooserHero,
+  chooserMeta,
   findGameDetail,
   gameDetailSlugsWithContent,
   glossaryLive,
@@ -61,6 +63,7 @@ export function GET() {
     `- [Home](${absolute("/")})`,
     `- [${aboutContent.pageName}](${absolute("/about")})`,
     ...navLinks.map((link) => `- [${link.label}](${absolute(link.href)})`),
+    `- [${chooserHero.crumb}](${absolute("/games/chooser")}): ${chooserMeta.description}`,
     "",
     `## ${llmsCopy.sections.guides}`,
     "",

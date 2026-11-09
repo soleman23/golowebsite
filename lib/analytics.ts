@@ -36,10 +36,11 @@ declare global {
  * - blog_filter        a chip on /blog was selected
  * - newsletter_signup  a newsletter address was accepted
  * - newsletter_error   a newsletter signup failed (validation or server)
- * - share_click        a share control on a blog post, or a glossary term's
- *                      copy-link button (channel "copy", term_id), or a Rules
+ * - share_click        a share control on a blog post, a glossary term's
+ *                      copy-link button (channel "copy", term_id), a Rules
  *                      Center entry's (channel "copy", and scenario_id or
- *                      rule_number as below), was clicked
+ *                      rule_number as below) or the chooser's copy-link
+ *                      button (channel "copy", page "chooser") was clicked
  * - cta_click          a hero or closing CTA button was clicked
  *
  * The glossary (/glossary, #165). Params come from closed sets only: a
@@ -54,6 +55,16 @@ declare global {
  * - glossary_cta_click a term's guide, post, Rules Center or product link was
  *                      followed: term_id, destination_type (guide / post /
  *                      rules / page)
+ *
+ * The side-game chooser (/games/chooser, #224). Closed sets only: radio
+ * values and a player count, never free text.
+ * - chooser_result     an answer set settled (1.5 s after the last change,
+ *                      once per distinct set per page load, a shared link's
+ *                      included): group ("4/teams/apart/simple/18", "-"
+ *                      where unanswered), result_count (picks shown, 0-3),
+ *                      top_pick (format id, or "none")
+ * - chooser_guide_click a pick's guide or further-reading link was followed:
+ *                      format, rank (1-3). A guide click, not an install.
  *
  * The Rules Center (/rules, #244; docs/rules/ux.md § Analytics hooks). The
  * same rules: closed sets only, checked by lib/rulesAnalytics.ts before
@@ -119,6 +130,8 @@ export type AnalyticsEvent =
   | "glossary_filter"
   | "glossary_term_open"
   | "glossary_cta_click"
+  | "chooser_result"
+  | "chooser_guide_click"
   | "rules_search"
   | "rules_filter"
   | "rules_rule_open"

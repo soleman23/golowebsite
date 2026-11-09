@@ -49,6 +49,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: "monthly",
       priority: 0.9,
     },
+    // The side-game chooser (#224): undated, like the other static pages.
+    {
+      url: `${siteConfig.url}/games/chooser`,
+      changeFrequency: "monthly",
+      priority: 0.8,
+    },
     // Keyed off the complete, typed detail-record map so every roster game is
     // guaranteed to have exactly one routable page.
     ...gameDetailSlugsWithContent.map((slug) => {

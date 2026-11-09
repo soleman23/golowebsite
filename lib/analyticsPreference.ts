@@ -1,4 +1,5 @@
 import { looksPersonal } from "@/lib/analytics";
+import { CHOOSER_PATH, isChooserParam } from "@/lib/chooser/params";
 
 /**
  * The visitor's analytics choice, and turning the two providers on and off.
@@ -54,12 +55,15 @@ const SLUG = /^[a-z0-9-]{1,40}$/;
 /**
  * Whether a query parameter survives when analytics loads: GA4 campaign
  * fields whose value carries nothing personal (no @, no long digit run,
- * 100 characters at most), and filter, topic and category slugs on their own routes.
+ * 100 characters at most), filter, topic and category slugs on their own
+ * routes, and the side-game chooser's answers on its route, each checked
+ * against the chooser's own allow-list (lib/chooser/params.ts).
  */
-function isKeptQueryParam(key: string, value: string, pathname: string): boolean {
+export function isKeptQueryParam(key: string, value: string, pathname: string): boolean {
   if (CAMPAIGN_PARAMS.has(key)) {
     return value.length <= 100 && !looksPersonal(value);
   }
+  if (pathname === CHOOSER_PATH) return isChooserParam(key, value);
   return (ROUTE_PARAMS[key]?.includes(pathname) ?? false) && SLUG.test(value);
 }
 
@@ -235,6 +239,18 @@ export function dropUnusedQueryParams(): void {
   for (const [key, value] of [...url.searchParams.entries()]) {
     if (!isKeptQueryParam(key, value, url.pathname)) {
       url.searchParams.delete(key);
+      changed = true;
+    }
+  }
+  // A chooser answer given more than once is read only if every copy agrees
+  // (lib/chooser/url.ts), so keep one copy of an agreed answer and none of a
+  // disputed one: nothing the chooser wouldn't use stays in page_location.
+  if (url.pathname === CHOOSER_PATH) {
+    for (const key of new Set(url.searchParams.keys())) {
+      const values = url.searchParams.getAll(key);
+      if (!isChooserParam(key, values[0]) || values.length < 2) continue;
+      url.searchParams.delete(key);
+      if (values.every((value) => value === values[0])) url.searchParams.set(key, values[0]);
       changed = true;
     }
   }

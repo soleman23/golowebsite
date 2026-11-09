@@ -119,8 +119,13 @@ export function queryGroup(query) {
   return QUERY_GROUPS.find((group) => group.test(q)).name;
 }
 
+/** Tool pages, by path. Add each new tool here when it ships. */
+export const TOOL_PATHS = new Set(["/games/chooser"]);
+
 export function pageGroup(url) {
   const path = new URL(url).pathname.replace(/\/$/, "") || "/";
+  // Interactive tools (#106 Phase 2) sit under /games/ but aren't guides.
+  if (TOOL_PATHS.has(path)) return "Tools";
   if (path.startsWith("/games/")) return "Guides";
   if (path.startsWith("/blog/")) return "Posts";
   if (path === "/glossary") return "Glossary";
@@ -360,12 +365,12 @@ async function main(argv) {
   const pages = locate(currentArg, "Pages.csv");
   if (pages) {
     const rows = readExport(pages);
-    const pageOrder = ["Guides", "Posts", "Core pages"];
+    const pageOrder = ["Guides", "Posts", "Tools", "Core pages"];
     const basePages = baselineArg && locate(baselineArg, "Pages.csv");
     const base = basePages ? summarize(readExport(basePages), pageGroup, pageOrder) : null;
     out.push(groupTable("Page groups", "URLs", summarize(rows, pageGroup, pageOrder), base));
     const roster = await readSitemap(sitemapArg);
-    for (const group of ["Guides", "Posts"]) {
+    for (const group of ["Guides", "Posts", "Tools"]) {
       out.push(
         rowTable(
           group,

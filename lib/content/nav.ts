@@ -76,6 +76,7 @@ export const footerLinks: Record<FooterColumn, NavLink[]> = {
     { label: "All games", href: "/games" },
     { label: "Nassau", href: "/games/nassau" },
     { label: "Skins", href: "/games/skins" },
+    { label: "Side-game chooser", href: "/games/chooser" },
     { label: "Golf glossary", href: "/glossary" },
     // The Rules Center, beside the glossary (#242; spec Amendment A9). No header link.
     { label: "Golf rules", href: "/rules" },
