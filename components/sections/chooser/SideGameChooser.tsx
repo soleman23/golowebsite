@@ -187,16 +187,38 @@ export function SideGameChooser({ copy, questions, questionNames, ui }: SideGame
     setReady(true);
   }, [adoptUrl]);
 
-  /** Writes the waiting answers into the address bar, if they differ from it. */
+  /**
+   * The answers into the address bar straight away, so a reload or a copied
+   * address never lags the form. It calls the browser's own
+   * History.prototype.replaceState, which neither gtag.js nor Next sees:
+   * both wrap window.history.replaceState, and gtag's wrapper would count
+   * every tap as a page_view. The entry keeps its existing state (Next's
+   * __NA marker and tree), so Next's popstate handler still restores it on
+   * Back and Forward. Measured 2026-11-09 with the live gtag.js (every hit
+   * answered locally): this write sends no page_view, and the later write
+   * through flushUrl still sends one. The router catches up in flushUrl.
+   * Not recorded in ownWrites: only the router's own acknowledgements are,
+   * so a passing answer set can't later hide a real navigation.
+   */
+  const writeNow = useCallback((next: Answers) => {
+    if (window.location.pathname !== CHOOSER_PATH) return;
+    const search = serializeAnswers(next, window.location.search);
+    if (new URLSearchParams(search).toString() === new URLSearchParams(window.location.search).toString()) return;
+    History.prototype.replaceState.call(window.history, window.history.state, "", `${CHOOSER_PATH}${search}${window.location.hash}`);
+  }, []);
+
+  /** Writes the waiting answers into the address bar and through Next's router, if either lags. */
   const flushUrl = useCallback(() => {
     window.clearTimeout(urlTimer.current);
     const next = pendingUrl.current;
     pendingUrl.current = null;
     // Not after leaving: Back can change the URL before this page unmounts.
     if (!next || window.location.pathname !== CHOOSER_PATH) return;
+    // The address bar first (Reset, a link's cleanup), then the router.
+    writeNow(next);
     const search = serializeAnswers(next, window.location.search);
     // Compared with what the router holds, not the address bar, which
-    // writeNow has usually updated already.
+    // writeNow has just brought up to date.
     const normalised = new URLSearchParams(search).toString();
     if (normalised === routerSearch.current) return;
     routerSearch.current = normalised;
@@ -205,27 +227,7 @@ export function SideGameChooser({ copy, questions, questionNames, ui }: SideGame
     // then moves its router to the new URL, and Back returns to it. GA4's
     // history listener counts this one as a page_view: one per settled set.
     window.history.replaceState(null, "", `${CHOOSER_PATH}${search}${window.location.hash}`);
-  }, []);
-
-  /**
-   * The answers into the address bar straight away, so a reload or a copied
-   * address never lags the form. It goes through the browser's own
-   * History.prototype.replaceState with the entry's existing state: gtag.js
-   * wraps window.history.replaceState and would count every tap as a
-   * page_view, and Next's wrapper passes an entry with its own state through
-   * untouched. Measured 2026-11-09 with the live gtag.js (every hit answered
-   * locally): this write sends no page_view, and the later write through
-   * flushUrl still sends one. The router catches up in flushUrl.
-   */
-  const writeNow = useCallback((next: Answers) => {
-    if (window.location.pathname !== CHOOSER_PATH) return;
-    const search = serializeAnswers(next, window.location.search);
-    if (new URLSearchParams(search).toString() === new URLSearchParams(window.location.search).toString()) return;
-    // Seen as this component's own if the router picks it up first (the
-    // analytics cleaner rewrites the URL through Next).
-    ownWrites.current.push(chooserQuery(search));
-    History.prototype.replaceState.call(window.history, window.history.state, "", `${CHOOSER_PATH}${search}${window.location.hash}`);
-  }, []);
+  }, [writeNow]);
 
   const writeUrlSoon = useCallback(
     (next: Answers, delay = SETTLE_MS) => {
@@ -256,9 +258,16 @@ export function SideGameChooser({ copy, questions, questionNames, ui }: SideGame
       if (document.visibilityState === "hidden") flushUrl();
     };
     // Back or Forward: the waiting answers belong to the entry being left.
+    // The entry arrived at is adopted here, whatever the router reports:
+    // its URL can match the router's last one while the form has moved on
+    // (answers written by writeNow and not yet flushed).
     const onPopState = () => {
       window.clearTimeout(urlTimer.current);
       pendingUrl.current = null;
+      if (window.location.pathname !== CHOOSER_PATH) return;
+      ownWrites.current = [];
+      seenQuery.current = null;
+      adoptUrl(window.location.search);
     };
     document.addEventListener("click", onClick, true);
     document.addEventListener("visibilitychange", onHidden);
@@ -275,7 +284,7 @@ export function SideGameChooser({ copy, questions, questionNames, ui }: SideGame
       window.clearTimeout(urlTimer.current);
       pendingUrl.current = null;
     };
-  }, [flushUrl]);
+  }, [adoptUrl, flushUrl]);
 
   // Announce a change the reader made, once its result has stood a moment.
   useEffect(() => {

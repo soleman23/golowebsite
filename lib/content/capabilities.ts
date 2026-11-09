@@ -215,7 +215,7 @@ export const capabilities = [
       // players; a group of five or more plays as a scramble.", which the
       // side-game chooser (#224) carried from guide copy. lib/content/chooser.ts
       // finds this line by its opening words.
-      "A round without teams (stroke play, match play or Stableford) takes two to four players; a group of five to 12 plays as a scramble.",
+      "A round without teams (stroke play, match play or Stableford) takes two to four players; a group of five to twelve plays as a scramble.",
       "Birdie and eagle bounties are Skins settings (Birdie Skin, Eagle Skin), gross birdies only, no cap.",
       "No separate junk board: greenies and sandies are Skins settings, and barkies, poleys, snakes and arnies aren't scored.",
       "Longest Drive is played on one par 5 and doesn't record a measured distance.",
