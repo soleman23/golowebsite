@@ -314,7 +314,10 @@ export function SideGameChooser({ copy, questions, questionNames, ui }: SideGame
   const jumpToResults = useCallback((event: ReactMouseEvent<HTMLAnchorElement>) => {
     if (event.defaultPrevented || event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
     event.preventDefault();
-    resultsHeading.current?.focus();
+    // Scroll as the anchor did (under the nav's scroll-padding, smooth unless
+    // reduced motion), then focus without a second, centring scroll.
+    document.getElementById("chooser-results")?.scrollIntoView({ block: "start" });
+    resultsHeading.current?.focus({ preventScroll: true });
   }, []);
 
   const copyLink = useCallback(async () => {

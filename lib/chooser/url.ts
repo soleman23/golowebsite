@@ -52,12 +52,18 @@ function folded(key: string): string {
 
 /**
  * A parameter that isn't one of the chooser's but is plainly meant as one: a
- * different case or a singular/plural slip (`?player=4`, `?Holes=9`). It's
- * reported like a bad value, so the visitor is told; campaign and click ids
- * (utm_source, fbclid) never match and are still left alone.
+ * different case or a singular/plural slip, carrying a value that question
+ * accepts (`?player=4`, `?Holes=9`). It's reported like a bad value, so the
+ * visitor is told, and left out when the page rewrites its URL. A third
+ * party's own key that happens to look alike (`?partner=acme`) has a value
+ * no question accepts, so it's left alone, as are campaign and click ids.
  */
+function misspeltFor(key: string, value: string): Question | undefined {
+  return QUESTIONS.find((question) => key !== question && folded(key) === folded(question) && isChooserParam(question, value));
+}
+
 function misspelt(params: URLSearchParams, question: Question): boolean {
-  for (const key of params.keys()) if (key !== question && folded(key) === folded(question)) return true;
+  for (const [key, value] of params) if (misspeltFor(key, value) === question) return true;
   return false;
 }
 
@@ -92,7 +98,7 @@ export function serializeAnswers(answers: Answers, keep?: string | URLSearchPara
   }
   const others = typeof keep === "string" ? new URLSearchParams(keep) : keep;
   others?.forEach((value, key) => {
-    if (!(QUESTIONS as readonly string[]).includes(key)) params.append(key, value);
+    if (!(QUESTIONS as readonly string[]).includes(key) && !misspeltFor(key, value)) params.append(key, value);
   });
   const query = params.toString();
   return query ? `?${query}` : "";

@@ -281,6 +281,10 @@ for (const bad of ["1", "13", "04", "4.0", "+4", " 4", "four", "", "4e0", "0x4",
   check("parse: a misspelt copy beside the real key isn't reported", q.answers.players === 4 && !q.dropped.length);
   const r = parseAnswers("utm_source=x&utm_medium=y&gclid=1&fbclid=2&ref=z&handicapper=3");
   check("parse: campaign, click ids and longer keys never count as misspelt", !r.dropped.length, JSON.stringify(r.dropped));
+  const t = parseAnswers("partner=acme&handicap=12&player=me&players=4");
+  check("parse: a look-alike key whose value no question takes isn't reported", t.answers.players === 4 && !t.dropped.length, JSON.stringify(t.dropped));
+  check("serialize: a misspelt chooser key is left out, others kept",
+    serializeAnswers({ ...NO_ANSWERS, players: 4 }, "player=4&Holes=9&partner=acme&utm_source=x") === "?players=4&partner=acme&utm_source=x");
 }
 {
   const p = parseAnswers("partners=%3Cscript%3E&handicaps=none%00");
