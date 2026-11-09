@@ -428,8 +428,12 @@ export const capabilities = [
     label: "Share card for the group chat",
     status: "live",
     summary:
-      "One card with the final scores, the results and who owes whom, sent to the group's text thread.",
-    verified: OWNER_1015,
+      "One card with the course, the games, the results and who owes whom for the group's text thread, plus a text summary with the final standings to copy.",
+    // App check 2026-11-09, golo `main` 398a08b2 (GoLo 1.2.2), read-only:
+    // src/lib/receiptCard.js draws the course, date, games, up to six
+    // settle-ups and highlights, no scores; formatRoundSummary is the text.
+    // The owner's 2026-10-15 wording said "final scores".
+    verified: { by: "app-check", date: "2026-11-09", appVersion: "1.2.2" },
     roadmap: true,
   },
   {
@@ -480,9 +484,14 @@ export const capabilities = [
     label: "Venmo handle at settle-up",
     status: "live",
     summary:
-      "A player can save a Venmo handle, shown to the group at settle-up so they know where to send it.",
-    limits: ["GoLo never sends or receives money."],
-    verified: OWNER_1015,
+      "A player can save a Venmo handle; whoever owes them sees a link to that Venmo profile on the payments screen, with the amount to copy.",
+    limits: ["GoLo never sends or receives money, and doesn't fill in the payment."],
+    // App check 2026-11-09, golo `main` 398a08b2 (GoLo 1.2.2), read-only:
+    // src/pages/PaymentsPage.jsx (Open Venmo, Copy amount and note, for a
+    // recipient with a GoLo account) and src/lib/venmo.js. The owner's
+    // 2026-10-15 wording ("shown to the group at settle-up") overstated it:
+    // the handle isn't on the Settle Up screen.
+    verified: { by: "app-check", date: "2026-11-09", appVersion: "1.2.2" },
   },
   {
     id: "course-data",

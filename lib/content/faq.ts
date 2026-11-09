@@ -67,7 +67,7 @@ export const faqCategories: FaqCategory[] = [
       {
         id: "q-everyone",
         q: "Do all four of us need the app?",
-        a: "No. One person keeps the card and the rest just play. Anyone signed in can join the round and follow it live on their own phone, and the share card sends the final scores and the results to the group chat.",
+        a: "No. One person keeps the card and the rest just play. Anyone signed in can join the round and follow it live on their own phone, and the share card sends the games, the results and who owes whom to the group chat.",
       },
       {
         id: "q-start-round",
@@ -160,7 +160,7 @@ export const faqCategories: FaqCategory[] = [
       {
         id: "q-money-move",
         q: "Does money actually move through GoLo?",
-        a: "Never. The settlement screen is a scoreboard, not a wallet — we don’t touch cards, balances or transfers. If you save a Venmo handle we just show it to your group so they know where to send it.",
+        a: "Never. The settlement screen is a scoreboard, not a wallet — we don’t touch cards, balances or transfers. If you save a Venmo handle, a player who owes you sees a link to your Venmo profile on the payments screen; GoLo never sends the payment.",
       },
       {
         id: "q-dispute",
