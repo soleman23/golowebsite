@@ -157,7 +157,7 @@ Checked on `https://www.golo.golf`, from about 11:06 PST, against `main` at `f27
 | Request indexing | About 11:09: "Indexing requested. URL was added to a priority crawl queue." Clicked by coordinates from a fresh screenshot |
 | Sitemap | `https://www.golo.golf/sitemap.xml` resubmitted: "Sitemap submitted successfully". The row now reads Submitted Nov 7, 2026 and Last read Nov 5, 2026, with 47 pages discovered at that read. L+7 checks for a read after L |
 | Rich Results Test, `/rules` | Crawled successfully at 11:09:47 AM: "1 valid item detected", Breadcrumbs. CollectionPage isn't a Google rich-result type |
-| Prelaunch baseline (L-28 – L-1, Oct 10 – Nov 6) | **Provisional.** Saved to `~/gsc/rules-baseline/` (Web, no other filters). Totals: 6 clicks, 684 impressions, CTR 0.9%, position 28.6. Rules of Golf group: 0 queries, 0 impressions. Search Console still marked Nov 5 and Nov 6 "Data is still being collected", so re-export the same window once they're complete, at the latest with the L+7 run (`docs/seo-reports/rules-checkpoints.md` § Baseline) |
+| Prelaunch baseline (L-28 – L-1, Oct 10 – Nov 6) | **Provisional on 2026-11-07; complete days confirmed on 2026-11-09 with the same totals** (`rules-checkpoints.md` § Baseline). Saved to `~/gsc/rules-baseline/` (Web, no other filters). Totals: 6 clicks, 684 impressions, CTR 0.9%, position 28.6. Rules of Golf group: 0 queries, 0 impressions. Search Console still marked Nov 5 and Nov 6 "Data is still being collected", so re-export the same window once they're complete, at the latest with the L+7 run (`docs/seo-reports/rules-checkpoints.md` § Baseline) |
 
 ### Still open after the release
 

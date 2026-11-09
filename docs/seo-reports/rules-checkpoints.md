@@ -39,9 +39,11 @@ Two things the launch depends on. Without the first, L+28 has nothing to compare
 
 | Window | Property clicks | Property impressions | Rules of Golf queries | Impressions | Clicks | Position |
 |---|---:|---:|---:|---:|---:|---:|
-| L-28 – L-1 (2026-10-10 – 2026-11-06), provisional | 6 | 684 | 0 | 0 | 0 | – |
+| L-28 – L-1 (2026-10-10 – 2026-11-06), complete days confirmed 2026-11-09 | 6 | 684 | 0 | 0 | 0 | – |
 
-**Provisional, exported 2026-11-07** (Web, no other filters; property CTR 0.9%, position 28.6) to `~/gsc/rules-baseline/`. On the export day, Search Console still marked Nov 5 and Nov 6 "Data is still being collected". Re-export the same window into the same folder once both are complete, at the latest with the L+7 run, rerun `gsc-groups.mjs`, and replace this row. L+28 compares against the complete export. Before launch, the Rules of Golf group had no queries: no page on the site answered a rules query.
+**Provisional, exported 2026-11-07** (Web, no other filters; property CTR 0.9%, position 28.6) to `~/gsc/rules-baseline/`. On the export day, Search Console still marked Nov 5 and Nov 6 "Data is still being collected". Re-export the same window into the same folder once both are complete, at the latest with the L+7 run, rerun `gsc-groups.mjs`, and replace this row. L+28 compares against the complete export.
+
+**Re-read 2026-11-09, 11:40 PST** (agent, the owner's Chrome, read-only; Performance → Search results, Web, 2026-10-10 – 2026-11-06, no other filters). Nov 5 and Nov 6 no longer carry the marker, and their rows read the same as in the export (0 clicks and 42 impressions; 0 and 39). Property totals unchanged: 6 clicks, 684 impressions, CTR 0.9%, position 28.6. The Queries tab at 500 rows listed 107 queries (the export had 105); run through `queryGroup` in `scripts/gsc-groups.mjs` at 0a8394b, none falls in Rules of Golf, so that row stays 0. The row above stands as the complete baseline. Not yet done: a fresh CSV export of the complete days to `~/gsc/rules-baseline/` (the folder still holds the 2026-11-07 export, whose totals match). Do it with the L+7 run on 2026-11-14 so L+28 compares file to file. Before launch, the Rules of Golf group had no queries: no page on the site answered a rules query.
 
 The "Rules of Golf" group was added to `scripts/gsc-groups.mjs` with #244. It sits after every other named group, so it takes only queries that were Unassigned before it existed. Every other group's numbers are unchanged. A report filed earlier counts those queries under Unassigned.
 
