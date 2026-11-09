@@ -36,7 +36,7 @@ Prepared on November 7, 2026 for launch PR #269 (branch `launch/242-rules-inboun
 - the clarifications check date;
 - one test.
 
-The project checks, axe, the accessibility tree and Lighthouse ran again on 2a43b25, and that build is what the owner's VoiceOver check uses.
+The project checks, axe, the accessibility tree and Lighthouse ran again on 2a43b25. Before the go, the VoiceOver check was planned on that build; the owner moved it to after deploy, so it now runs on the live page (RL-QA-14).
 
 | ID | Check | Result | Evidence |
 |---|---|---|---|
@@ -157,7 +157,7 @@ Checked on `https://www.golo.golf`, from about 11:06 PST, against `main` at `f27
 | Request indexing | About 11:09: "Indexing requested. URL was added to a priority crawl queue." Clicked by coordinates from a fresh screenshot |
 | Sitemap | `https://www.golo.golf/sitemap.xml` resubmitted: "Sitemap submitted successfully". The row now reads Submitted Nov 7, 2026 and Last read Nov 5, 2026, with 47 pages discovered at that read. L+7 checks for a read after L |
 | Rich Results Test, `/rules` | Crawled successfully at 11:09:47 AM: "1 valid item detected", Breadcrumbs. CollectionPage isn't a Google rich-result type |
-| Prelaunch baseline (L-28 – L-1, Oct 10 – Nov 6) | **Provisional.** Saved to `~/gsc/rules-baseline/` (Web, no other filters). Totals: 6 clicks, 684 impressions, CTR 0.9%, position 28.6. Rules of Golf group: 0 queries, 0 impressions. Search Console still marked Nov 5 and Nov 6 "Data is still being collected", so re-export the same window once they're complete, before L+28 (`docs/seo-reports/rules-checkpoints.md` § Baseline) |
+| Prelaunch baseline (L-28 – L-1, Oct 10 – Nov 6) | **Provisional.** Saved to `~/gsc/rules-baseline/` (Web, no other filters). Totals: 6 clicks, 684 impressions, CTR 0.9%, position 28.6. Rules of Golf group: 0 queries, 0 impressions. Search Console still marked Nov 5 and Nov 6 "Data is still being collected", so re-export the same window once they're complete, at the latest with the L+7 run (`docs/seo-reports/rules-checkpoints.md` § Baseline) |
 
 ### Still open after the release
 
@@ -329,7 +329,7 @@ Press **Cmd + F5** to turn VoiceOver off.
 
 ## Release steps (after the owner's go)
 
-Done on 2026-11-07, except step 6. Step 1 wasn't needed, because the merge was on the launch date.
+Done on 2026-11-07, except step 6 and the part of step 7 that waits on it. Step 1 wasn't needed, because the merge was on the launch date.
 
 1. If the merge won't happen on 2026-11-07 (Pacific), change `RULES_LAUNCHED_ON` in `lib/content/rules/launch.ts` to the merge date. That one constant sets every record's `publishedOn` and the sitemap's lastmod. Also move `TODAY` in `scripts/test-rules.mjs` if the validator rejects the new date as being in the future. Rerun `npm run lint:content` and `npm test`, push, wait for CI, and get Codex's 👍 at the new head.
 2. Mark the PR ready, then merge it with a merge commit: `gh pr merge 269 --merge --match-head-commit <sha>`, without `--delete-branch`. Hostinger deploys `main` in about 2 minutes. LiteSpeed serves `public/` with `max-age=0`, so there's no purge.
@@ -351,7 +351,7 @@ Done on 2026-11-07, except step 6. Step 1 wasn't needed, because the merge was o
    Record each with its date.
 5. Save the Search Console baseline for L-28 – L-1 to `~/gsc/rules-baseline/` and run `scripts/gsc-groups.mjs`, per `docs/seo-reports/rules-checkpoints.md` § Before launch. Set L and the L+7/28/56/90 dates there and in #248.
 6. The owner's VoiceOver check (RL-QA-14) on the live page, using the script below. Record the reply as given.
-7. Record the live results here and in #247. Close #246 and #247, keep #248 open, and tick #230.
+7. Record the live results here and in #247. #247 closed with the #269 merge. Keep #246 open until step 6's reply is recorded in RL-QA-14, then close it and tick #246 and #247 in #230. Keep #248 open.
 
 ## Rollback
 

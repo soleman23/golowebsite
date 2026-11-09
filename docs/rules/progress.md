@@ -11,11 +11,17 @@ Gates are separate, and none implies another:
 5. editorially approved (content: the owner's approval in `review-packet-overviews.md` or `review-packet-situations.md`)
 6. released (`rulesLive` flipped by #247)
 
-CI runs on PRs to `main` and pushes to `main`. `main` auto-deploys to Hostinger, so every PR before #247 must leave `/rules` a 404 in production.
+CI runs on PRs to `main` and pushes to `main`. `main` auto-deploys to Hostinger, so every PR before #247 had to leave `/rules` a 404 in production.
 
-## Where things stand (November 7, 2026)
+## Where things stand (November 9, 2026)
 
-`rulesLive` is `false`. All 25 rule overviews and all 12 situations are `approved`; none is `published`. Only the launch PR (#247) publishes them.
+**Live since 2026-11-07.** The launch PR #269 merged as `f27675b` at 11:04:03 PST on the owner's "Go" (11:03 PST, recorded in #247), and `/rules` first returned 200 on www.golo.golf at 11:05:53 PST. `rulesLive` is `true` and `RULES_LAUNCHED_ON` is `"2026-11-07"` (`lib/content/rules/launch.ts`); all 25 overviews and all 12 situations are `published` with `publishedOn` 2026-11-07. The live checks and the Search Console steps are in `launch-packet.md` § Live results; the checkpoint dates are in `docs/seo-reports/rules-checkpoints.md`.
+
+**Not done:** the owner's VoiceOver check, RL-QA-14, which the owner moved to after deploy. Until it's recorded, #246 stays open, and so do #230 and M9.
+
+### Before launch (as recorded on November 7, 2026)
+
+`rulesLive` was `false`. All 25 rule overviews and all 12 situations were `approved`; none was `published`. Only the launch PR (#247) published them.
 
 | Issue | What | PR | Merge commit |
 |---|---|---|---|
@@ -31,20 +37,28 @@ CI runs on PRs to `main` and pushes to `main`. `main` auto-deploys to Hostinger,
 | #241 | Situations batch 2: five P1 answers | #261 | fc5e57c |
 | #243 | Metadata, `CollectionPage` schema, gated sitemap and llms.txt | #262 | 119c2fc |
 | #235 | Hero photo and share card | #263 | c73e784 |
+| #242 | Discovery: link map, related reading, closing band (the inbound links shipped with #269) | #266 | efd2ed5 |
+| #244 | Consent-aware analytics and reporting definitions | #267 | 189e7eb |
+| #247 | Launch: flag on, 37 records published, 15 inbound links | #269 | f27675b |
 
 #264 (7e4992c) came out of the #236 work: `/glossary#%` crashed the live glossary, and it now ignores a malformed hash (#157).
 
 `npm test` runs 135 rules cases and 40 rules-sources cases.
 
-**Open in M9:**
+**Open in M9 (November 9, 2026):**
 
-- **#242 discovery** and **#244 analytics**: in progress in parallel sessions as of this update. Check #230 and the open PRs before starting either.
-  - The links into `/rules` from the footer, glossary records, game guides and posts can't merge while the flag is off (`rulesHrefProblem` in `scripts/rules-checks.mjs`), so #242 prepares them for the launch PR.
-  - Related reading for Rules 3, 21 and 23 was deferred to #242.
-- **#246 QA matrix**: needs #242 and #244.
-- **#247 launch**: the owner's go/no-go.
+- **#246 QA matrix**: 24 of 25 RL-QA rows pass on the launch build. RL-QA-14, the owner's VoiceOver check on the live page, is outstanding (`launch-packet.md` § VoiceOver script). Close #246 only once the owner's reply is recorded in RL-QA-14 as given.
+- **#230 epic**: open until #246 closes. #242, #244 and #247 are closed.
 
-M10 (#248–#251) waits on launch, Search Console evidence or the 2028 edition.
+Closed on November 7, 2026: #242 (18:01 UTC), #244 (18:11 UTC) and #247 (closed by the #269 merge, 19:04 UTC).
+
+**M10:**
+
+- **#248 checkpoints**: L+7 on 2026-11-14, L+28 on 2026-12-05, L+56 on 2027-01-02, L+90 on 2027-02-05 (`rules-checkpoints.md`). The prelaunch baseline (2026-10-10 – 2026-11-06) is provisional until a re-export with complete days, at the latest with the L+7 run.
+- **#249** and **#250** wait on Search Console evidence from those checkpoints.
+- **#251** waits on the official 2028 edition.
+
+Before launch, M9 also held #242 discovery and #244 analytics, run in parallel sessions. The links into `/rules` couldn't merge while the flag was off (`rulesHrefProblem` in `scripts/rules-checks.mjs`), so #242 prepared them for the launch PR, along with the related reading for Rules 3, 21 and 23.
 
 ## Facts established on November 6, 2026
 
@@ -84,11 +98,8 @@ M10 (#248–#251) waits on launch, Search Console evidence or the 2028 edition.
 - A static `/rules#id` href fails lint until the record is published; build it with `rulesAnchorHref`.
 - `validateRules` fails every record from 2028-01-01 until #251 moves them to the new edition; a clarifications check older than 100 days only warns.
 
-## Owner actions outstanding
+## Owner actions outstanding (November 9, 2026)
 
-- **#242.** Approve the edits to published glossary records (`relatedContentPaths` and their review-log entries).
-- **#244.** Register the new event-scoped custom dimensions in GA4. The #244 PR lists them; the property is at 24 of 50.
-- **#246.** Run the VoiceOver check, as for GL-QA-13.
-- **#247.**
-  - Give the launch go/no-go.
-  - After deploy, approve the Search Console URL inspection.
+- **#246.** Run the VoiceOver check (RL-QA-14) on https://www.golo.golf/rules with the script in `launch-packet.md` § VoiceOver script, and reply with pass or fail for steps 1–12 plus the macOS, Safari and VoiceOver versions.
+
+Done on November 7, 2026: the glossary record edits for #242 ("Approve all 10"), the five Rules GA4 dimensions for #244 (29 of 50), the launch go for #247 ("Go", 11:03 PST), and the Search Console inspection, indexing request and sitemap resubmission after deploy.

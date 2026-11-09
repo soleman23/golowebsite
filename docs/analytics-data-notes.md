@@ -47,7 +47,7 @@ Metric definitions (spec §9.4). Report each with its date range and its source,
 
 ## Rules Center events and reporting definitions (#244)
 
-Added with the Rules Center (`/rules`). Nothing fires until it's live (`lib/content/rules/launch.ts`) and a visitor has opted in. Every call goes through `track()` by way of `lib/rulesAnalytics.ts`, which types each event's params and checks the values the hub's `data-*` attributes carry against closed sets: a bucket, a match type, a topic id, a rule number from 1 to 25, a record id, glossary slug or site path, a document type, a CTA destination. A value outside its set sends nothing. **The search text is never sent**: not as a param, not in a URL (it never enters the URL), not in the console. The consent harness of 2026-11-07 checked that in every captured request (#244, recorded on #246).
+Added with the Rules Center (`/rules`), live since 2026-11-07 (#269; the flag is in `lib/content/rules/launch.ts`). Nothing fires until a visitor has opted in. Every call goes through `track()` by way of `lib/rulesAnalytics.ts`, which types each event's params and checks the values the hub's `data-*` attributes carry against closed sets: a bucket, a match type, a topic id, a rule number from 1 to 25, a record id, glossary slug or site path, a document type, a CTA destination. A value outside its set sends nothing. **The search text is never sent**: not as a param, not in a URL (it never enters the URL), not in the console. The consent harness of 2026-11-07 checked that in every captured request (#244, recorded on #246).
 
 | Event | Fires | Params |
 |---|---|---|
