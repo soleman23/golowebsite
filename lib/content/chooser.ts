@@ -73,7 +73,7 @@ const goloStrokes: readonly Line[] = [
   { text: summary("nine-hole-rounds"), when: { holes: ["9"] } },
 ];
 
-const twoToFour = registryLine("game-library", "Without teams, a round takes two to four players");
+const twoToFour = registryLine("game-library", "A round without teams (stroke play, match play or Stableford) takes two to four players");
 
 const bestScore: FormatCopy = {
   name: "Best Score",
