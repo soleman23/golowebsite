@@ -4,7 +4,7 @@ Prepared on November 7, 2026 for launch PR #269 (branch `launch/242-rules-inboun
 
 **Released 2026-11-07, 11:04 PST.** The owner said "Go" in chat at 11:03 PST, recorded in #247 before the merge. #269 merged as `f27675b` at 11:04:03 PST, and `/rules` first returned 200 on www.golo.golf at 11:05:53 PST. The live results are in § Live results.
 
-**State:** Live since 2026-11-07. The live checks pass, and the Search Console steps are done. Still open: the owner's VoiceOver check (RL-QA-14), which the owner moved to after deploy.
+**State:** Live since 2026-11-07. The live checks pass, and the Search Console steps are done. The owner waived the VoiceOver check (RL-QA-14) on 2026-11-09, so no QA row is open.
 
 ## Go/no-go
 
@@ -14,10 +14,10 @@ Prepared on November 7, 2026 for launch PR #269 (branch `launch/242-rules-inboun
 | Glossary edits | 10 records each gain one `/rules#…` link, approved by the owner in chat on 2026-11-07 ("Approve all 10") and cross-checked by the coordinator. One `seo` review-log entry each; `reviewedOn`, `updatedOn` and copy unchanged (`canonical-map.md` § Inbound: glossary records) | merge |
 | Rights | `check:rules-copy`: no run of 8 or more words shared with 27 official pages, across 342 fields in 37 records. No official media: the only image is GoLo's own hero, and the SVGs are GoLo's logo, store glyphs and social icons. The independence disclaimer is on the page twice (RL-QA-23) | — |
 | Sources | `check:rules-sources` green: 28 R&A pages, 25 titles, 336 anchors, hashes accepted 2026-11-06 unchanged. USGA clarifications page re-read in a browser on 2026-11-07: still "Updated October 2, 2026", so `clarificationsCheckedOn` is 2026-11-07. Every official link opened once (RL-QA-22) | — |
-| QA | RL-QA-01–25 below: 24 pass, and RL-QA-14 is moved to after deploy | — |
+| QA | RL-QA-01–25 below: 24 pass, and RL-QA-14 was waived by the owner on 2026-11-09 | — |
 | Performance | `/rules` lab LCP median 2,490 ms (target ≤ 2.5 s), CLS 0, score 97. `/glossary`, `/blog/gimmes` and `/` measure the same before and after (RL-QA-19) | — |
 | GA4 | The five Rules dimensions (Rule number, Opened from, Rules situation, Official document, Related content) were registered on 2026-11-07, and a read-only check the same day found all five still listed (29 of 50) | — |
-| Screen reader | **Moved to after deploy by the owner's choice** on 2026-11-07 ("Do it after deploy"), as with the glossary's GL-QA-13. Before the go, the automated evidence: axe 0 violations (RL-QA-12), the accessibility tree (RL-QA-13) and the Tab walk (RL-QA-09–11) | owner, after deploy |
+| Screen reader | **Waived by the owner.** Moved to after deploy on 2026-11-07 ("Do it after deploy"), then waived on 2026-11-09 ("We don't need to run the voice over"). The release stands on the automated evidence: axe 0 violations (RL-QA-12), the accessibility tree (RL-QA-13) and the Tab walk (RL-QA-09–11) | owner exception |
 | Launch PR | Head `5c9493a`: CI `lint · typecheck · build` success, and Codex's review completed with no findings (`codex-review-state` at 5c9493a6f8, plus a 👍). Quoted in #247 with the owner's go | — |
 | Owner go | **"Go"**, in chat on 2026-11-07 at 11:03 PST. One request covered the merge, URL Inspection plus Request indexing, the sitemap resubmission, the Rich Results Test, the #248 dates and this follow-up record | given |
 
@@ -36,7 +36,7 @@ Prepared on November 7, 2026 for launch PR #269 (branch `launch/242-rules-inboun
 - the clarifications check date;
 - one test.
 
-The project checks, axe, the accessibility tree and Lighthouse ran again on 2a43b25. Before the go, the VoiceOver check was planned on that build; the owner moved it to after deploy, so it now runs on the live page (RL-QA-14).
+The project checks, axe, the accessibility tree and Lighthouse ran again on 2a43b25. Before the go, the VoiceOver check was planned on that build. The owner moved it to after deploy, then waived it (RL-QA-14).
 
 | ID | Check | Result | Evidence |
 |---|---|---|---|
@@ -53,7 +53,7 @@ The project checks, axe, the accessibility tree and Lighthouse ran again on 2a43
 | RL-QA-11 | Paired against `main` | **pass**, at 320, 760, 1100 and 1440 on `/`, `/glossary`, three posts, `/games/overall-match`, `/games` and `/faq`. Launch adds exactly these stops, each lime and clean: the footer's "Golf rules" on every page, the 10 glossary entry links, and one link in each post. No stop exists only on `main`. No stop moved without an explanation: each moved stop comes after an added one, or cascades from one. Before the first added element nothing moves, and after it everything shifts straight down with no reflow. The footer grows 28px at 320 and 760; on `/faq` at 1100 and 1440, focusing "Golf rules" scrolls 10px further, and the 8 footer stops after it follow. The `/games/overall-match` FAQ 8 link is `visibility: hidden` while its item is closed. Opened, it takes one Tab and draws a 2px lime ring at six viewports. Already on `main`, identical alone: at 320×800, the `/games` Overall Match and Scramble cards and the match-play post's table scroller are taller than the space between the nav and the open consent banner, so their rings run under both | tabwalk/summary.txt, job2-paired-diff.json, job3-faq-link.json |
 | RL-QA-12 | axe-core (WCAG 2.1 AA + best practice), 320 and 1280px | **pass after a fix**: 0 violations on the final build. The first run found one, `label-content-name-mismatch` on the closing band's Google Play button, and it's on `main` too, on every page with that button (`regression.txt`). The cause was a label of "Get GoLo on Google Play" over visible text that read "Get it on" + "Google Play" with no space between the spans. Fixed in the launch PR (RL-QA fix below). Button rects are unchanged at 320 and 1440px, and the violation clears on `/` and `/rules`. `color-contrast` is "incomplete" for 66–67 nodes on the glass and photo backgrounds, where axe can't compute a background. That isn't a violation, and the hero's per-pixel contrast was measured in #235 | a11y-tree-final.txt, store-space.txt |
 | RL-QA-13 | Accessibility tree | **pass** (details below) | a11y-tree.txt, ax-entries.txt |
-| RL-QA-14 | Screen reader: owner's VoiceOver check | **Moved to after deploy** by the owner on 2026-11-07, who chose "Do it after deploy" when asked. Claude can't turn VoiceOver on: it's a system setting, and Safari is read-only to it. The owner runs the script below on `https://www.golo.golf/rules` after the deploy, and the reply is recorded here as given: pass or fail per step, observations, and the macOS, Safari and VoiceOver versions | — |
+| RL-QA-14 | Screen reader: owner's VoiceOver check | **Waived by the owner** (an owner-approved exception, not a pass). On 2026-11-07 the owner chose "Do it after deploy". On 2026-11-09 the owner decided not to run it: "We don't need to run the voice over". No human screen-reader pass was made. Claude can't run one: turning VoiceOver on is a system setting, and Safari is read-only to it. What stands in its place is supplementary and automated: RL-QA-09–13 and the live Tab walk. The script below is kept for any later check | — |
 | RL-QA-15 | Consent harness (#244), rerun on the launch build | **pass**: identical to the #244 run at df2e315 in all five scenarios: denied, granted, no choice then Allow, withdrawn in the same tab, withdrawn from another tab. The same event sequences in each, and no typed query text in any request, param or console line. Denied sends 0 requests to Google. After a withdrawal, no Rules events; the 1–2 hits captured just after a decline carry `_p` page ids from before it, so they're flushes from pages loaded under consent | consent-launch.json |
 | RL-QA-16 | Analytics: inbound links | **pass**, consent granted, one event per action: a glossary link to `/rules#rule-6` sends `glossary_cta_click {teeing-area, rules}` and `/rules#conceded-putt` sends `{gimme, rules}`; a guide link still sends `guide`. The footer link sends `link_click {/rules, footer}`, the `/blog/gimmes` link `link_click {/rules#conceded-putt, main}`, and the home hero's Google Play `store_button_click` | analytics-regression.txt |
 | RL-QA-17 | Schema | **pass**: validator.schema.org, with the page's two JSON-LD blocks pasted, found 0 errors and 0 warnings: CollectionPage (an ItemList of 37, `dateModified` 2026-11-07) and BreadcrumbList. No review records, sources or check dates in the JSON-LD (`test-rules` schema cases) | jsonld-blocks.html |
@@ -161,7 +161,6 @@ Checked on `https://www.golo.golf`, from about 11:06 PST, against `main` at `f27
 
 ### Still open after the release
 
-- **RL-QA-14:** the owner's VoiceOver check on the live page, using the script below. The reply is recorded in RL-QA-14 as given.
 - **#248:**
   - L+7 on 2026-11-14;
   - L+28 on 2026-12-05;
@@ -171,7 +170,7 @@ Checked on `https://www.golo.golf`, from about 11:06 PST, against `main` at `f27
 
 ## VoiceOver script (RL-QA-14)
 
-The owner's copy is `246-voiceover-script.md` in the coordinator's notes folder, the same text as below. VO means Control + Option.
+Not run: the owner waived the check on 2026-11-09. Kept for a later screen-reader pass. The owner's copy is `246-voiceover-script.md` in the coordinator's notes folder, the same text as below. VO means Control + Option.
 
 **Before you start**
 
@@ -350,8 +349,8 @@ Done on 2026-11-07, except step 6 and the part of step 7 that waits on it. Step 
 
    Record each with its date.
 5. Save the Search Console baseline for L-28 – L-1 to `~/gsc/rules-baseline/` and run `scripts/gsc-groups.mjs`, per `docs/seo-reports/rules-checkpoints.md` § Before launch. Set L and the L+7/28/56/90 dates there and in #248.
-6. The owner's VoiceOver check (RL-QA-14) on the live page, using the script below. Record the reply as given.
-7. Record the live results here and in #247. #247 closed with the #269 merge. Keep #246 open until step 6's reply is recorded in RL-QA-14, then close it and tick #246 and #247 in #230. Keep #248 open.
+6. The owner's VoiceOver check (RL-QA-14) on the live page, using the script below. **Waived by the owner on 2026-11-09**, so it wasn't run.
+7. Record the live results here and in #247. #247 closed with the #269 merge, and #246 with the #270 merge. Both are ticked in #230, with RL-QA-14 recorded as waived. Keep #248 open.
 
 ## Rollback
 
