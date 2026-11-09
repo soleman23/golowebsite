@@ -23,7 +23,7 @@
  * stood a moment; arriving from a link isn't, since the page already shows it.
  */
 
-import { Suspense, useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
+import { Suspense, useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState, type MouseEvent as ReactMouseEvent } from "react";
 import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { NO_ANSWERS, PLAYER_COUNTS, type Answers } from "@/lib/chooser/engine";
@@ -64,6 +64,7 @@ const SETTLE_MS = 1500;
 const RESULT_ANNOUNCE_MS = 400;
 /** Between clearing the live region and filling it, for one-off messages. */
 const ANNOUNCE_MS = 60;
+
 
 function listOf(items: string[], ui: Ui): string {
   if (items.length < 2) return items.join("");
@@ -110,7 +111,9 @@ export function SideGameChooser({ copy, questions, questionNames, ui }: SideGame
   answersRef.current = answers;
   // The chooser part of the last URL adopted (chooserQuery), so a URL change
   // that leaves it alone (the analytics cleaner) is ignored.
-  const seenQuery = useRef("");
+  // null until the first read, so a link whose only chooser-like keys are
+  // misspelt is still parsed (and reported) on arrival.
+  const seenQuery = useRef<string | null>(null);
   // The chooser part of each URL this component wrote and the sync leaf
   // hasn't seen yet, oldest first. Seeing one retires it and any older.
   const ownWrites = useRef<string[]>([]);
@@ -119,8 +122,11 @@ export function SideGameChooser({ copy, questions, questionNames, ui }: SideGame
   const urlTimer = useRef<number | undefined>(undefined);
   // A link's unreadable parameters, removed from the address bar after mount.
   const cleanOnMount = useRef<Answers | null>(null);
-  // Set by a change the reader made, so the next result is announced.
-  const announceNext = useRef(false);
+  // Set by a change the reader made: the answers (answersKey) whose result is
+  // announced once it renders. Keyed, not a flag, because a Link to other
+  // answers also re-renders with new props first, and that render still shows
+  // the old answers.
+  const announceFor = useRef<string | null>(null);
   const announceTimer = useRef<number | undefined>(undefined);
   const resultsHeading = useRef<HTMLHeadingElement>(null);
   const formHeading = useRef<HTMLHeadingElement>(null);
@@ -136,6 +142,11 @@ export function SideGameChooser({ copy, questions, questionNames, ui }: SideGame
     announceTimer.current = window.setTimeout(() => setMessage(text), delay);
   }, []);
   useEffect(() => () => window.clearTimeout(announceTimer.current), []);
+
+  // Becomes true after the first read of the URL. A URL adopted after that
+  // (a Link to other answers, Back or Forward) is the reader's doing, so its
+  // result is announced; a shared link's answers on arrival are not.
+  const mounted = useRef(false);
 
   const adoptUrl = useCallback((search: string) => {
     const query = chooserQuery(search);
@@ -155,6 +166,7 @@ export function SideGameChooser({ copy, questions, questionNames, ui }: SideGame
     const parsed = parseAnswers(search);
     if (parsed.dropped.length) cleanOnMount.current = parsed.answers;
     if (sameAnswers(parsed.answers, answersRef.current) && !parsed.dropped.length) return;
+    if (mounted.current) announceFor.current = answersKey(parsed.answers);
     setAnswers(parsed.answers);
     setDropped(parsed.dropped);
   }, []);
@@ -162,6 +174,7 @@ export function SideGameChooser({ copy, questions, questionNames, ui }: SideGame
   // A shared link's answers, before the first paint after hydration.
   useLayoutEffect(() => {
     adoptUrl(window.location.search);
+    mounted.current = true;
     setReady(true);
   }, [adoptUrl]);
 
@@ -214,6 +227,9 @@ export function SideGameChooser({ copy, questions, questionNames, ui }: SideGame
     };
     document.addEventListener("click", onClick, true);
     document.addEventListener("visibilitychange", onHidden);
+    // For Back and the bfcache. A reload has already picked its URL by
+    // now, so an answer less than SETTLE_MS old doesn't survive one; keeping
+    // it in browser storage would need a cookie-policy change (#224).
     window.addEventListener("pagehide", flushUrl);
     window.addEventListener("popstate", onPopState);
     return () => {
@@ -229,10 +245,10 @@ export function SideGameChooser({ copy, questions, questionNames, ui }: SideGame
 
   // Announce a change the reader made, once its result has stood a moment.
   useEffect(() => {
-    if (!announceNext.current) return;
-    announceNext.current = false;
+    if (announceFor.current === null || announceFor.current !== answersKey(answers)) return;
+    announceFor.current = null;
     announce(summaryOf(view, ui), RESULT_ANNOUNCE_MS);
-  }, [announce, view, ui]);
+  }, [announce, answers, view, ui]);
 
   // "Link copied" goes back to the button's label, as the glossary's does. A
   // failure note stays until the next answer, since it holds the link.
@@ -260,7 +276,7 @@ export function SideGameChooser({ copy, questions, questionNames, ui }: SideGame
 
   const answer = useCallback(
     <Q extends Question>(question: Q, value: Answers[Q]) => {
-      announceNext.current = true;
+      announceFor.current = answersKey({ ...answersRef.current, [question]: value });
       setCopyState("idle");
       setDropped([]);
       const next = { ...answersRef.current, [question]: value };
@@ -291,6 +307,15 @@ export function SideGameChooser({ copy, questions, questionNames, ui }: SideGame
     },
     [answer],
   );
+
+  // The jump link moves to the results without a #chooser-results history
+  // entry, which Back would otherwise restore with older answers. The href
+  // stays for a plain link's behaviour without script.
+  const jumpToResults = useCallback((event: ReactMouseEvent<HTMLAnchorElement>) => {
+    if (event.defaultPrevented || event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+    event.preventDefault();
+    resultsHeading.current?.focus();
+  }, []);
 
   const copyLink = useCallback(async () => {
     const link = `${window.location.origin}${CHOOSER_PATH}${serializeAnswers(answersRef.current)}`;
@@ -421,7 +446,7 @@ export function SideGameChooser({ copy, questions, questionNames, ui }: SideGame
 
         {/* Narrow screens: the results are below the form, so say so. */}
         {view.status !== "needs-players" ? (
-          <a href="#chooser-results" className={styles.jump}>
+          <a href="#chooser-results" className={styles.jump} onClick={jumpToResults}>
             {summaryOf(view, ui)} <span aria-hidden="true">↓</span>
           </a>
         ) : null}

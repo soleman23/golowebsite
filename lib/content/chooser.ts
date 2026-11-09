@@ -346,7 +346,11 @@ const nines: FormatCopy = {
     ...goloFrom(null),
     lines: [
       {
-        text: `Not one of GoLo’s games, which are ${capability("game-library").label}, and ${capability("closest-to-pin").label}. Keep Nines on paper, or score another game beside it in GoLo.`,
+        // Not a registry string: the registry lists what GoLo scores, and
+        // Nines isn't in it. No list of GoLo's games here, so this line
+        // can't fall behind the registry (scramble and team play live in
+        // their own entries).
+        text: "Not a game GoLo scores. Keep Nines on paper, or score another game beside it in GoLo.",
       },
     ],
   },

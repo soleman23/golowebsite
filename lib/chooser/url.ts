@@ -38,9 +38,28 @@ export function chooserQuery(search: string | URLSearchParams): string {
 
 export type ParsedAnswers = {
   answers: Answers;
-  /** Chooser parameters that were present but not used, in question order. */
+  /**
+   * Chooser parameters that were present but not used, in question order:
+   * a bad or disputed value, or a misspelt key for a question left blank.
+   */
   dropped: Question[];
 };
+
+/** A key folded for comparison: lower case, one trailing "s" dropped ("Player", "HOLE"). */
+function folded(key: string): string {
+  return key.toLowerCase().replace(/s$/, "");
+}
+
+/**
+ * A parameter that isn't one of the chooser's but is plainly meant as one: a
+ * different case or a singular/plural slip (`?player=4`, `?Holes=9`). It's
+ * reported like a bad value, so the visitor is told; campaign and click ids
+ * (utm_source, fbclid) never match and are still left alone.
+ */
+function misspelt(params: URLSearchParams, question: Question): boolean {
+  for (const key of params.keys()) if (key !== question && folded(key) === folded(question)) return true;
+  return false;
+}
 
 export function parseAnswers(search: string | URLSearchParams): ParsedAnswers {
   const params = typeof search === "string" ? new URLSearchParams(search) : search;
@@ -48,7 +67,10 @@ export function parseAnswers(search: string | URLSearchParams): ParsedAnswers {
   const dropped: Question[] = [];
   for (const question of QUESTIONS) {
     const raw = params.getAll(question);
-    if (!raw.length) continue;
+    if (!raw.length) {
+      if (misspelt(params, question)) dropped.push(question);
+      continue;
+    }
     const values = new Set(raw);
     const value = values.size === 1 ? parseValue(question, raw[0]) : undefined;
     if (value === undefined) dropped.push(question);

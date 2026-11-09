@@ -272,6 +272,17 @@ for (const bad of ["1", "13", "04", "4.0", "+4", " 4", "four", "", "4e0", "0x4",
   check("parse: foreign params ignored, not reported", p.answers.players === 3 && !p.dropped.length);
 }
 {
+  // A misspelt key for a question left blank is reported, so the visitor is
+  // told (#224: "dropped on its own and the visitor is told").
+  const p = parseAnswers("player=4&Partners=solo&HOLE=9&scoring=simple");
+  check("parse: misspelt keys reported, good ones kept",
+    p.answers.scoring === "simple" && p.answers.players === null && eq(p.dropped, ["players", "partners", "holes"]), JSON.stringify(p));
+  const q = parseAnswers("players=4&player=5");
+  check("parse: a misspelt copy beside the real key isn't reported", q.answers.players === 4 && !q.dropped.length);
+  const r = parseAnswers("utm_source=x&utm_medium=y&gclid=1&fbclid=2&ref=z&handicapper=3");
+  check("parse: campaign, click ids and longer keys never count as misspelt", !r.dropped.length, JSON.stringify(r.dropped));
+}
+{
   const p = parseAnswers("partners=%3Cscript%3E&handicaps=none%00");
   check("parse: encoded junk dropped", p.answers.partners === null && p.answers.handicaps === null && eq(p.dropped, ["partners", "handicaps"]));
 }
@@ -368,14 +379,22 @@ const registryText = new Set(
   const notRegistry = [];
   for (const [id, format] of Object.entries(chooserCopy.formats)) {
     for (const line of format.golo.lines) {
-      // Nines quotes the registry's game list inside a sentence of its own.
+      // Nines isn't in the registry, so its one line is the chooser's own.
       if (id === "nines") continue;
       if (!registryText.has(line.text)) notRegistry.push(`${id}: ${line.text.slice(0, 50)}`);
     }
   }
   check("every GoLo line is registry text", notRegistry.length === 0, notRegistry.join(" | "));
-  const gameList = capabilities.find((c) => c.id === "game-library").label;
-  check("Nines line quotes the registry game list", chooserCopy.formats.nines.golo.lines[0].text.includes(gameList));
+  // It once listed GoLo's games from one registry label and left out the
+  // scramble and team play. It names no games now, so it can't fall behind.
+  const ninesLine = chooserCopy.formats.nines.golo.lines;
+  check(
+    "Nines says GoLo doesn't score it, without listing GoLo's games",
+    ninesLine.length === 1 &&
+      /^Not a game GoLo scores\./.test(ninesLine[0].text) &&
+      !capabilities.some((c) => c.label.length > 12 && ninesLine[0].text.includes(c.label)),
+    ninesLine.map((l) => l.text).join(" | "),
+  );
 }
 {
   const cap = (id) => capabilities.find((c) => c.id === id);
