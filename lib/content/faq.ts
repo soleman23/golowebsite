@@ -67,7 +67,7 @@ export const faqCategories: FaqCategory[] = [
       {
         id: "q-everyone",
         q: "Do all four of us need the app?",
-        a: "No. One person keeps the card and the rest just play. Anyone signed in can join the round and follow it live on their own phone, and the share card sends the final scores and the results to the group chat.",
+        a: "No. One person keeps the card and the rest just play. Anyone signed in can join the round and follow it live on their own phone, and the share card sends the games, the results and who owes whom to the group chat.",
       },
       {
         id: "q-start-round",

@@ -205,7 +205,7 @@ export const featureBlocks: FeatureBlock[] = [
       },
       {
         lead: "Itemized",
-        rest: "tap any number to see which game produced it.",
+        rest: "each game’s card shows every player’s result, and a tap opens its lines.",
       },
     ],
     visualSide: "right",
@@ -257,7 +257,7 @@ export const alsoInThere: AlsoCard[] = [
   {
     title: "Receipts for the group chat",
     status: TODAY,
-    body: "One card with the final scores, the results and who owes whom — dropped straight into the text thread where the trash talk already lives. Ends the Tuesday re-litigation.",
+    body: "One card with the course, the games, the results and who owes whom — dropped straight into the text thread where the trash talk already lives. Ends the Tuesday re-litigation.",
   },
 ];
 

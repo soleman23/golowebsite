@@ -412,8 +412,12 @@ export const capabilities = [
     label: "Share card for the group chat",
     status: "live",
     summary:
-      "One card with the final scores, the results and who owes whom, sent to the group's text thread.",
-    verified: OWNER_1015,
+      "One card with the course, the games, the results and who owes whom for the group's text thread, plus a text summary with the final standings to copy.",
+    // App check 2026-11-09, golo `main` 398a08b2 (GoLo 1.2.2), read-only:
+    // src/lib/receiptCard.js draws the course, date, games, up to six
+    // settle-ups and highlights, no scores; formatRoundSummary is the text.
+    // The owner's 2026-10-15 wording said "final scores".
+    verified: { by: "app-check", date: "2026-11-09", appVersion: "1.2.2" },
     roadmap: true,
   },
   {

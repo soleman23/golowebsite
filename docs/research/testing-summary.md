@@ -110,6 +110,17 @@ Both M4 posts were hidden on 2026-10-30 (7b2065b) and republished on 2026-11-09 
   - The share card is live (golo #954, 2026-10-26).
   - A saved Venmo handle is shown to whoever owes, on the payments screen. The registry's `payment-handle` summary and the FAQ money answer said "shown to the group at settle-up", and both are corrected.
 
+**Second pass, the same day.** An independent fact check of the rewrite added these corrections:
+- The fix dates are when each fix merged into the app's development branch. The September 25 to October 7 fixes reached the production web app (`main`) on October 9.
+- The re-check is against the production *web* build. Play was on an earlier build at the time.
+- The June 29 step's finish prompt dates from October 7 (PR #419).
+- The skins figures are illustrative, so they're marked "for example".
+- "place in the order" is out of the re-agree list.
+- The share card draws the course, the games, up to six settle-ups and highlights (src/lib/receiptCard.js), not scores. The final standings are in the copied text summary. Corrected in the registry, `/features`, the FAQ, the group-accountant post and the settle-up post.
+- `/features` said "tap any number to see which game produced it". Tapping a standings number switches whose view you see, so it now describes the game cards.
+- The About line no longer promises a write-up for every mistake.
+- Not changed: the Terms of Service still say a saved Venmo handle is displayed "to the other players in your group" (`lib/content/legal.ts`). That's legal text, left for the owner.
+
 **The testing study is still blocked.** M4 asks for a testing study built from a testing log. No first-party record of test rounds exists in this repo or in the app repo:
 - `docs/TESTFLIGHT.md` is a template.
 - The external beta (golo #92) and go/no-go (#57, #58) issues are still open.
