@@ -54,7 +54,7 @@ Closed on November 7, 2026: #242 (18:01 UTC), #244 (18:11 UTC) and #247 (closed 
 
 **M10:**
 
-- **#248 checkpoints**: L+7 on 2026-11-14, L+28 on 2026-12-05, L+56 on 2027-01-02, L+90 on 2027-02-05 (`rules-checkpoints.md`). The prelaunch baseline (2026-10-10 – 2026-11-06) is provisional until a re-export with complete days, at the latest with the L+7 run.
+- **#248 checkpoints**: L+7 on 2026-11-14, L+28 on 2026-12-05, L+56 on 2027-01-02, L+90 on 2027-02-05 (`rules-checkpoints.md`). The prelaunch baseline (2026-10-10 – 2026-11-06) was re-read with complete days on 2026-11-09 and is unchanged (6 clicks, 684 impressions, Rules of Golf 0); a fresh CSV export goes with the L+7 run.
 - **#249** and **#250** wait on Search Console evidence from those checkpoints.
 - **#251** waits on the official 2028 edition.
 
