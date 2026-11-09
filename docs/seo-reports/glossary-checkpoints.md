@@ -6,11 +6,11 @@ The four post-launch readings of `/glossary`, with the same definitions each tim
 
 **Status on 2026-10-30:** none due. No results exist yet, and none are written below.
 
-**Status on 2026-11-05:** launch + 7 days is filed in `2026-12.md`. Its Search Console re-read is pending, because November 4 was still being collected. The other three aren't due.
+**Status on 2026-11-09:** launch + 7 days is filed in `2026-12.md`, and its Search Console cells are final: re-read on 2026-11-09 with November 4 complete, unchanged from 2026-11-05. Launch + 28 is next, on 2026-11-26. (On 2026-11-05 the re-read was pending because November 4 was still being collected.)
 
 | Checkpoint | Run on | Window (Pacific days) | Filed in | Status |
 |---|---|---|---|---|
-| Launch + 7 days | Thu 2026-11-05 | 2026-10-29 – 2026-11-04 (7 days) | `2026-12.md` | filed in `2026-12.md` (PR pending); Search Console re-read pending (Nov 4 incomplete on Nov 5) |
+| Launch + 7 days | Thu 2026-11-05 | 2026-10-29 – 2026-11-04 (7 days) | `2026-12.md` | filed in `2026-12.md` (#229); Search Console cells final, re-read 2026-11-09 |
 | Launch + 28 days | Thu 2026-11-26 | 2026-10-29 – 2026-11-25 (28 days) | `2026-12.md` | pending |
 | Launch + 56 days | Thu 2026-12-24 | 2026-10-29 – 2026-12-23 (56 days) | `2027-01.md` | pending |
 | Launch + 90 days | Wed 2027-01-27 | 2026-10-29 – 2027-01-26 (90 days) | `2027-02.md` | pending |
@@ -120,7 +120,7 @@ A dry run of both loops on 2026-10-30 checked 39 internal paths and 75 fragments
 
 ## Launch + 7 days: 2026-11-05
 
-**Status: filed in `2026-12.md` on 2026-11-05.** The two Search Console cells it marks provisional get re-read once November 4 is complete. The table below is the checklist; the results are in the report. Window 2026-10-29 – 2026-11-04. Reads: C, F, D (events firing only), B (first impression only).
+**Status: filed in `2026-12.md` on 2026-11-05; final since 2026-11-09,** when the two Search Console cells marked provisional were re-read with November 4 complete and came out unchanged. The table below is the checklist; the results are in the report. Window 2026-10-29 – 2026-11-04. Reads: C, F, D (events firing only), B (first impression only).
 
 | Check | Expected | Result (date checked) |
 |---|---|---|
