@@ -11,11 +11,14 @@
  * back to with Back. The form is server-rendered with nothing chosen; on
  * mount a link's answers are read before paint, and a Link to this page with
  * other answers is picked up by the Suspense'd sync leaf, as FilterUrlSync
- * does. A change is written with replaceState (no history entry per answer)
- * once the answers have stood for SETTLE_MS, and at once before a link is
- * followed or the page is hidden. The wait is for analytics: the web
- * stream's enhanced measurement counts a history change as a page view, so
- * writing on every tap would send one per tap (docs/analytics-data-notes.md).
+ * does. Each change goes into the address bar at once (writeNow), with the
+ * browser's own replaceState, so a reload or a copied address never lags the
+ * form and no history entry is added. Next's router, and GA4's history
+ * listener with it, are told through window.history.replaceState once the
+ * answers have stood for SETTLE_MS (flushUrl), and at once before a link is
+ * followed or the page is hidden. That keeps the web stream's history page
+ * views to one per settled answer set rather than one per tap
+ * (docs/analytics-data-notes.md).
  * Parameters the chooser doesn't own (utm_source) are kept; a chooser
  * parameter it couldn't read is dropped from the address bar and reported.
  *
@@ -117,7 +120,10 @@ export function SideGameChooser({ copy, questions, questionNames, ui }: SideGame
   // The chooser part of each URL this component wrote and the sync leaf
   // hasn't seen yet, oldest first. Seeing one retires it and any older.
   const ownWrites = useRef<string[]>([]);
-  // Answers waiting to be written, and the timer that writes them.
+  // The query string Next's router (and GA's history listener) last saw for
+  // this page, normalised. The address bar can be ahead of it: see writeNow.
+  const routerSearch = useRef("");
+  // Answers waiting to be written through Next, and the timer that writes them.
   const pendingUrl = useRef<Answers | null>(null);
   const urlTimer = useRef<number | undefined>(undefined);
   // A link's unreadable parameters, removed from the address bar after mount.
@@ -149,6 +155,9 @@ export function SideGameChooser({ copy, questions, questionNames, ui }: SideGame
   const mounted = useRef(false);
 
   const adoptUrl = useCallback((search: string) => {
+    // Every call carries a URL Next's router holds (the first read, or the
+    // sync leaf's useSearchParams).
+    routerSearch.current = new URLSearchParams(search).toString();
     const query = chooserQuery(search);
     const own = ownWrites.current.lastIndexOf(query);
     if (own !== -1) {
@@ -186,20 +195,46 @@ export function SideGameChooser({ copy, questions, questionNames, ui }: SideGame
     // Not after leaving: Back can change the URL before this page unmounts.
     if (!next || window.location.pathname !== CHOOSER_PATH) return;
     const search = serializeAnswers(next, window.location.search);
-    if (new URLSearchParams(search).toString() === new URLSearchParams(window.location.search).toString()) return;
+    // Compared with what the router holds, not the address bar, which
+    // writeNow has usually updated already.
+    const normalised = new URLSearchParams(search).toString();
+    if (normalised === routerSearch.current) return;
+    routerSearch.current = normalised;
     ownWrites.current.push(chooserQuery(search));
     // null state, as dropUnusedQueryParams does: Next's patched replaceState
-    // then moves its router to the new URL, and Back returns to it.
+    // then moves its router to the new URL, and Back returns to it. GA4's
+    // history listener counts this one as a page_view: one per settled set.
     window.history.replaceState(null, "", `${CHOOSER_PATH}${search}${window.location.hash}`);
+  }, []);
+
+  /**
+   * The answers into the address bar straight away, so a reload or a copied
+   * address never lags the form. It goes through the browser's own
+   * History.prototype.replaceState with the entry's existing state: gtag.js
+   * wraps window.history.replaceState and would count every tap as a
+   * page_view, and Next's wrapper passes an entry with its own state through
+   * untouched. Measured 2026-11-09 with the live gtag.js (every hit answered
+   * locally): this write sends no page_view, and the later write through
+   * flushUrl still sends one. The router catches up in flushUrl.
+   */
+  const writeNow = useCallback((next: Answers) => {
+    if (window.location.pathname !== CHOOSER_PATH) return;
+    const search = serializeAnswers(next, window.location.search);
+    if (new URLSearchParams(search).toString() === new URLSearchParams(window.location.search).toString()) return;
+    // Seen as this component's own if the router picks it up first (the
+    // analytics cleaner rewrites the URL through Next).
+    ownWrites.current.push(chooserQuery(search));
+    History.prototype.replaceState.call(window.history, window.history.state, "", `${CHOOSER_PATH}${search}${window.location.hash}`);
   }, []);
 
   const writeUrlSoon = useCallback(
     (next: Answers, delay = SETTLE_MS) => {
       window.clearTimeout(urlTimer.current);
+      writeNow(next);
       pendingUrl.current = next;
       urlTimer.current = window.setTimeout(flushUrl, delay);
     },
-    [flushUrl],
+    [flushUrl, writeNow],
   );
 
   // Drop a link's unreadable parameters once Next has patched the history
@@ -227,9 +262,8 @@ export function SideGameChooser({ copy, questions, questionNames, ui }: SideGame
     };
     document.addEventListener("click", onClick, true);
     document.addEventListener("visibilitychange", onHidden);
-    // For Back and the bfcache. A reload has already picked its URL by
-    // now, so an answer less than SETTLE_MS old doesn't survive one; keeping
-    // it in browser storage would need a cookie-policy change (#224).
+    // For Back and the bfcache. A reload needs nothing here: writeNow has
+    // already put every answer in the address bar.
     window.addEventListener("pagehide", flushUrl);
     window.addEventListener("popstate", onPopState);
     return () => {
