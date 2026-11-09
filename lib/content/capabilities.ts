@@ -161,6 +161,21 @@ const APP_CHECK_1103 = {
   date: "2026-11-03",
   appVersion: "1.2.1",
 } as const;
+/**
+ * Read from soleman23/golo `main` at 398a08b2 (2026-11-05, GoLo 1.2.2,
+ * Android build 34) on 2026-11-09 by an agent, read-only. A source check,
+ * not the owner's confirmation. Player counts: src/lib/scrambleTeams.js:10-14
+ * (2 to 12 players; stroke play, match play and Stableford up to 4; 2 to 6
+ * teams of 1 to 4), enforced in Setup at src/pages/SetupWizard.jsx:2116,
+ * :3488 and :3535 (Team Play exactly 4, not in a scramble). Games in a
+ * scramble: src/engines/betResults.js:208+ (team against team) and :309-320
+ * (Closest to Pin and Longest Drive player by player, at least 2).
+ */
+const APP_CHECK_1109 = {
+  by: "app-check",
+  date: "2026-11-09",
+  appVersion: "1.2.2",
+} as const;
 /** Owner's answers on 2026-10-15 (soleman23/golowebsite#61). */
 const OWNER_1015 = { by: "owner", date: "2026-10-15" } as const;
 
@@ -195,13 +210,12 @@ export const capabilities = [
     summary:
       "Run several games in one round, each with its own amount, netted into one number per player.",
     limits: [
-      // Already in app-checked guide copy (APP_CHECK_1029; the Best Score,
-      // Bingo Bango Bongo and scramble FAQs and the scramble steps in
-      // gameDetail.ts); recorded here for the side-game chooser
-      // (soleman23/golowebsite#224), which reads GoLo's limits from this file
-      // only. Owner review pending: carried from that copy, not rechecked
-      // against the app or confirmed by the owner for #224.
-      "Without teams, a round takes two to four players; a group of five or more plays as a scramble.",
+      // APP_CHECK_1109 (2026-11-09, GoLo 1.2.2): source-checked, not owner
+      // confirmed. Replaces "Without teams, a round takes two to four
+      // players; a group of five or more plays as a scramble.", which the
+      // side-game chooser (#224) carried from guide copy. lib/content/chooser.ts
+      // finds this line by its opening words.
+      "A round without teams (stroke play, match play or Stableford) takes two to four players; a group of five to 12 plays as a scramble.",
       "Birdie and eagle bounties are Skins settings (Birdie Skin, Eagle Skin), gross birdies only, no cap.",
       "No separate junk board: greenies and sandies are Skins settings, and barkies, poleys, snakes and arnies aren't scored.",
       "Longest Drive is played on one par 5 and doesn't record a measured distance.",
@@ -230,6 +244,8 @@ export const capabilities = [
       "Team handicaps follow the WHS percentages (30/20/10% for three players), or play Gross, or the organizer sets them.",
       "Teams of different sizes each use their own percentages, so an uneven split isn't fully evened out.",
       "Wolf and Bingo Bango Bongo aren't played in a scramble.",
+      // APP_CHECK_1109: src/engines/betResults.js:309-320.
+      "In a scramble, Closest to Pin and Longest Drive are still played player by player.",
       "No Texas scramble drive count and no shamble.",
     ],
     verified: APP_CHECK_1029,
