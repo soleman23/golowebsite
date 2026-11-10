@@ -63,6 +63,7 @@ export const NO_ANSWERS: Answers = {
 export const FORMAT_IDS = [
   "best-score",
   "skins",
+  "overall-match",
   "nassau",
   "best-ball",
   "scramble",
@@ -83,8 +84,8 @@ export type FormatRule = {
   players: { min: number; max: number };
   /**
    * The largest group for which the format counts as simple: 12 means always,
-   * 0 never. A Nassau is simple between two players and isn't head to head
-   * among three or four, where every pair has its own Nassau.
+   * 0 never. A Nassau or an Overall Match is simple between two players and
+   * isn't among three or four, where every pair has its own.
    */
   simpleUpTo: number;
   /** Plays without handicap strokes at all. */
@@ -100,6 +101,10 @@ export const FORMAT_RULES: readonly FormatRule[] = [
   { id: "best-score", style: "solo", players: { min: 2, max: 12 }, simpleUpTo: 12 },
   // The roster's "2–6 players".
   { id: "skins", style: "solo", players: { min: 2, max: 6 }, simpleUpTo: 12 },
+  // Ahead of Nassau on purpose (#273). The two share every rule and no ranking
+  // key separates them, and Best Score and Skins fit wherever they do, so only
+  // the one listed first can be a pick. The other is always in "Also fits".
+  { id: "overall-match", style: "solo", players: { min: 2, max: 4 }, simpleUpTo: 2 },
   { id: "nassau", style: "solo", players: { min: 2, max: 4 }, simpleUpTo: 2 },
   { id: "best-ball", style: "teams", players: { min: 4, max: 4 }, simpleUpTo: 12 },
   // Two teams of two at the least: below four, a "team" is one player.

@@ -17,7 +17,9 @@
  * - the analytics URL cleaner keeps exactly the answers the chooser reads;
  * - every link on a card or the page is a served page or a published
  *   glossary anchor;
- * - the worked example still produces what its prose says.
+ * - the worked example still produces what its prose says;
+ * - Overall Match (#273): eligibility, rank, copy by group size and holes,
+ *   the registry moved under it, and the event values it can produce.
  *
  * Exit 1 with one line per failed case.
  */
@@ -62,7 +64,7 @@ const { dropUnusedQueryParams, isKeptQueryParam } = await load("lib/analyticsPre
 const { choose, FORMAT_IDS, FORMAT_RULES, NO_ANSWERS, PLAYER_COUNTS, evenTeams } = engine;
 const { parseAnswers, serializeAnswers, sameAnswers, answersKey, isChooserParam, chooserQuery, CHOOSER_PATH } = url;
 const { chooserView, goloVerdict, goloCell, simpleCell } = view;
-const { chooserCopy, chooserExample, chooserTable, chooserTableCells, chooserKeepReading, chooserSideGames, chooserTeaser } = content;
+const { chooserCopy, chooserExample, chooserHow, chooserTable, chooserTableCells, chooserKeepReading, chooserSideGames, chooserTeaser, chooserUi } = content;
 
 const failures = [];
 let passed = 0;
@@ -100,9 +102,9 @@ for (const bad of [0, 1, 13, 2.5, -4, Number.NaN]) {
 
 // With nothing else answered, eligibility is size alone.
 const bySize = {
-  2: ["best-score", "skins", "nassau", "bingo-bango-bongo"],
-  3: ["best-score", "skins", "nassau", "bingo-bango-bongo", "nines"],
-  4: ["best-score", "skins", "nassau", "best-ball", "scramble", "bingo-bango-bongo", "wolf"],
+  2: ["best-score", "skins", "overall-match", "nassau", "bingo-bango-bongo"],
+  3: ["best-score", "skins", "overall-match", "nassau", "bingo-bango-bongo", "nines"],
+  4: ["best-score", "skins", "overall-match", "nassau", "best-ball", "scramble", "bingo-bango-bongo", "wolf"],
   5: ["best-score", "skins", "scramble"],
   6: ["best-score", "skins", "scramble"],
   7: ["best-score", "scramble"],
@@ -119,7 +121,10 @@ check("4 players, nothing else: fixed order with Wolf lifted at four",
   eq(picks({ players: 4 }), ["wolf", "best-score", "skins"]), JSON.stringify(picks({ players: 4 })));
 check("3 players, nothing else: Nines first at three",
   eq(picks({ players: 3 }), ["nines", "best-score", "skins"]), JSON.stringify(picks({ players: 3 })));
-check("2 players: fixed order", eq(picks({ players: 2 }), ["best-score", "skins", "nassau"]));
+// Overall Match sits ahead of Nassau in the fixed order (#273), so at two
+// players it takes the third pick and Nassau moves to "Also fits".
+check("2 players: fixed order", eq(picks({ players: 2 }), ["best-score", "skins", "overall-match"]));
+check("2 players: Nassau and BBB also fit, in order", eq(ask({ players: 2 }).alsoFits, ["nassau", "bingo-bango-bongo"]));
 check("at most three picks", [2, 3, 4, 5, 8].every((p) => (picks({ players: p }) ?? []).length <= 3));
 
 /* --------------------------------------------------- partner answers */
@@ -477,6 +482,7 @@ const registryText = new Set(
     eq(Object.fromEntries(FORMAT_RULES.map((r) => [r.id, goloCell(r, chooserCopy.formats[r.id].golo, chooserTable.words.golo)])), {
       "best-score": "Yes, 2–4 players",
       skins: "Yes, 2–4 players",
+      "overall-match": "Yes",
       nassau: "Yes",
       "best-ball": "Yes",
       scramble: "Yes",
@@ -541,6 +547,8 @@ const registryText = new Set(
   check("the chooser route exists", routes.has("/games/chooser"));
   check("Nassau points to the press post and glossary entry",
     ["/blog/pressing", "/glossary#press"].every((h) => hrefs.some(([owner, href]) => owner === "nassau" && href === h)));
+  check("Overall Match points to its guide, the press post and the glossary",
+    ["/games/overall-match", "/blog/pressing", "/glossary#press", "/glossary#push"].every((h) => hrefs.some(([owner, href]) => owner === "overall-match" && href === h)));
 }
 
 /* ------------------------------------------------------- worked example */
@@ -554,6 +562,348 @@ const registryText = new Set(
   const team = (low, high) => Math.round(0.35 * low + 0.15 * high);
   check("worked example: team handicaps", team(6, 24) === 6 && team(12, 18) === 7);
   check("worked example: prose names the numbers", chooserExample.math.includes("5.7") && chooserExample.math.includes("6.9"));
+}
+
+/* -------------------------------------------------- Overall Match (#273) */
+
+{
+  const OM = "overall-match";
+  const cap = (id) => capabilities.find((c) => c.id === id);
+  const card = (answers, copy = chooserCopy) => view.pickView(OM, 1, [], { ...NO_ANSWERS, ...answers }, copy);
+  const outOf = (partial) => ask(partial).ruledOut.find((x) => x.id === OM);
+  const texts = (lines) => lines.map((l) => l.text);
+
+  // Structure: one rule, one copy entry, one table row, and every field filled.
+  check("OM: one id", FORMAT_IDS.filter((id) => id === OM).length === 1);
+  check("OM: one rule", FORMAT_RULES.filter((r) => r.id === OM).length === 1);
+  check("OM: rule values", eq(FORMAT_RULES.find((r) => r.id === OM),
+    { id: OM, style: "solo", players: { min: 2, max: 4 }, simpleUpTo: 2 }));
+  {
+    const f = chooserCopy.formats[OM];
+    check("OM: named", f.name === "Overall Match");
+    check("OM: guide is the published guide", f.guide.href === "/games/overall-match" && gameDetailSlugsWithContent.includes(OM));
+    check("OM: every copy field filled", f.summary.length && f.fit.length && f.tradeoff.length && f.agree.length && f.golo.lines.length);
+    check("OM: every ruled-out reason written", ["players", "partners", "scoring"].every((k) => f.ruledOut[k].length > 0));
+    check("OM: no rank reasons to give, since no rule lifts it", eq(f.reasons, {}));
+    check("OM: table row", eq(chooserTableCells[OM], { partners: "Head to head", strokes: "Net or gross" }));
+  }
+
+  // Eligibility across the player counts.
+  for (const players of [2, 3, 4]) {
+    check(`OM ${players}: eligible, solo`, eligible({ players, partners: "solo" }).includes(OM));
+    check(`OM ${players}: eligible, either`, eligible({ players, partners: "either" }).includes(OM));
+    check(`OM ${players}: eligible, happy to follow more`, eligible({ players, scoring: "more" }).includes(OM));
+    const teams = outOf({ players, partners: "teams" });
+    check(`OM ${players}: teams rules it out on partners`, eq(teams?.reasons, ["partners"]), JSON.stringify(teams));
+  }
+  for (const players of [5, 6, 7, 8, 9, 10, 11, 12]) {
+    check(`OM ${players}: out on size only`, eq(outOf({ players })?.reasons, ["players"]));
+    check(`OM ${players}, simple: still size only`, eq(outOf({ players, scoring: "simple" })?.reasons, ["players"]));
+    check(`OM ${players}, teams: size and partners`, eq(outOf({ players, partners: "teams" })?.reasons, ["players", "partners"]));
+  }
+  check("OM 2 simple: stays", eligible({ players: 2, scoring: "simple" }).includes(OM));
+  for (const players of [3, 4]) {
+    check(`OM ${players} simple: out on simplicity`, eq(outOf({ players, scoring: "simple" })?.reasons, ["scoring"]));
+  }
+  for (const bad of [1, 13, 0, -2, 2.5, 3.999, Number.NaN, Infinity]) {
+    check(`OM players ${bad}: no result, no crash`, ask({ players: bad }).status === "needs-players");
+  }
+  for (const query of ["players=1", "players=13", "players=2.5", "players=three", "players=%00", "players=4&players=2", "players=%E0%A4%A"]) {
+    const { answers } = parseAnswers(query);
+    check(`OM malformed ${query}: reads as unanswered`, answers.players === null && chooserView(answers, chooserCopy).status === "needs-players");
+  }
+  // Handicaps and holes never take it out of a group it fits.
+  for (const players of [2, 3, 4])
+    for (const handicaps of [null, "close", "apart", "none"])
+      for (const holes of [null, "18", "9"]) {
+        check(`OM ${players}/${handicaps}/${holes}: stays eligible`, eligible({ players, handicaps, holes }).includes(OM));
+      }
+
+  // Rank: after Skins, before Nassau, and behind every key the engine already had.
+  const order = FORMAT_RULES.map((r) => r.id);
+  check("OM: fixed order is after Skins, before Nassau", order.indexOf(OM) === order.indexOf("skins") + 1 && order.indexOf(OM) === order.indexOf("nassau") - 1);
+  check("the other eight keep their order",
+    eq(order.filter((id) => id !== OM), ["best-score", "skins", "nassau", "best-ball", "scramble", "bingo-bango-bongo", "wolf", "nines"]));
+  const ranked = {
+    "2//": [["best-score", "skins", OM], ["nassau", "bingo-bango-bongo"]],
+    "2/simple/": [["best-score", "skins", OM], ["nassau"]],
+    "2//apart": [["bingo-bango-bongo", "best-score", "skins"], [OM, "nassau"]],
+    "2//none": [["bingo-bango-bongo", "best-score", "skins"], [OM, "nassau"]],
+    "2/simple/apart": [["best-score", "skins", OM], ["nassau"]],
+    "3//": [["nines", "best-score", "skins"], [OM, "nassau", "bingo-bango-bongo"]],
+    "3/simple/": [["best-score", "skins"], []],
+    "4//": [["wolf", "best-score", "skins"], [OM, "nassau", "best-ball", "scramble", "bingo-bango-bongo"]],
+    "4/simple/": [["best-score", "skins", "best-ball"], ["scramble"]],
+    "4//apart": [["scramble", "bingo-bango-bongo", "wolf"], ["best-score", "skins", OM, "nassau", "best-ball"]],
+    "4//none": [["bingo-bango-bongo", "scramble", "wolf"], ["best-score", "skins", OM, "nassau", "best-ball"]],
+  };
+  for (const [key, [expectedPicks, expectedAlso]] of Object.entries(ranked)) {
+    const [p, scoring, handicaps] = key.split("/");
+    const r = ask({ players: Number(p), scoring: scoring || null, handicaps: handicaps || null });
+    check(`OM rank ${key}: picks`, eq(r.picks.map((x) => x.id), expectedPicks), JSON.stringify(r.picks.map((x) => x.id)));
+    check(`OM rank ${key}: also fits`, eq(r.alsoFits, expectedAlso), JSON.stringify(r.alsoFits));
+  }
+  check("OM: Wolf still lifted at four, Nines at three", picks({ players: 4 })[0] === "wolf" && picks({ players: 3 })[0] === "nines");
+  // A consequence of the order, pinned so it can't change unnoticed: the two
+  // share every rule, so the one listed second is never a pick.
+  {
+    let nassauPicked = 0, omPicked = 0, nassauLost = 0;
+    for (const players of PLAYER_COUNTS)
+      for (const partners of [null, "solo", "teams", "either"])
+        for (const handicaps of [null, "close", "apart", "none"])
+          for (const scoring of [null, "simple", "more"]) {
+            const r = ask({ players, partners, handicaps, scoring });
+            if (r.picks.some((p) => p.id === "nassau")) nassauPicked++;
+            if (r.picks.some((p) => p.id === OM)) omPicked++;
+            const omFits = r.alsoFits.includes(OM) || r.picks.some((p) => p.id === OM);
+            if (omFits && !r.alsoFits.includes("nassau")) nassauLost++;
+          }
+    check("Nassau is never a pick, by design of the order", nassauPicked === 0, `${nassauPicked} sets`);
+    check("Overall Match is a pick somewhere", omPicked > 0);
+    check("Nassau is in Also fits wherever Overall Match is", nassauLost === 0);
+  }
+
+  // Over every reachable answer set: deterministic, no duplicates, three
+  // picks at most, never lost, and only closed values reach the events.
+  const { track } = await load("lib/analytics.ts");
+  const validPick = new Set([...FORMAT_IDS, "none"]);
+  const problems = [];
+  let seenAsTop = false;
+  for (const players of PLAYER_COUNTS)
+    for (const partners of [null, "solo", "teams", "either"])
+      for (const handicaps of [null, "close", "apart", "none"])
+        for (const scoring of [null, "simple", "more"])
+          for (const holes of [null, "18", "9"]) {
+            const answers = { players, partners, handicaps, scoring, holes };
+            const key = answersKey(answers);
+            const r = choose(answers);
+            if (!eq(r, choose(answers))) problems.push(`${key}: differs between calls`);
+            const all = [...r.picks.map((p) => p.id), ...r.alsoFits, ...r.ruledOut.map((x) => x.id)];
+            if (new Set(all).size !== all.length || all.length !== FORMAT_IDS.length) problems.push(`${key}: duplicates or losses`);
+            if (r.picks.length > 3) problems.push(`${key}: more than three picks`);
+            const fits = players <= 4 && partners !== "teams" && !(scoring === "simple" && players > 2);
+            const placed = r.picks.some((p) => p.id === OM) || r.alsoFits.includes(OM);
+            if (fits !== placed) problems.push(`${key}: Overall Match ${fits ? "lost" : "shown when it doesn't fit"}`);
+            if (r.picks[0]?.id === OM) seenAsTop = true;
+            const top = r.status === "ok" ? r.picks[0].id : "none";
+            if (!validPick.has(top)) problems.push(`${key}: top_pick ${top}`);
+            if (r.picks.some((p) => !FORMAT_IDS.includes(p.id) || p.rank < 1 || p.rank > 3)) problems.push(`${key}: format or rank out of set`);
+          }
+  check("every answer set: deterministic, closed, Overall Match never lost", problems.length === 0, problems.slice(0, 5).join(" | "));
+  // Nothing in the engine's rules puts it first: Best Score and Skins always precede it.
+  check("OM is never the first pick, so top_pick can't carry it", !seenAsTop);
+
+  // Copy by group size and holes.
+  const two = card({ players: 2 });
+  check("OM 2: one match, one amount", two.summary.startsWith("One match over the whole round against one opponent"), two.summary);
+  check("OM 2: fit is one opponent", texts(two.why).some((t) => t.startsWith("Two players: one opponent")));
+  check("OM 2: no per-pair text", ![two.summary, ...texts(two.why), two.tradeoff.text].some((t) => /every pair/i.test(t)));
+  for (const players of [3, 4]) {
+    for (const holes of ["18", "9"]) {
+      const c = card({ players, holes });
+      check(`OM ${players}/${holes}: summary is per pair`, /every pair plays its own match/.test(c.summary), c.summary);
+      check(`OM ${players}/${holes}: no single match implied`, !/^One match/.test(c.summary));
+      check(`OM ${players}/${holes}: fit is per pair`, texts(c.why).some((t) => t.includes("every pair has its own match")));
+      check(`OM ${players}/${holes}: trade-off counts the matches`, /three matches and four make six/.test(c.tradeoff.text), c.tradeoff.text);
+      check(`OM ${players}/${holes}: amount line counts the exposure`, texts(c.agree).some((t) => t.includes("$10 on a player at three and $15 at four")));
+    }
+  }
+  const nine = card({ players: 2, holes: "9" });
+  check("OM 2/9: says nine", nine.summary === "One match over the nine holes against one opponent, for one agreed amount.", nine.summary);
+  check("OM 2/9: trade-off says nine", nine.tradeoff.text.startsWith("Nine holes"), nine.tradeoff.text);
+  check("OM 2/9: press note says the 9th", texts(nine.agree).some((t) => t.includes("press runs to the 9th")));
+  for (const holes of [null, "18", "9"]) {
+    for (const players of [2, 3, 4]) {
+      const c = card({ players, holes });
+      const all = [c.summary, c.tradeoff.text, ...texts(c.why), ...texts(c.agree)].join(" ");
+      check(`OM ${players}/${holes}: never says eighteen holes`, !/\b(18|eighteen)\b(?!th)/i.test(all) && !/18th/.test(all), all.slice(0, 80));
+      for (const handicaps of [null, "close", "apart", "none"]) {
+        const lines = texts(card({ players, holes, handicaps }).agree).join(" ");
+        check(`OM ${players}/${holes}/${handicaps}: no front or back nine in a round of unknown length`, !/front nine|back nine/i.test(lines), lines.slice(0, 80));
+      }
+    }
+  }
+  check("OM 18: no nine-hole note", !texts(card({ players: 2, holes: "18" }).agree).some((t) => t.includes("9th")));
+  // Each line only under its own answers.
+  check("OM 2/18: trade-off is the whole-round one", card({ players: 2, holes: "18" }).tradeoff.text.startsWith("One result for the whole round"));
+  check("OM 3/18: trade-off doesn't mention nine", !card({ players: 3, holes: "18" }).tradeoff.text.includes("nine"));
+  check("OM 3/9: trade-off mentions nine", card({ players: 3, holes: "9" }).tradeoff.text.includes("nine holes"));
+  for (const players of [3, 4]) {
+    check(`OM ${players}: no two-player fit line`, !texts(card({ players }).why).some((t) => t.startsWith("Two players")));
+    check(`OM ${players}: no one-match amount line`, !texts(card({ players }).agree).some((t) => t.startsWith("What the match is worth")));
+  }
+  check("OM 2: one-match amount line", texts(two.agree).some((t) => t.startsWith("What the match is worth")));
+  check("OM 2: no per-match exposure line", !texts(two.agree).some((t) => t.startsWith("What each match is worth")));
+
+  // House rules: net or gross, a push, and presses as a custom.
+  for (const handicaps of [null, "close", "apart", "none"]) {
+    const c = card({ players: 2, handicaps });
+    check(`OM ${handicaps}: scoring basis to agree`, c.agree.some((l) => /net|handicap/i.test(l.text)));
+  }
+  {
+    const c = card({ players: 2 });
+    const press = c.agree.find((l) => l.text.startsWith("Presses:"));
+    check("OM: presses are a custom, not a Rule", /A custom, not a Rule of Golf\./.test(press?.text ?? ""), press?.text);
+    check("OM: press links", eq(press.links.map((l) => l.href), ["/blog/pressing", "/glossary#press"]));
+    check("OM: card links to the guide", c.guide.href === "/games/overall-match");
+    const tied = c.agree.find((l) => /tied match/.test(l.text));
+    check("OM: a tie pushes", /pushes/.test(tied?.text ?? "") && tied.links?.[0].href === "/glossary#push");
+    check("OM: house-rule label shown", chooserUi.agreeNote.includes("not the Rules of Golf"));
+  }
+
+  // Ruled-out wording.
+  {
+    const f = chooserCopy.formats[OM].ruledOut;
+    check("OM ruled out, size: names the range", f.players.includes("2 to 4"));
+    check("OM ruled out, partners: points to team games, at the sizes they take",
+      f.partners.includes("best ball at four players") && f.partners.includes("scramble at four or more"));
+    check("OM ruled out, simple: names the pairs", f.scoring.includes("every pair") && f.scoring.includes("three or six"));
+    const v = chooserView({ ...NO_ANSWERS, players: 2, partners: "teams" }, chooserCopy);
+    check("OM: shows in the empty state's ruled-out list", v.status === "empty" && v.ruledOut.some((x) => x.id === OM && x.reasons[0] === f.partners));
+    const v4 = chooserView({ ...NO_ANSWERS, players: 4, scoring: "simple" }, chooserCopy);
+    check("OM: simple at four, listed with its reason", v4.ruledOut.some((x) => x.id === OM && eq(x.reasons, [f.scoring])));
+    const v6 = chooserView({ ...NO_ANSWERS, players: 6 }, chooserCopy);
+    check("OM: too many, listed with its reason", v6.ruledOut.some((x) => x.id === OM && eq(x.reasons, [f.players])));
+    const also = chooserView({ ...NO_ANSWERS, players: 3 }, chooserCopy);
+    check("OM: also-fits entry links to the guide", also.alsoFits.some((x) => x.id === OM && x.name === "Overall Match" && x.href === "/games/overall-match"));
+  }
+
+  // "In GoLo": registry words only, and no claim the registry doesn't make.
+  {
+    const startsWith = (lines, s) => lines.some((l) => l.text.startsWith(s));
+    const c2 = card({ players: 2 }).golo;
+    check("OM GoLo 2: scored", c2.scored && c2.label === chooserCopy.golo.scored);
+    check("OM GoLo 2: press summary", c2.lines.some((l) => l.text === cap("overall-match-presses").summary));
+    check("OM GoLo 2: scorer-entered", startsWith(c2.lines, "Entered by the scorer, never automatic"));
+    check("OM GoLo 2: a press can't be pressed", startsWith(c2.lines, "A press can't itself be pressed"));
+    check("OM GoLo 2: no pairing line", !startsWith(c2.lines, "Without teams"));
+    check("OM GoLo 2: no shared-presses line", !startsWith(c2.lines, "Two presses a round on the game"));
+    for (const handicaps of [null, "close", "none"]) {
+      check(`OM GoLo ${handicaps}: no full-handicap line`, !startsWith(card({ players: 2, handicaps }).golo.lines, "Everyone gets their full course handicap"));
+    }
+    for (const handicaps of [null, "close", "apart"]) {
+      check(`OM GoLo ${handicaps}: no guests line`, !card({ players: 2, handicaps }).golo.lines.some((l) => l.text === cap("guests").summary));
+    }
+    for (const players of [3, 4]) {
+      const c = card({ players }).golo;
+      check(`OM GoLo ${players}: every pair`, startsWith(c.lines, "Without teams, Nassau and the Overall Match are played head to head"));
+      check(`OM GoLo ${players}: two presses, shared`, startsWith(c.lines, "Two presses a round on the game, shared by every pairing"));
+    }
+    check("OM GoLo 9: nine-hole entry", card({ players: 2, holes: "9" }).golo.lines.some((l) => l.text === cap("nine-hole-rounds").summary));
+    check("OM GoLo 18: no nine-hole entry", !card({ players: 2, holes: "18" }).golo.lines.some((l) => l.text === cap("nine-hole-rounds").summary));
+    check("OM GoLo no handicap: guests entry", card({ players: 2, handicaps: "none" }).golo.lines.some((l) => l.text === cap("guests").summary));
+    check("OM GoLo apart: full course handicap", startsWith(card({ players: 2, handicaps: "apart" }).golo.lines, "Everyone gets their full course handicap"));
+    check("OM GoLo: game is in the registry's list", cap("game-library").label.includes("Overall Match"));
+    // The golf half of the card makes no statement about the app.
+    const golf = Object.values(chooserCopy.formats[OM]).flatMap((v) => (Array.isArray(v) ? v.map((l) => l.text) : []));
+    golf.push(...Object.values(chooserCopy.formats[OM].ruledOut));
+    check("OM: golf copy never names GoLo", !golf.some((t) => /golo|\bthe app\b/i.test(t)), golf.find((t) => /golo|\bthe app\b/i.test(t)));
+    // Nor do GoLo's lines say what the registry rules out.
+    const allLines = chooserCopy.formats[OM].golo.lines.map((l) => l.text).join(" ");
+    check("OM GoLo: nothing claims automatic presses", !/opens? (presses )?automatically|automatic press/i.test(allLines));
+    check("Nassau GoLo: still says it takes no presses", chooserCopy.formats.nassau.golo.lines.some((l) => l.text.startsWith("Nassau doesn")));
+  }
+
+  // Move the real registry under the copy and rebuild it: a capability that
+  // stops being live stops being claimed.
+  {
+    let round = 0;
+    const withStatus = async (id, status, run) => {
+      const entry = cap(id);
+      const was = entry.status;
+      entry.status = status;
+      try {
+        const fresh = await import(new URL(`../lib/content/chooser.ts?status=${++round}`, import.meta.url).href);
+        await run(fresh);
+      } finally {
+        entry.status = was;
+      }
+    };
+    for (const status of ["testing", "planned", "not-offered"]) {
+      await withStatus("overall-match-presses", status, ({ chooserCopy: copy }) => {
+        const c = card({ players: 3, holes: "9" }, copy).golo;
+        check(`presses ${status}: no press claim on the card`, !c.lines.some((l) => /press/i.test(l.text)), JSON.stringify(c.lines));
+        check(`presses ${status}: the game itself stays scored`, c.scored);
+        check(`presses ${status}: house-rule advice stays`, card({ players: 3 }, copy).agree.some((l) => l.text.startsWith("Presses:")));
+      });
+      await withStatus("nine-hole-rounds", status, ({ chooserCopy: copy }) => {
+        check(`nine holes ${status}: line drops`, !card({ players: 2, holes: "9" }, copy).golo.lines.some((l) => l.text === cap("nine-hole-rounds").summary));
+      });
+      await withStatus("guests", status, ({ chooserCopy: copy }) => {
+        check(`guests ${status}: line drops`, !card({ players: 2, handicaps: "none" }, copy).golo.lines.some((l) => l.text === cap("guests").summary));
+      });
+      await withStatus("handicap-strokes", status, ({ chooserCopy: copy }) => {
+        check(`strokes ${status}: line drops`, !card({ players: 2, handicaps: "apart" }, copy).golo.lines.some((l) => l.text.startsWith("Everyone gets their full")));
+      });
+      await withStatus("game-library", status, ({ chooserCopy: copy, chooserTable: table }) => {
+        const c = card({ players: 2 }, copy).golo;
+        const rule = FORMAT_RULES.find((r) => r.id === OM);
+        const expected = status === "testing" ? copy.golo.testing : copy.golo.notScored;
+        check(`game ${status}: card isn't scored`, !c.scored && c.label === expected, c.label);
+        check(`game ${status}: no present-tense GoLo lines under it`, card({ players: 3, holes: "9", handicaps: "apart" }, copy).golo.lines.length === 0);
+        const cell = goloCell(rule, copy.formats[OM].golo, table.words.golo);
+        check(`game ${status}: table agrees`, cell === (status === "testing" ? table.words.golo.testing : table.words.golo.no), cell);
+      });
+    }
+    check("registry restored", ["overall-match-presses", "nine-hole-rounds", "guests", "handicap-strokes", "game-library"].every((id) => cap(id).status === "live"));
+  }
+
+  // The page's words agree with the rules.
+  {
+    const how = chooserHow.rules.map((r) => r.body).join(" ");
+    const fixed = chooserHow.rules.find((r) => r.body.includes("fixed order:")).body.split("fixed order:")[1].replace(/\.$/, "");
+    const shown = fixed.split(",").map((s) => s.trim().toLowerCase());
+    const engineOrder = FORMAT_RULES.map((r) => chooserCopy.formats[r.id].name.toLowerCase());
+    check("how it decides: the fixed order is the engine's",
+      shown.length === engineOrder.length && shown.every((name, i) => engineOrder[i].startsWith(name)),
+      `${shown.join(", ")} vs ${engineOrder.join(", ")}`);
+    check("how it decides: size rule names it", /Overall Match or Nassau and Bingo Bango Bongo up to four/.test(how));
+    check("how it decides: simplicity rule names its pairings", /an Overall Match and a Nassau among three or four players/.test(how) && /three pairings at three, six at four/.test(how));
+    check("how it decides: nine holes names it", /Over nine holes an Overall Match runs over the nine/.test(how));
+    check("worked example: prose rules Overall Match out on simplicity", chooserExample.steps[0].includes("Overall Match"));
+    const r = choose(chooserExample.answers);
+    check("worked example: Overall Match ruled out on simplicity", eq(r.ruledOut.find((x) => x.id === OM)?.reasons, ["scoring"]));
+    check("worked example: expected result unchanged", eq(chooserExample.expected, ["scramble", "best-score", "skins"]));
+    check("table: Overall Match row", simpleCell(FORMAT_RULES.find((x) => x.id === OM), chooserTable.words.simple) === "With 2 players");
+  }
+
+  // The Overall Match's id in the two events: sent with consent, not without.
+  {
+    const sent = [];
+    const run = (allowed, event, params) => {
+      globalThis.window = { __goloAnalyticsAllowed: allowed, gtag: (...args) => sent.push(args) };
+      track(event, params);
+      delete globalThis.window;
+    };
+    // From the real result: rank 3, the only place it's picked. top_pick is
+    // hand-built, since the rules can't put it first; this only shows track()
+    // wouldn't alter the id if they ever did.
+    const omPick = ask({ players: 2 }).picks.find((p) => p.id === OM);
+    const result = { group: "2/-/-/-/-", result_count: 3, top_pick: OM };
+    const click = { format: omPick?.id, rank: omPick?.rank };
+    check("analytics: at two players it's rank 3", omPick?.rank === 3);
+    run(false, "chooser_result", result);
+    run(undefined, "chooser_guide_click", click);
+    check("analytics: nothing without consent", sent.length === 0, JSON.stringify(sent));
+    run(true, "chooser_result", result);
+    run(true, "chooser_guide_click", click);
+    check("analytics: top_pick carries the id unchanged", eq(sent[0], ["event", "chooser_result", result]), JSON.stringify(sent[0]));
+    check("analytics: format carries the id unchanged", eq(sent[1], ["event", "chooser_guide_click", click]), JSON.stringify(sent[1]));
+    check("analytics: an answer can't carry a format id", !isChooserParam("format", OM) && !isChooserParam("top_pick", OM) && !isChooserParam("players", OM));
+  }
+
+  // /llms.txt and the sitemap are built from the content layer. The route pulls
+  // in modules this harness can't load, so read its source; the built output
+  // is checked in the browser pass.
+  {
+    const route = readFileSync(join(root, "app/llms.txt/route.ts"), "utf8");
+    const sitemap = readFileSync(join(root, "app/sitemap.ts"), "utf8");
+    check("llms.txt: lists the chooser from its metadata", route.includes("chooserMeta.description") && route.includes('absolute("/games/chooser")'));
+    check("llms.txt: lists every guide with content, Overall Match among them", route.includes("gameDetailSlugsWithContent.map") && gameDetailSlugsWithContent.includes(OM));
+    check("llms.txt: lists live capabilities, presses among them", route.includes('capabilitiesWithStatus("live")') && cap("overall-match-presses").status === "live");
+    check("sitemap: has the chooser", sitemap.includes("/games/chooser"));
+    check("no new route for the format", !existsSync(join(root, "app/games/chooser/overall-match")));
+  }
 }
 
 /* --------------------------------------------------------------- result */

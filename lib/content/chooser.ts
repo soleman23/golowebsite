@@ -39,6 +39,15 @@ function goloFrom(id: CapabilityId | null, scoredFor?: GoloCopy["scoredFor"]): O
   return { capability: id, status: id ? capability(id).status : null, ...(scoredFor ? { scoredFor } : {}) };
 }
 
+/**
+ * Lines that say what GoLo does, shown only while the registry entry behind
+ * them is live, so a capability moved to testing or planned drops out instead
+ * of reading as live under the card's verdict.
+ */
+function whileLive(id: CapabilityId, lines: readonly Line[]): readonly Line[] {
+  return capability(id).status === "live" ? lines : [];
+}
+
 /** The registry's game-library limit: without teams, two to four players. */
 const GOLO_SOLO = { min: 2, max: 4 } as const;
 const SOLO_MAX = { players: { max: GOLO_SOLO.max } } as const;
@@ -56,7 +65,7 @@ const netOrGross: readonly Line[] = [
     when: { handicaps: ["apart"] },
   },
   {
-    text: "A number for anyone without a handicap, agreed before the round, not after the front nine.",
+    text: "A number for anyone without a handicap, agreed before the round, not partway through it.",
     links: [{ href: "/blog/no-handicap-fair-game", label: "How to agree one" }],
     when: { handicaps: ["none"] },
   },
@@ -136,6 +145,68 @@ const skins: FormatCopy = {
   },
 };
 
+const overallMatch: FormatCopy = {
+  name: "Overall Match",
+  summary: [
+    { text: "One match over the nine holes against one opponent, for one agreed amount.", when: { holes: ["9"], players: { max: 2 } } },
+    { text: "Over nine holes, every pair plays its own match, each for the agreed amount.", when: { holes: ["9"] } },
+    { text: "One match over the whole round against one opponent, for one agreed amount.", when: { players: { max: 2 } } },
+    { text: "Head to head, every pair plays its own match over the whole round, each for the agreed amount." },
+  ],
+  fit: [
+    { text: "Two players: one opponent, one match, one amount.", when: { players: { max: 2 } } },
+    { text: "Head to head among three or four: every pair has its own match, so there is no single match for the group.", when: { players: { min: 3 } } },
+  ],
+  guide: { href: "/games/overall-match", label: "Overall Match guide" },
+  more: { href: "/blog/match-play-vs-stroke-play", label: "Match play vs. stroke play" },
+  tradeoff: [
+    { text: "Nine holes leave less time to come back from a bad start.", when: { holes: ["9"], players: { max: 2 } } },
+    { text: "Three players make three matches and four make six, with nine holes to come back in.", when: { holes: ["9"] } },
+    { text: "One result for the whole round: once one side is well ahead, there’s little left to play for unless the group allows presses.", when: { players: { max: 2 } } },
+    { text: "Three players make three matches and four make six, each with its own standing: more to follow than one total." },
+  ],
+  agree: [
+    ...netOrGross,
+    { text: "What the match is worth: one amount, paid once, however many holes up the winner finishes.", when: { players: { max: 2 } } },
+    { text: "What each match is worth. Everyone plays each of the others, so before presses $5 a match puts up to $10 on a player at three and $15 at four.", when: { players: { min: 3 } } },
+    {
+      text: "Presses: whether a side that’s 2 down can start a new match, for how much, how many, and whether a press can itself be pressed. A custom, not a Rule of Golf.",
+      links: [
+        { href: "/blog/pressing", label: "On pressing" },
+        { href: "/glossary#press", label: "Press, defined" },
+      ],
+    },
+    { text: "Over nine holes a press runs to the 9th, so it has few holes to be won on.", when: { holes: ["9"] } },
+    { text: "What a tied match does: it pushes, and nothing changes hands.", links: [{ href: "/glossary#push", label: "Push" }] },
+  ],
+  reasons: {},
+  ruledOut: {
+    players: "Head to head it takes 2 to 4 players. Bigger groups play it between teams.",
+    partners: "Listed here head to head, each player against each other player. Between two sides it can sit on top of best ball at four players, or a scramble at four or more.",
+    scoring: "With three or four players, every pair has its own match: three or six at once.",
+  },
+  golo: {
+    ...goloFrom("game-library", GOLO_SOLO),
+    lines: whileLive("game-library", [
+      {
+        text: registryLine("game-library", "Without teams, Nassau and the Overall Match are played head to head"),
+        when: { players: { min: 3 } },
+      },
+      ...whileLive("overall-match-presses", [
+        { text: summary("overall-match-presses") },
+        { text: registryLine("overall-match-presses", "Entered by the scorer, never automatic") },
+        { text: registryLine("overall-match-presses", "A press can't itself be pressed") },
+        { text: registryLine("overall-match-presses", "Two presses a round on the game, shared by every pairing"), when: { players: { min: 3 } } },
+      ]),
+      ...whileLive("handicap-strokes", [
+        { text: registryLine("handicap-strokes", "Everyone gets their full course handicap"), when: { handicaps: ["apart"] } },
+      ]),
+      ...whileLive("nine-hole-rounds", [{ text: summary("nine-hole-rounds"), when: { holes: ["9"] } }]),
+      ...whileLive("guests", [{ text: summary("guests"), when: { handicaps: ["none"] } }]),
+    ]),
+  },
+};
+
 const nassau: FormatCopy = {
   name: "Nassau",
   summary: [
@@ -197,7 +268,7 @@ const bestBall: FormatCopy = {
   agree: [
     ...netOrGross,
     { text: "Who partners whom, and how the sides are picked." },
-    { text: "Which games run between the two sides: a Nassau, skins or Best Score." },
+    { text: "Which games run between the two sides: a Nassau, an Overall Match, skins or Best Score." },
   ],
   reasons: {},
   ruledOut: {
@@ -360,6 +431,7 @@ export const chooserCopy: ChooserCopy = {
   formats: {
     "best-score": bestScore,
     skins,
+    "overall-match": overallMatch,
     nassau,
     "best-ball": bestBall,
     scramble,
@@ -489,11 +561,11 @@ export const chooserHow = {
   rules: [
     {
       title: "Size and partners rule a game in or out",
-      body: "Each format has a player range: Wolf and best ball need exactly four, Nines exactly three, a scramble at least four, Skins up to six, a head-to-head Nassau and Bingo Bango Bongo up to four. Asking for partners leaves the team games and Wolf; asking to play on your own leaves the rest.",
+      body: "Each format has a player range: Wolf and best ball need exactly four, Nines exactly three, a scramble at least four, Skins up to six, a head-to-head Overall Match or Nassau and Bingo Bango Bongo up to four. Asking for partners leaves the team games and Wolf; asking to play on your own leaves the rest.",
     },
     {
       title: "“Keep it simple” rules out the busy ones",
-      body: "Wolf, Bingo Bango Bongo and Nines drop out, and so does a Nassau among three or four players, where every pair has its own three matches.",
+      body: "Wolf, Bingo Bango Bongo and Nines drop out, and so do an Overall Match and a Nassau among three or four players, where every pair has its own: three pairings at three, six at four.",
     },
     {
       title: "Handicaps change the order, never the list",
@@ -501,11 +573,11 @@ export const chooserHow = {
     },
     {
       title: "Then simplicity, then group size, then a fixed order",
-      body: "“Keep it simple” puts Best Score first. A format made for exactly your number comes next: Nines for three, Wolf for four. Anything still level keeps a fixed order: Best Score, Skins, Nassau, best ball, scramble, Bingo Bango Bongo, Wolf, Nines.",
+      body: "“Keep it simple” puts Best Score first. A format made for exactly your number comes next: Nines for three, Wolf for four. Anything still level keeps a fixed order: Best Score, Skins, Overall Match, Nassau, best ball, scramble, Bingo Bango Bongo, Wolf, Nines.",
     },
     {
       title: "Nine holes changes the notes",
-      body: "Over nine holes a Nassau is one match, a skins carry ends on the 9th, and Wolf needs a rule for the 9th tee. Each card says what to agree.",
+      body: "Over nine holes an Overall Match runs over the nine, a skins carry ends on the 9th, and Wolf needs a rule for the 9th tee. Each card says what to agree.",
     },
   ],
 };
@@ -529,6 +601,7 @@ export const chooserTable = {
 export const chooserTableCells: Record<FormatId, { partners: string; strokes: string }> = {
   "best-score": { partners: "On your own", strokes: "Net or gross" },
   skins: { partners: "On your own", strokes: "Net or gross" },
+  "overall-match": { partners: "Head to head", strokes: "Net or gross" },
   nassau: { partners: "Head to head", strokes: "Net or gross" },
   "best-ball": { partners: "Two sides of two", strokes: "Net or gross" },
   scramble: { partners: "Teams, one ball", strokes: "Team handicap" },
@@ -549,7 +622,7 @@ export const chooserExample = {
   intro:
     "Four players with course handicaps of 6, 12, 18 and 24, 18 holes, nobody fussed about partners, and two of them would rather not count anything complicated. The answers: 4 players, either, further apart, keep it simple, 18 holes.",
   steps: [
-    "Size and partners rule out Nines, which needs three. “Keep it simple” rules out Wolf, Bingo Bango Bongo and the head-to-head Nassau, which among four players means six pairings.",
+    "Size and partners rule out Nines, which needs three. “Keep it simple” rules out Wolf, Bingo Bango Bongo, and the head-to-head Overall Match and Nassau, which among four players mean six pairings.",
     "That leaves Best Score, Skins, best ball and a scramble. Far-apart handicaps put the scramble first: one ball a team, so the 6 and the 24 can play together and both count.",
     "Best Score comes next as the simplest game to explain, played net. Skins and best ball keep the fixed order, so Skins is third and best ball is listed as also fitting.",
   ],
