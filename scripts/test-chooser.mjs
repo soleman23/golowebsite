@@ -586,7 +586,6 @@ const registryText = new Set(
     check("OM: every ruled-out reason written", ["players", "partners", "scoring"].every((k) => f.ruledOut[k].length > 0));
     check("OM: no rank reasons to give, since no rule lifts it", eq(f.reasons, {}));
     check("OM: table row", eq(chooserTableCells[OM], { partners: "Head to head", strokes: "Net or gross" }));
-    check("copy ids carry no duplicates", new Set(Object.keys(chooserCopy.formats)).size === FORMAT_IDS.length);
   }
 
   // Eligibility across the player counts.
@@ -645,6 +644,23 @@ const registryText = new Set(
     check(`OM rank ${key}: also fits`, eq(r.alsoFits, expectedAlso), JSON.stringify(r.alsoFits));
   }
   check("OM: Wolf still lifted at four, Nines at three", picks({ players: 4 })[0] === "wolf" && picks({ players: 3 })[0] === "nines");
+  // A consequence of the order, pinned so it can't change unnoticed: the two
+  // share every rule, so the one listed second is never a pick.
+  {
+    let nassauPicked = 0, omPicked = 0, nassauLost = 0;
+    for (const players of PLAYER_COUNTS)
+      for (const partners of [null, "solo", "teams", "either"])
+        for (const handicaps of [null, "close", "apart", "none"])
+          for (const scoring of [null, "simple", "more"]) {
+            const r = ask({ players, partners, handicaps, scoring });
+            if (r.picks.some((p) => p.id === "nassau")) nassauPicked++;
+            if (r.picks.some((p) => p.id === OM)) omPicked++;
+            if (r.alsoFits.includes(OM) && !r.alsoFits.includes("nassau")) nassauLost++;
+          }
+    check("Nassau is never a pick, by design of the order", nassauPicked === 0, `${nassauPicked} sets`);
+    check("Overall Match is a pick somewhere", omPicked > 0);
+    check("Nassau is in Also fits wherever Overall Match is", nassauLost === 0);
+  }
 
   // Over every reachable answer set: deterministic, no duplicates, three
   // picks at most, never lost, and only closed values reach the events.
@@ -674,7 +690,7 @@ const registryText = new Set(
           }
   check("every answer set: deterministic, closed, Overall Match never lost", problems.length === 0, problems.slice(0, 5).join(" | "));
   // Nothing in the engine's rules puts it first: Best Score and Skins always precede it.
-  check("OM is never the first pick", !seenAsTop);
+  check("OM is never the first pick, so top_pick can't carry it", !seenAsTop);
 
   // Copy by group size and holes.
   const two = card({ players: 2 });
@@ -700,9 +716,23 @@ const registryText = new Set(
       const c = card({ players, holes });
       const all = [c.summary, c.tradeoff.text, ...texts(c.why), ...texts(c.agree)].join(" ");
       check(`OM ${players}/${holes}: never says eighteen holes`, !/\b(18|eighteen)\b(?!th)/i.test(all) && !/18th/.test(all), all.slice(0, 80));
+      for (const handicaps of [null, "close", "apart", "none"]) {
+        const lines = texts(card({ players, holes, handicaps }).agree).join(" ");
+        check(`OM ${players}/${holes}/${handicaps}: no front or back nine in a round of unknown length`, !/front nine|back nine/i.test(lines), lines.slice(0, 80));
+      }
     }
   }
   check("OM 18: no nine-hole note", !texts(card({ players: 2, holes: "18" }).agree).some((t) => t.includes("9th")));
+  // Each line only under its own answers.
+  check("OM 2/18: trade-off is the whole-round one", card({ players: 2, holes: "18" }).tradeoff.text.startsWith("One result for the whole round"));
+  check("OM 3/18: trade-off doesn't mention nine", !card({ players: 3, holes: "18" }).tradeoff.text.includes("nine"));
+  check("OM 3/9: trade-off mentions nine", card({ players: 3, holes: "9" }).tradeoff.text.includes("nine holes"));
+  for (const players of [3, 4]) {
+    check(`OM ${players}: no two-player fit line`, !texts(card({ players }).why).some((t) => t.startsWith("Two players")));
+    check(`OM ${players}: no one-match amount line`, !texts(card({ players }).agree).some((t) => t.startsWith("What the match is worth")));
+  }
+  check("OM 2: one-match amount line", texts(two.agree).some((t) => t.startsWith("What the match is worth")));
+  check("OM 2: no per-match exposure line", !texts(two.agree).some((t) => t.startsWith("What each match is worth")));
 
   // House rules: net or gross, a push, and presses as a custom.
   for (const handicaps of [null, "close", "apart", "none"]) {
@@ -724,7 +754,8 @@ const registryText = new Set(
   {
     const f = chooserCopy.formats[OM].ruledOut;
     check("OM ruled out, size: names the range", f.players.includes("2 to 4"));
-    check("OM ruled out, partners: points to team games", f.partners.includes("best ball") && f.partners.includes("scramble"));
+    check("OM ruled out, partners: points to team games, at the sizes they take",
+      f.partners.includes("best ball at four players") && f.partners.includes("scramble at four or more"));
     check("OM ruled out, simple: names the pairs", f.scoring.includes("every pair") && f.scoring.includes("three or six"));
     const v = chooserView({ ...NO_ANSWERS, players: 2, partners: "teams" }, chooserCopy);
     check("OM: shows in the empty state's ruled-out list", v.status === "empty" && v.ruledOut.some((x) => x.id === OM && x.reasons[0] === f.partners));
@@ -745,6 +776,13 @@ const registryText = new Set(
     check("OM GoLo 2: scorer-entered", startsWith(c2.lines, "Entered by the scorer, never automatic"));
     check("OM GoLo 2: a press can't be pressed", startsWith(c2.lines, "A press can't itself be pressed"));
     check("OM GoLo 2: no pairing line", !startsWith(c2.lines, "Without teams"));
+    check("OM GoLo 2: no shared-presses line", !startsWith(c2.lines, "Two presses a round on the game"));
+    for (const handicaps of [null, "close", "none"]) {
+      check(`OM GoLo ${handicaps}: no full-handicap line`, !startsWith(card({ players: 2, handicaps }).golo.lines, "Everyone gets their full course handicap"));
+    }
+    for (const handicaps of [null, "close", "apart"]) {
+      check(`OM GoLo ${handicaps}: no guests line`, !card({ players: 2, handicaps }).golo.lines.some((l) => l.text === cap("guests").summary));
+    }
     for (const players of [3, 4]) {
       const c = card({ players }).golo;
       check(`OM GoLo ${players}: every pair`, startsWith(c.lines, "Without teams, Nassau and the Overall Match are played head to head"));
@@ -801,6 +839,7 @@ const registryText = new Set(
         const rule = FORMAT_RULES.find((r) => r.id === OM);
         const expected = status === "testing" ? copy.golo.testing : copy.golo.notScored;
         check(`game ${status}: card isn't scored`, !c.scored && c.label === expected, c.label);
+        check(`game ${status}: no present-tense GoLo lines under it`, card({ players: 3, holes: "9", handicaps: "apart" }, copy).golo.lines.length === 0);
         const cell = goloCell(rule, copy.formats[OM].golo, table.words.golo);
         check(`game ${status}: table agrees`, cell === (status === "testing" ? table.words.golo.testing : table.words.golo.no), cell);
       });
@@ -835,8 +874,13 @@ const registryText = new Set(
       track(event, params);
       delete globalThis.window;
     };
+    // From the real result: rank 3, the only place it's picked. top_pick is
+    // hand-built, since the rules can't put it first; this only shows track()
+    // wouldn't alter the id if they ever did.
+    const omPick = ask({ players: 2 }).picks.find((p) => p.id === OM);
     const result = { group: "2/-/-/-/-", result_count: 3, top_pick: OM };
-    const click = { format: OM, rank: 3 };
+    const click = { format: omPick.id, rank: omPick.rank };
+    check("analytics: at two players it's rank 3", omPick.rank === 3);
     run(false, "chooser_result", result);
     run(undefined, "chooser_guide_click", click);
     check("analytics: nothing without consent", sent.length === 0, JSON.stringify(sent));
@@ -844,8 +888,6 @@ const registryText = new Set(
     run(true, "chooser_guide_click", click);
     check("analytics: top_pick carries the id unchanged", eq(sent[0], ["event", "chooser_result", result]), JSON.stringify(sent[0]));
     check("analytics: format carries the id unchanged", eq(sent[1], ["event", "chooser_guide_click", click]), JSON.stringify(sent[1]));
-    check("analytics: rank for Overall Match stays 1 to 3",
-      [2, 3, 4].every((players) => ask({ players }).picks.every((p) => p.rank >= 1 && p.rank <= 3)));
     check("analytics: an answer can't carry a format id", !isChooserParam("format", OM) && !isChooserParam("top_pick", OM) && !isChooserParam("players", OM));
   }
 

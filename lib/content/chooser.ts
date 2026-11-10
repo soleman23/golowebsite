@@ -40,9 +40,9 @@ function goloFrom(id: CapabilityId | null, scoredFor?: GoloCopy["scoredFor"]): O
 }
 
 /**
- * Lines backed by a registry entry other than the format's own. The card's
- * verdict follows the format's entry; these follow theirs, so a capability
- * moved to testing or planned drops out instead of reading as live.
+ * Lines that say what GoLo does, shown only while the registry entry behind
+ * them is live, so a capability moved to testing or planned drops out instead
+ * of reading as live under the card's verdict.
  */
 function whileLive(id: CapabilityId, lines: readonly Line[]): readonly Line[] {
   return capability(id).status === "live" ? lines : [];
@@ -65,7 +65,7 @@ const netOrGross: readonly Line[] = [
     when: { handicaps: ["apart"] },
   },
   {
-    text: "A number for anyone without a handicap, agreed before the round, not after the front nine.",
+    text: "A number for anyone without a handicap, agreed before the round, not partway through it.",
     links: [{ href: "/blog/no-handicap-fair-game", label: "How to agree one" }],
     when: { handicaps: ["none"] },
   },
@@ -162,7 +162,7 @@ const overallMatch: FormatCopy = {
   tradeoff: [
     { text: "Nine holes leave less time to come back from a bad start.", when: { holes: ["9"], players: { max: 2 } } },
     { text: "Three players make three matches and four make six, with nine holes to come back in.", when: { holes: ["9"] } },
-    { text: "One result for the whole round: once the match is out of reach, nothing is left to play for unless the group allows presses.", when: { players: { max: 2 } } },
+    { text: "One result for the whole round: once one side is well ahead, there’s little left to play for unless the group allows presses.", when: { players: { max: 2 } } },
     { text: "Three players make three matches and four make six, each with its own standing: more to follow than one total." },
   ],
   agree: [
@@ -182,12 +182,12 @@ const overallMatch: FormatCopy = {
   reasons: {},
   ruledOut: {
     players: "Head to head it takes 2 to 4 players. Bigger groups play it between teams.",
-    partners: "Listed here head to head, each player against each other player. Between two sides, play it on top of best ball or a scramble.",
+    partners: "Listed here head to head, each player against each other player. Between two sides it can sit on top of best ball at four players, or a scramble at four or more.",
     scoring: "With three or four players, every pair has its own match: three or six at once.",
   },
   golo: {
     ...goloFrom("game-library", GOLO_SOLO),
-    lines: [
+    lines: whileLive("game-library", [
       {
         text: registryLine("game-library", "Without teams, Nassau and the Overall Match are played head to head"),
         when: { players: { min: 3 } },
@@ -203,7 +203,7 @@ const overallMatch: FormatCopy = {
       ]),
       ...whileLive("nine-hole-rounds", [{ text: summary("nine-hole-rounds"), when: { holes: ["9"] } }]),
       ...whileLive("guests", [{ text: summary("guests"), when: { handicaps: ["none"] } }]),
-    ],
+    ]),
   },
 };
 
@@ -577,7 +577,7 @@ export const chooserHow = {
     },
     {
       title: "Nine holes changes the notes",
-      body: "Over nine holes an Overall Match runs over the nine, a Nassau is one match, a skins carry ends on the 9th, and Wolf needs a rule for the 9th tee. Each card says what to agree.",
+      body: "Over nine holes an Overall Match runs over the nine, a skins carry ends on the 9th, and Wolf needs a rule for the 9th tee. Each card says what to agree.",
     },
   ],
 };

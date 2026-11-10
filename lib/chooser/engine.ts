@@ -101,8 +101,9 @@ export const FORMAT_RULES: readonly FormatRule[] = [
   { id: "best-score", style: "solo", players: { min: 2, max: 12 }, simpleUpTo: 12 },
   // The roster's "2–6 players".
   { id: "skins", style: "solo", players: { min: 2, max: 6 }, simpleUpTo: 12 },
-  // Ahead of Nassau on purpose (#273): between two players it's the simpler
-  // match, and one place lower it would never reach the three picks.
+  // Ahead of Nassau on purpose (#273). The two share every rule and no ranking
+  // key separates them, and Best Score and Skins fit wherever they do, so only
+  // the one listed first can be a pick. The other is always in "Also fits".
   { id: "overall-match", style: "solo", players: { min: 2, max: 4 }, simpleUpTo: 2 },
   { id: "nassau", style: "solo", players: { min: 2, max: 4 }, simpleUpTo: 2 },
   { id: "best-ball", style: "teams", players: { min: 4, max: 4 }, simpleUpTo: 12 },
