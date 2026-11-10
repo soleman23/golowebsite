@@ -655,7 +655,8 @@ const registryText = new Set(
             const r = ask({ players, partners, handicaps, scoring });
             if (r.picks.some((p) => p.id === "nassau")) nassauPicked++;
             if (r.picks.some((p) => p.id === OM)) omPicked++;
-            if (r.alsoFits.includes(OM) && !r.alsoFits.includes("nassau")) nassauLost++;
+            const omFits = r.alsoFits.includes(OM) || r.picks.some((p) => p.id === OM);
+            if (omFits && !r.alsoFits.includes("nassau")) nassauLost++;
           }
     check("Nassau is never a pick, by design of the order", nassauPicked === 0, `${nassauPicked} sets`);
     check("Overall Match is a pick somewhere", omPicked > 0);
@@ -879,8 +880,8 @@ const registryText = new Set(
     // wouldn't alter the id if they ever did.
     const omPick = ask({ players: 2 }).picks.find((p) => p.id === OM);
     const result = { group: "2/-/-/-/-", result_count: 3, top_pick: OM };
-    const click = { format: omPick.id, rank: omPick.rank };
-    check("analytics: at two players it's rank 3", omPick.rank === 3);
+    const click = { format: omPick?.id, rank: omPick?.rank };
+    check("analytics: at two players it's rank 3", omPick?.rank === 3);
     run(false, "chooser_result", result);
     run(undefined, "chooser_guide_click", click);
     check("analytics: nothing without consent", sent.length === 0, JSON.stringify(sent));
