@@ -318,6 +318,13 @@ export const capabilities = [
     limits: [
       "Everyone gets their full course handicap; no 90% or other allowance except a scramble's team handicap, and nobody plays off the low man.",
       "One set of tees per group.",
+      // Owner-confirmed 2026-11-11 against the scoring engine of production
+      // web build 1.2.2 (35) (golf-app src/engines/handicap.js:183): +1.5 on
+      // par-72 tees rated 71.8 / Slope 131 gives +2, strokes back on stroke
+      // index 18 and 17, gross 71 → net 73. Checked for a new 18-hole net
+      // round with a complete stroke-index card; nine holes not stated.
+      // Doesn't change `verified` (soleman23/golowebsite#283).
+      "A plus Index is accepted: in an 18-hole net round, a plus course handicap adds strokes to the player's net score from stroke index 18, then 17, and so on.",
     ],
     verified: APP_CHECK_1029,
     roadmap: true,

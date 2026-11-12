@@ -123,6 +123,8 @@ Subtotal: 10 MVP + 14 expansion = 24.
 
 ## C. Side games (26)
 
+**Expansion batch 2 (#168, November 11, 2026):** rows 67–70 and 72 are `approved` (owner, 2026-11-11), not yet published (`expansion-batch-2.md`): the four junk items as golf education with no GoLo note and no `junk` tag, and Double or Nothing with a general definition.
+
 The spec calls this category "Side games and friendly wagers". The public label is **Side games** (owner, 2026-10-29: Q1), because the site's vocabulary check fails "wager" anywhere in site copy. The category id is `side-games`.
 
 The app has no junk board (owner, 2026-10-29, #172). Junk, Greenie, Sandy and every junk item are golf education with no GoLo note. Birdie and eagle bounties exist in GoLo only as the Skins game's birdie and eagle skin settings.
@@ -161,6 +163,8 @@ Subtotal: 10 MVP + 16 expansion = 26.
 **Expansion batch 1 (#168, November 11, 2026):** rows 59–66, 71, 73 and 74 are drafted at `in-review` (`expansion-batch-1.md`). Birdie Bounty and Eagle Bounty were drafted without the `junk` tag, following the owner's 2026-10-30 decision that bounties are Skins options. Rows 67–70 (the four junk items) and 72 (Double or Nothing) are kept by the owner's decision of 2026-11-11 and go into batch 2. That keeps batch 1 within #168's 10–15 terms. Double or Nothing still needs a general definition or sourcing to community usage, labelled as such.
 
 ## D. Handicaps and course ratings (20)
+
+**Expansion batch 2 (#168, November 11, 2026):** rows 85–94 are `approved` (owner, 2026-11-11), not yet published (`expansion-batch-2.md`), with rows 67–70 and 72 from § C. Row 84 (Score Differential) is MVP and already published.
 
 Every record here is rules-sensitive. Worked examples are recomputed by the reviewer from shown inputs (#160). GoLo notes keep official rules apart from GoLo's narrower implementation: full Course Handicap for everyone, one set of tees per group, no percentage allowance except a scramble's team handicap, nobody plays off the low man (`handicap-strokes`; `handicap-allowances` and `mixed-tees` are planned).
 

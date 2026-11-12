@@ -21,6 +21,7 @@ import { handicapsTerms } from "./terms/handicaps";
 import { scoringShotsTerms } from "./terms/scoring-shots";
 import { courseEquipmentSlangTerms } from "./terms/course-equipment-slang";
 import { sideGamesBatch1Terms } from "./terms/side-games-batch-1";
+import { expansionBatch2Terms } from "./terms/expansion-batch-2";
 
 export const glossaryTerms: GlossaryTerm[] = [
   ...formatsTerms,
@@ -29,4 +30,5 @@ export const glossaryTerms: GlossaryTerm[] = [
   ...scoringShotsTerms,
   ...courseEquipmentSlangTerms,
   ...sideGamesBatch1Terms,
+  ...expansionBatch2Terms,
 ];
