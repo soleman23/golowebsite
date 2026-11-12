@@ -4,9 +4,8 @@
  * November 11, 2026, with merge M6 applied (Dance Floor is an alias of
  * Putting Green).
  *
- * APPROVED, NOT PUBLISHED. Nothing here reaches a public page, the search
- * index, the sitemap, llms.txt or structured data until a release PR
- * publishes it; approved records show only in local review (../selectors).
+ * PUBLISHED by the batch 5 release PR, which the owner asked for after
+ * approving all 15 ("merged after they are reviewed and ready").
  * Expansion records go back to the owner's
  * review roles (editorial-review.md § Roles): an agent drafted these and
  * prepared the checks in docs/glossary/expansion-batch-5.md. On 2026-11-11
@@ -35,6 +34,9 @@ const ROG_BASE = "https://www.randa.org/en/rog/";
  * Approval is the owner's.
  */
 const REVIEWED_ON = "2026-11-11";
+
+/** The day the release PR merged and deployed. */
+const PUBLISHED_ON = "2026-11-11";
 
 const reviewLog: ReviewEntry[] = [
   {
@@ -148,7 +150,8 @@ export const expansionBatch5Terms: GlossaryTerm[] = [
     reviewLog,
     reviewedBy: "owner",
     reviewedOn: REVIEWED_ON,
-    status: "approved",
+    publishedOn: PUBLISHED_ON,
+    status: "published",
   },
   {
     id: "fringe",
@@ -185,7 +188,8 @@ export const expansionBatch5Terms: GlossaryTerm[] = [
     reviewLog,
     reviewedBy: "owner",
     reviewedOn: REVIEWED_ON,
-    status: "approved",
+    publishedOn: PUBLISHED_ON,
+    status: "published",
   },
   {
     id: "general-area",
@@ -209,7 +213,8 @@ export const expansionBatch5Terms: GlossaryTerm[] = [
     reviewLog,
     reviewedBy: "owner",
     reviewedOn: REVIEWED_ON,
-    status: "approved",
+    publishedOn: PUBLISHED_ON,
+    status: "published",
   },
   {
     id: "out-of-bounds",
@@ -241,7 +246,8 @@ export const expansionBatch5Terms: GlossaryTerm[] = [
     reviewLog,
     reviewedBy: "owner",
     reviewedOn: REVIEWED_ON,
-    status: "approved",
+    publishedOn: PUBLISHED_ON,
+    status: "published",
   },
   {
     id: "provisional-ball",
@@ -272,7 +278,8 @@ export const expansionBatch5Terms: GlossaryTerm[] = [
     reviewLog,
     reviewedBy: "owner",
     reviewedOn: REVIEWED_ON,
-    status: "approved",
+    publishedOn: PUBLISHED_ON,
+    status: "published",
   },
   {
     id: "unplayable-ball",
@@ -300,7 +307,8 @@ export const expansionBatch5Terms: GlossaryTerm[] = [
     reviewLog,
     reviewedBy: "owner",
     reviewedOn: REVIEWED_ON,
-    status: "approved",
+    publishedOn: PUBLISHED_ON,
+    status: "published",
   },
   {
     id: "stroke-and-distance",
@@ -331,7 +339,8 @@ export const expansionBatch5Terms: GlossaryTerm[] = [
     reviewLog,
     reviewedBy: "owner",
     reviewedOn: REVIEWED_ON,
-    status: "approved",
+    publishedOn: PUBLISHED_ON,
+    status: "published",
   },
   {
     id: "relief-area",
@@ -359,7 +368,8 @@ export const expansionBatch5Terms: GlossaryTerm[] = [
     reviewLog,
     reviewedBy: "owner",
     reviewedOn: REVIEWED_ON,
-    status: "approved",
+    publishedOn: PUBLISHED_ON,
+    status: "published",
   },
   {
     id: "nearest-point-of-complete-relief",
@@ -391,7 +401,8 @@ export const expansionBatch5Terms: GlossaryTerm[] = [
     reviewLog,
     reviewedBy: "owner",
     reviewedOn: REVIEWED_ON,
-    status: "approved",
+    publishedOn: PUBLISHED_ON,
+    status: "published",
   },
   {
     id: "ground-under-repair",
@@ -423,7 +434,8 @@ export const expansionBatch5Terms: GlossaryTerm[] = [
     reviewLog,
     reviewedBy: "owner",
     reviewedOn: REVIEWED_ON,
-    status: "approved",
+    publishedOn: PUBLISHED_ON,
+    status: "published",
   },
   {
     id: "temporary-water",
@@ -451,7 +463,8 @@ export const expansionBatch5Terms: GlossaryTerm[] = [
     reviewLog,
     reviewedBy: "owner",
     reviewedOn: REVIEWED_ON,
-    status: "approved",
+    publishedOn: PUBLISHED_ON,
+    status: "published",
   },
   {
     id: "preferred-lies",
@@ -490,7 +503,8 @@ export const expansionBatch5Terms: GlossaryTerm[] = [
     reviewLog,
     reviewedBy: "owner",
     reviewedOn: REVIEWED_ON,
-    status: "approved",
+    publishedOn: PUBLISHED_ON,
+    status: "published",
   },
   {
     id: "ready-golf",
@@ -518,7 +532,8 @@ export const expansionBatch5Terms: GlossaryTerm[] = [
     reviewLog,
     reviewedBy: "owner",
     reviewedOn: REVIEWED_ON,
-    status: "approved",
+    publishedOn: PUBLISHED_ON,
+    status: "published",
   },
   {
     id: "local-rule",
@@ -546,7 +561,8 @@ export const expansionBatch5Terms: GlossaryTerm[] = [
     reviewLog,
     reviewedBy: "owner",
     reviewedOn: REVIEWED_ON,
-    status: "approved",
+    publishedOn: PUBLISHED_ON,
+    status: "published",
   },
   {
     id: "pace-of-play",
@@ -574,6 +590,7 @@ export const expansionBatch5Terms: GlossaryTerm[] = [
     reviewLog,
     reviewedBy: "owner",
     reviewedOn: REVIEWED_ON,
-    status: "approved",
+    publishedOn: PUBLISHED_ON,
+    status: "published",
   },
 ];
