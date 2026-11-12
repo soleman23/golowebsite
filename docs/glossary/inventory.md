@@ -158,7 +158,7 @@ The app has no junk board (owner, 2026-10-29, #172). Junk, Greenie, Sandy and ev
 
 Subtotal: 10 MVP + 16 expansion = 26.
 
-**Expansion batch 1 (#168, November 11, 2026):** rows 59–66, 71, 73 and 74 are drafted at `in-review` (`expansion-batch-1.md`). Birdie Bounty and Eagle Bounty were drafted without the `junk` tag, following the owner's 2026-10-30 decision that bounties are Skins options. Rows 67–70 (the four junk items) and 72 (Double or Nothing) are held back for an owner decision, explained there.
+**Expansion batch 1 (#168, November 11, 2026):** rows 59–66, 71, 73 and 74 are drafted at `in-review` (`expansion-batch-1.md`). Birdie Bounty and Eagle Bounty were drafted without the `junk` tag, following the owner's 2026-10-30 decision that bounties are Skins options. Rows 67–70 (the four junk items) and 72 (Double or Nothing) are kept by the owner's decision of 2026-11-11 and go into batch 2. That keeps batch 1 within #168's 10–15 terms. Double or Nothing still needs a general definition or sourcing to community usage, labelled as such.
 
 ## D. Handicaps and course ratings (20)
 

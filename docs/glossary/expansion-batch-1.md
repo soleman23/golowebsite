@@ -18,10 +18,15 @@ The inventory lists 16 side-games expansion terms. #168 asks for batches of 10 t
 
 `automatic-press`, `point-value`, `buy-in`, `validation`, `net-skins`, `debt-netting`, `birdie-bounty`, `eagle-bounty`, `hammer`, `lone-wolf`, `rabbit`.
 
-**Held back (5), for an owner decision:**
+**Held back (5), kept for batch 2:**
 
-- **Barkie, Poley, Snake, Arnie.** The inventory tags all four `junk`. On 2026-10-30 the owner cut "junk" as a content category: greenies, sandies and birdie or eagle bounties are Skins options in GoLo, and the rest aren't scored. These four would be golf education with no GoLo note, linked to the published Junk record. Before anyone drafts them: keep them in M8, or drop them and substitute four other terms?
-- **Double or Nothing.** No established golf meaning could be sourced. Searches turned up only the general phrase, and a press or a hammer described as "essentially" double or nothing. Recommendation: drop it and substitute another term, logged as a revision in `inventory.md`.
+- **Barkie, Poley, Snake, Arnie.** The inventory tags all four `junk`. On 2026-10-30 the owner cut "junk" as a content category: greenies, sandies and birdie or eagle bounties are Skins options in GoLo, and the rest aren't scored. These four would be golf education with no GoLo note, linked to the published Junk record.
+- **Double or Nothing.** No established golf meaning could be sourced. Searches turned up only the general phrase, and a press or a hammer described as "essentially" double or nothing.
+
+**Owner decision (2026-11-11): keep all five.** The owner's words, given in another session and relayed here, were "Keep these". They aren't added to this PR, because that would make 16 terms, over #168's cap of 15 per batch. They go into batch 2, so batch 2 starts with side games. #168's order still applies after them.
+
+- The four junk items are defined as golf, with no GoLo note. The registry's `junk-board` and `skins-greenie-sandie` limits say GoLo doesn't score them.
+- Double or Nothing still has no golf source that defines it as a game of its own. Batch 2 either gives it a general definition (the plain meaning, with the golf uses as examples: a press late in a nine, a hammer) or sources it to community usage, labelled as such (`editorial-review.md` § Source hierarchy, level 5).
 
 ## Stages
 
