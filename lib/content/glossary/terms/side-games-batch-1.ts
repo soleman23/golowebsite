@@ -2,9 +2,8 @@
  * Side games, expansion batch 1 (#168, M8). Eleven records from
  * docs/glossary/inventory.md § C, drafted November 11, 2026.
  *
- * APPROVED, NOT PUBLISHED. Nothing here reaches a public page, the search
- * index, the sitemap, llms.txt or structured data until a release PR
- * publishes it; approved records show only in local review (../selectors). Expansion records go back to the owner's
+ * PUBLISHED by the batch 1 release PR, on the owner's word in chat
+ * ("Publish then"), after their approval of all 11 the same day. Expansion records go back to the owner's
  * review roles (editorial-review.md § Roles): an agent drafted these and
  * prepared the checks in docs/glossary/expansion-batch-1.md. On 2026-11-11
  * the owner delegated stages 2–4 to an agent; each record logs them below.
@@ -39,6 +38,9 @@ const DRAFTED_ON = "2026-11-11";
  * logged until they give it.
  */
 const REVIEWED_ON = "2026-11-11";
+
+/** The day the release PR merged and deployed (owner: "Publish then"). */
+const PUBLISHED_ON = "2026-11-11";
 
 const rules: ReviewEntry = {
   stage: "rules",
@@ -128,7 +130,8 @@ export const sideGamesBatch1Terms: GlossaryTerm[] = [
     reviewLog: reviewLogNone,
     reviewedBy: "owner",
     reviewedOn: REVIEWED_ON,
-    status: "approved",
+    publishedOn: PUBLISHED_ON,
+    status: "published",
   },
   {
     id: "point-value",
@@ -162,7 +165,8 @@ export const sideGamesBatch1Terms: GlossaryTerm[] = [
     reviewLog: reviewLogNone,
     reviewedBy: "owner",
     reviewedOn: REVIEWED_ON,
-    status: "approved",
+    publishedOn: PUBLISHED_ON,
+    status: "published",
   },
   {
     id: "buy-in",
@@ -201,7 +205,8 @@ export const sideGamesBatch1Terms: GlossaryTerm[] = [
     reviewLog: reviewLogNone,
     reviewedBy: "owner",
     reviewedOn: REVIEWED_ON,
-    status: "approved",
+    publishedOn: PUBLISHED_ON,
+    status: "published",
   },
   {
     id: "validation",
@@ -241,7 +246,8 @@ export const sideGamesBatch1Terms: GlossaryTerm[] = [
     reviewLog: reviewLogNone,
     reviewedBy: "owner",
     reviewedOn: REVIEWED_ON,
-    status: "approved",
+    publishedOn: PUBLISHED_ON,
+    status: "published",
   },
   {
     id: "net-skins",
@@ -289,7 +295,8 @@ export const sideGamesBatch1Terms: GlossaryTerm[] = [
     reviewLog: reviewLogGolo,
     reviewedBy: "owner",
     reviewedOn: REVIEWED_ON,
-    status: "approved",
+    publishedOn: PUBLISHED_ON,
+    status: "published",
   },
   {
     id: "debt-netting",
@@ -321,7 +328,8 @@ export const sideGamesBatch1Terms: GlossaryTerm[] = [
     reviewLog: reviewLogGolo,
     reviewedBy: "owner",
     reviewedOn: REVIEWED_ON,
-    status: "approved",
+    publishedOn: PUBLISHED_ON,
+    status: "published",
   },
   {
     id: "birdie-bounty",
@@ -363,7 +371,8 @@ export const sideGamesBatch1Terms: GlossaryTerm[] = [
     reviewLog: reviewLogGolo,
     reviewedBy: "owner",
     reviewedOn: REVIEWED_ON,
-    status: "approved",
+    publishedOn: PUBLISHED_ON,
+    status: "published",
   },
   {
     id: "eagle-bounty",
@@ -398,7 +407,8 @@ export const sideGamesBatch1Terms: GlossaryTerm[] = [
     reviewLog: reviewLogGolo,
     reviewedBy: "owner",
     reviewedOn: REVIEWED_ON,
-    status: "approved",
+    publishedOn: PUBLISHED_ON,
+    status: "published",
   },
   {
     id: "hammer",
@@ -439,7 +449,8 @@ export const sideGamesBatch1Terms: GlossaryTerm[] = [
     reviewLog: reviewLogNone,
     reviewedBy: "owner",
     reviewedOn: REVIEWED_ON,
-    status: "approved",
+    publishedOn: PUBLISHED_ON,
+    status: "published",
   },
   {
     id: "lone-wolf",
@@ -477,7 +488,8 @@ export const sideGamesBatch1Terms: GlossaryTerm[] = [
     reviewLog: reviewLogGolo,
     reviewedBy: "owner",
     reviewedOn: REVIEWED_ON,
-    status: "approved",
+    publishedOn: PUBLISHED_ON,
+    status: "published",
   },
   {
     id: "rabbit",
@@ -518,6 +530,7 @@ export const sideGamesBatch1Terms: GlossaryTerm[] = [
     reviewLog: reviewLogNone,
     reviewedBy: "owner",
     reviewedOn: REVIEWED_ON,
-    status: "approved",
+    publishedOn: PUBLISHED_ON,
+    status: "published",
   },
 ];
