@@ -199,7 +199,7 @@ Subtotal: 10 MVP + 10 expansion = 20.
 
 ## E. Shots and ball flight (20)
 
-**Expansion batch 6 (#168, #298, November 12, 2026):** rows 100–114 are drafted at `in-review` (`expansion-batch-6.md`), golf only. Started at the owner's request before #167's launch + 28 read. Stages 2–4 were done by an agent under the owner's delegation (2026-11-12); approval is pending. Fat Shot's related `chili-dip` (row 155) waits for batch 7.
+**Expansion batch 6 (#168, #298, November 12, 2026):** rows 100–114 are drafted at `in-review` (`expansion-batch-6.md`), golf only. Started at the owner's request before #167's launch + 28 read. Stages 2–4 were done by an agent under the owner's delegation, and the owner approved all 15 (2026-11-12). Not yet published. Fat Shot's related `chili-dip` (row 155) waits for batch 7.
 
 | # | id = slug | Term | MVP | Tags | Tier | Aliases | Related, not the same | Sources | Destination |
 |---|---|---|---|---|---|---|---|---|---|

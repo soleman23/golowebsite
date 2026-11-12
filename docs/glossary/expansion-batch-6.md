@@ -1,6 +1,6 @@
 # Glossary expansion batch 6: shots and ball flight (#168, #298)
 
-Prepared November 12, 2026 for the owner's review; stages 2–4 done the same day under the owner's delegation. The records are in `lib/content/glossary/terms/expansion-batch-6.ts`, all `in-review`. Nothing here reaches a public page, the search index, the sitemap, `llms.txt` or structured data until a record is approved and a release PR publishes it (`selectors.ts`; checked by `npm run test:glossary`, and in the built `glossary.html`, `glossary.rsc`, `llms.txt`, `sitemap.xml` and `.next/static` for this PR).
+Prepared November 12, 2026 for the owner's review; stages 2–4 done the same day under the owner's delegation, and **approved by the owner the same day**. Not published: a release PR does that. The records are in `lib/content/glossary/terms/expansion-batch-6.ts`, all `approved`, and reach no public page, search index, sitemap, `llms.txt` or structured data (`selectors.ts`; checked by `npm run test:glossary`, and in the built `glossary.html`, `glossary.rsc`, `llms.txt`, `sitemap.xml` and `.next/static` for this PR).
 
 ## Why now
 
@@ -22,9 +22,9 @@ Batches 1–5 are published (126 records). Shots and ball flight is next in `inv
 | 2 | Rules fact-check | Agent, 2026-11-12, under the owner's delegation: every source reopened, every sentence checked, examples recomputed below. [Results](#stage-24-results-agent-2026-11-12) | — |
 | 3 | GoLo product audit | Agent, 2026-11-12, under the owner's delegation: no record mentions GoLo or the app, links a GoLo page, or cites a capability | — |
 | 4 | SEO/canonical | Agent, 2026-11-12, under the owner's delegation: hub anchors at each slug; `lint:content` passes; related ids resolve | — |
-| 5 | Approval | — | **Owner** |
+| 5 | Approval | **Owner**, in chat, 2026-11-12: "Approve all 15" | — |
 
-**Delegation (owner, 2026-11-12, #298).** The owner delegated stages 2–4 for the 15 records of batch 6 ("Yes, delegate"), as for batches 1–5, and kept approval. Each record now has a `reviewLog` with `rules`, `product` and `seo` entries, `by: "agent"`, dated 2026-11-12. The records stay `in-review` until the owner approves them.
+**Delegation (owner, 2026-11-12, #298).** The owner delegated stages 2–4 for the 15 records of batch 6 ("Yes, delegate"), as for batches 1–5, and kept approval. Each record now has a `reviewLog` with `rules`, `product` and `seo` entries, `by: "agent"`, dated 2026-11-12. The owner approved all 15 in chat the same day ("Approve all 15"), so each record also has an `approval` entry `by: "owner"`, `reviewedBy: "owner"`, `reviewedOn: 2026-11-12`, and status `approved`. Approved records show only in local review (`next dev`); a release PR sets `published` and `publishedOn` to the day it merges.
 
 ### Stage 2–4 results (agent, 2026-11-12)
 
