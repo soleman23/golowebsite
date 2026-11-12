@@ -19,13 +19,11 @@
  * usga.org/handicapping/roh/Content/rules/. Pages whose URL carries a word
  * the vocabulary check bans were left out.
  *
- * GoLo notes come only from live registry entries, within their limits:
- * Shamble and Texas Scramble say what the scramble capability doesn't do,
- * and Three-Ball uses the game-library limit on head-to-head matches.
- * Everything else is golf only. Quota, Vegas, Sixes, Nines, Peoria and the
- * Ryder Cup-style event carry no GoLo note; where the registry doesn't say
- * whether GoLo does something (Modified Stableford points, Par Competition,
- * Greensomes, Chapman, Florida Scramble), the packet asks the owner.
+ * No record mentions GoLo, links a GoLo guide or post, or cites a
+ * capability: the owner decided on 2026-11-11 that GoLo doesn't offer these
+ * formats yet, so the batch is golf only, term and description. Related
+ * links stay inside the glossary, plus the Rules Center's Rule 21 for Par
+ * Competition and Three-Ball.
  */
 
 import type { GlossaryTerm } from "../types";
@@ -68,12 +66,10 @@ export const expansionBatch3Terms: GlossaryTerm[] = [
       kind: "house-rules",
       text: "Events set how many scores count on each hole, from one to all four, and some require a set number of each player's drives.",
     },
-    goloNote:
-      "GoLo scores a scramble, one ball a team to the hole, and has no shamble setting.",
     relatedTermIds: ["scramble", "texas-scramble", "florida-scramble", "four-ball"],
-    relatedContentPaths: ["/games/scramble"],
+    relatedContentPaths: [],
     canonical: { kind: "hub", anchor: "shamble" },
-    capabilityIds: ["scramble"],
+    capabilityIds: [],
     sources: [
       {
         title: "The Golf News Net: Golf games, how to play a shamble",
@@ -207,13 +203,10 @@ export const expansionBatch3Terms: GlossaryTerm[] = [
       kind: "house-rules",
       text: "The number of drives is the event's rule: three or four each in a four-player team is typical. Appendix C of the Rules of Handicapping recommends 25%, 20%, 15% and 10% of the four players' Course Handicaps, lowest to highest.",
     },
-    goloNote:
-      "GoLo scores the scramble with team handicaps, but it doesn't count whose drive was used, so keep the drive count on paper.",
     relatedTermIds: ["scramble", "florida-scramble", "shamble", "handicap-allowance"],
-    relatedContentPaths: ["/games/scramble"],
+    relatedContentPaths: [],
     canonical: { kind: "hub", anchor: "texas-scramble" },
-    capabilityIds: ["scramble"],
-    ctaIntent: "games",
+    capabilityIds: [],
     sources: [
       {
         ...CP9,
@@ -261,7 +254,7 @@ export const expansionBatch3Terms: GlossaryTerm[] = [
     relatedTermIds: ["stableford", "eagle", "birdie", "bogey"],
     relatedContentPaths: [],
     canonical: { kind: "hub", anchor: "modified-stableford" },
-    capabilityIds: ["round-formats"],
+    capabilityIds: [],
     sources: [
       {
         ...CP9,
@@ -287,6 +280,8 @@ export const expansionBatch3Terms: GlossaryTerm[] = [
     priority: "expansion",
     shortDefinition:
       "A team event built like the Ryder Cup: two teams play a series of foursomes, four-ball and singles matches, each worth one point, or half a point each if halved. The team with more points wins.",
+    explanation:
+      "Every match is match play. In foursomes each pair plays one ball, taking alternate shots; in four-ball each player plays their own ball and the pair's better score counts; singles is one against one. A halved hole carries nothing over.",
     example:
       "Twelve players on a trip, six a side. Day one has three foursomes and three four-ball matches, day two six singles: 12 points in all, so 6.5 wins outright.",
     ruleNote: {
@@ -296,7 +291,7 @@ export const expansionBatch3Terms: GlossaryTerm[] = [
     relatedTermIds: ["four-ball", "foursomes", "match-play"],
     relatedContentPaths: [],
     canonical: { kind: "hub", anchor: "ryder-cup-style" },
-    capabilityIds: ["trip-tally"],
+    capabilityIds: [],
     sources: [
       {
         title: "Golf Monthly: Ryder Cup format explained",
@@ -328,6 +323,8 @@ export const expansionBatch3Terms: GlossaryTerm[] = [
     priority: "expansion",
     shortDefinition:
       "A two-against-two game where each side writes its two scores on a hole as one two-digit number, lower score first, so a 4 and a 5 make 45. The lower number wins the hole by the difference, in points.",
+    explanation:
+      "Partners usually stay together for the whole round. A birdie flip or a blow-up hole can swing a single hole by 20 points or more, so groups keep the value of a point small.",
     example:
       "You make 4 and your partner 5: 45. The other side makes 5 and 6: 56. You win the hole by 11 points, $1.10 at 10 cents a point.",
     ruleNote: {
@@ -337,7 +334,7 @@ export const expansionBatch3Terms: GlossaryTerm[] = [
     relatedTermIds: ["point-value", "four-ball", "birdie"],
     relatedContentPaths: [],
     canonical: { kind: "hub", anchor: "vegas" },
-    capabilityIds: ["game-library"],
+    capabilityIds: [],
     sources: [
       {
         title: "GolfLink: How to play Vegas",
@@ -372,10 +369,10 @@ export const expansionBatch3Terms: GlossaryTerm[] = [
       kind: "house-rules",
       text: "Groups set the point table and the target. Some start each player on their Course Handicap in points and play to 36, which comes to the same result.",
     },
-    relatedTermIds: ["stableford", "course-handicap", "best-score"],
-    relatedContentPaths: ["/games/best-score"],
+    relatedTermIds: ["stableford", "course-handicap"],
+    relatedContentPaths: [],
     canonical: { kind: "hub", anchor: "quota" },
-    capabilityIds: ["quota"],
+    capabilityIds: [],
     sources: [
       {
         title: "Beezer Golf: Quota tournament",
@@ -413,7 +410,7 @@ export const expansionBatch3Terms: GlossaryTerm[] = [
     relatedTermIds: ["four-ball", "match-play", "nines"],
     relatedContentPaths: [],
     canonical: { kind: "hub", anchor: "sixes" },
-    capabilityIds: ["team-play"],
+    capabilityIds: [],
     sources: [
       {
         title: "Golf Compendium: How to play the Sixes golf format",
@@ -460,10 +457,10 @@ export const expansionBatch3Terms: GlossaryTerm[] = [
       kind: "house-rules",
       text: "Groups choose gross or net. It's also played by four, with 5, 3, 1 and 0.",
     },
-    relatedTermIds: ["point-value", "sixes", "best-score"],
-    relatedContentPaths: ["/blog/golf-games-for-3-players"],
+    relatedTermIds: ["point-value", "sixes"],
+    relatedContentPaths: [],
     canonical: { kind: "hub", anchor: "nines" },
-    capabilityIds: ["game-library"],
+    capabilityIds: [],
     sources: [
       {
         title: "Golf Compendium: How to play the golf game named Nines",
@@ -553,9 +550,9 @@ export const expansionBatch3Terms: GlossaryTerm[] = [
       text: "The R&A's Committee Procedures (Section 9C) list it as a scramble variation, also called dropout scramble or stand aside. Handicaps are the organizer's call.",
     },
     relatedTermIds: ["scramble", "texas-scramble", "shamble"],
-    relatedContentPaths: ["/games/scramble"],
+    relatedContentPaths: [],
     canonical: { kind: "hub", anchor: "florida-scramble" },
-    capabilityIds: ["scramble"],
+    capabilityIds: [],
     sources: [
       {
         ...CP9,
@@ -645,13 +642,10 @@ export const expansionBatch3Terms: GlossaryTerm[] = [
       kind: "rules",
       text: "Rule 21.4 of the Rules of Golf (Three-Ball Match Play). It covers the two cases where the matches conflict: a stroke played out of turn, and a ball or ball-marker lifted or moved by one opponent.",
     },
-    goloNote:
-      "Without teams, GoLo plays the Overall Match and Nassau head to head, so in a group of three each player has a match with each of the other two.",
-    relatedTermIds: ["match-play", "nassau"],
+    relatedTermIds: ["match-play"],
     relatedContentPaths: ["/rules#rule-21"],
     canonical: { kind: "hub", anchor: "three-ball" },
-    capabilityIds: ["game-library"],
-    ctaIntent: "games",
+    capabilityIds: [],
     sources: [
       {
         title: ROG,

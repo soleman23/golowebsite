@@ -14,7 +14,7 @@ Batches 1 and 2 are published (#278, #283). #168's order after side games and ha
 
 The revisions the owner accepted on 2026-10-29 (`inventory.md` § Revisions) are applied: **M1** Pinehurst is an alias of Chapman, **M2** Round Robin is an alias of Sixes, **S2** Par Competition, **S3** Greensomes, **S4** Florida Scramble. M1 asked the fact-check to split Chapman and Pinehurst again if a distinct regional definition turned up. None did: the R&A's Committee Procedures (Section 9B) call the same format Pinehurst Foursomes, and Golf Compendium says Pinehurst System "is the exact same thing as Chapman system". The merge stands, and so does S2.
 
-**Canonicals** (`canonical-map.md` § Expansion terms with an existing page): Texas Scramble, Shamble and Florida Scramble are hub entries linking `/games/scramble`; Quota is a hub entry linking `/games/best-score`. The other ten are hub entries.
+**Canonicals:** all 14 are hub entries (`/glossary#<slug>`). `canonical-map.md` § Expansion terms with an existing page has Texas Scramble, Shamble and Florida Scramble linking `/games/scramble` and Quota linking `/games/best-score`; the owner decided on 2026-11-11 that these records link no GoLo guide (see [GoLo](#golo-owners-decision-2026-11-11)), so they don't. `canonical-map.md` isn't changed in this PR.
 
 **Next (batch 4):** whatever #168's order and the 28-day read put next. With formats done, § A scoring, § E shots, § F course, § G equipment and § H slang still have expansion terms.
 
@@ -24,23 +24,22 @@ The revisions the owner accepted on 2026-10-29 (`inventory.md` § Revisions) are
 |---|---|---|---|
 | 1 | Draft | Agent, 2026-11-11 | — |
 | 2 | Rules fact-check | Agent prepared: Rules of Golf Rule 21 and Definitions (randa.org, 2023 edition), Committee Procedures Section 9, and RoH Appendix C (2024 edition, read in a browser), all opened 2026-11-11; every editorial source opened the same day; examples recomputed below | **Owner** signs |
-| 3 | GoLo product audit | Agent prepared against the registry. Three records have a GoLo note (Shamble, Texas Scramble, Three-Ball). [Questions](#product-audit-questions) below | **Owner** signs |
-| 4 | SEO/canonical | Agent: canonicals per `canonical-map.md` (all 14 are hub anchors; four link a guide). `lint:content` passes; related ids and paths resolve | **Owner** confirms |
+| 3 | GoLo product audit | Agent: no record mentions GoLo, links a GoLo guide or post, or cites a capability, per the owner's decision of 2026-11-11 | **Owner** signs |
+| 4 | SEO/canonical | Agent: canonicals per `canonical-map.md` (all 14 are hub anchors; none links a GoLo guide). `lint:content` passes; related ids and paths resolve | **Owner** confirms |
 | 5 | Approval | — | **Owner** |
 
 None of the records has a review log. The owner delegated stages 2–4 for batch 1 and for batch 2, each time for that batch only (`editorial-review.md` § Roles), so batch 3 is back on the owner's roles. If the owner delegates this batch the same way, an agent reopens the sources, logs stages 2–4 as `by: "agent"`, and the owner's approval moves the records to `approved`.
 
-## Product audit questions
+## GoLo (owner's decision, 2026-11-11)
 
-The registry is the evidence for every GoLo statement. GoLo gives full Course Handicap, one set of tees per group, and no allowance except a scramble's team handicap (`handicap-strokes`). Every allowance in these records is golf (RoH Appendix C), never a GoLo setting.
+After the draft PR opened, the owner said GoLo doesn't offer these variations yet, so the records shouldn't link or state anything about GoLo: just the term and a detailed description. Applied:
 
-1. **Three-Ball note.** The record says: "Without teams, GoLo plays the Overall Match and Nassau head to head, so in a group of three each player has a match with each of the other two." It's the `game-library` limit ("Without teams, Nassau and the Overall Match are played head to head: with three or four players, every pair has its own match"), applied to three players. Confirm it's wanted on a Rules of Golf format, or drop it.
-2. **Shamble and Texas Scramble notes.** Both say what GoLo doesn't do, from the `scramble` limit "No Texas scramble drive count and no shamble", in the words of the published Scramble record and the scramble guide (`gameDetail.ts`). Confirm.
-3. **Modified Stableford.** `round-formats` says GoLo scores Stableford rounds. It doesn't say which points. Can a group set its own table, with points below zero (the PGA Tour's 8, 5, 2, 0, −1, −3)? Until you answer, the record is golf only and cites `round-formats` so a change reopens it.
-4. **Par Competition.** Does GoLo score a round as holes won and lost against par (Par/Bogey)? The registry doesn't say. Golf only for now.
-5. **Greensomes and Chapman.** Does GoLo score a two-player side playing one ball (foursomes, greensomes, Chapman)? The registry doesn't say, and the published Foursomes record has no GoLo note. Golf only for now.
-6. **Florida Scramble.** GoLo's scramble records one score a team on each hole, so it could record a Florida scramble's score. It doesn't know who played which shot. Is a note like "GoLo scores it as a scramble; it doesn't track who sits out" wanted? Golf only for now; the record cites `scramble`.
-7. **Nothing to answer unless it's changed:** Quota (`quota` planned), Vegas and Nines (not in `game-library`; the published three-player post says GoLo doesn't score Nines), Sixes (`team-play` is two fixed pairs, so no rotating partners), the Ryder Cup-style event (`trip-tally` planned) and Peoria (GoLo uses the Index each player enters). None of these records says anything about GoLo. Each cites the capability that would reopen it, except Peoria.
+- **No GoLo notes.** The drafts had three (Shamble and Texas Scramble, from the `scramble` limit "No Texas scramble drive count and no shamble"; Three-Ball, from the `game-library` head-to-head limit). All removed.
+- **No GoLo links.** `relatedContentPaths` to `/games/scramble`, `/games/best-score` and `/blog/golf-games-for-3-players` removed, and no `ctaIntent`. Quota and Nines no longer relate to the `best-score` record (GoLo's game). The two `/rules#rule-21` links stay: the Rules Center explains the Rules of Golf, not GoLo.
+- **No capabilities.** Every `capabilityIds` is empty; the field reaches the public payload even though nothing renders it. The cost: a change to `scramble`, `quota`, `round-formats` or another capability won't reopen these records automatically, so whoever adds one of these formats to GoLo should reopen the matching record by hand.
+- **Fuller descriptions.** Vegas and the Ryder Cup-style event, which had no explanation, now have one.
+- The earlier product-audit questions (Three-Ball note, Shamble and Texas Scramble notes, Modified Stableford points, Par Competition, one-ball formats, Florida Scramble) fall away with the notes.
+- The GoLo three-player post stays in Nines' `sources` as a cross-check. Sources are internal and never reach a page.
 
 ## Differences from `inventory.md`
 
@@ -50,6 +49,8 @@ The registry is the evidence for every GoLo statement. GoLo gives full Course Ha
 - **Greensomes** doesn't take "Scotch foursomes", though National Club Golfer uses it: in the US, "Scotch" often means plain alternate shot.
 - **Florida Scramble** keeps only "step-aside scramble". The R&A also lists dropout scramble, step aside, stand aside and stand out; the record's note names two of them.
 - **Related ids** stay within existing records: Vegas and Nines relate to `point-value`; Chapman, Greensomes and Texas Scramble to `handicap-allowance`; Par Competition to `handicap-stroke` and `stroke-play`. The inventory's `all-square`, `halve` and `dormie` aren't records yet.
+- **No guide links** on Texas Scramble, Shamble, Florida Scramble or Quota, against `canonical-map.md`, by the owner's decision above.
+- **Quota and Nines** don't relate to `best-score`, the record for GoLo's Best Score game.
 - **Par Competition and Three-Ball** link `/rules#rule-21` (Rule 21 is published in the Rules Center), as the published Stableford record does.
 - **Ryder Cup-Style Competition** is `convention`, not `rules`: the Rules of Golf define foursomes and four-ball, not the event.
 - **Peoria System** is filed under `formats` with the `handicap` tag, as the inventory has it; it's an event method, not part of the World Handicap System.
@@ -77,10 +78,8 @@ The worked numbers reused from published records: a 12.4 Index plays off 14 from
 
 **Note (house-rules):** Events set how many scores count on each hole, from one to all four, and some require a set number of each player's drives.
 
-**GoLo note:** GoLo scores a scramble, one ball a team to the hole, and has no shamble setting.
-
-- Canonical: /glossary#shamble · related: scramble, texas-scramble, florida-scramble, four-ball · content links: /games/scramble · no CTA intent: "Browse the games GoLo scores" would sit oddly on a format GoLo doesn't score
-- Capabilities: `scramble` (live); the note is its limit "No Texas scramble drive count and no shamble" and its summary "one ball a team".
+- Canonical: /glossary#shamble · related: scramble, texas-scramble, florida-scramble, four-ball
+- Capabilities: none. No GoLo note (owner, 2026-11-11).
 - Sources: The Golf News Net, "How to play a shamble" <https://thegolfnewsnet.com/ryan_ballengee/2026/03/13/golf-games-how-to-play-a-shamble-124053/>: teams of two, three or four tee off, pick the best shot, then "each player will play their own ball into the hole"; the team score may be the best one, two or three scores, or every score. GolfLink, "Playing a shamble golf format" <https://www.golflink.com/lifestyle/playing-shamble-golf-format-as-fun-alternative>: best tee shot chosen, everyone plays their own ball in, the best individual score counts in its example; an organizer can require "each player's tee shot at least four times".
 - Agrees with the scramble guide (`gameDetail.ts`): "Best drive, then everyone plays their own ball into the hole", and with the Scottsdale post's "best two net scores count".
 - Recomputed: best two of net 4, 5, 5, 6 are 4 and 5; 4 + 5 = 9 ✓
@@ -96,7 +95,7 @@ The worked numbers reused from published records: a 12.4 Index plays off 14 from
 **Note (handicapping):** The R&A's Committee Procedures list it as Pinehurst Foursomes, a variation of greensomes. Appendix C of the Rules of Handicapping recommends 60% of the lower Course Handicap plus 40% of the higher, as for greensomes.
 
 - Canonical: /glossary#chapman · aliases: chapman system, pinehurst, pinehurst foursomes, american foursomes · related: foursomes, greensomes, handicap-allowance
-- Capabilities: none. [Question 5](#product-audit-questions).
+- Capabilities: none. No GoLo note (owner, 2026-11-11).
 - Sources: R&A Committee Procedures, Section 9B <https://www.randa.org/en/rog/committee-procedures/sections/9>: "Pinehurst Foursomes where both players tee off, then they switch their play of golf balls … After the second shots, they then select which ball they will continue to play, and that ball is then played by alternate-shot until holed." RoH Appendix C <https://www.usga.org/handicapping/roh/Content/rules/Appendix%20C%20Handicap%20Allowances.htm>: "Pinehurst/Chapman: 60% low / 40% high". Golf Compendium, "Chapman System" <https://www.golfcompendium.com/2022/08/chapman-system-golf-format.html>: both drive, switch balls, select one after the seconds; "The golfer whose second stroke was not selected is the one who plays the third stroke"; also called Pinehurst System, Pinehurst Foursomes and American Foursomes; Eloise and Dick Chapman developed it after two rounds at Pinehurst "in March, 1947". CaddieHQ, "What is Chapman in golf?" <https://www.caddiehq.com/resources/what-is-chapman-in-golf>: the same switch and selection; "Who hits the third shot? It's the player whose second shot was NOT chosen."
 - Also read: Golf Compendium's "Pinehurst System" and "American Foursomes" pages, both saying it's the same format as Chapman (the M1 check).
 - Recomputed: your second (with her ball) is picked, so she, whose second wasn't, plays the third ✓
@@ -112,7 +111,7 @@ The worked numbers reused from published records: a 12.4 Index plays off 14 from
 **Note (rules):** Rule 21.3 of the Rules of Golf (Par/Bogey). Appendix C of the Rules of Handicapping recommends a 95% allowance for individual Par/Bogey: a 12.4 Index off white tees rated 69.6, Slope 122, par 72, has an unrounded Course Handicap of 10.988; × 95% = 10.44, so 10 strokes.
 
 - Canonical: /glossary#par-competition · aliases: bogey competition, par/bogey · related: par, stableford, match-play, stroke-play, handicap-stroke · content links: /rules#rule-21
-- Capabilities: none. [Question 4](#product-audit-questions).
+- Capabilities: none. No GoLo note (owner, 2026-11-11).
 - Sources: RoG Rule 21.3 <https://www.randa.org/en/rog/the-rules-of-golf/rule-21>: "a form of stroke play that uses scoring as in match play"; a hole is won, tied ("also known as halved") or lost against "the fixed target score (typically par or bogey) set by the Committee"; the winner has "the highest total of holes won versus holes lost"; players "are encouraged to stop playing a hole when their score exceeds the fixed score". RoG Definitions, Par/Bogey <https://www.randa.org/en/rog/definitions> (cited at page level; multi-word definitions have no stable anchor): the same, "adding up the holes won and subtracting the holes lost". RoH Appendix C: "Individual Par/Bogey 95%"; allowances apply "to the unrounded Course Handicap". Golf Monthly, "What are bogey competitions in golf?" <https://www.golfmonthly.com/features/the-game/what-are-bogey-competitions-in-golf-78821>: "if played against par, this type of competition is known as a par competition"; strokes apply by stroke index, as in Stableford; stroke-play rules and penalties.
 - Recomputed: 12.4 × 122 ÷ 113 = 13.388; + (69.6 − 72) = 10.988 (unrounded, as the published Course Handicap record) ✓; 10.988 × 0.95 = 10.439 → 10 ✓; stroke index 4 ≤ 10, so one stroke: 5 − 1 = 4 = par, halved ✓; net 3 < 4 wins ✓; 5 − 8 = −3, "3 down" ✓
 - "Bogey competition" is an alias, not a separate record: Rule 21.3 treats both targets as one format.
@@ -127,10 +126,8 @@ The worked numbers reused from published records: a 12.4 Index plays off 14 from
 
 **Note (house-rules):** The number of drives is the event's rule: three or four each in a four-player team is typical. Appendix C of the Rules of Handicapping recommends 25%, 20%, 15% and 10% of the four players' Course Handicaps, lowest to highest.
 
-**GoLo note:** GoLo scores the scramble with team handicaps, but it doesn't count whose drive was used, so keep the drive count on paper.
-
-- Canonical: /glossary#texas-scramble · related: scramble, florida-scramble, shamble, handicap-allowance · content links: /games/scramble · CTA intent: games
-- Capabilities: `scramble` (live); the note is its label ("Scramble with team handicaps") and its limit "No Texas scramble drive count". The guide says the same: "GoLo doesn't track whose drive was used, so keep that count on paper."
+- Canonical: /glossary#texas-scramble · related: scramble, florida-scramble, shamble, handicap-allowance
+- Capabilities: none. No GoLo note (owner, 2026-11-11).
 - Sources: R&A Committee Procedures, Section 9C: "A Texas Scramble is a four-person team scramble, and this normally requires a minimum number of tee shots of each member of the team to be used during the round." RoH Appendix C: "Scramble (4 players) 25% low/20%/15%/10% high". Golf Monthly, "What is a Texas Scramble?" <https://www.golfmonthly.com/features/the-game/texas-scramble-64802>: "Texas Scramble, which is also called a 'Scramble'"; teams of two, three or four; "Usually a team in a Texas Scramble is required to take a certain amount of drives from each player", and in one example "each player must hit three (counting) tee shots, which is typical in a four-player Texas". England iGolf, "Golf scramble formats" <https://englandigolf.co.uk/igolf-blog/blog-archive/golf-scramble-formats-the-ultimate-guide-to-team-play/>: "typically, in a four-person team, at least three or four drives from each player must be chosen".
 - The UK reading comes from Golf Monthly (a UK title). The inventory says "Britain and Ireland"; no source opened today speaks for Ireland, so the record says "the UK".
 - The scramble guide says "often four each over 18"; the sources say three or four, so the record says "three or four each" and the example uses four."
@@ -147,7 +144,7 @@ The worked numbers reused from published records: a 12.4 Index plays off 14 from
 **Note (rules):** Standard Stableford is Rule 21.1 of the Rules of Golf. Modified Stableford is one of the other forms of play in the R&A's Committee Procedures (Section 9A), which give its points only as an example.
 
 - Canonical: /glossary#modified-stableford · related: stableford, eagle, birdie, bogey
-- Capabilities: `round-formats` (live), cited so a change reopens the record; no GoLo note. [Question 3](#product-audit-questions).
+- Capabilities: none. No GoLo note (owner, 2026-11-11).
 - Sources: R&A Committee Procedures, Section 9A: "Modified Stableford is a form of play that gives higher points for good play, but also subtracts points for bad play. For example, four points are awarded for a birdie, two for a par and minus one for a bogey or worse." PGA Tour, "How it works: Modified Stableford format, Barracuda Championship" <https://www.pgatour.com/article/news/latest/2023/07/16/how-it-works-modified-stableford-format-barracuda-championship>: Double Eagle 8, Eagle 5, Birdie 2, Par 0, Bogey −1, Double Bogey or more −3.
 - Cross-checked, not cited: Golf.com's page has the same PGA Tour table but labels standard Stableford points as "traditional" Modified Stableford (see [Found along the way](#found-along-the-way-outside-this-pr)).
 - Recomputed: 1 + 5 + 10 + 1 + 1 = 18 holes ✓; 1 × 5 + 5 × 2 + 10 × 0 + 1 × (−1) + 1 × (−3) = 5 + 10 + 0 − 1 − 3 = 11 ✓
@@ -156,12 +153,14 @@ The worked numbers reused from published records: a 12.4 Index plays off 14 from
 
 **Definition (36 words):** A team event built like the Ryder Cup: two teams play a series of foursomes, four-ball and singles matches, each worth one point, or half a point each if halved. The team with more points wins.
 
+**Explanation:** Every match is match play. In foursomes each pair plays one ball, taking alternate shots; in four-ball each player plays their own ball and the pair's better score counts; singles is one against one. A halved hole carries nothing over.
+
 **Example:** Twelve players on a trip, six a side. Day one has three foursomes and three four-ball matches, day two six singles: 12 points in all, so 6.5 wins outright.
 
 **Note (convention):** The Ryder Cup itself has 28 matches: eight foursomes, eight four-balls and 12 singles, so 14.5 points wins. For handicap play, Appendix C of the Rules of Handicapping recommends 100% for singles, 90% for four-ball and, in foursomes, 50% of the difference between the sides' combined Course Handicaps.
 
 - Canonical: /glossary#ryder-cup-style · alias: ryder cup format · related: four-ball, foursomes, match-play
-- Capabilities: `trip-tally` (planned), cited so it reopens the record; no GoLo note.
+- Capabilities: none. No GoLo note (owner, 2026-11-11).
 - Sources: Golf Monthly, "Ryder Cup format explained" <https://www.golfmonthly.com/news/ryder-cup-format-explained-how-foursomes-fourballs-and-singles-differ>: "The magic number at the Ryder Cup is 14.5"; "eight foursomes matches, eight fourballs matches, and 12 singles matches"; a match winner gets one point, "half a point for each team" if all square. Golf.com, "Ryder Cup 101" <https://golf.com/news/ryder-cup-101-how-it-works-explained/>: "28 matches long, broken out into three formats (foursomes, four-ball and singles) across five sessions". RoH Appendix C: match play Individual 100%, Four-Ball 90%; Foursomes "50% of combined team handicap", applied in C/2 Example 4 as "50% of the difference between each Team's combined Course Handicaps".
 - Recomputed: day one 3 + 3 = 6 matches using 12 players a session (2 per side per match) ✓; day two 6 singles ✓; 6 + 6 = 12 points; more than half is 6.5 ✓. Ryder Cup: 8 + 8 + 12 = 28; 28 ÷ 2 = 14, so 14.5 wins outright ✓
 
@@ -169,12 +168,14 @@ The worked numbers reused from published records: a 12.4 Index plays off 14 from
 
 **Definition (39 words):** A two-against-two game where each side writes its two scores on a hole as one two-digit number, lower score first, so a 4 and a 5 make 45. The lower number wins the hole by the difference, in points.
 
+**Explanation:** Partners usually stay together for the whole round. A birdie flip or a blow-up hole can swing a single hole by 20 points or more, so groups keep the value of a point small.
+
 **Example:** You make 4 and your partner 5: 45. The other side makes 5 and 6: 56. You win the hole by 11 points, $1.10 at 10 cents a point.
 
 **Note (house-rules):** A common addition is the birdie flip: when one side makes a birdie, the other side's number is written high score first, so 56 becomes 65. If both sides make one, nothing flips. Agree how a 10 is written: one common way makes 4 and 10 into 104.
 
 - Canonical: /glossary#vegas · alias: las vegas · related: point-value, four-ball, birdie
-- Capabilities: `game-library` (Vegas isn't in it), cited so a change reopens the record. No GoLo note: "Quota and Vegas are golf, full stop" (`editorial-review.md`).
+- Capabilities: none. No GoLo note (owner, 2026-11-11).
 - Sources: GolfLink, "How to play Vegas" <https://www.golflink.com/lifestyle/play-vegas>: two teams of two pair their scores, "Start with the lower score"; the winner takes the difference in points; "104 is better than 410"; "When one team makes a birdie, they can flip their opponent's score". The Fried Egg, "Vegas golf game" <https://www.thefriedegg.com/articles/vegas-golf-game>: low score is the first digit; on a birdie "the opposing team's score flips"; "If both teams make a birdie, the numbers remain in the original order"; its first example is 45 against 56, 11 points.
 - Cross-checked, not cited (URL contains "gambling" or "betting"): Golf.com's and Golf Monthly's Vegas pages.
 - Recomputed: 4, 5 → 45; 5, 6 → 56; 56 − 45 = 11 ✓; 11 × $0.10 = $1.10 ✓; flip: 5, 6 high first = 65 ✓
@@ -189,8 +190,8 @@ The worked numbers reused from published records: a 12.4 Index plays off 14 from
 
 **Note (house-rules):** Groups set the point table and the target. Some start each player on their Course Handicap in points and play to 36, which comes to the same result.
 
-- Canonical: /glossary#quota · related: stableford, course-handicap, best-score · content links: /games/best-score
-- Capabilities: `quota` (planned), cited so it reopens the record. No GoLo note, and the record never says GoLo scores quota (its claim phrase is "quota").
+- Canonical: /glossary#quota · related: stableford, course-handicap
+- Capabilities: none. No GoLo note (owner, 2026-11-11).
 - Sources: Beezer Golf, "Quota tournament" <https://beezergolf.com/games-guide/quota-tournament>: "1 point for bogeys, 2 points for a par, 4 points for birdies, and 8 points for eagles"; two versions, start on your Course Handicap and beat 36, or start at 0 and beat 36 minus Course Handicap. LiveTourney, "A complete guide to the quota golf game format" <https://www.livetourney.com/blog/quota-golf-game>: "The standard formula is 36 minus the player's Course Handicap"; points "based on their gross score"; double bogey or worse 0, bogey 1, par 2, birdie 4, eagle 8.
 - Cross-checked, not cited (URL contains "betting"): The Golf News Net's Quota page. The Arizona Golf Association page in the search results returned 404.
 - Recomputed: 12.4 × 131 ÷ 113 = 14.375; − 0.2 = 14.175 → 14 ✓ (published Course Handicap record); 36 − 14 = 22 ✓; 8 + 6 + 1 + 3 = 18 holes ✓; 8 × 2 + 6 × 1 + 1 × 4 + 3 × 0 = 26 ✓; 26 − 22 = +4 ✓. Starting on 14 and playing to 36: 14 + 26 = 40, 40 − 36 = +4, the same ✓
@@ -206,7 +207,7 @@ The worked numbers reused from published records: a 12.4 Index plays off 14 from
 **Note (house-rules):** Groups decide the order of partners and the scoring for each match, and some change the scoring when partners change.
 
 - Canonical: /glossary#sixes · aliases: round robin, hollywood · related: four-ball, match-play, nines
-- Capabilities: `team-play` (live, "Four players in two fixed pairs"), cited so a change reopens the record; no GoLo note, since GoLo's pairs don't rotate.
+- Capabilities: none. No GoLo note (owner, 2026-11-11).
 - Sources: Golf Compendium, "Sixes golf format" <https://www.golfcompendium.com/2019/01/sixes-golf-format.html>: "Players rotate partners after every six holes"; A and B v C and D on 1–6, A and C v B and D on 7–12, A and D v B and C on 13–18; each six-hole segment is separate; "the most common name for this format is Round Robin", also Hollywood. Golf Compendium, "Round Robin" <https://www.golfcompendium.com/2023/08/round-robin.html>: three six-hole matches, "also commonly known by the name Sixes", and Hollywood. Golf.com, "How to play Sixes" <https://golf.com/news/money-games-explained-how-to-play-sixes/>: "Sixes, otherwise known as Round Robin or Hollywood"; any two-on-two scoring, "keep it the same, or switch it up when you switch partners".
 - Golf Compendium, "Hollywood" <https://www.golfcompendium.com/2024/09/hollywood-format.html>: the same rotation; "fourball (better ball, meaning the lower score of the two partners counts as the side's score) being most common".
 - Recomputed: pairs AB, AC, AD for A, so A partners B, C and D once ✓; +$5 + $5 − $5 = +$5 ✓
@@ -221,8 +222,8 @@ The worked numbers reused from published records: a 12.4 Index plays off 14 from
 
 **Note (house-rules):** Groups choose gross or net. It's also played by four, with 5, 3, 1 and 0.
 
-- Canonical: /glossary#nines · alias: 5-3-1 · related: point-value, sixes, best-score · content links: /blog/golf-games-for-3-players
-- Capabilities: `game-library` (Nines isn't in it), cited so a change reopens the record. No GoLo note; the linked post already says "GoLo doesn't score it".
+- Canonical: /glossary#nines · alias: 5-3-1 · related: point-value, sixes
+- Capabilities: none. No GoLo note (owner, 2026-11-11).
 - Sources: Golf Compendium, "Nines" <https://www.golfcompendium.com/2022/12/nines-golf-game.html>: nine points a hole; ties add the places' points and divide; in a foursome 5-3-1-0, "A group of three golfers playing nines would just use the 5-3-1 points". CaddieHQ, "How to play 9s" <https://www.caddiehq.com/resources/how-to-play-9s-golf>: also known as 5-3-1; "net or gross scores"; two tied for best take 4 each. GoLo, "Golf games for 3 players" <https://www.golo.golf/blog/golf-games-for-3-players> (served 200 on 2026-11-11): "Nines, also called 5-3-1, was made for three"; the tie splits; "players settle the difference in points at an agreed amount a point".
 - Agrees with the post and the chooser (`chooser.ts`, "Nines (5-3-1)").
 - Recomputed: 9 × 18 = 162 ✓; 60 + 52 + 50 = 162 ✓. Ties: (5 + 3) ÷ 2 = 4; (3 + 1) ÷ 2 = 2; 9 ÷ 3 = 3 ✓. Pairs: you − Jess 8, you − Tom 10, Jess − Tom 2. You +8 + 10 = +18; Jess −8 + 2 = −6; Tom −10 − 2 = −12; total 0 ✓
@@ -238,7 +239,7 @@ The worked numbers reused from published records: a 12.4 Index plays off 14 from
 **Note (handicapping):** The R&A's Committee Procedures (Section 9B) describe it as a variation of foursomes. Appendix C of the Rules of Handicapping recommends 60% of the lower Course Handicap plus 40% of the higher.
 
 - Canonical: /glossary#greensomes · related: foursomes, chapman, handicap-allowance
-- Capabilities: none. [Question 5](#product-audit-questions).
+- Capabilities: none. No GoLo note (owner, 2026-11-11).
 - Sources: R&A Committee Procedures, Section 9B: "Greensomes is a variation of Foursomes where both partners play from the teeing area and one of the two tee shots is selected. The partner whose tee shot was not selected then plays the next stroke". RoH Appendix C: "Greensomes 60% low / 40% high". Golf Monthly, "What is greensomes?" <https://www.golfmonthly.com/features/what-is-greensomes>: each player tees off, the best drive is chosen, alternate shot from there; under the WHS "60% of the lowest handicap, plus 40% of the highest" (its example: 5 and 15 → 9). National Club Golfer, "How to play greensomes" <https://www.nationalclubgolfer.com/club/glossary/greensomes-golf-format-explained/>: both tee off, choose one ball, alternate; "60% of the lower handicap plus 40% of the higher".
 - The example applies the percentages to rounded Course Handicaps, as Appendix C's own examples do "for ease of illustration"; Appendix C applies them to the unrounded figure.
 - Recomputed: 11 × 0.6 = 6.6 ✓; 23 × 0.4 = 9.2 ✓; 6.6 + 9.2 = 15.8 → 16 ✓. Golf Monthly's: 5 × 0.6 + 15 × 0.4 = 3 + 6 = 9 ✓
@@ -253,8 +254,8 @@ The worked numbers reused from published records: a 12.4 Index plays off 14 from
 
 **Note (house-rules):** The R&A's Committee Procedures (Section 9C) list it as a scramble variation, also called dropout scramble or stand aside. Handicaps are the organizer's call.
 
-- Canonical: /glossary#florida-scramble · alias: step-aside scramble · related: scramble, texas-scramble, shamble · content links: /games/scramble
-- Capabilities: `scramble` (live), cited; no GoLo note. [Question 6](#product-audit-questions).
+- Canonical: /glossary#florida-scramble · alias: step-aside scramble · related: scramble, texas-scramble, shamble
+- Capabilities: none. No GoLo note (owner, 2026-11-11).
 - Sources: R&A Committee Procedures, Section 9C: "A Florida Scramble (also known as Dropout Scramble, Step Aside, Stand Aside, Stand Out) provides that the player whose shot is selected does not play the next shot." Beezer Golf, "Step Aside" <https://beezergolf.com/games-guide/step-aside>: four-player teams; the player whose shot was selected doesn't play the next one; "There is no fixed set of rules concerning handicaps in Florida Scramble, and they are decided by the organizer." England iGolf, "Golf scramble formats" <https://englandigolf.co.uk/igolf-blog/blog-archive/golf-scramble-formats-the-ultimate-guide-to-team-play/>: "sometimes called a 'Step Aside Scramble'"; "the player whose shot is selected steps aside for the next shot"; it also notes a less common shamble-like reading. Golf Compendium, "Miami scramble" <https://www.golfcompendium.com/2020/11/miami-scramble-golf-format.html>: the selected driver "has to skip the following strokes until the team reaches the green".
 - Recomputed: your drive picked → you sit out shot 2, the other three play it ✓; Tom's shot 2 picked → Tom sits out shot 3, you play it ✓
 
@@ -269,7 +270,7 @@ The worked numbers reused from published records: a 12.4 Index plays off 14 from
 **Note (convention):** Versions differ: which holes are picked (traditionally a par 3, a par 4 and a par 5 on each nine), the 80%, and the cap on each hole (some events use double bogey instead of double par).
 
 - Canonical: /glossary#peoria-system · alias: peoria · related: handicap-index, net-score, sandbagging
-- Capabilities: none. GoLo uses the Index each player enters.
+- Capabilities: none. No GoLo note (owner, 2026-11-11).
 - Sources: Golf Compendium, "How the Peoria System works" <https://www.golfcompendium.com/2026/01/peoria-system-golf-handicap.html>: for events where most players "do not have real handicap indexes"; six holes not revealed until play ends; traditionally a par 3, par 4 and par 5 on each nine; double par the maximum per hole; total × 3, minus par, × 80% (its example: 32 → 96 − 72 = 24 → 19.2 → 19). Beezer Golf, "Peoria System" <https://beezergolf.com/games-guide/peoria-system>: the same steps and double-par maximum; "any of the holes can be chosen at random". CaddieHQ, "What is Peoria scoring?" <https://www.caddiehq.com/resources/what-is-peoria-scoring-in-golf>: "a quick-and-dirty, one-day handicapping method"; six secret holes, × 3, minus par; the result comes off the 18-hole score.
 - Related to Sandbagging as the inventory has it: it's what events use when nobody can vouch for a handicap. The record doesn't say so; the link is enough.
 - Recomputed: 31 × 3 = 93 ✓; 93 − 72 = 21 ✓; 21 × 0.8 = 16.8 → 17 ✓; 95 − 17 = 78 ✓. Golf Compendium's: 32 × 3 = 96; 96 − 72 = 24; 24 × 0.8 = 19.2 → 19 ✓
@@ -284,10 +285,8 @@ The worked numbers reused from published records: a 12.4 Index plays off 14 from
 
 **Note (rules):** Rule 21.4 of the Rules of Golf (Three-Ball Match Play). It covers the two cases where the matches conflict: a stroke played out of turn, and a ball or ball-marker lifted or moved by one opponent.
 
-**GoLo note:** Without teams, GoLo plays the Overall Match and Nassau head to head, so in a group of three each player has a match with each of the other two.
-
-- Canonical: /glossary#three-ball · alias: three-ball match play · related: match-play, nassau · content links: /rules#rule-21 · CTA intent: games
-- Capabilities: `game-library` (live); the note is its limit "Without teams, Nassau and the Overall Match are played head to head: with three or four players, every pair has its own match". [Question 1](#product-audit-questions).
+- Canonical: /glossary#three-ball · alias: three-ball match play · related: match-play · content links: /rules#rule-21
+- Capabilities: none. No GoLo note (owner, 2026-11-11).
 - Sources: RoG Rule 21.4 <https://www.randa.org/en/rog/the-rules-of-golf/rule-21>: "Each of three players plays an individual match against the other two players at the same time, and Each player plays one ball that is used in both of their matches"; 21.4b playing out of turn; 21.4c ball or ball-marker lifted or moved by one opponent. Beezer Golf, "Three Ball" <https://beezergolf.com/games-guide/three-ball>: "Golfer A plays one match against B and another against C", up to two points a hole. Golf Monthly, "The best threeball formats for golf" <https://www.golfmonthly.com/features/the-game/the-best-threeball-formats-for-golf-74154>: uses "threeball" for any group of three and lists games for one, which supports the explanation.
 - Recomputed: three players → three pairs (you–Jess, you–Tom, Jess–Tom) ✓; 4 < 5 twice → you win both ✓; 5 = 5 → halved ✓
 
@@ -300,7 +299,7 @@ A separate agent, given the diff, the house rules and this packet but not the dr
 - **Peoria System:** both sources treat the double-par cap as the standard step, so it moved into the usual sum, with double bogey as the variant; the example now states par 72.
 - **Packet:** Quota's word count corrected.
 - **Suggestions applied:** Chapman's history sentence cut (one publisher only); Nines "usually for three players", and "also played by four"; Sixes cites the Hollywood page for "better ball is the most common"; Three-Ball drops "or threesome" (threesomes is also a format name); Par Competition's note says "unrounded Course Handicap of 10.988", and its bogey target is described; Shamble's explanation reworded; Florida vs Miami "usually a different format"; Vegas's 104 softened to "one common way"; Shamble's `ctaIntent` dropped.
-- **Confirmed by the review:** all arithmetic, the source URLs, the R&A quotes, the canonicals and aliases, and the three GoLo notes against the registry text.
+- **Confirmed by the review:** all arithmetic, the source URLs, the R&A quotes, the canonicals and aliases, and the three GoLo notes against the registry text (since removed by the owner's decision).
 
 ## Checks run for this PR
 
