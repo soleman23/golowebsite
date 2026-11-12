@@ -3,9 +3,8 @@
  * from docs/glossary/inventory.md § G, rows 137–146, drafted November 12,
  * 2026. The last expansion batch: with it the glossary reaches 166 records.
  *
- * APPROVED, NOT PUBLISHED. Nothing here reaches a public page, the search
- * index, the sitemap, llms.txt or structured data until a release PR
- * publishes it; approved records show only in local review (../selectors).
+ * PUBLISHED by the batch 8 release PR, which the owner asked for after
+ * approving all 10 ("Merge, then release"). It took the glossary to 166.
  * Expansion records go back to the owner's
  * review roles (editorial-review.md § Roles): an agent drafted these and
  * prepared the checks in docs/glossary/expansion-batch-8.md. On 2026-11-12
@@ -33,6 +32,9 @@ const DRAFTED_ON = "2026-11-12";
  * Approval is the owner's.
  */
 const REVIEWED_ON = "2026-11-12";
+
+/** The day the release PR merged and deployed. */
+const PUBLISHED_ON = "2026-11-12";
 
 const reviewLog: ReviewEntry[] = [
   {
@@ -126,7 +128,8 @@ export const expansionBatch8Terms: GlossaryTerm[] = [
     reviewLog,
     reviewedBy: "owner",
     reviewedOn: REVIEWED_ON,
-    status: "approved",
+    publishedOn: PUBLISHED_ON,
+    status: "published",
   },
   {
     id: "wedge",
@@ -161,7 +164,8 @@ export const expansionBatch8Terms: GlossaryTerm[] = [
     reviewLog,
     reviewedBy: "owner",
     reviewedOn: REVIEWED_ON,
-    status: "approved",
+    publishedOn: PUBLISHED_ON,
+    status: "published",
   },
   {
     id: "hybrid",
@@ -192,7 +196,8 @@ export const expansionBatch8Terms: GlossaryTerm[] = [
     reviewLog,
     reviewedBy: "owner",
     reviewedOn: REVIEWED_ON,
-    status: "approved",
+    publishedOn: PUBLISHED_ON,
+    status: "published",
   },
   {
     id: "fairway-wood",
@@ -218,7 +223,8 @@ export const expansionBatch8Terms: GlossaryTerm[] = [
     reviewLog,
     reviewedBy: "owner",
     reviewedOn: REVIEWED_ON,
-    status: "approved",
+    publishedOn: PUBLISHED_ON,
+    status: "published",
   },
   {
     id: "loft",
@@ -249,7 +255,8 @@ export const expansionBatch8Terms: GlossaryTerm[] = [
     reviewLog,
     reviewedBy: "owner",
     reviewedOn: REVIEWED_ON,
-    status: "approved",
+    publishedOn: PUBLISHED_ON,
+    status: "published",
   },
   {
     id: "lie-angle",
@@ -282,7 +289,8 @@ export const expansionBatch8Terms: GlossaryTerm[] = [
     reviewLog,
     reviewedBy: "owner",
     reviewedOn: REVIEWED_ON,
-    status: "approved",
+    publishedOn: PUBLISHED_ON,
+    status: "published",
   },
   {
     id: "bounce",
@@ -313,7 +321,8 @@ export const expansionBatch8Terms: GlossaryTerm[] = [
     reviewLog,
     reviewedBy: "owner",
     reviewedOn: REVIEWED_ON,
-    status: "approved",
+    publishedOn: PUBLISHED_ON,
+    status: "published",
   },
   {
     id: "shaft-flex",
@@ -342,7 +351,8 @@ export const expansionBatch8Terms: GlossaryTerm[] = [
     reviewLog,
     reviewedBy: "owner",
     reviewedOn: REVIEWED_ON,
-    status: "approved",
+    publishedOn: PUBLISHED_ON,
+    status: "published",
   },
   {
     id: "rangefinder",
@@ -377,7 +387,8 @@ export const expansionBatch8Terms: GlossaryTerm[] = [
     reviewLog,
     reviewedBy: "owner",
     reviewedOn: REVIEWED_ON,
-    status: "approved",
+    publishedOn: PUBLISHED_ON,
+    status: "published",
   },
   {
     id: "launch-monitor",
@@ -412,6 +423,7 @@ export const expansionBatch8Terms: GlossaryTerm[] = [
     reviewLog,
     reviewedBy: "owner",
     reviewedOn: REVIEWED_ON,
-    status: "approved",
+    publishedOn: PUBLISHED_ON,
+    status: "published",
   },
 ];

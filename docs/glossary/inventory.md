@@ -259,7 +259,7 @@ Subtotal: 5 MVP + 15 expansion = 20.
 
 ## G. Equipment and technology (12)
 
-**Expansion batch 8 (#168, #304, November 12, 2026):** rows 137–146 are drafted at `in-review` (`expansion-batch-8.md`), golf only. Rangefinder is a hub entry for now: `/blog/rangefinder` is unpublished. Started at the owner's request before #167's launch + 28 read. Stages 2–4 were done by an agent under the owner's delegation, and the owner approved all 10 (2026-11-12). Not yet published. Its release takes the glossary to 166.
+**Expansion batch 8 (#168, #304, November 12, 2026):** rows 137–146 are published (`expansion-batch-8.md`), golf only. Rangefinder is a hub entry for now: `/blog/rangefinder` is unpublished. Started at the owner's request before #167's launch + 28 read. Stages 2–4 were done by an agent under the owner's delegation, and the owner approved all 10 and asked for the release (2026-11-12). The batch 8 release PR published them, taking the glossary to 166, and added "lob shot" to Flop Shot.
 
 Definitions, not buying advice. No brands (#162).
 
@@ -275,7 +275,7 @@ Definitions, not buying advice. No brands (#162).
 | 142 | `lie-angle` | Lie Angle | | | P3 | | `loft`. Not "lie" (where the ball rests, RoG Def. Lie), so "lie" is not an alias. | — | hub |
 | 143 | `bounce` | Bounce | | short-game | P3 | | `wedge`, `loft` | — | hub |
 | 144 | `shaft-flex` | Shaft Flex | | | P3 | flex | — | — | hub |
-| 145 | `rangefinder` | Rangefinder | | | P2 | laser | `launch-monitor`; GPS devices (GoLo `gps-yardages` is not offered) | RoG R. 4.3a; CP Model Local Rule G-5 | → `/blog/rangefinder` |
+| 145 | `rangefinder` | Rangefinder | | | P2 | laser | `launch-monitor`; GPS devices (GoLo `gps-yardages` is not offered) | RoG R. 4.3a; CP Model Local Rule G-5 | hub while `/blog/rangefinder` is unpublished (owner, 2026-11-12); → the post once published |
 | 146 | `launch-monitor` | Launch Monitor | | | P3 | | `rangefinder` | RoG R. 4.3 | hub |
 
 Subtotal: 2 MVP + 10 expansion = 12.
@@ -315,6 +315,8 @@ Subtotal: 6 MVP + 14 expansion = 20.
 
 **Reconciled November 11, 2026** against `main` at 9c1e8a3 and the live hub. Batches 1–3 are published: 56 MVP + 40 expansion = 96 records, and www.golo.golf/glossary served 96 `DefinedTerm` entries at 19:17 PST. Every published id is an inventory id, none is duplicated, and the 70 inventory ids without a record are exactly the expansion rows below. No alias was promoted to a record.
 
+**Reconciled November 12, 2026** with batch 8's release: the inventory's 166 ids (56 MVP + 110 expansion) and the 166 records in `lib/content/glossary/terms/` are the same set, with no duplicate and no id missing on either side. All 166 are published. Live counts are recorded on #304 and #168.
+
 | Batch | Category | Rows | Terms | Running total |
 |---|---|---|---:|---:|
 | 1–3 | side games, handicaps, formats | 35–48, 59–74, 85–94 | 40 | 96 (published) |
@@ -322,7 +324,7 @@ Subtotal: 6 MVP + 14 expansion = 20.
 | 5 | Course, rules and etiquette | 120–134 | 15 | 126 (published 2026-11-11) |
 | 6 | Shots and ball flight | 100–114 | 15 | 141 (published 2026-11-12) |
 | 7 | Slang, plus Halve (**mixed**) | 153–166, 20 | 15 | 156 (published 2026-11-12) |
-| 8 | Equipment and technology | 137–146 | 10 | 166 |
+| 8 | Equipment and technology | 137–146 | 10 | 166 (published 2026-11-12) |
 
 15 + 15 + 15 + 15 + 10 = 70.
 
@@ -334,7 +336,7 @@ Subtotal: 6 MVP + 14 expansion = 20.
 - **GA4 zero-result searches:** the `result_bucket` split exists only from 2026-11-05 and no checkpoint window with it is complete yet.
 - **Reader requests:** none recorded (issues searched 2026-11-11).
 
-That's too sparse to reorder anything. The owner released batch 4 on 2026-11-11 without waiting (override, as for batches 1–3), and batches 5–7 the same way (batches 6 and 7 on 2026-11-12), so launch + 28 (window 2026-10-29 – 11-25, run 2026-11-26) is the first read that can, starting with batch 8. Batches 1–5 went live on the evening of 2026-11-11 (batch 3 at 19:13 PST) and batches 6–7 on 2026-11-12, so the window holds about 14 days of them; read their terms' queries against that, not the full 28. If launch + 28 is still too sparse, the order above stands, and launch + 56 (2026-12-24) and + 90 (2027-01-27) apply only to batches still unreleased.
+That's too sparse to reorder anything. The owner released batch 4 on 2026-11-11 without waiting (override, as for batches 1–3), and batches 5–8 the same way (batches 6–8 on 2026-11-12). Every batch was released by owner override, so no checkpoint read set the order. Launch + 28 (window 2026-10-29 – 11-25, run 2026-11-26), + 56 (2026-12-24) and + 90 (2027-01-27) are now measurement only (#167): they read the published terms' queries, and batches 1–5 have about 14 days in the + 28 window and batches 6–8 about 13.
 
 **Guides.** Dormie, All Square and Halve link `/games/nassau` (`canonical-map.md`), subject to batch 7's product audit. No batch builds a guide or a standalone page: that work gets its own issue (#106 Phase 3, #169), and a record links a guide only once it's published and the canonical map says so.
 

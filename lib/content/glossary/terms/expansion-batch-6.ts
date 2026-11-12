@@ -213,7 +213,7 @@ export const expansionBatch6Terms: GlossaryTerm[] = [
     id: "flop-shot",
     slug: "flop-shot",
     term: "Flop Shot",
-    aliases: ["flop"],
+    aliases: ["flop", "lob shot"],
     primaryCategory: "shots",
     tags: ["short-game"],
     priority: "expansion",
