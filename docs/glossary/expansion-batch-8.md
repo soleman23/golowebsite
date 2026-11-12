@@ -1,6 +1,6 @@
 # Glossary expansion batch 8: equipment and technology (#168, #304)
 
-Prepared November 12, 2026 for the owner's review. The records are in `lib/content/glossary/terms/expansion-batch-8.ts`, all `in-review`. Nothing here reaches a public page, the search index, the sitemap, `llms.txt` or structured data until a record is approved and a release PR publishes it (`selectors.ts`; checked by `npm run test:glossary`, and in the built `glossary.html`, `glossary.rsc`, `llms.txt`, `sitemap.xml` and `.next/static` for this PR).
+Prepared November 12, 2026 for the owner's review; stages 2–4 done the same day under the owner's delegation. The records are in `lib/content/glossary/terms/expansion-batch-8.ts`, all `in-review`. Nothing here reaches a public page, the search index, the sitemap, `llms.txt` or structured data until a record is approved and a release PR publishes it (`selectors.ts`; checked by `npm run test:glossary`, and in the built `glossary.html`, `glossary.rsc`, `llms.txt`, `sitemap.xml` and `.next/static` for this PR).
 
 ## Why now
 
@@ -35,10 +35,23 @@ The batch 6 packet held "lob shot" as a Flop Shot alias until the Wedge record e
 | # | Stage | Done | Still needed |
 |---|---|---|---|
 | 1 | Draft | Agent, 2026-11-12 | — |
-| 2 | Rules fact-check | Sources opened and quoted below; examples recomputed | Owner sign-off, or a delegation for this batch |
-| 3 | GoLo product audit | No record mentions GoLo or the app, links a GoLo page, or cites a capability | Owner sign-off, or a delegation |
-| 4 | SEO/canonical | Hub anchors at each slug; `lint:content` passes; related ids resolve | Owner sign-off, or a delegation |
+| 2 | Rules fact-check | Agent, 2026-11-12, under the owner's delegation: every source reopened, every sentence checked, examples recomputed below. [Results](#stage-24-results-agent-2026-11-12) | — |
+| 3 | GoLo product audit | Agent, 2026-11-12, under the owner's delegation: no record mentions GoLo or the app, links a GoLo page, or cites a capability | — |
+| 4 | SEO/canonical | Agent, 2026-11-12, under the owner's delegation: hub anchors at each slug; `lint:content` passes; related ids resolve | — |
 | 5 | Approval | — | **Owner** |
+
+**Delegation (owner, 2026-11-12, #304).** The owner delegated stages 2–4 for the 10 records of batch 8 ("Yes, delegate"), as for batches 1–7, and kept approval. Each record now has a `reviewLog` with `rules`, `product` and `seo` entries, `by: "agent"`, dated 2026-11-12. The records stay `in-review` until the owner approves them. Rangefinder's destination and the "lob shot" alias (above) are part of that approval.
+
+### Stage 2–4 results (agent, 2026-11-12)
+
+- **Rules.** All 20 source URLs were reopened at 12:41 PST, and each answered 200: Rule 4 on randa.org and 19 editorial pages. Every quoted phrase below was found again in that day's text (44 quotes).
+- **Two wording fixes.**
+  - **Iron:** said the club has "a flat-faced metal head", which none of the cited sources says. It's gone; the definition is now the numbering and the loft-to-distance trade, which they do say.
+  - **Launch Monitor:** said "many driving ranges have them". Golf Monthly says only "Maybe your local range has" one, so it now says "some".
+- **Wedge's uses, checked.** Golfshake's wedges article supports each use the definition names: the pitching wedge "for those longer distance pitch shots", the sand wedge "to get you out of the sand" and "for close range chip shots", and the lob wedge "for the flop shot" and "short range approach shots".
+- **Examples.** Every number recomputed again from the inputs shown; all match (the "Recomputed" lines below).
+- **Product.** No `goloNote`, `ctaIntent` or `capabilityIds` on any record; no field names GoLo or the app; no brands.
+- **SEO.** Every canonical is `{ kind: "hub", anchor: <slug> }`, Rangefinder included (above). Related ids resolve to records (published, or in this batch). `lint:content` passes, and the aliases are unique across all 166 records.
 
 ## GoLo
 
@@ -56,7 +69,7 @@ Golf only. GoLo doesn't sell, fit or measure equipment, and `gps-yardages` and `
 Every source was opened on 2026-11-12 at the URL in the record and answered 200. Rule 4 on randa.org is the 2023 edition.
 
 ### Iron (`iron`, P2)
-- **Definition:** One of the numbered clubs, from about 3 to 9, with a flat-faced metal head. The higher the number, the more loft, so the higher and shorter the shot.
+- **Definition:** One of the numbered clubs, from about 3 to 9. The higher the number, the more loft, so the higher and shorter the shot.
 - Sources: Golf Compendium (mid-irons): "the 3- and 4-iron were usually called the long irons, the 5-, 6- and 7-irons were known as the mid-irons, and the 8- and 9-iron plus the pitching wedge were called the short irons … today many golfers have replaced long irons with hybrids". Golf Compendium (long irons): "golf club manufacturers often market hybrids specifically as replacements for long irons". Golf Monthly (lofts): "There is no official loft angle assigned to each iron … a three-iron usually comes in at around 20 degrees … a seven-iron is usually around 34 degree and then the eight- and nine-irons often come with 37 and 41 degrees".
 - Recomputed: 160 is 10 yards past the 7-iron's 150, so one club more, the 6 ✓ (illustrative)
 

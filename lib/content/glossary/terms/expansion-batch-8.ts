@@ -7,8 +7,10 @@
  * llms.txt or structured data until each record is approved and a release PR
  * publishes it (../selectors). Expansion records go back to the owner's
  * review roles (editorial-review.md § Roles): an agent drafted these and
- * prepared the checks in docs/glossary/expansion-batch-8.md; no stage is
- * signed, so no record has a review log yet.
+ * prepared the checks in docs/glossary/expansion-batch-8.md. On 2026-11-12
+ * the owner delegated stages 2–4 for this batch to an agent and kept
+ * approval (#304); each record logs those three stages below. They stay
+ * `in-review` until the owner approves.
  *
  * Every source with `accessedOn` was opened on that date. Rules of Golf
  * pages are the 2023 edition on randa.org. Definitions, not buying advice:
@@ -19,9 +21,37 @@
  * Rangefinder is a hub entry because /blog/rangefinder is unpublished.
  */
 
-import type { GlossaryTerm } from "../types";
+import type { GlossaryTerm, ReviewEntry } from "../types";
 
 const DRAFTED_ON = "2026-11-12";
+
+/**
+ * Stages 2–4, done by an agent on 2026-11-12 under the owner's delegation of
+ * that date for this batch only (#304; editorial-review.md § Roles).
+ * Approval is the owner's and isn't logged until they give it.
+ */
+const REVIEWED_ON = "2026-11-12";
+
+const reviewLog: ReviewEntry[] = [
+  {
+    stage: "rules",
+    by: "agent",
+    on: REVIEWED_ON,
+    note: "Every source reopened 2026-11-12 (R&A 2023 Rule 4; 19 editorial pages) and each sentence checked against it; examples recomputed (expansion-batch-8.md).",
+  },
+  {
+    stage: "product",
+    by: "agent",
+    on: REVIEWED_ON,
+    note: "Golf only: no GoLo note, link, CTA or capability id, and no field mentions GoLo or the app; no brands (#304).",
+  },
+  {
+    stage: "seo",
+    by: "agent",
+    on: REVIEWED_ON,
+    note: "Hub canonical at the slug; Rangefinder is a hub entry while /blog/rangefinder is unpublished. Related ids pass lint:content.",
+  },
+];
 
 const RULE_4 = (ref: string) =>
   ({
@@ -71,7 +101,7 @@ export const expansionBatch8Terms: GlossaryTerm[] = [
     tags: [],
     priority: "expansion",
     shortDefinition:
-      "One of the numbered clubs, from about 3 to 9, with a flat-faced metal head. The higher the number, the more loft, so the higher and shorter the shot.",
+      "One of the numbered clubs, from about 3 to 9. The higher the number, the more loft, so the higher and shorter the shot.",
     explanation:
       "Golfers group them as long irons (3 and 4), mid irons (5 to 7) and short irons (8, 9 and the pitching wedge). Many now carry hybrids instead of the long irons. No standard sets each iron's loft; a 7-iron is usually around 34 degrees.",
     example:
@@ -85,6 +115,7 @@ export const expansionBatch8Terms: GlossaryTerm[] = [
       LONG_IRONS,
       GM_LOFTS,
     ],
+    reviewLog,
     status: "in-review",
   },
   {
@@ -117,6 +148,7 @@ export const expansionBatch8Terms: GlossaryTerm[] = [
       compendium("What is an 'attack wedge' in golf?", "https://www.golfcompendium.com/2022/06/attack-wedge-golf.html"),
       RULE_4("Rule 4.1b(1) (limit of 14 clubs)"),
     ],
+    reviewLog,
     status: "in-review",
   },
   {
@@ -145,6 +177,7 @@ export const expansionBatch8Terms: GlossaryTerm[] = [
       LONG_IRONS,
       GM_LOFTS,
     ],
+    reviewLog,
     status: "in-review",
   },
   {
@@ -168,6 +201,7 @@ export const expansionBatch8Terms: GlossaryTerm[] = [
       GM_LOFTS,
       compendium("The brassie (or 'brassy') golf club", "https://www.golfcompendium.com/2020/06/brassie-golf-club.html"),
     ],
+    reviewLog,
     status: "in-review",
   },
   {
@@ -196,6 +230,7 @@ export const expansionBatch8Terms: GlossaryTerm[] = [
       ),
       GM_LOFTS,
     ],
+    reviewLog,
     status: "in-review",
   },
   {
@@ -226,6 +261,7 @@ export const expansionBatch8Terms: GlossaryTerm[] = [
         "https://golf.com/gear/fully-equipped-mailbag-understanding-lie-angle-and-how-it-works/",
       ),
     ],
+    reviewLog,
     status: "in-review",
   },
   {
@@ -254,6 +290,7 @@ export const expansionBatch8Terms: GlossaryTerm[] = [
       ),
       editorial("Golf Monthly: What is bounce on wedges?", "https://www.golfmonthly.com/reviews/wedges/what-is-bounce-on-wedges"),
     ],
+    reviewLog,
     status: "in-review",
   },
   {
@@ -280,6 +317,7 @@ export const expansionBatch8Terms: GlossaryTerm[] = [
         "https://www.golfcompendium.com/2019/03/putter-shaft-flex.html",
       ),
     ],
+    reviewLog,
     status: "in-review",
   },
   {
@@ -312,6 +350,7 @@ export const expansionBatch8Terms: GlossaryTerm[] = [
         "https://www.todays-golfer.com/news-and-events/equipment-news/what-is-slope-function-in-a-rangefinder/",
       ),
     ],
+    reviewLog,
     status: "in-review",
   },
   {
@@ -325,7 +364,7 @@ export const expansionBatch8Terms: GlossaryTerm[] = [
     shortDefinition:
       "A device that measures each shot just after impact and reports numbers such as clubhead speed, ball speed, launch angle, spin rate and carry distance.",
     explanation:
-      "Coaches and club fitters use them, and many driving ranges have them. Carry, the distance the ball flies before it lands, is the number most worth knowing for each club.",
+      "Coaches and club fitters use them, and some driving ranges have them. Carry, the distance the ball flies before it lands, is the number most worth knowing for each club.",
     example:
       "On the range a player hits ten 7-irons and the monitor shows an average carry of 148 yards: that's their 7-iron number.",
     ruleNote: {
@@ -344,6 +383,7 @@ export const expansionBatch8Terms: GlossaryTerm[] = [
       editorial("Golf Monthly: What shaft flex should I use?", "https://www.golfmonthly.com/features/the-game/shaft-flex-use-2-189385"),
       RULE_4("Rule 4.3a(3) (information gathered before or during the round)"),
     ],
+    reviewLog,
     status: "in-review",
   },
 ];

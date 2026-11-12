@@ -63,6 +63,8 @@ A record moves from `in-review` to `approved` only when stages 2–5 each have a
 
 **Delegation for expansion batch 7 (owner, November 12, 2026).** The owner delegated stages 2–4 for the 15 records of batch 7, the 14 slang terms plus Halve (#168, #301; `lib/content/glossary/terms/expansion-batch-7.ts`), to an agent ("Yes, delegate"), and kept approval. The agent reopened every source, recomputed every example, checked that no field mentions GoLo and that the three Nassau guide links agree with the guide, and ran the canonical and link checks. Each record logs stages 2–4 as `by: "agent"`, dated November 12, 2026. The owner approved all 15 in chat the same day ("Approve all 15"), so each record also logs `approval` as `by: "owner"` and is `approved` (`docs/glossary/expansion-batch-7.md` § Stages). The owner then asked for the merge and release once ready ("Merge when they pass and are ready"); the batch 7 release PR set them to `published`. The delegation covers batch 7 only.
 
+**Delegation for expansion batch 8 (owner, November 12, 2026).** The owner delegated stages 2–4 for the 10 equipment and technology records of batch 8 (#168, #304; `lib/content/glossary/terms/expansion-batch-8.ts`) to an agent ("Yes, delegate"), and kept approval. The agent reopened every source, recomputed every example, checked that no field mentions GoLo, and ran the canonical and link checks. Each record logs stages 2–4 as `by: "agent"`, dated November 12, 2026 (`docs/glossary/expansion-batch-8.md` § Stages). No approval is logged until the owner gives it.
+
 Never invent a reviewer, credential, review date or source check. If a stage hasn't happened, the record says so by not having that entry.
 
 ## Review record format
