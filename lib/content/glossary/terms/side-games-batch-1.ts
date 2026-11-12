@@ -2,13 +2,13 @@
  * Side games, expansion batch 1 (#168, M8). Eleven records from
  * docs/glossary/inventory.md § C, drafted November 11, 2026.
  *
- * IN REVIEW. Nothing here reaches a page, the search index, the sitemap,
- * llms.txt or structured data until each record is approved and a release PR
- * publishes it (../selectors). Expansion records go back to the owner's
+ * APPROVED, NOT PUBLISHED. Nothing here reaches a public page, the search
+ * index, the sitemap, llms.txt or structured data until a release PR
+ * publishes it; approved records show only in local review (../selectors). Expansion records go back to the owner's
  * review roles (editorial-review.md § Roles): an agent drafted these and
  * prepared the checks in docs/glossary/expansion-batch-1.md. On 2026-11-11
  * the owner delegated stages 2–4 to an agent; each record logs them below.
- * Approval stays with the owner.
+ * The owner approved all 11 in chat the same day.
  *
  * Every source with `accessedOn` was opened on that date. Pages whose URL
  * carries a word the vocabulary check bans were left out, as for the MVP.
@@ -54,6 +54,14 @@ const seo: ReviewEntry = {
   note: "Canonical per canonical-map.md; related ids and paths pass lint:content.",
 };
 
+/** The owner's approval, given in chat on 2026-11-11 ("Approve all 11"). */
+const approval: ReviewEntry = {
+  stage: "approval",
+  by: "owner",
+  on: REVIEWED_ON,
+  note: "Approved in chat on 2026-11-11, all 11 records, on the agent's stage 2–4 checks.",
+};
+
 /** A record with a GoLo note, checked against the registry and the owner's answers. */
 const reviewLogGolo: ReviewEntry[] = [
   rules,
@@ -64,6 +72,7 @@ const reviewLogGolo: ReviewEntry[] = [
     note: "GoLo note and capability ids checked against capabilities.ts and the owner's answers of 2026-11-11; app code not read.",
   },
   seo,
+  approval,
 ];
 
 /** A record with no GoLo note: capability ids only back the absence of one. */
@@ -76,6 +85,7 @@ const reviewLogNone: ReviewEntry[] = [
     note: "No GoLo claim; any capability ids are planned or not offered, and the record implies neither.",
   },
   seo,
+  approval,
 ];
 
 export const sideGamesBatch1Terms: GlossaryTerm[] = [
@@ -116,7 +126,9 @@ export const sideGamesBatch1Terms: GlossaryTerm[] = [
       },
     ],
     reviewLog: reviewLogNone,
-    status: "in-review",
+    reviewedBy: "owner",
+    reviewedOn: REVIEWED_ON,
+    status: "approved",
   },
   {
     id: "point-value",
@@ -148,7 +160,9 @@ export const sideGamesBatch1Terms: GlossaryTerm[] = [
       },
     ],
     reviewLog: reviewLogNone,
-    status: "in-review",
+    reviewedBy: "owner",
+    reviewedOn: REVIEWED_ON,
+    status: "approved",
   },
   {
     id: "buy-in",
@@ -185,7 +199,9 @@ export const sideGamesBatch1Terms: GlossaryTerm[] = [
       },
     ],
     reviewLog: reviewLogNone,
-    status: "in-review",
+    reviewedBy: "owner",
+    reviewedOn: REVIEWED_ON,
+    status: "approved",
   },
   {
     id: "validation",
@@ -223,7 +239,9 @@ export const sideGamesBatch1Terms: GlossaryTerm[] = [
       },
     ],
     reviewLog: reviewLogNone,
-    status: "in-review",
+    reviewedBy: "owner",
+    reviewedOn: REVIEWED_ON,
+    status: "approved",
   },
   {
     id: "net-skins",
@@ -269,7 +287,9 @@ export const sideGamesBatch1Terms: GlossaryTerm[] = [
       },
     ],
     reviewLog: reviewLogGolo,
-    status: "in-review",
+    reviewedBy: "owner",
+    reviewedOn: REVIEWED_ON,
+    status: "approved",
   },
   {
     id: "debt-netting",
@@ -299,7 +319,9 @@ export const sideGamesBatch1Terms: GlossaryTerm[] = [
       },
     ],
     reviewLog: reviewLogGolo,
-    status: "in-review",
+    reviewedBy: "owner",
+    reviewedOn: REVIEWED_ON,
+    status: "approved",
   },
   {
     id: "birdie-bounty",
@@ -339,7 +361,9 @@ export const sideGamesBatch1Terms: GlossaryTerm[] = [
       },
     ],
     reviewLog: reviewLogGolo,
-    status: "in-review",
+    reviewedBy: "owner",
+    reviewedOn: REVIEWED_ON,
+    status: "approved",
   },
   {
     id: "eagle-bounty",
@@ -372,7 +396,9 @@ export const sideGamesBatch1Terms: GlossaryTerm[] = [
       },
     ],
     reviewLog: reviewLogGolo,
-    status: "in-review",
+    reviewedBy: "owner",
+    reviewedOn: REVIEWED_ON,
+    status: "approved",
   },
   {
     id: "hammer",
@@ -411,7 +437,9 @@ export const sideGamesBatch1Terms: GlossaryTerm[] = [
       },
     ],
     reviewLog: reviewLogNone,
-    status: "in-review",
+    reviewedBy: "owner",
+    reviewedOn: REVIEWED_ON,
+    status: "approved",
   },
   {
     id: "lone-wolf",
@@ -447,7 +475,9 @@ export const sideGamesBatch1Terms: GlossaryTerm[] = [
       },
     ],
     reviewLog: reviewLogGolo,
-    status: "in-review",
+    reviewedBy: "owner",
+    reviewedOn: REVIEWED_ON,
+    status: "approved",
   },
   {
     id: "rabbit",
@@ -486,6 +516,8 @@ export const sideGamesBatch1Terms: GlossaryTerm[] = [
       },
     ],
     reviewLog: reviewLogNone,
-    status: "in-review",
+    reviewedBy: "owner",
+    reviewedOn: REVIEWED_ON,
+    status: "approved",
   },
 ];

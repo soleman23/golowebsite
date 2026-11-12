@@ -36,9 +36,9 @@ The inventory lists 16 side-games expansion terms. #168 asks for batches of 10 t
 | 2 | Rules fact-check | Agent, 2026-11-11, under the owner's delegation: every source reopened, every sentence checked, examples recomputed below. No record cites the Rules of Golf or the Rules of Handicapping; every source is editorial or first-party. One fix: Validation's definition | — |
 | 3 | GoLo product audit | Agent, 2026-11-11, under the owner's delegation: notes and `capabilityIds` checked against `capabilities.ts` and the owner's [answers](#owners-answers-november-11-2026). App code not read | — |
 | 4 | SEO/canonical | Agent, 2026-11-11, under the owner's delegation: canonicals per `canonical-map.md`; `lint:content` passes; related ids and paths resolve | — |
-| 5 | Approval | — | **Owner** |
+| 5 | Approval | **Owner**, in chat, 2026-11-11: "Approve all 11" | — |
 
-**Delegation (owner, 2026-11-11).** The owner delegated stages 2–4 for this batch to an agent and kept approval (`editorial-review.md` § Roles). Each record now has a `reviewLog` with `rules`, `product` and `seo` entries, `by: "agent"`, dated 2026-11-11. Records stay `in-review`: no `approval` entry, `reviewedBy` or `reviewedOn` until the owner approves in chat. Then the records move to `approved`, and a release PR moves them to `published`.
+**Delegation (owner, 2026-11-11).** The owner delegated stages 2–4 for this batch to an agent and kept approval (`editorial-review.md` § Roles). Each record now has a `reviewLog` with `rules`, `product` and `seo` entries, `by: "agent"`, dated 2026-11-11. The owner approved all 11 in chat on 2026-11-11 ("Approve all 11"), so each record also has an `approval` entry `by: "owner"`, `reviewedBy: "owner"`, `reviewedOn: 2026-11-11`, and status `approved`. A release PR moves them to `published`.
 
 ### Stage 2–4 results (agent, 2026-11-11)
 
