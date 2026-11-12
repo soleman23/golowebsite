@@ -3,7 +3,8 @@
  * docs/glossary/inventory.md; the lifecycle and the review record from
  * docs/glossary/editorial-review.md.
  *
- * The records live in ./terms/, one file per content batch (#158–#162),
+ * The records live in ./terms/, one file per content batch (#158–#162, and
+ * the expansion batches under #168),
  * and reach `approved` only through the review stages. Drafts never reach a
  * page, the search index, the sitemap, llms.txt or structured data
  * (./selectors).
@@ -19,6 +20,7 @@ import { sideGamesTerms } from "./terms/side-games";
 import { handicapsTerms } from "./terms/handicaps";
 import { scoringShotsTerms } from "./terms/scoring-shots";
 import { courseEquipmentSlangTerms } from "./terms/course-equipment-slang";
+import { sideGamesBatch1Terms } from "./terms/side-games-batch-1";
 
 export const glossaryTerms: GlossaryTerm[] = [
   ...formatsTerms,
@@ -26,4 +28,5 @@ export const glossaryTerms: GlossaryTerm[] = [
   ...handicapsTerms,
   ...scoringShotsTerms,
   ...courseEquipmentSlangTerms,
+  ...sideGamesBatch1Terms,
 ];

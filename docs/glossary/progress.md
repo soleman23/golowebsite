@@ -22,6 +22,8 @@ CI runs on PRs to `main` and pushes to `main`. A retargeted PR needs a push befo
 - **#167:** the next glossary work. First checkpoint 2026-11-05 (L+7); the run sheet is `docs/seo-reports/glossary-checkpoints.md`.
 - **#168–#170:** not started, each behind its own #167 gate: #168 waits for the 28-day section to be filed, #169 for the 56-day section and #78's plan, #170 for the 90-day section.
 
+**Update, November 11, 2026.** The owner chose to start #168's first batch before the 28-day checkpoint. Batch 1 is 11 side-games terms, drafted and merged at `in-review`, so none of them is public. The packet for the owner's sign-off is `expansion-batch-1.md`. The 28-day, 56-day and 90-day reads still set the order of batch 2 onward. #169 and #170 keep their gates.
+
 The section below is the launch-night record and is kept as written.
 
 ## Where things stand (October 29, 2026, night: released)
