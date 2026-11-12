@@ -12,6 +12,10 @@
  * Every source with `accessedOn` was opened on that date. Pages whose URL
  * carries a word the vocabulary check bans were left out, as for the MVP.
  *
+ * The owner answered the batch's three product questions on 2026-11-11
+ * (#278): Net Skins narrowed to the standard skins, Lone Wolf and Eagle
+ * Bounty kept as drafted.
+ *
  * GoLo notes come only from `live` registry entries and their limits:
  * birdie and eagle bounties are the Skins game's Birdie Skin and Eagle Skin
  * settings (game-library), net strokes follow handicap-strokes, netting
@@ -189,12 +193,15 @@ export const sideGamesBatch1Terms: GlossaryTerm[] = [
       kind: "house-rules",
       text: "Groups decide whether skins are gross or net before the round, and whether everyone takes full strokes or a percentage of them.",
     },
+    // Owner, 2026-11-11 (#278), from the app's skins engine: Net applies
+    // strokes to the standard skins, ties and carries included; the Birdie
+    // Skin, Eagle Skin, Greenie and Sandie options stay gross.
     goloNote:
-      "GoLo's Skins game can be played net, with strokes placed by the card's stroke index. Every player gets their full Course Handicap; in a scramble, teams play off their team handicap.",
+      "GoLo's Skins game can be set to net: strokes go on by the card's stroke index and decide each hole's low score, so ties and carries are net too. Its Birdie Skin, Eagle Skin, Greenie and Sandie options still use gross scores.",
     relatedTermIds: ["skins", "net-score", "handicap-stroke", "stroke-index"],
     relatedContentPaths: ["/games/skins"],
     canonical: { kind: "hub", anchor: "net-skins" },
-    capabilityIds: ["game-library", "handicap-strokes", "scramble"],
+    capabilityIds: ["game-library", "handicap-strokes", "skins-greenie-sandie"],
     ctaIntent: "handicaps",
     sources: [
       {

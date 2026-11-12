@@ -29,7 +29,7 @@ The inventory lists 16 side-games expansion terms. #168 asks for batches of 10 t
 |---|---|---|---|
 | 1 | Draft | Agent, 2026-11-11 | — |
 | 2 | Rules fact-check | Agent prepared: sources opened 2026-11-11, examples recomputed below. No record cites the Rules of Golf or the Rules of Handicapping; every source is editorial or first-party | **Owner** signs |
-| 3 | GoLo product audit | Agent prepared against the registry only. Not checked against the app's code (see [Product audit questions](#product-audit-questions)) | **Owner** signs |
+| 3 | GoLo product audit | Agent prepared against the registry. The owner answered the three open questions from the app's code on 2026-11-11 ([answers](#owners-answers-november-11-2026)) | **Owner** signs |
 | 4 | SEO/canonical | Agent: canonicals per `canonical-map.md`; `lint:content` passes; related ids and paths resolve | **Owner** confirms |
 | 5 | Approval | — | **Owner** |
 
@@ -42,6 +42,16 @@ The registry is the evidence for every GoLo note below. It was last checked agai
 1. **Net Skins.** Can every Skins game in GoLo be played net? The skins guide says so ("GoLo allocates strokes by stroke index, hole by hole"). The note also says a scramble's teams play off their team handicap (`scramble`, `handicap-strokes`).
 2. **Lone Wolf.** The note says GoLo's Wolf scores Lone Wolf holes. The Wolf guide says so ("GoLo handles every partner pick, Lone Wolf, and settlement"), but no registry line names it. Blind Wolf isn't claimed.
 3. **Eagle Bounty.** The note says only that it's the Skins game's Eagle Skin setting. The birdies guide says "Eagle Skin for the double, both at your skin price". The note doesn't repeat that, because the registry doesn't say how Eagle Skin is valued.
+
+### Owner's answers (November 11, 2026)
+
+The owner answered all three in chat, citing the app's scoring code (`src/engines/skins.js`, `src/engines/wolf.js`) and the live guides. This session didn't open the app's code; the answers are recorded as the owner's.
+
+1. **Net Skins: no, not every Skins game.** Setting Skins to Net applies handicap strokes to the standard skins, including the low-score comparison that decides ties and carryovers. The Birdie Skin, Eagle Skin, Greenie and Sandie options still use gross scores. **Changed:** the note now says that and drops the scramble clause; `capabilityIds` swaps `scramble` for `skins-greenie-sandie`. The registry already says the bonus skins are gross (`game-library`: "gross birdies only"; `skins-greenie-sandie`: "GoLo checks the par from the gross score"), so the registry is unchanged.
+2. **Lone Wolf: keep the note.** GoLo compares the solo wolf's score with the best score of the other three and records a win, loss or push.
+3. **Eagle Bounty: keep the note, without "for the double".** A gross eagle or better earns one Eagle Skin at the configured base value. If Birdie Skin is also on, the same score earns a birdie skin too.
+
+**Found along the way, outside this PR:** the birdies guide (`/games/birdies`, `lib/content/gameDetail.ts`) says "Birdie Skin, plus Eagle Skin for the double". Read as Eagle Skin on its own doubling the amount, that disagrees with the code. It's double only when both settings are on.
 
 ## Differences from `inventory.md`
 
@@ -117,10 +127,10 @@ Word counts are for the short definition. "Recomputed" lines redo every number i
 
 **Note (house-rules):** Groups decide whether skins are gross or net before the round, and whether everyone takes full strokes or a percentage of them.
 
-**GoLo note:** GoLo's Skins game can be played net, with strokes placed by the card's stroke index. Every player gets their full Course Handicap; in a scramble, teams play off their team handicap.
+**GoLo note:** GoLo's Skins game can be set to net: strokes go on by the card's stroke index and decide each hole's low score, so ties and carries are net too. Its Birdie Skin, Eagle Skin, Greenie and Sandie options still use gross scores.
 
 - Canonical: /glossary#net-skins · related: skins, net-score, handicap-stroke, stroke-index · content links: /games/skins · CTA intent: handicaps
-- Capabilities: `game-library`, `handicap-strokes`, `scramble` (all live, app check 2026-10-29). See [question 1](#product-audit-questions).
+- Capabilities: `game-library`, `handicap-strokes`, `skins-greenie-sandie` (all live, app check 2026-10-29). The note follows the owner's answer to [question 1](#owners-answers-november-11-2026).
 - Sources: LiveTourney <https://www.livetourney.com/blog/skins-game-rules-golf> (opened 2026-11-11): players "apply their course handicap to get strokes on the toughest-rated holes", and the net score decides the outright winner. GolfLink <https://golflink.com/lifestyle/golf-skins-game-everything-you-need-to-know> (opened 2026-11-11): decide "whether you'll play gross or net skins".
 - Recomputed: a 12 gets strokes on stroke index 1–12, so it gets one on SI 4 ✓; a 2 gets strokes on SI 1–2 only, so none on SI 4 ✓; 5 − 1 = net 4 = Sam's 4 → tie, skin carries ✓
 - Agrees with the skins guide glossary: "Skins played off handicaps, with strokes allocated hole by hole."
