@@ -4,9 +4,8 @@
  * terms the owner kept on 2026-11-11 (§ C rows 67–70 and 72) and the ten
  * handicaps expansion terms (§ D rows 85–94).
  *
- * APPROVED, NOT PUBLISHED. Nothing here reaches a public page, the search
- * index, the sitemap, llms.txt or structured data until a release PR
- * publishes it; approved records show only in local review (../selectors). Expansion records go back to the owner's
+ * PUBLISHED by the batch 2 release PR, which the owner asked for after
+ * approving all 15 ("Yes, after merge"). Expansion records go back to the owner's
  * review roles (editorial-review.md § Roles): an agent drafted these and
  * prepared the checks in docs/glossary/expansion-batch-2.md. On 2026-11-11
  * the owner delegated stages 2–4 for this batch to an agent and kept
@@ -45,6 +44,9 @@ const ROH_BASE = "https://www.usga.org/handicapping/roh/Content/rules/";
  * Approval is the owner's.
  */
 const REVIEWED_ON = "2026-11-11";
+
+/** The day the release PR merged and deployed. */
+const PUBLISHED_ON = "2026-11-11";
 
 /** The owner's approval, given in chat on 2026-11-11 ("Approve all 15"). */
 const approval: ReviewEntry = {
@@ -133,7 +135,8 @@ export const expansionBatch2Terms: GlossaryTerm[] = [
     reviewLog: reviewLogNone,
     reviewedBy: "owner",
     reviewedOn: REVIEWED_ON,
-    status: "approved",
+    publishedOn: PUBLISHED_ON,
+    status: "published",
   },
   {
     id: "poley",
@@ -172,7 +175,8 @@ export const expansionBatch2Terms: GlossaryTerm[] = [
     reviewLog: reviewLogNone,
     reviewedBy: "owner",
     reviewedOn: REVIEWED_ON,
-    status: "approved",
+    publishedOn: PUBLISHED_ON,
+    status: "published",
   },
   {
     id: "snake",
@@ -219,7 +223,8 @@ export const expansionBatch2Terms: GlossaryTerm[] = [
     reviewLog: reviewLogNone,
     reviewedBy: "owner",
     reviewedOn: REVIEWED_ON,
-    status: "approved",
+    publishedOn: PUBLISHED_ON,
+    status: "published",
   },
   {
     id: "arnie",
@@ -266,7 +271,8 @@ export const expansionBatch2Terms: GlossaryTerm[] = [
     reviewLog: reviewLogNone,
     reviewedBy: "owner",
     reviewedOn: REVIEWED_ON,
-    status: "approved",
+    publishedOn: PUBLISHED_ON,
+    status: "published",
   },
   {
     id: "double-or-nothing",
@@ -307,7 +313,8 @@ export const expansionBatch2Terms: GlossaryTerm[] = [
     reviewLog: reviewLogNone,
     reviewedBy: "owner",
     reviewedOn: REVIEWED_ON,
-    status: "approved",
+    publishedOn: PUBLISHED_ON,
+    status: "published",
   },
 
   /* ------------------------------------------------------- handicaps */
@@ -367,7 +374,8 @@ export const expansionBatch2Terms: GlossaryTerm[] = [
     reviewLog: reviewLogNone,
     reviewedBy: "owner",
     reviewedOn: REVIEWED_ON,
-    status: "approved",
+    publishedOn: PUBLISHED_ON,
+    status: "published",
   },
   {
     id: "scratch-golfer",
@@ -422,7 +430,8 @@ export const expansionBatch2Terms: GlossaryTerm[] = [
     reviewLog: reviewLogNone,
     reviewedBy: "owner",
     reviewedOn: REVIEWED_ON,
-    status: "approved",
+    publishedOn: PUBLISHED_ON,
+    status: "published",
   },
   {
     id: "bogey-golfer",
@@ -479,7 +488,8 @@ export const expansionBatch2Terms: GlossaryTerm[] = [
     reviewLog: reviewLogNone,
     reviewedBy: "owner",
     reviewedOn: REVIEWED_ON,
-    status: "approved",
+    publishedOn: PUBLISHED_ON,
+    status: "published",
   },
   {
     id: "plus-handicap",
@@ -539,7 +549,8 @@ export const expansionBatch2Terms: GlossaryTerm[] = [
     reviewLog: reviewLogGolo,
     reviewedBy: "owner",
     reviewedOn: REVIEWED_ON,
-    status: "approved",
+    publishedOn: PUBLISHED_ON,
+    status: "published",
   },
   {
     id: "sandbagging",
@@ -599,7 +610,8 @@ export const expansionBatch2Terms: GlossaryTerm[] = [
     reviewLog: reviewLogNone,
     reviewedBy: "owner",
     reviewedOn: REVIEWED_ON,
-    status: "approved",
+    publishedOn: PUBLISHED_ON,
+    status: "published",
   },
   {
     id: "playing-conditions-calculation",
@@ -647,7 +659,8 @@ export const expansionBatch2Terms: GlossaryTerm[] = [
     reviewLog: reviewLogNone,
     reviewedBy: "owner",
     reviewedOn: REVIEWED_ON,
-    status: "approved",
+    publishedOn: PUBLISHED_ON,
+    status: "published",
   },
   {
     id: "soft-cap",
@@ -697,7 +710,8 @@ export const expansionBatch2Terms: GlossaryTerm[] = [
     reviewLog: reviewLogNone,
     reviewedBy: "owner",
     reviewedOn: REVIEWED_ON,
-    status: "approved",
+    publishedOn: PUBLISHED_ON,
+    status: "published",
   },
   {
     id: "hard-cap",
@@ -745,7 +759,8 @@ export const expansionBatch2Terms: GlossaryTerm[] = [
     reviewLog: reviewLogNone,
     reviewedBy: "owner",
     reviewedOn: REVIEWED_ON,
-    status: "approved",
+    publishedOn: PUBLISHED_ON,
+    status: "published",
   },
   {
     id: "exceptional-score-reduction",
@@ -786,7 +801,8 @@ export const expansionBatch2Terms: GlossaryTerm[] = [
     reviewLog: reviewLogNone,
     reviewedBy: "owner",
     reviewedOn: REVIEWED_ON,
-    status: "approved",
+    publishedOn: PUBLISHED_ON,
+    status: "published",
   },
   {
     id: "most-likely-score",
@@ -827,6 +843,7 @@ export const expansionBatch2Terms: GlossaryTerm[] = [
     reviewLog: reviewLogNone,
     reviewedBy: "owner",
     reviewedOn: REVIEWED_ON,
-    status: "approved",
+    publishedOn: PUBLISHED_ON,
+    status: "published",
   },
 ];

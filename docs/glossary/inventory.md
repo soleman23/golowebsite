@@ -123,7 +123,7 @@ Subtotal: 10 MVP + 14 expansion = 24.
 
 ## C. Side games (26)
 
-**Expansion batch 2 (#168, November 11, 2026):** rows 67–70 and 72 are `approved` (owner, 2026-11-11), not yet published (`expansion-batch-2.md`): the four junk items as golf education with no GoLo note and no `junk` tag, and Double or Nothing with a general definition.
+**Expansion batch 2 (#168, November 11, 2026):** rows 67–70 and 72 are published (owner's approval and release, 2026-11-11; `expansion-batch-2.md`): the four junk items as golf education with no GoLo note and no `junk` tag, and Double or Nothing with a general definition.
 
 The spec calls this category "Side games and friendly wagers". The public label is **Side games** (owner, 2026-10-29: Q1), because the site's vocabulary check fails "wager" anywhere in site copy. The category id is `side-games`.
 
@@ -164,7 +164,7 @@ Subtotal: 10 MVP + 16 expansion = 26.
 
 ## D. Handicaps and course ratings (20)
 
-**Expansion batch 2 (#168, November 11, 2026):** rows 85–94 are `approved` (owner, 2026-11-11), not yet published (`expansion-batch-2.md`), with rows 67–70 and 72 from § C. Row 84 (Score Differential) is MVP and already published.
+**Expansion batch 2 (#168, November 11, 2026):** rows 85–94 are published (owner's approval and release, 2026-11-11; `expansion-batch-2.md`), with rows 67–70 and 72 from § C. Row 84 (Score Differential) is MVP and already published.
 
 Every record here is rules-sensitive. Worked examples are recomputed by the reviewer from shown inputs (#160). GoLo notes keep official rules apart from GoLo's narrower implementation: full Course Handicap for everyone, one set of tees per group, no percentage allowance except a scramble's team handicap, nobody plays off the low man (`handicap-strokes`; `handicap-allowances` and `mixed-tees` are planned).
 
