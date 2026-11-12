@@ -1,12 +1,12 @@
 # Glossary expansion batch 7: slang, plus Halve (#168, #301)
 
-Prepared November 12, 2026 for the owner's review; stages 2–4 done the same day under the owner's delegation, and **approved by the owner the same day**. Not published: a release PR does that. The records are in `lib/content/glossary/terms/expansion-batch-7.ts`, all `approved`, and reach no public page, search index, sitemap, `llms.txt` or structured data (`selectors.ts`; checked by `npm run test:glossary`, and in the built `glossary.html`, `glossary.rsc`, `llms.txt`, `sitemap.xml` and `.next/static` for this PR).
+Prepared November 12, 2026 for the owner's review; stages 2–4 done the same day under the owner's delegation, and **approved by the owner the same day, and published by the batch 7 release PR**. The records are in `lib/content/glossary/terms/expansion-batch-7.ts`, now `published`. Until the release PR, they were checked at each stage to reach no public page, search index, sitemap, `llms.txt` or structured data (`selectors.ts`; checked by `npm run test:glossary`, and in the built `glossary.html`, `glossary.rsc`, `llms.txt`, `sitemap.xml` and `.next/static` for this PR).
 
 ## Why now
 
-Batches 1–6 are published (141 records). Slang, plus Halve, is next in `inventory.md` § Expansion batch plan. The owner asked for it on 2026-11-12 ("Start batch 7"), before #167's launch + 28 read (2026-11-26). Drafting changes nothing public. Release timing is the owner's call: wait for launch + 28, which can reorder the batches not yet released, or override as for batches 1–6.
+Batches 1–6 are published (141 records). Slang, plus Halve, is next in `inventory.md` § Expansion batch plan. The owner asked for it on 2026-11-12 ("Start batch 7"), before #167's launch + 28 read (2026-11-26). Drafting changes nothing public. Release timing was the owner's call, as for batches 1–6; they released it the same day ("Merge when they pass and are ready"), ahead of launch + 28.
 
-**This batch crosses 150.** Its release takes the count from 141 to 156, so spec §7.4's title ("Golf Glossary: 150+ Terms, Slang & Games | GoLo Golf") ships in the batch 7 release PR, not this one.
+**This batch crosses 150.** Its release took the count from 141 to 156, so the batch 7 release PR also set spec §7.4's title: `Golf Glossary: 150+ Terms, Slang & Games`, shown as "… · GoLo" by the site's title template. The H1 stays spec §5.2's. `npm run test:glossary` now fails if the title claims more terms than are published, or if 150 or more are published and the title doesn't say 150+.
 
 ## Scope
 
@@ -30,7 +30,7 @@ Batches 1–6 are published (141 records). Slang, plus Halve, is next in `invent
 | 4 | SEO/canonical | Agent, 2026-11-12, under the owner's delegation: hub anchors at each slug; `lint:content` passes; related ids and paths resolve | — |
 | 5 | Approval | **Owner**, in chat, 2026-11-12: "Approve all 15" | — |
 
-**Delegation (owner, 2026-11-12, #301).** The owner delegated stages 2–4 for the 15 records of batch 7 ("Yes, delegate"), as for batches 1–6, and kept approval. Each record now has a `reviewLog` with `rules`, `product` and `seo` entries, `by: "agent"`, dated 2026-11-12. The owner approved all 15 in chat the same day ("Approve all 15"), so each record also has an `approval` entry `by: "owner"`, `reviewedBy: "owner"`, `reviewedOn: 2026-11-12`, and status `approved`. Approved records show only in local review (`next dev`); a release PR sets `published` and `publishedOn` to the day it merges, and changes the title to spec §7.4's.
+**Delegation (owner, 2026-11-12, #301).** The owner delegated stages 2–4 for the 15 records of batch 7 ("Yes, delegate"), as for batches 1–6, and kept approval. Each record now has a `reviewLog` with `rules`, `product` and `seo` entries, `by: "agent"`, dated 2026-11-12. The owner approved all 15 in chat the same day ("Approve all 15"), so each record also has an `approval` entry `by: "owner"`, `reviewedBy: "owner"`, `reviewedOn: 2026-11-12`, and status `approved`. Approved records show only in local review (`next dev`); The owner then asked for the merge and release once each PR passed and was ready ("Merge when they pass and are ready"), ahead of #167's launch + 28 read, as for batches 1–6. The batch 7 release PR moved them to `published`, with `publishedOn` the day it merged, and changed the title. The release recheck (`editorial-review.md` § Release recheck): Rules 3, 16 and 19 were reopened again at release time and are still the 2023 edition's text the records quote; no record cites a capability id. The 22 editorial sources answered 200 again.
 
 ### Stage 2–4 results (agent, 2026-11-12)
 
