@@ -4,10 +4,8 @@
  * 2026. Halve (row 20) goes to batch 7 with Dormie and All Square
  * (inventory.md § Expansion batch plan).
  *
- * APPROVED, NOT PUBLISHED. Nothing here reaches a public page, the search
- * index, the sitemap, llms.txt or structured data until a release PR
- * publishes it; approved records show only in local review (../selectors).
- * Expansion records go back to the owner's
+ * PUBLISHED by the batch 4 release PR, which the owner asked for after
+ * approving all 15 ("Merge, then release"). Expansion records go back to the owner's
  * review roles (editorial-review.md § Roles): an agent drafted these and
  * prepared the checks in docs/glossary/expansion-batch-4.md. On 2026-11-11
  * the owner delegated stages 2–4 for this batch to an agent and kept
@@ -42,6 +40,9 @@ const ROG_DEFINITIONS = {
  * Approval is the owner's.
  */
 const REVIEWED_ON = "2026-11-11";
+
+/** The day the release PR merged and deployed. */
+const PUBLISHED_ON = "2026-11-11";
 
 const reviewLog: ReviewEntry[] = [
   {
@@ -107,7 +108,8 @@ export const expansionBatch4Terms: GlossaryTerm[] = [
     reviewLog,
     reviewedBy: "owner",
     reviewedOn: REVIEWED_ON,
-    status: "approved",
+    publishedOn: PUBLISHED_ON,
+    status: "published",
   },
   {
     id: "albatross",
@@ -129,7 +131,8 @@ export const expansionBatch4Terms: GlossaryTerm[] = [
     reviewLog,
     reviewedBy: "owner",
     reviewedOn: REVIEWED_ON,
-    status: "approved",
+    publishedOn: PUBLISHED_ON,
+    status: "published",
   },
   {
     id: "condor",
@@ -164,7 +167,8 @@ export const expansionBatch4Terms: GlossaryTerm[] = [
     reviewLog,
     reviewedBy: "owner",
     reviewedOn: REVIEWED_ON,
-    status: "approved",
+    publishedOn: PUBLISHED_ON,
+    status: "published",
   },
   {
     id: "triple-bogey",
@@ -199,7 +203,8 @@ export const expansionBatch4Terms: GlossaryTerm[] = [
     reviewLog,
     reviewedBy: "owner",
     reviewedOn: REVIEWED_ON,
-    status: "approved",
+    publishedOn: PUBLISHED_ON,
+    status: "published",
   },
   {
     id: "quadruple-bogey",
@@ -233,7 +238,8 @@ export const expansionBatch4Terms: GlossaryTerm[] = [
     reviewLog,
     reviewedBy: "owner",
     reviewedOn: REVIEWED_ON,
-    status: "approved",
+    publishedOn: PUBLISHED_ON,
+    status: "published",
   },
   {
     id: "even-par",
@@ -276,7 +282,8 @@ export const expansionBatch4Terms: GlossaryTerm[] = [
     reviewLog,
     reviewedBy: "owner",
     reviewedOn: REVIEWED_ON,
-    status: "approved",
+    publishedOn: PUBLISHED_ON,
+    status: "published",
   },
   {
     id: "under-par",
@@ -306,7 +313,8 @@ export const expansionBatch4Terms: GlossaryTerm[] = [
     reviewLog,
     reviewedBy: "owner",
     reviewedOn: REVIEWED_ON,
-    status: "approved",
+    publishedOn: PUBLISHED_ON,
+    status: "published",
   },
   {
     id: "over-par",
@@ -336,7 +344,8 @@ export const expansionBatch4Terms: GlossaryTerm[] = [
     reviewLog,
     reviewedBy: "owner",
     reviewedOn: REVIEWED_ON,
-    status: "approved",
+    publishedOn: PUBLISHED_ON,
+    status: "published",
   },
   {
     id: "scorecard",
@@ -373,7 +382,8 @@ export const expansionBatch4Terms: GlossaryTerm[] = [
     reviewLog,
     reviewedBy: "owner",
     reviewedOn: REVIEWED_ON,
-    status: "approved",
+    publishedOn: PUBLISHED_ON,
+    status: "published",
   },
   {
     id: "front-nine",
@@ -411,7 +421,8 @@ export const expansionBatch4Terms: GlossaryTerm[] = [
     reviewLog,
     reviewedBy: "owner",
     reviewedOn: REVIEWED_ON,
-    status: "approved",
+    publishedOn: PUBLISHED_ON,
+    status: "published",
   },
   {
     id: "back-nine",
@@ -447,7 +458,8 @@ export const expansionBatch4Terms: GlossaryTerm[] = [
     reviewLog,
     reviewedBy: "owner",
     reviewedOn: REVIEWED_ON,
-    status: "approved",
+    publishedOn: PUBLISHED_ON,
+    status: "published",
   },
   {
     id: "round",
@@ -482,7 +494,8 @@ export const expansionBatch4Terms: GlossaryTerm[] = [
     reviewLog,
     reviewedBy: "owner",
     reviewedOn: REVIEWED_ON,
-    status: "approved",
+    publishedOn: PUBLISHED_ON,
+    status: "published",
   },
   {
     id: "penalty-stroke",
@@ -526,7 +539,8 @@ export const expansionBatch4Terms: GlossaryTerm[] = [
     reviewLog,
     reviewedBy: "owner",
     reviewedOn: REVIEWED_ON,
-    status: "approved",
+    publishedOn: PUBLISHED_ON,
+    status: "published",
   },
   {
     id: "maximum-score",
@@ -563,7 +577,8 @@ export const expansionBatch4Terms: GlossaryTerm[] = [
     reviewLog,
     reviewedBy: "owner",
     reviewedOn: REVIEWED_ON,
-    status: "approved",
+    publishedOn: PUBLISHED_ON,
+    status: "published",
   },
   {
     id: "cut-line",
@@ -597,6 +612,7 @@ export const expansionBatch4Terms: GlossaryTerm[] = [
     reviewLog,
     reviewedBy: "owner",
     reviewedOn: REVIEWED_ON,
-    status: "approved",
+    publishedOn: PUBLISHED_ON,
+    status: "published",
   },
 ];

@@ -1,6 +1,6 @@
 # Glossary expansion batch 4: scoring (#168, #292)
 
-Prepared November 11, 2026 for the owner's review; stages 2–4 done the same day under the owner's delegation, and **approved by the owner the same day**. Not published: a release PR does that. The records are in `lib/content/glossary/terms/expansion-batch-4.ts`, all `approved`, and reach no public page, search index, sitemap, `llms.txt` or structured data (`selectors.ts`; checked by `npm run test:glossary`, and in the built `glossary.html`, `glossary.rsc`, `llms.txt` and `.next/static` for this PR).
+Prepared November 11, 2026 for the owner's review; stages 2–4 done the same day under the owner's delegation, and **approved by the owner the same day, and published by the batch 4 release PR**. The records are in `lib/content/glossary/terms/expansion-batch-4.ts`, now `published`. Until the release PR, they were checked at each stage to reach no public page, search index, sitemap, `llms.txt` or structured data (`selectors.ts`; checked by `npm run test:glossary`, and in the built `glossary.html`, `glossary.rsc`, `llms.txt` and `.next/static` for this PR).
 
 ## Why now, and when it can ship
 
@@ -10,7 +10,7 @@ Batches 1–3 are published (96 records). Scoring is next in #168's order and in
 - no complete GA4 zero-result window;
 - no recorded reader requests.
 
-So batch 4 waits for launch + 28, unless the owner overrides, as for batches 1–3. If launch + 28 puts another category first, these records stay `approved`, unpublished, until their turn.
+The plan was for batch 4 to wait for launch + 28. On 2026-11-11 the owner overrode that ("Merge, then release"), as for batches 1–3. Launch + 28 now applies from batch 5 on.
 
 ## Scope
 
@@ -32,7 +32,7 @@ So batch 4 waits for launch + 28, unless the owner overrides, as for batches 1�
 | 4 | SEO/canonical | Agent, 2026-11-11, under the owner's delegation: hub anchors at each slug; `lint:content` passes; related ids and paths resolve | — |
 | 5 | Approval | **Owner**, in chat, 2026-11-11: "Approve all 15" | — |
 
-**Delegation (owner, 2026-11-11, #292).** The owner delegated stages 2–4 for the 15 records of batch 4 ("Yes, delegate"), as for batches 1–3, and kept approval. Each record now has a `reviewLog` with `rules`, `product` and `seo` entries, `by: "agent"`, dated 2026-11-11. The owner approved all 15 in chat the same day ("Approve all 15"), so each record also has an `approval` entry `by: "owner"`, `reviewedBy: "owner"`, `reviewedOn: 2026-11-11`, and status `approved`. Approved records show only in local review (`next dev`); the release PR sets `published` and `publishedOn` to the day it merges.
+**Delegation (owner, 2026-11-11, #292).** The owner delegated stages 2–4 for the 15 records of batch 4 ("Yes, delegate"), as for batches 1–3, and kept approval. Each record now has a `reviewLog` with `rules`, `product` and `seo` entries, `by: "agent"`, dated 2026-11-11. The owner approved all 15 in chat the same day ("Approve all 15"), so each record also has an `approval` entry `by: "owner"`, `reviewedBy: "owner"`, `reviewedOn: 2026-11-11`, and status `approved`. At the owner's request ("Merge, then release"), the batch 4 release PR moved them to `published`, with `publishedOn` the day it merged. That came before #167's launch + 28 read, by the owner's choice, as for batches 1–3. The release recheck (`editorial-review.md` § Release recheck) is this day's stage 2 and 3 work: every source reopened at 19:31–19:40 PST, the Rules of Golf still the 2023 edition, and no capability ids to recheck.
 
 ### Stage 2–4 results (agent, 2026-11-11)
 
