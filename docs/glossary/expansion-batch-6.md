@@ -1,6 +1,6 @@
 # Glossary expansion batch 6: shots and ball flight (#168, #298)
 
-Prepared November 12, 2026 for the owner's review. The records are in `lib/content/glossary/terms/expansion-batch-6.ts`, all `in-review`. Nothing here reaches a public page, the search index, the sitemap, `llms.txt` or structured data until a record is approved and a release PR publishes it (`selectors.ts`; checked by `npm run test:glossary`, and in the built `glossary.html`, `glossary.rsc`, `llms.txt`, `sitemap.xml` and `.next/static` for this PR).
+Prepared November 12, 2026 for the owner's review; stages 2–4 done the same day under the owner's delegation. The records are in `lib/content/glossary/terms/expansion-batch-6.ts`, all `in-review`. Nothing here reaches a public page, the search index, the sitemap, `llms.txt` or structured data until a record is approved and a release PR publishes it (`selectors.ts`; checked by `npm run test:glossary`, and in the built `glossary.html`, `glossary.rsc`, `llms.txt`, `sitemap.xml` and `.next/static` for this PR).
 
 ## Why now
 
@@ -19,10 +19,20 @@ Batches 1–5 are published (126 records). Shots and ball flight is next in `inv
 | # | Stage | Done | Still needed |
 |---|---|---|---|
 | 1 | Draft | Agent, 2026-11-12 | — |
-| 2 | Rules fact-check | Sources opened and quoted below; examples recomputed | Owner sign-off, or a delegation for this batch |
-| 3 | GoLo product audit | No record mentions GoLo or the app, links a GoLo page, or cites a capability | Owner sign-off, or a delegation |
-| 4 | SEO/canonical | Hub anchors at each slug; `lint:content` passes; related ids resolve | Owner sign-off, or a delegation |
+| 2 | Rules fact-check | Agent, 2026-11-12, under the owner's delegation: every source reopened, every sentence checked, examples recomputed below. [Results](#stage-24-results-agent-2026-11-12) | — |
+| 3 | GoLo product audit | Agent, 2026-11-12, under the owner's delegation: no record mentions GoLo or the app, links a GoLo page, or cites a capability | — |
+| 4 | SEO/canonical | Agent, 2026-11-12, under the owner's delegation: hub anchors at each slug; `lint:content` passes; related ids resolve | — |
 | 5 | Approval | — | **Owner** |
+
+**Delegation (owner, 2026-11-12, #298).** The owner delegated stages 2–4 for the 15 records of batch 6 ("Yes, delegate"), as for batches 1–5, and kept approval. Each record now has a `reviewLog` with `rules`, `product` and `seo` entries, `by: "agent"`, dated 2026-11-12. The records stay `in-review` until the owner approves them.
+
+### Stage 2–4 results (agent, 2026-11-12)
+
+- **Rules.** All 16 source URLs were reopened between 11:06 and 11:07 PST, and each answered 200. Every quoted phrase below was found again in that day's text (52 quotes; punctuation inside quotation marks aside, and Golfshake's "slighly" typo on Thin quoted as it stands). The Rules of Golf define none of these shots, so there is no Rules page to recheck.
+- **Three wording fixes.** Fade said the ball "starts a little left of the target"; Golfshake says only "moving to the left of the target", so "a little" is gone. Bump-and-Run said it's "usually played from farther out" than a chip; no source says so (Golfshake has it "played close to the green"), so the explanation now states the difference the sources support: less loft than a wedge, a lower flight and more roll. Topped Shot called nobble "the old British word"; Golf Compendium says "chiefly a British term", and the record now says that.
+- **Examples.** Every number recomputed again from the inputs shown; all match (the "Recomputed" lines below). The Montgomerie example matches National Club Golfer's account.
+- **Product.** No `goloNote`, `ctaIntent` or `capabilityIds` on any record; no field names GoLo or the app. Three-Putt names Snake as a golf side game and links its glossary entry only.
+- **SEO.** Every canonical is `{ kind: "hub", anchor: <slug> }`. Related ids resolve to records (published, or in this batch). `lint:content` passes, and the aliases are unique across all 141 records.
 
 ## GoLo
 
@@ -33,7 +43,7 @@ Golf only. GoLo keeps a score per hole (`hole-scoring`: one scorer taps in each 
 - **Aliases kept as listed:** Shank keeps "hosel rocket" (Golf Compendium: "hence another term for the shank, 'hosel rocket'") and "socket" (Golf24: "In socket golf, the club does not hit the ball with the clubface, but with the joint between the shaft and club head - the so-called hosel"). Flop Shot keeps "flop" (Golf.com: "a flop (or lob) shot"). Punch Shot keeps "punch", Lag Putt "lag", Approach Shot "approach", Layup "lay up" (Golfshake's headword). Fat Shot keeps "chunk", "chunked" (Golf Compendium: "A chunk shot and a fat shot are the same thing") and "heavy" (National Club Golfer, on Montgomerie in 2006: "The shot was heavy"). Thin Shot keeps "skull", "skulled" and "bladed" (Golf Compendium: skulls "are sometimes called 'bladed shots'"). Topped Shot keeps "topped". Three-Putt keeps "three jack" and "3-putt" (Golf Compendium: "three jack is just a snappier slang expression for the more standard term of 'three putt' or '3-putt'").
 - **Not added:** "lob shot" for Flop Shot. Golf.com uses it, but "lob" is also the lob wedge, an equipment term, so the alias waits for batch 8, which has the Wedge record (row 138).
 - **Related ids not yet records:** Fat Shot's inventory row relates `chili-dip`, which is a slang record in batch 7. The explanation names chili dip in words, and the related id gets added when that record exists. Every other related id is a published record or in this batch.
-- **Thin and skulled.** Golfshake has thin as contact "near its midpoint or slightly lower"; Golf Compendium has a skull as the leading edge striking "above its equator". The record treats skulled and bladed as the bad end of a thin shot rather than a separate record, as the inventory's aliases do.
+- **Thin and skulled.** Golfshake has thin as contact "near its midpoint or slighly [sic] lower"; Golf Compendium has a skull as the leading edge striking "above its equator". The record treats skulled and bladed as the bad end of a thin shot rather than a separate record, as the inventory's aliases do.
 - **Up-and-Down and par.** Sources differ on whether it must be for par. Golfshake's and NCG's examples are pars; the record says it's "usually" how a missed green becomes a par, and defines it by the two strokes only.
 
 ## The terms
@@ -45,7 +55,7 @@ Every source was opened on 2026-11-12 at the URL in the record and answered 200 
 - Sources: Golfshake, Draw: "A flight path of the ball in which the ball curves gently right-to-left for a right-handed player, or left-to-right for a left-handed player". Golf Compendium (duck hook): "Hooks are typically mishits, but are sometimes played intentionally."
 
 ### Fade (`fade`, P2)
-- **Definition:** A shot that starts a little left of the target and curves gently back to the right, for a right-handed golfer. For a left-hander it's the other way round.
+- **Definition:** A shot that starts left of the target and curves gently back to the right, for a right-handed golfer. For a left-hander it's the other way round.
 - Sources: Golfshake, Fade: "the golf ball comes off the clubface moving to the left of the target before curving gently back to the right (for a right-handed golfer; reverse directions for a left-hander)". The slice comparison follows the published Slice record ("A gentle, controlled curve the same way is a fade").
 
 ### Hook (`hook`, P2)
@@ -67,7 +77,7 @@ Every source was opened on 2026-11-12 at the URL in the record and answered 200 
 
 ### Bump-and-Run (`bump-and-run`, P2)
 - **Definition:** A low shot from near the green, played with a less-lofted club such as a 6-, 7- or 8-iron, that spends little time in the air and runs most of the way to the hole.
-- Sources: Golfshake, Bump and Run: "played close to the green with a lower-lofted club relative to a wedge (an 8-, 7- or 6-iron, for example), and with very little airtime … played from the back of the stance … mostly scooting along the ground and running up to the green". The difference from a chip (inventory row 106) is stated: a kind of chip, usually from farther out and with less loft.
+- Sources: Golfshake, Bump and Run: "played close to the green with a lower-lofted club relative to a wedge (an 8-, 7- or 6-iron, for example), and with very little airtime … played from the back of the stance … mostly scooting along the ground and running up to the green". The difference from a chip (inventory row 106) is stated: a kind of chip with less loft than a wedge, so lower and with more roll. The draft's "usually from farther out" had no source and was cut at stage 2.
 
 ### Lag Putt (`lag-putt`, P2)
 - **Definition:** A long putt you don't expect to hole, hit to stop close to the hole so the next putt is easy.
@@ -91,7 +101,7 @@ Every source was opened on 2026-11-12 at the URL in the record and answered 200 
 
 ### Thin Shot (`thin-shot`, P2)
 - **Definition:** A shot where the club strikes the ball too high, near its middle, instead of below it. The ball comes off low and can run well past the target.
-- Sources: Golfshake, Thin: "the clubhead strikes the ball too high (near its midpoint or slightly lower), often resulting in a low, sometimes slicing shot that can travel a long distance". Golf Compendium (skull): "the leading edge of the clubface striking the golf ball above its equator … skulls are sometimes called 'bladed shots' … Skulled chips, pitches and bunker shots are particularly vexing".
+- Sources: Golfshake, Thin: "the clubhead strikes the ball too high (near its midpoint or slighly [sic] lower), often resulting in a low, sometimes slicing shot that can travel a long distance". Golf Compendium (skull): "the leading edge of the clubface striking the golf ball above its equator … skulls are sometimes called 'bladed shots' … Skulled chips, pitches and bunker shots are particularly vexing".
 
 ### Topped Shot (`topped-shot`, P2)
 - **Definition:** A shot where the club catches only the top of the ball, so it rolls or bounces along the ground instead of flying.

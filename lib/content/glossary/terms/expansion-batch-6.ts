@@ -7,8 +7,10 @@
  * llms.txt or structured data until each record is approved and a release PR
  * publishes it (../selectors). Expansion records go back to the owner's
  * review roles (editorial-review.md § Roles): an agent drafted these and
- * prepared the checks in docs/glossary/expansion-batch-6.md; no stage is
- * signed, so no record has a review log yet.
+ * prepared the checks in docs/glossary/expansion-batch-6.md. On 2026-11-12
+ * the owner delegated stages 2–4 for this batch to an agent and kept
+ * approval (#298); each record logs those three stages below. They stay
+ * `in-review` until the owner approves.
  *
  * Every source with `accessedOn` was opened on that date. These are shot
  * names, not Rules terms: the Rules of Golf define none of them, so every
@@ -18,9 +20,37 @@
  * No record mentions GoLo or cites a capability: the batch is golf only.
  */
 
-import type { GlossaryTerm } from "../types";
+import type { GlossaryTerm, ReviewEntry } from "../types";
 
 const DRAFTED_ON = "2026-11-12";
+
+/**
+ * Stages 2–4, done by an agent on 2026-11-12 under the owner's delegation of
+ * that date for this batch only (#298; editorial-review.md § Roles).
+ * Approval is the owner's and isn't logged until they give it.
+ */
+const REVIEWED_ON = "2026-11-12";
+
+const reviewLog: ReviewEntry[] = [
+  {
+    stage: "rules",
+    by: "agent",
+    on: REVIEWED_ON,
+    note: "Every source reopened 2026-11-12 (16 editorial pages: Golfshake, Golf Compendium, Golf.com, National Club Golfer, American Golf, Hole19, Golf24) and each sentence checked against it; examples recomputed (expansion-batch-6.md). The Rules of Golf define none of these shots.",
+  },
+  {
+    stage: "product",
+    by: "agent",
+    on: REVIEWED_ON,
+    note: "Golf only: no GoLo note, link, CTA or capability id, and no field mentions GoLo or the app; capabilities.ts records no putts or shot types (#298).",
+  },
+  {
+    stage: "seo",
+    by: "agent",
+    on: REVIEWED_ON,
+    note: "Hub canonical at the slug, as inventory.md has every shots expansion term; related ids pass lint:content.",
+  },
+];
 
 const GOLFSHAKE = {
   title: "Golfshake: Golf terms explained, the complete A–Z golf glossary",
@@ -70,6 +100,7 @@ export const expansionBatch6Terms: GlossaryTerm[] = [
     canonical: { kind: "hub", anchor: "draw" },
     capabilityIds: [],
     sources: [GOLFSHAKE, DUCK_HOOK],
+    reviewLog,
     status: "in-review",
   },
   {
@@ -81,7 +112,7 @@ export const expansionBatch6Terms: GlossaryTerm[] = [
     tags: ["ball-flight"],
     priority: "expansion",
     shortDefinition:
-      "A shot that starts a little left of the target and curves gently back to the right, for a right-handed golfer. For a left-hander it's the other way round.",
+      "A shot that starts left of the target and curves gently back to the right, for a right-handed golfer. For a left-hander it's the other way round.",
     explanation:
       "It's the mirror image of a draw. A slice is the same curve, bigger and usually by accident.",
     example:
@@ -91,6 +122,7 @@ export const expansionBatch6Terms: GlossaryTerm[] = [
     canonical: { kind: "hub", anchor: "fade" },
     capabilityIds: [],
     sources: [GOLFSHAKE],
+    reviewLog,
     status: "in-review",
   },
   {
@@ -116,6 +148,7 @@ export const expansionBatch6Terms: GlossaryTerm[] = [
       compendium("Defining the snap hook in golf", "https://www.golfcompendium.com/2021/10/snap-hook-golf-definition.html"),
       GOLFSHAKE,
     ],
+    reviewLog,
     status: "in-review",
   },
   {
@@ -152,6 +185,7 @@ export const expansionBatch6Terms: GlossaryTerm[] = [
         accessedOn: DRAFTED_ON,
       },
     ],
+    reviewLog,
     status: "in-review",
   },
   {
@@ -192,6 +226,7 @@ export const expansionBatch6Terms: GlossaryTerm[] = [
         accessedOn: DRAFTED_ON,
       },
     ],
+    reviewLog,
     status: "in-review",
   },
   {
@@ -212,6 +247,7 @@ export const expansionBatch6Terms: GlossaryTerm[] = [
     canonical: { kind: "hub", anchor: "punch-shot" },
     capabilityIds: [],
     sources: [GOLFSHAKE],
+    reviewLog,
     status: "in-review",
   },
   {
@@ -225,7 +261,7 @@ export const expansionBatch6Terms: GlossaryTerm[] = [
     shortDefinition:
       "A low shot from near the green, played with a less-lofted club such as a 6-, 7- or 8-iron, that spends little time in the air and runs most of the way to the hole.",
     explanation:
-      "It's a kind of chip, usually played from farther out and with less loft, so it rolls even more. The ball is played back in the stance.",
+      "It's a kind of chip played with less loft than a wedge, so it flies lower and rolls more. The ball is played back in the stance.",
     example:
       "Your ball is 15 yards short of the green on firm, closely mown grass. You play a 7-iron that lands short of the green and runs up to 4 feet.",
     relatedTermIds: ["chip", "pitch", "punch-shot"],
@@ -233,6 +269,7 @@ export const expansionBatch6Terms: GlossaryTerm[] = [
     canonical: { kind: "hub", anchor: "bump-and-run" },
     capabilityIds: [],
     sources: [GOLFSHAKE],
+    reviewLog,
     status: "in-review",
   },
   {
@@ -254,6 +291,7 @@ export const expansionBatch6Terms: GlossaryTerm[] = [
     canonical: { kind: "hub", anchor: "lag-putt" },
     capabilityIds: [],
     sources: [GOLFSHAKE],
+    reviewLog,
     status: "in-review",
   },
   {
@@ -275,6 +313,7 @@ export const expansionBatch6Terms: GlossaryTerm[] = [
     canonical: { kind: "hub", anchor: "approach-shot" },
     capabilityIds: [],
     sources: [GOLFSHAKE],
+    reviewLog,
     status: "in-review",
   },
   {
@@ -296,6 +335,7 @@ export const expansionBatch6Terms: GlossaryTerm[] = [
     canonical: { kind: "hub", anchor: "layup" },
     capabilityIds: [],
     sources: [GOLFSHAKE],
+    reviewLog,
     status: "in-review",
   },
   {
@@ -326,6 +366,7 @@ export const expansionBatch6Terms: GlossaryTerm[] = [
         accessedOn: DRAFTED_ON,
       },
     ],
+    reviewLog,
     status: "in-review",
   },
   {
@@ -347,6 +388,7 @@ export const expansionBatch6Terms: GlossaryTerm[] = [
     canonical: { kind: "hub", anchor: "thin-shot" },
     capabilityIds: [],
     sources: [GOLFSHAKE, SKULL],
+    reviewLog,
     status: "in-review",
   },
   {
@@ -360,7 +402,7 @@ export const expansionBatch6Terms: GlossaryTerm[] = [
     shortDefinition:
       "A shot where the club catches only the top of the ball, so it rolls or bounces along the ground instead of flying.",
     explanation:
-      "A thin shot catches the ball lower and still gets airborne. A worm burner describes the flight, low along the grass; topped names the contact. Nobble is the old British word for it.",
+      "A thin shot catches the ball lower and still gets airborne. A worm burner describes the flight, low along the grass; topped names the contact. Nobble is a chiefly British word for it.",
     example: "A nervous drive off the first tee is topped and bounces 40 yards down the fairway.",
     relatedTermIds: ["thin-shot", "worm-burner", "fat-shot"],
     relatedContentPaths: [],
@@ -373,6 +415,7 @@ export const expansionBatch6Terms: GlossaryTerm[] = [
       ),
       SKULL,
     ],
+    reviewLog,
     status: "in-review",
   },
   {
@@ -403,6 +446,7 @@ export const expansionBatch6Terms: GlossaryTerm[] = [
       },
       compendium("Defining the 'chip-in' in golf", "https://www.golfcompendium.com/2024/01/chip-in-golf-definition.html"),
     ],
+    reviewLog,
     status: "in-review",
   },
   {
@@ -426,6 +470,7 @@ export const expansionBatch6Terms: GlossaryTerm[] = [
     sources: [
       compendium("What a 'three jack' is in golf", "https://www.golfcompendium.com/2026/10/three-jack-golf-slang.html"),
     ],
+    reviewLog,
     status: "in-review",
   },
 ];
