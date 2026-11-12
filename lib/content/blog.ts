@@ -2561,7 +2561,7 @@ export const posts: Post[] = [
           { kind: "cardGrid", items: [
             { title: "Everybody posts every round", body: "Announce it as a group habit, not a policy aimed at anyone. If all four of you enter every score, the indexes converge on reality within a month and the problem quietly disappears." },
             { title: "Cap the strokes you give", body: "Play an allowance — 90% in four-ball, or simply cap the maximum strokes anybody can receive at, say, eight. A capped game limits what a bad number can cost you without ever naming it." },
-            { title: "Rotate formats toward the stroke-free ones", body: "Bingo Bango Bongo, gross skins, and match play with a hard cap all reduce the value of an inflated index. Keep them in the rotation and nobody has to explain why." },
+            { title: "Rotate formats toward the stroke-free ones", body: "Bingo Bango Bongo, gross skins, and match play with a limit on handicap strokes all reduce the value of an inflated index. Keep them in the rotation and nobody has to explain why." },
             { title: "Use the lowest index of the last twelve months", body: "If a player was a 12 in September, he plays as a 12 in April. It is the single most effective rule you can adopt, and it sounds like housekeeping rather than an accusation." },
           ] },
           { kind: "callout", title: "BEFORE YOU SAY ANYTHING", html: "An accusation costs more than the money. If you are wrong you have insulted a friend over $20; if you are right, you have made the next twenty rounds awkward for four people. Change the structure first and see whether the results change with it. They usually do." },
