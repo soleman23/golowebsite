@@ -8,8 +8,10 @@
  * llms.txt or structured data until each record is approved and a release PR
  * publishes it (../selectors). Expansion records go back to the owner's
  * review roles (editorial-review.md § Roles): an agent drafted these and
- * prepared the checks in docs/glossary/expansion-batch-4.md; no stage is
- * signed, so no record has a review log yet.
+ * prepared the checks in docs/glossary/expansion-batch-4.md. On 2026-11-11
+ * the owner delegated stages 2–4 for this batch to an agent and kept
+ * approval (#292); each record logs those three stages below. They stay
+ * `in-review` until the owner approves.
  *
  * Every source with `accessedOn` was opened on that date. Rules of Golf
  * pages are the 2023 edition on randa.org. Pages whose URL carries a word
@@ -21,7 +23,7 @@
  * record, a golf term the site already defines.
  */
 
-import type { GlossaryTerm } from "../types";
+import type { GlossaryTerm, ReviewEntry } from "../types";
 
 const DRAFTED_ON = "2026-11-11";
 const ROG = "Rules of Golf, 2023 edition (R&A)";
@@ -32,6 +34,34 @@ const ROG_DEFINITIONS = {
   url: `${ROG_BASE}definitions`,
   kind: "official-rules",
 } as const;
+
+/**
+ * Stages 2–4, done by an agent on 2026-11-11 under the owner's delegation of
+ * that date for this batch only (#292; editorial-review.md § Roles).
+ * Approval is the owner's and isn't logged until they give it.
+ */
+const REVIEWED_ON = "2026-11-11";
+
+const reviewLog: ReviewEntry[] = [
+  {
+    stage: "rules",
+    by: "agent",
+    on: REVIEWED_ON,
+    note: "Every source reopened 2026-11-11 (R&A 2023 Definitions and Rules 1, 3, 17 and 21; 16 editorial and first-party pages) and each sentence checked against it; examples recomputed (expansion-batch-4.md).",
+  },
+  {
+    stage: "product",
+    by: "agent",
+    on: REVIEWED_ON,
+    note: "Golf only: no GoLo note, link, CTA or capability id, and no public field mentions GoLo or the app; the Nassau guide is an internal source only (#292).",
+  },
+  {
+    stage: "seo",
+    by: "agent",
+    on: REVIEWED_ON,
+    note: "Hub canonical at the slug, as canonical-map.md has every scoring expansion term; related ids and paths pass lint:content.",
+  },
+];
 
 const GOLFSHAKE = {
   title: "Golfshake: Golf terms explained, the complete A–Z golf glossary",
@@ -68,6 +98,7 @@ export const expansionBatch4Terms: GlossaryTerm[] = [
     capabilityIds: [],
     sources: [GOLF_COM_TERMS, GOLFSHAKE],
     status: "in-review",
+    reviewLog,
   },
   {
     id: "albatross",
@@ -87,6 +118,7 @@ export const expansionBatch4Terms: GlossaryTerm[] = [
     capabilityIds: [],
     sources: [GOLF_COM_TERMS, GOLFSHAKE],
     status: "in-review",
+    reviewLog,
   },
   {
     id: "condor",
@@ -119,6 +151,7 @@ export const expansionBatch4Terms: GlossaryTerm[] = [
       },
     ],
     status: "in-review",
+    reviewLog,
   },
   {
     id: "triple-bogey",
@@ -151,6 +184,7 @@ export const expansionBatch4Terms: GlossaryTerm[] = [
       },
     ],
     status: "in-review",
+    reviewLog,
   },
   {
     id: "quadruple-bogey",
@@ -182,6 +216,7 @@ export const expansionBatch4Terms: GlossaryTerm[] = [
       },
     ],
     status: "in-review",
+    reviewLog,
   },
   {
     id: "even-par",
@@ -222,6 +257,7 @@ export const expansionBatch4Terms: GlossaryTerm[] = [
       },
     ],
     status: "in-review",
+    reviewLog,
   },
   {
     id: "under-par",
@@ -249,6 +285,7 @@ export const expansionBatch4Terms: GlossaryTerm[] = [
       },
     ],
     status: "in-review",
+    reviewLog,
   },
   {
     id: "over-par",
@@ -276,6 +313,7 @@ export const expansionBatch4Terms: GlossaryTerm[] = [
       },
     ],
     status: "in-review",
+    reviewLog,
   },
   {
     id: "scorecard",
@@ -310,6 +348,7 @@ export const expansionBatch4Terms: GlossaryTerm[] = [
       },
     ],
     status: "in-review",
+    reviewLog,
   },
   {
     id: "front-nine",
@@ -345,6 +384,7 @@ export const expansionBatch4Terms: GlossaryTerm[] = [
       },
     ],
     status: "in-review",
+    reviewLog,
   },
   {
     id: "back-nine",
@@ -378,6 +418,7 @@ export const expansionBatch4Terms: GlossaryTerm[] = [
       },
     ],
     status: "in-review",
+    reviewLog,
   },
   {
     id: "round",
@@ -410,6 +451,7 @@ export const expansionBatch4Terms: GlossaryTerm[] = [
       },
     ],
     status: "in-review",
+    reviewLog,
   },
   {
     id: "penalty-stroke",
@@ -451,6 +493,7 @@ export const expansionBatch4Terms: GlossaryTerm[] = [
       },
     ],
     status: "in-review",
+    reviewLog,
   },
   {
     id: "maximum-score",
@@ -485,6 +528,7 @@ export const expansionBatch4Terms: GlossaryTerm[] = [
       },
     ],
     status: "in-review",
+    reviewLog,
   },
   {
     id: "cut-line",
@@ -516,5 +560,6 @@ export const expansionBatch4Terms: GlossaryTerm[] = [
       GOLFSHAKE,
     ],
     status: "in-review",
+    reviewLog,
   },
 ];

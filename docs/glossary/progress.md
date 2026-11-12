@@ -28,7 +28,7 @@ CI runs on PRs to `main` and pushes to `main`. A retargeted PR needs a push befo
 
 **Update, November 11, 2026 (batch 3).** The owner chose to start batch 3 before the 28-day read: the 14 formats expansion terms. The owner delegated stages 2–4 to an agent and approved all 14 the same day; the batch 3 release PR published them. Packet: `expansion-batch-3.md`. The 28-day read can still reorder batch 4 onward.
 
-**Update, November 11, 2026 (batch 4 drafted).** 15 scoring terms drafted at `in-review` (#292, `expansion-batch-4.md`). Production is unchanged. Stages 2–5 need the owner, or a fresh delegation for this batch. Release waits for launch + 28 (2026-11-26) or an owner override. Halve moves to batch 7.
+**Update, November 11, 2026 (batch 4 drafted).** 15 scoring terms drafted at `in-review` (#292, `expansion-batch-4.md`). Production is unchanged. The owner delegated stages 2–4 the same day and an agent logged them; approval (stage 5) is the owner's. Release waits for launch + 28 (2026-11-26) or an owner override. Halve moves to batch 7.
 
 The section below is the launch-night record and is kept as written.
 

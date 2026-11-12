@@ -1,6 +1,6 @@
 # Glossary expansion batch 4: scoring (#168, #292)
 
-Prepared November 11, 2026 for the owner's review. Only stage 1 (draft) is done. The records are in `lib/content/glossary/terms/expansion-batch-4.ts`, all `in-review`, and reach no public page, search index, sitemap, `llms.txt` or structured data (`selectors.ts`; checked by `npm run test:glossary`, and in the built `glossary.html`, `glossary.rsc`, `llms.txt` and `.next/static` for this PR).
+Prepared November 11, 2026 for the owner's review; stages 2–4 done the same day under the owner's delegation. **Approval (stage 5) is still the owner's.** The records are in `lib/content/glossary/terms/expansion-batch-4.ts`, all `in-review`, and reach no public page, search index, sitemap, `llms.txt` or structured data (`selectors.ts`; checked by `npm run test:glossary`, and in the built `glossary.html`, `glossary.rsc`, `llms.txt` and `.next/static` for this PR).
 
 ## Why now, and when it can ship
 
@@ -27,12 +27,20 @@ So batch 4 waits for launch + 28, unless the owner overrides, as for batches 1�
 | # | Stage | Done | Still needed |
 |---|---|---|---|
 | 1 | Draft | Agent, 2026-11-11 | — |
-| 2 | Rules fact-check | Prepared: sources opened, examples recomputed below | **Owner** signs, or delegates to an agent for this batch |
-| 3 | GoLo product audit | Prepared: no record mentions GoLo or cites a capability; [questions](#product-audit-questions) | **Owner** |
-| 4 | SEO/canonical | Prepared: hub anchors at each slug; `lint:content` passes; related ids and paths resolve | Agent prepares, **owner** confirms |
+| 2 | Rules fact-check | Agent, 2026-11-11, under the owner's delegation: every source reopened, every sentence checked, examples recomputed below. [Results](#stage-24-results-agent-2026-11-11) | — |
+| 3 | GoLo product audit | Agent, 2026-11-11, under the owner's delegation: no record mentions GoLo or the app, links a GoLo page, or cites a capability | — |
+| 4 | SEO/canonical | Agent, 2026-11-11, under the owner's delegation: hub anchors at each slug; `lint:content` passes; related ids and paths resolve | — |
 | 5 | Approval | — | **Owner** |
 
-No record has a `reviewLog`. Each delegation so far covered one batch, so batch 4 needs its own.
+**Delegation (owner, 2026-11-11, #292).** The owner delegated stages 2–4 for the 15 records of batch 4 ("Yes, delegate"), as for batches 1–3, and kept approval. Each record now has a `reviewLog` with `rules`, `product` and `seo` entries, `by: "agent"`, dated 2026-11-11, and stays `in-review` until the owner approves.
+
+### Stage 2–4 results (agent, 2026-11-11)
+
+- **Rules.** All 21 source URLs were reopened at the exact addresses in the records, between 19:31 and 19:40 PST; each answered 200. The five R&A pages are still the 2023 edition: Definitions (Scorecard, Round, Maximum Score, General Penalty), Rule 1.1 and 1.3c, Rule 3.3b, Rule 17.1d and Rule 21.2. Every phrase quoted below was found again on its page. Each sentence in the records was checked against these sources. Every `accessedOn` stays 2026-11-11.
+- **Examples.** Every number recomputed again from the inputs shown; all match (the "Recomputed" lines below).
+- **Product.** No `goloNote`, `ctaIntent` or `capabilityIds` on any record; no public field names GoLo or the app. The GoLo Nassau guide is in Front Nine's and Back Nine's `sources`, which are internal and never reach a page. The $5 Nassau in Front Nine's example is golf, not a product claim, and matches the Nassau guide's format. The product-audit questions below stay open for the owner, and the recommendation stands: no note.
+- **SEO.** Every canonical is `{ kind: "hub", anchor: <slug> }`, as `canonical-map.md` has every scoring expansion term. Related ids all resolve to records. The content paths `/rules#rule-3`, `/rules#rule-17` and `/rules#rule-21` are published Rules Center anchors. `lint:content` passes.
+- **One packet fix, no record change.** Over Par's Golfshake quote reads "73 or higher", not "73 or more". The record never quoted it.
 
 ## Product-audit questions
 
@@ -92,7 +100,7 @@ Every source was opened on 2026-11-11 at the URL in the record. The R&A pages an
 
 ### Over Par (`over-par`, P2)
 - **Definition:** More strokes than par, for a hole or for the holes played so far. Three over means three strokes above par.
-- Sources: Golfshake: "If the par for the course is 72, over par is a score of 73 or more". Golf Compendium: "more strokes [than] the par of those holes".
+- Sources: Golfshake: "If the par for the course is 72, over par is a score of 73 or higher". Golf Compendium: "more strokes [than] the par of those holes".
 - Recomputed: 85 − 72 = 13 ✓; 18 × (par + 1) = 72 + 18 = 90, 18 over ✓
 
 ### Scorecard (`scorecard`, P2)
