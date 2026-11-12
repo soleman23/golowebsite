@@ -4,14 +4,14 @@
  * terms the owner kept on 2026-11-11 (§ C rows 67–70 and 72) and the ten
  * handicaps expansion terms (§ D rows 85–94).
  *
- * IN REVIEW. Nothing here reaches a page, the search index, the sitemap,
- * llms.txt or structured data until each record is approved and a release PR
- * publishes it (../selectors). Expansion records go back to the owner's
+ * APPROVED, NOT PUBLISHED. Nothing here reaches a public page, the search
+ * index, the sitemap, llms.txt or structured data until a release PR
+ * publishes it; approved records show only in local review (../selectors). Expansion records go back to the owner's
  * review roles (editorial-review.md § Roles): an agent drafted these and
  * prepared the checks in docs/glossary/expansion-batch-2.md. On 2026-11-11
  * the owner delegated stages 2–4 for this batch to an agent and kept
- * approval (#283); each record logs those three stages below. They stay
- * `in-review` until the owner approves.
+ * approval (#283); each record logs those three stages below. The owner
+ * approved all 15 in chat the same day ("Approve all 15").
  *
  * Every source with `accessedOn` was opened on that date. The Rules of
  * Handicapping pages are the 2024 edition under
@@ -42,9 +42,17 @@ const ROH_BASE = "https://www.usga.org/handicapping/roh/Content/rules/";
 /**
  * Stages 2–4, done by an agent on 2026-11-11 under the owner's delegation of
  * that date for this batch only (#283; editorial-review.md § Roles).
- * Approval is the owner's and isn't logged until they give it.
+ * Approval is the owner's.
  */
 const REVIEWED_ON = "2026-11-11";
+
+/** The owner's approval, given in chat on 2026-11-11 ("Approve all 15"). */
+const approval: ReviewEntry = {
+  stage: "approval",
+  by: "owner",
+  on: REVIEWED_ON,
+  note: "Approved in chat on 2026-11-11, all 15 records, on the agent's stage 2–4 checks.",
+};
 
 const rules: ReviewEntry = {
   stage: "rules",
@@ -70,6 +78,7 @@ const reviewLogNone: ReviewEntry[] = [
     note: "No GoLo note; capability ids checked against capabilities.ts and the owner's answers of 2026-11-11 (#283).",
   },
   seo,
+  approval,
 ];
 
 /** A GoLo note, checked against a live registry limit. */
@@ -82,6 +91,7 @@ const reviewLogGolo: ReviewEntry[] = [
     note: "GoLo note checked against the handicap-strokes limit the owner confirmed on 2026-11-11 (#283); app code not read.",
   },
   seo,
+  approval,
 ];
 
 export const expansionBatch2Terms: GlossaryTerm[] = [
@@ -121,7 +131,9 @@ export const expansionBatch2Terms: GlossaryTerm[] = [
       },
     ],
     reviewLog: reviewLogNone,
-    status: "in-review",
+    reviewedBy: "owner",
+    reviewedOn: REVIEWED_ON,
+    status: "approved",
   },
   {
     id: "poley",
@@ -158,7 +170,9 @@ export const expansionBatch2Terms: GlossaryTerm[] = [
       },
     ],
     reviewLog: reviewLogNone,
-    status: "in-review",
+    reviewedBy: "owner",
+    reviewedOn: REVIEWED_ON,
+    status: "approved",
   },
   {
     id: "snake",
@@ -203,7 +217,9 @@ export const expansionBatch2Terms: GlossaryTerm[] = [
       },
     ],
     reviewLog: reviewLogNone,
-    status: "in-review",
+    reviewedBy: "owner",
+    reviewedOn: REVIEWED_ON,
+    status: "approved",
   },
   {
     id: "arnie",
@@ -248,7 +264,9 @@ export const expansionBatch2Terms: GlossaryTerm[] = [
       },
     ],
     reviewLog: reviewLogNone,
-    status: "in-review",
+    reviewedBy: "owner",
+    reviewedOn: REVIEWED_ON,
+    status: "approved",
   },
   {
     id: "double-or-nothing",
@@ -287,7 +305,9 @@ export const expansionBatch2Terms: GlossaryTerm[] = [
       },
     ],
     reviewLog: reviewLogNone,
-    status: "in-review",
+    reviewedBy: "owner",
+    reviewedOn: REVIEWED_ON,
+    status: "approved",
   },
 
   /* ------------------------------------------------------- handicaps */
@@ -345,7 +365,9 @@ export const expansionBatch2Terms: GlossaryTerm[] = [
       },
     ],
     reviewLog: reviewLogNone,
-    status: "in-review",
+    reviewedBy: "owner",
+    reviewedOn: REVIEWED_ON,
+    status: "approved",
   },
   {
     id: "scratch-golfer",
@@ -398,7 +420,9 @@ export const expansionBatch2Terms: GlossaryTerm[] = [
       },
     ],
     reviewLog: reviewLogNone,
-    status: "in-review",
+    reviewedBy: "owner",
+    reviewedOn: REVIEWED_ON,
+    status: "approved",
   },
   {
     id: "bogey-golfer",
@@ -453,7 +477,9 @@ export const expansionBatch2Terms: GlossaryTerm[] = [
       },
     ],
     reviewLog: reviewLogNone,
-    status: "in-review",
+    reviewedBy: "owner",
+    reviewedOn: REVIEWED_ON,
+    status: "approved",
   },
   {
     id: "plus-handicap",
@@ -511,7 +537,9 @@ export const expansionBatch2Terms: GlossaryTerm[] = [
       },
     ],
     reviewLog: reviewLogGolo,
-    status: "in-review",
+    reviewedBy: "owner",
+    reviewedOn: REVIEWED_ON,
+    status: "approved",
   },
   {
     id: "sandbagging",
@@ -569,7 +597,9 @@ export const expansionBatch2Terms: GlossaryTerm[] = [
       },
     ],
     reviewLog: reviewLogNone,
-    status: "in-review",
+    reviewedBy: "owner",
+    reviewedOn: REVIEWED_ON,
+    status: "approved",
   },
   {
     id: "playing-conditions-calculation",
@@ -615,7 +645,9 @@ export const expansionBatch2Terms: GlossaryTerm[] = [
       },
     ],
     reviewLog: reviewLogNone,
-    status: "in-review",
+    reviewedBy: "owner",
+    reviewedOn: REVIEWED_ON,
+    status: "approved",
   },
   {
     id: "soft-cap",
@@ -663,7 +695,9 @@ export const expansionBatch2Terms: GlossaryTerm[] = [
       },
     ],
     reviewLog: reviewLogNone,
-    status: "in-review",
+    reviewedBy: "owner",
+    reviewedOn: REVIEWED_ON,
+    status: "approved",
   },
   {
     id: "hard-cap",
@@ -709,7 +743,9 @@ export const expansionBatch2Terms: GlossaryTerm[] = [
       },
     ],
     reviewLog: reviewLogNone,
-    status: "in-review",
+    reviewedBy: "owner",
+    reviewedOn: REVIEWED_ON,
+    status: "approved",
   },
   {
     id: "exceptional-score-reduction",
@@ -748,7 +784,9 @@ export const expansionBatch2Terms: GlossaryTerm[] = [
       },
     ],
     reviewLog: reviewLogNone,
-    status: "in-review",
+    reviewedBy: "owner",
+    reviewedOn: REVIEWED_ON,
+    status: "approved",
   },
   {
     id: "most-likely-score",
@@ -787,6 +825,8 @@ export const expansionBatch2Terms: GlossaryTerm[] = [
       },
     ],
     reviewLog: reviewLogNone,
-    status: "in-review",
+    reviewedBy: "owner",
+    reviewedOn: REVIEWED_ON,
+    status: "approved",
   },
 ];

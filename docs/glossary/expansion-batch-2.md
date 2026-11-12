@@ -1,6 +1,6 @@
 # Glossary expansion batch 2: side games and handicaps (#168)
 
-Prepared November 11, 2026 for the owner's review. This is the second M8 batch. The records are in `lib/content/glossary/terms/expansion-batch-2.ts` at `in-review`, so nothing here is public: an `in-review` record reaches no page, search index, sitemap, `llms.txt` or structured data (`selectors.ts`; checked again by `npm run test:glossary`, and in the built `glossary.html`, `glossary.rsc`, `llms.txt` and `.next/static` for this PR).
+Prepared November 11, 2026 for the owner's review; **approved by the owner the same day**. This is the second M8 batch. The records are in `lib/content/glossary/terms/expansion-batch-2.ts` at `approved`, so nothing here is public yet: an `approved` record shows only in local review and reaches no public page, search index, sitemap, `llms.txt` or structured data until a release PR publishes it (`selectors.ts`; checked again by `npm run test:glossary`, and in the built `glossary.html`, `glossary.rsc`, `llms.txt` and `.next/static` for this PR).
 
 ## Why now
 
@@ -26,9 +26,9 @@ On 2026-11-11 the owner asked to start batch 2 straight after batch 1, still bef
 | 2 | Rules fact-check | Agent, 2026-11-11, under the owner's delegation: every source reopened, every sentence checked, examples recomputed below. [Results](#stage-24-results-agent-2026-11-11) | — |
 | 3 | GoLo product audit | Agent, 2026-11-11, under the owner's delegation: Plus Handicap's note checked against the `handicap-strokes` limit the owner confirmed; the other 14 checked for no GoLo claim. App code not read | — |
 | 4 | SEO/canonical | Agent, 2026-11-11, under the owner's delegation: Sandbagging is canonical to `/blog/sandbagging` (`canonical-map.md` § Expansion terms with an existing page); the other 14 are hub anchors. `lint:content` passes; related ids and paths resolve | — |
-| 5 | Approval | — | **Owner** |
+| 5 | Approval | **Owner**, in chat, 2026-11-11: "Approve all 15" | — |
 
-**Delegation (owner, 2026-11-11, #283).** "I delegate stages 2–4 to you for the 15 records in batch 2. Reopen the sources, verify the examples and product claims, check the canonicals and related links, and record the actual review dates with `by: "agent"`. Keep the records `in-review` and send me the completed review log for stage 5 owner approval. This delegation covers batch 2 only." Each record now has a `reviewLog` with `rules`, `product` and `seo` entries, `by: "agent"`, dated 2026-11-11. No `approval` entry, no `reviewedBy` or `reviewedOn`, status `in-review`. The owner's approval adds the fourth entry and moves the records to `approved`.
+**Delegation (owner, 2026-11-11, #283).** "I delegate stages 2–4 to you for the 15 records in batch 2. Reopen the sources, verify the examples and product claims, check the canonicals and related links, and record the actual review dates with `by: "agent"`. Keep the records `in-review` and send me the completed review log for stage 5 owner approval. This delegation covers batch 2 only." Each record now has a `reviewLog` with `rules`, `product` and `seo` entries, `by: "agent"`, dated 2026-11-11. The owner approved all 15 in chat on 2026-11-11 ("Approve all 15"), so each record also has an `approval` entry `by: "owner"`, `reviewedBy: "owner"`, `reviewedOn: 2026-11-11`, and status `approved`. A release PR moves them to `published`.
 
 ### Stage 2–4 results (agent, 2026-11-11)
 
@@ -70,8 +70,8 @@ Given in the parent session and relayed here; recorded on #283. This session did
 
 ## Found along the way, outside this PR
 
-- **"Hard cap" in the sandbagging post.** *Being changed in a separate PR from the parent session ("a limit on handicap strokes"); not in this PR.* `/blog/sandbagging` (`lib/content/blog.ts`, "Rotate formats toward the stroke-free ones") says "match play with a hard cap". It means a cap on the strokes given in a match, not the WHS hard cap (Rule 5.8) defined here. Sandbagging is canonical to that post, so a reader can meet both senses. A word like "a cap on strokes" in the post would remove it.
-- **Barkie in the skins guide.** *Being changed in the same separate PR, along with the barkie mention in the guide's "Stack the side pots" list; not in this PR.* The skins guide's glossary (`lib/content/gameDetail.ts`) defines "Barkie / sandy" as "Bonus mini-skins". Sandies are a GoLo Skins option; barkies aren't scored. The line is golf education, but it sits on the page for GoLo's Skins game.
+- **"Hard cap" in the sandbagging post.** *Resolved in #285 ("a limit on handicap strokes"), not in this PR.* `/blog/sandbagging` (`lib/content/blog.ts`, "Rotate formats toward the stroke-free ones") says "match play with a hard cap". It means a cap on the strokes given in a match, not the WHS hard cap (Rule 5.8) defined here. Sandbagging is canonical to that post, so a reader can meet both senses. A word like "a cap on strokes" in the post would remove it.
+- **Barkie in the skins guide.** *Resolved in #285, with the barkie mention in the guide's "Stack the side pots" list; not in this PR.* The skins guide's glossary (`lib/content/gameDetail.ts`) defines "Barkie / sandy" as "Bonus mini-skins". Sandies are a GoLo Skins option; barkies aren't scored. The line is golf education, but it sits on the page for GoLo's Skins game.
 - **The batch 1 note in `inventory.md`.** *Resolved:* on `main` it's under § C, before § D. The draft's reading was wrong.
 
 ## The terms
