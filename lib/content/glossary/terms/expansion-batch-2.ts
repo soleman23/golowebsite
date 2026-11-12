@@ -185,7 +185,7 @@ export const expansionBatch2Terms: GlossaryTerm[] = [
     shortDefinition:
       "A putting side game. Whoever three-putts holds the snake until someone else three-putts, and whoever holds it after the last hole owes each of the other players the agreed amount.",
     explanation:
-      "In a common version the amount doubles every time the snake changes hands, so it starts small.",
+      "In a common version the amount doubles with every three-putt, so it starts small.",
     example:
       "A $5 snake in a foursome. You three-putt the 4th, Dave the 9th, and you again on the 16th. Nobody three-putts after that, so you owe $5 to each of the other three: $15.",
     ruleNote: {
@@ -230,7 +230,7 @@ export const expansionBatch2Terms: GlossaryTerm[] = [
     tags: [],
     priority: "expansion",
     shortDefinition:
-      "A side point for making par on a hole without your ball ever finishing in the fairway, named after Arnold Palmer. It's usually counted only on par 4s and par 5s.",
+      "A side point for making par on a hole without your ball ever touching the fairway, named after Arnold Palmer. It's usually counted only on par 4s and par 5s.",
     example:
       "On the par-5 8th you drive into the left rough, lay up into the right rough, pitch on and two-putt for 5. Never in the fairway, and par: an Arnie, worth $1 from each of the other three at $1 each.",
     ruleNote: {
@@ -322,7 +322,7 @@ export const expansionBatch2Terms: GlossaryTerm[] = [
     shortDefinition:
       "The handicapping system run jointly by the USGA and The R&A: the Rules of Handicapping and the Course Rating System. It gives a golfer one Handicap Index that works on any rated course.",
     explanation:
-      "National associations authorised by the USGA and The R&A run it in their countries, and clubs look after their members' Indexes.",
+      "National associations authorized by the USGA and The R&A run it in their countries, and clubs look after their members' Indexes.",
     example:
       "The same 12.4 Index plays off 14 from blue tees rated 71.8 with a Slope of 131, and off 11 from white tees rated 69.6 with a Slope of 122, both par 72.",
     ruleNote: {
@@ -500,7 +500,7 @@ export const expansionBatch2Terms: GlossaryTerm[] = [
     // Owner, 2026-11-11 (#283), checked against production web build
     // 1.2.2 (35); recorded as a handicap-strokes limit.
     goloNote:
-      "GoLo accepts a plus Index. In an 18-hole net round it adds the strokes back to the player's net score from stroke index 18, then 17, and so on.",
+      "GoLo accepts a plus Index. When the course handicap comes out plus in an 18-hole net round, it adds the strokes back to the player's net score from stroke index 18, then 17, and so on.",
     relatedTermIds: ["scratch-golfer", "handicap-index", "course-handicap", "stroke-index"],
     relatedContentPaths: [],
     canonical: { kind: "hub", anchor: "plus-handicap" },

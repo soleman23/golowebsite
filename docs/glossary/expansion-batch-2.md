@@ -39,6 +39,7 @@ Every source below was reopened on 2026-11-11, so each `accessedOn` stays 2026-1
 - **Changed: Arnie.** Two sources added at the owner's direction (answer 3): Swing Yard and Parful. The house-rules note now names the par-3 variant Parful describes.
 - **Changed: Snake.** England iGolf's page now redirects to `/igolf-blog/blog-archive/…`; the source URL is the final one. Content unchanged.
 - **Confirmed as drafted:** every other sentence matched its source on reopening, and every example recomputed as shown below.
+- **Corrected before merge (independent review, 2026-11-11, after approval):** four wording fixes, no change of meaning the owner approved. Arnie: "finishing in" the fairway → "touching" the fairway, as all three sources say. Snake: the amount doubles "with every three-putt", not "every time the snake changes hands" (the holder can three-putt again; the source and the record's own $4 example double on each three-putt). Plus Handicap's GoLo note: give-backs only "when the course handicap comes out plus", matching the `handicap-strokes` limit (a small plus Index can round to 0 or a positive Course Handicap, e.g. +0.5 on tees rated 73.4, Slope 113, par 72: −0.5 + 1.4 = 0.9 → 1). World Handicap System: "authorized", US spelling.
 - **Product:** Plus Handicap's note stays inside the new `handicap-strokes` limit, including the 18-hole qualifier. Barkie, Poley, Snake and Arnie cite `junk-board` (not offered) and make no GoLo claim. The other ten make none, in line with the owner's answer 2.
 - **SEO:** Sandbagging canonical `/blog/sandbagging` (served 200 on 2026-11-11); the rest hub anchors. Related paths `/blog/pressing` and `/blog/index-vs-course-handicap` are served. `lint:content` passes.
 
@@ -110,7 +111,7 @@ Word counts are for the short definition. "Recomputed" lines redo every number i
 
 **Definition (30 words):** A putting side game. Whoever three-putts holds the snake until someone else three-putts, and whoever holds it after the last hole owes each of the other players the agreed amount.
 
-**Explanation:** In a common version the amount doubles every time the snake changes hands, so it starts small.
+**Explanation:** In a common version the amount doubles with every three-putt, so it starts small.
 
 **Example:** A $5 snake in a foursome. You three-putt the 4th, Dave the 9th, and you again on the 16th. Nobody three-putts after that, so you owe $5 to each of the other three: $15.
 
@@ -123,7 +124,7 @@ Word counts are for the short definition. "Recomputed" lines redo every number i
 
 ### Arnie (`arnie`, P3)
 
-**Definition (31 words):** A side point for making par on a hole without your ball ever finishing in the fairway, named after Arnold Palmer. It's usually counted only on par 4s and par 5s.
+**Definition (31 words):** A side point for making par on a hole without your ball ever touching the fairway, named after Arnold Palmer. It's usually counted only on par 4s and par 5s.
 
 **Example:** On the par-5 8th you drive into the left rough, lay up into the right rough, pitch on and two-putt for 5. Never in the fairway, and par: an Arnie, worth $1 from each of the other three at $1 each.
 
@@ -155,7 +156,7 @@ Word counts are for the short definition. "Recomputed" lines redo every number i
 
 **Definition (33 words):** The handicapping system run jointly by the USGA and The R&A: the Rules of Handicapping and the Course Rating System. It gives a golfer one Handicap Index that works on any rated course.
 
-**Explanation:** National associations authorised by the USGA and The R&A run it in their countries, and clubs look after their members' Indexes.
+**Explanation:** National associations authorized by the USGA and The R&A run it in their countries, and clubs look after their members' Indexes.
 
 **Example:** The same 12.4 Index plays off 14 from blue tees rated 71.8 with a Slope of 131, and off 11 from white tees rated 69.6 with a Slope of 122, both par 72.
 
@@ -204,7 +205,7 @@ Word counts are for the short definition. "Recomputed" lines redo every number i
 
 **Note (handicapping):** Rule 5.2c of the Rules of Handicapping asks players to write a plus Index with the + sign. Appendix C has a plus player give strokes back from stroke index 18; on nine holes they start at the highest stroke index on that nine (Appendix E). An allowance moves a plus handicap toward zero.
 
-**GoLo note:** GoLo accepts a plus Index. In an 18-hole net round it adds the strokes back to the player's net score from stroke index 18, then 17, and so on.
+**GoLo note:** GoLo accepts a plus Index. When the course handicap comes out plus in an 18-hole net round, it adds the strokes back to the player's net score from stroke index 18, then 17, and so on.
 
 - Canonical: /glossary#plus-handicap · alias: plus handicapper · related: scratch-golfer, handicap-index, course-handicap, stroke-index · CTA intent: handicaps
 - Capabilities: `handicap-strokes` (live), the limit added from the owner's [answer 1](#owners-answers-november-11-2026).
