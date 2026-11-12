@@ -26,6 +26,8 @@ CI runs on PRs to `main` and pushes to `main`. A retargeted PR needs a push befo
 
 **Update, November 11, 2026 (batch 2).** At the owner's request, batch 2 followed straight after: the five side-games terms kept from batch 1 and the ten handicaps expansion terms, 15 in all. The owner delegated stages 2–4 to an agent and approved all 15 the same day; the batch 2 release PR published them. Packet: `expansion-batch-2.md`. The 28-day read still sets the order from batch 3.
 
+**Update, November 11, 2026 (batch 3).** The owner chose to start batch 3 before the 28-day read: the 14 formats expansion terms. The owner delegated stages 2–4 to an agent and approved all 14 the same day; they're `approved`, not yet published. Packet: `expansion-batch-3.md`. The 28-day read can still reorder batch 4 onward.
+
 The section below is the launch-night record and is kept as written.
 
 ## Where things stand (October 29, 2026, night: released)
