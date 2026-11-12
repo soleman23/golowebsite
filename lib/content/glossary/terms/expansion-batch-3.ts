@@ -5,14 +5,15 @@
  * (Pinehurst into Chapman) and M2 (Round Robin into Sixes), substitutions
  * S2 (Par Competition), S3 (Greensomes) and S4 (Florida Scramble).
  *
- * IN REVIEW. Nothing here reaches a page, the search index, the sitemap,
- * llms.txt or structured data until each record is approved and a release PR
- * publishes it (../selectors). Expansion records go back to the owner's
+ * APPROVED, NOT PUBLISHED. Nothing here reaches a public page, the search
+ * index, the sitemap, llms.txt or structured data until a release PR
+ * publishes it; approved records show only in local review (../selectors).
+ * Expansion records go back to the owner's
  * review roles (editorial-review.md § Roles): an agent drafted these and
  * prepared the checks in docs/glossary/expansion-batch-3.md. On 2026-11-11
  * the owner delegated stages 2–4 for this batch to an agent and kept
- * approval (#288); each record logs those three stages below. They stay
- * `in-review` until the owner approves.
+ * approval (#288); each record logs those three stages below. The owner
+ * approved all 14 in chat the same day ("Approve all 14").
  *
  * Every source with `accessedOn` was opened on that date. Rules of Golf
  * pages are the 2023 edition on randa.org, including Committee Procedures
@@ -46,7 +47,7 @@ const CP9 = {
 /**
  * Stages 2–4, done by an agent on 2026-11-11 under the owner's delegation of
  * that date for this batch only (#288; editorial-review.md § Roles).
- * Approval is the owner's and isn't logged until they give it.
+ * Approval is the owner's.
  */
 const REVIEWED_ON = "2026-11-11";
 
@@ -68,6 +69,12 @@ const reviewLog: ReviewEntry[] = [
     by: "agent",
     on: REVIEWED_ON,
     note: "Hub canonical at the slug; related ids and paths pass lint:content. No guide link, against canonical-map.md, by the owner's decision (#288).",
+  },
+  {
+    stage: "approval",
+    by: "owner",
+    on: REVIEWED_ON,
+    note: "Approved in chat on 2026-11-11, all 14 records, on the agent's stage 2–4 checks.",
   },
 ];
 
@@ -115,7 +122,9 @@ export const expansionBatch3Terms: GlossaryTerm[] = [
       },
     ],
     reviewLog,
-    status: "in-review",
+    reviewedBy: "owner",
+    reviewedOn: REVIEWED_ON,
+    status: "approved",
   },
   {
     id: "chapman",
@@ -164,7 +173,9 @@ export const expansionBatch3Terms: GlossaryTerm[] = [
       },
     ],
     reviewLog,
-    status: "in-review",
+    reviewedBy: "owner",
+    reviewedOn: REVIEWED_ON,
+    status: "approved",
   },
   {
     id: "par-competition",
@@ -216,7 +227,9 @@ export const expansionBatch3Terms: GlossaryTerm[] = [
       },
     ],
     reviewLog,
-    status: "in-review",
+    reviewedBy: "owner",
+    reviewedOn: REVIEWED_ON,
+    status: "approved",
   },
   {
     id: "texas-scramble",
@@ -265,7 +278,9 @@ export const expansionBatch3Terms: GlossaryTerm[] = [
       },
     ],
     reviewLog,
-    status: "in-review",
+    reviewedBy: "owner",
+    reviewedOn: REVIEWED_ON,
+    status: "approved",
   },
   {
     id: "modified-stableford",
@@ -303,7 +318,9 @@ export const expansionBatch3Terms: GlossaryTerm[] = [
       },
     ],
     reviewLog,
-    status: "in-review",
+    reviewedBy: "owner",
+    reviewedOn: REVIEWED_ON,
+    status: "approved",
   },
   {
     id: "ryder-cup-style",
@@ -347,7 +364,9 @@ export const expansionBatch3Terms: GlossaryTerm[] = [
       },
     ],
     reviewLog,
-    status: "in-review",
+    reviewedBy: "owner",
+    reviewedOn: REVIEWED_ON,
+    status: "approved",
   },
   {
     id: "vegas",
@@ -386,7 +405,9 @@ export const expansionBatch3Terms: GlossaryTerm[] = [
       },
     ],
     reviewLog,
-    status: "in-review",
+    reviewedBy: "owner",
+    reviewedOn: REVIEWED_ON,
+    status: "approved",
   },
   {
     id: "quota",
@@ -425,7 +446,9 @@ export const expansionBatch3Terms: GlossaryTerm[] = [
       },
     ],
     reviewLog,
-    status: "in-review",
+    reviewedBy: "owner",
+    reviewedOn: REVIEWED_ON,
+    status: "approved",
   },
   {
     id: "sixes",
@@ -476,7 +499,9 @@ export const expansionBatch3Terms: GlossaryTerm[] = [
       },
     ],
     reviewLog,
-    status: "in-review",
+    reviewedBy: "owner",
+    reviewedOn: REVIEWED_ON,
+    status: "approved",
   },
   {
     id: "nines",
@@ -521,7 +546,9 @@ export const expansionBatch3Terms: GlossaryTerm[] = [
       },
     ],
     reviewLog,
-    status: "in-review",
+    reviewedBy: "owner",
+    reviewedOn: REVIEWED_ON,
+    status: "approved",
   },
   {
     id: "greensomes",
@@ -570,7 +597,9 @@ export const expansionBatch3Terms: GlossaryTerm[] = [
       },
     ],
     reviewLog,
-    status: "in-review",
+    reviewedBy: "owner",
+    reviewedOn: REVIEWED_ON,
+    status: "approved",
   },
   {
     id: "florida-scramble",
@@ -620,7 +649,9 @@ export const expansionBatch3Terms: GlossaryTerm[] = [
       },
     ],
     reviewLog,
-    status: "in-review",
+    reviewedBy: "owner",
+    reviewedOn: REVIEWED_ON,
+    status: "approved",
   },
   {
     id: "peoria-system",
@@ -665,7 +696,9 @@ export const expansionBatch3Terms: GlossaryTerm[] = [
       },
     ],
     reviewLog,
-    status: "in-review",
+    reviewedBy: "owner",
+    reviewedOn: REVIEWED_ON,
+    status: "approved",
   },
   {
     id: "three-ball",
@@ -711,6 +744,8 @@ export const expansionBatch3Terms: GlossaryTerm[] = [
       },
     ],
     reviewLog,
-    status: "in-review",
+    reviewedBy: "owner",
+    reviewedOn: REVIEWED_ON,
+    status: "approved",
   },
 ];
