@@ -199,6 +199,8 @@ Subtotal: 10 MVP + 10 expansion = 20.
 
 ## E. Shots and ball flight (20)
 
+**Expansion batch 6 (#168, #298, November 12, 2026):** rows 100–114 are drafted at `in-review` (`expansion-batch-6.md`), golf only. Started at the owner's request before #167's launch + 28 read. Stages 2–4 were done by an agent under the owner's delegation, and the owner approved all 15 (2026-11-12). Not yet published. Fat Shot's related `chili-dip` (row 155) waits for batch 7.
+
 | # | id = slug | Term | MVP | Tags | Tier | Aliases | Related, not the same | Sources | Destination |
 |---|---|---|---|---|---|---|---|---|---|
 | 95 | `drive` | Drive | ✓ | | P2 | | **Driver** (`driver`: the club, not the shot); `longest-drive`, `teeing-area`. "Tee shot" is broader (an iron on a par 3 is a tee shot, not usually called a drive), so it's not an alias. | — | hub |
