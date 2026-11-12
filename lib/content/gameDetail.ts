@@ -1252,7 +1252,7 @@ const birdies: GameDetailCopy = {
     { n: "2", title: "Gross or net", body: "Gross is simple. Net lets a 20 handicap into the game when par on a stroke hole counts. GoLo counts gross birdies only." },
     { n: "3", title: "Everybody else owes the maker", body: "Nothing builds up in the middle. Every other player owes the maker." },
     { n: "4", title: "Eagles double, aces clear the table", body: "The traditional multiplier, with optional bonuses for streaks or hard holes." },
-    { n: "5", title: "GoLo tallies every bounty", body: "In GoLo it is a Skins setting: Birdie Skin, plus Eagle Skin for the double, both at your skin price. Each bounty posts automatically and nets against what you owe." },
+    { n: "5", title: "GoLo tallies every bounty", body: "Two Skins settings at your skin price: Birdie Skin for a gross birdie or better, Eagle Skin for a gross eagle or better. An eagle pays double only with both on. Each one posts and nets as you play." },
   ],
   scoring: {
     kicker: "SETTLE THESE FIRST", title: "Four questions, asked before the first birdie.", lead: "A bounty is simple until somebody makes five of them. Here is where most groups land.",
@@ -1321,7 +1321,7 @@ const birdies: GameDetailCopy = {
   faqs: gameFaqs("birdies", [
     { q: "How much should a birdie be worth?", a: "Five dollars is the default: enough that a hot nine matters without paying the best player a salary." },
     { q: "Should we count net birdies?", a: "Yes when the handicap spread is wide. A game nobody can win is not much of a game. GoLo counts gross birdies only, so net birdies are a house rule it does not track." },
-    { q: "Do eagles really pay double?", a: "Almost always, and a hole-in-one commonly clears the table. Set it before the shot. GoLo counts an eagle double when Eagle Skin is on, and has no separate ace bonus." },
+    { q: "Do eagles really pay double?", a: "Almost always, and a hole-in-one commonly clears the table. Set it before the shot. In GoLo an eagle pays two skins only when Birdie Skin and Eagle Skin are both on. Eagle Skin alone pays one. There is no separate ace bonus." },
     { q: "Who owes the maker?", a: "Everybody else owes. That is what makes it a bounty rather than a match." },
     { q: "What if somebody goes on a run?", a: "Use a cap so a great round stays a great story instead of an awkward bill. GoLo has no cap setting, so agree one before the round and settle the difference yourselves." },
     { q: "Can we stack it on another game?", a: "Yes. In GoLo it is part of the Skins game, so it runs beside a Nassau or Best Score, with or without the standard skin, and GoLo nets it all." },
