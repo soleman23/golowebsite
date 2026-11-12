@@ -28,6 +28,8 @@ CI runs on PRs to `main` and pushes to `main`. A retargeted PR needs a push befo
 
 **Update, November 11, 2026 (batch 3).** The owner chose to start batch 3 before the 28-day read: the 14 formats expansion terms. The owner delegated stages 2–4 to an agent and approved all 14 the same day; the batch 3 release PR published them. Packet: `expansion-batch-3.md`. The 28-day read can still reorder batch 4 onward.
 
+**Update, November 11, 2026 (after batch 3).** 96 records live, checked at 19:17 PST. `canonical-map.md` now matches the published records: Texas Scramble, Shamble, Florida Scramble and Quota are hub entries with no guide link. The remaining 70 are planned as batches 4–8 in `inventory.md` § Expansion batch plan, with Halve moved into the slang batch (the only mixed batch). Batch 4 (scoring) is drafted next; its release waits for launch + 28 or an owner override.
+
 **Update, November 11, 2026 (batch 4 drafted).** 15 scoring terms drafted at `in-review` (#292, `expansion-batch-4.md`). Production is unchanged. The owner delegated stages 2–4 the same day, an agent logged them, and the owner approved all 15 ("Approve all 15"). Release waits for launch + 28 (2026-11-26) or an owner override. Halve moves to batch 7.
 
 The section below is the launch-night record and is kept as written.

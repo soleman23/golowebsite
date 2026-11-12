@@ -4,6 +4,8 @@ For each glossary term, which URL answers the search intent, and what the glossa
 
 **Status:** prepared October 28, 2026 against `main` at ba08106. It's a proposal for owner review, not a sign-off. Ownership of the Nassau and Wolf guide/post pairs waits on #78 (see [Guide and post pairs](#guide-and-post-pairs)).
 
+**Reconciled November 11, 2026** against `main` at 9c1e8a3, after expansion batches 1–3 were published (96 records). The [expansion table](#expansion-terms-with-an-existing-page) now matches the published records; the only change is the four formats the owner made golf only (#288).
+
 ## The rules
 
 1. **One owner per intent.** Each search intent has one canonical URL. The glossary never publishes a second page for an intent a guide or post already answers.
@@ -108,7 +110,7 @@ Count: 8 + 10 + 10 + 10 + 18 = 56.
 
 ## Expansion terms with an existing page
 
-Every other expansion term is hub-canonical (`inventory.md`). These have an owner already:
+Every other expansion term is hub-canonical (`inventory.md`). These have an owner already, or were listed as linking one:
 
 | Term | Canonical | Note |
 |---|---|---|
@@ -118,9 +120,9 @@ Every other expansion term is hub-canonical (`inventory.md`). These have an owne
 | Eagle Bounty | hub, links `/games/birdies` | The guide covers it in passing ("Eagles usually count double") |
 | Automatic Press | hub, links `/blog/pressing` | The post has a section on auto-presses, but "what is an automatic press" is a definition; revisit with #169 data |
 | Lone Wolf | hub, links `/games/wolf` | |
-| Texas Scramble, Shamble, Florida Scramble | hub, links `/games/scramble` | The guide's glossary defines the first two in one line each |
-| Dormie, All Square, Halve | hub, links `/games/nassau` | The guide's glossary defines all three in one line each |
-| Quota | hub, links `/games/best-score` | Same |
+| Texas Scramble, Shamble, Florida Scramble | hub, no guide link | Published 2026-11-11 (#288). The scramble guide's glossary defines the first two in one line each, but GoLo doesn't offer these variants, so the owner made the records golf only: no GoLo note, link or capability (2026-11-11). Link `/games/scramble` only if GoLo ships the variant and the owner reopens the record |
+| Dormie, All Square, Halve | hub, links `/games/nassau` | The guide's glossary defines all three in one line each. Not yet records |
+| Quota | hub, no guide link | Published 2026-11-11 (#288), golf only by the same owner decision. The Best Score guide's glossary mentions quota, but GoLo's `quota` capability is planned, so no link |
 
 ## Existing pages and the terms that point at them
 

@@ -303,6 +303,35 @@ Each entry is labelled informal. Mulligan, Gimme and Breakfast Ball are labelled
 
 Subtotal: 6 MVP + 14 expansion = 20.
 
+## Expansion batch plan (#168)
+
+**Reconciled November 11, 2026** against `main` at 9c1e8a3 and the live hub. Batches 1–3 are published: 56 MVP + 40 expansion = 96 records, and www.golo.golf/glossary served 96 `DefinedTerm` entries at 19:17 PST. Every published id is an inventory id, none is duplicated, and the 70 inventory ids without a record are exactly the expansion rows below. No alias was promoted to a record.
+
+| Batch | Category | Rows | Terms | Running total |
+|---|---|---|---:|---:|
+| 1–3 | side games, handicaps, formats | 35–48, 59–74, 85–94 | 40 | 96 (published) |
+| 4 | Scoring | 9–19, 21–24 | 15 | 111 |
+| 5 | Course, rules and etiquette | 120–134 | 15 | 126 |
+| 6 | Shots and ball flight | 100–114 | 15 | 141 |
+| 7 | Slang, plus Halve (**mixed**) | 153–166, 20 | 15 | 156 |
+| 8 | Equipment and technology | 137–146 | 10 | 166 |
+
+15 + 15 + 15 + 15 + 10 = 70.
+
+**Mixed batch 7.** Scoring has 16 expansion terms, one over #168's cap of 15, and 16 can't split into two batches of at least 10. Halve (row 20) moves to batch 7. Its source is Rule 3.2a (match play), and batch 7 already has the two other match-play standings, Dormie and All Square (rows 159–160), so one fact-check covers all three. Halve keeps `scoring` as its category: only the batch changes, so no category total moves. No substitution, merge or alias change comes with it.
+
+**Order.** Drafting follows #168's suggested order: scoring, course, shots, slang, equipment. Release order is set by #167's checkpoints for every batch not yet released, unless the owner records an override (batches 1–3 started early by the owner's choice, 2026-11-11). What there is on 2026-11-11:
+
+- **Search Console:** launch + 7 only (2026-10-29 – 11-04): `/glossary` 0 clicks, 71 impressions, position 59.6 (`docs/seo-reports/2026-12.md`).
+- **GA4 zero-result searches:** the `result_bucket` split exists only from 2026-11-05 and no checkpoint window with it is complete yet.
+- **Reader requests:** none recorded (issues searched 2026-11-11).
+
+That's too sparse to reorder anything. Launch + 28 (window 2026-10-29 – 11-25, run 2026-11-26) is the first read that can. Batches 1–3 went live at 19:13 PST on 2026-11-11, so the window holds about 14 days of them; read their terms' queries against that, not the full 28. If launch + 28 is still too sparse, the order above stands, and launch + 56 (2026-12-24) and + 90 (2027-01-27) apply only to batches still unreleased.
+
+**Guides.** Dormie, All Square and Halve link `/games/nassau` (`canonical-map.md`), subject to batch 7's product audit. No batch builds a guide or a standalone page: that work gets its own issue (#106 Phase 3, #169), and a record links a guide only once it's published and the canonical map says so.
+
+**Title.** Spec §7.4's "150+ Terms" title ships in the release that first takes the published count above 150: batch 7 in this order (141 → 156). If the order changes, it moves with whichever release crosses 150.
+
 ## Alias decisions
 
 The six from #152, each resolved to exactly one record:
