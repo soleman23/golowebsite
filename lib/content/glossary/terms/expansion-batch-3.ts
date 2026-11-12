@@ -5,10 +5,8 @@
  * (Pinehurst into Chapman) and M2 (Round Robin into Sixes), substitutions
  * S2 (Par Competition), S3 (Greensomes) and S4 (Florida Scramble).
  *
- * APPROVED, NOT PUBLISHED. Nothing here reaches a public page, the search
- * index, the sitemap, llms.txt or structured data until a release PR
- * publishes it; approved records show only in local review (../selectors).
- * Expansion records go back to the owner's
+ * PUBLISHED by the batch 3 release PR, which the owner asked for after
+ * approving all 14 ("Merge, then release"). Expansion records go back to the owner's
  * review roles (editorial-review.md § Roles): an agent drafted these and
  * prepared the checks in docs/glossary/expansion-batch-3.md. On 2026-11-11
  * the owner delegated stages 2–4 for this batch to an agent and kept
@@ -50,6 +48,9 @@ const CP9 = {
  * Approval is the owner's.
  */
 const REVIEWED_ON = "2026-11-11";
+
+/** The day the release PR merged and deployed. */
+const PUBLISHED_ON = "2026-11-11";
 
 const reviewLog: ReviewEntry[] = [
   {
@@ -124,7 +125,8 @@ export const expansionBatch3Terms: GlossaryTerm[] = [
     reviewLog,
     reviewedBy: "owner",
     reviewedOn: REVIEWED_ON,
-    status: "approved",
+    publishedOn: PUBLISHED_ON,
+    status: "published",
   },
   {
     id: "chapman",
@@ -175,7 +177,8 @@ export const expansionBatch3Terms: GlossaryTerm[] = [
     reviewLog,
     reviewedBy: "owner",
     reviewedOn: REVIEWED_ON,
-    status: "approved",
+    publishedOn: PUBLISHED_ON,
+    status: "published",
   },
   {
     id: "par-competition",
@@ -229,7 +232,8 @@ export const expansionBatch3Terms: GlossaryTerm[] = [
     reviewLog,
     reviewedBy: "owner",
     reviewedOn: REVIEWED_ON,
-    status: "approved",
+    publishedOn: PUBLISHED_ON,
+    status: "published",
   },
   {
     id: "texas-scramble",
@@ -280,7 +284,8 @@ export const expansionBatch3Terms: GlossaryTerm[] = [
     reviewLog,
     reviewedBy: "owner",
     reviewedOn: REVIEWED_ON,
-    status: "approved",
+    publishedOn: PUBLISHED_ON,
+    status: "published",
   },
   {
     id: "modified-stableford",
@@ -320,7 +325,8 @@ export const expansionBatch3Terms: GlossaryTerm[] = [
     reviewLog,
     reviewedBy: "owner",
     reviewedOn: REVIEWED_ON,
-    status: "approved",
+    publishedOn: PUBLISHED_ON,
+    status: "published",
   },
   {
     id: "ryder-cup-style",
@@ -366,7 +372,8 @@ export const expansionBatch3Terms: GlossaryTerm[] = [
     reviewLog,
     reviewedBy: "owner",
     reviewedOn: REVIEWED_ON,
-    status: "approved",
+    publishedOn: PUBLISHED_ON,
+    status: "published",
   },
   {
     id: "vegas",
@@ -407,7 +414,8 @@ export const expansionBatch3Terms: GlossaryTerm[] = [
     reviewLog,
     reviewedBy: "owner",
     reviewedOn: REVIEWED_ON,
-    status: "approved",
+    publishedOn: PUBLISHED_ON,
+    status: "published",
   },
   {
     id: "quota",
@@ -448,7 +456,8 @@ export const expansionBatch3Terms: GlossaryTerm[] = [
     reviewLog,
     reviewedBy: "owner",
     reviewedOn: REVIEWED_ON,
-    status: "approved",
+    publishedOn: PUBLISHED_ON,
+    status: "published",
   },
   {
     id: "sixes",
@@ -501,7 +510,8 @@ export const expansionBatch3Terms: GlossaryTerm[] = [
     reviewLog,
     reviewedBy: "owner",
     reviewedOn: REVIEWED_ON,
-    status: "approved",
+    publishedOn: PUBLISHED_ON,
+    status: "published",
   },
   {
     id: "nines",
@@ -548,7 +558,8 @@ export const expansionBatch3Terms: GlossaryTerm[] = [
     reviewLog,
     reviewedBy: "owner",
     reviewedOn: REVIEWED_ON,
-    status: "approved",
+    publishedOn: PUBLISHED_ON,
+    status: "published",
   },
   {
     id: "greensomes",
@@ -599,7 +610,8 @@ export const expansionBatch3Terms: GlossaryTerm[] = [
     reviewLog,
     reviewedBy: "owner",
     reviewedOn: REVIEWED_ON,
-    status: "approved",
+    publishedOn: PUBLISHED_ON,
+    status: "published",
   },
   {
     id: "florida-scramble",
@@ -651,7 +663,8 @@ export const expansionBatch3Terms: GlossaryTerm[] = [
     reviewLog,
     reviewedBy: "owner",
     reviewedOn: REVIEWED_ON,
-    status: "approved",
+    publishedOn: PUBLISHED_ON,
+    status: "published",
   },
   {
     id: "peoria-system",
@@ -698,7 +711,8 @@ export const expansionBatch3Terms: GlossaryTerm[] = [
     reviewLog,
     reviewedBy: "owner",
     reviewedOn: REVIEWED_ON,
-    status: "approved",
+    publishedOn: PUBLISHED_ON,
+    status: "published",
   },
   {
     id: "three-ball",
@@ -746,6 +760,7 @@ export const expansionBatch3Terms: GlossaryTerm[] = [
     reviewLog,
     reviewedBy: "owner",
     reviewedOn: REVIEWED_ON,
-    status: "approved",
+    publishedOn: PUBLISHED_ON,
+    status: "published",
   },
 ];
