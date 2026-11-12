@@ -450,7 +450,10 @@ const skins: GameDetailCopy = {
     { term: "Halve", def: "The match-play word for a tied hole. In skins the same tie is a push, and the skin carries." },
     { term: "Validation", def: "A house rule that carried skins only count on a birdie or better." },
     { term: "Net skins", def: "Skins played off handicaps, with strokes allocated hole by hole." },
-    { term: "Barkie / sandy", def: "Bonus mini-skins for making par after hitting a tree or getting up and down from a bunker." },
+    // Split 2026-11-11 (owner): the sandie is a GoLo Skins option
+    // (capabilities.ts skins-greenie-sandie); a barkie isn't scored.
+    { term: "Sandie", def: "Par or better after being in a bunker on the hole. In GoLo it's a Skins option: the scorer flags the bunker, and the par is checked from the gross score." },
+    { term: "Barkie", def: "Par or better after hitting a tree. A side point the group keeps on its own; GoLo doesn't score it." },
   ],
   faqs: gameFaqs("skins", [
     { q: "How much is one skin actually worth?", a: "Multiply your skin value by the number of opponents. At $5 a skin in a foursome, a winner is owed $15. A carry worth five skins pays $75." },
