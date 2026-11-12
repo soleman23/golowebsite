@@ -196,7 +196,7 @@ export const expansionBatch5Terms: GlossaryTerm[] = [
     shortDefinition:
       "A second ball played in case the first is out of bounds or lost outside a penalty area. It saves walking back to play again, but you must say you're playing a provisional before you hit it.",
     explanation:
-      "If you find the original on the course, outside a penalty area, within three minutes of starting to search, you play it and abandon the provisional. If not, the provisional becomes your ball in play under stroke and distance.",
+      "Until the provisional becomes your ball in play, it's abandoned if the original turns up: found on the course outside a penalty area within three minutes, you play the original; found in a penalty area, or known or virtually certain to be in one, you play it or take penalty-area relief. Otherwise the provisional becomes your ball in play under stroke and distance.",
     example:
       "Your drive on the 7th heads for the trees. You announce a provisional and hit it down the middle. The first ball isn't found, so the provisional is your ball, and you've played 3.",
     ruleNote: {
