@@ -226,7 +226,7 @@ Subtotal: 5 MVP + 15 expansion = 20.
 
 ## F. Course, rules and etiquette (20)
 
-**Expansion batch 5 (#168, #295, November 11, 2026):** rows 120–134 are drafted at `in-review` (`expansion-batch-5.md`), golf only, with M6 applied (Dance Floor is an alias of Putting Green). Started at the owner's request before #167's launch + 28 read; no stage is signed yet.
+**Expansion batch 5 (#168, #295, November 11, 2026):** rows 120–134 are drafted at `in-review` (`expansion-batch-5.md`), golf only, with M6 applied (Dance Floor is an alias of Putting Green). Started at the owner's request before #167's launch + 28 read. Stages 2–4 were done by an agent under the owner's delegation (2026-11-11); approval is pending.
 
 Use the Rules' defined terms. "Fairway" and "rough" aren't defined areas; both are part of the general area, and the entries say so without being pedantic (#162). Historical terms ("hazard", "casual water", "through the green") are aliases with a note that the Rules stopped using them in 2019.
 

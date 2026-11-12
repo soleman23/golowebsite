@@ -1,6 +1,6 @@
 # Glossary expansion batch 5: course, rules and etiquette (#168, #295)
 
-Prepared November 11, 2026 for the owner's review. Only stage 1 (draft) is done. The records are in `lib/content/glossary/terms/expansion-batch-5.ts`, all `in-review`, and reach no public page, search index, sitemap, `llms.txt` or structured data (`selectors.ts`; checked by `npm run test:glossary`, and in the built `glossary.html`, `glossary.rsc`, `llms.txt`, `sitemap.xml` and `.next/static` for this PR).
+Prepared November 11, 2026 for the owner's review; stages 2–4 done the same day under the owner's delegation. **Approval (stage 5) is still the owner's.** The records are in `lib/content/glossary/terms/expansion-batch-5.ts`, all `in-review`, and reach no public page, search index, sitemap, `llms.txt` or structured data (`selectors.ts`; checked by `npm run test:glossary`, and in the built `glossary.html`, `glossary.rsc`, `llms.txt`, `sitemap.xml` and `.next/static` for this PR).
 
 ## Why now
 
@@ -21,12 +21,21 @@ Merge **M6** is applied: Dance Floor is an alias of Putting Green (Golf Compendi
 | # | Stage | Done | Still needed |
 |---|---|---|---|
 | 1 | Draft | Agent, 2026-11-11 | — |
-| 2 | Rules fact-check | Prepared: sources opened, examples recomputed below | **Owner** signs, or delegates to an agent for this batch |
-| 3 | GoLo product audit | Prepared: no record mentions GoLo or cites a capability | **Owner** |
-| 4 | SEO/canonical | Prepared: hub anchors at each slug; `lint:content` passes; related ids and paths resolve | Agent prepares, **owner** confirms |
+| 2 | Rules fact-check | Agent, 2026-11-11, under the owner's delegation: every source reopened, every sentence checked, examples recomputed below. [Results](#stage-24-results-agent-2026-11-11) | — |
+| 3 | GoLo product audit | Agent, 2026-11-11, under the owner's delegation: no record mentions GoLo or the app, links a GoLo page, or cites a capability | — |
+| 4 | SEO/canonical | Agent, 2026-11-11, under the owner's delegation: hub anchors at each slug; `lint:content` passes; related ids and Rules Center paths resolve | — |
 | 5 | Approval | — | **Owner** |
 
-No record has a `reviewLog`. Each delegation so far covered one batch.
+**Delegation (owner, 2026-11-11, #295).** The owner delegated stages 2–4 for the 15 records of batch 5 ("Yes, delegate"), as for batches 1–4, and kept approval. Each record now has a `reviewLog` with `rules`, `product` and `seo` entries, `by: "agent"`, dated 2026-11-11, and stays `in-review` until the owner approves.
+
+### Stage 2–4 results (agent, 2026-11-11)
+
+- **Rules.** All 15 source URLs were reopened between 20:13 and 20:16 PST, and each answered 200. The nine R&A Rules pages (Definitions and Rules 1, 5, 6, 13, 14, 16, 18, 19) are the 2023 edition, and every phrase quoted below was found again. Definitions text was checked from the page's embedded data. Committee Procedures Section 8 was opened in headless Chrome, and its Section 8E Model Local Rule E-3 was read in full. It is now cited on Preferred Lies and Local Rule (`CP8`).
+- **One correction from E-3.** The draft said preferred lies applies to "a closely mown area, usually the fairway", for when "the course is wet or worn". E-3's wording is "When any part of a player's ball touches part of the general area cut to fairway height or less", relief is taken "once" by placing a ball within a specified size "such as one club-length, one scorecard length or 6 inches", and the purpose names "heavy snows, spring thaws, prolonged rains or extreme heat". The record now says "the general area cut to fairway height or less", "when bad weather has damaged the course", and that the relief is free, taken once, and "should be withdrawn as soon as conditions allow" (E-3's words).
+- **Earlier correction (Codex on #296).** Provisional Ball now includes Rule 18.3c(3)'s penalty-area case.
+- **Examples.** Every number recomputed again from the inputs shown; all match (the "Recomputed" lines below).
+- **Product.** No `goloNote`, `ctaIntent` or `capabilityIds` on any record; no field names GoLo or the app.
+- **SEO.** Every canonical is `{ kind: "hub", anchor: <slug> }`. Related ids resolve to records. The twelve `/rules#rule-N` paths are published Rules Center anchors. `lint:content` passes.
 
 ## GoLo
 
@@ -45,7 +54,7 @@ Golf only. GoLo keeps score and runs side games; it doesn't apply or enforce any
 
 ## The terms
 
-Every source was opened on 2026-11-11 at the URL in the record. The R&A pages answered a plain fetch and are the 2023 edition; Definitions text was read from the page's embedded data. The R&A's Committee Procedures Section 8 page (the Model Local Rules) renders only in a browser, so Preferred Lies and Local Rule cite the R&A's own winter rules FAQ for Model Local Rule E-3, plus Rule 1.3a.
+Every source was opened on 2026-11-11 at the URL in the record. The R&A pages answered a plain fetch and are the 2023 edition; Definitions text was read from the page's embedded data. The R&A's Committee Procedures Section 8 page (the Model Local Rules) renders only in a browser, so Preferred Lies and Local Rule first cited the R&A's own winter rules FAQ for Model Local Rule E-3, plus Rule 1.3a; stage 2 opened the Section 8 page in headless Chrome and added it.
 
 ### Putting Green (`putting-green`, P2)
 - **Definition:** The specially prepared area around the hole you're playing, made for putting. Its edge is where the specially prepared grass starts, unless the committee marks it another way.
@@ -99,9 +108,9 @@ Every source was opened on 2026-11-11 at the URL in the record. The R&A pages an
 - Sources: Definitions, Temporary Water (quoted in the definition); "It is not enough for the ground to be merely wet, muddy or soft"; "Dew and Frost are not temporary water"; snow and natural ice "are either loose impediments or, when on the ground, temporary water, at the player's option". National Club Golfer: "Old: Casual water New: Temporary Water". Rule 16.1b.
 
 ### Preferred Lies (`preferred-lies`, P2)
-- **Definition:** A local rule that lets you lift, clean and place a ball lying in a closely mown area, usually the fairway, within a set distance of where it lay, no nearer the hole. Committees use it when the course is wet or worn.
+- **Definition:** A local rule that lets you lift, clean and place a ball lying in the general area cut to fairway height or less, within a set distance of where it lay, no nearer the hole. Committees use it when bad weather has damaged the course.
 - Sources: The R&A winter rules FAQ: relief "generally restricted to when your ball lies on the fairway"; "lift your ball, clean it and replace it on another spot within a specified relief area (for example, six inches, a scorecard length or one club length) of the original spot, no nearer the hole"; "The decision to enforce preferred lies under Model Local Rule E-3 rests with the Committee"; it "should end" when conditions improve. Golfshake: "'Preferred lies' (also known as 'winter rules') … exists by local rule only". Golf Monthly: clubs adopt it "to allow balls on the fairways or other closely mown areas to be lifted, cleaned and placed". Rule 1.3a: local rules are part of the Rules.
-- Not confirmed against Committee Procedures Section 8 itself (browser-only page). The stage 2 check should open it in a browser.
+- Committee Procedures Section 8E, Model Local Rule E-3 (opened in headless Chrome at stage 2): "When any part of a player's ball touches part of the general area cut to fairway height or less … the player may take free relief once by placing the original ball or another ball" in a relief area of "[Specify size … such as one club-length, one scorecard length or 6 inches]", "Must not be nearer the hole", "Must be in the general area"; the purpose: conditions "such as heavy snows, spring thaws, prolonged rains or extreme heat"; "Such a Local Rule should be withdrawn as soon as conditions allow"; use outside the fairway "is not recommended".
 
 ### Ready Golf (`ready-golf`, P2)
 - **Definition:** Playing when you're ready instead of strictly in turn, safely and responsibly, to keep the round moving. The Rules of Golf allow and encourage it in stroke play.
