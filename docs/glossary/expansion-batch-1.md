@@ -33,12 +33,21 @@ The inventory lists 16 side-games expansion terms. #168 asks for batches of 10 t
 | # | Stage | Done | Still needed |
 |---|---|---|---|
 | 1 | Draft | Agent, 2026-11-11 | — |
-| 2 | Rules fact-check | Agent prepared: sources opened 2026-11-11, examples recomputed below. No record cites the Rules of Golf or the Rules of Handicapping; every source is editorial or first-party | **Owner** signs |
-| 3 | GoLo product audit | Agent prepared against the registry. The owner answered the three open questions from the app's code on 2026-11-11 ([answers](#owners-answers-november-11-2026)) | **Owner** signs |
-| 4 | SEO/canonical | Agent: canonicals per `canonical-map.md`; `lint:content` passes; related ids and paths resolve | **Owner** confirms |
-| 5 | Approval | — | **Owner** |
+| 2 | Rules fact-check | Agent, 2026-11-11, under the owner's delegation: every source reopened, every sentence checked, examples recomputed below. No record cites the Rules of Golf or the Rules of Handicapping; every source is editorial or first-party. One fix: Validation's definition | — |
+| 3 | GoLo product audit | Agent, 2026-11-11, under the owner's delegation: notes and `capabilityIds` checked against `capabilities.ts` and the owner's [answers](#owners-answers-november-11-2026). App code not read | — |
+| 4 | SEO/canonical | Agent, 2026-11-11, under the owner's delegation: canonicals per `canonical-map.md`; `lint:content` passes; related ids and paths resolve | — |
+| 5 | Approval | **Owner**, in chat, 2026-11-11: "Approve all 11" | — |
 
-None of the records has a review log yet. Under `editorial-review.md` § Roles, expansion records go back to the owner's roles unless the owner delegates again, as they did for the MVP on 2026-10-29. Once the owner approves, the records move to `approved` with a dated log, and a release PR moves them to `published`.
+**Delegation (owner, 2026-11-11).** The owner delegated stages 2–4 for this batch to an agent and kept approval (`editorial-review.md` § Roles). Each record now has a `reviewLog` with `rules`, `product` and `seo` entries, `by: "agent"`, dated 2026-11-11. The owner approved all 11 in chat on 2026-11-11 ("Approve all 11"), so each record also has an `approval` entry `by: "owner"`, `reviewedBy: "owner"`, `reviewedOn: 2026-11-11`, and status `approved`. A release PR moves them to `published`.
+
+### Stage 2–4 results (agent, 2026-11-11)
+
+Every source below was reopened on 2026-11-11, so each `accessedOn` stays 2026-11-11.
+
+- **Fixed: Validation.** The definition said a carried skin "needs a birdie, or at least a par". Neither source says that. LiveTourney's validation is tying the low score on the next hole; the help-centre article's is meeting a set requirement (par, birdie or eagle) on the next hole. LiveTourney's "a par cannot win a skin" is a separate rule that applies to every skin, not a validation. The definition now reads: "the winner must tie or beat the low score on the next hole, or must make a set score there, such as a par or a birdie." The example (next-hole low score) is unchanged and still correct.
+- **Confirmed as drafted:** every other sentence matched its source on reopening, and every example recomputed as shown below. Golf Monthly's two pages and the Australian Golf Digest Rabbit page needed a direct fetch to read past the page shell; their quotes match.
+- **Product:** every GoLo note stays inside a `live` capability and its limits, or the owner's answers: Net Skins (`game-library`, `handicap-strokes`, `skins-greenie-sandie`), Debt Netting (`settle-up`: no "fewest", no money handling), Birdie and Eagle Bounty (`game-library` bounty limit), Lone Wolf (`game-library` Wolf limit; Lone Wolf scoring from answer 2). Automatic Press (`auto-press`, planned) and Validation (`skins-validation`, not offered) have no GoLo note and don't imply the feature. Point Value, Buy-in, Hammer and Rabbit make no GoLo claim.
+- **SEO:** Birdie Bounty is canonical to `/games/birdies`; the other ten are hub anchors, with Eagle Bounty, Automatic Press and Lone Wolf linking the pages `canonical-map.md` § Expansion terms names. `lint:content` passes.
 
 ## Product audit questions
 
@@ -110,7 +119,7 @@ Word counts are for the short definition. "Recomputed" lines redo every number i
 
 ### Validation (`validation`, P2)
 
-**Definition (42 words):** A skins house rule that adds a condition before a skin counts. Common versions: the winner must tie or beat the low score on the next hole, or a carried skin needs a birdie, or at least a par, to win it.
+**Definition (41 words; reworded 2026-11-11 in stage 2):** A skins house rule that adds a condition before a skin counts. Common versions: the winner must tie or beat the low score on the next hole, or must make a set score there, such as a par or a birdie.
 
 **Example:** Your group validates on the next hole. You win the 6th outright with a 4, then make 5 on the 7th, where the low score is 4. The 6th's skin isn't yours.
 
