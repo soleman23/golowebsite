@@ -280,7 +280,7 @@ Subtotal: 2 MVP + 10 expansion = 12.
 
 ## H. Slang and golf culture (20)
 
-**Expansion batch 7 (#168, #301, November 12, 2026):** rows 153–166 are drafted at `in-review` with Halve (row 20, scoring), the only mixed batch (`expansion-batch-7.md`). Substitutions S1, S7, S8 and S9 applied; Halve, Dormie and All Square link `/games/nassau`. Started at the owner's request before #167's launch + 28 read. Stages 2–4 were done by an agent under the owner's delegation, and the owner approved all 15 (2026-11-12). Not yet published. Its release crosses 150 and carries the §7.4 title.
+**Expansion batch 7 (#168, #301, November 12, 2026):** rows 153–166 are published with Halve (row 20, scoring), the only mixed batch (`expansion-batch-7.md`). Substitutions S1, S7, S8 and S9 applied; Halve, Dormie and All Square link `/games/nassau`. Started at the owner's request before #167's launch + 28 read. Stages 2–4 were done by an agent under the owner's delegation, and the owner approved all 15 and asked for the release (2026-11-12), ahead of #167's launch + 28 read. The batch 7 release PR published them, crossing 150, and set the §7.4 title.
 
 Each entry is labelled informal. Mulligan, Gimme and Breakfast Ball are labelled as practices the Rules don't allow, with what that means for a score posted for handicap (#162).
 
@@ -319,7 +319,7 @@ Subtotal: 6 MVP + 14 expansion = 20.
 | 4 | Scoring | 9–19, 21–24 | 15 | 111 (published 2026-11-11) |
 | 5 | Course, rules and etiquette | 120–134 | 15 | 126 (published 2026-11-11) |
 | 6 | Shots and ball flight | 100–114 | 15 | 141 (published 2026-11-12) |
-| 7 | Slang, plus Halve (**mixed**) | 153–166, 20 | 15 | 156 |
+| 7 | Slang, plus Halve (**mixed**) | 153–166, 20 | 15 | 156 (published 2026-11-12) |
 | 8 | Equipment and technology | 137–146 | 10 | 166 |
 
 15 + 15 + 15 + 15 + 10 = 70.
@@ -332,11 +332,11 @@ Subtotal: 6 MVP + 14 expansion = 20.
 - **GA4 zero-result searches:** the `result_bucket` split exists only from 2026-11-05 and no checkpoint window with it is complete yet.
 - **Reader requests:** none recorded (issues searched 2026-11-11).
 
-That's too sparse to reorder anything. The owner released batch 4 on 2026-11-11 without waiting (override, as for batches 1–3), and batches 5 and 6 the same way (batch 6 on 2026-11-12), so launch + 28 (window 2026-10-29 – 11-25, run 2026-11-26) is the first read that can, starting with batch 7. Batches 1–5 went live on the evening of 2026-11-11 (batch 3 at 19:13 PST) and batch 6 on 2026-11-12, so the window holds about 14 days of them; read their terms' queries against that, not the full 28. If launch + 28 is still too sparse, the order above stands, and launch + 56 (2026-12-24) and + 90 (2027-01-27) apply only to batches still unreleased.
+That's too sparse to reorder anything. The owner released batch 4 on 2026-11-11 without waiting (override, as for batches 1–3), and batches 5–7 the same way (batches 6 and 7 on 2026-11-12), so launch + 28 (window 2026-10-29 – 11-25, run 2026-11-26) is the first read that can, starting with batch 8. Batches 1–5 went live on the evening of 2026-11-11 (batch 3 at 19:13 PST) and batches 6–7 on 2026-11-12, so the window holds about 14 days of them; read their terms' queries against that, not the full 28. If launch + 28 is still too sparse, the order above stands, and launch + 56 (2026-12-24) and + 90 (2027-01-27) apply only to batches still unreleased.
 
 **Guides.** Dormie, All Square and Halve link `/games/nassau` (`canonical-map.md`), subject to batch 7's product audit. No batch builds a guide or a standalone page: that work gets its own issue (#106 Phase 3, #169), and a record links a guide only once it's published and the canonical map says so.
 
-**Title.** Spec §7.4's "150+ Terms" title ships in the release that first takes the published count above 150: batch 7 in this order (141 → 156). If the order changes, it moves with whichever release crosses 150.
+**Title.** Spec §7.4's "150+ Terms" title shipped in the batch 7 release (141 → 156), the one that first took the published count above 150. `test:glossary` keeps the title and the published count in step.
 
 ## Alias decisions
 

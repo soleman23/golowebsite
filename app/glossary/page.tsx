@@ -37,12 +37,14 @@ import styles from "./glossary.module.css";
 
 /**
  * Self-canonical to /glossary, with or without ?category= (spec §7.3, #163).
- * The title template adds " · GoLo", as on every page; no "150+" until that
- * many terms are public. The share card is the hero photo's (#171).
+ * The title template adds " · GoLo", as on every page. Spec §7.4's "150+"
+ * title since batch 7 took the published count to 156 (#168, #301); the
+ * glossary test fails if the title claims more terms than are published.
+ * The share card is the hero photo's (#171).
  */
 export const metadata: Metadata = pageMetadata({
   path: "/glossary",
-  title: "Golf Glossary: Terms, Slang & Games Explained",
+  title: "Golf Glossary: 150+ Terms, Slang & Games",
   description:
     "Learn golf terms, scoring rules, handicaps, slang and side games with clear definitions and real examples from GoLo Golf.",
   image: heroOgImage("glossary"),

@@ -5,9 +5,9 @@
  * it shares Rule 3.2 with Dormie and All Square (inventory.md § Expansion
  * batch plan). It keeps its scoring category.
  *
- * APPROVED, NOT PUBLISHED. Nothing here reaches a public page, the search
- * index, the sitemap, llms.txt or structured data until a release PR
- * publishes it; approved records show only in local review (../selectors).
+ * PUBLISHED by the batch 7 release PR, which the owner asked for after
+ * approving all 15 ("Merge when they pass and are ready"). It took the count
+ * past 150, so it also carries spec §7.4's "150+ Terms" title.
  * Expansion records go back to the owner's
  * review roles (editorial-review.md § Roles): an agent drafted these and
  * prepared the checks in docs/glossary/expansion-batch-7.md. On 2026-11-12
@@ -33,6 +33,9 @@ const DRAFTED_ON = "2026-11-12";
  * Approval is the owner's.
  */
 const REVIEWED_ON = "2026-11-12";
+
+/** The day the release PR merged and deployed. */
+const PUBLISHED_ON = "2026-11-12";
 
 const reviewLog: ReviewEntry[] = [
   {
@@ -121,7 +124,8 @@ export const expansionBatch7Terms: GlossaryTerm[] = [
     reviewLog,
     reviewedBy: "owner",
     reviewedOn: REVIEWED_ON,
-    status: "approved",
+    publishedOn: PUBLISHED_ON,
+    status: "published",
   },
   {
     id: "knee-knocker",
@@ -158,7 +162,8 @@ export const expansionBatch7Terms: GlossaryTerm[] = [
     reviewLog,
     reviewedBy: "owner",
     reviewedOn: REVIEWED_ON,
-    status: "approved",
+    publishedOn: PUBLISHED_ON,
+    status: "published",
   },
   {
     id: "fried-egg",
@@ -193,7 +198,8 @@ export const expansionBatch7Terms: GlossaryTerm[] = [
     reviewLog,
     reviewedBy: "owner",
     reviewedOn: REVIEWED_ON,
-    status: "approved",
+    publishedOn: PUBLISHED_ON,
+    status: "published",
   },
   {
     id: "chili-dip",
@@ -229,7 +235,8 @@ export const expansionBatch7Terms: GlossaryTerm[] = [
     reviewLog,
     reviewedBy: "owner",
     reviewedOn: REVIEWED_ON,
-    status: "approved",
+    publishedOn: PUBLISHED_ON,
+    status: "published",
   },
   {
     id: "lip-out",
@@ -256,7 +263,8 @@ export const expansionBatch7Terms: GlossaryTerm[] = [
     reviewLog,
     reviewedBy: "owner",
     reviewedOn: REVIEWED_ON,
-    status: "approved",
+    publishedOn: PUBLISHED_ON,
+    status: "published",
   },
   {
     id: "inside-the-leather",
@@ -288,7 +296,8 @@ export const expansionBatch7Terms: GlossaryTerm[] = [
     reviewLog,
     reviewedBy: "owner",
     reviewedOn: REVIEWED_ON,
-    status: "approved",
+    publishedOn: PUBLISHED_ON,
+    status: "published",
   },
   {
     id: "the-turn",
@@ -316,7 +325,8 @@ export const expansionBatch7Terms: GlossaryTerm[] = [
     reviewLog,
     reviewedBy: "owner",
     reviewedOn: REVIEWED_ON,
-    status: "approved",
+    publishedOn: PUBLISHED_ON,
+    status: "published",
   },
   {
     id: "dormie",
@@ -344,7 +354,8 @@ export const expansionBatch7Terms: GlossaryTerm[] = [
     reviewLog,
     reviewedBy: "owner",
     reviewedOn: REVIEWED_ON,
-    status: "approved",
+    publishedOn: PUBLISHED_ON,
+    status: "published",
   },
   {
     id: "all-square",
@@ -372,7 +383,8 @@ export const expansionBatch7Terms: GlossaryTerm[] = [
     reviewLog,
     reviewedBy: "owner",
     reviewedOn: REVIEWED_ON,
-    status: "approved",
+    publishedOn: PUBLISHED_ON,
+    status: "published",
   },
   {
     id: "good-good",
@@ -403,7 +415,8 @@ export const expansionBatch7Terms: GlossaryTerm[] = [
     reviewLog,
     reviewedBy: "owner",
     reviewedOn: REVIEWED_ON,
-    status: "approved",
+    publishedOn: PUBLISHED_ON,
+    status: "published",
   },
   {
     id: "the-yips",
@@ -440,7 +453,8 @@ export const expansionBatch7Terms: GlossaryTerm[] = [
     reviewLog,
     reviewedBy: "owner",
     reviewedOn: REVIEWED_ON,
-    status: "approved",
+    publishedOn: PUBLISHED_ON,
+    status: "published",
   },
   {
     id: "army-golf",
@@ -463,7 +477,8 @@ export const expansionBatch7Terms: GlossaryTerm[] = [
     reviewLog,
     reviewedBy: "owner",
     reviewedOn: REVIEWED_ON,
-    status: "approved",
+    publishedOn: PUBLISHED_ON,
+    status: "published",
   },
   {
     id: "members-bounce",
@@ -487,7 +502,8 @@ export const expansionBatch7Terms: GlossaryTerm[] = [
     reviewLog,
     reviewedBy: "owner",
     reviewedOn: REVIEWED_ON,
-    status: "approved",
+    publishedOn: PUBLISHED_ON,
+    status: "published",
   },
   {
     id: "grip-it-and-rip-it",
@@ -523,7 +539,8 @@ export const expansionBatch7Terms: GlossaryTerm[] = [
     reviewLog,
     reviewedBy: "owner",
     reviewedOn: REVIEWED_ON,
-    status: "approved",
+    publishedOn: PUBLISHED_ON,
+    status: "published",
   },
   {
     id: "ham-and-egg",
@@ -547,6 +564,7 @@ export const expansionBatch7Terms: GlossaryTerm[] = [
     reviewLog,
     reviewedBy: "owner",
     reviewedOn: REVIEWED_ON,
-    status: "approved",
+    publishedOn: PUBLISHED_ON,
+    status: "published",
   },
 ];

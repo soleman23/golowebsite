@@ -16,7 +16,7 @@
  * Exit 1 with one line per failed case.
  */
 
-import { existsSync } from "node:fs";
+import { existsSync, readFileSync } from "node:fs";
 import { registerHooks } from "node:module";
 import { fileURLToPath } from "node:url";
 
@@ -287,6 +287,15 @@ const boundary = statuses.map((status) =>
     today: new Date().toISOString().slice(0, 10),
   });
   check("shipped records pass validation", shipped.length === 0, shipped.join(" | "));
+
+  // Spec §7.4: the page title claims "150+" only once that many terms are
+  // published, and does from the release that first crosses 150.
+  const page = readFileSync(new URL("../app/glossary/page.tsx", import.meta.url), "utf8");
+  const title = page.match(/path: "\/glossary",\s*title: "([^"]+)"/)?.[1] ?? "";
+  const claimed = Number(title.match(/(\d+)\+ Terms/)?.[1] ?? 0);
+  check("title: found in the page's pageMetadata", title !== "", title);
+  check("title: never claims more terms than are published", claimed <= pub.length, `${title} (${pub.length} published)`);
+  check("title: says 150+ once 150 or more are published", pub.length < 150 || claimed === 150, `${title} (${pub.length} published)`);
 }
 
 {
