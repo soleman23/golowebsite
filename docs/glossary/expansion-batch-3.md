@@ -14,7 +14,7 @@ Batches 1 and 2 are published (#278, #283). #168's order after side games and ha
 
 The revisions the owner accepted on 2026-10-29 (`inventory.md` § Revisions) are applied: **M1** Pinehurst is an alias of Chapman, **M2** Round Robin is an alias of Sixes, **S2** Par Competition, **S3** Greensomes, **S4** Florida Scramble. M1 asked the fact-check to split Chapman and Pinehurst again if a distinct regional definition turned up. None did: the R&A's Committee Procedures (Section 9B) call the same format Pinehurst Foursomes, and Golf Compendium says Pinehurst System "is the exact same thing as Chapman system". The merge stands, and so does S2.
 
-**Canonicals:** all 14 are hub entries (`/glossary#<slug>`). `canonical-map.md` § Expansion terms with an existing page has Texas Scramble, Shamble and Florida Scramble linking `/games/scramble` and Quota linking `/games/best-score`; the owner decided on 2026-11-11 that these records link no GoLo guide (see [GoLo](#golo-owners-decision-2026-11-11)), so they don't. `canonical-map.md` isn't changed in this PR.
+**Canonicals:** all 14 are hub entries (`/glossary#<slug>`). `canonical-map.md` § Expansion terms with an existing page has Texas Scramble, Shamble and Florida Scramble linking `/games/scramble` and Quota linking `/games/best-score`; the owner decided on 2026-11-11 that these records link no GoLo guide (see [GoLo](#golo-owners-decision-2026-11-11)), so they don't. `canonical-map.md` wasn't changed in this PR; it was reconciled to the published records after the release (#168 bookkeeping, 2026-11-11).
 
 **Next (batch 4):** whatever #168's order and the 28-day read put next. With formats done, § A scoring, § E shots, § F course, § G equipment and § H slang still have expansion terms.
 
