@@ -38,6 +38,8 @@ CI runs on PRs to `main` and pushes to `main`. A retargeted PR needs a push befo
 
 **Update, November 12, 2026 (batch 7 drafted).** At the owner's request ("Start batch 7"), the 14 slang terms and Halve are drafted at `in-review` (#301, `expansion-batch-7.md`). Production is unchanged at 141. The owner delegated stages 2–4 the same day, an agent logged them, and the owner approved all 15 ("Approve all 15"). The owner then asked for the merge and release once each PR passed and was ready; the batch 7 release PR published them, for 156 live terms, and changed the title to spec §7.4's "150+ Terms". Batch 8 (equipment, 10) is the last; launch + 28 (2026-11-26) can still set its timing unless the owner overrides.
 
+**Update, November 12, 2026 (batch 8 drafted).** At the owner's request ("Start batch 8"), the 10 equipment and technology terms, the last batch, are drafted at `in-review` (#304, `expansion-batch-8.md`). Production is unchanged at 156. The owner delegated stages 2–4 the same day, an agent logged them, and the owner approved all 10 ("Approve all 10"). The release timing is the owner's. The release takes the count to 166, #168's target. Rangefinder is a hub entry while `/blog/rangefinder` stays unpublished.
+
 The section below is the launch-night record and is kept as written.
 
 ## Where things stand (October 29, 2026, night: released)
