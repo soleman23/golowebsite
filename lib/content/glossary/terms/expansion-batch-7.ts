@@ -9,8 +9,10 @@
  * llms.txt or structured data until each record is approved and a release PR
  * publishes it (../selectors). Expansion records go back to the owner's
  * review roles (editorial-review.md § Roles): an agent drafted these and
- * prepared the checks in docs/glossary/expansion-batch-7.md; no stage is
- * signed, so no record has a review log yet.
+ * prepared the checks in docs/glossary/expansion-batch-7.md. On 2026-11-12
+ * the owner delegated stages 2–4 for this batch to an agent and kept
+ * approval (#301); each record logs those three stages below. They stay
+ * `in-review` until the owner approves.
  *
  * Every source with `accessedOn` was opened on that date. Rules of Golf
  * pages are the 2023 edition on randa.org. Pages whose URL carries a word
@@ -20,9 +22,37 @@
  * Square link the Nassau guide, as canonical-map.md has them.
  */
 
-import type { GlossaryTerm } from "../types";
+import type { GlossaryTerm, ReviewEntry } from "../types";
 
 const DRAFTED_ON = "2026-11-12";
+
+/**
+ * Stages 2–4, done by an agent on 2026-11-12 under the owner's delegation of
+ * that date for this batch only (#301; editorial-review.md § Roles).
+ * Approval is the owner's and isn't logged until they give it.
+ */
+const REVIEWED_ON = "2026-11-12";
+
+const reviewLog: ReviewEntry[] = [
+  {
+    stage: "rules",
+    by: "agent",
+    on: REVIEWED_ON,
+    note: "Every source reopened 2026-11-12 (R&A 2023 Rules 3, 16 and 19; 22 editorial pages) and each sentence checked against it; examples recomputed (expansion-batch-7.md).",
+  },
+  {
+    stage: "product",
+    by: "agent",
+    on: REVIEWED_ON,
+    note: "No GoLo claim, CTA or capability id; no field mentions GoLo or the app. Halve, Dormie and All Square link /games/nassau and agree with its glossary (#301).",
+  },
+  {
+    stage: "seo",
+    by: "agent",
+    on: REVIEWED_ON,
+    note: "Hub canonical at the slug, as inventory.md has every slang expansion term and Halve; related ids, the Nassau guide and the Rules Center paths pass lint:content.",
+  },
+];
 const ROG = "Rules of Golf, 2023 edition (R&A)";
 const ROG_BASE = "https://www.randa.org/en/rog/";
 
@@ -81,6 +111,7 @@ export const expansionBatch7Terms: GlossaryTerm[] = [
       compendium("What is a 'halve' or 'halved match' in golf?", "https://www.golfcompendium.com/2021/09/halved-golf-definition.html"),
       GOLFSHAKE,
     ],
+    reviewLog,
     status: "in-review",
   },
   {
@@ -94,7 +125,7 @@ export const expansionBatch7Terms: GlossaryTerm[] = [
     shortDefinition:
       "A short putt you really should make but easily could miss, usually somewhere inside 6 feet, with enough riding on it to make your knees shake.",
     explanation:
-      "It's too long to be a gimme, so someone has to hit it. A golfer who keeps missing them may have the yips.",
+      "If nobody concedes it, you have to hole it. A golfer who keeps missing them may have the yips.",
     example:
       "All square on the 18th, your par putt is 4 feet. Nobody concedes it: that's a knee-knocker.",
     relatedTermIds: ["gimme", "the-yips", "putt"],
@@ -115,6 +146,7 @@ export const expansionBatch7Terms: GlossaryTerm[] = [
         accessedOn: DRAFTED_ON,
       },
     ],
+    reviewLog,
     status: "in-review",
   },
   {
@@ -128,7 +160,7 @@ export const expansionBatch7Terms: GlossaryTerm[] = [
     shortDefinition:
       "A ball half buried in a bunker, sitting in its own small crater with only the top showing, like the yolk of a fried egg.",
     explanation:
-      "It usually happens when a ball lands in soft or wet sand. A normal splash shot won't get under it; one common method is an open-faced wedge with a very steep swing that stabs into the sand just behind the ball.",
+      "It usually happens when a ball lands in soft or wet sand. One common way to play it is an open-faced wedge and a very steep swing that stabs into the sand just behind the ball, closer to it than a normal bunker shot.",
     example:
       "After rain, your approach drops into a greenside bunker and stays where it landed, half buried. You play it as it lies.",
     ruleNote: {
@@ -147,6 +179,7 @@ export const expansionBatch7Terms: GlossaryTerm[] = [
       rule(16, "Rule 16.3 (embedded ball, general area only)"),
       rule(19, "Rule 19.3 (unplayable ball in a bunker)"),
     ],
+    reviewLog,
     status: "in-review",
   },
   {
@@ -180,6 +213,7 @@ export const expansionBatch7Terms: GlossaryTerm[] = [
         accessedOn: DRAFTED_ON,
       },
     ],
+    reviewLog,
     status: "in-review",
   },
   {
@@ -204,6 +238,7 @@ export const expansionBatch7Terms: GlossaryTerm[] = [
       compendium("The dreaded lip out in golf", "https://www.golfcompendium.com/2021/05/lip-out-golf-definition.html"),
       GOLFSHAKE,
     ],
+    reviewLog,
     status: "in-review",
   },
   {
@@ -233,6 +268,7 @@ export const expansionBatch7Terms: GlossaryTerm[] = [
       GIMME_PUTTS,
       rule(3, "Rules 3.2b(1), 3.3c"),
     ],
+    reviewLog,
     status: "in-review",
   },
   {
@@ -258,6 +294,7 @@ export const expansionBatch7Terms: GlossaryTerm[] = [
         "https://www.golfcompendium.com/2020/07/the-turn-definition-golf-course.html",
       ),
     ],
+    reviewLog,
     status: "in-review",
   },
   {
@@ -283,6 +320,7 @@ export const expansionBatch7Terms: GlossaryTerm[] = [
       GOLFSHAKE,
       rule(3, "Rules 3.2a(3), 3.2a(4)"),
     ],
+    reviewLog,
     status: "in-review",
   },
   {
@@ -308,6 +346,7 @@ export const expansionBatch7Terms: GlossaryTerm[] = [
       compendium("What 'all square' means in golf scoring", "https://www.golfcompendium.com/2021/08/all-square-golf-definition.html"),
       GOLFSHAKE,
     ],
+    reviewLog,
     status: "in-review",
   },
   {
@@ -336,6 +375,7 @@ export const expansionBatch7Terms: GlossaryTerm[] = [
       compendium("What does 'good-good' mean in golf?", "https://www.golfcompendium.com/2019/10/definition-of-good-good-in-golf.html"),
       rule(3, "Rules 3.2b(1), 3.3c"),
     ],
+    reviewLog,
     status: "in-review",
   },
   {
@@ -370,6 +410,7 @@ export const expansionBatch7Terms: GlossaryTerm[] = [
         accessedOn: DRAFTED_ON,
       },
     ],
+    reviewLog,
     status: "in-review",
   },
   {
@@ -390,6 +431,7 @@ export const expansionBatch7Terms: GlossaryTerm[] = [
     canonical: { kind: "hub", anchor: "army-golf" },
     capabilityIds: [],
     sources: [compendium("Explain the slang: what is 'army golf'?", "https://www.golfcompendium.com/2020/04/army-golf-definition.html")],
+    reviewLog,
     status: "in-review",
   },
   {
@@ -411,6 +453,7 @@ export const expansionBatch7Terms: GlossaryTerm[] = [
     canonical: { kind: "hub", anchor: "members-bounce" },
     capabilityIds: [],
     sources: [compendium("Definition of member's bounce", "https://www.golfcompendium.com/2020/07/members-bounce-definition-golf.html")],
+    reviewLog,
     status: "in-review",
   },
   {
@@ -422,7 +465,7 @@ export const expansionBatch7Terms: GlossaryTerm[] = [
     tags: ["informal"],
     priority: "expansion",
     shortDefinition:
-      "Stop thinking and swing freely and hard. It's said before an all-out drive, and some players use it as a swing thought to clear their head.",
+      "Stop thinking and swing freely and hard. Golfers say it before an all-out swing, and some use it as a swing thought to clear their head.",
     explanation: "John Daly made it famous with the long, all-out driving that won him the 1991 PGA Championship.",
     example: "A wide fairway, nothing left or right, no wind: grip it and rip it.",
     relatedTermIds: ["drive", "driver"],
@@ -444,6 +487,7 @@ export const expansionBatch7Terms: GlossaryTerm[] = [
       },
       compendium("1991 PGA Championship winner and scores", "https://www.golfcompendium.com/2018/10/1991-pga-championship.html"),
     ],
+    reviewLog,
     status: "in-review",
   },
   {
@@ -457,7 +501,7 @@ export const expansionBatch7Terms: GlossaryTerm[] = [
     shortDefinition:
       "Two partners taking turns playing well, so that on each hole one of them is good enough to keep the team in it.",
     explanation:
-      "It isn't one player carrying the other: neither plays well all round, just never badly at the same time. It counts most in formats where the team takes its better score, such as four-ball.",
+      "It isn't one player carrying the other: neither plays well all round, just never badly at the same time. Where the team counts its better score on each hole, as in four-ball, one good score per hole is enough.",
     example:
       "On two par 4s, you make 4 and your partner 5 on the first, then your partner makes 3 and you 6 on the second. The team's better scores are 4 and 3.",
     relatedTermIds: ["four-ball"],
@@ -465,6 +509,7 @@ export const expansionBatch7Terms: GlossaryTerm[] = [
     canonical: { kind: "hub", anchor: "ham-and-egg" },
     capabilityIds: [],
     sources: [compendium("The meaning of 'ham and egg' in golf", "https://www.golfcompendium.com/2019/10/ham-and-egg-definition-golf.html")],
+    reviewLog,
     status: "in-review",
   },
 ];

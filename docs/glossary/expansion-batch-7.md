@@ -1,6 +1,6 @@
 # Glossary expansion batch 7: slang, plus Halve (#168, #301)
 
-Prepared November 12, 2026 for the owner's review. The records are in `lib/content/glossary/terms/expansion-batch-7.ts`, all `in-review`. Nothing here reaches a public page, the search index, the sitemap, `llms.txt` or structured data until a record is approved and a release PR publishes it (`selectors.ts`; checked by `npm run test:glossary`, and in the built `glossary.html`, `glossary.rsc`, `llms.txt`, `sitemap.xml` and `.next/static` for this PR).
+Prepared November 12, 2026 for the owner's review; stages 2–4 done the same day under the owner's delegation. The records are in `lib/content/glossary/terms/expansion-batch-7.ts`, all `in-review`. Nothing here reaches a public page, the search index, the sitemap, `llms.txt` or structured data until a record is approved and a release PR publishes it (`selectors.ts`; checked by `npm run test:glossary`, and in the built `glossary.html`, `glossary.rsc`, `llms.txt`, `sitemap.xml` and `.next/static` for this PR).
 
 ## Why now
 
@@ -25,10 +25,24 @@ Batches 1–6 are published (141 records). Slang, plus Halve, is next in `invent
 | # | Stage | Done | Still needed |
 |---|---|---|---|
 | 1 | Draft | Agent, 2026-11-12 | — |
-| 2 | Rules fact-check | Sources opened and quoted below; examples recomputed | Owner sign-off, or a delegation for this batch |
-| 3 | GoLo product audit | No record makes a GoLo claim or cites a capability; the three Nassau links checked against the guide's own glossary | Owner sign-off, or a delegation |
-| 4 | SEO/canonical | Hub anchors at each slug; `lint:content` passes; related ids and paths resolve | Owner sign-off, or a delegation |
+| 2 | Rules fact-check | Agent, 2026-11-12, under the owner's delegation: every source reopened, every sentence checked, examples recomputed below. [Results](#stage-24-results-agent-2026-11-12) | — |
+| 3 | GoLo product audit | Agent, 2026-11-12, under the owner's delegation: no record makes a GoLo claim or cites a capability; the three Nassau links checked against the guide's own glossary | — |
+| 4 | SEO/canonical | Agent, 2026-11-12, under the owner's delegation: hub anchors at each slug; `lint:content` passes; related ids and paths resolve | — |
 | 5 | Approval | — | **Owner** |
+
+**Delegation (owner, 2026-11-12, #301).** The owner delegated stages 2–4 for the 15 records of batch 7 ("Yes, delegate"), as for batches 1–6, and kept approval. Each record now has a `reviewLog` with `rules`, `product` and `seo` entries, `by: "agent"`, dated 2026-11-12. The records stay `in-review` until the owner approves them.
+
+### Stage 2–4 results (agent, 2026-11-12)
+
+- **Rules.** All 25 source URLs were reopened at 12:06 PST, and each answered 200: Rules 3, 16 and 19 on randa.org and 22 editorial pages. Every quoted phrase below was found again in that day's text (65 quotes). The two phrases that weren't come from the Golf Monthly page the packet names as *not* cited.
+- **Four wording fixes.**
+  - **Knee-Knocker:** said the putt is "too long to be a gimme", which no source says. It now says that if nobody concedes it, you have to hole it.
+  - **Fried Egg:** said "a normal splash shot won't get under it". Golf Compendium only contrasts where the club enters the sand, so the explanation now says that: "closer to it than a normal bunker shot".
+  - **Grip It and Rip It:** said "before an all-out drive". SwingU and Backswing don't tie it to the driver, so it now says "before an all-out swing".
+  - **Ham and Egg:** said it "counts most" in better-score formats, which no source ranks. It now states the mechanism: one good score per hole is enough where the team counts its better score.
+- **Examples.** Every number recomputed again from the inputs shown; all match (the "Recomputed" lines below).
+- **Product.** No `goloNote`, `ctaIntent` or `capabilityIds` on any record; no field names GoLo or the app. The three `/games/nassau` links were checked against the guide's own glossary (§ GoLo).
+- **SEO.** Every canonical is `{ kind: "hub", anchor: <slug> }`. Related ids resolve to records (published, or in this batch). `/games/nassau`, `/rules#rule-3`, `/rules#rule-16` and `/rules#conceded-putt` are served pages and anchors. `lint:content` passes, and the aliases are unique across all 156 records.
 
 ## GoLo
 
@@ -104,7 +118,7 @@ Every source was opened on 2026-11-12 at the URL in the record and answered 200.
 - Sources: Golf Compendium: "a synonym for a lucky bounce or a lucky break"; "kicked in a good direction instead of a bad direction"; "The term derives from member-guest tournaments at private golf clubs … the golfer in the group who is a member at the club being played knows the bumps and humps and contours of the golf course and, therefore, might just be getting some of those good bounces by design."
 
 ### Grip It and Rip It (`grip-it-and-rip-it`, P3)
-- **Definition:** Stop thinking and swing freely and hard. It's said before an all-out drive, and some players use it as a swing thought to clear their head.
+- **Definition:** Stop thinking and swing freely and hard. Golfers say it before an all-out swing, and some use it as a swing thought to clear their head.
 - Sources: SwingU: "Popularized by John Daly, this refers to minimizing the mental part of the game and swinging freely and ferociously." Backswing (a teaching pro): "We all get into our heads too much … So I started saying a simple phrase to myself … 'Grip it and Rip it!'" Golf Compendium (1991 PGA Championship): Daly "burst onto the scene at the 1991 PGA Championship bombing drives and going for broke. He wound up the unlikely champion".
 
 ### Ham and Egg (`ham-and-egg`, P3)

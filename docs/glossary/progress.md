@@ -36,7 +36,7 @@ CI runs on PRs to `main` and pushes to `main`. A retargeted PR needs a push befo
 
 **Update, November 12, 2026 (batch 6 drafted).** At the owner's request ("Start batch 6"), the 15 shots and ball-flight terms are drafted at `in-review` (#298, `expansion-batch-6.md`). The owner delegated stages 2–4 the same day, an agent logged them, and the owner approved all 15 ("Approve all 15"). The owner then asked for the merge and release once each PR was ready ("Merge as long as they are ready"); the batch 6 release PR published them, for 141 live terms. Launch + 28 (2026-11-26) can still reorder batches 7 and 8 unless the owner overrides.
 
-**Update, November 12, 2026 (batch 7 drafted).** At the owner's request ("Start batch 7"), the 14 slang terms and Halve are drafted at `in-review` (#301, `expansion-batch-7.md`). Production is unchanged at 141. Stages 2–5 and the release timing are the owner's. The release takes the count to 156 and changes the title to spec §7.4's "150+ Terms".
+**Update, November 12, 2026 (batch 7 drafted).** At the owner's request ("Start batch 7"), the 14 slang terms and Halve are drafted at `in-review` (#301, `expansion-batch-7.md`). Production is unchanged at 141. The owner delegated stages 2–4 the same day and an agent logged them; approval and the release timing are the owner's. The release takes the count to 156 and changes the title to spec §7.4's "150+ Terms".
 
 The section below is the launch-night record and is kept as written.
 

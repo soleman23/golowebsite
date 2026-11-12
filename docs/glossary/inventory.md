@@ -280,7 +280,7 @@ Subtotal: 2 MVP + 10 expansion = 12.
 
 ## H. Slang and golf culture (20)
 
-**Expansion batch 7 (#168, #301, November 12, 2026):** rows 153–166 are drafted at `in-review` with Halve (row 20, scoring), the only mixed batch (`expansion-batch-7.md`). Substitutions S1, S7, S8 and S9 applied; Halve, Dormie and All Square link `/games/nassau`. Started at the owner's request before #167's launch + 28 read; no stage is signed yet. Its release crosses 150 and carries the §7.4 title.
+**Expansion batch 7 (#168, #301, November 12, 2026):** rows 153–166 are drafted at `in-review` with Halve (row 20, scoring), the only mixed batch (`expansion-batch-7.md`). Substitutions S1, S7, S8 and S9 applied; Halve, Dormie and All Square link `/games/nassau`. Started at the owner's request before #167's launch + 28 read. Stages 2–4 were done by an agent under the owner's delegation (2026-11-12); approval is pending. Its release crosses 150 and carries the §7.4 title.
 
 Each entry is labelled informal. Mulligan, Gimme and Breakfast Ball are labelled as practices the Rules don't allow, with what that means for a score posted for handicap (#162).
 
