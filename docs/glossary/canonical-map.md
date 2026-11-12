@@ -6,6 +6,8 @@ For each glossary term, which URL answers the search intent, and what the glossa
 
 **Reconciled November 11, 2026** against `main` at 9c1e8a3, after expansion batches 1–3 were published (96 records). The [expansion table](#expansion-terms-with-an-existing-page) now matches the published records; the only change is the four formats the owner made golf only (#288).
 
+**Reconciled November 12, 2026** after expansion batches 4–8, with all 166 records published (#168). Two rows changed: Dormie, All Square and Halve are now records that link `/games/nassau` (#301), and Rangefinder is a hub entry while `/blog/rangefinder` is unpublished (#304, owner-approved). Every other expansion record is hub-canonical, as `inventory.md` has it.
+
 ## The rules
 
 1. **One owner per intent.** Each search intent has one canonical URL. The glossary never publishes a second page for an intent a guide or post already answers.
@@ -115,13 +117,13 @@ Every other expansion term is hub-canonical (`inventory.md`). These have an owne
 | Term | Canonical | Note |
 |---|---|---|
 | Sandbagging | `/blog/sandbagging` | Short definition + post link |
-| Rangefinder | `/blog/rangefinder` | Short definition + post link |
+| Rangefinder | hub `#rangefinder`, no post link | `/blog/rangefinder` is unpublished (`published: false`), so the record is a hub entry (owner, 2026-11-12, #304). Switch to `/blog/rangefinder` with a short definition once the post is published |
 | Birdie Bounty | `/games/birdies` | Short definition + guide link |
 | Eagle Bounty | hub, links `/games/birdies` | The guide covers it in passing ("Eagles usually count double") |
 | Automatic Press | hub, links `/blog/pressing` | The post has a section on auto-presses, but "what is an automatic press" is a definition; revisit with #169 data |
 | Lone Wolf | hub, links `/games/wolf` | |
 | Texas Scramble, Shamble, Florida Scramble | hub, no guide link | Published 2026-11-11 (#288). The scramble guide's glossary defines the first two in one line each, but GoLo doesn't offer these variants, so the owner made the records golf only: no GoLo note, link or capability (2026-11-11). Link `/games/scramble` only if GoLo ships the variant and the owner reopens the record |
-| Dormie, All Square, Halve | hub, links `/games/nassau` | The guide's glossary defines all three in one line each. Not yet records |
+| Dormie, All Square, Halve | hub, links `/games/nassau` | Published 2026-11-12 (#301). The guide's glossary defines all three in one line each, and the records agree with it |
 | Quota | hub, no guide link | Published 2026-11-11 (#288), golf only by the same owner decision. The Best Score guide's glossary mentions quota, but GoLo's `quota` capability is planned, so no link |
 
 ## Existing pages and the terms that point at them
@@ -148,7 +150,7 @@ Every published guide and the posts with glossary overlap. This is also the inbo
 | `/blog/who-pays-first` | Settling-up etiquette | Junk, Settle-up (related) | → Settle-up |
 | `/blog/settle-up-screen` | How GoLo's settle-up was built | Settle-up (related) | — |
 | `/blog/sandbagging` | Sandbagging | Sandbagging (M8) | → Handicap Index |
-| `/blog/rangefinder` | Rangefinder vs GPS | Rangefinder (M8) | — |
+| `/blog/rangefinder` | Rangefinder vs GPS (unpublished) | Rangefinder (M8), once published | — |
 | `/faq` | Product questions | Net Double Bogey (related) | — (FAQ answers stay short) |
 
 No glossary record competes with a page in this table. The checks behind that:

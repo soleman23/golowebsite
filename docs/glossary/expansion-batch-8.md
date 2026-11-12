@@ -1,10 +1,10 @@
 # Glossary expansion batch 8: equipment and technology (#168, #304)
 
-Prepared November 12, 2026 for the owner's review; stages 2–4 done the same day under the owner's delegation, and **approved by the owner the same day**. Not published: a release PR does that. The records are in `lib/content/glossary/terms/expansion-batch-8.ts`, all `approved`, and reach no public page, search index, sitemap, `llms.txt` or structured data (`selectors.ts`; checked by `npm run test:glossary`, and in the built `glossary.html`, `glossary.rsc`, `llms.txt`, `sitemap.xml` and `.next/static` for this PR).
+Prepared November 12, 2026 for the owner's review; stages 2–4 done the same day under the owner's delegation, and **approved by the owner the same day, and published by the batch 8 release PR**. The records are in `lib/content/glossary/terms/expansion-batch-8.ts`, now `published`. Until the release PR, they were checked at each stage to reach no public page, search index, sitemap, `llms.txt` or structured data (`selectors.ts`; checked by `npm run test:glossary`, and in the built `glossary.html`, `glossary.rsc`, `llms.txt`, `sitemap.xml` and `.next/static` for this PR).
 
 ## Why now
 
-Batches 1–7 are published (156 records). Equipment and technology is the last batch in `inventory.md` § Expansion batch plan. The owner asked for it on 2026-11-12 ("Start batch 8"), before #167's launch + 28 read (2026-11-26). Drafting changes nothing public. Release timing is the owner's call: wait for launch + 28, or override as for batches 1–7.
+Batches 1–7 are published (156 records). Equipment and technology is the last batch in `inventory.md` § Expansion batch plan. The owner asked for it on 2026-11-12 ("Start batch 8"), before #167's launch + 28 read (2026-11-26). Drafting changes nothing public. Release timing was the owner's call, as for batches 1–7; they released it the same day ("Merge, then release"), ahead of launch + 28.
 
 **This batch completes #168.** Its release takes the count from 156 to 166, the issue's target. #168 closes once production serves exactly 166 and the docs reconcile.
 
@@ -28,7 +28,7 @@ Nothing else depends on the post. The record says nothing about GoLo. The regist
 
 ## Held for the release PR: "lob shot"
 
-The batch 6 packet held "lob shot" as a Flop Shot alias until the Wedge record existed, because "lob" is also the lob wedge. Wedge now names the lob wedge as a club, and an alias match on "lob shot" can only mean the shot. Flop Shot is already published, though, so adding the alias in this PR would change production search before the owner approves anything. **The batch 8 release PR adds it**, if the owner approves this batch.
+The batch 6 packet held "lob shot" as a Flop Shot alias until the Wedge record existed, because "lob" is also the lob wedge. Wedge now names the lob wedge as a club, and an alias match on "lob shot" can only mean the shot. Flop Shot is already published, though, so adding the alias in the drafting PR would have changed production search before the owner approved anything. The owner approved it with the batch, and **the batch 8 release PR added it**.
 
 ## Stages
 
@@ -40,7 +40,7 @@ The batch 6 packet held "lob shot" as a Flop Shot alias until the Wedge record e
 | 4 | SEO/canonical | Agent, 2026-11-12, under the owner's delegation: hub anchors at each slug; `lint:content` passes; related ids resolve | — |
 | 5 | Approval | **Owner**, in chat, 2026-11-12: "Approve all 10" | — |
 
-**Delegation (owner, 2026-11-12, #304).** The owner delegated stages 2–4 for the 10 records of batch 8 ("Yes, delegate"), as for batches 1–7, and kept approval. Each record now has a `reviewLog` with `rules`, `product` and `seo` entries, `by: "agent"`, dated 2026-11-12. The owner approved all 10 in chat the same day ("Approve all 10"), on a question that named Rangefinder as a glossary-page entry and the "lob shot" alias, so each record also has an `approval` entry `by: "owner"`, `reviewedBy: "owner"`, `reviewedOn: 2026-11-12`, and status `approved`. Approved records show only in local review (`next dev`); a release PR sets `published` and `publishedOn` to the day it merges, and adds the alias.
+**Delegation (owner, 2026-11-12, #304).** The owner delegated stages 2–4 for the 10 records of batch 8 ("Yes, delegate"), as for batches 1–7, and kept approval. Each record now has a `reviewLog` with `rules`, `product` and `seo` entries, `by: "agent"`, dated 2026-11-12. The owner approved all 10 in chat the same day ("Approve all 10"), on a question that named Rangefinder as a glossary-page entry and the "lob shot" alias, so each record also has an `approval` entry `by: "owner"`, `reviewedBy: "owner"`, `reviewedOn: 2026-11-12`, and status `approved`. Approved records show only in local review (`next dev`); The owner then asked for the merge and release ("Merge, then release"), ahead of #167's launch + 28 read, as for batches 1–7. The batch 8 release PR moved them to `published`, with `publishedOn` the day it merged, and added the "lob shot" alias. The release recheck (`editorial-review.md` § Release recheck): Rule 4 was reopened again at release time and still has the quoted text; no record cites a capability id. The 19 editorial sources answered 200 again.
 
 ### Stage 2–4 results (agent, 2026-11-12)
 
