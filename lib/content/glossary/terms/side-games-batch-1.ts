@@ -6,8 +6,9 @@
  * llms.txt or structured data until each record is approved and a release PR
  * publishes it (../selectors). Expansion records go back to the owner's
  * review roles (editorial-review.md § Roles): an agent drafted these and
- * prepared the checks in docs/glossary/expansion-batch-1.md;
- * no stage is signed, so no record has a review log yet.
+ * prepared the checks in docs/glossary/expansion-batch-1.md. On 2026-11-11
+ * the owner delegated stages 2–4 to an agent; each record logs them below.
+ * Approval stays with the owner.
  *
  * Every source with `accessedOn` was opened on that date. Pages whose URL
  * carries a word the vocabulary check bans were left out, as for the MVP.
@@ -28,9 +29,54 @@
  * golf meaning found to source). See expansion-batch-1.md § Scope.
  */
 
-import type { GlossaryTerm } from "../types";
+import type { GlossaryTerm, ReviewEntry } from "../types";
 
 const DRAFTED_ON = "2026-11-11";
+
+/**
+ * Stages 2-4, done by an agent on 2026-11-11 under the owner's delegation of
+ * that date (editorial-review.md § Roles). Approval is the owner's and isn't
+ * logged until they give it.
+ */
+const REVIEWED_ON = "2026-11-11";
+
+const rules: ReviewEntry = {
+  stage: "rules",
+  by: "agent",
+  on: REVIEWED_ON,
+  note: "Every source reopened 2026-11-11 and each sentence checked against it; examples recomputed (expansion-batch-1.md).",
+};
+
+const seo: ReviewEntry = {
+  stage: "seo",
+  by: "agent",
+  on: REVIEWED_ON,
+  note: "Canonical per canonical-map.md; related ids and paths pass lint:content.",
+};
+
+/** A record with a GoLo note, checked against the registry and the owner's answers. */
+const reviewLogGolo: ReviewEntry[] = [
+  rules,
+  {
+    stage: "product",
+    by: "agent",
+    on: REVIEWED_ON,
+    note: "GoLo note and capability ids checked against capabilities.ts and the owner's answers of 2026-11-11; app code not read.",
+  },
+  seo,
+];
+
+/** A record with no GoLo note: capability ids only back the absence of one. */
+const reviewLogNone: ReviewEntry[] = [
+  rules,
+  {
+    stage: "product",
+    by: "agent",
+    on: REVIEWED_ON,
+    note: "No GoLo claim; any capability ids are planned or not offered, and the record implies neither.",
+  },
+  seo,
+];
 
 export const sideGamesBatch1Terms: GlossaryTerm[] = [
   {
@@ -69,6 +115,7 @@ export const sideGamesBatch1Terms: GlossaryTerm[] = [
         accessedOn: DRAFTED_ON,
       },
     ],
+    reviewLog: reviewLogNone,
     status: "in-review",
   },
   {
@@ -100,6 +147,7 @@ export const sideGamesBatch1Terms: GlossaryTerm[] = [
         accessedOn: DRAFTED_ON,
       },
     ],
+    reviewLog: reviewLogNone,
     status: "in-review",
   },
   {
@@ -136,6 +184,7 @@ export const sideGamesBatch1Terms: GlossaryTerm[] = [
         accessedOn: DRAFTED_ON,
       },
     ],
+    reviewLog: reviewLogNone,
     status: "in-review",
   },
   {
@@ -147,7 +196,7 @@ export const sideGamesBatch1Terms: GlossaryTerm[] = [
     tags: [],
     priority: "expansion",
     shortDefinition:
-      "A skins house rule that adds a condition before a skin counts. Common versions: the winner must tie or beat the low score on the next hole, or a carried skin needs a birdie, or at least a par, to win it.",
+      "A skins house rule that adds a condition before a skin counts. Common versions: the winner must tie or beat the low score on the next hole, or must make a set score there, such as a par or a birdie.",
     example:
       "Your group validates on the next hole. You win the 6th outright with a 4, then make 5 on the 7th, where the low score is 4. The 6th's skin isn't yours.",
     ruleNote: {
@@ -173,6 +222,7 @@ export const sideGamesBatch1Terms: GlossaryTerm[] = [
         accessedOn: DRAFTED_ON,
       },
     ],
+    reviewLog: reviewLogNone,
     status: "in-review",
   },
   {
@@ -218,6 +268,7 @@ export const sideGamesBatch1Terms: GlossaryTerm[] = [
         accessedOn: DRAFTED_ON,
       },
     ],
+    reviewLog: reviewLogGolo,
     status: "in-review",
   },
   {
@@ -247,6 +298,7 @@ export const sideGamesBatch1Terms: GlossaryTerm[] = [
         accessedOn: DRAFTED_ON,
       },
     ],
+    reviewLog: reviewLogGolo,
     status: "in-review",
   },
   {
@@ -286,6 +338,7 @@ export const sideGamesBatch1Terms: GlossaryTerm[] = [
         accessedOn: DRAFTED_ON,
       },
     ],
+    reviewLog: reviewLogGolo,
     status: "in-review",
   },
   {
@@ -318,6 +371,7 @@ export const sideGamesBatch1Terms: GlossaryTerm[] = [
         accessedOn: DRAFTED_ON,
       },
     ],
+    reviewLog: reviewLogGolo,
     status: "in-review",
   },
   {
@@ -356,6 +410,7 @@ export const sideGamesBatch1Terms: GlossaryTerm[] = [
         accessedOn: DRAFTED_ON,
       },
     ],
+    reviewLog: reviewLogNone,
     status: "in-review",
   },
   {
@@ -391,6 +446,7 @@ export const sideGamesBatch1Terms: GlossaryTerm[] = [
         accessedOn: DRAFTED_ON,
       },
     ],
+    reviewLog: reviewLogGolo,
     status: "in-review",
   },
   {
@@ -429,6 +485,7 @@ export const sideGamesBatch1Terms: GlossaryTerm[] = [
         accessedOn: DRAFTED_ON,
       },
     ],
+    reviewLog: reviewLogNone,
     status: "in-review",
   },
 ];
