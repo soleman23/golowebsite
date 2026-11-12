@@ -61,7 +61,7 @@ Existing site content already cites RoH Appendix C (allowances), Appendix G (Cou
 
 ## A. Scoring (24)
 
-**Expansion batch 4 (#168, #292, November 11, 2026):** rows 9–19 and 21–24 are drafted at `in-review` (`expansion-batch-4.md`), golf only. Stages 2–4 were done by an agent under the owner's delegation (2026-11-11); approval is pending. Their release waits for #167's launch + 28 read or an owner override. Row 20 (Halve) goes to batch 7 with Dormie and All Square.
+**Expansion batch 4 (#168, #292, November 11, 2026):** rows 9–19 and 21–24 are drafted at `in-review` (`expansion-batch-4.md`), golf only. Stages 2–4 were done by an agent under the owner's delegation, and the owner approved all 15 (2026-11-11). Not yet published. Their release waits for #167's launch + 28 read or an owner override. Row 20 (Halve) goes to batch 7 with Dormie and All Square.
 
 | # | id = slug | Term | MVP | Tags | Tier | Aliases | Related, not the same | Sources | Destination |
 |---|---|---|---|---|---|---|---|---|---|

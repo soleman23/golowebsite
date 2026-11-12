@@ -4,14 +4,15 @@
  * 2026. Halve (row 20) goes to batch 7 with Dormie and All Square
  * (inventory.md § Expansion batch plan).
  *
- * IN REVIEW. Nothing here reaches a page, the search index, the sitemap,
- * llms.txt or structured data until each record is approved and a release PR
- * publishes it (../selectors). Expansion records go back to the owner's
+ * APPROVED, NOT PUBLISHED. Nothing here reaches a public page, the search
+ * index, the sitemap, llms.txt or structured data until a release PR
+ * publishes it; approved records show only in local review (../selectors).
+ * Expansion records go back to the owner's
  * review roles (editorial-review.md § Roles): an agent drafted these and
  * prepared the checks in docs/glossary/expansion-batch-4.md. On 2026-11-11
  * the owner delegated stages 2–4 for this batch to an agent and kept
- * approval (#292); each record logs those three stages below. They stay
- * `in-review` until the owner approves.
+ * approval (#292); each record logs those three stages below. The owner
+ * approved all 15 in chat the same day ("Approve all 15").
  *
  * Every source with `accessedOn` was opened on that date. Rules of Golf
  * pages are the 2023 edition on randa.org. Pages whose URL carries a word
@@ -38,7 +39,7 @@ const ROG_DEFINITIONS = {
 /**
  * Stages 2–4, done by an agent on 2026-11-11 under the owner's delegation of
  * that date for this batch only (#292; editorial-review.md § Roles).
- * Approval is the owner's and isn't logged until they give it.
+ * Approval is the owner's.
  */
 const REVIEWED_ON = "2026-11-11";
 
@@ -60,6 +61,12 @@ const reviewLog: ReviewEntry[] = [
     by: "agent",
     on: REVIEWED_ON,
     note: "Hub canonical at the slug, as canonical-map.md has every scoring expansion term; related ids and paths pass lint:content.",
+  },
+  {
+    stage: "approval",
+    by: "owner",
+    on: REVIEWED_ON,
+    note: "Approved in chat on 2026-11-11, all 15 records, on the agent's stage 2–4 checks.",
   },
 ];
 
@@ -97,8 +104,10 @@ export const expansionBatch4Terms: GlossaryTerm[] = [
     canonical: { kind: "hub", anchor: "hole-in-one" },
     capabilityIds: [],
     sources: [GOLF_COM_TERMS, GOLFSHAKE],
-    status: "in-review",
     reviewLog,
+    reviewedBy: "owner",
+    reviewedOn: REVIEWED_ON,
+    status: "approved",
   },
   {
     id: "albatross",
@@ -117,8 +126,10 @@ export const expansionBatch4Terms: GlossaryTerm[] = [
     canonical: { kind: "hub", anchor: "albatross" },
     capabilityIds: [],
     sources: [GOLF_COM_TERMS, GOLFSHAKE],
-    status: "in-review",
     reviewLog,
+    reviewedBy: "owner",
+    reviewedOn: REVIEWED_ON,
+    status: "approved",
   },
   {
     id: "condor",
@@ -150,8 +161,10 @@ export const expansionBatch4Terms: GlossaryTerm[] = [
         accessedOn: DRAFTED_ON,
       },
     ],
-    status: "in-review",
     reviewLog,
+    reviewedBy: "owner",
+    reviewedOn: REVIEWED_ON,
+    status: "approved",
   },
   {
     id: "triple-bogey",
@@ -183,8 +196,10 @@ export const expansionBatch4Terms: GlossaryTerm[] = [
         accessedOn: DRAFTED_ON,
       },
     ],
-    status: "in-review",
     reviewLog,
+    reviewedBy: "owner",
+    reviewedOn: REVIEWED_ON,
+    status: "approved",
   },
   {
     id: "quadruple-bogey",
@@ -215,8 +230,10 @@ export const expansionBatch4Terms: GlossaryTerm[] = [
         accessedOn: DRAFTED_ON,
       },
     ],
-    status: "in-review",
     reviewLog,
+    reviewedBy: "owner",
+    reviewedOn: REVIEWED_ON,
+    status: "approved",
   },
   {
     id: "even-par",
@@ -256,8 +273,10 @@ export const expansionBatch4Terms: GlossaryTerm[] = [
         accessedOn: DRAFTED_ON,
       },
     ],
-    status: "in-review",
     reviewLog,
+    reviewedBy: "owner",
+    reviewedOn: REVIEWED_ON,
+    status: "approved",
   },
   {
     id: "under-par",
@@ -284,8 +303,10 @@ export const expansionBatch4Terms: GlossaryTerm[] = [
         accessedOn: DRAFTED_ON,
       },
     ],
-    status: "in-review",
     reviewLog,
+    reviewedBy: "owner",
+    reviewedOn: REVIEWED_ON,
+    status: "approved",
   },
   {
     id: "over-par",
@@ -312,8 +333,10 @@ export const expansionBatch4Terms: GlossaryTerm[] = [
         accessedOn: DRAFTED_ON,
       },
     ],
-    status: "in-review",
     reviewLog,
+    reviewedBy: "owner",
+    reviewedOn: REVIEWED_ON,
+    status: "approved",
   },
   {
     id: "scorecard",
@@ -347,8 +370,10 @@ export const expansionBatch4Terms: GlossaryTerm[] = [
         accessedOn: DRAFTED_ON,
       },
     ],
-    status: "in-review",
     reviewLog,
+    reviewedBy: "owner",
+    reviewedOn: REVIEWED_ON,
+    status: "approved",
   },
   {
     id: "front-nine",
@@ -383,8 +408,10 @@ export const expansionBatch4Terms: GlossaryTerm[] = [
         accessedOn: DRAFTED_ON,
       },
     ],
-    status: "in-review",
     reviewLog,
+    reviewedBy: "owner",
+    reviewedOn: REVIEWED_ON,
+    status: "approved",
   },
   {
     id: "back-nine",
@@ -417,8 +444,10 @@ export const expansionBatch4Terms: GlossaryTerm[] = [
         accessedOn: DRAFTED_ON,
       },
     ],
-    status: "in-review",
     reviewLog,
+    reviewedBy: "owner",
+    reviewedOn: REVIEWED_ON,
+    status: "approved",
   },
   {
     id: "round",
@@ -450,8 +479,10 @@ export const expansionBatch4Terms: GlossaryTerm[] = [
         accessedOn: DRAFTED_ON,
       },
     ],
-    status: "in-review",
     reviewLog,
+    reviewedBy: "owner",
+    reviewedOn: REVIEWED_ON,
+    status: "approved",
   },
   {
     id: "penalty-stroke",
@@ -492,8 +523,10 @@ export const expansionBatch4Terms: GlossaryTerm[] = [
         accessedOn: DRAFTED_ON,
       },
     ],
-    status: "in-review",
     reviewLog,
+    reviewedBy: "owner",
+    reviewedOn: REVIEWED_ON,
+    status: "approved",
   },
   {
     id: "maximum-score",
@@ -527,8 +560,10 @@ export const expansionBatch4Terms: GlossaryTerm[] = [
         accessedOn: DRAFTED_ON,
       },
     ],
-    status: "in-review",
     reviewLog,
+    reviewedBy: "owner",
+    reviewedOn: REVIEWED_ON,
+    status: "approved",
   },
   {
     id: "cut-line",
@@ -559,7 +594,9 @@ export const expansionBatch4Terms: GlossaryTerm[] = [
       },
       GOLFSHAKE,
     ],
-    status: "in-review",
     reviewLog,
+    reviewedBy: "owner",
+    reviewedOn: REVIEWED_ON,
+    status: "approved",
   },
 ];
