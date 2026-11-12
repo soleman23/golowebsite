@@ -1,6 +1,6 @@
 # Glossary expansion batch 3: formats (#168)
 
-Prepared November 11, 2026 for the owner's review. This is the third M8 batch. The records are in `lib/content/glossary/terms/expansion-batch-3.ts` at `in-review`, so nothing here is public: an `in-review` record reaches no page, search index, sitemap, `llms.txt` or structured data (`selectors.ts`; checked again by `npm run test:glossary`, and in the built `glossary.html`, `glossary.rsc`, `llms.txt` and `.next/static` for this PR).
+Prepared November 11, 2026 for the owner's review; stages 2–4 done the same day under the owner's delegation, approval still the owner's. This is the third M8 batch. The records are in `lib/content/glossary/terms/expansion-batch-3.ts` at `in-review`, so nothing here is public: an `in-review` record reaches no page, search index, sitemap, `llms.txt` or structured data (`selectors.ts`; checked again by `npm run test:glossary`, and in the built `glossary.html`, `glossary.rsc`, `llms.txt` and `.next/static` for this PR).
 
 ## Why now
 
@@ -23,12 +23,20 @@ The revisions the owner accepted on 2026-10-29 (`inventory.md` § Revisions) are
 | # | Stage | Done | Still needed |
 |---|---|---|---|
 | 1 | Draft | Agent, 2026-11-11 | — |
-| 2 | Rules fact-check | Agent prepared: Rules of Golf Rule 21 and Definitions (randa.org, 2023 edition), Committee Procedures Section 9, and RoH Appendix C (2024 edition, read in a browser), all opened 2026-11-11; every editorial source opened the same day; examples recomputed below | **Owner** signs |
-| 3 | GoLo product audit | Agent: no record mentions GoLo, links a GoLo guide or post, or cites a capability, per the owner's decision of 2026-11-11 | **Owner** signs |
-| 4 | SEO/canonical | Agent: canonicals per `canonical-map.md` (all 14 are hub anchors; none links a GoLo guide). `lint:content` passes; related ids and paths resolve | **Owner** confirms |
+| 2 | Rules fact-check | Agent, 2026-11-11, under the owner's delegation: every source reopened, every sentence checked, examples recomputed below. [Results](#stage-24-results-agent-2026-11-11) | — |
+| 3 | GoLo product audit | Agent, 2026-11-11, under the owner's delegation: no record mentions GoLo, links a GoLo guide or post, or cites a capability, per the owner's decision of 2026-11-11 | — |
+| 4 | SEO/canonical | Agent, 2026-11-11, under the owner's delegation: all 14 are hub anchors at their slug; none links a GoLo guide. `lint:content` passes; related ids and paths resolve | — |
 | 5 | Approval | — | **Owner** |
 
-None of the records has a review log. The owner delegated stages 2–4 for batch 1 and for batch 2, each time for that batch only (`editorial-review.md` § Roles), so batch 3 is back on the owner's roles. If the owner delegates this batch the same way, an agent reopens the sources, logs stages 2–4 as `by: "agent"`, and the owner's approval moves the records to `approved`.
+**Delegation (owner, 2026-11-11, #288).** The owner delegated stages 2–4 for the 14 records of batch 3, as for batches 1 and 2, and kept approval. Each record now has a `reviewLog` with `rules`, `product` and `seo` entries, `by: "agent"`, dated 2026-11-11, and stays `in-review`. The owner's approval adds an `approval` entry, `reviewedBy: "owner"` and `reviewedOn`, and moves the records to `approved`; a release PR then publishes them.
+
+### Stage 2–4 results (agent, 2026-11-11)
+
+- **Rules.** All 30 editorial and first-party pages were reopened at the exact URLs in the records; each answered 200 and still carries every phrase the records and this packet rely on. The three R&A pages (Rule 21, Definitions, Committee Procedures Section 9) were reopened and are the 2023 edition; the Rule 21.3 and 21.4 wording, the Par/Bogey definition and the Section 9A–9C texts quoted below are unchanged. RoH Appendix C was reopened in a browser: the Par/Bogey, match play, foursomes, greensomes, Pinehurst/Chapman and four-player scramble allowances, the unrounded-Course-Handicap rule, C/2 Example 4 and Note 2 are as cited. Every `accessedOn` stays 2026-11-11.
+- **Examples.** Every number recomputed again from the inputs shown; all match (the "Recomputed" lines below). Par Competition's 10.988 × 0.95 = 10.4386, shown as 10.44, rounds to 10.
+- **Product.** No `goloNote`, `ctaIntent` or `capabilityIds` on any record; no field names GoLo. Nines keeps the GoLo three-player post as an internal source only.
+- **SEO.** Every canonical is `{ kind: "hub", anchor: <slug> }`. Related ids all resolve to records; the only content paths are `/rules#rule-21` on Par Competition and Three-Ball, a published rule. `lint:content` passes. The guide links `canonical-map.md` lists for the three scrambles and Quota are left out by the owner's decision.
+- **Confirmed as drafted:** no record text changed in this pass.
 
 ## GoLo (owner's decision, 2026-11-11)
 

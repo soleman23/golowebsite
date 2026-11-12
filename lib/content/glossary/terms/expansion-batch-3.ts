@@ -9,8 +9,10 @@
  * llms.txt or structured data until each record is approved and a release PR
  * publishes it (../selectors). Expansion records go back to the owner's
  * review roles (editorial-review.md § Roles): an agent drafted these and
- * prepared the checks in docs/glossary/expansion-batch-3.md;
- * no stage is signed, so no record has a review log yet.
+ * prepared the checks in docs/glossary/expansion-batch-3.md. On 2026-11-11
+ * the owner delegated stages 2–4 for this batch to an agent and kept
+ * approval (#288); each record logs those three stages below. They stay
+ * `in-review` until the owner approves.
  *
  * Every source with `accessedOn` was opened on that date. Rules of Golf
  * pages are the 2023 edition on randa.org, including Committee Procedures
@@ -26,7 +28,7 @@
  * Competition and Three-Ball.
  */
 
-import type { GlossaryTerm } from "../types";
+import type { GlossaryTerm, ReviewEntry } from "../types";
 
 const DRAFTED_ON = "2026-11-11";
 const ROG = "Rules of Golf, 2023 edition (R&A)";
@@ -40,6 +42,34 @@ const CP9 = {
   url: `${ROG_BASE}committee-procedures/sections/9`,
   kind: "official-rules",
 } as const;
+
+/**
+ * Stages 2–4, done by an agent on 2026-11-11 under the owner's delegation of
+ * that date for this batch only (#288; editorial-review.md § Roles).
+ * Approval is the owner's and isn't logged until they give it.
+ */
+const REVIEWED_ON = "2026-11-11";
+
+const reviewLog: ReviewEntry[] = [
+  {
+    stage: "rules",
+    by: "agent",
+    on: REVIEWED_ON,
+    note: "Every source reopened 2026-11-11 (R&A 2023 Rule 21, Definitions, Committee Procedures 9; RoH Appendix C in a browser) and each sentence checked against it; examples recomputed (expansion-batch-3.md).",
+  },
+  {
+    stage: "product",
+    by: "agent",
+    on: REVIEWED_ON,
+    note: "No GoLo note, link or capability id, per the owner's decision of 2026-11-11 that GoLo doesn't offer these formats yet (#288); checked that no field mentions GoLo.",
+  },
+  {
+    stage: "seo",
+    by: "agent",
+    on: REVIEWED_ON,
+    note: "Hub canonical at the slug; related ids and paths pass lint:content. No guide link, against canonical-map.md, by the owner's decision (#288).",
+  },
+];
 
 const APPENDIX_C = {
   title: ROH,
@@ -84,6 +114,7 @@ export const expansionBatch3Terms: GlossaryTerm[] = [
         accessedOn: DRAFTED_ON,
       },
     ],
+    reviewLog,
     status: "in-review",
   },
   {
@@ -132,6 +163,7 @@ export const expansionBatch3Terms: GlossaryTerm[] = [
         accessedOn: DRAFTED_ON,
       },
     ],
+    reviewLog,
     status: "in-review",
   },
   {
@@ -183,6 +215,7 @@ export const expansionBatch3Terms: GlossaryTerm[] = [
         accessedOn: DRAFTED_ON,
       },
     ],
+    reviewLog,
     status: "in-review",
   },
   {
@@ -231,6 +264,7 @@ export const expansionBatch3Terms: GlossaryTerm[] = [
         accessedOn: DRAFTED_ON,
       },
     ],
+    reviewLog,
     status: "in-review",
   },
   {
@@ -268,6 +302,7 @@ export const expansionBatch3Terms: GlossaryTerm[] = [
         accessedOn: DRAFTED_ON,
       },
     ],
+    reviewLog,
     status: "in-review",
   },
   {
@@ -311,6 +346,7 @@ export const expansionBatch3Terms: GlossaryTerm[] = [
         accessedOn: DRAFTED_ON,
       },
     ],
+    reviewLog,
     status: "in-review",
   },
   {
@@ -349,6 +385,7 @@ export const expansionBatch3Terms: GlossaryTerm[] = [
         accessedOn: DRAFTED_ON,
       },
     ],
+    reviewLog,
     status: "in-review",
   },
   {
@@ -387,6 +424,7 @@ export const expansionBatch3Terms: GlossaryTerm[] = [
         accessedOn: DRAFTED_ON,
       },
     ],
+    reviewLog,
     status: "in-review",
   },
   {
@@ -437,6 +475,7 @@ export const expansionBatch3Terms: GlossaryTerm[] = [
         accessedOn: DRAFTED_ON,
       },
     ],
+    reviewLog,
     status: "in-review",
   },
   {
@@ -481,6 +520,7 @@ export const expansionBatch3Terms: GlossaryTerm[] = [
         accessedOn: DRAFTED_ON,
       },
     ],
+    reviewLog,
     status: "in-review",
   },
   {
@@ -529,6 +569,7 @@ export const expansionBatch3Terms: GlossaryTerm[] = [
         accessedOn: DRAFTED_ON,
       },
     ],
+    reviewLog,
     status: "in-review",
   },
   {
@@ -578,6 +619,7 @@ export const expansionBatch3Terms: GlossaryTerm[] = [
         accessedOn: DRAFTED_ON,
       },
     ],
+    reviewLog,
     status: "in-review",
   },
   {
@@ -622,6 +664,7 @@ export const expansionBatch3Terms: GlossaryTerm[] = [
         accessedOn: DRAFTED_ON,
       },
     ],
+    reviewLog,
     status: "in-review",
   },
   {
@@ -667,6 +710,7 @@ export const expansionBatch3Terms: GlossaryTerm[] = [
         accessedOn: DRAFTED_ON,
       },
     ],
+    reviewLog,
     status: "in-review",
   },
 ];

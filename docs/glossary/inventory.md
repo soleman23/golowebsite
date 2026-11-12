@@ -92,7 +92,7 @@ Subtotal: 8 MVP + 16 expansion = 24.
 
 ## B. Games and formats (24)
 
-**Expansion batch 3 (#168, November 11, 2026):** rows 35–48 are drafted at `in-review` (`expansion-batch-3.md`), with M1, M2 and S2–S4 applied, golf only with no GoLo note or link (owner, 2026-11-11). Chapman and Pinehurst stay merged: the R&A calls the same format Pinehurst Foursomes.
+**Expansion batch 3 (#168, November 11, 2026):** rows 35–48 are drafted at `in-review`, stages 2–4 done by an agent under the owner's delegation (`expansion-batch-3.md`), with M1, M2 and S2–S4 applied, golf only with no GoLo note or link (owner, 2026-11-11). Chapman and Pinehurst stay merged: the R&A calls the same format Pinehurst Foursomes.
 
 | # | id = slug | Term | MVP | Tags | Tier | Aliases | Related, not the same | Sources | Destination |
 |---|---|---|---|---|---|---|---|---|---|
