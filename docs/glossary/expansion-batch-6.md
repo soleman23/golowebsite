@@ -1,10 +1,10 @@
 # Glossary expansion batch 6: shots and ball flight (#168, #298)
 
-Prepared November 12, 2026 for the owner's review; stages 2–4 done the same day under the owner's delegation, and **approved by the owner the same day**. Not published: a release PR does that. The records are in `lib/content/glossary/terms/expansion-batch-6.ts`, all `approved`, and reach no public page, search index, sitemap, `llms.txt` or structured data (`selectors.ts`; checked by `npm run test:glossary`, and in the built `glossary.html`, `glossary.rsc`, `llms.txt`, `sitemap.xml` and `.next/static` for this PR).
+Prepared November 12, 2026 for the owner's review; stages 2–4 done the same day under the owner's delegation, and **approved by the owner the same day, and published by the batch 6 release PR**. The records are in `lib/content/glossary/terms/expansion-batch-6.ts`, now `published`. Until the release PR, they were checked at each stage to reach no public page, search index, sitemap, `llms.txt` or structured data (`selectors.ts`; checked by `npm run test:glossary`, and in the built `glossary.html`, `glossary.rsc`, `llms.txt`, `sitemap.xml` and `.next/static` for this PR).
 
 ## Why now
 
-Batches 1–5 are published (126 records). Shots and ball flight is next in `inventory.md` § Expansion batch plan. The owner asked for it on 2026-11-12 ("Start batch 6"), before #167's launch + 28 read (2026-11-26). Drafting changes nothing public. Release timing is the owner's call: wait for launch + 28, which can reorder the batches not yet released, or override as for batches 1–5.
+Batches 1–5 are published (126 records). Shots and ball flight is next in `inventory.md` § Expansion batch plan. The owner asked for it on 2026-11-12 ("Start batch 6"), before #167's launch + 28 read (2026-11-26). Drafting changes nothing public. Release timing was the owner's call, as for batches 1–5; they released it the same day ("Merge as long as they are ready"), ahead of launch + 28.
 
 ## Scope
 
@@ -24,7 +24,7 @@ Batches 1–5 are published (126 records). Shots and ball flight is next in `inv
 | 4 | SEO/canonical | Agent, 2026-11-12, under the owner's delegation: hub anchors at each slug; `lint:content` passes; related ids resolve | — |
 | 5 | Approval | **Owner**, in chat, 2026-11-12: "Approve all 15" | — |
 
-**Delegation (owner, 2026-11-12, #298).** The owner delegated stages 2–4 for the 15 records of batch 6 ("Yes, delegate"), as for batches 1–5, and kept approval. Each record now has a `reviewLog` with `rules`, `product` and `seo` entries, `by: "agent"`, dated 2026-11-12. The owner approved all 15 in chat the same day ("Approve all 15"), so each record also has an `approval` entry `by: "owner"`, `reviewedBy: "owner"`, `reviewedOn: 2026-11-12`, and status `approved`. Approved records show only in local review (`next dev`); a release PR sets `published` and `publishedOn` to the day it merges.
+**Delegation (owner, 2026-11-12, #298).** The owner delegated stages 2–4 for the 15 records of batch 6 ("Yes, delegate"), as for batches 1–5, and kept approval. Each record now has a `reviewLog` with `rules`, `product` and `seo` entries, `by: "agent"`, dated 2026-11-12. The owner approved all 15 in chat the same day ("Approve all 15"), so each record also has an `approval` entry `by: "owner"`, `reviewedBy: "owner"`, `reviewedOn: 2026-11-12`, and status `approved`. The owner then asked for the merge and release once each PR was ready ("Merge as long as they are ready"), ahead of #167's launch + 28 read, as for batches 1–5. The batch 6 release PR moved them to `published`, with `publishedOn` the day it merged. The release recheck (`editorial-review.md` § Release recheck) has nothing to recheck for this batch: no `official-rules` or `handicapping` source and no capability ids. The 16 editorial sources were reopened again at release time and all answered 200.
 
 ### Stage 2–4 results (agent, 2026-11-12)
 
