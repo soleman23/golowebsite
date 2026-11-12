@@ -5,14 +5,15 @@
  * it shares Rule 3.2 with Dormie and All Square (inventory.md § Expansion
  * batch plan). It keeps its scoring category.
  *
- * IN REVIEW. Nothing here reaches a page, the search index, the sitemap,
- * llms.txt or structured data until each record is approved and a release PR
- * publishes it (../selectors). Expansion records go back to the owner's
+ * APPROVED, NOT PUBLISHED. Nothing here reaches a public page, the search
+ * index, the sitemap, llms.txt or structured data until a release PR
+ * publishes it; approved records show only in local review (../selectors).
+ * Expansion records go back to the owner's
  * review roles (editorial-review.md § Roles): an agent drafted these and
  * prepared the checks in docs/glossary/expansion-batch-7.md. On 2026-11-12
  * the owner delegated stages 2–4 for this batch to an agent and kept
- * approval (#301); each record logs those three stages below. They stay
- * `in-review` until the owner approves.
+ * approval (#301); each record logs those three stages below. The owner
+ * approved all 15 in chat the same day ("Approve all 15").
  *
  * Every source with `accessedOn` was opened on that date. Rules of Golf
  * pages are the 2023 edition on randa.org. Pages whose URL carries a word
@@ -29,7 +30,7 @@ const DRAFTED_ON = "2026-11-12";
 /**
  * Stages 2–4, done by an agent on 2026-11-12 under the owner's delegation of
  * that date for this batch only (#301; editorial-review.md § Roles).
- * Approval is the owner's and isn't logged until they give it.
+ * Approval is the owner's.
  */
 const REVIEWED_ON = "2026-11-12";
 
@@ -51,6 +52,12 @@ const reviewLog: ReviewEntry[] = [
     by: "agent",
     on: REVIEWED_ON,
     note: "Hub canonical at the slug, as inventory.md has every slang expansion term and Halve; related ids, the Nassau guide and the Rules Center paths pass lint:content.",
+  },
+  {
+    stage: "approval",
+    by: "owner",
+    on: REVIEWED_ON,
+    note: "Approved in chat on 2026-11-12, all 15 records, on the agent's stage 2–4 checks.",
   },
 ];
 const ROG = "Rules of Golf, 2023 edition (R&A)";
@@ -112,7 +119,9 @@ export const expansionBatch7Terms: GlossaryTerm[] = [
       GOLFSHAKE,
     ],
     reviewLog,
-    status: "in-review",
+    reviewedBy: "owner",
+    reviewedOn: REVIEWED_ON,
+    status: "approved",
   },
   {
     id: "knee-knocker",
@@ -147,7 +156,9 @@ export const expansionBatch7Terms: GlossaryTerm[] = [
       },
     ],
     reviewLog,
-    status: "in-review",
+    reviewedBy: "owner",
+    reviewedOn: REVIEWED_ON,
+    status: "approved",
   },
   {
     id: "fried-egg",
@@ -180,7 +191,9 @@ export const expansionBatch7Terms: GlossaryTerm[] = [
       rule(19, "Rule 19.3 (unplayable ball in a bunker)"),
     ],
     reviewLog,
-    status: "in-review",
+    reviewedBy: "owner",
+    reviewedOn: REVIEWED_ON,
+    status: "approved",
   },
   {
     id: "chili-dip",
@@ -214,7 +227,9 @@ export const expansionBatch7Terms: GlossaryTerm[] = [
       },
     ],
     reviewLog,
-    status: "in-review",
+    reviewedBy: "owner",
+    reviewedOn: REVIEWED_ON,
+    status: "approved",
   },
   {
     id: "lip-out",
@@ -239,7 +254,9 @@ export const expansionBatch7Terms: GlossaryTerm[] = [
       GOLFSHAKE,
     ],
     reviewLog,
-    status: "in-review",
+    reviewedBy: "owner",
+    reviewedOn: REVIEWED_ON,
+    status: "approved",
   },
   {
     id: "inside-the-leather",
@@ -269,7 +286,9 @@ export const expansionBatch7Terms: GlossaryTerm[] = [
       rule(3, "Rules 3.2b(1), 3.3c"),
     ],
     reviewLog,
-    status: "in-review",
+    reviewedBy: "owner",
+    reviewedOn: REVIEWED_ON,
+    status: "approved",
   },
   {
     id: "the-turn",
@@ -295,7 +314,9 @@ export const expansionBatch7Terms: GlossaryTerm[] = [
       ),
     ],
     reviewLog,
-    status: "in-review",
+    reviewedBy: "owner",
+    reviewedOn: REVIEWED_ON,
+    status: "approved",
   },
   {
     id: "dormie",
@@ -321,7 +342,9 @@ export const expansionBatch7Terms: GlossaryTerm[] = [
       rule(3, "Rules 3.2a(3), 3.2a(4)"),
     ],
     reviewLog,
-    status: "in-review",
+    reviewedBy: "owner",
+    reviewedOn: REVIEWED_ON,
+    status: "approved",
   },
   {
     id: "all-square",
@@ -347,7 +370,9 @@ export const expansionBatch7Terms: GlossaryTerm[] = [
       GOLFSHAKE,
     ],
     reviewLog,
-    status: "in-review",
+    reviewedBy: "owner",
+    reviewedOn: REVIEWED_ON,
+    status: "approved",
   },
   {
     id: "good-good",
@@ -376,7 +401,9 @@ export const expansionBatch7Terms: GlossaryTerm[] = [
       rule(3, "Rules 3.2b(1), 3.3c"),
     ],
     reviewLog,
-    status: "in-review",
+    reviewedBy: "owner",
+    reviewedOn: REVIEWED_ON,
+    status: "approved",
   },
   {
     id: "the-yips",
@@ -411,7 +438,9 @@ export const expansionBatch7Terms: GlossaryTerm[] = [
       },
     ],
     reviewLog,
-    status: "in-review",
+    reviewedBy: "owner",
+    reviewedOn: REVIEWED_ON,
+    status: "approved",
   },
   {
     id: "army-golf",
@@ -432,7 +461,9 @@ export const expansionBatch7Terms: GlossaryTerm[] = [
     capabilityIds: [],
     sources: [compendium("Explain the slang: what is 'army golf'?", "https://www.golfcompendium.com/2020/04/army-golf-definition.html")],
     reviewLog,
-    status: "in-review",
+    reviewedBy: "owner",
+    reviewedOn: REVIEWED_ON,
+    status: "approved",
   },
   {
     id: "members-bounce",
@@ -454,7 +485,9 @@ export const expansionBatch7Terms: GlossaryTerm[] = [
     capabilityIds: [],
     sources: [compendium("Definition of member's bounce", "https://www.golfcompendium.com/2020/07/members-bounce-definition-golf.html")],
     reviewLog,
-    status: "in-review",
+    reviewedBy: "owner",
+    reviewedOn: REVIEWED_ON,
+    status: "approved",
   },
   {
     id: "grip-it-and-rip-it",
@@ -488,7 +521,9 @@ export const expansionBatch7Terms: GlossaryTerm[] = [
       compendium("1991 PGA Championship winner and scores", "https://www.golfcompendium.com/2018/10/1991-pga-championship.html"),
     ],
     reviewLog,
-    status: "in-review",
+    reviewedBy: "owner",
+    reviewedOn: REVIEWED_ON,
+    status: "approved",
   },
   {
     id: "ham-and-egg",
@@ -510,6 +545,8 @@ export const expansionBatch7Terms: GlossaryTerm[] = [
     capabilityIds: [],
     sources: [compendium("The meaning of 'ham and egg' in golf", "https://www.golfcompendium.com/2019/10/ham-and-egg-definition-golf.html")],
     reviewLog,
-    status: "in-review",
+    reviewedBy: "owner",
+    reviewedOn: REVIEWED_ON,
+    status: "approved",
   },
 ];
