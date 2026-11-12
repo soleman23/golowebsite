@@ -23,20 +23,41 @@ On 2026-11-11 the owner asked to start batch 2 straight after batch 1, still bef
 | # | Stage | Done | Still needed |
 |---|---|---|---|
 | 1 | Draft | Agent, 2026-11-11 | — |
-| 2 | Rules fact-check | Agent prepared: every Rules of Handicapping page opened 2026-11-11 (2024 edition, under `usga.org/handicapping/roh/Content/rules/`), every editorial source opened the same day, examples recomputed below | **Owner** signs |
-| 3 | GoLo product audit | Agent prepared against the registry. No record has a GoLo note. [Questions](#product-audit-questions) below | **Owner** signs |
-| 4 | SEO/canonical | Agent: Sandbagging is canonical to `/blog/sandbagging` (`canonical-map.md` § Expansion terms with an existing page); the other 14 are hub anchors. `lint:content` passes; related ids and paths resolve | **Owner** confirms |
+| 2 | Rules fact-check | Agent, 2026-11-11, under the owner's delegation: every source reopened, every sentence checked, examples recomputed below. [Results](#stage-24-results-agent-2026-11-11) | — |
+| 3 | GoLo product audit | Agent, 2026-11-11, under the owner's delegation: Plus Handicap's note checked against the `handicap-strokes` limit the owner confirmed; the other 14 checked for no GoLo claim. App code not read | — |
+| 4 | SEO/canonical | Agent, 2026-11-11, under the owner's delegation: Sandbagging is canonical to `/blog/sandbagging` (`canonical-map.md` § Expansion terms with an existing page); the other 14 are hub anchors. `lint:content` passes; related ids and paths resolve | — |
 | 5 | Approval | — | **Owner** |
 
-None of the records has a review log. The owner delegated stages 2–4 for batch 1 only (`editorial-review.md` § Roles, "Later batches go back to the table above unless the owner delegates again"), so batch 2 is back on the owner's roles. If the owner delegates this batch the same way, an agent reopens the sources, logs stages 2–4 as `by: "agent"`, and the owner's approval moves the records to `approved`.
+**Delegation (owner, 2026-11-11, #283).** "I delegate stages 2–4 to you for the 15 records in batch 2. Reopen the sources, verify the examples and product claims, check the canonicals and related links, and record the actual review dates with `by: "agent"`. Keep the records `in-review` and send me the completed review log for stage 5 owner approval. This delegation covers batch 2 only." Each record now has a `reviewLog` with `rules`, `product` and `seo` entries, `by: "agent"`, dated 2026-11-11. No `approval` entry, no `reviewedBy` or `reviewedOn`, status `in-review`. The owner's approval adds the fourth entry and moves the records to `approved`.
+
+### Stage 2–4 results (agent, 2026-11-11)
+
+Every source below was reopened on 2026-11-11, so each `accessedOn` stays 2026-11-11. The Rules of Handicapping pages were reopened in a browser and each quoted phrase was checked on the page.
+
+- **Packet fix, record unchanged: Plus Handicap.** The draft packet said Appendix C's Individual Stroke Play entry adds a plus Playing Handicap to the gross score. That line isn't on the Appendix C page; it came from a separate RoH committee page found by search. The record's "added to the gross score" stands on Appendix C's "give strokes back to the course" and its C/3 example ("player A gives 3 strokes back to the course"), and on the owner's answer for GoLo. The source line below is corrected.
+- **Changed: Plus Handicap.** Now has a GoLo note and `capabilityIds: ["handicap-strokes"]`, from the owner's answer 1; its note adds the nine-hole rule (Appendix E, now cited). `ctaIntent: "handicaps"` added.
+- **Changed: Arnie.** Two sources added at the owner's direction (answer 3): Swing Yard and Parful. The house-rules note now names the par-3 variant Parful describes.
+- **Changed: Snake.** England iGolf's page now redirects to `/igolf-blog/blog-archive/…`; the source URL is the final one. Content unchanged.
+- **Confirmed as drafted:** every other sentence matched its source on reopening, and every example recomputed as shown below.
+- **Product:** Plus Handicap's note stays inside the new `handicap-strokes` limit, including the 18-hole qualifier. Barkie, Poley, Snake and Arnie cite `junk-board` (not offered) and make no GoLo claim. The other ten make none, in line with the owner's answer 2.
+- **SEO:** Sandbagging canonical `/blog/sandbagging` (served 200 on 2026-11-11); the rest hub anchors. Related paths `/blog/pressing` and `/blog/index-vs-course-handicap` are served. `lint:content` passes.
 
 ## Product audit questions
 
-The registry is the evidence for every GoLo statement. None of the 15 makes one, so these questions decide only whether a GoLo note is wanted later:
+The registry is the evidence for every GoLo statement. When drafted, none of the 15 made one; the owner's answers below added one, to Plus Handicap.
 
 1. **Plus handicaps.** Can a GoLo player enter a plus Index such as +1.5, and does GoLo then add strokes from stroke index 18 (RoH Appendix C)? The registry's `handicap-strokes` doesn't say. If it does, Plus Handicap could carry a note under that capability.
 2. **Posting and the Index calculation.** Nothing in the registry covers posting scores to a handicap service or calculating an Index, a Low Handicap Index, a PCC, the caps or an exceptional score reduction. The records say nothing about GoLo on any of them. Confirm that's right, or name the capability.
 3. **Barkies, poleys, snakes, arnies.** The registry says GoLo doesn't score them (`junk-board` not offered; `game-library` and `skins-greenie-sandie` limits). The four records carry `junk-board` in `capabilityIds` so a change to it reopens them, and no note. Nothing to answer unless that's changed.
+
+### Owner's answers (November 11, 2026)
+
+Given in the parent session and relayed here; recorded on #283. This session didn't open the app's code; the answers are recorded as the owner's.
+
+1. **Plus handicaps: yes.** GoLo accepts "+1.5" as entered. In a new 18-hole net round with a complete stroke-index card, if the calculated Course Handicap is still plus, GoLo adds one stroke to the player's net score at stroke index 18, then 17, and so on. The owner checked the packet's example against the scoring engine of production web build 1.2.2 (35) (golf-app `src/engines/handicap.js`): +1.5 on par-72 tees rated 71.8 with a Slope of 131 gives +2; strokes back on stroke index 18 and 17; gross 71 is net 73. **Changed:** a new `handicap-strokes` limit in `capabilities.ts`, with an owner-confirmed comment and the build, `verified` unchanged; Plus Handicap now cites that capability and has a GoLo note, 18-hole qualifier kept. The nine-hole rule is in the record's handicapping note as golf (RoH Appendix E), not as a GoLo claim. **This changes public output:** registry limits are listed in `llms.txt`.
+2. **Posting and WHS calculations: confirmed, none.** GoLo records scores in the app and uses the Index a player enters to work out a Course Handicap and score the round. It doesn't post scores to GHIN or another service, establish or update a Handicap Index or Low Handicap Index, calculate a PCC, or apply the soft cap, hard cap or exceptional score reduction. GHIN integration code is shelved and its production flag is off (golf-app `docs/GHIN.md`, `docs/IOS-1.2.2-34-REVIEW.md`). **No change:** those records stay WHS-only.
+3. **Arnie: keep it, with Swing Yard as the second source.** Swing Yard, "Fun golf games to play on the course" (Erik Schjolberg): "a par on a par 4 or 5, without touching the fairway". Parful documents the birdie and par-3 variants. **Changed:** both cited (both URLs pass the vocabulary check).
+4. **Review: stages 2–4 delegated for batch 2 only;** the owner keeps approval. See [Stages](#stages).
 
 ## Differences from `inventory.md`
 
@@ -49,9 +70,9 @@ The registry is the evidence for every GoLo statement. None of the 15 makes one,
 
 ## Found along the way, outside this PR
 
-- **"Hard cap" in the sandbagging post.** `/blog/sandbagging` (`lib/content/blog.ts`, "Rotate formats toward the stroke-free ones") says "match play with a hard cap". It means a cap on the strokes given in a match, not the WHS hard cap (Rule 5.8) defined here. Sandbagging is canonical to that post, so a reader can meet both senses. A word like "a cap on strokes" in the post would remove it.
-- **Barkie in the skins guide.** The skins guide's glossary (`lib/content/gameDetail.ts`) defines "Barkie / sandy" as "Bonus mini-skins". Sandies are a GoLo Skins option; barkies aren't scored. The line is golf education, but it sits on the page for GoLo's Skins game.
-- **The batch 1 note in `inventory.md`** sits under § A. Scoring, though it's about § C rows.
+- **"Hard cap" in the sandbagging post.** *Being changed in a separate PR from the parent session ("a limit on handicap strokes"); not in this PR.* `/blog/sandbagging` (`lib/content/blog.ts`, "Rotate formats toward the stroke-free ones") says "match play with a hard cap". It means a cap on the strokes given in a match, not the WHS hard cap (Rule 5.8) defined here. Sandbagging is canonical to that post, so a reader can meet both senses. A word like "a cap on strokes" in the post would remove it.
+- **Barkie in the skins guide.** *Being changed in the same separate PR, along with the barkie mention in the guide's "Stack the side pots" list; not in this PR.* The skins guide's glossary (`lib/content/gameDetail.ts`) defines "Barkie / sandy" as "Bonus mini-skins". Sandies are a GoLo Skins option; barkies aren't scored. The line is golf education, but it sits on the page for GoLo's Skins game.
+- **The batch 1 note in `inventory.md`.** *Resolved:* on `main` it's under § C, before § D. The draft's reading was wrong.
 
 ## The terms
 
@@ -97,7 +118,7 @@ Word counts are for the short definition. "Recomputed" lines redo every number i
 
 - Canonical: /glossary#snake · related: putt, junk
 - Capabilities: `junk-board` (not offered). No GoLo note.
-- Sources: Golf Compendium, "Snake side game" <https://www.golfcompendium.com/2025/09/snake-putting-game.html>: the snake passes with each three-putt; the holder at the end owes each of the others; a fixed amount, or traditionally doubled with each new three-putt. England iGolf, "What is Snake in golf?" <https://englandigolf.co.uk/igolf-blog/what-is-snake-in-golf-how-to-play-this-ultimate-putting-test>: same, plus two three-putts on one hole go to the last to hole out. Golf Monthly, "Golf bits" <https://www.golfmonthly.com/features/the-game/golf-bits-95132-95132>: "the holder of the snake at the end of the round has to pay a bit to every other player" (as written there).
+- Sources: Golf Compendium, "Snake side game" <https://www.golfcompendium.com/2025/09/snake-putting-game.html>: the snake passes with each three-putt; the holder at the end owes each of the others; a fixed amount, or traditionally doubled with each new three-putt. England iGolf, "What is Snake in golf?" <https://englandigolf.co.uk/igolf-blog/blog-archive/what-is-snake-in-golf-how-to-play-this-ultimate-putting-test/>: same, plus two three-putts on one hole go to the last to hole out. Golf Monthly, "Golf bits" <https://www.golfmonthly.com/features/the-game/golf-bits-95132-95132>: "the holder of the snake at the end of the round has to pay a bit to every other player" (as written there).
 - Recomputed: holders 4th → you, 9th → Dave, 16th → you; you hold it after the 18th ✓; 3 × $5 = $15 ✓. Doubling: $1, $2, $4 on the first, second and third three-putts ✓ (matches Golf Compendium's eight three-putts → $128: 2⁷ = 128).
 
 ### Arnie (`arnie`, P3)
@@ -106,12 +127,12 @@ Word counts are for the short definition. "Recomputed" lines redo every number i
 
 **Example:** On the par-5 8th you drive into the left rough, lay up into the right rough, pitch on and two-putt for 5. Never in the fairway, and par: an Arnie, worth $1 from each of the other three at $1 each.
 
-**Note (house-rules):** Groups decide whether a birdie counts too, and whether a par 3 can produce one at all.
+**Note (house-rules):** Groups decide whether a birdie counts and what it's worth, and whether par 3s count at all: some groups score a par after missing the green.
 
 - Canonical: /glossary#arnie · alias: arnold · related: junk, fairway, rough, par
 - Capabilities: `junk-board` (not offered). No GoLo note.
-- Sources: Where2Golf, golf dictionary <https://www.where2golf.com/dictionary/> (entry "Arnies"): a set reward for a par made without the ball being on the fairway. Cross-checked, not cited (URL contains "bet"): Golf Compendium's arnies page, "in effect only on par-4 and par-5 holes", named for Palmer's recoveries.
-- **One citable source.** The source hierarchy asks for a cross-check against a second source (level 3). The second page agrees but can't be cited under the vocabulary rule. The owner may accept that, or ask for another source before approval.
+- Sources: Where2Golf, golf dictionary <https://www.where2golf.com/dictionary/> (entry "Arnies"): a set reward for a par made without the ball being on the fairway. Swing Yard, "Fun golf games to play on the course" <https://swingyard.com/fun-golf-games-for-the-course/> (Erik Schjolberg, per the page's author tag): "a par on a par 4 or 5, without touching the fairway". Parful, "Arnies" <https://www.parful.io/games/arnies>: "a par or better on a par 4 or par 5 made without hitting the fairway"; a birdie "is still one Arnie"; "Some groups count a par after missing the green on a par 3." Cross-checked, not cited (URL contains "bet"): Golf Compendium's arnies page.
+- Two citable sources now agree on par 4s and 5s (owner's answer 3), so the level-3 cross-check is met.
 - Recomputed: drive (1), lay-up (2), pitch (3), two putts (5) on a par 5 = par ✓; no shot finished in the fairway ✓
 
 ### Double or Nothing (`double-or-nothing`, P3)
@@ -181,11 +202,13 @@ Word counts are for the short definition. "Recomputed" lines redo every number i
 
 **Example:** A +1.5 Index from blue tees rated 71.8 with a Slope of 131, par 72: −1.5 × 131 ÷ 113 = −1.739, plus (71.8 − 72) = −1.939, so +2. The player adds a stroke on stroke index 18 and 17, and a gross 71 is a net 73.
 
-**Note (handicapping):** Rule 5.2c of the Rules of Handicapping asks players to write a plus Index with the + sign. Appendix C has a plus player give strokes back from stroke index 18, and an allowance moves a plus handicap toward zero.
+**Note (handicapping):** Rule 5.2c of the Rules of Handicapping asks players to write a plus Index with the + sign. Appendix C has a plus player give strokes back from stroke index 18; on nine holes they start at the highest stroke index on that nine (Appendix E). An allowance moves a plus handicap toward zero.
 
-- Canonical: /glossary#plus-handicap · alias: plus handicapper · related: scratch-golfer, handicap-index, course-handicap, stroke-index
-- Capabilities: none. See [question 1](#product-audit-questions).
-- Sources: RoH 5.2c and 5.2c/1 <https://www.usga.org/handicapping/roh/Content/rules/5%202c%20For%20Plus%20Handicap%20Index.htm>: an Index that "calculates as a negative figure" is a plus Index; players "should be encouraged to always prefix their Handicap Index with a 'Plus' sign (+)". RoH Appendix C, Plus Playing Handicaps <https://www.usga.org/handicapping/roh/Content/rules/Appendix%20C%20Handicap%20Allowances.htm>: "give strokes back to the course, beginning at the hole with stroke index 18"; +2 gives them back on 18 and 17; with an allowance, a plus handicap "moves up towards zero". Appendix C, Individual Stroke Play: a plus Playing Handicap is added to the gross score. RoH 6.1a.
+**GoLo note:** GoLo accepts a plus Index. In an 18-hole net round it adds the strokes back to the player's net score from stroke index 18, then 17, and so on.
+
+- Canonical: /glossary#plus-handicap · alias: plus handicapper · related: scratch-golfer, handicap-index, course-handicap, stroke-index · CTA intent: handicaps
+- Capabilities: `handicap-strokes` (live), the limit added from the owner's [answer 1](#owners-answers-november-11-2026).
+- Sources: RoH 5.2c and 5.2c/1 <https://www.usga.org/handicapping/roh/Content/rules/5%202c%20For%20Plus%20Handicap%20Index.htm>: an Index that "calculates as a negative figure" is a plus Index; players "should be encouraged to always prefix their Handicap Index with a 'Plus' sign (+)". RoH Appendix C, Plus Playing Handicaps <https://www.usga.org/handicapping/roh/Content/rules/Appendix%20C%20Handicap%20Allowances.htm>: "give strokes back to the course, beginning at the hole with stroke index 18"; +2 gives them back on 18 and 17; with an allowance, a plus handicap "moves up towards zero"; C/3: "player A gives 3 strokes back to the course". RoH Appendix E <https://www.usga.org/handicapping/roh/Content/rules/Appendix%20E%20Stroke%20Index%20Allocation.htm>: on nine holes, give-backs "commence on the hole with the highest published stroke index allocated for the 9 holes". RoH 6.1a.
 - Recomputed: −1.5 × 131 ÷ 113 = −1.739; − 0.2 = −1.939 → −2, written +2 ✓; strokes back on stroke index 18 and 17 ✓; 71 + 2 = 73 ✓
 
 ### Sandbagging (`sandbagging`, P1)
@@ -269,5 +292,5 @@ Word counts are for the short definition. "Recomputed" lines redo every number i
 
 ## Checks run for this PR
 
-- `npm run lint` (ESLint, filter CSS, `lint:content`: 82 glossary records valid, 56 published), `npm run typecheck`, `npm test` (glossary 140 cases), `npm run build`: all pass.
-- Built output: none of the new records' text is in `.next/server/app/glossary.html`, `glossary.rsc`, `llms.txt` or `.next/static`. The only hits for "barkie" and "poley" are the capability registry's existing lines; "Course Rating System" is the published MVP records.
+- `npm run lint` (ESLint, filter CSS, `lint:content`: 82 glossary records valid, 67 published after batch 1's release), `npm run typecheck`, `npm test` (glossary 140 cases), `npm run build`: all pass.
+- Built output: none of the new records' text is in `.next/server/app/glossary.html`, `glossary.rsc`, `llms.txt` or `.next/static`. The only hits for "barkie" and "poley" are the capability registry's existing lines; "Course Rating System" is the published MVP records. The one intended public change is the new `handicap-strokes` limit in `llms.txt`.

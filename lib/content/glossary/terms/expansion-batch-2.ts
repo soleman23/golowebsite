@@ -8,8 +8,10 @@
  * llms.txt or structured data until each record is approved and a release PR
  * publishes it (../selectors). Expansion records go back to the owner's
  * review roles (editorial-review.md § Roles): an agent drafted these and
- * prepared the checks in docs/glossary/expansion-batch-2.md;
- * no stage is signed, so no record has a review log yet.
+ * prepared the checks in docs/glossary/expansion-batch-2.md. On 2026-11-11
+ * the owner delegated stages 2–4 for this batch to an agent and kept
+ * approval (#283); each record logs those three stages below. They stay
+ * `in-review` until the owner approves.
  *
  * Every source with `accessedOn` was opened on that date. The Rules of
  * Handicapping pages are the 2024 edition under
@@ -24,18 +26,63 @@
  * golf source that defines it as a game of its own, so it gets the general
  * meaning, with the golf use (a press on the 18th tee) as the example.
  *
- * The handicap records are WHS education with no GoLo note. GoLo's handicap
- * behaviour (full Course Handicap, one set of tees, no allowance except a
- * scramble's team handicap) is already stated on the MVP records; nothing
- * in the registry covers posting scores, a Low Handicap Index or a plus
- * Index, so none of these claims it.
+ * The handicap records are WHS education. Only Plus Handicap has a GoLo
+ * note, from the handicap-strokes limit the owner confirmed on 2026-11-11
+ * (#283). The owner also confirmed that GoLo doesn't post scores or
+ * calculate an Index, a Low Handicap Index, a PCC, the caps or an exceptional
+ * score reduction, so those records say nothing about GoLo.
  */
 
-import type { GlossaryTerm } from "../types";
+import type { GlossaryTerm, ReviewEntry } from "../types";
 
 const DRAFTED_ON = "2026-11-11";
 const ROH = "Rules of Handicapping, 2024 edition (USGA)";
 const ROH_BASE = "https://www.usga.org/handicapping/roh/Content/rules/";
+
+/**
+ * Stages 2–4, done by an agent on 2026-11-11 under the owner's delegation of
+ * that date for this batch only (#283; editorial-review.md § Roles).
+ * Approval is the owner's and isn't logged until they give it.
+ */
+const REVIEWED_ON = "2026-11-11";
+
+const rules: ReviewEntry = {
+  stage: "rules",
+  by: "agent",
+  on: REVIEWED_ON,
+  note: "Every source reopened 2026-11-11 and each sentence checked against it; examples recomputed (expansion-batch-2.md).",
+};
+
+const seo: ReviewEntry = {
+  stage: "seo",
+  by: "agent",
+  on: REVIEWED_ON,
+  note: "Canonical per canonical-map.md; related ids and paths pass lint:content.",
+};
+
+/** No GoLo note: checked that nothing in the record implies a GoLo feature. */
+const reviewLogNone: ReviewEntry[] = [
+  rules,
+  {
+    stage: "product",
+    by: "agent",
+    on: REVIEWED_ON,
+    note: "No GoLo note; capability ids checked against capabilities.ts and the owner's answers of 2026-11-11 (#283).",
+  },
+  seo,
+];
+
+/** A GoLo note, checked against a live registry limit. */
+const reviewLogGolo: ReviewEntry[] = [
+  rules,
+  {
+    stage: "product",
+    by: "agent",
+    on: REVIEWED_ON,
+    note: "GoLo note checked against the handicap-strokes limit the owner confirmed on 2026-11-11 (#283); app code not read.",
+  },
+  seo,
+];
 
 export const expansionBatch2Terms: GlossaryTerm[] = [
   /* ------------------------------------------------------ side games */
@@ -73,6 +120,7 @@ export const expansionBatch2Terms: GlossaryTerm[] = [
         accessedOn: DRAFTED_ON,
       },
     ],
+    reviewLog: reviewLogNone,
     status: "in-review",
   },
   {
@@ -109,6 +157,7 @@ export const expansionBatch2Terms: GlossaryTerm[] = [
         accessedOn: DRAFTED_ON,
       },
     ],
+    reviewLog: reviewLogNone,
     status: "in-review",
   },
   {
@@ -142,7 +191,7 @@ export const expansionBatch2Terms: GlossaryTerm[] = [
       },
       {
         title: "England iGolf: What is Snake in golf?",
-        url: "https://englandigolf.co.uk/igolf-blog/what-is-snake-in-golf-how-to-play-this-ultimate-putting-test",
+        url: "https://englandigolf.co.uk/igolf-blog/blog-archive/what-is-snake-in-golf-how-to-play-this-ultimate-putting-test/",
         kind: "editorial",
         accessedOn: DRAFTED_ON,
       },
@@ -153,6 +202,7 @@ export const expansionBatch2Terms: GlossaryTerm[] = [
         accessedOn: DRAFTED_ON,
       },
     ],
+    reviewLog: reviewLogNone,
     status: "in-review",
   },
   {
@@ -169,7 +219,7 @@ export const expansionBatch2Terms: GlossaryTerm[] = [
       "On the par-5 8th you drive into the left rough, lay up into the right rough, pitch on and two-putt for 5. Never in the fairway, and par: an Arnie, worth $1 from each of the other three at $1 each.",
     ruleNote: {
       kind: "house-rules",
-      text: "Groups decide whether a birdie counts too, and whether a par 3 can produce one at all.",
+      text: "Groups decide whether a birdie counts and what it's worth, and whether par 3s count at all: some groups score a par after missing the green.",
     },
     relatedTermIds: ["junk", "fairway", "rough", "par"],
     relatedContentPaths: [],
@@ -183,7 +233,21 @@ export const expansionBatch2Terms: GlossaryTerm[] = [
         ref: "Arnies",
         accessedOn: DRAFTED_ON,
       },
+      {
+        title: "Swing Yard: Fun golf games to play on the course",
+        url: "https://swingyard.com/fun-golf-games-for-the-course/",
+        kind: "editorial",
+        ref: "Arnie",
+        accessedOn: DRAFTED_ON,
+      },
+      {
+        title: "Parful: Arnies, golf game rules and scoring",
+        url: "https://www.parful.io/games/arnies",
+        kind: "editorial",
+        accessedOn: DRAFTED_ON,
+      },
     ],
+    reviewLog: reviewLogNone,
     status: "in-review",
   },
   {
@@ -222,6 +286,7 @@ export const expansionBatch2Terms: GlossaryTerm[] = [
         accessedOn: DRAFTED_ON,
       },
     ],
+    reviewLog: reviewLogNone,
     status: "in-review",
   },
 
@@ -279,6 +344,7 @@ export const expansionBatch2Terms: GlossaryTerm[] = [
         accessedOn: DRAFTED_ON,
       },
     ],
+    reviewLog: reviewLogNone,
     status: "in-review",
   },
   {
@@ -331,6 +397,7 @@ export const expansionBatch2Terms: GlossaryTerm[] = [
         accessedOn: DRAFTED_ON,
       },
     ],
+    reviewLog: reviewLogNone,
     status: "in-review",
   },
   {
@@ -385,6 +452,7 @@ export const expansionBatch2Terms: GlossaryTerm[] = [
         accessedOn: DRAFTED_ON,
       },
     ],
+    reviewLog: reviewLogNone,
     status: "in-review",
   },
   {
@@ -401,12 +469,17 @@ export const expansionBatch2Terms: GlossaryTerm[] = [
       "A +1.5 Index from blue tees rated 71.8 with a Slope of 131, par 72: −1.5 × 131 ÷ 113 = −1.739, plus (71.8 − 72) = −1.939, so +2. The player adds a stroke on stroke index 18 and 17, and a gross 71 is a net 73.",
     ruleNote: {
       kind: "handicapping",
-      text: "Rule 5.2c of the Rules of Handicapping asks players to write a plus Index with the + sign. Appendix C has a plus player give strokes back from stroke index 18, and an allowance moves a plus handicap toward zero.",
+      text: "Rule 5.2c of the Rules of Handicapping asks players to write a plus Index with the + sign. Appendix C has a plus player give strokes back from stroke index 18; on nine holes they start at the highest stroke index on that nine (Appendix E). An allowance moves a plus handicap toward zero.",
     },
+    // Owner, 2026-11-11 (#283), checked against production web build
+    // 1.2.2 (35); recorded as a handicap-strokes limit.
+    goloNote:
+      "GoLo accepts a plus Index. In an 18-hole net round it adds the strokes back to the player's net score from stroke index 18, then 17, and so on.",
     relatedTermIds: ["scratch-golfer", "handicap-index", "course-handicap", "stroke-index"],
     relatedContentPaths: [],
     canonical: { kind: "hub", anchor: "plus-handicap" },
-    capabilityIds: [],
+    capabilityIds: ["handicap-strokes"],
+    ctaIntent: "handicaps",
     sources: [
       {
         title: ROH,
@@ -419,7 +492,14 @@ export const expansionBatch2Terms: GlossaryTerm[] = [
         title: ROH,
         url: `${ROH_BASE}Appendix%20C%20Handicap%20Allowances.htm`,
         kind: "handicapping",
-        ref: "Appendix C, Plus Playing Handicaps",
+        ref: "Appendix C, Plus Playing Handicaps; C/3",
+        accessedOn: DRAFTED_ON,
+      },
+      {
+        title: ROH,
+        url: `${ROH_BASE}Appendix%20E%20Stroke%20Index%20Allocation.htm`,
+        kind: "handicapping",
+        ref: "Appendix E, Stroke Index Allocation for 9-Hole Play",
         accessedOn: DRAFTED_ON,
       },
       {
@@ -430,6 +510,7 @@ export const expansionBatch2Terms: GlossaryTerm[] = [
         accessedOn: DRAFTED_ON,
       },
     ],
+    reviewLog: reviewLogGolo,
     status: "in-review",
   },
   {
@@ -487,6 +568,7 @@ export const expansionBatch2Terms: GlossaryTerm[] = [
         accessedOn: DRAFTED_ON,
       },
     ],
+    reviewLog: reviewLogNone,
     status: "in-review",
   },
   {
@@ -532,6 +614,7 @@ export const expansionBatch2Terms: GlossaryTerm[] = [
         accessedOn: DRAFTED_ON,
       },
     ],
+    reviewLog: reviewLogNone,
     status: "in-review",
   },
   {
@@ -579,6 +662,7 @@ export const expansionBatch2Terms: GlossaryTerm[] = [
         accessedOn: DRAFTED_ON,
       },
     ],
+    reviewLog: reviewLogNone,
     status: "in-review",
   },
   {
@@ -624,6 +708,7 @@ export const expansionBatch2Terms: GlossaryTerm[] = [
         accessedOn: DRAFTED_ON,
       },
     ],
+    reviewLog: reviewLogNone,
     status: "in-review",
   },
   {
@@ -662,6 +747,7 @@ export const expansionBatch2Terms: GlossaryTerm[] = [
         accessedOn: DRAFTED_ON,
       },
     ],
+    reviewLog: reviewLogNone,
     status: "in-review",
   },
   {
@@ -700,6 +786,7 @@ export const expansionBatch2Terms: GlossaryTerm[] = [
         accessedOn: DRAFTED_ON,
       },
     ],
+    reviewLog: reviewLogNone,
     status: "in-review",
   },
 ];
