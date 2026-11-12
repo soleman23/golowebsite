@@ -23,6 +23,7 @@ import { courseEquipmentSlangTerms } from "./terms/course-equipment-slang";
 import { sideGamesBatch1Terms } from "./terms/side-games-batch-1";
 import { expansionBatch2Terms } from "./terms/expansion-batch-2";
 import { expansionBatch3Terms } from "./terms/expansion-batch-3";
+import { expansionBatch4Terms } from "./terms/expansion-batch-4";
 
 export const glossaryTerms: GlossaryTerm[] = [
   ...formatsTerms,
@@ -33,4 +34,5 @@ export const glossaryTerms: GlossaryTerm[] = [
   ...sideGamesBatch1Terms,
   ...expansionBatch2Terms,
   ...expansionBatch3Terms,
+  ...expansionBatch4Terms,
 ];
