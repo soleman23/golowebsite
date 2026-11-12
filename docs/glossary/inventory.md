@@ -259,7 +259,7 @@ Subtotal: 5 MVP + 15 expansion = 20.
 
 ## G. Equipment and technology (12)
 
-**Expansion batch 8 (#168, #304, November 12, 2026):** rows 137–146 are drafted at `in-review` (`expansion-batch-8.md`), golf only. Rangefinder is a hub entry for now: `/blog/rangefinder` is unpublished. Started at the owner's request before #167's launch + 28 read. Stages 2–4 were done by an agent under the owner's delegation (2026-11-12); approval is pending. Its release takes the glossary to 166.
+**Expansion batch 8 (#168, #304, November 12, 2026):** rows 137–146 are drafted at `in-review` (`expansion-batch-8.md`), golf only. Rangefinder is a hub entry for now: `/blog/rangefinder` is unpublished. Started at the owner's request before #167's launch + 28 read. Stages 2–4 were done by an agent under the owner's delegation, and the owner approved all 10 (2026-11-12). Not yet published. Its release takes the glossary to 166.
 
 Definitions, not buying advice. No brands (#162).
 
