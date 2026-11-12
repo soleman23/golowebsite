@@ -290,7 +290,7 @@ export const courseEquipmentSlangTerms: GlossaryTerm[] = [
     explanation: "The driver is the club; the drive is the shot.",
     example:
       "Drivers range from about 7 to 13 degrees of loft. A 7-iron usually has around 34.",
-    relatedTermIds: ["drive", "longest-drive"],
+    relatedTermIds: ["drive", "longest-drive", "fairway-wood"],
     relatedContentPaths: [],
     canonical: { kind: "hub", anchor: "driver" },
     capabilityIds: [],
