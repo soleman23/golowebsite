@@ -199,7 +199,7 @@ Subtotal: 10 MVP + 10 expansion = 20.
 
 ## E. Shots and ball flight (20)
 
-**Expansion batch 6 (#168, #298, November 12, 2026):** rows 100–114 are drafted at `in-review` (`expansion-batch-6.md`), golf only. Started at the owner's request before #167's launch + 28 read. Stages 2–4 were done by an agent under the owner's delegation, and the owner approved all 15 (2026-11-12). Not yet published. Fat Shot's related `chili-dip` (row 155) waits for batch 7.
+**Expansion batch 6 (#168, #298, November 12, 2026):** rows 100–114 are published (`expansion-batch-6.md`), golf only. Started at the owner's request before #167's launch + 28 read. Stages 2–4 were done by an agent under the owner's delegation, and the owner approved all 15 and asked for the release (2026-11-12), ahead of #167's launch + 28 read. Published by the batch 6 release PR. Fat Shot's related `chili-dip` (row 155) waits for batch 7.
 
 | # | id = slug | Term | MVP | Tags | Tier | Aliases | Related, not the same | Sources | Destination |
 |---|---|---|---|---|---|---|---|---|---|
@@ -316,7 +316,7 @@ Subtotal: 6 MVP + 14 expansion = 20.
 | 1–3 | side games, handicaps, formats | 35–48, 59–74, 85–94 | 40 | 96 (published) |
 | 4 | Scoring | 9–19, 21–24 | 15 | 111 (published 2026-11-11) |
 | 5 | Course, rules and etiquette | 120–134 | 15 | 126 (published 2026-11-11) |
-| 6 | Shots and ball flight | 100–114 | 15 | 141 |
+| 6 | Shots and ball flight | 100–114 | 15 | 141 (published 2026-11-12) |
 | 7 | Slang, plus Halve (**mixed**) | 153–166, 20 | 15 | 156 |
 | 8 | Equipment and technology | 137–146 | 10 | 166 |
 
@@ -330,7 +330,7 @@ Subtotal: 6 MVP + 14 expansion = 20.
 - **GA4 zero-result searches:** the `result_bucket` split exists only from 2026-11-05 and no checkpoint window with it is complete yet.
 - **Reader requests:** none recorded (issues searched 2026-11-11).
 
-That's too sparse to reorder anything. The owner released batch 4 on 2026-11-11 without waiting (override, as for batches 1–3), and batch 5 the same way, so launch + 28 (window 2026-10-29 – 11-25, run 2026-11-26) is the first read that can, starting with batch 6. Batches 1–5 went live on the evening of 2026-11-11 (batch 3 at 19:13 PST), so the window holds about 14 days of them; read their terms' queries against that, not the full 28. If launch + 28 is still too sparse, the order above stands, and launch + 56 (2026-12-24) and + 90 (2027-01-27) apply only to batches still unreleased.
+That's too sparse to reorder anything. The owner released batch 4 on 2026-11-11 without waiting (override, as for batches 1–3), and batches 5 and 6 the same way (batch 6 on 2026-11-12), so launch + 28 (window 2026-10-29 – 11-25, run 2026-11-26) is the first read that can, starting with batch 7. Batches 1–5 went live on the evening of 2026-11-11 (batch 3 at 19:13 PST) and batch 6 on 2026-11-12, so the window holds about 14 days of them; read their terms' queries against that, not the full 28. If launch + 28 is still too sparse, the order above stands, and launch + 56 (2026-12-24) and + 90 (2027-01-27) apply only to batches still unreleased.
 
 **Guides.** Dormie, All Square and Halve link `/games/nassau` (`canonical-map.md`), subject to batch 7's product audit. No batch builds a guide or a standalone page: that work gets its own issue (#106 Phase 3, #169), and a record links a guide only once it's published and the canonical map says so.
 

@@ -3,9 +3,8 @@
  * from docs/glossary/inventory.md § E, rows 100–114, drafted November 12,
  * 2026.
  *
- * APPROVED, NOT PUBLISHED. Nothing here reaches a public page, the search
- * index, the sitemap, llms.txt or structured data until a release PR
- * publishes it; approved records show only in local review (../selectors).
+ * PUBLISHED by the batch 6 release PR, which the owner asked for after
+ * approving all 15 ("Merge as long as they are ready").
  * Expansion records go back to the owner's
  * review roles (editorial-review.md § Roles): an agent drafted these and
  * prepared the checks in docs/glossary/expansion-batch-6.md. On 2026-11-12
@@ -31,6 +30,9 @@ const DRAFTED_ON = "2026-11-12";
  * Approval is the owner's.
  */
 const REVIEWED_ON = "2026-11-12";
+
+/** The day the release PR merged and deployed. */
+const PUBLISHED_ON = "2026-11-12";
 
 const reviewLog: ReviewEntry[] = [
   {
@@ -110,7 +112,8 @@ export const expansionBatch6Terms: GlossaryTerm[] = [
     reviewLog,
     reviewedBy: "owner",
     reviewedOn: REVIEWED_ON,
-    status: "approved",
+    publishedOn: PUBLISHED_ON,
+    status: "published",
   },
   {
     id: "fade",
@@ -134,7 +137,8 @@ export const expansionBatch6Terms: GlossaryTerm[] = [
     reviewLog,
     reviewedBy: "owner",
     reviewedOn: REVIEWED_ON,
-    status: "approved",
+    publishedOn: PUBLISHED_ON,
+    status: "published",
   },
   {
     id: "hook",
@@ -162,7 +166,8 @@ export const expansionBatch6Terms: GlossaryTerm[] = [
     reviewLog,
     reviewedBy: "owner",
     reviewedOn: REVIEWED_ON,
-    status: "approved",
+    publishedOn: PUBLISHED_ON,
+    status: "published",
   },
   {
     id: "shank",
@@ -201,7 +206,8 @@ export const expansionBatch6Terms: GlossaryTerm[] = [
     reviewLog,
     reviewedBy: "owner",
     reviewedOn: REVIEWED_ON,
-    status: "approved",
+    publishedOn: PUBLISHED_ON,
+    status: "published",
   },
   {
     id: "flop-shot",
@@ -244,7 +250,8 @@ export const expansionBatch6Terms: GlossaryTerm[] = [
     reviewLog,
     reviewedBy: "owner",
     reviewedOn: REVIEWED_ON,
-    status: "approved",
+    publishedOn: PUBLISHED_ON,
+    status: "published",
   },
   {
     id: "punch-shot",
@@ -267,7 +274,8 @@ export const expansionBatch6Terms: GlossaryTerm[] = [
     reviewLog,
     reviewedBy: "owner",
     reviewedOn: REVIEWED_ON,
-    status: "approved",
+    publishedOn: PUBLISHED_ON,
+    status: "published",
   },
   {
     id: "bump-and-run",
@@ -291,7 +299,8 @@ export const expansionBatch6Terms: GlossaryTerm[] = [
     reviewLog,
     reviewedBy: "owner",
     reviewedOn: REVIEWED_ON,
-    status: "approved",
+    publishedOn: PUBLISHED_ON,
+    status: "published",
   },
   {
     id: "lag-putt",
@@ -315,7 +324,8 @@ export const expansionBatch6Terms: GlossaryTerm[] = [
     reviewLog,
     reviewedBy: "owner",
     reviewedOn: REVIEWED_ON,
-    status: "approved",
+    publishedOn: PUBLISHED_ON,
+    status: "published",
   },
   {
     id: "approach-shot",
@@ -339,7 +349,8 @@ export const expansionBatch6Terms: GlossaryTerm[] = [
     reviewLog,
     reviewedBy: "owner",
     reviewedOn: REVIEWED_ON,
-    status: "approved",
+    publishedOn: PUBLISHED_ON,
+    status: "published",
   },
   {
     id: "layup",
@@ -363,7 +374,8 @@ export const expansionBatch6Terms: GlossaryTerm[] = [
     reviewLog,
     reviewedBy: "owner",
     reviewedOn: REVIEWED_ON,
-    status: "approved",
+    publishedOn: PUBLISHED_ON,
+    status: "published",
   },
   {
     id: "fat-shot",
@@ -396,7 +408,8 @@ export const expansionBatch6Terms: GlossaryTerm[] = [
     reviewLog,
     reviewedBy: "owner",
     reviewedOn: REVIEWED_ON,
-    status: "approved",
+    publishedOn: PUBLISHED_ON,
+    status: "published",
   },
   {
     id: "thin-shot",
@@ -420,7 +433,8 @@ export const expansionBatch6Terms: GlossaryTerm[] = [
     reviewLog,
     reviewedBy: "owner",
     reviewedOn: REVIEWED_ON,
-    status: "approved",
+    publishedOn: PUBLISHED_ON,
+    status: "published",
   },
   {
     id: "topped-shot",
@@ -449,7 +463,8 @@ export const expansionBatch6Terms: GlossaryTerm[] = [
     reviewLog,
     reviewedBy: "owner",
     reviewedOn: REVIEWED_ON,
-    status: "approved",
+    publishedOn: PUBLISHED_ON,
+    status: "published",
   },
   {
     id: "up-and-down",
@@ -482,7 +497,8 @@ export const expansionBatch6Terms: GlossaryTerm[] = [
     reviewLog,
     reviewedBy: "owner",
     reviewedOn: REVIEWED_ON,
-    status: "approved",
+    publishedOn: PUBLISHED_ON,
+    status: "published",
   },
   {
     id: "three-putt",
@@ -508,6 +524,7 @@ export const expansionBatch6Terms: GlossaryTerm[] = [
     reviewLog,
     reviewedBy: "owner",
     reviewedOn: REVIEWED_ON,
-    status: "approved",
+    publishedOn: PUBLISHED_ON,
+    status: "published",
   },
 ];
