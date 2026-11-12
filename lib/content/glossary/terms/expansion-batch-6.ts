@@ -391,7 +391,7 @@ export const expansionBatch6Terms: GlossaryTerm[] = [
       "Also called a chunk, or hitting it heavy. A fat chip is a chili dip. The opposite mishit, catching the ball too high, is a thin shot.",
     example:
       "Colin Montgomerie came to the 72nd hole of the 2006 US Open where a 4 would have won. His approach was heavy, finished in rough beside the green, and he made 6.",
-    relatedTermIds: ["thin-shot", "topped-shot"],
+    relatedTermIds: ["thin-shot", "topped-shot", "chili-dip"],
     relatedContentPaths: [],
     canonical: { kind: "hub", anchor: "fat-shot" },
     capabilityIds: [],

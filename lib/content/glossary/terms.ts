@@ -26,6 +26,7 @@ import { expansionBatch3Terms } from "./terms/expansion-batch-3";
 import { expansionBatch4Terms } from "./terms/expansion-batch-4";
 import { expansionBatch5Terms } from "./terms/expansion-batch-5";
 import { expansionBatch6Terms } from "./terms/expansion-batch-6";
+import { expansionBatch7Terms } from "./terms/expansion-batch-7";
 
 export const glossaryTerms: GlossaryTerm[] = [
   ...formatsTerms,
@@ -39,4 +40,5 @@ export const glossaryTerms: GlossaryTerm[] = [
   ...expansionBatch4Terms,
   ...expansionBatch5Terms,
   ...expansionBatch6Terms,
+  ...expansionBatch7Terms,
 ];
