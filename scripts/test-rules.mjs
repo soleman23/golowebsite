@@ -130,6 +130,13 @@ const index = prepareRulesSearch(rulesSearchEntries(fullHub));
 const top = (query, category) => searchRules(index, query, category).map((m) => m.entry.id);
 
 const glossarySlugs = new Set(glossary.publishedGlossaryTerms().map((t) => t.slug));
+/**
+ * A glossary id the hub can't link: an unpublished record while one exists,
+ * otherwise an id no record has. Each #168 batch publishes more terms, so a
+ * hard-coded draft id goes stale (provisional-ball did with batch 5).
+ */
+const UNPUBLISHED_GLOSSARY_ID =
+  glossary.glossaryTerms.find((t) => t.status !== "published")?.slug ?? "not-a-glossary-term";
 /** Every related path a shipped record names (#242 added the posts and /games), plus a few more. */
 const SERVED = new Set([
   "/glossary",
@@ -360,7 +367,7 @@ const CTX = { servedPaths: SERVED, glossarySlugs, today: TODAY };
   fails("a Model Local Rule without its caveat", { scenarios: withScenario(2, { localRuleCaveat: undefined }) }, /out-of-bounds: cites a Model Local Rule without a localRuleCaveat/);
   fails("handicapping without its caveat", { scenarios: withScenario(11, { handicapCaveat: "" }) }, /conceded-putt: cites the Rules of Handicapping without a handicapCaveat/);
   fails("handicapping cited from the R&A", { scenarios: withScenario(11, { sources: [{ ...rogSource("3.2b"), checkedOn: TODAY }, { ...handicapSource("3.3", "https://www.usga.org/x"), authority: "RANDA", checkedOn: TODAY }] }) }, /source RoH 3\.3 should point to a page under https:\/\/www\.usga\.org\/handicapping/);
-  fails("an unpublished glossary term", { scenarios: withScenario(3, { relatedGlossaryIds: ["provisional-ball"] }) }, /red-vs-yellow-penalty-areas: related glossary term "provisional-ball" isn't published/);
+  fails("an unpublished glossary term", { scenarios: withScenario(3, { relatedGlossaryIds: [UNPUBLISHED_GLOSSARY_ID] }) }, new RegExp(`red-vs-yellow-penalty-areas: related glossary term "${UNPUBLISHED_GLOSSARY_ID}" isn't published`));
   fails("an unserved related path", { overviews: withOverview(3, { relatedContentPaths: ["/blog/not-a-post"] }) }, /rule-3: related path \/blog\/not-a-post isn't a served page/);
   fails("a related path into the hub itself", { overviews: withOverview(3, { relatedContentPaths: ["/rules"] }) }, /link the record instead/);
   fails("a reserved fragment", { scenarios: withScenario(0, { slug: "official-sources" }) }, /fragment "official-sources" is a hub section id/);
