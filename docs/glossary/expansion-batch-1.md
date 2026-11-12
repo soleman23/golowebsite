@@ -38,7 +38,7 @@ The inventory lists 16 side-games expansion terms. #168 asks for batches of 10 t
 | 4 | SEO/canonical | Agent, 2026-11-11, under the owner's delegation: canonicals per `canonical-map.md`; `lint:content` passes; related ids and paths resolve | — |
 | 5 | Approval | **Owner**, in chat, 2026-11-11: "Approve all 11" | — |
 
-**Delegation (owner, 2026-11-11).** The owner delegated stages 2–4 for this batch to an agent and kept approval (`editorial-review.md` § Roles). Each record now has a `reviewLog` with `rules`, `product` and `seo` entries, `by: "agent"`, dated 2026-11-11. The owner approved all 11 in chat on 2026-11-11 ("Approve all 11"), so each record also has an `approval` entry `by: "owner"`, `reviewedBy: "owner"`, `reviewedOn: 2026-11-11`, and status `approved`. A release PR moves them to `published`.
+**Delegation (owner, 2026-11-11).** The owner delegated stages 2–4 for this batch to an agent and kept approval (`editorial-review.md` § Roles). Each record now has a `reviewLog` with `rules`, `product` and `seo` entries, `by: "agent"`, dated 2026-11-11. The owner approved all 11 in chat on 2026-11-11 ("Approve all 11"), so each record also has an `approval` entry `by: "owner"`, `reviewedBy: "owner"`, `reviewedOn: 2026-11-11`, and status `approved`. On the owner's word in chat ("Publish then"), the batch 1 release PR moved them to `published`, with `publishedOn` the day it merged. The release recheck (`editorial-review.md` § Release recheck) is this day's stage 2 and 3 work: sources reopened and capability ids rechecked on 2026-11-11.
 
 ### Stage 2–4 results (agent, 2026-11-11)
 
