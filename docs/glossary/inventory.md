@@ -61,6 +61,8 @@ Existing site content already cites RoH Appendix C (allowances), Appendix G (Cou
 
 ## A. Scoring (24)
 
+**Expansion batch 4 (#168, #292, November 11, 2026):** rows 9–19 and 21–24 are drafted at `in-review` (`expansion-batch-4.md`), golf only, with no stage signed. Their release waits for #167's launch + 28 read or an owner override. Row 20 (Halve) goes to batch 7 with Dormie and All Square.
+
 | # | id = slug | Term | MVP | Tags | Tier | Aliases | Related, not the same | Sources | Destination |
 |---|---|---|---|---|---|---|---|---|---|
 | 1 | `par` | Par | ✓ | scoring-basics | P2 | | `even-par`, `birdie`, `bogey`; Par Competition (`par-competition`, a format) | RoH Definitions (Par) | hub |
