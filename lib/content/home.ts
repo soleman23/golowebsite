@@ -10,7 +10,7 @@
 import type { IconName } from "@/components/ui/Icon";
 import { mostAskedFaqs, type FaqItem } from "./faq";
 import { games, rosterGame, type GameSlug } from "@/lib/content/games";
-import { pricing } from "./features";
+import { pricing, pricingHref } from "./features";
 
 /**
  * The hero H1. It names what a searcher types — "golf scorecard app", "side
@@ -248,6 +248,6 @@ export const faqs: FaqItem[] = mostAskedFaqs;
  * while that block is (siteConfig.appLive false).
  */
 export const homePricingLink = {
-  href: "/features#pricing",
+  href: pricingHref,
   label: `What it costs: ${pricing.value.toLowerCase()} →`,
 };

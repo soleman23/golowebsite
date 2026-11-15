@@ -105,10 +105,12 @@ function listSideGames(): ToolResult {
 function getSideGame(args: Record<string, unknown>): ToolResult {
   const query = normalizeGlossaryText(stringArg(args, "game"));
   const slug = query.replace(/ /g, "-");
-  const game =
-    games.find((g) => g.slug === slug) ??
-    games.find((g) => normalizeGlossaryText(g.name) === query) ??
-    games.find((g) => normalizeGlossaryText(g.name).includes(query));
+  // An all-punctuation name normalizes to "", which every name "includes".
+  const game = query
+    ? (games.find((g) => g.slug === slug) ??
+      games.find((g) => normalizeGlossaryText(g.name) === query) ??
+      games.find((g) => normalizeGlossaryText(g.name).includes(query)))
+    : undefined;
   if (!game) {
     return { text: `${agentToolCopy.noGame}\n\n${listSideGames().text}` };
   }

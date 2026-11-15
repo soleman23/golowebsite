@@ -6,6 +6,7 @@ import {
   homeGamesSection,
   llmsCopy,
   pricing,
+  pricingHref,
   steps,
 } from "@/lib/content";
 import { siteConfig } from "@/lib/siteConfig";
@@ -51,7 +52,7 @@ export function GET() {
     "",
     `${siteConfig.brandName}. ${siteConfig.tagline}`,
     "",
-    `**${pricing.kicker.charAt(0)}${pricing.kicker.slice(1).toLowerCase()}:** ${pricing.value}. ${pricing.body} (${absolute("/features#pricing")})`,
+    `**${pricing.kicker.charAt(0)}${pricing.kicker.slice(1).toLowerCase()}:** ${pricing.value}. ${pricing.body} (${absolute(pricingHref)})`,
     "",
     ...features.flatMap((f) => [
       `## ${f.title}`,

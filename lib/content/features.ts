@@ -318,6 +318,13 @@ export const betaQuotes: BetaQuote[] = [];
 
 /* ----------------------------------------------------------------- pricing */
 
+/**
+ * Where the price is stated. The #pricing block (PricingNote) renders only
+ * while siteConfig.appLive is false; after that the link is the page, so
+ * the home page's Offer and its Markdown never point at a missing anchor.
+ */
+export const pricingHref = siteConfig.appLive ? "/features" : "/features#pricing";
+
 export const pricing = {
   kicker: "WHAT IT COSTS",
   value: "Free",

@@ -21,7 +21,7 @@ import { Testimonials } from "@/components/sections/Testimonials";
 import { FinalCTA } from "@/components/sections/FinalCTA";
 import { FAQ } from "@/components/sections/FAQ";
 import { JsonLd } from "@/components/ui/JsonLd";
-import { capability, quotes } from "@/lib/content";
+import { capability, pricingHref, quotes } from "@/lib/content";
 
 const baseMetadata = pageMetadata({
   path: "/",
@@ -53,7 +53,7 @@ export const metadata: Metadata = {
  * report, and inventing either is the kind of thing that gets structured data
  * ignored site-wide.
  *
- * The Offer is what /features#pricing says today: free, in US dollars
+ * The Offer is what /features#pricing (pricingHref) says today: free, in US dollars
  * (owner, 2026-11-15). If GoLo ever charges, this changes with that block.
  *
  * `operatingSystem` comes from the capability registry: "Web browser" and
@@ -100,7 +100,7 @@ const homeJsonLd = {
         price: "0",
         priceCurrency: "USD",
         availability: "https://schema.org/InStock",
-        url: `${siteConfig.url}/features#pricing`,
+        url: `${siteConfig.url}${pricingHref}`,
       },
     },
   ],
