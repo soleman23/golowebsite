@@ -48,6 +48,16 @@ export function organizationNode() {
     alternateName: siteConfig.name,
     url: siteConfig.url,
     email: siteConfig.supportEmail,
+    // Email only: the company has no public phone line, so no telephone
+    // field rather than an invented or personal number (owner, 2026-11-15).
+    contactPoint: {
+      "@type": "ContactPoint",
+      contactType: "customer support",
+      email: siteConfig.supportEmail,
+      url: `${siteConfig.url}/contact`,
+      availableLanguage: "en",
+      areaServed: "US",
+    },
     logo: organizationLogo,
     address: {
       "@type": "PostalAddress",

@@ -23,6 +23,13 @@ export const llmsCopy = {
     articles: "Articles",
     glossary: "Glossary",
     rules: "Rules of Golf",
+    agents: "For agents",
+  },
+  /** The agent endpoints, after the sections that list pages. */
+  agents: {
+    markdown: "The home page as Markdown. \"/\" serves it too for Accept: text/markdown.",
+    mcp: "Read-only MCP server (Streamable HTTP, no sign-in): look up golf terms, side games, Rules situations and app facts.",
+    card: "MCP Server Card",
   },
   glossary:
     "Golf terms, scoring, handicaps, side games and slang, defined. Each term has an anchor on the hub page.",

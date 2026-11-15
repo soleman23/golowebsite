@@ -59,6 +59,13 @@ export const siteConfig = {
     false,
   ),
 
+  /**
+   * The Content-Signal line in /robots.txt (contentsignals.org): search and
+   * AI answers that cite the page are welcome, model training isn't. Owner's
+   * call, 2026-11-15.
+   */
+  contentSignal: "search=yes, ai-input=yes, ai-train=no",
+
   /** The one public address. Also the contact of record in /privacy. */
   supportEmail: "info@golo.golf",
 

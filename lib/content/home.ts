@@ -10,6 +10,7 @@
 import type { IconName } from "@/components/ui/Icon";
 import { mostAskedFaqs, type FaqItem } from "./faq";
 import { games, rosterGame, type GameSlug } from "@/lib/content/games";
+import { pricing } from "./features";
 
 /**
  * The hero H1. It names what a searcher types — "golf scorecard app", "side
@@ -240,3 +241,13 @@ export const quotes: Quote[] = [];
  * "Read the full FAQ →" lands somewhere the visitor recognises.
  */
 export const faqs: FaqItem[] = mostAskedFaqs;
+
+/**
+ * The price, linked from the home FAQ to the /features pricing block, so the
+ * home page states it in a link as well as in its Offer markup. Shown only
+ * while that block is (siteConfig.appLive false).
+ */
+export const homePricingLink = {
+  href: "/features#pricing",
+  label: `What it costs: ${pricing.value.toLowerCase()} →`,
+};

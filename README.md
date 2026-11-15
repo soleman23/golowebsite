@@ -446,7 +446,10 @@ app/                     # App Router: layout, landing page, content pages, API
   (content)/             # /privacy, /terms, /contact (route group, no URL segment)
   blog/  faq/  features/  games/    # the rest of the routes
   api/                   # route handlers: text-link, contact, subscribe, health
-  robots.ts              # generates /robots.txt
+  robots.txt/            # /robots.txt, with the Content-Signal line
+  llms.txt/  index.md/   # plain-text site map; the home page as Markdown
+  mcp/                   # read-only MCP server (Streamable HTTP, JSON only)
+  .well-known/mcp/       # the MCP Server Card
   sitemap.ts             # generates /sitemap.xml — driven entirely off lib/content
 components/
   layout/                # Nav (+ mobile drawer, active-link state), Footer
