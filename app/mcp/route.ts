@@ -1,5 +1,6 @@
 import { agentServer } from "@/lib/content/agent";
 import { isAgentToolName, runAgentTool } from "@/lib/agent/tools";
+import { readBodyText } from "@/lib/subscribeGuard";
 import {
   MCP_PROTOCOL_VERSIONS,
   mcpCapabilities,
@@ -70,8 +71,10 @@ function negotiateVersion(requested: unknown): string {
 }
 
 export async function POST(request: Request): Promise<Response> {
-  const raw = await request.text();
-  if (raw.length > MAX_BODY_BYTES) {
+  // Counted in bytes as the body streams in, and cancelled past the limit,
+  // so an oversized or chunked request is never buffered whole.
+  const raw = await readBodyText(request.body, MAX_BODY_BYTES);
+  if (raw === null) {
     return rpcError(null, -32600, "Request too large.", 413);
   }
 

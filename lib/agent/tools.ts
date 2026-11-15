@@ -25,9 +25,13 @@ import {
   publishedRules,
   rulesAnchorHref,
   rulesEdition,
+  rulesEntryCopy,
+  rulesLinkText,
   rulesSearchEntries,
+  rulesSituationsCopy,
   searchGlossary,
   searchRules,
+  type PublicRulesScenario,
 } from "@/lib/content";
 import {
   AGENT_INPUT_MAX,
@@ -124,6 +128,41 @@ function getSideGame(args: Record<string, unknown>): ToolResult {
   return { text: lines.join("\n") };
 }
 
+/**
+ * A situation as the hub renders it (components/sections/rules/
+ * ScenarioAnswer.tsx), in the same order and under the same labels: the
+ * answer, what has to be true for it to hold, the options, penalty, example,
+ * caveats and the official text. The conditions are part of the answer: a
+ * question can match through one, and the answer alone can contradict it.
+ */
+function scenarioLines(s: PublicRulesScenario): string[] {
+  const c = rulesSituationsCopy;
+  const lines = [s.answer];
+  if (s.conditions.length) {
+    lines.push("", `${c.conditions}:`, ...s.conditions.map((x) => `- ${x}`));
+  }
+  if (s.options.length) {
+    lines.push("", `${c.options}:`, ...s.options.map((x, i) => `${i + 1}. ${x}`));
+  }
+  if (s.penalty) lines.push("", `${c.penalty}: ${s.penalty}`);
+  if (s.example) lines.push("", `${c.example}: ${s.example}`);
+  for (const [label, text] of [
+    [c.localRule, s.localRuleCaveat],
+    [c.matchVsStroke, s.matchVsStrokeCaveat],
+    [c.handicap, s.handicapCaveat],
+  ] as const) {
+    if (text) lines.push("", `${label}: ${text}`);
+  }
+  if (s.links.length) {
+    lines.push(
+      "",
+      `${rulesEntryCopy.official}:`,
+      ...s.links.map((link) => `- ${rulesLinkText(link)}: ${link.href}`),
+    );
+  }
+  return lines;
+}
+
 function findRulesSituation(args: Record<string, unknown>): ToolResult {
   const query = stringArg(args, "question");
   const matches = searchRules(rulesIndex, query).slice(0, 3);
@@ -135,9 +174,7 @@ function findRulesSituation(args: Record<string, unknown>): ToolResult {
     const scenario = entry.kind === "scenario" ? scenarioById.get(entry.id) : undefined;
     const overview = entry.kind === "rule" ? overviewById.get(entry.id) : undefined;
     if (scenario) {
-      lines.push(scenario.answer);
-      if (scenario.penalty) lines.push("", `Penalty: ${scenario.penalty}`);
-      if (scenario.ruleRefs.length) lines.push("", `Rules cited: ${scenario.ruleRefs.join(", ")}`);
+      lines.push(...scenarioLines(scenario));
     } else if (overview) {
       lines.push(overview.summary);
     } else {
