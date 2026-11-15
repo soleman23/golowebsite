@@ -10,14 +10,30 @@ import { prisma } from "@/lib/db";
 import { textLinkSchema } from "@/lib/validation";
 import { sendDownloadLink } from "@/lib/sms";
 import { assertDatabaseConfigured } from "@/lib/env";
+// The same 4 kB cap /api/subscribe uses: both carry one short field plus the
+// same attribution fields, a few hundred bytes in practice.
+import { MAX_BODY_BYTES, readBodyText } from "@/lib/subscribeGuard";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
+function tooLarge() {
+  console.warn("[text-link] blocked: too_large");
+  return NextResponse.json({ error: "Request too large." }, { status: 413 });
+}
+
 export async function POST(request: Request) {
+  if (Number(request.headers.get("content-length")) > MAX_BODY_BYTES) {
+    return tooLarge();
+  }
+  // Counted as it streams in and cancelled past the limit, so a chunked
+  // request (no Content-Length) is never buffered whole either.
+  const body = await readBodyText(request.body);
+  if (body === null) return tooLarge();
+
   let payload: unknown;
   try {
-    payload = await request.json();
+    payload = JSON.parse(body);
   } catch {
     return NextResponse.json({ error: "Invalid request body." }, { status: 400 });
   }
