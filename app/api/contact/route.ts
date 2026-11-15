@@ -9,14 +9,36 @@ import { prisma } from "@/lib/db";
 import { contactSchema } from "@/lib/validation";
 import { assertDatabaseConfigured } from "@/lib/env";
 import { sendContactNotification } from "@/lib/email";
+import { readBodyText } from "@/lib/subscribeGuard";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
+/**
+ * Largest request body accepted, in bytes. The schema allows a 4,000-character
+ * message plus name and email. Even if every character were multi-byte or a
+ * JSON-escaped control character, that's about 25 kB, so this never turns
+ * away a message the form would accept.
+ */
+const MAX_BODY_BYTES = 32 * 1024;
+
+function tooLarge() {
+  console.warn("[contact] blocked: too_large");
+  return NextResponse.json({ error: "Request too large." }, { status: 413 });
+}
+
 export async function POST(request: Request) {
+  if (Number(request.headers.get("content-length")) > MAX_BODY_BYTES) {
+    return tooLarge();
+  }
+  // Counted as it streams in and cancelled past the limit, so a chunked
+  // request (no Content-Length) is never buffered whole either.
+  const body = await readBodyText(request.body, MAX_BODY_BYTES);
+  if (body === null) return tooLarge();
+
   let payload: unknown;
   try {
-    payload = await request.json();
+    payload = JSON.parse(body);
   } catch {
     return NextResponse.json({ error: "Invalid request body." }, { status: 400 });
   }
