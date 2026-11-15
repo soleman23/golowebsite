@@ -65,6 +65,23 @@ const nextConfig = {
           },
         ],
       },
+      {
+        // The home page points agents at its Markdown twin and the llms.txt
+        // map (RFC 8288). The MCP server card is linked too, under a URI rel
+        // since no registered rel fits it. No Vary here: Next replaces it
+        // with its own on the prerendered HTML (see middleware.ts).
+        source: "/",
+        headers: [
+          {
+            key: "Link",
+            value: [
+              '</index.md>; rel="alternate"; type="text/markdown"',
+              '</llms.txt>; rel="describedby"; type="text/plain"',
+              '</.well-known/mcp/server-card.json>; rel="https://modelcontextprotocol.io/rel/server-card"; type="application/json"',
+            ].join(", "),
+          },
+        ],
+      },
     ];
   },
 

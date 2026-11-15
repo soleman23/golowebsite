@@ -21,13 +21,26 @@ import { Testimonials } from "@/components/sections/Testimonials";
 import { FinalCTA } from "@/components/sections/FinalCTA";
 import { FAQ } from "@/components/sections/FAQ";
 import { JsonLd } from "@/components/ui/JsonLd";
-import { capability, quotes } from "@/lib/content";
+import { capability, pricingHref, quotes } from "@/lib/content";
 
-export const metadata: Metadata = pageMetadata({
+const baseMetadata = pageMetadata({
   path: "/",
   title: "Golf Side-Game Scorecard App for Skins, Nassau & More",
   description: siteConfig.description,
 });
+
+/**
+ * The page's Markdown twin (/index.md, also what "/" serves for Accept:
+ * text/markdown) as a <link rel="alternate">. next.config.mjs sends the same
+ * as a Link header.
+ */
+export const metadata: Metadata = {
+  ...baseMetadata,
+  alternates: {
+    ...baseMetadata.alternates,
+    types: { "text/markdown": "/index.md" },
+  },
+};
 
 /**
  * The app itself, plus the company behind it. One graph rather than three
@@ -38,8 +51,10 @@ export const metadata: Metadata = pageMetadata({
  *
  * No `aggregateRating` and no `datePublished`: there are no ratings to
  * report, and inventing either is the kind of thing that gets structured data
- * ignored site-wide. No `offers` either: pricing isn't set (see the FAQ), and
- * an Offer would state a price. Add one from the pricing decision, not before.
+ * ignored site-wide.
+ *
+ * The Offer is what /features#pricing (pricingHref) says today: free, in US dollars
+ * (owner, 2026-11-15). If GoLo ever charges, this changes with that block.
  *
  * `operatingSystem` comes from the capability registry: "Web browser" and
  * "Android" while those are live, and "iOS" only once the ios-app entry is
@@ -80,6 +95,13 @@ const homeJsonLd = {
       url: siteConfig.url,
       publisher: organizationRef,
       ...(storeListings.length ? { sameAs: storeListings } : {}),
+      offers: {
+        "@type": "Offer",
+        price: "0",
+        priceCurrency: "USD",
+        availability: "https://schema.org/InStock",
+        url: `${siteConfig.url}${pricingHref}`,
+      },
     },
   ],
 };

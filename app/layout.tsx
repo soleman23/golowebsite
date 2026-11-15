@@ -6,6 +6,7 @@ import { Footer } from "@/components/layout/Footer";
 import { AnalyticsLoader } from "@/components/analytics/AnalyticsLoader";
 import { AnalyticsConsentBanner } from "@/components/analytics/AnalyticsConsentBanner";
 import { LandingCapture } from "@/components/layout/LandingCapture";
+import { WebMcpTools } from "@/components/agent/WebMcpTools";
 import "./globals.css";
 
 // Google Analytics 4 measurement ID. Override per-environment with NEXT_PUBLIC_GA_ID.
@@ -67,6 +68,8 @@ export default function RootLayout({
         <main id="main">{children}</main>
         <Footer />
         <LandingCapture />
+        {/* Read-only agent tools for WebMCP browsers; renders nothing. */}
+        <WebMcpTools />
         <AnalyticsLoader
           enabled={GA_ENABLED}
           measurementId={GA_MEASUREMENT_ID}

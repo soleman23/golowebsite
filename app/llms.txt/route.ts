@@ -14,6 +14,7 @@ import {
   rulesHasPublished,
 } from "@/lib/content";
 import { siteConfig } from "@/lib/siteConfig";
+import { mcpEndpointUrl } from "@/lib/agent/mcp";
 
 /**
  * /llms.txt — a plain-text map of the site in the llms.txt proposal's format
@@ -97,6 +98,12 @@ export function GET() {
           "",
         ]
       : []),
+    `## ${llmsCopy.sections.agents}`,
+    "",
+    `- [Home page in Markdown](${absolute("/index.md")}): ${llmsCopy.agents.markdown}`,
+    `- [MCP server](${mcpEndpointUrl}): ${llmsCopy.agents.mcp}`,
+    `- [${llmsCopy.agents.card}](${absolute("/.well-known/mcp/server-card.json")})`,
+    "",
   ];
 
   return new Response(lines.join("\n"), {

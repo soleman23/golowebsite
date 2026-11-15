@@ -8,7 +8,7 @@ import styles from "./PricingNote.module.css";
 
 export function PricingNote() {
   return (
-    <section className={styles.section} aria-labelledby="pricing-heading">
+    <section id="pricing" className={styles.section} aria-labelledby="pricing-heading">
       <div className={styles.inner}>
         <div className={styles.card}>
           <div className={styles.copy}>

@@ -4,7 +4,8 @@
  * "+" rotating to "×" — so this stays a server component.
  */
 
-import { faqs } from "@/lib/content";
+import { faqs, homePricingLink } from "@/lib/content";
+import { siteConfig } from "@/lib/siteConfig";
 import { SectionHeader } from "@/components/ui/SectionHeader";
 import { Accordion, type AccordionItem } from "@/components/ui/Accordion";
 import { SeeAllLink } from "@/components/ui/SeeAllLink";
@@ -30,9 +31,16 @@ export function FAQ() {
 
         <Accordion items={items} idPrefix="faq" />
 
-        <SeeAllLink href="/faq" align="center">
-          Read the full FAQ →
-        </SeeAllLink>
+        <div className={styles.links}>
+          <SeeAllLink href="/faq" align="center">
+            Read the full FAQ →
+          </SeeAllLink>
+          {siteConfig.appLive ? null : (
+            <SeeAllLink href={homePricingLink.href} align="center">
+              {homePricingLink.label}
+            </SeeAllLink>
+          )}
+        </div>
       </div>
     </section>
   );
