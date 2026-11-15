@@ -11,6 +11,10 @@ const compat = new FlatCompat({
 
 const eslintConfig = [
   { ignores: [".next/**", "node_modules/**", "public/**"] },
+  // With a flat config, `next lint` drops its extensions list and ESLint 9
+  // would skip .jsx/.mts/.cts. Name every extension ESLint 8 covered, plus
+  // the module/commonjs TypeScript ones.
+  { files: ["**/*.{js,jsx,mjs,cjs,ts,tsx,mts,cts}"] },
   ...compat.extends("next/core-web-vitals"),
   // ESLint 9 turns this on by default; 8 had it off. Keep 8's behaviour so
   // the upgrade doesn't change lint output.
