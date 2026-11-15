@@ -47,18 +47,22 @@
     "zod": "^4.6.7"
   },
   "devDependencies": {
+    "@eslint/eslintrc": "^3.3.7",
     "@types/node": "^20.16.11",
     "@types/react": "^18.3.11",
     "@types/react-dom": "^18.3.0",
-    "eslint": "^8.57.1",
+    "eslint": "^9.39.5",
     "eslint-config-next": "^15.5.28",
     "prisma": "^5.22.0",
     "typescript": "^5.6.3"
   },
-  "//overrides": "next 15.5.x pins postcss to exactly 8.4.31, which is inside GHSA-qx2v-qp2m-jg93, GHSA-6g55-p6wh-862q, GHSA-fxqj-rqcc-2cmp and GHSA-r28c-9q8g-f849 (fixed in 8.5.23). 8.5 is API-compatible with 8.4. Remove this once next widens its postcss range.",
+  "//overrides": "next 15.5.x pins postcss to exactly 8.4.31, which is inside GHSA-qx2v-qp2m-jg93, GHSA-6g55-p6wh-862q, GHSA-fxqj-rqcc-2cmp and GHSA-r28c-9q8g-f849 (fixed in 8.5.23). 8.5 is API-compatible with 8.4. Remove this once next widens its postcss range. minimatch: @typescript-eslint/typescript-estree 8.x still asks for ^10, and 10.x is inside CVE-2026-118764 (fixed in 11.0.1). 11 keeps the CommonJS minimatch() export it calls. Drop this once typescript-estree widens to ^11. Lint-time only; nothing here ships to the browser.",
   "overrides": {
     "next": {
       "postcss": "^8.5.29"
+    },
+    "@typescript-eslint/typescript-estree": {
+      "minimatch": "^11.0.8"
     }
   }
 }
