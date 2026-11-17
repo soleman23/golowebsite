@@ -237,6 +237,35 @@ reports is stated separately.
     `referrerHost=l.instagram.com`, `landingSource=instagram`,
     `landingMedium=organic_social`, `landingCampaign=golo_prelaunch_2026q4` and
     `landingContent=bio`, then deleted at 02:34 UTC (`0` `qa+` rows remain).
+- **November 7 and November 9: Rules Center hits from a local build
+  (#248).** Hostname `localhost` sent 36 events on November 7 and 2 on
+  November 9 (Pacific days, the property's reporting time zone).
+  - On `/rules` they were 4 views, 2 users and 31 events: 29 on November 7 and
+    2 on November 9.
+  - The 31 include `rules_scenario_open` 1 (10:00 PST hour) and
+    `rules_rule_open` 1 (11:00 PST hour), both on November 7. Session medium
+    was `(none)`.
+  - The launch record says the launch-day QA and live checks answered every
+    Google request locally (`docs/rules/launch-packet.md`), so the run that
+    sent them hasn't been identified.
+  - **Reporting rule:** leave out hostname `localhost`. The Rules Center
+    launch + 7 days checkpoint did this (`docs/seo-reports/2026-12.md`), and
+    L+28 and later must too.
+  - **Not deleted.** The "Exclude local builds" data filter was activated
+    after these days (see below), and it isn't retroactive.
+- **From 2026-11-17, local builds are filtered out.** The web hostname data
+  filter "Exclude local builds" (hostname exactly matches `localhost` or
+  `127.0.0.1`) was switched from Testing to **Active** on 2026-11-17 at about
+  14:54 PST, with the owner's approval.
+  - **Checked in Testing first.** An exploration covering 2026-10-20 to
+    2026-11-16 split event count by Hostname and Test data filter name. All
+    51 `localhost` events were tagged "Exclude local builds": 13 on October
+    20, 36 on November 7 and 2 on November 9. None of the 1,325
+    `www.golo.golf` events was tagged, and no other hostname appeared.
+  - **Effect:** `localhost` and `127.0.0.1` events received after activation
+    are never processed or recoverable. Earlier test hits stay in the data, so
+    the reporting rules above still apply to them.
+  - The property's other filter, "Internal Traffic", is still in Testing.
 
 **Clarity**
 - Sessions whose entry URL is on `localhost`, about 02:20–05:30 UTC on
@@ -263,6 +292,10 @@ reports is stated separately.
 Recommendation: annotate the window, filter `localhost` in reports, and add the
 hostname data filter for future builds. Don't use deletion requests for this:
 they leave the counts in place and can't target the test hits cleanly.
+
+**Status on 2026-11-17:** the hostname data filter ("Exclude local builds",
+`localhost` or `127.0.0.1`) is active. It was created in Testing on 2026-10-20,
+and activated on 2026-11-17 after the Testing check in § Test traffic.
 
 ### Microsoft Clarity
 
