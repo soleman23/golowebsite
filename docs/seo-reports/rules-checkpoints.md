@@ -83,7 +83,7 @@ The side-game chooser's five (#224) are still unregistered.
 
 - **No search text.** The events never carry it. Failed searches are read from `result_bucket`, `match_type` and `category`, never from what was typed.
 - **One URL.** In Release A every situation and rule is a fragment of `/rules`. Search Console can't split them, so per-situation demand comes from the queries (read B) and from GA4's opens, never from page rows.
-- **Known non-visitor traffic.** Read `docs/analytics-data-notes.md` § Test traffic first, and leave out sessions with medium `qa`. The #244 consent harness (2026-11-07) ran against a local build with every Google request answered locally, and sent nothing to GA4. Any live check on launch day that allows analytics is recorded in § Test traffic by #247; report day L on its own line wherever GA4 allows.
+- **Known non-visitor traffic.** Read `docs/analytics-data-notes.md` § Test traffic first, and leave out sessions with medium `qa`. The #244 consent harness (2026-11-07) ran against a local build with every Google request answered locally, and sent nothing to GA4. Any live check on launch day that allows analytics is recorded in § Test traffic by #247; report day L on its own line wherever GA4 allows. Also leave out hostname `localhost`. A local build sent `/rules` hits on 2026-11-07 and 2026-11-09, recorded there on 2026-11-17. The "Exclude local builds" data filter has been active since 2026-11-17, but it isn't retroactive, so every window that starts on L still includes those hits.
 - **Opens are once per entry per page load,** and the first source wins. A second open of the same entry on the same page isn't counted. Read them as "entries reached", not "times read".
 
 ## Shared reads
